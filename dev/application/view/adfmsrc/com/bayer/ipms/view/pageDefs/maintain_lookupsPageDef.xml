@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.64.93" id="maintain_lookupsPageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="Root.ManagementAppModule.LicenseTypeView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="LicenseTypeViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator Binds="Root.ManagementAppModule.PriorityView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="PriorityViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator Binds="Root.ManagementAppModule.RegionView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="RegionViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator Binds="Root.ManagementAppModule.SubstanceTypeView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="SubstanceTypeViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator Binds="Root.ManagementAppModule.FunctionView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="FunctionViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator Binds="Root.ManagementAppModule.ProjectCategoryView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="ProjectCategoryViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator Binds="Root.ManagementAppModule.NewsCategoryView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="NewsCategoryViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator Binds="Root.ManagementAppModule.ProjectAreaView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="ProjectAreaViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator Binds="Root.ManagementAppModule.ProjectStateView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="ProjectStateViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator Binds="Root.ManagementAppModule.ProjectSourceView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="ProjectSourceViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator Binds="Root.ManagementAppModule.TeamRoleView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="TeamRoleViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator Binds="Root.ManagementAppModule.TerminationReasonView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="TerminationReasonViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator Binds="Root.ManagementAppModule.TherapeuticAreaView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="TherapeuticAreaViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator Binds="Root.ManagementAppModule.GlobalBusinessUnitView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="GlobalBusinessUnitViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator Binds="ManagementAppModule.ProjectTerminationReasonsView" 
+              DataControl="PrivateAppModuleDataControl"
+              RangeSize="100" id="ProjectTerminationReasonsViewIterator"/>
+    <iterator Binds="Root.ManagementAppModule.TargetClassView"
+              RangeSize="100" DataControl="PrivateAppModuleDataControl"
+              id="TargetClassViewIterator"/>
+    <iterator Binds="Root.ManagementAppModule.TargetOriginView" 
+			  RangeSize="100" DataControl="PrivateAppModuleDataControl"
+              id="TargetOriginViewIterator"/>
+    <iterator Binds="Root.ManagementAppModule.ProjectDeviceTypeView" 
+			  DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="ProjectDeviceTypeViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator Binds="Root.ManagementAppModule.RegulatoryTypeView" 
+	DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="RegulatoryTypeViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator Binds="Root.ManagementAppModule.PhasePlanningTypeView" 
+	DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="PhasePlanningTypeViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator Binds="Root.ManagementAppModule.ProjectPlanningCodeView" 
+			  DataControl="PrivateAppModuleDataControl" ChangeEventPolicy="ppr"
+              RangeSize="100" id="ProjectPlanningCodeViewIterator"/>
+    <iterator Binds="ManagementAppModule.StrategicBusinessEntityView" DataControl="PrivateAppModuleDataControl"
+              RangeSize="10" id="StrategicBusinessEntityViewIterator" ChangeEventPolicy="ppr"/>
+
+    <iterator Binds="ManagementAppModule.ProjectModalityView" DataControl="PrivateAppModuleDataControl"
+              RangeSize="10" id="ProjectModalityViewIterator" ChangeEventPolicy="ppr"/>
+
+    <iterator Binds="ManagementAppModule.DevicePhaseView" DataControl="PrivateAppModuleDataControl"
+              RangeSize="10" id="DevicePhaseViewIterator" ChangeEventPolicy="ppr"/>
+              
+    <iterator Binds="ManagementAppModule.SamdStatusView" DataControl="PrivateAppModuleDataControl"
+              RangeSize="10" id="SamdStatusViewIterator" ChangeEventPolicy="ppr"/>
+              
+    <iterator Binds="ManagementAppModule.BudgetStatusView" DataControl="PrivateAppModuleDataControl"
+              RangeSize="10" id="BudgetStatusViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator Binds="ManagementAppModule.CollaborationTypeView" DataControl="PrivateAppModuleDataControl"
+              RangeSize="10" id="CollaborationTypeViewIterator" ChangeEventPolicy="ppr"/>	
+    <iterator Binds="ManagementAppModule.PartnerView" DataControl="PrivateAppModuleDataControl"
+              RangeSize="10" id="PartnerViewIterator" ChangeEventPolicy="ppr"/>	
+    <iterator Binds="ManagementAppModule.LicenseDetailTypeView" DataControl="PrivateAppModuleDataControl"
+              RangeSize="10" id="LicenseDetailTypeViewIterator" ChangeEventPolicy="ppr"/>              
+  </executables>
+  <bindings>
+    <tree IterBinding="LicenseTypeViewIterator" id="LicenseTypeView">
+      <nodeDefinition Name="LicenseTypeView0" DefName="com.bayer.ipms.model.views.lookups.LicenseTypeView">
+        <AttrNames>
+          <Item Value="Code"/>
+          <Item Value="Name"/>
+          <Item Value="IsActive"/>
+          <Item Value="Description"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="PriorityViewIterator" id="PriorityView">
+      <nodeDefinition Name="PriorityView0" DefName="com.bayer.ipms.model.views.lookups.PriorityView">
+        <AttrNames>
+          <Item Value="Code"/>
+          <Item Value="Name"/>
+          <Item Value="IsActive"/>
+          <Item Value="Description"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="RegionViewIterator" id="RegionView">
+      <nodeDefinition Name="RegionView0" DefName="com.bayer.ipms.model.views.lookups.RegionView">
+        <AttrNames>
+          <Item Value="Code"/>
+          <Item Value="Name"/>
+          <Item Value="IsActive"/>
+          <Item Value="Description"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="GlobalBusinessUnitViewIterator" id="GlobalBusinessUnitView">
+      <nodeDefinition Name="GlobalBusinessUnitView0" DefName="com.bayer.ipms.model.views.lookups.GlobalBusinessUnitView">
+        <AttrNames>
+          <Item Value="Code"/>
+          <Item Value="Name"/>
+          <Item Value="IsActive"/>
+          <Item Value="Description"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="TherapeuticAreaViewIterator" id="TherapeuticAreaView">
+      <nodeDefinition Name="TherapeuticAreaView0" DefName="com.bayer.ipms.model.views.lookups.TherapeuticAreaView">
+        <AttrNames>
+          <Item Value="Code"/>
+          <Item Value="Name"/>
+          <Item Value="IsActive"/>
+          <Item Value="Description"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="TerminationReasonViewIterator" id="TerminationReasonView">
+      <nodeDefinition Name="TerminationReasonView0" DefName="com.bayer.ipms.model.views.lookups.TerminationReasonView">
+        <AttrNames>
+          <Item Value="Code"/>
+          <Item Value="Name"/>
+          <Item Value="IsActive"/>
+          <Item Value="Description"/>
+          <Item Value="RefReasonCode"/>       
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="TeamRoleViewIterator" id="TeamRoleView">
+      <nodeDefinition Name="TeamRoleView0" DefName="com.bayer.ipms.model.views.lookups.TeamRoleView">
+        <AttrNames>
+          <Item Value="Code"/>
+          <Item Value="Name"/>
+          <Item Value="IsActive"/>
+          <Item Value="Description"/>
+          <Item Value="IsD2prjRelevant"/>
+          <Item Value="IsDevRelevant"/>
+          <Item Value="IsPrdmntRelevant"/>
+          <Item Value="IsSamdRelevant"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="ProjectSourceViewIterator" id="ProjectSourceView">
+      <nodeDefinition Name="ProjectSourceView0" DefName="com.bayer.ipms.model.views.lookups.ProjectSourceView">
+        <AttrNames>
+          <Item Value="Code"/>
+          <Item Value="Name"/>
+          <Item Value="IsActive"/>
+          <Item Value="Description"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="SubstanceTypeViewIterator" id="SubstanceTypeView">
+      <nodeDefinition Name="SubstanceTypeView0" DefName="com.bayer.ipms.model.views.lookups.SubstanceTypeView">
+        <AttrNames>
+          <Item Value="Code"/>
+          <Item Value="Name"/>
+          <Item Value="IsActive"/>
+          <Item Value="Description"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="FunctionViewIterator" id="FunctionView">
+      <nodeDefinition Name="FunctionView0" DefName="com.bayer.ipms.model.views.lookups.FunctionView">
+        <AttrNames>
+          <Item Value="Code"/>
+          <Item Value="Name"/>
+          <Item Value="IsActive"/>
+          <Item Value="Description"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="ProjectCategoryViewIterator" id="ProjectCategoryView">
+      <nodeDefinition Name="ProjectCategoryView0" DefName="com.bayer.ipms.model.views.lookups.ProjectCategoryView">
+        <AttrNames>
+          <Item Value="Code"/>
+          <Item Value="Name"/>
+          <Item Value="IsActive"/>
+          <Item Value="Description"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="NewsCategoryViewIterator" id="NewsCategoryView">
+      <nodeDefinition Name="NewsCategoryView0" DefName="com.bayer.ipms.model.views.lookups.NewsCategoryView">
+        <AttrNames>
+          <Item Value="Code"/>
+          <Item Value="Name"/>
+          <Item Value="IsActive"/>
+          <Item Value="Description"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="ProjectAreaViewIterator" id="ProjectAreaView">
+      <nodeDefinition Name="ProjectAreaView0" DefName="com.bayer.ipms.model.views.lookups.ProjectAreaView">
+        <AttrNames>
+          <Item Value="Code"/>
+          <Item Value="Name"/>
+          <Item Value="IsActive"/>
+          <Item Value="Description"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="ProjectStateViewIterator" id="ProjectStateView">
+      <nodeDefinition Name="ProjectStateView0" DefName="com.bayer.ipms.model.views.lookups.ProjectStateView">
+        <AttrNames>
+          <Item Value="Code"/>
+          <Item Value="Name"/>
+          <Item Value="IsActive"/>
+          <Item Value="Description"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <list IterBinding="ProjectTerminationReasonsViewIterator" StaticList="false" Uses="LOV_RefReasonCode"
+          id="RefReasonCode" DTSupportsMRU="true" SelectItemValueMode="ListObject"/>
+    <tree IterBinding="ProjectTerminationReasonsViewIterator" id="ProjectTerminationReasonsView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.lookups.ProjectTerminationReasonsView"
+                      Name="ProjectTerminationReasonsView10">
+        <AttrNames>
+          <Item Value="Code"/>
+          <Item Value="Name"/>
+          <Item Value="IsActive"/>
+          <Item Value="Description"/>
+          <Item Value="RefReasonCode"/>
+          <Item Value="D1"/>
+          <Item Value="D2"/>
+          <Item Value="PrdMnt"/>
+          <Item Value="Dev"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="TargetClassViewIterator" id="TargetClassView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.lookups.TargetClassView" Name="TargetClassView0">
+        <AttrNames>
+          <Item Value="Code"/>
+          <Item Value="Description"/>
+          <Item Value="IsActive"/>
+          <Item Value="Name"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="TargetOriginViewIterator" id="TargetOriginView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.lookups.TargetOriginView" Name="TargetOriginView0">
+        <AttrNames>
+          <Item Value="Code"/>
+          <Item Value="Description"/>
+          <Item Value="IsActive"/>
+          <Item Value="Name"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="ProjectDeviceTypeViewIterator" id="ProjectDeviceTypeView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.lookups.ProjectDeviceTypeView" Name="ProjectDeviceTypeView0">
+        <AttrNames>
+          <Item Value="Code"/>
+          <Item Value="Name"/>
+          <Item Value="IsActive"/>
+          <Item Value="Description"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="RegulatoryTypeViewIterator" id="RegulatoryTypeView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.lookups.RegulatoryTypeView" Name="RegulatoryTypeView0">
+        <AttrNames>
+          <Item Value="Code"/>
+          <Item Value="Description"/>
+          <Item Value="IsActive"/>
+          <Item Value="Name"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="PhasePlanningTypeViewIterator" id="PhasePlanningTypeView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.lookups.PhasePlanningTypeView" Name="PhasePlanningTypeView0">
+        <AttrNames>
+          <Item Value="Code"/>
+          <Item Value="Description"/>
+          <Item Value="IsActive"/>
+          <Item Value="Name"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="ProjectModalityViewIterator" id="ProjectModalityView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.lookups.ProjectModalityView" Name="ProjectModalityView0">
+        <AttrNames>
+          <Item Value="Code"/>
+          <Item Value="Description"/>
+          <Item Value="IsActive"/>
+          <Item Value="Name"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="DevicePhaseViewIterator" id="DevicePhaseView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.lookups.DevicePhaseView" Name="DevicePhaseView0">
+        <AttrNames>
+          <Item Value="Code"/>
+          <Item Value="Description"/>
+          <Item Value="IsActive"/>
+          <Item Value="Name"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+        <tree IterBinding="SamdStatusViewIterator" id="SamdStatusView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.lookups.SamdStatusView" Name="SamdStatusView0">
+        <AttrNames>
+          <Item Value="Code"/>
+          <Item Value="Description"/>
+          <Item Value="IsActive"/>
+          <Item Value="Name"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+            <tree IterBinding="BudgetStatusViewIterator" id="BudgetStatusView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.lookups.BudgetStatusView" Name="BudgetStatusView0">
+        <AttrNames>
+          <Item Value="Code"/>
+          <Item Value="Description"/>
+          <Item Value="IsActive"/>
+          <Item Value="Name"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="CollaborationTypeViewIterator" id="CollaborationTypeView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.lookups.CollaborationTypeView" Name="CollaborationTypeView0">
+        <AttrNames>
+          <Item Value="Code"/>
+          <Item Value="Description"/>
+          <Item Value="IsActive"/>
+          <Item Value="Name"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>			
+    <tree IterBinding="PartnerViewIterator" id="PartnerView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.lookups.PartnerView" Name="PartnerView0">
+        <AttrNames>
+          <Item Value="Code"/>
+          <Item Value="Description"/>
+          <Item Value="IsActive"/>
+          <Item Value="Name"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>		
+    <tree IterBinding="LicenseDetailTypeViewIterator" id="LicenseDetailTypeView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.lookups.LicenseDetailTypeView" Name="LicenseDetailTypeView0">
+        <AttrNames>
+          <Item Value="Code"/>
+          <Item Value="Description"/>
+          <Item Value="IsActive"/>
+          <Item Value="Name"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>	
+    <tree IterBinding="ProjectPlanningCodeViewIterator" id="ProjectPlanningCodeView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.lookups.ProjectPlanningCodeView"
+                      Name="ProjectPlanningCodeView0">
+        <AttrNames>
+          <Item Value="Code"/>
+          <Item Value="CreateDate"/>
+          <Item Value="IsActive"/>
+          <Item Value="Name"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="StrategicBusinessEntityViewIterator" id="StrategicBusinessEntityView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.lookups.StrategicBusinessEntityView"
+                      Name="StrategicBusinessEntityView0">
+        <AttrNames>
+          <Item Value="Code"/>
+          <Item Value="IsActive"/>
+          <Item Value="IsVisible"/>
+          <Item Value="Name"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+
+  </bindings>
+</pageDefinition>

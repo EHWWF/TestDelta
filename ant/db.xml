@@ -1,0 +1,1052 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="IPMS" basedir=".." default="readme"
+	xmlns:oprisk="antlib:com.oprisk" xmlns:contrib="antlib:net.sf.antcontrib" xmlns:ora="antlib:net.sf.incanto">
+
+	<path id="classpath">
+		<fileset dir="ant/lib">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+
+	<taskdef name="http" classname="org.missinglink.ant.task.http.HttpClientTask">
+		<classpath refid="classpath"/>
+	</taskdef>
+
+	<taskdef name="xpath" classname="net.uworks.andariel.XPath">
+		<classpath refid="classpath"/>
+	</taskdef>
+
+	<!--taskdef resource="org/realityforge/antix/antlib.xml">
+		<classpath refid="classpath"/>
+	</taskdef-->
+
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+		<classpath refid="classpath"/>
+	</taskdef>
+
+	<property file="ant/ant.properties"/>
+	
+	<target name="readme">
+		<echo>
+			Available commands in their preferred order of execution:
+				-users - creates users
+				-xusers - creates external users
+				-links - creates database links
+				-rights - updates access rights
+				-sys_deployment - creates deployment env. at IPMS_DATA
+
+				-tables - creates structures -> /100_tables
+				-versions - deploys versions -> /200_versions
+				-types - creates types and other global elements -> /300_types
+				-triggers - -> /400_triggers
+				-views - creates views -> /500_views
+				-mviews - creates mviews -> /600_mviews
+				-functions - -> /700_functions
+				-procedures - -> /800_procedures
+				-packages - -> /900_packages
+				-dml - runs all scrips from 950_DML folder
+
+				-code - creates plsql elements -> /400_triggers,500_views,600_mviews,700_functions,800_procedures,900_packages
+
+				---MISSING, moved to DML:lookup,lookups - loads single or all lookups
+				-xsd - loads xsd schemas
+				-compile - compiles code
+				-validate - validates schemas
+				-jobs - starts database services
+				-roles - sends all program roles to P6
+				-inactive - drops inactive codes from db, if they are not used atm
+				-listeners - deregisters all db listeners, important before deploying new ADF
+				-indexes - create missing indexes
+				-timelines - refreshes timelines from P6, if they are not used atm
+				-grant4ipms_repo - grands SELECT for all missing IPMS_DATA obejcts for ipms_repo
+		</echo>
+	</target>
+
+	<!-- configuration -->
+	<target name="cfg">
+		<tstamp>
+			<format property="timestamp" pattern="yyyy-MM-dd_HH-mm-ss"/>
+		</tstamp>
+
+		<mkdir dir="ant/log"/>
+		<record name="log/db_${timestamp}.log" action="start" />
+
+		<property name="build.dir" value="dev/database"/>
+
+		<contrib:propertycopy property="usr" from="db.${user}.user" />
+		<contrib:propertycopy property="pwd" from="db.${user}.password" />
+	</target>
+
+	<!-- users -->
+	<target name="users" depends="cfg">
+		<sql userid="sys as sysdba" password="${db.sys.password}"
+			driver="oracle.jdbc.driver.OracleDriver"
+			url="jdbc:oracle:thin:@${db.host}:${db.port}:${db.sid}"
+			classpathref="classpath">
+
+			create user ${db.ipms_data.user} identified by ${db.ipms_data.password};
+		</sql>
+
+		<sql userid="sys as sysdba" password="${db.sys.password}"
+			driver="oracle.jdbc.driver.OracleDriver"
+			url="jdbc:oracle:thin:@${db.host}:${db.port}:${db.sid}"
+			classpathref="classpath">
+
+			create user ${db.ipms_repo.user} identified by ${db.ipms_repo.password};
+		</sql>
+	</target>
+
+	<!-- xusers -->
+	<target name="xusers" depends="cfg">
+		<sql userid="sys as sysdba" password="${db.sys.password}"
+			driver="oracle.jdbc.driver.OracleDriver"
+			url="jdbc:oracle:thin:@${db.host}:${db.port}:${db.sid}"
+			classpathref="classpath">
+
+			create user ${db.sophia_import.user} identified by ${db.sophia_import.password};
+		</sql>
+
+		<sql userid="sys as sysdba" password="${db.sys.password}"
+			driver="oracle.jdbc.driver.OracleDriver"
+			url="jdbc:oracle:thin:@${db.host}:${db.port}:${db.sid}"
+			classpathref="classpath">
+
+			create user ${db.masterdata.user} identified by ${db.masterdata.password};
+		</sql>
+	</target>
+
+	<!-- links -->
+	<target name="links" depends="cfg">
+		<sql userid="${db.ipms_data.user}" password="${db.ipms_data.password}"
+			driver="oracle.jdbc.driver.OracleDriver"
+			url="jdbc:oracle:thin:@${db.host}:${db.port}:${db.sid}"
+			classpathref="classpath">
+
+			create database link soainfra_db
+				connect to ${db.soainfra.user} identified by ${db.soainfra.password}
+				using '${db.soainfra.sid}';
+		</sql>
+
+		<sql userid="${db.ipms_data.user}" password="${db.ipms_data.password}"
+			driver="oracle.jdbc.driver.OracleDriver"
+			url="jdbc:oracle:thin:@${db.host}:${db.port}:${db.sid}"
+			classpathref="classpath">
+
+			create database link sophia_db
+				connect to ${db.sophia_import.user} identified by ${db.sophia_import.password}
+				using '${db.sophia_import.sid}';
+		</sql>
+
+		<sql userid="${db.ipms_data.user}" password="${db.ipms_data.password}"
+			driver="oracle.jdbc.driver.OracleDriver"
+			url="jdbc:oracle:thin:@${db.host}:${db.port}:${db.sid}"
+			classpathref="classpath">
+
+			create database link combase_db
+				connect to ${db.masterdata.user} identified by ${db.masterdata.password}
+				using '${db.masterdata.sid}';
+		</sql>
+
+		<sql userid="${db.ipms_data.user}" password="${db.ipms_data.password}"
+			driver="oracle.jdbc.driver.OracleDriver"
+			url="jdbc:oracle:thin:@${db.host}:${db.port}:${db.sid}"
+			classpathref="classpath">
+
+			create database link p6_db
+				connect to ${db.p6.user} identified by ${db.p6.password}
+				using '${db.p6.sid}';
+		</sql>
+		<sql userid="${db.ipms_data.user}" password="${db.ipms_data.password}"
+			driver="oracle.jdbc.driver.OracleDriver"
+			url="jdbc:oracle:thin:@${db.host}:${db.port}:${db.sid}"
+			classpathref="classpath">
+
+			create database link bpm_opss_db
+				connect to ${db.bpm_opss.user} identified by ${db.bpm_opss.password}
+				using '${db.soainfra.sid}';
+		</sql>
+	</target>
+
+	<!-- tables -->
+	<target name="tables" depends="cfg">
+		<antcall target="sql.dir" inheritall="true">
+			<param name="dir" value="${user}/100_tables"/>
+			<param name="user" value="${usr}"/>
+			<param name="password" value="${pwd}"/>
+		</antcall>
+	</target>
+
+	<!-- types -->
+	<target name="types" depends="cfg">
+		<antcall target="sql.dir" inheritall="true">
+			<param name="dir" value="${user}/300_types"/>
+			<param name="user" value="${usr}"/>
+			<param name="password" value="${pwd}"/>
+		</antcall>
+	</target>
+
+	<!-- versions -->
+	<target name="versions" depends="cfg">
+		<antcall target="sql.dir" inheritall="true">
+			<param name="dir" value="${user}/200_versions"/>
+			<param name="user" value="${usr}"/>
+			<param name="password" value="${pwd}"/>
+		</antcall>
+	</target>
+
+	<!-- DMLs -->
+	<target name="dml" depends="cfg">
+		<antcall target="sql.dir" inheritall="true">
+			<param name="dir" value="${user}/950_dml"/>
+			<param name="user" value="${usr}"/>
+			<param name="password" value="${pwd}"/>
+		</antcall>
+	</target>
+
+	<!-- TESTSQL concrete SQL file -->
+	<target name="testsql" depends="cfg">
+		<antcall target="sql.dir" inheritall="true">
+			<param name="dir" value="${user}/testsql"/>
+			<param name="user" value="${usr}"/>
+			<param name="password" value="${pwd}"/>
+		</antcall>
+	</target>
+
+	<!-- update.db -->
+	<target name="update.db" depends="cfg">
+		<!-- read fileset into a property formatted as a list of lines -->
+		<pathconvert property="file.list" pathsep="${line.separator}">
+			<map from="${build.dir}/${user}${file.separator}" to=""/>
+				<fileset dir="${build.dir}/${user}" >
+					<include name="**/*.sql" />
+				</fileset>
+		</pathconvert>
+
+		<!-- extract a single target file from the list -->
+		<loadresource property="file.name">
+		<string value="${file.list}"/>
+			<filterchain>
+				<!-- read all files, limited to 999 -->
+				<headfilter lines="999"/>
+			</filterchain>
+		</loadresource>
+
+		<antcall target="stop_jobs" inheritall="true"/>
+		<!-- print the result -->
+		<foreach list="${file.name}" target="check1file_and_run" param="file" delimiter="${line.separator}" />
+		<!-- and one more time CALL selected object types -->
+		<antcall target="code" inheritall="true"/>
+
+		<!-- IPMS_REPO must be also updated but missing GRANTs must go before! -->
+		<antcall target="missing_grants" inheritall="true"/>
+		<antcall target="repo" inheritall="true"/>
+		<antcall target="missing_grants" inheritall="true"/>
+		<antcall target="indexes" inheritall="true"/>
+		<!--antcall target="xsd" inheritall="true"/-->
+		<!--target name="lookup.clear" depends="cfg"-->
+		<!--antcall target="lookups" inheritall="true"/-->
+		<antcall target="listeners" inheritall="true"/>
+		<antcall target="listeners" inheritall="true"/>
+		<antcall target="validate" inheritall="true"/>
+		<antcall target="compile" inheritall="true"/>
+		<antcall target="validate" inheritall="true"/>
+		<antcall target="start_jobs" inheritall="true"/>
+	</target>
+
+	<!-- one.file -->
+	<target name="one.repostudydim" depends="cfg">
+		<!-- read fileset into a property formatted as a list of lines -->
+		<antcall target="repo1studydim" inheritall="true"/>
+		
+	</target>
+
+	<target name="check1file_and_run" depends="cfg">
+		<sql userid="${db.ipms_data.user}" password="${db.ipms_data.password}"
+		driver="oracle.jdbc.driver.OracleDriver"
+		url="jdbc:oracle:thin:@${db.host}:${db.port}:${db.sid}"
+		classpathref="classpath" print="yes" output="temp.properties"
+		expandProperties="true" showheaders="false" showtrailers="false">
+		<![CDATA[
+		select 'f_response='||SYS_DEPLOYMENT_CHECK('${file}','${usr}') from dual;
+		]]>
+		</sql>
+		<property file="temp.properties" />
+		<echo message="${file}"/>
+		<!--echo message="${f_response}" /-->
+			<if>
+				<equals arg1="${f_response}" arg2="1" />
+				<then>
+					<ora:sqlplus start="${file}" silent="true" 
+					logon="${usr}/${pwd}@(description=(address_list=(address=(protocol=TCP)(host=${db.host})(port=${db.port})))(connect_data=(sid=${db.sid})))" />
+					<!--echo message="................................................................." />
+					<echo message="...........................TEST.............................." />
+					<echo message="................................................................." /-->
+				</then>
+				<else>
+					<echo message="................................................................." />
+					<echo message="................................................................." />
+					<echo message="...........................OBSOLETE.............................." />
+					<echo message="................................................................." />
+					<echo message="................................................................." />
+					<echo message="${f_response}" />
+					<echo message="................................................................." />
+					<echo message="................................................................." />
+				</else>
+			</if>
+		<delete file="temp.properties" />
+	</target>
+
+	<!-- rights -->
+	<target name="rights" depends="cfg">
+		<sql userid="sys as sysdba" password="${db.sys.password}"
+			driver="oracle.jdbc.driver.OracleDriver"
+			url="jdbc:oracle:thin:@${db.host}:${db.port}:${db.sid}"
+			classpathref="classpath">
+
+			grant connect,resource,aq_administrator_role,aq_user_role,scheduler_admin to ${db.ipms_data.user};
+			grant create database link,create view,create materialized view,create synonym to ${db.ipms_data.user};
+			grant change notification to ${db.ipms_data.user};
+			grant execute on sys.dbms_aq to ${db.ipms_data.user};
+			grant execute on sys.dbms_aqadm to ${db.ipms_data.user};
+			grant execute on sys.dbms_lock to ${db.ipms_data.user};
+			grant execute on dbms_change_notification to ${db.ipms_data.user};
+
+			grant connect,resource,create session,scheduler_admin to ${db.ipms_repo.user};
+			grant create view,create materialized view,create synonym to ${db.ipms_repo.user};
+
+			grant connect,resource,create session to ${db.masterdata.user};
+			grant connect,resource,create session to ${db.sophia_import.user};
+		</sql>
+
+		<ora:sqlplus logon="sys/${db.sys.password}@(description=(address_list=(address=(protocol=TCP)(host=${db.host})(port=${db.port})))(connect_data=(sid=${db.sid}))) as sysdba"
+					silent="true">
+			begin
+				for run in (select 'grant select on ${db.ipms_data.user}.'||object_name||' to ${db.ipms_repo.user}' as cmd from all_objects where owner=upper('${db.ipms_data.user}') and object_type in ('TABLE','VIEW','MATERIALIZED VIEW') and not object_name like 'AQ%' and not object_name like '%_QT' and not object_name like '%_QT_F' and not object_name like '%_TAB' and not object_name like 'COMBASE_%' and not object_name like 'SOPHIA_%' and not object_name like 'SYS_%' and not object_name like 'REDSAM_%') loop
+					execute immediate run.cmd;
+				end loop;
+			end;
+			/
+		</ora:sqlplus>
+		
+		<!-- Change for projex_archieve user IPMS-1020 -->
+		<ora:sqlplus logon="sys/${db.sys.password}@(description=(address_list=(address=(protocol=TCP)(host=${db.host})(port=${db.port})))(connect_data=(sid=${db.sid}))) as sysdba"
+		silent="true">
+			begin
+				for run in (select 'grant select on ${db.ipms_data.user}.'||object_name||' to ${db.ipms_data_projex.user}' as cmd from all_objects where owner=upper('${db.ipms_data.user}') and object_type in ('TABLE','VIEW') and not object_name like '%_DT' and not object_name like '%_dt' and not object_name like 'PLSQL_%' and  not  object_name in ('COST_PROBABILITY_DEFAULT_VIEW','PHASE_TRANSITION_VW','SOPHIA_FORCAST_VW','DBMSHP_FUNCTION_INFO','DBMSHP_PARENT_CHILD_INFO','DBMSHP_RUNS','EXPORT_MASTERDATA_VW','IMPORT_TIMELINE_TEST','INGREDIENT','PROJECT_IDS_TAB') ) loop
+					execute immediate run.cmd;
+				end loop;
+			end;
+			/
+		</ora:sqlplus>
+	</target>
+
+	<!-- lookup.clear -->
+	<target name="lookup.clear" depends="cfg">
+		<ora:sqlplus logon="${db.ipms_data.user}/${db.ipms_data.password}@(description=(address_list=(address=(protocol=TCP)(host=${db.host})(port=${db.port})))(connect_data=(sid=${db.sid})))"
+				silent="true">
+			begin
+				delete from project_area_qplan_config;
+				commit;
+			end;
+			/
+		</ora:sqlplus>
+	</target>
+	
+	<!-- lookup -->
+	<target name="lookup" depends="cfg">
+		<input message="Lookup(empty if all):" addproperty="data.lookup"/>
+
+		<antcall target="lookups.do" inheritall="true">
+			<param name="name" value="${data.lookup}"/>
+		</antcall>
+
+		<echo>Check values in case of configuration lookup upload!</echo>
+	</target>
+
+	<!-- lookups -->
+	<target name="lookups" depends="cfg">
+		<antcall target="lookups.do" inheritall="true">
+			<param name="name" value=""/>
+		</antcall>
+
+		<echo>Check values in case of configuration lookup upload!</echo>
+	</target>
+
+	<!-- lookups(name) -->
+	<target name="lookups.do" depends="cfg">
+		<oprisk:xls2ora userid="${usr}" password="${pwd}"
+			url="jdbc:oracle:thin:@${db.host}:${db.port}:${db.sid}"
+			driver="oracle.jdbc.driver.OracleDriver"
+			file="${build.dir}/${user}/lookups.xls"
+			lookup="${name}"
+			classpathref="classpath" />
+	</target>
+
+	<!-- repo -->
+	<target name="repo" depends="cfg">
+		<contrib:foreach inheritall="true" target="sql.file" param="file">
+			<fileset dir="${build.dir}/${db.ipms_repo.user}" >
+				<include name="100_tables/**/*.sql" />
+				<include name="200_versions/**/*.sql" />
+				<include name="300_types/**/*.sql" />
+				<include name="500_views/**/*.sql" />
+				<include name="600_mviews/**/*.sql" />
+				<include name="900_packages/**/*.sql" />
+			</fileset>
+			<param name="usr" value="${db.ipms_repo.user}"/>
+			<param name="pwd" value="${db.ipms_repo.password}"/>
+		</contrib:foreach>
+	</target>
+	
+	<target name="repo1studydim" depends="cfg">
+		<contrib:foreach inheritall="true" target="sql.file" param="file">
+			<fileset dir="${build.dir}/${db.ipms_repo.user}" >
+				<include name="500_views/**/study_dim_vw.sql" />
+				<include name="600_mviews/**/study_dim.txt" />
+			</fileset>
+			<param name="usr" value="${db.ipms_repo.user}"/>
+			<param name="pwd" value="${db.ipms_repo.password}"/>
+		</contrib:foreach>
+	</target>
+
+	<!-- code -->
+	<target name="code" depends="cfg">
+		<contrib:foreach inheritall="true" target="sql.file" param="file">
+			<fileset dir="${build.dir}/${user}" >
+				<include name="700_functions/**/*.sql" />
+				<include name="800_procedures/**/*.sql" />
+				<include name="400_triggers/**/*.sql" />
+				<include name="500_views/**/*.sql" />
+				<include name="600_mviews/**/*.sql" />
+				<include name="900_packages/**/*.sql" />
+			</fileset>
+			<param name="user" value="${usr}"/>
+			<param name="password" value="${pwd}" />
+		</contrib:foreach>
+	</target>
+
+	<!-- triggers -->
+	<target name="triggers" depends="cfg">
+		<antcall target="sql.dir" inheritall="true">
+			<param name="dir" value="${user}/400_triggers"/>
+			<param name="user" value="${usr}"/>
+			<param name="password" value="${pwd}"/>
+		</antcall>
+	</target>
+
+	<!-- functions -->
+	<target name="functions" depends="cfg">
+		<antcall target="sql.dir" inheritall="true">
+			<param name="dir" value="${user}/700_functions"/>
+			<param name="user" value="${usr}"/>
+			<param name="password" value="${pwd}"/>
+		</antcall>
+	</target>
+
+	<!-- procedures -->
+	<target name="procedures" depends="cfg">
+		<antcall target="sql.dir" inheritall="true">
+			<param name="dir" value="${user}/800_procedures"/>
+			<param name="user" value="${usr}"/>
+			<param name="password" value="${pwd}"/>
+		</antcall>
+	</target>
+
+	<!-- packages -->
+	<target name="packages" depends="cfg">
+		<antcall target="sql.dir" inheritall="true">
+			<param name="dir" value="${user}/900_packages"/>
+			<param name="user" value="${usr}"/>
+			<param name="password" value="${pwd}"/>
+		</antcall>
+	</target>
+	
+	<!-- views -->
+	<target name="views" depends="cfg">
+		<antcall target="sql.dir" inheritall="true">
+			<param name="dir" value="${user}/500_views"/>
+			<param name="user" value="${usr}"/>
+			<param name="password" value="${pwd}"/>
+		</antcall>
+	</target>
+
+	<!-- mviews -->
+	<target name="mviews" depends="cfg">
+		<antcall target="sql.dir" inheritall="true">
+			<param name="dir" value="${user}/600_mviews"/>
+			<param name="user" value="${usr}"/>
+			<param name="password" value="${pwd}"/>
+		</antcall>
+	</target>
+
+	<!-- stop_jobs -->
+	<target name="stop_jobs" depends="cfg">
+		<ora:sqlplus logon="${usr}/${pwd}@(description=(address_list=(address=(protocol=TCP)(host=${db.host})(port=${db.port})))(connect_data=(sid=${db.sid})))" silent="true">
+			set serveroutput on
+			begin
+			dbms_output.put_line('-------------------------->>>  ');
+			dbms_output.put_line('------SYSDATE------------->>>  '||to_char(sysdate,'dd-mm-yyyy hh24:mi:ss'));
+			dbms_output.put_line('-------------------------->>>  ');
+			for rr in (
+			select job_name,enabled,next_run_date,job_creator
+			from user_scheduler_jobs 
+			where job_name in (
+			'CACHEMDS_JOB',
+			'CALCULATE_GT_JOB',
+			'EXPORT_JOB',
+			'FUNCTION_SUB_STATUS',
+			'IMPORT_CLOSE_SLOT_JOB',
+			'IMPORT_OPEN_SLOT_JOB',
+			'PURGE_BIG_FDA_JOB',
+			'QPLAN_NOTIFY_JOB',
+			'QPLAN_RELEASE_JOB',
+			'SYS_GUID_JOB')
+			order by job_name)
+			loop
+				dbms_output.put_line('------JOB_NAME------------>>>  '||rr.job_creator||'.'||rr.job_name);
+				dbms_output.put_line('------next_run_date-IS---->>>  '||rr.next_run_date);
+				dbms_output.put_line('------ENABLED------------->>>  '||rr.enabled);
+				--if rr.next_run_date&lt;sysdate+1/6 and rr.enabled='TRUE' then--could impact during max4h potential installation
+				if rr.enabled='TRUE' then
+					begin
+						dbms_scheduler.disable(name=>rr.job_name, force => true);
+						dbms_output.put_line('------STOPPING------------>>>  DONE');
+					exception when others then
+						dbms_output.put_line('------ERROR------>>>  '||sqlerrm);
+					end;
+				else --just print INfo
+					--dbms_output.put_line('------OK-NO-IMPACT-------->>>');
+					dbms_output.put_line('------Already STOPPED----->>>');
+				end if;
+			dbms_output.put_line('-------------------------->>>');
+			end loop;
+			exception when others then
+				dbms_output.put_line('------MAIN-ERROR------>>>'||sqlerrm);
+			end;
+		/
+		</ora:sqlplus>
+
+		<ora:sqlplus logon="${db.ipms_repo.user}/${db.ipms_repo.password}@(description=(address_list=(address=(protocol=TCP)(host=${db.host})(port=${db.port})))(connect_data=(sid=${db.sid})))" silent="true">
+			set serveroutput on
+			begin
+			dbms_output.put_line('-------------------------->>>  ');
+			dbms_output.put_line('------SYSDATE------------->>>  '||to_char(sysdate,'dd-mm-yyyy hh24:mi:ss'));
+			dbms_output.put_line('-------------------------->>>  ');
+				for rr in (
+				select job_name,enabled,next_run_date,job_creator
+				from user_scheduler_jobs 
+				order by job_name)
+				loop
+					dbms_output.put_line('------JOB_NAME------------>>>  '||rr.job_creator||'.'||rr.job_name);
+					dbms_output.put_line('------next_run_date-IS---->>>  '||rr.next_run_date);
+					dbms_output.put_line('------ENABLED------------->>>  '||rr.enabled);
+					--if rr.next_run_date&lt;sysdate+1/6 and rr.enabled='TRUE' then--could impact during max4h potential installation
+					if rr.enabled='TRUE' then
+						begin
+							dbms_scheduler.disable(name=>rr.job_name, force => true);
+							dbms_output.put_line('------STOPPING------------>>>  DONE');
+						exception when others then
+							dbms_output.put_line('------ERROR------>>>  '||sqlerrm);
+						end;
+					else --just print INfo
+						--dbms_output.put_line('------OK-NO-IMPACT-------->>>');
+						dbms_output.put_line('------Already STOPPED----->>>');
+					end if;
+				dbms_output.put_line('-------------------------->>>');
+				end loop;
+			exception when others then
+				dbms_output.put_line('------MAIN-ERROR------>>>'||sqlerrm);
+			end;
+		/
+		</ora:sqlplus>
+	</target>
+
+	<!-- start_jobs -->
+	<target name="start_jobs" depends="cfg">
+		<ora:sqlplus logon="${usr}/${pwd}@(description=(address_list=(address=(protocol=TCP)(host=${db.host})(port=${db.port})))(connect_data=(sid=${db.sid})))" silent="true">
+			set serveroutput on
+			declare
+				v_next_run_date nvarchar2(99);
+				v_enabled nvarchar2(22);
+			begin
+			dbms_output.put_line('----------------------------->>>  ');
+			dbms_output.put_line('------SYSDATE---------------->>>  '||to_char(sysdate,'yyyy-mm-dd hh24:mi:ss'));
+			dbms_output.put_line('----------------------------->>>  ');
+			for rr in (
+			select job_name,enabled,next_run_date,job_creator
+			from user_scheduler_jobs 
+			where job_name in (
+			'CACHEMDS_JOB',
+			'CALCULATE_GT_JOB',
+			'EXPORT_JOB',
+			'FUNCTION_SUB_STATUS',
+			'IMPORT_CLOSE_SLOT_JOB',
+			'IMPORT_OPEN_SLOT_JOB',
+			'PURGE_BIG_FDA_JOB',
+			'QPLAN_NOTIFY_JOB',
+			'QPLAN_RELEASE_JOB',
+			'SYS_GUID_JOB')
+			--and enabled = 'FALSE'
+			order by job_name)
+			loop
+				dbms_output.put_line('------JOB_NAME--------------->>>  '||rr.job_creator||'.'||rr.job_name);
+				dbms_output.put_line('------next_run_date-IS------->>>  '||rr.next_run_date);
+				dbms_output.put_line('------ENABLED---------------->>>  '||rr.enabled);
+				if rr.enabled = 'FALSE' then
+					begin
+						dbms_scheduler.enable(name=>rr.job_name);
+						dbms_output.put_line('------STARTING--------------->>>  ......');
+						select next_run_date, enabled
+						into v_next_run_date, v_enabled
+						from user_scheduler_jobs where job_name=rr.job_name;
+						dbms_output.put_line('------next_run_date-WILL-BE-->>>  '||v_next_run_date);
+						dbms_output.put_line('------ENABLED---------------->>>  '||v_enabled);
+					exception when others then
+						dbms_output.put_line('------ERROR------>>>'||rr.job_creator||'.'||rr.job_name);
+						dbms_output.put_line('------ERROR------>>>'||sqlerrm);
+					end;
+				else --just print INfo
+					dbms_output.put_line('------OK-RUNNING------------->>>');
+				end if;
+			dbms_output.put_line('----------------------------->>>');
+			end loop;
+			exception when others then
+				dbms_output.put_line('------MAIN-ERROR------>>>'||sqlerrm);
+			end;
+		/
+		</ora:sqlplus>
+
+		<ora:sqlplus logon="${db.ipms_repo.user}/${db.ipms_repo.password}@(description=(address_list=(address=(protocol=TCP)(host=${db.host})(port=${db.port})))(connect_data=(sid=${db.sid})))" silent="true">
+			set serveroutput on
+			declare
+				v_next_run_date nvarchar2(99);
+				v_enabled nvarchar2(22);
+			begin
+			dbms_output.put_line('----------------------------->>>  ');
+			dbms_output.put_line('------SYSDATE---------------->>>  '||to_char(sysdate,'yyyy-mm-dd hh24:mi:ss'));
+			dbms_output.put_line('----------------------------->>>  ');
+			for rr in (
+			select job_name,enabled,next_run_date,job_creator
+			from user_scheduler_jobs 
+			order by job_name)
+			loop
+				dbms_output.put_line('------JOB_NAME--------------->>>  '||rr.job_creator||'.'||rr.job_name);
+				dbms_output.put_line('------next_run_date-IS------->>>  '||rr.next_run_date);
+				dbms_output.put_line('------ENABLED---------------->>>  '||rr.enabled);
+				if rr.enabled = 'FALSE' then
+					begin
+						dbms_scheduler.enable(name=>rr.job_name);
+						dbms_output.put_line('------STARTING--------------->>>  ......');
+						select next_run_date, enabled
+						into v_next_run_date, v_enabled
+						from user_scheduler_jobs where job_name=rr.job_name;
+						dbms_output.put_line('------next_run_date-WILL-BE-->>>  '||v_next_run_date);
+						dbms_output.put_line('------ENABLED---------------->>>  '||v_enabled);
+					exception when others then
+						dbms_output.put_line('------ERROR------>>>'||rr.job_creator||'.'||rr.job_name);
+						dbms_output.put_line('------ERROR------>>>'||sqlerrm);
+					end;
+				else --just print INfo
+					dbms_output.put_line('------OK-RUNNING------------->>>');
+				end if;
+			dbms_output.put_line('----------------------------->>>');
+			end loop;
+			exception when others then
+				dbms_output.put_line('------MAIN-ERROR------>>>'||sqlerrm);
+			end;
+		/
+		</ora:sqlplus>
+	</target>
+
+	<!-- missing_grants -->
+	<target name="missing_grants" depends="cfg">
+		<ora:sqlplus logon="${usr}/${pwd}@(description=(address_list=(address=(protocol=TCP)(host=${db.host})(port=${db.port})))(connect_data=(sid=${db.sid})))"
+				silent="true">
+				set serveroutput on
+				begin
+					dbms_output.put_line('Starting>>ipms_data: missing_grants######################');
+					for rr in (select 'IPMS_REPO' usr from dual union all select 'PMO_READ' usr from dual) loop
+						for run in
+						(with allobj as (
+							select object_name
+							from all_objects 
+							where owner=upper('ipms_data') 
+							and object_type in ('TABLE','VIEW','MATERIALIZED VIEW') 
+							and not object_name like 'AQ%'
+							and not object_name like '%_QT' 
+							and not object_name like '%_QT_F'
+							and not object_name like '%_TAB' 
+							and not object_name like '%_TMP'
+							and not object_name like 'COMBASE_%'
+							and not object_name like 'SOPHIA_%'
+							and not object_name like 'SYS_%'
+							and not object_name like 'REDSAM_%'
+							and not object_name like '%_HIS_VW'
+							and object_name not in ('CONSTRAINT_VW','INDEX_VW')
+						)
+						select 'grant select on ipms_data.'||object_name||' to '||rr.usr as cmd 
+						from (
+							select object_name from allobj
+								minus
+							select table_name from user_tab_privs where grantee=upper(rr.usr)
+							)
+						)
+						loop
+							begin
+								execute immediate run.cmd;
+								dbms_output.put_line(run.cmd);
+							exception when others then
+								dbms_output.put_line('ERROR:missing_grants>>>'||run.cmd);
+								dbms_output.put_line(sqlerrm);
+							end;
+						end loop;
+					end loop;
+					dbms_output.put_line('Finishing>ipms_data: missing_grants######################');
+				exception when others then
+					dbms_output.put_line('ERROR: '|| sqlerrm);
+				end;
+				/
+		</ora:sqlplus>
+		<ora:sqlplus logon="${db.ipms_repo.user}/${db.ipms_repo.password}@(description=(address_list=(address=(protocol=TCP)(host=${db.host})(port=${db.port})))(connect_data=(sid=${db.sid})))" silent="true">
+				set serveroutput on
+				begin
+					dbms_output.put_line('Starting>>ipms_repo: missing_grants######################');
+					for rr in (select 'PMO_READ' usr from dual) loop
+						for run in
+						(with allobj as (
+							select object_name
+							from all_objects 
+							where owner=upper('ipms_repo') 
+							and object_type in ('TABLE', 'MATERIALIZED VIEW')
+							order by 1
+						)
+						select 'grant select on ipms_repo.'||object_name||' to '||rr.usr as cmd 
+						from (
+							select object_name from allobj
+								minus
+							select table_name from user_tab_privs where grantee=upper(rr.usr)
+							)
+						)
+						loop
+							begin
+								execute immediate run.cmd;
+								dbms_output.put_line(run.cmd);
+							exception when others then
+								dbms_output.put_line('ERROR:missing_grants>>>'||run.cmd);
+								dbms_output.put_line(sqlerrm);
+							end;
+						end loop;
+					end loop;
+					dbms_output.put_line('Finishing>ipms_repo: missing_grants######################');
+				exception when others then
+					dbms_output.put_line('ERROR: '|| sqlerrm);
+				end;
+				/
+		</ora:sqlplus>
+	</target>
+
+	<!-- compile -->
+	<target name="compile" depends="cfg">
+		<ora:sqlplus logon="${usr}/${pwd}@(description=(address_list=(address=(protocol=TCP)(host=${db.host})(port=${db.port})))(connect_data=(sid=${db.sid})))"
+				silent="true">
+			begin
+				dbms_utility.compile_schema(upper('${usr}'));
+			end;
+			/
+		</ora:sqlplus>
+		<!--For REPO as well -->
+		<ora:sqlplus logon="${db.ipms_repo.user}/${db.ipms_repo.password}@(description=(address_list=(address=(protocol=TCP)(host=${db.host})(port=${db.port})))(connect_data=(sid=${db.sid})))"
+				silent="true">
+			begin
+				dbms_utility.compile_schema(upper('${db.ipms_repo.user}'));
+			end;
+			/
+		</ora:sqlplus>
+		<ora:sqlplus logon="${usr}/${pwd}@(description=(address_list=(address=(protocol=TCP)(host=${db.host})(port=${db.port})))(connect_data=(sid=${db.sid})))"
+				silent="true">
+			begin
+				dbms_utility.compile_schema(upper('${usr}'));
+			end;
+			/
+		</ora:sqlplus>
+	</target>
+
+	<!-- validate -->
+	<target name="validate" depends="cfg">
+		<ora:sqlplus logon="${usr}/${pwd}@(description=(address_list=(address=(protocol=TCP)(host=${db.host})(port=${db.port})))(connect_data=(sid=${db.sid})))"
+					silent="true">
+			set linesize 60;
+			select object_type||'.'||object_name as object
+			from user_objects
+			where status = 'INVALID'
+			order by object_type,object_name;
+		</ora:sqlplus>
+		<!--For REPO as well -->
+		<ora:sqlplus logon="${db.ipms_repo.user}/${db.ipms_repo.password}@(description=(address_list=(address=(protocol=TCP)(host=${db.host})(port=${db.port})))(connect_data=(sid=${db.sid})))"
+					silent="true">
+			set linesize 60;
+			select object_type||'.'||object_name as object
+			from user_objects
+			where status = 'INVALID'
+			order by object_type,object_name;
+		</ora:sqlplus>
+	</target>
+
+	<!-- indexes -->
+	<target name="indexes" depends="cfg">
+		<tempfile property="temp.sql" deleteonexit="true" suffix=".sql"/>
+
+		<sql userid="${usr}" password="${pwd}"
+			driver="oracle.jdbc.driver.OracleDriver"
+			url="jdbc:oracle:thin:@${db.host}:${db.port}:${db.sid}"
+			classpathref="classpath"
+			output="${temp.sql}"
+			print="true"
+			showheaders="false"
+			showtrailers="false">
+
+			select
+				get_text('create index %1 on %2(%3);', varchar2_table_typ(regexp_replace(constraint_name,'^SYS_','FK_'),table_name,columns)) stmt
+			from constraint_vw cons
+			where
+				cons.constraint_type = 'R'
+				and cons.table_name not like 'DBMSHP%'
+				and cons.table_name not like 'PLSQL%'
+				and not exists (
+					select index_name
+					from index_vw idx
+					where
+						idx.table_name=cons.table_name
+						and (lower(cons.columns)=lower(idx.columns) or lower(cons.columns) like lower(idx.columns)||',_%')
+			)
+			order by cons.table_name;
+		</sql>
+
+		<ora:sqlplus start="${temp.sql}"
+				silent="true"
+				logon="${usr}/${pwd}@(description=(address_list=(address=(protocol=TCP)(host=${db.host})(port=${db.port})))(connect_data=(sid=${db.sid})))" />
+	</target>
+
+	<!-- jobs -->
+	<target name="jobs" depends="cfg">
+		<ora:sqlplus logon="${db.ipms_data.user}/${db.ipms_data.password}@(description=(address_list=(address=(protocol=TCP)(host=${db.host})(port=${db.port})))(connect_data=(sid=${db.sid})))"
+				silent="true">
+			begin
+				message_pkg.teardown;
+				message_pkg.setup;
+				job_pkg.teardown;
+				job_pkg.setup;
+			end;
+			/
+		</ora:sqlplus>
+
+		<ora:sqlplus logon="${db.ipms_repo.user}/${db.ipms_repo.password}@(description=(address_list=(address=(protocol=TCP)(host=${db.host})(port=${db.port})))(connect_data=(sid=${db.sid})))"
+				silent="true">
+			begin
+				job_pkg.teardown;
+				job_pkg.setup;
+			end;
+			/
+		</ora:sqlplus>
+	</target>
+
+	<!-- roles -->
+	<target name="roles" depends="cfg">
+		<ora:sqlplus logon="${db.ipms_data.user}/${db.ipms_data.password}@(description=(address_list=(address=(protocol=TCP)(host=${db.host})(port=${db.port})))(connect_data=(sid=${db.sid})))"
+				silent="true">
+			begin
+				program_pkg.send_roles;
+			end;
+			/
+		</ora:sqlplus>
+	</target>
+
+	<!-- inactive -->
+	<target name="inactive" depends="cfg">
+		<ora:sqlplus logon="${db.ipms_data.user}/${db.ipms_data.password}@(description=(address_list=(address=(protocol=TCP)(host=${db.host})(port=${db.port})))(connect_data=(sid=${db.sid})))"
+				silent="true">
+			begin
+				lookup_pkg.drop_inactive;
+			end;
+			/
+		</ora:sqlplus>
+	</target>
+
+	<!-- timelines -->
+	<target name="timelines" depends="cfg">
+		<ora:sqlplus logon="${db.ipms_data.user}/${db.ipms_data.password}@(description=(address_list=(address=(protocol=TCP)(host=${db.host})(port=${db.port})))(connect_data=(sid=${db.sid})))"
+				silent="true">
+			begin
+				timeline_pkg.receive;
+			end;
+			/
+		</ora:sqlplus>
+	</target>
+
+	<!-- listeners -->
+	<target name="listeners" depends="cfg">
+	
+		<oprisk:deregisterDCN userid="${usr}" password="${pwd}"
+			url="jdbc:oracle:thin:@${db.host}:${db.port}:${db.sid}"
+			driver="oracle.jdbc.driver.OracleDriver"
+			classpathref="classpath" />
+
+		<!-- to be on a safe side, run also direct Call to DB -->
+		<ora:sqlplus logon="${db.ipms_data.user}/${db.ipms_data.password}@(description=(address_list=(address=(protocol=TCP)(host=${db.host})(port=${db.port})))(connect_data=(sid=${db.sid})))"
+				silent="true">
+			begin
+				lookup_pkg.deregister_listeners;
+			end;
+			/
+		</ora:sqlplus>
+	</target>
+
+	<!-- xsd -->
+	<target name="xsd" depends="cfg">
+		<tempfile property="temp.sql" deleteonexit="true" suffix=".sql"/>
+
+		<concat destfile="${temp.sql}" append="yes">
+			begin
+				for r in (SELECT * FROM all_xml_schemas WHERE schema_url LIKE '%xmlns.bayer.com/ipms/%.xsd' ORDER BY schema_url) loop
+					dbms_xmlschema.deleteSchema(r.schema_url);
+				end loop;
+		</concat>
+
+ 		<!-- types.xsd -->
+		<concat destfile="${temp.sql}" append="yes">
+			dbms_xmlschema.registerSchema('http://xmlns.bayer.com/ipms/types.xsd', '
+		</concat>
+
+		<concat destfile="${temp.sql}" append="yes" fixlastline="yes">
+			<path path="${build.dir}/${user}/schemas/types.xsd"/>
+			<filterchain>
+				<linecontains negate="true"><contains value="&lt;?xml"/></linecontains>
+				<ignoreblank/>
+			</filterchain>
+		</concat>
+		<concat destfile="${temp.sql}" append="yes">
+			', TRUE, FALSE, FALSE, FALSE, TRUE);
+		</concat>
+
+ 		<!-- messages.xsd -->
+		<concat destfile="${temp.sql}" append="yes">
+			dbms_xmlschema.registerSchema('http://xmlns.bayer.com/ipms/soa/soa.xsd', '
+		</concat>
+		<concat destfile="${temp.sql}" append="yes" fixlastline="yes">
+			<path path="${build.dir}/${user}/schemas/soa/soa.xsd"/>
+			<filterchain>
+				<linecontains negate="true"><contains value="&lt;?xml"/></linecontains>
+				<ignoreblank/>
+				<replacetokens begintoken='"' endtoken='"'>
+					<token key="oramds:/apps/com/bayer/xmlns/ipms/types.xsd" value='"http://xmlns.bayer.com/ipms/types.xsd"'/>
+					<token key="oramds:/apps/com/bayer/xmlns/ipms/qplan/qplan.xsd" value='"http://xmlns.bayer.com/ipms/qplan/qplan.xsd"'/>
+				</replacetokens>
+			</filterchain>
+		</concat>
+		<concat destfile="${temp.sql}" append="yes">
+			', TRUE, FALSE, FALSE, FALSE, TRUE);
+		</concat>
+
+ 		<!-- qplan.xsd -->
+		<concat destfile="${temp.sql}" append="yes">
+			dbms_xmlschema.registerSchema('http://xmlns.bayer.com/ipms/qplan/qplan.xsd', '
+		</concat>
+		<concat destfile="${temp.sql}" append="yes" fixlastline="yes">
+			<path path="${build.dir}/${user}/schemas/qplan/qplan.xsd"/>
+			<filterchain>
+				<linecontains negate="true"><contains value="&lt;?xml"/></linecontains>
+				<ignoreblank/>
+				<replacetokens begintoken='"' endtoken='"'>
+					<token key="oramds:/apps/com/bayer/xmlns/ipms/types.xsd" value='"http://xmlns.bayer.com/ipms/types.xsd"'/>
+				</replacetokens>
+			</filterchain>
+		</concat>
+		<concat destfile="${temp.sql}" append="yes">
+			', TRUE, FALSE, FALSE, FALSE, TRUE);
+		</concat>
+		
+		<concat destfile="${temp.sql}" append="yes">
+				commit;
+			end;
+			/
+		</concat>
+
+		<ora:sqlplus start="${temp.sql}"
+				silent="true"
+				logon="${usr}/${pwd}@(description=(address_list=(address=(protocol=TCP)(host=${db.host})(port=${db.port})))(connect_data=(sid=${db.sid})))" />
+	</target>
+
+	<!-- sql.dir(user,password,dir) -->
+	<target name="sql.dir" depends="cfg">
+		<contrib:foreach inheritall="true" target="sql.file" param="file">
+			<fileset dir="${build.dir}/${dir}" includes="**/*.sql" />
+		</contrib:foreach>
+	</target>
+
+	<!-- sql.file(user,password,file) -->
+	<target name="sql.file" depends="cfg">
+		<!--echo>${file}</echo>
+		<ora:sqlplus start="${file}"
+				silent="true"
+				logon="${user}/${password}@(description=(address_list=(address=(protocol=TCP)(host=${db.host})(port=${db.port})))(connect_data=(sid=${db.sid})))">
+			set sqlblanklines on;
+		</ora:sqlplus-->
+		
+		<antcall target="check1file_and_run" inheritall="true" />
+		
+	</target>
+
+	<!-- sys_deployment -->
+	<target name="sys_deployment" depends="cfg">
+		<ora:sqlplus logon="${usr}/${pwd}@(description=(address_list=(address=(protocol=TCP)(host=${db.host})(port=${db.port})))(connect_data=(sid=${db.sid})))"
+				silent="true">
+				create table sys_deployment 
+				(
+				unique_name nvarchar2(254) not null enable, 
+				create_date date default sysdate not null enable, 
+				constraint sys_deployment_pk primary key (unique_name)
+				);
+				create or replace trigger sys_deployment_tr
+				before insert on sys_deployment
+				for each row
+				begin
+					:new.unique_name := replace(lower(:new.unique_name),' ');
+				end;
+				/
+				create or replace function sys_deployment_check(p_full_file in nvarchar2, p_db_user in nvarchar2) return nvarchar2 
+				as
+					pragma autonomous_transaction;
+					v_unique_name nvarchar2(4000);
+					v_file_name nvarchar2(4000);
+					v_db_path nvarchar2(200):='database\'||p_db_user||'\';
+				begin
+					v_file_name :=replace(lower(p_full_file),'/','\');
+					v_file_name := substr(v_file_name,instr(v_file_name,v_db_path)-1);
+
+					if v_file_name like '%'||v_db_path||'100_tables\%' 
+						or v_file_name like '%'||v_db_path||'200_versions\%'
+						or v_file_name like '%'||v_db_path||'300_types\%'
+						or v_file_name like '%'||v_db_path||'tables\%' 
+						or v_file_name like '%'||v_db_path||'versions\%'
+						or v_file_name like '%'||v_db_path||'types\%'
+					then
+						v_unique_name := v_file_name;
+					else
+						v_unique_name := v_file_name||'--'||to_char(sysdate,'yyyy-mm-dd hh24:mi:ss');  
+					end if;  
+
+					insert into sys_deployment (unique_name) values (v_unique_name);  
+					commit;
+
+					return '1';
+
+				exception 
+					when dup_val_on_index then
+						return 'UNIQUE....OK.......KAUNAS.INT......p_db_user='||p_db_user;
+					when others then
+						return sqlerrm;
+				end;
+				/			
+		</ora:sqlplus>
+	</target>
+</project>

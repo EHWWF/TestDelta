@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.64.93" id="import_runPageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator id="ImportViewIterator" Binds="ImportAppModule.ImportView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              ChangeEventPolicy="ppr"/>
+    <iterator id="ImportTimelineViewIterator"
+              Binds="ImportAppModule.ImportTimelineRootElementView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="2000">
+      <sortCriteria>
+        <sort attribute="SequenceNumber" ascending="true"/>
+        <sort attribute="BusinessId" ascending="true"/>
+        <sort attribute="OldStartDate" ascending="true"/>
+      </sortCriteria>
+    </iterator>
+    <searchRegion Criteria="Filter"
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="ImportTimelineViewIterator"
+                  id="ImportTimelineViewCriteriaQuery"/>
+    <iterator Binds="ImportAppModule.ImportTimelineStudyView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="1000"
+              id="ImportTimelineStudyViewIterator" ChangeEventPolicy="ppr"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="ImportViewIterator" id="ImportStatusCode">
+      <AttrNames>
+        <Item Value="StatusCode"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ImportViewIterator" id="ImportStatusName">
+      <AttrNames>
+        <Item Value="StatusName"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="ImportTimelineViewIterator"
+          id="ImportTimelineView" ChangeEventPolicy="ppr">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.imports.ImportTimelineView" Name="ImportTimelineView10">
+        <AttrNames>
+          <Item Value="BusinessId"/>
+          <Item Value="Name"/>
+          <Item Value="NewFinishDate"/>
+          <Item Value="NewStartDate"/>
+          <Item Value="OldFinishDate"/>
+          <Item Value="OldStartDate"/>
+          <Item Value="StatusCode"/>
+          <Item Value="ActivityId"/>
+          <Item Value="StudyElementId"/>
+          <Item Value="StudyId"/>
+          <Item Value="StatusName"/>
+          <Item Value="ActionCode"/>
+          <Item Value="ActionName"/>
+          <Item Value="WbsId"/>
+          <Item Value="StudyRelated"/>
+          <Item Value="Failed"/>
+          <Item Value="DateStatus"/>
+          <Item Value="NodeType"/>
+        </AttrNames>
+        <Accessors>
+          <Item Value="WbsIdImportTimelineElementView"/>
+        </Accessors>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="ImportViewIterator" id="ImportIsSyncing">
+      <AttrNames>
+        <Item Value="IsSyncing"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ImportViewIterator" id="SandboxId">
+      <AttrNames>
+        <Item Value="SandboxId"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

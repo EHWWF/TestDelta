@@ -1,0 +1,23 @@
+<CreateActivityCodeTypes xmlns="http://xmlns.oracle.com/Primavera/P6/WS/ActivityCodeType/V1">
+	<ActivityCodeType>
+		<IsBaseline>false</IsBaseline>
+		<IsSecureCode>false</IsSecureCode>
+		<Length>10</Length>
+		<Name>Phase</Name>
+		<Scope>Global</Scope>
+	</ActivityCodeType>
+	<ActivityCodeType>
+		<IsBaseline>false</IsBaseline>
+		<IsSecureCode>false</IsSecureCode>
+		<Length>10</Length>
+		<Name>Integration Type</Name>
+		<Scope>Global</Scope>
+	</ActivityCodeType>
+	<ActivityCodeType>
+		<IsBaseline>false</IsBaseline>
+		<IsSecureCode>false</IsSecureCode>
+		<Length>10</Length>
+		<Name>Milestone Type</Name>
+		<Scope>Global</Scope>
+	</ActivityCodeType>
+</CreateActivityCodeTypes>

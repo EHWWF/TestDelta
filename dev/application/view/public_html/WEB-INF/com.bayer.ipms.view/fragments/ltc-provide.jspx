@@ -1,0 +1,623 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich" xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:h="http://java.sun.com/jsf/html">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <c:set var="bundle" value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+    <f:view>
+        <af:document id="d1" title="#{bundle.ltcTitle}">
+            <af:messages id="m1"/>
+            <af:popup id="popPrefillFps" contentDelivery="lazyUncached">
+                <af:dialog id="diagPrefillFps" title="#{bundle.ltcPrefillFromFPS}" contentWidth="500"
+                           dialogListener="#{pageFlowScope.ltcBean.onPrefillFps}">
+                    <af:message message="#{bundle.ltcPrefillConfirmation}" messageType="confirmation"/>
+                </af:dialog>
+            </af:popup>
+            <af:popup id="popPrefillProfit" contentDelivery="lazyUncached">
+                <af:dialog id="diagPrefillProfit" title="#{bundle.ltcPrefillFromProfit}" contentWidth="500"
+                           dialogListener="#{pageFlowScope.ltcBean.onPrefillProfit}">
+                    <af:message message="#{bundle.ltcPrefillConfirmation}" messageType="confirmation"/>
+                </af:dialog>
+            </af:popup>
+            <af:form id="f1">
+                <af:pageTemplate viewId="/WEB-INF/com.bayer.ipms.view/templates/ipms-popup-template.jspx" id="pt1">
+                    <af:resource type="css">
+                        .depth0 {
+                            background-color: #CCFFCC;
+                        }
+
+                        .depth1 {
+                            background-color: #D7E1EE;
+                        }
+
+                        .depth2 {
+                            background-color: #FFB6C1;
+                        }
+
+                        .depth3 {
+                            background-color: #F0E08C;
+                        }
+
+                        .depth4 {
+                            background-color: #D3D3D3;
+                        }
+                    </af:resource>
+                    <f:facet name="summary">
+                        <af:panelBox text="#{bundle.project}" showDisclosure="true" helpTopicId="HELP_LTC_PROVIDE">
+                            <af:panelFormLayout styleClass="AFStretchWidth" fieldWidth="100%" maxColumns="2" rows="1">
+                                <af:panelLabelAndMessage label="#{bundle.ltcName}" inlineStyle="white-space: nowrap;">
+                                    <af:outputText value="#{pageFlowScope.objectName}" id="ot22"/>
+                                </af:panelLabelAndMessage>
+                                <af:panelLabelAndMessage label="#{bundle.ltcStatus}" inlineStyle="white-space: nowrap;">
+                                    <af:outputText value="#{bindings.StatusName.inputValue}" id="ot2"/>
+                                    <af:outputText value=" (#{bundle.ltcRefresh})"
+                                                   rendered="#{bindings.LtcStatusCode.inputValue == 'NEW'}"/>
+                                    <af:outputText value=" (#{bundle.ltcWaitingSubmitStatus})"
+                                                   rendered="#{bindings.LtcStatusCode.inputValue == 'SEND'}"/>
+                                    <af:outputText value=" (#{bundle.ltcSuccessfullSubmit})"
+                                                   rendered="#{bindings.LtcStatusCode.inputValue == 'DONE'}"/>
+                                    <af:image source="/images/busy.gif" id="i1"
+                                              rendered="#{bindings.LtcStatusCode.inputValue == 'NEW'}"/>
+                                </af:panelLabelAndMessage>
+                            </af:panelFormLayout>
+                            <af:poll id="poll" interval="5000"
+                                     rendered="#{bindings.LtcIsSyncing.inputValue or bindings.LtcStatusCode eq 'DONE' and bindings.IsReportGenerated.inputValue eq 'N'}"
+                                     pollListener="#{pageFlowScope.ltcBean.onPoll}" immediate="true"/>
+                        </af:panelBox>
+                    </f:facet>
+                    <f:facet name="content">
+                        <af:group>
+                            <af:panelStretchLayout id="psl1" styleClass="AFStretchWidth" bottomHeight="235px">
+                                <f:facet name="top"></f:facet>
+                                <f:facet name="center">
+                                    <af:group id="g1">
+                                        <af:panelBox text="#{bundle.globalMessage}" id="pb1"
+                                                     rendered="#{bindings.LtcStatusCode eq 'FAIL'}">
+                                            <f:facet name="toolbar"/>
+                                            <af:outputText value="#{bundle.ltcAnotherInstanceRunning}" id="ot3"/>
+                                        </af:panelBox>
+                                        <af:panelSplitter id="ps1" orientation="vertical" splitterPosition="200"
+                                                          positionedFromEnd="true"
+                                                          rendered="#{bindings.LtcStatusCode ne 'FAIL'}">
+                                            <f:facet name="first">
+                                                <af:panelBox text="#{bundle.ltcCBS}" showDisclosure="false"
+                                                             type="stretch" id="pb3">
+                                                    <af:panelStretchLayout id="psl2" topHeight="auto">
+                                                        <f:facet name="top">
+                                                            <af:query id="qryId1" headerText="#{bundle.globalFilter}"
+                                                                      disclosed="true"
+                                                                      value="#{bindings.LtcpFilterQuery.queryDescriptor}"
+                                                                      model="#{bindings.LtcpFilterQuery.queryModel}"
+                                                                      queryListener="#{bindings.LtcpFilterQuery.processQuery}"
+                                                                      queryOperationListener="#{bindings.LtcpFilterQuery.processQueryOperation}"
+                                                                      modeChangeVisible="false" saveQueryMode="hidden"
+                                                                      searchButtonText="#{bundle.globalFilter}"
+                                                                      labelAlignment="start"
+                                                                      resultComponentId="::pc1:treePlan" rows="1"
+                                                                      maxColumns="3"/>
+                                                        </f:facet>
+                                                        <f:facet name="center">
+                                                            <af:panelCollection id="pc1" styleClass="AFStretchWidth"
+                                                                                featuresOff="detach statusBar">
+                                                                <f:facet name="toolbar">
+                                                                    <af:toolbar id="t20">
+                                                                        <!--<af:button shortDesc="#{bundle.ltcPrefillFromFPS}"
+                                                                                   text="#{bundle.ltcPrefillFromFPS}"
+                                                                                   icon="images/prefill.png"
+                                                                                   disabled="#{bindings.LtcStatusCode ne 'READY'}"
+                                                                                   immediate="true" id="ctbPrefillFps">
+                                                                            <af:showPopupBehavior popupId=":::popPrefillFps"/>
+                                                                        </af:button>-->
+                                                                        <af:button shortDesc="#{bundle.ltcPrefillFromProfit}"
+                                                                                   text="#{bundle.ltcPrefillFromProfit}"
+                                                                                   icon="images/prefill.png"
+                                                                                   disabled="#{bindings.LtcStatusCode ne 'READY'}"
+                                                                                   immediate="true"
+                                                                                   id="ctbPrefillProfit">
+                                                                            <af:showPopupBehavior popupId=":::popPrefillProfit"/>
+                                                                        </af:button>
+                                                                    </af:toolbar>
+                                                                </f:facet>
+                                                                <af:treeTable value="#{bindings.LtcPlanView.treeModel}"
+                                                                              rowSelection="single" var="node"
+                                                                              id="treePlan" columnStretching="column:c1"
+                                                                              fetchSize="#{bindings.LtcPlanRootViewIterator.rangeSize}"
+                                                                              contentDelivery="immediate"
+                                                                              selectionListener="#{pageFlowScope.ltcBean.onPlanTreeSelect}"
+                                                                              disclosedRowKeys="#{pageFlowScope.ltcBean.ltcDisclosedTreeKeys}"
+                                                                              autoHeightRows="10"
+                                                                              partialTriggers=":::poll :::pc12:ctbApply"
+                                                                              emptyText="#{bindings.LtcPlanView.viewable ? bundle.ltcRefresh : bundle.globalNoAccess}">
+                                                                    <f:facet name="nodeStamp">
+                                                                        <af:column id="c1"
+                                                                                   headerText="#{bindings.LtcPlanView.hints.Name.label}"
+                                                                                   styleClass="depth#{bindings.LtcPlanView.treeModel.depth mod 5}"
+                                                                                   width="250" frozen="true">
+                                                                            <af:outputText value="#{node.Name}"
+                                                                                           id="ot11"/>
+                                                                        </af:column>
+                                                                    </f:facet>
+                                                                    <af:column id="c1128"
+                                                                               headerText="#{bindings.LtcPlanView.hints.StudyId.label}"
+                                                                               inlineStyle="text-align:right;"
+                                                                               styleClass="depth#{bindings.LtcPlanView.treeModel.depth mod 5}"
+                                                                               width="45">
+                                                                        <af:outputText value="#{node.StudyId}"
+                                                                                       id="ot182"/>
+                                                                    </af:column>
+                                                                    <af:column id="stdunitqty" visible="false"
+                                                                               headerText="#{bindings.LtcPlanView.hints.StudyUnitCount.label}"
+                                                                               inlineStyle="text-align:right;"
+                                                                               styleClass="depth#{bindings.LtcPlanView.treeModel.depth mod 5}"
+                                                                               width="50">
+                                                                        <af:outputText value="#{node.StudyUnitCount}"
+                                                                                       id="otstdunitqty"/>
+                                                                    </af:column>
+                                                                    <af:column id="stduqtyplan" visible="false"
+                                                                               headerText="#{bindings.LtcPlanView.hints.StudyUnitCountPlan.label}"
+                                                                               inlineStyle="text-align:right;"
+                                                                               styleClass="depth#{bindings.LtcPlanView.treeModel.depth mod 5}"
+                                                                               width="50">
+                                                                        <af:outputText value="#{node.StudyUnitCountPlan}"
+                                                                                       shortDesc="#{bindings.LtcPlanView.hints.StudyUnitCountPlan.tooltip}"
+                                                                                       id="otstduqtyplan"/>
+                                                                    </af:column>
+                                                                    <af:column id="cextflg" visible="false"
+                                                                               headerText="#{bindings.LtcPlanView.hints.IntExtFlag.label}"
+                                                                               inlineStyle="text-align:right;"
+                                                                               styleClass="depth#{bindings.LtcPlanView.treeModel.depth mod 5}"
+                                                                               width="50">
+                                                                        <af:outputText value="#{node.IntExtFlag}"
+                                                                                       id="otcextflg"/>
+                                                                    </af:column>
+                                                                    <af:column id="clnplantp" visible="false"
+                                                                               headerText="#{bindings.LtcPlanView.hints.ClinPlanType.label}"
+                                                                               inlineStyle="text-align:right;"
+                                                                               styleClass="depth#{bindings.LtcPlanView.treeModel.depth mod 5}"
+                                                                               width="50">
+                                                                        <af:outputText value="#{node.ClinPlanType}"
+                                                                                       id="otclnplantp"/>
+                                                                    </af:column>
+                                                                    <af:column id="stdmodname" visible="false"
+                                                                               headerText="#{bindings.LtcPlanView.hints.StudyModusName.label}"
+                                                                               inlineStyle="text-align:right;"
+                                                                               styleClass="depth#{bindings.LtcPlanView.treeModel.depth mod 5}"
+                                                                               width="50">
+                                                                        <af:outputText value="#{node.StudyModusName}"
+                                                                                       shortDesc="#{bindings.LtcPlanView.hints.StudyModusName.tooltip}"
+                                                                                       id="otstdmodname"/>
+                                                                    </af:column>
+                                                                    <af:column id="actpatients" visible="false"
+                                                                               headerText="#{bindings.LtcPlanView.hints.ActualPatients.label}"
+                                                                               inlineStyle="text-align:right;"
+                                                                               styleClass="depth#{bindings.LtcPlanView.treeModel.depth mod 5}"
+                                                                               width="80">
+                                                                        <af:outputText value="#{node.ActualPatients}"
+                                                                                       shortDesc="#{bindings.LtcPlanView.hints.ActualPatients.tooltip}"
+                                                                                       id="otactpatients"/>
+                                                                    </af:column>
+                                                                    <af:column id="plnpatients" visible="false"
+                                                                               headerText="#{bindings.LtcPlanView.hints.PlanPatients.label}"
+                                                                               inlineStyle="text-align:right;"
+                                                                               styleClass="depth#{bindings.LtcPlanView.treeModel.depth mod 5}"
+                                                                               width="70">
+                                                                        <af:outputText value="#{node.PlanPatients}"
+                                                                                       shortDesc="#{bindings.LtcPlanView.hints.PlanPatients.tooltip}"
+                                                                                       id="otplnpatients"/>
+                                                                    </af:column>
+                                                                    <af:column id="c11"
+                                                                               headerText="#{bindings.LtcPlanView.hints.StartDate.label}"
+                                                                               styleClass="depth#{bindings.LtcPlanView.treeModel.depth mod 5}"
+                                                                               width="65">
+                                                                        <af:inputDate value="#{node.StartDate}"
+                                                                                      readOnly="true" id="id1">
+                                                                            <af:convertDateTime pattern="#{bindings.LtcPlanView.hints.StartDate.format}"/>
+                                                                        </af:inputDate>
+                                                                    </af:column>
+                                                                    <af:column id="c1123"
+                                                                               headerText="#{bindings.LtcPlanView.hints.FinishDate.label}"
+                                                                               styleClass="depth#{bindings.LtcPlanView.treeModel.depth mod 5}"
+                                                                               width="65">
+                                                                        <af:inputDate value="#{node.FinishDate}"
+                                                                                      readOnly="true" id="id12">
+                                                                            <af:convertDateTime pattern="#{bindings.LtcPlanView.hints.FinishDate.format}"/>
+                                                                        </af:inputDate>
+                                                                    </af:column>
+                                                                    <af:column id="c112"
+                                                                               headerText="#{bindings.LtcPlanView.hints.LtIntCost.label}"
+                                                                               inlineStyle="text-align:right; background-color:ThreeDHighlight;"
+                                                                               styleClass="depth#{bindings.LtcPlanView.treeModel.depth mod 5}"
+                                                                               width="60">
+                                                                        <af:outputText value="#{node.LtIntCost}"
+                                                                                       id="ot1"/>
+                                                                    </af:column>
+                                                                    <af:column id="c113"
+                                                                               headerText="#{bindings.LtcPlanView.hints.LtCroCost.label}"
+                                                                               inlineStyle="text-align:right; background-color:ThreeDHighlight;"
+                                                                               styleClass="depth#{bindings.LtcPlanView.treeModel.depth mod 5}"
+                                                                               width="50">
+                                                                        <af:outputText value="#{node.LtCroCost}"
+                                                                                       id="ot12"/>
+                                                                    </af:column>
+                                                                    <af:column id="c114"
+                                                                               headerText="#{bindings.LtcPlanView.hints.LtEcgCost.label}"
+                                                                               inlineStyle="text-align:right; background-color:ThreeDHighlight;"
+                                                                               styleClass="depth#{bindings.LtcPlanView.treeModel.depth mod 5}"
+                                                                               width="50">
+                                                                        <af:outputText value="#{node.LtEcgCost}"
+                                                                                       id="ot13"/>
+                                                                    </af:column>
+                                                                    <af:column id="c115"
+                                                                               headerText="#{bindings.LtcPlanView.hints.LtOecCost.label}"
+                                                                               inlineStyle="text-align:right; background-color:ThreeDHighlight;"
+                                                                               styleClass="depth#{bindings.LtcPlanView.treeModel.depth mod 5}"
+                                                                               width="50">
+                                                                        <af:outputText value="#{node.LtOecCost}"
+                                                                                       id="ot14"/>
+                                                                    </af:column>
+                                                                    <af:column id="c1122"
+                                                                               headerText="#{bindings.LtcPlanView.hints.FcIntCost.label}"
+                                                                               inlineStyle="text-align:right; background-color:#b4dff0;"
+                                                                               styleClass="depth#{bindings.LtcPlanView.treeModel.depth mod 5}"
+                                                                               width="62">
+                                                                        <af:outputText value="#{node.FcIntCost}"
+                                                                                       id="ot123"/>
+                                                                    </af:column>
+                                                                    <af:column id="c1132"
+                                                                               headerText="#{bindings.LtcPlanView.hints.FcCroCost.label}"
+                                                                               inlineStyle="text-align:right; background-color:#b4dff0;"
+                                                                               styleClass="depth#{bindings.LtcPlanView.treeModel.depth mod 5}"
+                                                                               width="50">
+                                                                        <af:outputText value="#{node.FcCroCost}"
+                                                                                       id="ot122"/>
+                                                                    </af:column>
+                                                                    <af:column id="c1142"
+                                                                               headerText="#{bindings.LtcPlanView.hints.FcEcgCost.label}"
+                                                                               inlineStyle="text-align:right; background-color:#b4dff0;"
+                                                                               styleClass="depth#{bindings.LtcPlanView.treeModel.depth mod 5}"
+                                                                               width="50">
+                                                                        <af:outputText value="#{node.FcEcgCost}"
+                                                                                       id="ot132"/>
+                                                                    </af:column>
+                                                                    <af:column id="c1152"
+                                                                               headerText="#{bindings.LtcPlanView.hints.FcOeciCost.label}"
+                                                                               inlineStyle="text-align:right; background-color:#b4dff0;"
+                                                                               styleClass="depth#{bindings.LtcPlanView.treeModel.depth mod 5}"
+                                                                               width="50">
+                                                                        <af:outputText value="#{node.FcOeciCost}"
+                                                                                       id="ot142"/>
+                                                                    </af:column>
+                                                                    <af:column id="c11222"
+                                                                               headerText="#{bindings.LtcPlanView.hints.ActIntCost.label}"
+                                                                               inlineStyle="text-align:right; background-color:#dcebcc;"
+                                                                               styleClass="depth#{bindings.LtcPlanView.treeModel.depth mod 5}"
+                                                                               width="65">
+                                                                        <af:outputText value="#{node.ActIntCost}"
+                                                                                       id="ot1232"/>
+                                                                    </af:column>
+                                                                    <af:column id="c11322"
+                                                                               headerText="#{bindings.LtcPlanView.hints.ActCroCost.label}"
+                                                                               inlineStyle="text-align:right; background-color:#dcebcc;"
+                                                                               styleClass="depth#{bindings.LtcPlanView.treeModel.depth mod 5}"
+                                                                               width="50">
+                                                                        <af:outputText value="#{node.ActCroCost}"
+                                                                                       id="ot1222"/>
+                                                                    </af:column>
+                                                                    <af:column id="c11422"
+                                                                               headerText="#{bindings.LtcPlanView.hints.ActEcgCost.label}"
+                                                                               inlineStyle="text-align:right; background-color:#dcebcc;"
+                                                                               styleClass="depth#{bindings.LtcPlanView.treeModel.depth mod 5}"
+                                                                               width="50">
+                                                                        <af:outputText value="#{node.ActEcgCost}"
+                                                                                       id="ot1322"/>
+                                                                    </af:column>
+                                                                    <af:column id="c11522"
+                                                                               headerText="#{bindings.LtcPlanView.hints.ActOeciCost.label}"
+                                                                               inlineStyle="text-align:right; background-color:#dcebcc;"
+                                                                               styleClass="depth#{bindings.LtcPlanView.treeModel.depth mod 5}"
+                                                                               width="50">
+                                                                        <af:outputText value="#{node.ActOeciCost}"
+                                                                                       id="ot1422"/>
+                                                                    </af:column>
+                                                                </af:treeTable>
+                                                            </af:panelCollection>
+                                                        </f:facet>
+                                                        <f:verbatim>vi</f:verbatim>
+                                                    </af:panelStretchLayout>
+                                                </af:panelBox>
+                                            </f:facet>
+                                            <f:facet name="second">
+                                                <af:panelBox text="#{bundle.ltcCostDetails}: #{bindings.Name.inputValue}"
+                                                             showDisclosure="false" type="stretch" id="pb32"
+                                                             visible="#{bindings.WbsId.inputValue ne null and pageFlowScope.ltcBean.isUserActionPerformed}"
+                                                             partialTriggers="pc1:treePlan">
+                                                    <af:panelCollection id="pc12" featuresOff="detach">
+                                                        <f:facet name="toolbar">
+                                                            <af:toolbar id="t2" partialTriggers="ctb1 ctb12">
+                                                                <af:button shortDesc="#{bundle.globalAdd}"
+                                                                           text="#{bundle.globalAdd}"
+                                                                           icon="images/new.png"
+                                                                           disabled="#{bindings.LtcStatusCode ne 'READY'}"
+                                                                           immediate="true"
+                                                                           actionListener="#{bindings.LtcValueCreateInsert.execute}"
+                                                                           id="ctb1"/>
+                                                                <af:button shortDesc="#{bundle.globalRemove}"
+                                                                           text="#{bundle.globalRemove}"
+                                                                           disabled="#{bindings.LtcStatusCode ne 'READY' or bindings.LtcValueViewIterator.estimatedRowCount eq 0}"
+                                                                           icon="/images/remove.png" immediate="true"
+                                                                           actionListener="#{bindings.LtcValueDelete.execute}"
+                                                                           id="ctb12"/>
+                                                                <af:button shortDesc="#{bundle.ltcApply}"
+                                                                           text="#{bundle.globalApply}"
+                                                                           disabled="#{bindings.LtcStatusCode ne 'READY'}"
+                                                                           icon="/images/apply-all.png"
+                                                                           partialSubmit="true" id="ctbApply"
+                                                                           actionListener="#{pageFlowScope.ltcBean.onApplyValues}"/>
+                                                            </af:toolbar>
+                                                        </f:facet>
+                                                        <af:table value="#{bindings.LtcValueView.collectionModel}"
+                                                                  var="row" columnStretching="column:c5"
+                                                                  rows="#{bindings.LtcValueView.rangeSize}"
+                                                                  emptyText="#{bindings.LtcValueView.viewable ? 'No data to display.' : 'Access Denied.'}"
+                                                                  fetchSize="#{bindings.LtcValueView.rangeSize}"
+                                                                  selectionListener="#{bindings.LtcValueView.treeModel.makeCurrent}"
+                                                                  selectedRowKeys="#{bindings.LtcValueView.collectionModel.selectedRow}"
+                                                                  rowBandingInterval="0" varStatus="vs"
+                                                                  rowSelection="single" contentDelivery="immediate"
+                                                                  id="tblDet"
+                                                                  partialTriggers="::ctb1 ::ctb12">
+                                                            <af:column sortProperty="#{bindings.LtcValueView.hints.FunctionCode.name}"
+                                                                       sortable="true"
+                                                                       headerText="#{bindings.LtcValueView.hints.FunctionCode.label}"
+                                                                       id="c5" width="250">
+                                                                <af:selectOneChoice value="#{row.bindings.FunctionCode.inputValue}"
+                                                                                    label="#{row.bindings.FunctionCode.label}"
+                                                                                    required="false"
+                                                                                    shortDesc="#{bindings.LtcValueView.hints.FunctionCode.tooltip}"
+                                                                                    id="soc2">
+                                                                    <f:selectItems value="#{row.bindings.FunctionCode.items}"
+                                                                                   id="si2"/>
+                                                                </af:selectOneChoice>
+                                                            </af:column>
+                                                            <af:column sortProperty="#{bindings.LtcValueView.hints.LtIntCost.name}"
+                                                                       sortable="true"
+                                                                       headerText="#{bindings.LtcValueView.hints.LtIntCost.label}"
+                                                                       id="c2" width="60">
+                                                                <af:inputText value="#{row.bindings.LtIntCost.inputValue}"
+                                                                              label="#{bindings.LtcValueView.hints.LtIntCost.label}"
+                                                                              required="#{bindings.LtcValueView.hints.LtIntCost.mandatory}"
+                                                                              columns="#{bindings.LtcValueView.hints.LtIntCost.displayWidth}"
+                                                                              maximumLength="#{bindings.LtcValueView.hints.LtIntCost.precision}"
+                                                                              shortDesc="#{bindings.LtcValueView.hints.LtIntCost.tooltip}"
+                                                                              id="it7" readOnly="false" immediate="true"
+                                                                              inlineStyle="text-align:right;">
+                                                                    <f:validator binding="#{row.bindings.LtIntCost.validator}"/>
+                                                                </af:inputText>
+                                                            </af:column>
+                                                            <af:column sortProperty="#{bindings.LtcValueView.hints.LtCroCost.name}"
+                                                                       sortable="true"
+                                                                       headerText="#{bindings.LtcValueView.hints.LtCroCost.label}"
+                                                                       id="c10" width="50">
+                                                                <af:inputText value="#{row.bindings.LtCroCost.inputValue}"
+                                                                              label="#{bindings.LtcValueView.hints.LtCroCost.label}"
+                                                                              required="#{bindings.LtcValueView.hints.LtCroCost.mandatory}"
+                                                                              columns="#{bindings.LtcValueView.hints.LtCroCost.displayWidth}"
+                                                                              maximumLength="#{bindings.LtcValueView.hints.LtCroCost.precision}"
+                                                                              shortDesc="#{bindings.LtcValueView.hints.LtCroCost.tooltip}"
+                                                                              inlineStyle="text-align:right;"
+                                                                              immediate="true" id="it1">
+                                                                    <f:validator binding="#{row.bindings.LtCroCost.validator}"/>
+                                                                </af:inputText>
+                                                            </af:column>
+                                                            <af:column sortProperty="#{bindings.LtcValueView.hints.LtEcgCost.name}"
+                                                                       sortable="true"
+                                                                       headerText="#{bindings.LtcValueView.hints.LtEcgCost.label}"
+                                                                       id="c4" width="50">
+                                                                <af:inputText value="#{row.bindings.LtEcgCost.inputValue}"
+                                                                              label="#{bindings.LtcValueView.hints.LtEcgCost.label}"
+                                                                              required="#{bindings.LtcValueView.hints.LtEcgCost.mandatory}"
+                                                                              columns="#{bindings.LtcValueView.hints.LtEcgCost.displayWidth}"
+                                                                              maximumLength="#{bindings.LtcValueView.hints.LtEcgCost.precision}"
+                                                                              shortDesc="#{bindings.LtcValueView.hints.LtEcgCost.tooltip}"
+                                                                              immediate="true"
+                                                                              inlineStyle="text-align:right;" id="it8">
+                                                                    <f:validator binding="#{row.bindings.LtEcgCost.validator}"/>
+                                                                </af:inputText>
+                                                            </af:column>
+                                                            <af:column sortProperty="#{bindings.LtcValueView.hints.LtOecCost.name}"
+                                                                       sortable="true"
+                                                                       headerText="#{bindings.LtcValueView.hints.LtOecCost.label}"
+                                                                       id="c6" width="50">
+                                                                <af:inputText value="#{row.bindings.LtOecCost.inputValue}"
+                                                                              label="#{bindings.LtcValueView.hints.LtOecCost.label}"
+                                                                              required="#{bindings.LtcValueView.hints.LtOecCost.mandatory}"
+                                                                              columns="#{bindings.LtcValueView.hints.LtOecCost.displayWidth}"
+                                                                              maximumLength="#{bindings.LtcValueView.hints.LtOecCost.precision}"
+                                                                              shortDesc="#{bindings.LtcValueView.hints.LtOecCost.tooltip}"
+                                                                              inlineStyle="text-align:right;"
+                                                                              readOnly="#{bindings.StudyId.inputValue !=null}"
+                                                                              immediate="true" id="it5">
+                                                                    <f:validator binding="#{row.bindings.LtOecCost.validator}"/>
+                                                                </af:inputText>
+                                                            </af:column>
+                                                            <af:column sortProperty="#{bindings.LtcValueView.hints.Comments.name}"
+                                                                       sortable="true"
+                                                                       headerText="#{bindings.LtcValueView.hints.Comments.label}"
+                                                                       id="c601" noWrap="false">
+                                                                <af:inputText value="#{row.bindings.Comments.inputValue}"
+                                                                              label="#{bindings.LtcValueView.hints.Comments.label}"
+                                                                              required="#{bindings.LtcValueView.hints.Comments.mandatory}"
+                                                                              columns="#{bindings.LtcValueView.hints.Comments.displayWidth}"
+                                                                              maximumLength="#{bindings.LtcValueView.hints.Comments.precision}"
+                                                                              shortDesc="#{bindings.LtcValueView.hints.Comments.tooltip}"
+                                                                              readOnly="false" id="it50"
+                                                                              inlineStyle="text-align:left;">
+                                                                    <f:validator binding="#{row.bindings.Comments.validator}"/>
+                                                                </af:inputText>
+                                                            </af:column>
+                                                            <af:column sortProperty="#{bindings.LtcValueView.hints.FcIntCost.name}"
+                                                                       sortable="true"
+                                                                       headerText="#{bindings.LtcValueView.hints.FcIntCost.label}"
+                                                                       id="c79"
+                                                                       inlineStyle="text-align:right; background-color:#b4dff0;"
+                                                                       width="62">
+                                                                <af:inputText value="#{row.bindings.FcIntCost.inputValue}"
+                                                                              label="#{bindings.LtcValueView.hints.FcIntCost.label}"
+                                                                              required="#{bindings.LtcValueView.hints.FcIntCost.mandatory}"
+                                                                              columns="#{bindings.LtcValueView.hints.FcIntCost.displayWidth}"
+                                                                              maximumLength="#{bindings.LtcValueView.hints.FcIntCost.precision}"
+                                                                              shortDesc="#{bindings.LtcValueView.hints.FcIntCost.tooltip}"
+                                                                              id="it39">
+                                                                    <f:validator binding="#{row.bindings.FcIntCost.validator}"/>
+                                                                </af:inputText>
+                                                            </af:column>
+                                                            <af:column sortProperty="#{bindings.LtcValueView.hints.FcCroCost.name}"
+                                                                       sortable="true"
+                                                                       inlineStyle="text-align:right; background-color:#b4dff0;"
+                                                                       headerText="#{bindings.LtcValueView.hints.FcCroCost.label}"
+                                                                       id="c392" width="50">
+                                                                <af:inputText value="#{row.bindings.FcCroCost.inputValue}"
+                                                                              label="#{bindings.LtcValueView.hints.FcCroCost.label}"
+                                                                              required="#{bindings.LtcValueView.hints.FcCroCost.mandatory}"
+                                                                              columns="#{bindings.LtcValueView.hints.FcCroCost.displayWidth}"
+                                                                              maximumLength="#{bindings.LtcValueView.hints.FcCroCost.precision}"
+                                                                              shortDesc="#{bindings.LtcValueView.hints.FcCroCost.tooltip}"
+                                                                              readOnly="true" id="it49">
+                                                                    <f:validator binding="#{row.bindings.FcCroCost.validator}"/>
+                                                                </af:inputText>
+                                                            </af:column>
+                                                            <af:column sortProperty="#{bindings.LtcValueView.hints.FcEcgCost.name}"
+                                                                       sortable="true"
+                                                                       headerText="#{bindings.LtcValueView.hints.FcEcgCost.label}"
+                                                                       inlineStyle="text-align:right; background-color:#b4dff0;"
+                                                                       id="c89" width="50">
+                                                                <af:inputText value="#{row.bindings.FcEcgCost.inputValue}"
+                                                                              label="#{bindings.LtcValueView.hints.FcEcgCost.label}"
+                                                                              required="#{bindings.LtcValueView.hints.FcEcgCost.mandatory}"
+                                                                              columns="#{bindings.LtcValueView.hints.FcEcgCost.displayWidth}"
+                                                                              maximumLength="#{bindings.LtcValueView.hints.FcEcgCost.precision}"
+                                                                              shortDesc="#{bindings.LtcValueView.hints.FcEcgCost.tooltip}"
+                                                                              readOnly="true" id="it69">
+                                                                    <f:validator binding="#{row.bindings.FcEcgCost.validator}"/>
+                                                                </af:inputText>
+                                                            </af:column>
+                                                            <af:column sortProperty="#{bindings.LtcValueView.hints.FcOecCost.name}"
+                                                                       sortable="true"
+                                                                       headerText="#{bindings.LtcValueView.hints.FcOecCost.label}"
+                                                                       inlineStyle="text-align:right; background-color:#b4dff0;"
+                                                                       id="c99" width="50">
+                                                                <af:inputText value="#{row.bindings.FcOecCost.inputValue}"
+                                                                              label="#{bindings.LtcValueView.hints.FcOecCost.label}"
+                                                                              required="#{bindings.LtcValueView.hints.FcOecCost.mandatory}"
+                                                                              columns="#{bindings.LtcValueView.hints.FcOecCost.displayWidth}"
+                                                                              maximumLength="#{bindings.LtcValueView.hints.FcOecCost.precision}"
+                                                                              shortDesc="#{bindings.LtcValueView.hints.FcOecCost.tooltip}"
+                                                                              readOnly="true" id="it29">
+                                                                    <f:validator binding="#{row.bindings.FcOecCost.validator}"/>
+                                                                </af:inputText>
+                                                            </af:column>
+                                                            <af:column sortProperty="#{bindings.LtcValueView.hints.ActIntCost.name}"
+                                                                       sortable="true"
+                                                                       headerText="#{bindings.LtcValueView.hints.ActIntCost.label}"
+                                                                       id="c7"
+                                                                       inlineStyle="text-align:right; background-color:#dcebcc;"
+                                                                       width="65">
+                                                                <af:inputText value="#{row.bindings.ActIntCost.inputValue}"
+                                                                              label="#{bindings.LtcValueView.hints.ActIntCost.label}"
+                                                                              required="#{bindings.LtcValueView.hints.ActIntCost.mandatory}"
+                                                                              columns="#{bindings.LtcValueView.hints.ActIntCost.displayWidth}"
+                                                                              maximumLength="#{bindings.LtcValueView.hints.ActIntCost.precision}"
+                                                                              shortDesc="#{bindings.LtcValueView.hints.ActIntCost.tooltip}"
+                                                                              id="it3">
+                                                                    <f:validator binding="#{row.bindings.ActIntCost.validator}"/>
+                                                                </af:inputText>
+                                                            </af:column>
+                                                            <af:column sortProperty="#{bindings.LtcValueView.hints.ActCroCost.name}"
+                                                                       sortable="true"
+                                                                       inlineStyle="text-align:right; background-color:#dcebcc;"
+                                                                       headerText="#{bindings.LtcValueView.hints.ActCroCost.label}"
+                                                                       id="c3" width="50">
+                                                                <af:inputText value="#{row.bindings.ActCroCost.inputValue}"
+                                                                              label="#{bindings.LtcValueView.hints.ActCroCost.label}"
+                                                                              required="#{bindings.LtcValueView.hints.ActCroCost.mandatory}"
+                                                                              columns="#{bindings.LtcValueView.hints.ActCroCost.displayWidth}"
+                                                                              maximumLength="#{bindings.LtcValueView.hints.ActCroCost.precision}"
+                                                                              shortDesc="#{bindings.LtcValueView.hints.ActCroCost.tooltip}"
+                                                                              readOnly="true" id="it4">
+                                                                    <f:validator binding="#{row.bindings.ActCroCost.validator}"/>
+                                                                </af:inputText>
+                                                            </af:column>
+                                                            <af:column sortProperty="#{bindings.LtcValueView.hints.ActEcgCost.name}"
+                                                                       sortable="true"
+                                                                       headerText="#{bindings.LtcValueView.hints.ActEcgCost.label}"
+                                                                       inlineStyle="text-align:right; background-color:#dcebcc;"
+                                                                       id="c8" width="50">
+                                                                <af:inputText value="#{row.bindings.ActEcgCost.inputValue}"
+                                                                              label="#{bindings.LtcValueView.hints.ActEcgCost.label}"
+                                                                              required="#{bindings.LtcValueView.hints.ActEcgCost.mandatory}"
+                                                                              columns="#{bindings.LtcValueView.hints.ActEcgCost.displayWidth}"
+                                                                              maximumLength="#{bindings.LtcValueView.hints.ActEcgCost.precision}"
+                                                                              shortDesc="#{bindings.LtcValueView.hints.ActEcgCost.tooltip}"
+                                                                              readOnly="true" id="it6">
+                                                                    <f:validator binding="#{row.bindings.ActEcgCost.validator}"/>
+                                                                </af:inputText>
+                                                            </af:column>
+                                                            <af:column sortProperty="#{bindings.LtcValueView.hints.ActOecCost.name}"
+                                                                       sortable="true"
+                                                                       headerText="#{bindings.LtcValueView.hints.ActOecCost.label}"
+                                                                       inlineStyle="text-align:right; background-color:#dcebcc;"
+                                                                       id="c9" width="50">
+                                                                <af:inputText value="#{row.bindings.ActOecCost.inputValue}"
+                                                                              label="#{bindings.LtcValueView.hints.ActOecCost.label}"
+                                                                              required="#{bindings.LtcValueView.hints.ActOecCost.mandatory}"
+                                                                              columns="#{bindings.LtcValueView.hints.ActOecCost.displayWidth}"
+                                                                              maximumLength="#{bindings.LtcValueView.hints.ActOecCost.precision}"
+                                                                              shortDesc="#{bindings.LtcValueView.hints.ActOecCost.tooltip}"
+                                                                              readOnly="true" id="it2">
+                                                                    <f:validator binding="#{row.bindings.ActOecCost.validator}"/>
+                                                                </af:inputText>
+                                                            </af:column>
+                                                        </af:table>
+                                                    </af:panelCollection>
+                                                </af:panelBox>
+                                            </f:facet>
+                                        </af:panelSplitter>
+                                    </af:group>
+                                </f:facet>
+                                <f:facet name="bottom"/>
+                            </af:panelStretchLayout>
+                        </af:group>
+                    </f:facet>
+                    <f:facet name="controls">
+                        <af:panelGroupLayout layout="horizontal" halign="right" id="pgl1">
+                            <f:facet name="separator">
+                                <af:spacer width="5" id="s12"/>
+                            </f:facet>
+                            <af:button text="#{bundle.globalSubmit}" id="cmdOk" inlineStyle="font-weight:bold;"
+                                       partialSubmit="true" actionListener="#{pageFlowScope.ltcBean.onSubmit}"
+                                       disabled="#{bindings.LtcStatusCode != 'READY'}" action="submit"/>
+                            <!--af:button text="#{bundle.globalRefresh}"
+                                              id="cmdRefresh"
+                                              disabled="#{bindings.LtcStatusCode == 'READY' or bindings.LtcStatusCode == 'DONE' or not bindings.LtcIsSyncing.inputValue}"
+                                              actionListener="#{pageFlowScope.ltcBean.onRefresh}"/-->
+                            <af:button text="#{bundle.ltcExport}" id="cmdReport"
+                                       disabled="#{(bindings.LtcStatusCode != 'READY' and bindings.LtcStatusCode != 'DONE') or bindings.IsReportGenerated.inputValue eq 'N'}"
+                                       immediate="true" shortDesc="#{bundle.ltcExportDesc}" partialTriggers="poll">
+                                <af:fileDownloadActionListener filename="LtcReport.xls"
+                                                               contentType="application/vnd.ms-excel; charset=utf-8"
+                                                               method="#{pageFlowScope.ltcBean.onReport}"/>
+                            </af:button>
+                            <af:button text="#{bundle.globalCancel}" id="cmdCancel" action="cancel"
+                                       rendered="#{bindings.LtcStatusCode != 'DONE' and bindings.LtcStatusCode != 'FAIL'}"
+                                       immediate="true" actionListener="#{pageFlowScope.ltcBean.onCancel}"/>
+                            <af:button text="#{bundle.globalClose}" id="cmdClose" action="cancel"
+                                       rendered="#{bindings.LtcStatusCode == 'DONE' or bindings.LtcStatusCode == 'FAIL'}"
+                                       immediate="true"/>
+                            <af:spacer width="10" height="0" id="s1"/>
+                        </af:panelGroupLayout>
+                    </f:facet>
+                </af:pageTemplate>
+            </af:form>
+        </af:document>
+    </f:view>
+</jsp:root>

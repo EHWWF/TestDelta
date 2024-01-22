@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="ltc-tag-view">
+    <template-reference>
+      <document>/WEB-INF/com.bayer.ipms.view/templates/ipms-taskflow-template-fragment.xml</document>
+      <id>ipms-taskflow-template-fragment</id>
+    </template-reference>
+    <default-activity>__ltc-tag-view1</default-activity>
+    <data-control-scope>
+      <shared/>
+    </data-control-scope>
+    <managed-bean id="__1">
+      <managed-bean-name>ltcTagViewBean</managed-bean-name>
+      <managed-bean-class>com.bayer.ipms.view.beans.LtcTagViewBean</managed-bean-class>
+      <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <view id="__ltc-tag-view1">
+      <page>/WEB-INF/com.bayer.ipms.view/fragments/ltc-tag-view.jsff</page>
+    </view>
+    <task-flow-call id="ltc-planning-start">
+      <task-flow-reference>
+        <document>/WEB-INF/com.bayer.ipms.view/flows/ltc-planning-start.xml</document>
+        <id>ltc-planning-start</id>
+      </task-flow-reference>
+      <run-as-dialog>
+        <display-type>
+          <inline-popup/>
+        </display-type>
+      </run-as-dialog>
+    </task-flow-call>
+    <control-flow-rule id="__2">
+      <from-activity-id>__ltc-tag-view1</from-activity-id>
+      <control-flow-case id="__3">
+        <from-outcome>ltc-planning-start</from-outcome>
+        <to-activity-id>ltc-planning-start</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

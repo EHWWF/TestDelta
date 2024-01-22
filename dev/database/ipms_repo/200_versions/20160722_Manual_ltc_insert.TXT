@@ -1,0 +1,51 @@
+select count(1) from (--PROD=1269 --1180
+        select * from (
+          select 
+            period_id, project_id, sandbox_id, timeline_id, ltci_id, wbs_id, study_id, phase, function_code
+          from cost_ltc_fct_vw --where timeline_id='94-143-RAW' --and wbs_id in ('376342','703467')
+          minus
+          select 
+            period_id, project_id, sandbox_id, timeline_id, ltci_id, wbs_id, study_id, phase, function_code
+          from cost_ltc_fct_vw_del --where timeline_id='94-143-RAW' --and wbs_id in ('376342','703467')
+        )
+        minus
+        --the column list taken from unique index of cost_ltc_fct
+        select period_id, project_id, sandbox_id, timeline_id, ltci_id, wbs_id, study_id, phase, function_code
+        from cost_ltc_fct --where timeline_id='94-143-RAW'-- and wbs_id in ('376342','703467')
+        )
+        ;
+		
+		
+		
+		--create table cost_ltc_fct20160722 as select * from cost_ltc_fct;
+
+insert into cost_ltc_fct 
+					(period_id, project_id, sandbox_id, timeline_id, ltci_id, wbs_id, study_id, phase, function_code, 
+					act_ext_oec_det, act_ext_cro_det, act_ext_ecg_det, act_int_det, fct_ext_oec_det, fct_ext_cro_det, 
+					fct_ext_ecg_det, fct_int_det, ltc_ext_oec_det, ltc_ext_cro_det, ltc_ext_ecg_det, ltc_int,
+					total_ext_oec_det, total_ext_cro_det, total_ext_ecg_det, total_int,fte_avg)
+				select 
+					period_id, project_id, sandbox_id, timeline_id, ltci_id, wbs_id, study_id, phase, function_code, 
+					act_ext_oec_det, act_ext_cro_det, act_ext_ecg_det, act_int_det, fct_ext_oec_det, fct_ext_cro_det, 
+					fct_ext_ecg_det, fct_int_det, ltc_ext_oec_det, ltc_ext_cro_det, ltc_ext_ecg_det, ltc_int,
+					total_ext_oec_det, total_ext_cro_det, total_ext_ecg_det, total_int,fte_avg
+				from cost_ltc_fct_vw 
+        where period_id||project_id||sandbox_id||timeline_id||ltci_id||wbs_id||study_id||phase||function_code in 
+        (select * from (
+          select 
+            --period_id, project_id, sandbox_id, timeline_id, ltci_id, wbs_id, study_id, phase, function_code
+            period_id||project_id||sandbox_id||timeline_id||ltci_id||wbs_id||study_id||phase||function_code
+          from cost_ltc_fct_vw --where timeline_id='94-143-RAW' --and wbs_id in ('376342','703467')
+          minus
+          select 
+            --period_id, project_id, sandbox_id, timeline_id, ltci_id, wbs_id, study_id, phase, function_code
+            period_id||project_id||sandbox_id||timeline_id||ltci_id||wbs_id||study_id||phase||function_code
+          from cost_ltc_fct_vw_del --where timeline_id='94-143-RAW' --and wbs_id in ('376342','703467')
+        )
+        minus
+        --the column list taken from unique index of cost_ltc_fct
+        select --period_id, project_id, sandbox_id, timeline_id, ltci_id, wbs_id, study_id, phase, function_code
+        period_id||project_id||sandbox_id||timeline_id||ltci_id||wbs_id||study_id||phase||function_code
+        from cost_ltc_fct)
+        ;
+    

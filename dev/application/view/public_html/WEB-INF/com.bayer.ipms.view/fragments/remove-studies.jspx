@@ -1,0 +1,138 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich" xmlns:h="http://java.sun.com/jsf/html"
+          xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <c:set var="bundle" value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+    <f:view>
+        <af:document title="#{bundle.projectRemoveStudies}" id="d1">
+            <af:serverListener type="onLoadEvent" method="#{pageFlowScope.RS.onPageLoad}"/>
+            <af:clientListener type="load" method="triggerOnLoad"/>
+            <af:resource type="javascript">
+              function triggerOnLoad(event) {
+                  AdfCustomEvent.queue(event.getSource(), "onLoadEvent", 
+                  {
+                  },
+                  false);
+                  return true;
+              }
+            </af:resource>
+            <af:messages id="m1"/>
+            <af:form id="f1">
+                <af:pageTemplate viewId="/WEB-INF/com.bayer.ipms.view/templates/ipms-popup-template.jspx" id="pt1">
+                    <f:facet name="summary">
+                        <af:panelBox text="#{bundle.project}" showDisclosure="true">
+                            <af:panelFormLayout styleClass="AFStretchWidth" fieldWidth="100%" maxColumns="2" rows="2">
+                                <af:panelLabelAndMessage label="#{bundle.globalCode}">
+                                    <af:outputText value="#{pageFlowScope.projectCode}"/>
+                                </af:panelLabelAndMessage>
+                                <af:panelLabelAndMessage label="#{bundle.globalName}">
+                                    <af:outputText value="#{pageFlowScope.projectName}"/>
+                                </af:panelLabelAndMessage>
+                                <af:train value="#{controllerContext.currentViewPort.taskFlowContext.trainModel}"
+                                          id="t1" inlineStyle="min-width:100%;"/>
+                            </af:panelFormLayout>
+                        </af:panelBox>
+                    </f:facet>
+                    <f:facet name="content">
+                        <af:panelBox text="#{bundle.importDetails}" styleClass="AFStretchWidth" showDisclosure="false"
+                                     type="stretch" id="pb3">
+                            <af:panelStretchLayout topHeight="auto" styleClass="AFStretchWidth" bottomHeight="0">
+                                <f:facet name="center">
+                                    <af:group id="g1">
+                                        <af:outputText value="#{bundle.leadStudiesReceiveMessage}" id="otReceive"
+                                                       rendered="#{pageFlowScope.RS.currTrainActivityId eq 'receive-data'}"/>
+                                        <af:outputText value="#{bundle.leadStudiesSubmitMessage}" id="otSubmit"
+                                                       rendered="#{pageFlowScope.RS.currTrainActivityId eq 'submit'}"/>
+                                        <af:panelCollection id="pc1" styleClass="AFStretchWidth"
+                                                            featuresOff="detach statusBar" visible="false">
+                                            <af:table value="#{bindings.StudyRemoveView.collectionModel}" var="row"
+                                                      rows="#{bindings.StudyRemoveView.rangeSize}"
+                                                      emptyText="#{bindings.StudyRemoveView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                                                      rowBandingInterval="0"
+                                                      fetchSize="#{bindings.StudyRemoveView.rangeSize}" id="t2"
+                                                      columnStretching="column:c3">
+                                                <af:column headerText="#{bindings.StudyRemoveView.hints.IsDelete.label}" width="50px"
+                                                           id="c1">
+                                                    <af:selectBooleanCheckbox value="#{row.bindings.IsDelete.inputValue}"
+                                                                              label="#{row.bindings.IsDelete.label}"
+                                                                              shortDesc="#{bindings.StudyRemoveView.hints.IsDelete.tooltip}"
+                                                                              id="sbc1"/>
+                                                </af:column>
+                                                <af:column headerText="#{bindings.StudyRemoveView.hints.Id.label}"  width="50px"
+                                                           id="c2">
+                                                    <af:inputText value="#{row.bindings.Id.inputValue}"
+                                                                  label="#{bindings.StudyRemoveView.hints.Id.label}"
+                                                                  required="#{bindings.StudyRemoveView.hints.Id.mandatory}"
+                                                                  columns="#{bindings.StudyRemoveView.hints.Id.displayWidth}"
+                                                                  maximumLength="#{bindings.StudyRemoveView.hints.Id.precision}"
+                                                                  shortDesc="#{bindings.StudyRemoveView.hints.Id.tooltip}"
+                                                                  readOnly="true"
+                                                                  id="it1">
+                                                        <f:validator binding="#{row.bindings.Id.validator}"/>
+                                                    </af:inputText>
+                                                </af:column>
+                                                <af:column headerText="#{bindings.StudyRemoveView.hints.Name.label}"  width="70px"
+                                                           id="c3">
+                                                    <af:inputText value="#{row.bindings.Name.inputValue}"
+                                                                  label="#{bindings.StudyRemoveView.hints.Name.label}"
+                                                                  required="#{bindings.StudyRemoveView.hints.Name.mandatory}"
+                                                                  columns="#{bindings.StudyRemoveView.hints.Name.displayWidth}"
+                                                                  maximumLength="#{bindings.StudyRemoveView.hints.Name.precision}"
+                                                                  shortDesc="#{bindings.StudyRemoveView.hints.Name.tooltip}"
+                                                                  readOnly="true"
+                                                                  id="it2">
+                                                        <f:validator binding="#{row.bindings.Name.validator}"/>
+                                                    </af:inputText>
+                                                </af:column>
+                                                <af:column headerText="#{bindings.StudyRemoveView.hints.Phase.label}"  width="70px"
+                                                           id="c4">
+                                                    <af:inputText value="#{row.bindings.Phase.inputValue}"
+                                                                  label="#{bindings.StudyRemoveView.hints.Phase.label}"
+                                                                  required="#{bindings.StudyRemoveView.hints.Phase.mandatory}"
+                                                                  columns="#{bindings.StudyRemoveView.hints.Phase.displayWidth}"
+                                                                  maximumLength="#{bindings.StudyRemoveView.hints.Phase.precision}"
+                                                                  shortDesc="#{bindings.StudyRemoveView.hints.Phase.tooltip}"
+                                                                  readOnly="true"
+                                                                  id="it3">
+                                                        <f:validator binding="#{row.bindings.Phase.validator}"/>
+                                                    </af:inputText>
+                                                </af:column>
+                                                <af:column headerText="#{bindings.StudyRemoveView.hints.StudyModusName.label}"  width="100px"
+                                                           id="c5">
+                                                    <af:inputText value="#{row.StudyModusName}"
+                                                                  label="#{bindings.StudyRemoveView.hints.StudyModusName.label}"
+                                                                  required="#{bindings.StudyRemoveView.hints.StudyModusName.mandatory}"
+                                                                  columns="#{bindings.StudyRemoveView.hints.StudyModusName.displayWidth}"
+                                                                  maximumLength="#{bindings.StudyRemoveView.hints.StudyModusName.precision}"
+                                                                  shortDesc="#{bindings.StudyRemoveView.hints.StudyModusName.tooltip}"
+                                                                  readOnly="true"
+                                                                  id="it4">
+                                                        <f:validator binding="#{row.bindings.StudyModusName.validator}"/>
+                                                    </af:inputText>
+                                                </af:column>
+                                            </af:table>
+                                        </af:panelCollection>
+                                    </af:group>
+                                </f:facet>
+                            </af:panelStretchLayout>
+                        </af:panelBox>
+                    </f:facet>
+                    <f:facet name="controls">
+                        <af:panelGroupLayout layout="horizontal" halign="right" id="pgl12">
+                            <f:facet name="separator">
+                                <af:spacer width="5" id="s12"/>
+                            </f:facet>
+                            <af:button text="#{bundle.globalSubmit}" id="b3" action="submit"
+                                       rendered="#{pageFlowScope.RS.currTrainActivityId eq 'select'}"/>
+                            <af:button text="#{bundle.globalCancel}" id="b1" action="cancel"
+                                       rendered="#{pageFlowScope.RS.currTrainActivityId eq 'select'}"/>
+                            <af:button text="#{bundle.globalClose}" id="b12" action="cancel"
+                                       rendered="#{pageFlowScope.RS.currTrainActivityId eq 'complete'}"/>
+                        </af:panelGroupLayout>
+                    </f:facet>
+                </af:pageTemplate>
+            </af:form>
+        </af:document>
+    </f:view>
+</jsp:root>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Association SYSTEM "jbo_03_01.dtd">
+<!---->
+<Association
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="LtcProcess"
+  Version="12.2.1.0.31"
+  InheritPersonalization="merge">
+  <DesignTime>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <AssociationEnd
+    Name="LtcProcess1"
+    Cardinality="1"
+    Source="true"
+    Owner="com.bayer.ipms.model.entities.ltc.LtcProcess"
+    LockLevel="NONE"
+    CascadeDelete="true"
+    CascadeUpdate="true"
+    ExposedAccessor="false">
+    <DesignTime>
+      <Attr Name="_isUpdateable" Value="true"/>
+      <Attr Name="_minCardinality" Value="1"/>
+      <Attr Name="_aggregation" Value="0"/>
+      <Attr Name="_finderName" Value="LtcProcess1"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.ltc.LtcProcess.Id"/>
+    </AttrArray>
+  </AssociationEnd>
+  <AssociationEnd
+    Name="LtcProject1"
+    Cardinality="-1"
+    Owner="com.bayer.ipms.model.entities.ltc.LtcProject"
+    HasOwner="true"
+    ExposedAccessor="false">
+    <DesignTime>
+      <Attr Name="_isUpdateable" Value="true"/>
+      <Attr Name="_aggregation" Value="0"/>
+      <Attr Name="_finderName" Value="LtcProject1"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.ltc.LtcProject.LtcProcessId"/>
+    </AttrArray>
+  </AssociationEnd>
+</Association>

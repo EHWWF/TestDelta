@@ -1,0 +1,136 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+
+<ViewObject
+   xmlns="http://xmlns.oracle.com/bc4j"
+   Name="StrategicBusinessEntityView"
+   Version="12.2.1.0.31"
+   InheritPersonalization="true"
+   SelectList="StrategicBusinessEntity.CODE, 
+       StrategicBusinessEntity.IS_ACTIVE, 
+       StrategicBusinessEntity.NAME, 
+       StrategicBusinessEntity.IS_VISIBLE"
+   FromList="STRATEGIC_BUSINESS_ENTITY StrategicBusinessEntity"
+   BindingStyle="OracleName"
+   CustomQuery="false"
+   RowClass="com.bayer.ipms.model.views.lookups.StrategicBusinessEntityViewRowImpl"
+   ComponentClass="com.bayer.ipms.model.base.IPMSViewObjectImpl"
+   FetchMode="FETCH_ALL"
+   FetchSize="100"
+   RangeSize="-1"
+   Passivate="None"
+   OrderBy="StrategicBusinessEntity.IS_ACTIVE desc,StrategicBusinessEntity.IS_VISIBLE desc,StrategicBusinessEntity.NAME"
+   PageIterMode="Partial">
+   <DesignTime>
+      <Attr Name="_rowSuperClassName" Value="com.bayer.ipms.model.base.IPMSLookupViewRowImpl" />
+      <Attr Name="_codeGenFlag2" Value="Access"/>
+      <Attr Name="_isCodegen" Value="true"/>
+   </DesignTime>
+   <Properties >
+      <SchemaBasedProperties >
+         <LABEL
+            ResId="com.bayer.ipms.model.views.lookups.StrategicBusinessEntityView_LABEL" >
+         </LABEL>
+      </SchemaBasedProperties>
+   </Properties>
+   <EntityUsage
+      Name="StrategicBusinessEntity"
+      Entity="com.bayer.ipms.model.entities.lookups.StrategicBusinessEntity" >
+   </EntityUsage>
+   <ViewAttribute
+      Name="Code"
+      IsUpdateable="false"
+      IsNotNull="true"
+      PrecisionRule="true"
+      EntityAttrName="Code"
+      EntityUsage="StrategicBusinessEntity"
+      AliasName="CODE" >
+   </ViewAttribute>
+   <ViewAttribute
+      Name="IsActive"
+      IsNotNull="true"
+      PrecisionRule="true"
+      EntityAttrName="IsActive"
+      EntityUsage="StrategicBusinessEntity"
+      AliasName="IS_ACTIVE"
+      IsUpdateable="false">
+   </ViewAttribute>
+   <ViewAttribute
+      Name="Name"
+      IsNotNull="true"
+      PrecisionRule="true"
+      EntityAttrName="Name"
+      EntityUsage="StrategicBusinessEntity"
+      AliasName="NAME"
+      IsUpdateable="false">
+   </ViewAttribute>
+   <ViewAttribute
+      Name="QualifiedName"
+      IsUpdateable="false"
+      IsSelected="false"
+      IsPersistent="false"
+      PrecisionRule="true"
+      Type="java.lang.String"
+      ColumnType="CHAR"
+      AliasName="VIEW_ATTR"
+      SQLType="VARCHAR">
+      <TransientExpression
+         Name="ExpressionScript"
+         trustMode="untrusted"
+         CodeSourceName="StrategicBusinessEntityViewRow"/>
+      <Dependencies>
+         <Item
+            Value="Code"/>
+         <Item
+            Value="Name"/>
+      </Dependencies>
+   </ViewAttribute>
+   <ViewAttribute
+      Name="IsVisible"
+      IsNotNull="true"
+      PrecisionRule="true"
+      EntityAttrName="IsVisible"
+      EntityUsage="StrategicBusinessEntity"
+      AliasName="IS_VISIBLE"/>
+   <ViewCriteria
+      Name="StrategicBusinessEntityViewCriteria"
+      ViewObjectName="com.bayer.ipms.model.views.lookups.StrategicBusinessEntityView"
+      Conjunction="AND">
+      <Properties Name="_Props">
+         <CustomProperties>
+            <Property
+               Name="autoExecute"
+               Value="false"/>
+            <Property
+               Name="mode"
+               Value="Basic"/>
+            <Property
+               Name="allowConjunctionOverride"
+               Value="true"/>
+            <Property
+               Name="showInList"
+               Value="true"/>
+            <Property
+               Name="displayOperators"
+               Value="InAdvancedMode"/>
+         </CustomProperties>
+      </Properties>
+      <ViewCriteriaRow
+         Name="StrategicBusinessEntityViewCriteria_row_0"
+         UpperColumns="1">
+         <ViewCriteriaItem
+            Name="IsVisible"
+            ViewAttribute="IsVisible"
+            Operator="="
+            Conjunction="AND"
+            Value="1"
+            Required="Optional"/>
+      </ViewCriteriaRow>
+   </ViewCriteria>
+   <ResourceBundle >
+      <PropertiesBundle
+         PropertiesFile="com.bayer.ipms.model.bundles.modelBundle" >
+      </PropertiesBundle>
+   </ResourceBundle>
+</ViewObject>

@@ -1,0 +1,43 @@
+create or replace view ltc_imported_costs_phase_vw as
+------------------------------------
+----------The View is needed for LTC, for prefilling costs based on provided Milestone
+----------Use Case: Cost Phasing --PROMISIII-262
+------------------------------------
+select
+	csti.timeline_id,
+	csti.decision_start,
+	decode(mil.wbs_id,null,csti.wbs_id,mil.wbs_id) wbs_id,
+	decode(mil.wbs_id,null,csti.is_root_wbs,0) is_root_wbs,--if we get wbs_id based on decision_start means that it can not be root wbs
+	csti.study_id,
+	csti.function_code,
+	csti.cost_type_code,
+	csti.start_date,
+	csti.finish_date,
+	csti.act_cost,
+	csti.act_cost_start_date,
+	csti.act_cost_finish_date,
+	csti.fct_cost_fps,
+	csti.fct_cost_fps_start_date,
+	csti.fct_cost_fps_finish_date
+from ltc_imported_costs_vw csti
+-- PROMISIII-262
+-- left join in case decision_start was provided/imported and we can assign costs to Milestone/Phase insted of TopLevel=Project
+-- the assumption here is used that wbs_id creation at P6 happens in logical way: deeper wbs_in hierarchy have bigger id number value
+left join (
+			select ltc_wbsm.*, mp.code milestone_code 
+			from (
+					select ltc_wbs.rn,ltc_wbs.timeline_id,ltc_wbs.wbs_id,ltc_wbs.category_name--, mp.code milestone_code 
+					from (
+							select 
+								 row_number() over(partition by ltcvw.timeline_id,ltcvw.category_name order by ltcvw.wbs_id) as rn,
+								 ltcvw.timeline_id,
+								 ltcvw.wbs_id,
+								 ltcvw.category_name
+							from timeline_wbs_category  ltcvw
+							join timeline_wbs tw on (ltcvw.wbs_id=tw.wbs_id and tw.study_id is null)--Skip all study related nodes: PROMISIII-374
+						) ltc_wbs
+					where ltc_wbs.rn=1
+				) ltc_wbsm
+				join milestone mp on (mp.wbs_category = ltc_wbsm.category_name)
+			) mil on (csti.timeline_id=mil.timeline_id and  mil.milestone_code=csti.decision_start )
+;

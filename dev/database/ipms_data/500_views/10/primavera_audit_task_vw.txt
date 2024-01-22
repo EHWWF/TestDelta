@@ -1,0 +1,19 @@
+create or replace view primavera_audit_task_vw as
+select
+	null proj_short_name,
+	null oper,
+	null audit_date
+from dual;
+
+
+create or replace view primavera_audit_task_vw as
+select
+	p.proj_short_name,
+	a.oper,
+	a.audit_date
+from prmaudit@p6_db a
+join task@p6_db t on (a.pk1=t.task_id)
+join project@p6_db p on (t.proj_id = p.proj_id)
+where a.table_name = 'TASK'
+and p.proj_short_name like '%-RAW'
+and a.audit_date>sysdate - 1;

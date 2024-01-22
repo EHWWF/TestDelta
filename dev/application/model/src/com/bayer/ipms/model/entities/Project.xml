@@ -1,0 +1,2365 @@
+<?xml version="1.0" encoding="windows-1257" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  xmlns:validation="http://xmlns.oracle.com/adfm/validation"
+  Name="Project"
+    Version="12.2.1.12.2"
+  InheritPersonalization="true"
+  DBObjectType="table"
+  DBObjectName="PROJECT"
+  AliasName="Project"
+  BindingStyle="OracleName"
+  RowClass="com.bayer.ipms.model.base.IPMSEntityImpl">
+    <Attribute
+      Name="Id"
+      IsUpdateable="false"
+      Precision="20"
+      Scale="0"
+      ColumnName="ID"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT"
+      PrimaryKey="true"
+      RetrievedOnInsert="true">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="20"/>
+        </DesignTime>
+        <Properties>
+            <SchemaBasedProperties>
+                <LABEL
+                  ResId="com.bayer.ipms.model.entities.Project.Id_LABEL"/>
+            </SchemaBasedProperties>
+        </Properties>
+    </Attribute>
+    <Attribute
+      Name="TerminationReasonText"
+      Precision="500"
+      Scale="0"
+      ColumnName="TERMINATION_REASON"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="50"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="Code"
+      IsUnique="true"
+      Precision="20"
+      Scale="0"
+      ColumnName="CODE"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="20"/>
+        </DesignTime>
+        <Properties>
+            <SchemaBasedProperties>
+                <LABEL
+                  ResId="com.bayer.ipms.model.entities.Project.Code_LABEL"/>
+            </SchemaBasedProperties>
+        </Properties>
+    </Attribute>
+    <Attribute
+      Name="Name"
+      IsNotNull="true"
+      Precision="100"
+      Scale="0"
+      ColumnName="NAME"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="100"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="Description"
+      Precision="500"
+      Scale="0"
+      ColumnName="DESCRIPTION"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="500"/>
+        </DesignTime>
+        <Properties>
+            <SchemaBasedProperties>
+                <LABEL
+                  ResId="com.bayer.ipms.model.entities.Project.Description_LABEL"/>
+                <DISPLAYWIDTH
+                  Value="100"/>
+                <DISPLAYHEIGHT
+                  Value="4"/>
+            </SchemaBasedProperties>
+        </Properties>
+    </Attribute>
+    <Attribute
+      Name="CategoryCode"
+      Precision="10"
+      Scale="0"
+      ColumnName="CATEGORY_CODE"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="10"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="PhaseCode"
+      Precision="10"
+      Scale="0"
+      ColumnName="PHASE_CODE"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT"
+      RetrievedOnUpdate="true"
+      RetrievedOnInsert="true">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="10"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="SyncDate"
+      IsUpdateable="false"
+      ColumnName="SYNC_DATE"
+      SQLType="TIMESTAMP"
+      Type="oracle.jbo.domain.Date"
+      ColumnType="DATE"
+      TableName="PROJECT"
+      RetrievedOnUpdate="true"
+      RetrievedOnInsert="true">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="7"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="CreateDate"
+      IsUpdateable="false"
+      ColumnName="CREATE_DATE"
+      SQLType="TIMESTAMP"
+      Type="oracle.jbo.domain.Date"
+      ColumnType="DATE"
+      TableName="PROJECT"
+      RetrievedOnInsert="true">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="7"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="UpdateDate"
+      IsUpdateable="false"
+      ColumnName="UPDATE_DATE"
+      SQLType="TIMESTAMP"
+      Type="oracle.jbo.domain.Date"
+      ColumnType="DATE"
+      TableName="PROJECT"
+      ChangeIndicator="true"
+      RetrievedOnUpdate="true"
+      RetrievedOnInsert="true">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="7"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="ProgramId"
+      IsNotNull="true"
+      Precision="10"
+      Scale="0"
+      ColumnName="PROGRAM_ID"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="10"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="IsSyncing"
+      IsUpdateable="false"
+      PrecisionRule="false"
+      Precision="1"
+      ColumnName="IS_SYNCING"
+      SQLType="NUMERIC"
+      Type="java.lang.Boolean"
+      ColumnType="NUMBER"
+      TableName="PROJECT"
+      RetrievedOnUpdate="true"
+      RetrievedOnInsert="true">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="2"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="IsLead"
+      PrecisionRule="false"
+      Precision="1"
+      ColumnName="IS_LEAD"
+      SQLType="NUMERIC"
+      Type="java.lang.Boolean"
+      ColumnType="NUMBER"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="2"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="SubstanceTypeCode"
+      Precision="10"
+      Scale="0"
+      ColumnName="SUBSTANCE_TYPE_CODE"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="10"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="TerminationCode"
+      Precision="10"
+      Scale="0"
+      ColumnName="TERMINATION_CODE"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="10"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="SourceCode"
+      Precision="10"
+      Scale="0"
+      ColumnName="SOURCE_CODE"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="10"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="CreateUserId"
+      IsUpdateable="false"
+      Precision="20"
+      Scale="0"
+      ColumnName="CREATE_USER_ID"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT"
+      RetrievedOnInsert="true">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="20"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="UpdateUserId"
+      IsUpdateable="false"
+      Precision="20"
+      Scale="0"
+      ColumnName="UPDATE_USER_ID"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT"
+      RetrievedOnUpdate="true"
+      RetrievedOnInsert="true">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="20"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="PriorityCode"
+      Precision="10"
+      Scale="0"
+      ColumnName="PRIORITY_CODE"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="10"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="Abbreviation"
+      Precision="50"
+      Scale="0"
+      ColumnName="ABBREVIATION"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="50"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="StateCode"
+      Precision="10"
+      Scale="0"
+      ColumnName="STATE_CODE"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="10"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="IsCollaboration"
+      PrecisionRule="false"
+      Precision="1"
+      ColumnName="IS_COLLABORATION"
+      SQLType="NUMERIC"
+      Type="java.lang.Boolean"
+      ColumnType="NUMBER"
+      TableName="PROJECT"
+      RetrievedOnInsert="true">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="22"/>
+        </DesignTime>
+        <Properties>
+            <SchemaBasedProperties>
+                <CONTROLTYPE
+                  Value="check_box"/>
+            </SchemaBasedProperties>
+        </Properties>
+    </Attribute>
+    <Attribute
+      Name="IsPip"
+      PrecisionRule="false"
+      Precision="1"
+      ColumnName="IS_PIP"
+      SQLType="NUMERIC"
+      Type="java.lang.Boolean"
+      ColumnType="NUMBER"
+      TableName="PROJECT"
+      RetrievedOnInsert="true">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="22"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="IsPortfolio"
+      PrecisionRule="false"
+      Precision="1"
+      ColumnName="IS_PORTFOLIO"
+      SQLType="NUMERIC"
+      Type="java.lang.Boolean"
+      ColumnType="NUMBER"
+      TableName="PROJECT"
+      RetrievedOnInsert="true">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="22"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="IsHpr"
+      PrecisionRule="false"
+      Precision="1"
+      ColumnName="IS_HPR"
+      SQLType="NUMERIC"
+      Type="java.lang.Boolean"
+      ColumnType="NUMBER"
+      TableName="PROJECT"
+      RetrievedOnInsert="true">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="22"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="ReviewDate"
+      ColumnName="REVIEW_DATE"
+      SQLType="TIMESTAMP"
+      Type="oracle.jbo.domain.Date"
+      ColumnType="DATE"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="7"/>
+        </DesignTime>
+        <Properties>
+            <SchemaBasedProperties>
+                <FMT_FORMATTER
+                  ResId="com.bayer.ipms.model.entities.Project.ReviewDate_FMT_FORMATTER"/>
+                <FMT_FORMAT
+                  ResId="com.bayer.ipms.model.entities.Project.ReviewDate_FMT_FORMAT"/>
+            </SchemaBasedProperties>
+        </Properties>
+    </Attribute>
+    <Attribute
+      Name="AreaCode"
+      Precision="10"
+      Scale="0"
+      ColumnName="AREA_CODE"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="10"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="TerminationDate"
+      ColumnName="TERMINATION_DATE"
+      SQLType="TIMESTAMP"
+      Type="oracle.jbo.domain.Date"
+      ColumnType="DATE"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="7"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="DevelopmentPhaseCode"
+      Precision="10"
+      Scale="0"
+      ColumnName="DEVELOPMENT_PHASE_CODE"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="10"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="UrlDevelopmentPlan"
+      Precision="500"
+      Scale="0"
+      ColumnName="URL_DEVELOPMENT_PLAN"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="500"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="UrlProductProfile"
+      Precision="500"
+      Scale="0"
+      ColumnName="URL_PRODUCT_PROFILE"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="500"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="SharedocId"
+      IsUpdateable="false"
+      Precision="20"
+      Scale="0"
+      ColumnName="SHAREDOC_ID"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="20"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="SyncId"
+      Precision="20"
+      Scale="0"
+      ColumnName="SYNC_ID"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="20"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="DetailsCriteria"
+      Precision="2000"
+      Scale="0"
+      ColumnName="DETAILS_CRITERIA"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="2000"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="DetailsMesh"
+      Precision="2000"
+      Scale="0"
+      ColumnName="DETAILS_MESH"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="2000"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="DetailsIndication"
+      Precision="2000"
+      Scale="0"
+      ColumnName="DETAILS_INDICATION"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="2000"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="DetailsProduct"
+      Precision="2000"
+      Scale="0"
+      ColumnName="DETAILS_PRODUCT"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="2000"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="DetailsGoal"
+      Precision="2000"
+      Scale="0"
+      ColumnName="DETAILS_GOAL"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="2000"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="DetailsAction"
+      Precision="2000"
+      Scale="0"
+      ColumnName="DETAILS_ACTION"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="2000"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="DetailsAsia"
+      Precision="2000"
+      Scale="0"
+      ColumnName="DETAILS_ASIA"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="2000"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="DetailsCompetition"
+      Precision="2000"
+      Scale="0"
+      ColumnName="DETAILS_COMPETITION"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="2000"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="DetailsPatent"
+      Precision="2000"
+      Scale="0"
+      ColumnName="DETAILS_PATENT"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="2000"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="DetailsSales"
+      Precision="2000"
+      Scale="0"
+      ColumnName="DETAILS_SALES"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="2000"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="DetailsPmo"
+      Precision="2000"
+      Scale="0"
+      ColumnName="DETAILS_PMO"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="2000"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="DetailsPartner"
+      Precision="2000"
+      Scale="0"
+      ColumnName="DETAILS_PARTNER"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="2000"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="DetailsProgress"
+      Precision="2000"
+      Scale="0"
+      ColumnName="DETAILS_PROGRESS"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="2000"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="IsRegional"
+      PrecisionRule="false"
+      Precision="1"
+      ColumnName="IS_REGIONAL"
+      SQLType="NUMERIC"
+      Type="java.lang.Boolean"
+      ColumnType="NUMBER"
+      TableName="PROJECT"
+      RetrievedOnInsert="true">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="2"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="IsOrphanDrug"
+      PrecisionRule="false"
+      Precision="1"
+      ColumnName="IS_ORPHAN_DRUG"
+      SQLType="NUMERIC"
+      Type="java.lang.Boolean"
+      ColumnType="NUMBER"
+      TableName="PROJECT"
+      RetrievedOnInsert="true">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="2"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="IsDirectPhase3"
+      PrecisionRule="false"
+      Precision="1"
+      ColumnName="IS_DIRECT_PHASE3"
+      SQLType="NUMERIC"
+      Type="java.lang.Boolean"
+      ColumnType="NUMBER"
+      TableName="PROJECT"
+      RetrievedOnInsert="true">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="2"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="IsCombinedPhase2"
+      PrecisionRule="false"
+      Precision="1"
+      ColumnName="IS_COMBINED_PHASE2"
+      SQLType="NUMERIC"
+      Type="java.lang.Boolean"
+      ColumnType="NUMBER"
+      TableName="PROJECT"
+      RetrievedOnInsert="true">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="2"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="Enpv"
+      ColumnName="ENPV"
+      SQLType="NUMERIC"
+      Type="java.lang.Float"
+      ColumnType="FLOAT"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="22"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="Npv"
+      ColumnName="NPV"
+      SQLType="NUMERIC"
+      Type="java.lang.Float"
+      ColumnType="FLOAT"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="22"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="IsPdcoPositive"
+      PrecisionRule="false"
+      Precision="1"
+      ColumnName="IS_PDCO_POSITIVE"
+      SQLType="NUMERIC"
+      Type="java.lang.Boolean"
+      ColumnType="NUMBER"
+      TableName="PROJECT"
+      RetrievedOnInsert="true">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="2"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="IsWaiver"
+      PrecisionRule="false"
+      Precision="1"
+      ColumnName="IS_WAIVER"
+      SQLType="NUMERIC"
+      Type="java.lang.Boolean"
+      ColumnType="NUMBER"
+      TableName="PROJECT"
+      RetrievedOnInsert="true">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="2"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="PipActivities"
+      Precision="2000"
+      Scale="0"
+      ColumnName="PIP_ACTIVITIES"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="2000"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="PipDate"
+      ColumnName="PIP_DATE"
+      SQLType="TIMESTAMP"
+      Type="oracle.jbo.domain.Date"
+      ColumnType="DATE"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="7"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="PdcoDate"
+      ColumnName="PDCO_DATE"
+      SQLType="TIMESTAMP"
+      Type="oracle.jbo.domain.Date"
+      ColumnType="DATE"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="7"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="PeakSales"
+      ColumnName="PEAK_SALES"
+      SQLType="NUMERIC"
+      Type="java.lang.Float"
+      ColumnType="FLOAT"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="22"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="ProgressDate"
+      IsUpdateable="false"
+      ColumnName="PROGRESS_DATE"
+      SQLType="TIMESTAMP"
+      Type="oracle.jbo.domain.Date"
+      ColumnType="BIGINT"
+      TableName="PROJECT"
+      RetrievedOnUpdate="true"
+      RetrievedOnInsert="true">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="7"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="TaCode"
+      Precision="10"
+      Scale="0"
+      ColumnName="TA_CODE"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="10"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="IsActive"
+      PrecisionRule="false"
+      ColumnName="IS_ACTIVE"
+      SQLType="NUMERIC"
+      Type="java.lang.Boolean"
+      ColumnType="NUMBER"
+      TableName="PROJECT"
+      RetrievedOnInsert="true">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="2"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="BayCode"
+      Precision="10"
+      Scale="0"
+      ColumnName="BAY_CODE"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="10"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="SbeCode"
+      Precision="10"
+      Scale="0"
+      ColumnName="SBE_CODE"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="10"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="GbuCode"
+      Precision="10"
+      Scale="0"
+      ColumnName="GBU_CODE"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="10"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="PidtReleaseDate"
+      ColumnName="PIDT_RELEASE_DATE"
+      SQLType="TIMESTAMP"
+      Type="oracle.jbo.domain.Date"
+      ColumnType="DATE"
+      TableName="PROJECT"
+      IsUpdateable="false"
+      RetrievedOnUpdate="true"
+      RetrievedOnInsert="true">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="7"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="PlanningCode"
+      Precision="20"
+      Scale="0"
+      ColumnName="PLANNING_CODE"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT"
+      RetrievedOnUpdate="true"
+      RetrievedOnInsert="true">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="20"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="AccountingStatus"
+      Precision="20"
+      Scale="0"
+      ColumnName="ACCOUNTING_STATUS"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="20"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="SuccessorProjectId"
+      Precision="20"
+      Scale="0"
+      ColumnName="SUCCESSOR_PROJECT_ID"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="20"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="PlanningEnabled"
+      Precision="20"
+      Scale="0"
+      ColumnName="PLANNING_ENABLED"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="20"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="CurrentComment"
+      Precision="1024"
+      Scale="0"
+      ColumnName="CURRENT_COMMENT"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="254"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="CommentPreviousFc"
+      Precision="1024"
+      Scale="0"
+      ColumnName="COMMENT_PREVIOUS_FC"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="254"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="ControllingProjectType"
+      Precision="50"
+      Scale="0"
+      ColumnName="CONTROLLING_PROJECT_TYPE"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="20"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="IpownerCode"
+      Precision="20"
+      Scale="0"
+      ColumnName="IPOWNER_CODE"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="20"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="QplanReleaseDate"
+      ColumnName="QPLAN_RELEASE_DATE"
+      SQLType="TIMESTAMP"
+      Type="java.sql.Timestamp"
+      ColumnType="DATE"
+      TableName="PROJECT"
+      IsUpdateable="false">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="7"/>
+        </DesignTime>
+        <Properties>
+            <SchemaBasedProperties>
+                <FMT_FORMATTER
+                  ResId="com.bayer.ipms.model.entities.Project.QplanReleaseDate_FMT_FORMATTER"/>
+                <FMT_FORMAT
+                  ResId="com.bayer.ipms.model.entities.Project.QplanReleaseDate_FMT_FORMAT"/>
+            </SchemaBasedProperties>
+        </Properties>
+    </Attribute>
+    <Attribute
+      Name="ImportProgramCode"
+      Precision="20"
+      Scale="0"
+      ColumnName="IMPORT_PROGRAM_CODE"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT"
+      IsUpdateable="false">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="20"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="D3transitionProjectId"
+      Precision="30"
+      Scale="0"
+      ColumnName="D3TRANSITION_PROJECT_ID"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="30"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="ImportProgramName"
+      Precision="100"
+      Scale="0"
+      ColumnName="IMPORT_PROGRAM_NAME"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="100"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="PredecessorProjectId"
+      Precision="30"
+      Scale="0"
+      ColumnName="PREDECESSOR_PROJECT_ID"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="30"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="SuccProjectId"
+      Precision="30"
+      Scale="0"
+      ColumnName="SUCC_PROJECT_ID"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="30"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="IsTypifyExcluded"
+      ColumnName="IS_TYPIFY_EXCLUDED"
+      SQLType="NUMERIC"
+      Type="java.lang.Boolean"
+      ColumnType="BIT"
+      TableName="PROJECT"
+      PrecisionRule="false"
+      RetrievedOnInsert="true">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="2"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="ProposedSbeCode"
+      Precision="10"
+      Scale="0"
+      ColumnName="PROPOSED_SBE_CODE"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="10"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+      Name="LoReviewMeetingDate"
+      ColumnName="LO_REVIEW_MEETING_DATE"
+      SQLType="DATE"
+      Type="oracle.jbo.domain.Date"
+      ColumnType="DATE"
+      TableName="PROJECT">
+        <Properties>
+            <SchemaBasedProperties>
+                <LABEL
+                  ResId="com.bayer.ipms.model.entities.Project.LoReviewMeetingDate_LABEL"/>
+                <FMT_FORMAT
+                  ResId="com.bayer.ipms.model.entities.Project.LoReviewMeetingDate_FMT_FORMAT"/>
+                <FMT_FORMATTER
+                  ResId="com.bayer.ipms.model.entities.Project.LoReviewMeetingDate_FMT_FORMATTER"/>
+            </SchemaBasedProperties>
+        </Properties>
+    </Attribute>
+    <Attribute
+      Name="LoReviewResultCode"
+      ColumnName="LO_REVIEW_RESULT_CODE"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT"
+      Precision="20">
+        <Properties>
+            <SchemaBasedProperties>
+                <LABEL
+                  ResId="com.bayer.ipms.model.entities.Project.LoReviewResultCode_LABEL"/>
+            </SchemaBasedProperties>
+        </Properties>
+    </Attribute>
+    <Attribute
+      Name="D2Compound"
+      ColumnName="D2_COMPOUND"
+      SQLType="STRUCT"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT"
+      IsUpdateable="false">
+        <Properties>
+            <SchemaBasedProperties>
+                <LABEL
+                  ResId="com.bayer.ipms.model.entities.Project.D2Compound_LABEL"/>
+            </SchemaBasedProperties>
+        </Properties>
+    </Attribute>
+    <Attribute
+      Name="Trg"
+      ColumnName="TRG"
+      SQLType="STRUCT"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <Properties>
+            <SchemaBasedProperties>
+                <LABEL
+                  ResId="com.bayer.ipms.model.entities.Project.Trg_LABEL"/>
+            </SchemaBasedProperties>
+        </Properties>
+    </Attribute>
+    <Attribute
+      Name="TargetGeneCode"
+      ColumnName="TARGET_GENE_CODE"
+      SQLType="STRUCT"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT">
+        <Properties>
+            <SchemaBasedProperties>
+                <LABEL
+                  ResId="com.bayer.ipms.model.entities.Project.TargetGeneCode_LABEL"/>
+            </SchemaBasedProperties>
+        </Properties>
+    </Attribute>
+    <Attribute
+      Name="Er"
+      ColumnName="ER"
+      SQLType="STRUCT"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT"
+      IsUpdateable="false">
+        <Properties>
+            <SchemaBasedProperties>
+                <LABEL
+                  ResId="com.bayer.ipms.model.entities.Project.Er_LABEL"/>
+            </SchemaBasedProperties>
+        </Properties>
+    </Attribute>
+    <Attribute
+      Name="GeneralProjectFrame"
+      ColumnName="GENERAL_PROJECT_FRAME"
+      SQLType="STRUCT"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT"
+      IsUpdateable="false">
+        <Properties>
+            <SchemaBasedProperties>
+                <LABEL
+                  ResId="com.bayer.ipms.model.entities.Project.GeneralProjectFrame_LABEL"/>
+            </SchemaBasedProperties>
+        </Properties>
+    </Attribute>
+    <Attribute
+      Name="D1DecisionDate"
+      ColumnName="D1_DECISION_DATE"
+      SQLType="TIMESTAMP"
+      Type="oracle.jbo.domain.Date"
+      ColumnType="DATE"
+      TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="7"/>
+        </DesignTime>
+        <Properties>
+            <SchemaBasedProperties>
+                <LABEL
+                  ResId="com.bayer.ipms.model.entities.Project.D1DecisionDate_LABEL"/>
+                <FMT_FORMATTER
+                  ResId="com.bayer.ipms.model.entities.Project.D1DecisionDate_FMT_FORMATTER"/>
+                <FMT_FORMAT
+                  ResId="com.bayer.ipms.model.entities.Project.D1DecisionDate_FMT_FORMAT"/>
+            </SchemaBasedProperties>
+        </Properties>
+    </Attribute>
+    <Attribute
+      Name="LsaDate"
+      ColumnName="LSA_DATE"
+      SQLType="TIMESTAMP"
+      Type="oracle.jbo.domain.Date"
+      ColumnType="DATE"
+      TableName="PROJECT">
+        <Properties>
+            <SchemaBasedProperties>
+                <LABEL
+                  ResId="com.bayer.ipms.model.entities.Project.LsaDate_LABEL"/>
+                <FMT_FORMATTER
+                  ResId="com.bayer.ipms.model.entities.Project.LsaDate_FMT_FORMATTER"/>
+                <FMT_FORMAT
+                  ResId="com.bayer.ipms.model.entities.Project.LsaDate_FMT_FORMAT"/>
+            </SchemaBasedProperties>
+        </Properties>
+    </Attribute>
+    <Attribute
+      Name="StartHtsDate"
+      ColumnName="START_HTS_DATE"
+      SQLType="TIMESTAMP"
+      Type="oracle.jbo.domain.Date"
+      ColumnType="DATE"
+      TableName="PROJECT">
+        <Properties>
+            <SchemaBasedProperties>
+                <LABEL
+                  ResId="com.bayer.ipms.model.entities.Project.StartHtsDate_LABEL"/>
+                <FMT_FORMAT
+                  ResId="com.bayer.ipms.model.entities.Project.StartHtsDate_FMT_FORMAT"/>
+                <FMT_FORMATTER
+                  ResId="com.bayer.ipms.model.entities.Project.StartHtsDate_FMT_FORMATTER"/>
+            </SchemaBasedProperties>
+        </Properties>
+    </Attribute>
+    <Attribute
+      Name="PhaseEstimatedCode"
+      ColumnName="PHASE_ESTIMATED_CODE"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT"
+      RetrievedOnInsert="true"
+      RetrievedOnUpdate="true"/>
+    <Attribute
+      Name="PtrForD3Code"
+      ColumnName="PTR_FOR_D3_CODE"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT"/>
+    <Attribute
+      Name="D2PlannedDate"
+      ColumnName="D2_PLANNED_DATE"
+      SQLType="DATE"
+      Type="oracle.jbo.domain.Date"
+      ColumnType="DATE"
+      TableName="PROJECT"/>
+    <Attribute
+      Name="D2AchievedDate"
+      ColumnName="D2_ACHIEVED_DATE"
+      SQLType="DATE"
+      Type="oracle.jbo.domain.Date"
+      ColumnType="DATE"
+      TableName="PROJECT"/>
+    <Attribute
+      Name="PtrForD2Code"
+      ColumnName="PTR_FOR_D2_CODE"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="PROJECT"/>
+    <Attribute
+        Name="MedicalDeviceSpec"
+        IsQueriable="false"
+        ColumnName="MEDICAL_DEVICE_SPEC"
+        SQLType="CLOB"
+        Type="java.lang.String"
+        ColumnType="CLOB"
+        TableName="PROJECT"/>
+    <Attribute
+        Name="PtrComment"
+        ColumnName="PTR_COMMENT"
+        SQLType="STRUCT"
+        Type="java.lang.String"
+        ColumnType="NVARCHAR2"
+        TableName="PROJECT"/>
+    <Attribute
+        Name="TcCode"
+        ColumnName="TC_CODE"
+        SQLType="VARCHAR"
+        Type="java.lang.String"
+        ColumnType="NVARCHAR2"
+        TableName="PROJECT"
+        Precision="10"
+        Scale="0">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="10"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+        Name="ToCode"
+        ColumnName="TO_CODE"
+        SQLType="VARCHAR"
+        Type="java.lang.String"
+        ColumnType="NVARCHAR2"
+        TableName="PROJECT"
+        Precision="10"
+        Scale="0">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="10"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+        Name="DetailsComment"
+        Precision="2000"
+        Scale="0"
+        ColumnName="DETAILS_COMMENT"
+        SQLType="VARCHAR"
+        Type="java.lang.String"
+        ColumnType="NVARCHAR2"
+        TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="2000"/>
+        </DesignTime>
+        <Properties>
+            <SchemaBasedProperties>
+                <LABEL
+                    ResId="com.bayer.ipms.model.views.ProjectView.DetailsComment_LABEL"/>
+            </SchemaBasedProperties>
+        </Properties>
+    </Attribute>
+    <Attribute
+        Name="PreviousNames"
+        ColumnName="PREVIOUS_NAMES"
+        SQLType="VARCHAR"
+        Type="java.lang.String"
+        ColumnType="NVARCHAR2"
+        TableName="PROJECT"
+        Precision="4000"/>
+    <Attribute
+        Name="IsDeviceProject"
+        PrecisionRule="false"
+        Precision="1"
+        ColumnName="IS_DEVICE_PROJECT"
+        SQLType="NUMERIC"
+        Type="java.lang.Boolean"
+        ColumnType="NUMBER"
+        TableName="PROJECT"
+        RetrievedOnInsert="true">
+        <Properties>
+            <SchemaBasedProperties>
+                <CONTROLTYPE
+                    Value="check_box"/>
+            </SchemaBasedProperties>
+        </Properties>
+    </Attribute>
+    <Attribute
+        Name="ProjectDeviceTypeCode"
+        Precision="10"
+        Scale="0"
+        ColumnName="PROJECT_DEVICE_TYPE_CODE"
+        SQLType="VARCHAR"
+        Type="java.lang.String"
+        ColumnType="NVARCHAR2"
+        TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="10"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+        Name="BpiNo"
+        Precision="256"
+        ColumnName="BPI_NO"
+        SQLType="VARCHAR"
+        Type="java.lang.String"
+        ColumnType="VARCHAR2"
+        TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="256"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+        Name="DetailsModality"
+        Precision="2000"
+        ColumnName="DETAILS_MODALITY"
+        SQLType="VARCHAR"
+        Type="java.lang.String"
+        ColumnType="NVARCHAR2"
+        TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="500"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+        Name="RegulatoryCode"
+        Precision="100"
+        ColumnName="REGULATORY_CODE"
+        SQLType="VARCHAR"
+        Type="java.lang.String"
+        ColumnType="NVARCHAR2"
+        TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="10"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+        Name="RegulatoryOther"
+        Precision="1000"
+        ColumnName="REGULATORY_OTHER"
+        SQLType="VARCHAR"
+        Type="java.lang.String"
+        ColumnType="NVARCHAR2"
+        TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="100"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+        Name="DevicePhaseCode"
+        Precision="20"
+        ColumnName="DEVICE_PHASE_CODE"
+        SQLType="VARCHAR"
+        Type="java.lang.String"
+        ColumnType="VARCHAR2"
+        TableName="PROJECT">
+        <DesignTime>
+            <Attr Name="_DisplaySize" Value="20"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+        Name="DetailsRationale"
+        Precision="2000"
+        Scale="0"
+        SQLType="VARCHAR"
+        ColumnName="DETAILS_RATIONALE"
+        Type="java.lang.String"
+        ColumnType="NVARCHAR2"
+        TableName="PROJECT">
+       <DesignTime>
+            <Attr Name="_DisplaySize" Value="2000"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+        Name="DetailsRisks"
+        Precision="2000"
+        Scale="0"
+        SQLType="VARCHAR"
+        ColumnName="DETAILS_RISKS"
+        Type="java.lang.String"
+        ColumnType="NVARCHAR2"
+        TableName="PROJECT">
+       <DesignTime>
+            <Attr Name="_DisplaySize" Value="2000"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+        Name="DetailsIntendedUse"
+        ColumnName="DETAILS_INTENDED_USE"
+        Precision="2000"
+        Scale="0"
+        SQLType="VARCHAR"
+        Type="java.lang.String"
+        ColumnType="NVARCHAR2"
+        TableName="PROJECT">
+       <DesignTime>
+            <Attr Name="_DisplaySize" Value="2000"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+        Name="DetailsExecutiveSummary"
+        ColumnName="DETAILS_EXECUTIVE_SUMMARY"
+        Precision="2000"
+        Scale="0"
+        SQLType="VARCHAR"
+        Type="java.lang.String"
+        ColumnType="NVARCHAR2"
+        TableName="PROJECT">
+       <DesignTime>
+            <Attr Name="_DisplaySize" Value="2000"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+        Name="DetailsScope"
+        ColumnName="DETAILS_SCOPE"
+        Precision="2000"
+        Scale="0"
+        SQLType="VARCHAR"
+        Type="java.lang.String"
+        ColumnType="NVARCHAR2"
+        TableName="PROJECT">
+       <DesignTime>
+            <Attr Name="_DisplaySize" Value="2000"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+        Name="DetailsHighlights"
+        ColumnName="DETAILS_HIGHLIGHTS"
+        Precision="2000"
+        Scale="0"
+        SQLType="VARCHAR"
+        Type="java.lang.String"
+        ColumnType="NVARCHAR2"
+        TableName="PROJECT">
+       <DesignTime>
+            <Attr Name="_DisplaySize" Value="2000"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+        Name="DetailsBenefits"
+        ColumnName="DETAILS_BENEFITS"
+        Precision="2000"
+        Scale="0"
+        SQLType="VARCHAR"
+        Type="java.lang.String"
+        ColumnType="NVARCHAR2"
+        TableName="PROJECT">
+       <DesignTime>
+            <Attr Name="_DisplaySize" Value="2000"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+        Name="DetailsBudget"
+        Precision="2000"
+        Scale="0"
+        SQLType="VARCHAR"
+        Type="java.lang.String"
+        ColumnType="NVARCHAR2"
+        TableName="PROJECT"
+        ColumnName="DETAILS_BUDGET">
+       <DesignTime>
+            <Attr Name="_DisplaySize" Value="2000"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+        Name="DetailsActivitiesEvents"
+        ColumnName="DETAILS_ACTIVITIES_EVENTS"
+        Precision="2000"
+        Scale="0"
+        SQLType="VARCHAR"
+        Type="java.lang.String"
+        ColumnType="NVARCHAR2"
+        TableName="PROJECT">
+       <DesignTime>
+            <Attr Name="_DisplaySize" Value="2000"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+        Name="DetailsBudgetStatus"
+        ColumnName="DETAILS_BUDGET_STATUS"
+        Precision="2000"
+        Scale="0"
+        SQLType="VARCHAR"
+        Type="java.lang.String"
+        ColumnType="NVARCHAR2"
+        TableName="PROJECT">
+       <DesignTime>
+            <Attr Name="_DisplaySize" Value="2000"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+        Name="DetailsSamdStatus"
+        ColumnName="DETAILS_SAMD_STATUS"
+        Precision="2000"
+        Scale="0"
+        SQLType="VARCHAR"
+        Type="java.lang.String"
+        ColumnType="NVARCHAR2"
+        TableName="PROJECT">
+       <DesignTime>
+            <Attr Name="_DisplaySize" Value="2000"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+        Name="DetailsObjective"
+        ColumnName="DETAILS_OBJECTIVE"
+        SQLType="VARCHAR"
+        Precision="2000"
+        Scale="0"
+        Type="java.lang.String"
+        ColumnType="NVARCHAR2"
+        TableName="PROJECT">
+               <DesignTime>
+            <Attr Name="_DisplaySize" Value="2000"/>
+        </DesignTime>
+    </Attribute>
+    <Attribute
+        Name="IsExternalPortfolio"
+        Precision="1"
+        ColumnName="IS_EXTERNAL_PORTFOLIO"
+        SQLType="NUMERIC"
+        Type="java.lang.Boolean"
+        ColumnType="NUMBER"
+        TableName="PROJECT"
+        RetrievedOnInsert="true"
+        PrecisionRule="false">
+      <DesignTime>
+            <Attr Name="_DisplaySize" Value="22"/>
+        </DesignTime>
+        <Properties>
+            <SchemaBasedProperties>
+                <CONTROLTYPE
+                    Value="check_box"/>
+            </SchemaBasedProperties>
+        </Properties>
+    </Attribute>
+    <AccessorAttribute
+      Name="Timeline"
+      Association="com.bayer.ipms.model.entities.assoc.TimelineProject"
+      AssociationEnd="com.bayer.ipms.model.entities.assoc.TimelineProject.Timeline"
+      AssociationOtherEnd="com.bayer.ipms.model.entities.assoc.TimelineProject.Project"
+      Type="oracle.jbo.RowIterator"
+      IsUpdateable="false"/>
+    <AccessorAttribute
+      Name="Assignment"
+      Association="com.bayer.ipms.model.entities.assoc.ProjectAssignments"
+      AssociationEnd="com.bayer.ipms.model.entities.assoc.ProjectAssignments.Assignment"
+      AssociationOtherEnd="com.bayer.ipms.model.entities.assoc.ProjectAssignments.Project"
+      Type="oracle.jbo.RowIterator"
+      IsUpdateable="false"/>
+    <AccessorAttribute
+        Name="LtcProject"
+        Association="com.bayer.ipms.model.entities.assoc.LtcProject"
+        AssociationEnd="com.bayer.ipms.model.entities.assoc.LtcProject.LtcProject"
+        AssociationOtherEnd="com.bayer.ipms.model.entities.assoc.LtcProject.Project"
+        Type="com.bayer.ipms.model.base.IPMSEntityImpl"
+        IsUpdateable="true"/>
+    <AccessorAttribute
+        Name="LtcInstance"
+        Association="com.bayer.ipms.model.entities.assoc.ProjectLtcInstance"
+        AssociationEnd="com.bayer.ipms.model.entities.assoc.ProjectLtcInstance.LtcInstance"
+        AssociationOtherEnd="com.bayer.ipms.model.entities.assoc.ProjectLtcInstance.Project"
+        Type="oracle.jbo.RowIterator"
+        IsUpdateable="false"/>
+    <Key
+        Name="ProjectAreaCodeCheck">
+        <DesignTime>
+            <Attr Name="_isNotNull" Value="true"/>
+            <Attr Name="_DBObjectName" Value="PROJECT_AREA_CODE_CHECK"/>
+            <Attr Name="_checkCondition" Value='"AREA_CODE" IS NOT NULL'/>
+            <Attr Name="_isCheck" Value="true"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.AreaCode"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="ProjectCategoryCodeCheck">
+        <DesignTime>
+            <Attr Name="_isNotNull" Value="true"/>
+            <Attr Name="_DBObjectName" Value="PROJECT_CATEGORY_CODE_CHECK"/>
+            <Attr Name="_checkCondition" Value='"CATEGORY_CODE" IS NOT NULL'/>
+            <Attr Name="_isCheck" Value="true"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.CategoryCode"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="ProjectPhaseCodeCheck">
+        <DesignTime>
+            <Attr Name="_isNotNull" Value="true"/>
+            <Attr Name="_DBObjectName" Value="PROJECT_PHASE_CODE_CHECK"/>
+            <Attr Name="_checkCondition" Value='"PHASE_CODE" IS NOT NULL'/>
+            <Attr Name="_isCheck" Value="true"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.PhaseCode"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="ProjectPriorityCodeCheck">
+        <DesignTime>
+            <Attr Name="_isNotNull" Value="true"/>
+            <Attr Name="_DBObjectName" Value="PROJECT_PRIORITY_CODE_CHECK"/>
+            <Attr Name="_checkCondition" Value='"PRIORITY_CODE" IS NOT NULL'/>
+            <Attr Name="_isCheck" Value="true"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.PriorityCode"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="ProjectSourceCodeCheck">
+        <DesignTime>
+            <Attr Name="_isNotNull" Value="true"/>
+            <Attr Name="_DBObjectName" Value="PROJECT_SOURCE_CODE_CHECK"/>
+            <Attr Name="_checkCondition" Value='"SOURCE_CODE" IS NOT NULL'/>
+            <Attr Name="_isCheck" Value="true"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.SourceCode"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="ProjectStateCodeCheck">
+        <DesignTime>
+            <Attr Name="_isNotNull" Value="true"/>
+            <Attr Name="_DBObjectName" Value="PROJECT_STATE_CODE_CHECK"/>
+            <Attr Name="_checkCondition" Value='"STATE_CODE" IS NOT NULL'/>
+            <Attr Name="_isCheck" Value="true"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.StateCode"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="ProjectSubstanceTypeCodeCheck">
+        <DesignTime>
+            <Attr Name="_isNotNull" Value="true"/>
+            <Attr Name="_DBObjectName" Value="PROJECT_SUBSTANCE_TYPE_CODE_CH"/>
+            <Attr Name="_checkCondition" Value='"SUBSTANCE_TYPE_CODE" IS NOT NULL'/>
+            <Attr Name="_isCheck" Value="true"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.SubstanceTypeCode"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="ProjectTaCodeCheck">
+        <DesignTime>
+            <Attr Name="_isNotNull" Value="true"/>
+            <Attr Name="_DBObjectName" Value="PROJECT_TA_CODE_CHECK"/>
+            <Attr Name="_checkCondition" Value='"TA_CODE" IS NOT NULL'/>
+            <Attr Name="_isCheck" Value="true"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.TaCode"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="ProjectTerminationCodeCheck">
+        <DesignTime>
+            <Attr Name="_isNotNull" Value="true"/>
+            <Attr Name="_DBObjectName" Value="PROJECT_TERMINATION_CODE_CHECK"/>
+            <Attr Name="_checkCondition" Value='"TERMINATION_CODE" IS NOT NULL'/>
+            <Attr Name="_isCheck" Value="true"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.TerminationCode"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="ProjectTerminationDateCheck">
+        <DesignTime>
+            <Attr Name="_isNotNull" Value="true"/>
+            <Attr Name="_DBObjectName" Value="PROJECT_TERMINATION_DATE_CHECK"/>
+            <Attr Name="_checkCondition" Value='"TERMINATION_DATE" IS NOT NULL'/>
+            <Attr Name="_isCheck" Value="true"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.TerminationDate"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="ProjectTerminationReasonCheck">
+        <DesignTime>
+            <Attr Name="_isNotNull" Value="true"/>
+            <Attr Name="_DBObjectName" Value="PROJECT_TERMINATION_REASON_CHE"/>
+            <Attr Name="_checkCondition" Value='"TERMINATION_REASON" IS NOT NULL'/>
+            <Attr Name="_isCheck" Value="true"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.TerminationReasonText"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0011159">
+        <DesignTime>
+            <Attr Name="_DBObjectName" Value="SYS_C0011159"/>
+            <Attr Name="_checkCondition" Value='"ID" IS NOT NULL'/>
+            <Attr Name="_isCheck" Value="true"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.Id"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0011160">
+        <DesignTime>
+            <Attr Name="_DBObjectName" Value="SYS_C0011160"/>
+            <Attr Name="_checkCondition" Value='"NAME" IS NOT NULL'/>
+            <Attr Name="_isCheck" Value="true"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.Name"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0011161">
+        <DesignTime>
+            <Attr Name="_DBObjectName" Value="SYS_C0011161"/>
+            <Attr Name="_checkCondition" Value='"PROGRAM_ID" IS NOT NULL'/>
+            <Attr Name="_isCheck" Value="true"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.ProgramId"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0011165">
+        <DesignTime>
+            <Attr Name="_DBObjectName" Value="SYS_C0011165"/>
+            <Attr Name="_checkCondition" Value='"CREATE_DATE" IS NOT NULL'/>
+            <Attr Name="_isCheck" Value="true"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.CreateDate"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0011166"
+        PrimaryKey="true">
+        <DesignTime>
+            <Attr Name="_DBObjectName" Value="SYS_C0011166"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.Id"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0011195">
+        <DesignTime>
+            <Attr Name="_DBObjectName" Value="SYS_C0011195"/>
+            <Attr Name="_checkCondition" Value='"IS_SYNCING" IS NOT NULL'/>
+            <Attr Name="_isCheck" Value="true"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.IsSyncing"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0011198">
+        <DesignTime>
+            <Attr Name="_DBObjectName" Value="SYS_C0011198"/>
+            <Attr Name="_checkCondition" Value="is_syncing in (0,1)"/>
+            <Attr Name="_isCheck" Value="true"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.IsSyncing"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0012832">
+        <DesignTime>
+            <Attr Name="_DBObjectName" Value="SYS_C0012832"/>
+            <Attr Name="_checkCondition" Value='"IS_LEAD" IS NOT NULL'/>
+            <Attr Name="_isCheck" Value="true"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.IsLead"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0012833">
+        <DesignTime>
+            <Attr Name="_DBObjectName" Value="SYS_C0012833"/>
+            <Attr Name="_checkCondition" Value="is_lead in (0,1)"/>
+            <Attr Name="_isCheck" Value="true"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.IsLead"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0015815">
+        <DesignTime>
+            <Attr Name="_DBObjectName" Value="SYS_C0015815"/>
+            <Attr Name="_checkCondition" Value='"CREATE_USER_ID" IS NOT NULL'/>
+            <Attr Name="_isCheck" Value="true"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.CreateUserId"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0019063">
+        <DesignTime>
+            <Attr Name="_DBObjectName" Value="SYS_C0019063"/>
+            <Attr Name="_checkCondition" Value='"IS_COLLABORATION" IS NOT NULL'/>
+            <Attr Name="_isCheck" Value="true"/>
+        </DesignTime>
+        <AttrArray Name="Attributes"/>
+    </Key>
+    <Key
+        Name="SysC0019064">
+        <DesignTime>
+            <Attr Name="_DBObjectName" Value="SYS_C0019064"/>
+            <Attr Name="_checkCondition" Value='"IS_PIP" IS NOT NULL'/>
+            <Attr Name="_isCheck" Value="true"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.IsPip"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0019065">
+        <DesignTime>
+            <Attr Name="_DBObjectName" Value="SYS_C0019065"/>
+            <Attr Name="_checkCondition" Value='"IS_PORTFOLIO" IS NOT NULL'/>
+            <Attr Name="_isCheck" Value="true"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.IsPortfolio"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0019066">
+        <DesignTime>
+            <Attr Name="_DBObjectName" Value="SYS_C0019066"/>
+            <Attr Name="_checkCondition" Value='"IS_HPR" IS NOT NULL'/>
+            <Attr Name="_isCheck" Value="true"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.IsHpr"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0019067">
+        <DesignTime>
+            <Attr Name="_DBObjectName" Value="SYS_C0019067"/>
+            <Attr Name="_checkCondition" Value="is_collaboration in (0,1)"/>
+            <Attr Name="_isCheck" Value="true"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.IsCollaboration"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0019068">
+        <DesignTime>
+            <Attr Name="_DBObjectName" Value="SYS_C0019068"/>
+            <Attr Name="_checkCondition" Value="is_pip in (0,1)"/>
+            <Attr Name="_isCheck" Value="true"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.IsPip"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0019069">
+        <DesignTime>
+            <Attr Name="_DBObjectName" Value="SYS_C0019069"/>
+            <Attr Name="_checkCondition" Value="is_portfolio in (0,1)"/>
+            <Attr Name="_isCheck" Value="true"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.IsPortfolio"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0019070">
+        <DesignTime>
+            <Attr Name="_DBObjectName" Value="SYS_C0019070"/>
+            <Attr Name="_checkCondition" Value="is_hpr in (0,1)"/>
+            <Attr Name="_isCheck" Value="true"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.IsHpr"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0031223">
+        <DesignTime>
+            <Attr Name="_DBObjectName" Value="SYS_C0031223"/>
+            <Attr Name="_checkCondition" Value='"IS_REGIONAL" IS NOT NULL'/>
+            <Attr Name="_isCheck" Value="true"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.IsRegional"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0031224">
+        <DesignTime>
+            <Attr Name="_DBObjectName" Value="SYS_C0031224"/>
+            <Attr Name="_checkCondition" Value='"IS_ORPHAN_DRUG" IS NOT NULL'/>
+            <Attr Name="_isCheck" Value="true"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.IsOrphanDrug"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0031225">
+        <DesignTime>
+            <Attr Name="_DBObjectName" Value="SYS_C0031225"/>
+            <Attr Name="_checkCondition" Value='"IS_DIRECT_PHASE3" IS NOT NULL'/>
+            <Attr Name="_isCheck" Value="true"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.IsDirectPhase3"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0031226">
+        <DesignTime>
+            <Attr Name="_DBObjectName" Value="SYS_C0031226"/>
+            <Attr Name="_checkCondition" Value='"IS_COMBINED_PHASE2" IS NOT NULL'/>
+            <Attr Name="_isCheck" Value="true"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.IsCombinedPhase2"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0031227">
+        <DesignTime>
+            <Attr Name="_DBObjectName" Value="SYS_C0031227"/>
+            <Attr Name="_checkCondition" Value="is_regional in (0,1)"/>
+            <Attr Name="_isCheck" Value="true"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.IsRegional"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0031228">
+        <DesignTime>
+            <Attr Name="_DBObjectName" Value="SYS_C0031228"/>
+            <Attr Name="_checkCondition" Value="is_orphan_drug in (0,1)"/>
+            <Attr Name="_isCheck" Value="true"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.IsOrphanDrug"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0031229">
+        <DesignTime>
+            <Attr Name="_DBObjectName" Value="SYS_C0031229"/>
+            <Attr Name="_checkCondition" Value="is_direct_phase3 in (0,1)"/>
+            <Attr Name="_isCheck" Value="true"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.IsDirectPhase3"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0031230">
+        <DesignTime>
+            <Attr Name="_DBObjectName" Value="SYS_C0031230"/>
+            <Attr Name="_checkCondition" Value="is_combined_phase2 in (0,1)"/>
+            <Attr Name="_isCheck" Value="true"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.IsCombinedPhase2"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0031231">
+        <DesignTime>
+            <Attr Name="_DBObjectName" Value="SYS_C0031231"/>
+            <Attr Name="_checkCondition" Value='"IS_PDCO_POSITIVE" IS NOT NULL'/>
+            <Attr Name="_isCheck" Value="true"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.IsPdcoPositive"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0031232">
+        <DesignTime>
+            <Attr Name="_DBObjectName" Value="SYS_C0031232"/>
+            <Attr Name="_checkCondition" Value='"IS_WAIVER" IS NOT NULL'/>
+            <Attr Name="_isCheck" Value="true"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.IsWaiver"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0031233">
+        <DesignTime>
+            <Attr Name="_DBObjectName" Value="SYS_C0031233"/>
+            <Attr Name="_checkCondition" Value="is_pdco_positive in (0,1)"/>
+            <Attr Name="_isCheck" Value="true"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.IsPdcoPositive"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0031234">
+        <DesignTime>
+            <Attr Name="_DBObjectName" Value="SYS_C0031234"/>
+            <Attr Name="_checkCondition" Value="is_waiver in (0,1)"/>
+            <Attr Name="_isCheck" Value="true"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.IsWaiver"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0032152">
+        <DesignTime>
+            <Attr Name="_DBObjectName" Value="SYS_C0032152"/>
+            <Attr Name="_checkCondition" Value="is_active in (0,1)"/>
+            <Attr Name="_isCheck" Value="true"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.IsActive"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0011168">
+        <DesignTime>
+            <Attr Name="_isCascadeDelete" Value="true"/>
+            <Attr Name="_referencedKey" Value="SYS_C0011157"/>
+            <Attr Name="_isForeign" Value="true"/>
+            <Attr Name="_DBObjectName" Value="SYS_C0011168"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.ProgramId"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0011169">
+        <DesignTime>
+            <Attr Name="_referencedKey" Value="SYS_C0011129"/>
+            <Attr Name="_isForeign" Value="true"/>
+            <Attr Name="_DBObjectName" Value="SYS_C0011169"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.CategoryCode"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0011170">
+        <DesignTime>
+            <Attr Name="_referencedKey" Value="SYS_C0011124"/>
+            <Attr Name="_isForeign" Value="true"/>
+            <Attr Name="_DBObjectName" Value="SYS_C0011170"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.SbeCode"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0011171">
+        <DesignTime>
+            <Attr Name="_referencedKey" Value="SYS_C0011135"/>
+            <Attr Name="_isForeign" Value="true"/>
+            <Attr Name="_DBObjectName" Value="SYS_C0011171"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.PhaseCode"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0012840">
+        <DesignTime>
+            <Attr Name="_referencedKey" Value="SYS_C0012816"/>
+            <Attr Name="_isForeign" Value="true"/>
+            <Attr Name="_DBObjectName" Value="SYS_C0012840"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.SubstanceTypeCode"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0012841">
+        <DesignTime>
+            <Attr Name="_referencedKey" Value="SYS_C0012821"/>
+            <Attr Name="_isForeign" Value="true"/>
+            <Attr Name="_DBObjectName" Value="SYS_C0012841"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.TerminationCode"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0012842">
+        <DesignTime>
+            <Attr Name="_referencedKey" Value="SYS_C0012826"/>
+            <Attr Name="_isForeign" Value="true"/>
+            <Attr Name="_DBObjectName" Value="SYS_C0012842"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.SourceCode"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0019056">
+        <DesignTime>
+            <Attr Name="_referencedKey" Value="SYS_C0019055"/>
+            <Attr Name="_isForeign" Value="true"/>
+            <Attr Name="_DBObjectName" Value="SYS_C0019056"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.PriorityCode"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0019062">
+        <DesignTime>
+            <Attr Name="_referencedKey" Value="SYS_C0019061"/>
+            <Attr Name="_isForeign" Value="true"/>
+            <Attr Name="_DBObjectName" Value="SYS_C0019062"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.StateCode"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0019294">
+        <DesignTime>
+            <Attr Name="_referencedKey" Value="SYS_C0019283"/>
+            <Attr Name="_isForeign" Value="true"/>
+            <Attr Name="_DBObjectName" Value="SYS_C0019294"/>
+        </DesignTime>
+        <AttrArray Name="Attributes"/>
+    </Key>
+    <Key
+        Name="SysC0019295">
+        <DesignTime>
+            <Attr Name="_referencedKey" Value="SYS_C0019288"/>
+            <Attr Name="_isForeign" Value="true"/>
+            <Attr Name="_DBObjectName" Value="SYS_C0019295"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.AreaCode"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0020434">
+        <DesignTime>
+            <Attr Name="_referencedKey" Value="SYS_C0020432"/>
+            <Attr Name="_isForeign" Value="true"/>
+            <Attr Name="_DBObjectName" Value="SYS_C0020434"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.DevelopmentPhaseCode"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0031243">
+        <DesignTime>
+            <Attr Name="_referencedKey" Value="SYS_C0031242"/>
+            <Attr Name="_isForeign" Value="true"/>
+            <Attr Name="_DBObjectName" Value="SYS_C0031243"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.TaCode"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0032756">
+        <DesignTime>
+            <Attr Name="_referencedKey" Value="SYS_C0032755"/>
+            <Attr Name="_isForeign" Value="true"/>
+            <Attr Name="_DBObjectName" Value="SYS_C0032756"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.BayCode"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="SysC0033582">
+        <DesignTime>
+            <Attr Name="_referencedKey" Value="SYS_C0012831"/>
+            <Attr Name="_isForeign" Value="true"/>
+            <Attr Name="_DBObjectName" Value="SYS_C0033582"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.GbuCode"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="fk_Project">
+        <DesignTime>
+            <Attr Name="_referencedKey" Value="SAMDSTATUS_PRIMARY_KEY"/>
+            <Attr Name="_isForeign" Value="true"/>
+            <Attr Name="_DBObjectName" Value="FK_PROJECT"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.DetailsSamdStatus"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="fk_Project1">
+        <DesignTime>
+            <Attr Name="_referencedKey" Value="SYS_C0079381"/>
+            <Attr Name="_isForeign" Value="true"/>
+            <Attr Name="_DBObjectName" Value="FK_PROJECT1"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.TcCode"/>
+        </AttrArray>
+    </Key>
+    <Key
+        Name="fk_Project2">
+        <DesignTime>
+            <Attr Name="_referencedKey" Value="SYS_C0079386"/>
+            <Attr Name="_isForeign" Value="true"/>
+            <Attr Name="_DBObjectName" Value="FK_PROJECT2"/>
+        </DesignTime>
+        <AttrArray Name="Attributes">
+            <Item Value="com.bayer.ipms.model.entities.Project.ToCode"/>
+        </AttrArray>
+    </Key>
+    <ResourceBundle>
+        <PropertiesBundle
+          PropertiesFile="com.bayer.ipms.model.bundles.modelBundle"/>
+    </ResourceBundle>
+</Entity>

@@ -1,0 +1,1 @@
+create unique index ltc_value_uk_ind on ltc_value (ltcp_id, function_code);

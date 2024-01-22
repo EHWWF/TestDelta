@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.1.3.2.1" id="maintain_lead_studiesPageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="ProgramAppModule.LeadStudyInstanceView" DataControl="PrivateAppModuleDataControl" RangeSize="25"
+              id="LeadStudyInstanceViewIterator"/>
+    <iterator Binds="ProgramAppModule.LeadStudyMapView" DataControl="PrivateAppModuleDataControl" RangeSize="25"
+              id="LeadStudyMapViewIterator"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="LeadStudyInstanceViewIterator" id="Id">
+      <AttrNames>
+        <Item Value="Id"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="LeadStudyMapViewIterator" id="LeadStudyMapView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.LeadStudyMapView" Name="LeadStudyMapView0">
+        <AttrNames>
+          <Item Value="DevMlstnCode"/>
+          <Item Value="StudyPhaseName"/>
+          <Item Value="DrvMlstnName"/>
+          <Item Value="CurrLsName"/>
+          <Item Value="NewStudyWbsId"/>
+          <Item Value="StatusName"/>
+			 <Item Value="ErrorCode"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+  </bindings>
+</pageDefinition>

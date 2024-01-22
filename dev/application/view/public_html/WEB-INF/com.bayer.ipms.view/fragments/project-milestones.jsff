@@ -1,0 +1,131 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <af:componentDef>
+        <c:set var="bundle"
+               value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+        <af:panelGroupLayout layout="vertical" id="milestones">
+            <af:panelBox text="#{bundle.projectDecisions}"
+                         showDisclosure="false"
+                         rendered="#{bindings.AreaCode eq 'PRE-POT' or bindings.AreaCode eq 'POST-POT' or bindings.AreaCode eq 'D2-PRJ' or bindings.AreaCode eq 'D3-TR'}">
+                <af:table value="#{bindings.MilestoneDecisionView.collectionModel}"
+                          var="row"
+                          rows="#{bindings.MilestoneDecisionView.rangeSize}"
+                          emptyText="#{bindings.MilestoneDecisionView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                          fetchSize="#{bindings.MilestoneDecisionView.rangeSize}"
+                          rowBandingInterval="0" columnStretching="last"
+                          styleClass="AFStretchWidth" autoHeightRows="10"
+                          contentDelivery="immediate">
+                    <af:column headerText="#{bindings.MilestoneDecisionView.hints.MilestoneCode.label}">
+                        <af:outputText value="#{row.MilestoneCode}"/>
+                    </af:column>
+                    <af:column headerText="#{bindings.MilestoneDecisionView.hints.MilestoneName.label}">
+                        <af:outputText value="#{row.MilestoneName}"/>
+                    </af:column>
+                    <af:column headerText="#{bindings.MilestoneDecisionView.hints.PlanDate.label}">
+                        <af:outputText value="#{row.PlanDate}">
+                            <af:convertDateTime pattern="#{bindings.MilestoneDecisionView.hints.PlanDate.format}"/>
+                        </af:outputText>
+                    </af:column>
+                    <af:column headerText="#{bindings.MilestoneDecisionView.hints.ActualDate.label}">
+                        <af:outputText value="#{row.ActualDate}">
+                            <af:convertDateTime pattern="#{bindings.MilestoneDecisionView.hints.ActualDate.format}"/>
+                        </af:outputText>
+                    </af:column>
+                </af:table>
+            </af:panelBox>
+            <af:panelBox text="#{bundle.projectDecisions}"
+                         showDisclosure="false"
+                         rendered="#{bindings.AreaCode eq 'SAMD'}">
+                <af:table value="#{bindings.MilestoneDecisionSamdView.collectionModel}" var="row"
+                          rows="#{bindings.MilestoneDecisionSamdView.rangeSize}"
+                          emptyText="#{bindings.MilestoneDecisionSamdView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                          rowBandingInterval="0" fetchSize="#{bindings.MilestoneDecisionSamdView.rangeSize}" id="dc_t1"
+                          columnStretching="last"
+                          styleClass="AFStretchWidth" autoHeightRows="10"
+                          contentDelivery="immediate">
+                    <af:column headerText="#{bindings.MilestoneDecisionSamdView.hints.MilestoneCode.label}" id="dc_c1">
+                        <af:outputText value="#{row.MilestoneCode}"
+                                       id="dc_ot1"/>
+                    </af:column>
+                    <af:column headerText="#{bindings.MilestoneDecisionSamdView.hints.MilestoneName.label}" id="dc_c2">
+                        <af:outputText value="#{row.MilestoneName}"
+                                       id="dc_ot2"/>
+                    </af:column>
+                    <af:column headerText="#{bindings.MilestoneDecisionSamdView.hints.PlanDate.label}" id="dc_c3">
+                        <af:outputText value="#{row.PlanDate}"
+                                       id="dc_ot3">
+                            <af:convertDateTime pattern="#{bindings.MilestoneDecisionSamdView.hints.PlanDate.format}"/>
+                        </af:outputText>
+                    </af:column>
+                    <af:column headerText="#{bindings.MilestoneDecisionSamdView.hints.ActualDate.label}" id="dc_c4">
+                        <af:outputText value="#{row.ActualDate}"
+                                       id="dc_ot4">
+                            <af:convertDateTime pattern="#{bindings.MilestoneDecisionSamdView.hints.ActualDate.format}"/>
+                        </af:outputText>
+                    </af:column>
+                </af:table>
+            </af:panelBox>
+            <af:panelBox text="#{bundle.projectDevelopmentMilestones}"
+                         showDisclosure="false"
+                         rendered="#{bindings.AreaCode eq 'PRE-POT' or bindings.AreaCode eq 'POST-POT' or bindings.AreaCode eq 'D2-PRJ'}">
+                <af:table value="#{bindings.MilestoneDevelopmentView.collectionModel}"
+                          var="row"
+                          rows="#{bindings.MilestoneDevelopmentView.rangeSize}"
+                          emptyText="#{bindings.MilestoneDevelopmentView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                          fetchSize="#{bindings.MilestoneDevelopmentView.rangeSize}"
+                          rowBandingInterval="0" columnStretching="last"
+                          styleClass="AFStretchWidth" autoHeightRows="10"
+                          contentDelivery="immediate">
+                    <af:column headerText="#{bindings.MilestoneDecisionView.hints.MilestoneCode.label}">
+                        <af:outputText value="#{row.MilestoneCode}"/>
+                    </af:column>
+                    <af:column headerText="#{bindings.MilestoneDevelopmentView.hints.MilestoneName.label}">
+                        <af:outputText value="#{row.MilestoneName}"/>
+                    </af:column>
+                    <af:column headerText="#{bindings.MilestoneDevelopmentView.hints.PlanDate.label}">
+                        <af:outputText value="#{row.PlanDate}">
+                            <af:convertDateTime pattern="#{bindings.MilestoneDevelopmentView.hints.PlanDate.format}"/>
+                        </af:outputText>
+                    </af:column>
+                    <af:column headerText="#{bindings.MilestoneDevelopmentView.hints.ActualDate.label}">
+                        <af:outputText value="#{row.ActualDate}">
+                            <af:convertDateTime pattern="#{bindings.MilestoneDevelopmentView.hints.ActualDate.format}"/>
+                        </af:outputText>
+                    </af:column>
+                </af:table>
+            </af:panelBox>
+            <af:panelBox text="#{bundle.projectRegionalMilestones}" id="pb9"
+                         rendered="#{bindings.AreaCode eq 'PRE-POT' or bindings.AreaCode eq 'POST-POT'}"
+                         showDisclosure="false">
+                <af:table value="#{bindings.MilestoneRegionalView.collectionModel}"
+                          var="row"
+                          rows="#{bindings.MilestoneRegionalView.rangeSize}"
+                          emptyText="#{bindings.MilestoneRegionalView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                          fetchSize="#{bindings.MilestoneRegionalView.rangeSize}"
+                          rowBandingInterval="0" columnStretching="last"
+                          styleClass="AFStretchWidth" autoHeightRows="10"
+                          contentDelivery="immediate">
+                    <af:column headerText="#{bindings.MilestoneRegionalView.hints.RegionName.label}">
+                        <af:outputText value="#{row.RegionName}"/>
+                    </af:column>
+                    <af:column headerText="#{bindings.MilestoneRegionalView.hints.MilestoneName.label}">
+                        <af:outputText value="#{row.MilestoneName}"/>
+                    </af:column>
+                    <af:column headerText="#{bindings.MilestoneRegionalView.hints.PlanDate.label}">
+                        <af:outputText value="#{row.PlanDate}">
+                            <af:convertDateTime pattern="#{bindings.MilestoneRegionalView.hints.PlanDate.format}"/>
+                        </af:outputText>
+                    </af:column>
+                    <af:column headerText="#{bindings.MilestoneRegionalView.hints.ActualDate.label}">
+                        <af:outputText value="#{row.ActualDate}">
+                            <af:convertDateTime pattern="#{bindings.MilestoneRegionalView.hints.ActualDate.format}"/>
+                        </af:outputText>
+                    </af:column>
+                </af:table>
+            </af:panelBox>
+        </af:panelGroupLayout>
+    </af:componentDef>
+</jsp:root>

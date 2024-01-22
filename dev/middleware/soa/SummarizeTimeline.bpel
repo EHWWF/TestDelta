@@ -1,0 +1,327 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Fri Mar 14 17:53:18 CET 2014
+  Author:  algis
+  Type: BPEL 2.0 Process
+  Purpose: Asynchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="SummarizeTimeline" targetNamespace="http://xmlns.bayer.com/ipms/soa" xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:client="http://xmlns.bayer.com/ipms/soa" xmlns:ora="http://schemas.oracle.com/xpath/extension" xmlns:bpelx="http://schemas.oracle.com/bpel/extension" xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:ns1="http://xmlns.bayer.com/ipms" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/" xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20" xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc" xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue" xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath" xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath" xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions" xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk" xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions" xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap" xmlns:ns2="http://xmlns.bayer.com/ipms/soa/correlationset" xmlns:ns3="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2" xmlns:ns4="http://xmlns.oracle.com/Primavera/P6/WS/Job/V2" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         xmlns:ui="http://xmlns.oracle.com/soa/designer" xmlns:ess="http://xmlns.oracle.com/scheduler">
+
+    <bpelx:annotation><bpelx:analysis><bpelx:property name="propertiesFile"><![CDATA[WSDLs/SummarizeTimeline_properties.wsdl]]></bpelx:property></bpelx:analysis></bpelx:annotation><import namespace="http://xmlns.bayer.com/ipms/soa" location="SummarizeTimeline.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"
+                                                                                                                                                                                            ui:processWSDL="true"/>
+    <partnerLinks>
+        <partnerLink name="SummarizeService" partnerLinkType="client:SummarizeTimeline" myRole="SummarizeTimelineProvider" partnerRole="SummarizeTimelineRequester"/>
+        <partnerLink name="ProjectService" partnerLinkType="ns3:ProjectService" partnerRole="ProjectPortType"/>
+        <partnerLink name="JobService" partnerLinkType="ns4:JobService" partnerRole="JobPortType"/>
+    </partnerLinks>
+    <variables>
+        <!-- Reference to the message passed as input during initiation -->
+        <variable name="inputVariable" messageType="client:SummarizeTimelineRequestMessage"/>
+
+        <!-- Reference to the message that will be sent back to the requester during callback -->
+        <variable name="outputVariable" messageType="client:SummarizeTimelineResponseMessage"/>
+        <variable name="ReadProjectIn" messageType="ns3:ReadProjects"/>
+        <variable name="ReadProjectOut" messageType="ns3:ReadProjectsResponse"/>
+        <variable name="SummarizeIn" messageType="ns4:SummarizeProject"/>
+        <variable name="SummarizeOut" messageType="ns4:SummarizeProjectResponse"/>
+        <variable name="loopCountJobCount" type="xsd:integer"/>
+        <variable name="ReadJobStatusIn" messageType="ns4:ReadJobStatus"/>
+        <variable name="ReadJobStatusOut" messageType="ns4:ReadJobStatusResponse"/>
+    </variables>
+    <correlationSets>
+        <correlationSet name="CorrelationSetRequestId" properties="ns2:requestId"/>
+    </correlationSets>
+    <faultHandlers>
+        <catchAll>
+            <scope name="mainFaultCatchingScope" exitOnStandardFault="no">
+                <variables>
+                    <variable name="outputErrorVariable" messageType="client:SummarizeTimelineResponseMessage"/>
+                </variables>
+                <sequence name="FaultSeq">
+                    <assign name="assignFaultOutput">
+                        <copy>
+                            <from>$inputVariable.payload/@id</from>
+                            <to>$outputErrorVariable.payload/@id</to>
+                        </copy>
+                        <copy>
+                            <from>$inputVariable.payload/@id</from>
+                            <to>$outputErrorVariable.payload/ns1:error/@id</to>
+                        </copy>
+                        <copy>
+                            <from>ora:getFaultName()</from>
+                            <to>$outputErrorVariable.payload/ns1:error/ns1:code</to>
+                        </copy>
+                        <copy>
+                            <from>ora:getFaultAsString()</from>
+                            <to>$outputErrorVariable.payload/ns1:error/ns1:description</to>
+                        </copy>
+                        <copy>
+                            <from>$inputVariable.payload/ns1:timeline</from>
+                            <to>$outputErrorVariable.payload/client:complete/ns1:timeline</to>
+                        </copy>
+                        <extensionAssignOperation>
+                            <bpelx:remove>
+                                <bpelx:target>$outputErrorVariable.payload/client:complete</bpelx:target>
+                            </bpelx:remove>
+                        </extensionAssignOperation>
+                    </assign>
+                    <invoke name="callbackFaultOutput" bpelx:invokeAsDetail="no" partnerLink="SummarizeService" portType="client:SummarizeTimelineCallback" operation="callback" inputVariable="outputErrorVariable"/>
+                </sequence>
+            </scope>
+        </catchAll>
+    </faultHandlers>
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+       ORCHESTRATION LOGIC                                               
+       Set of activities coordinating the flow of messages across the    
+       services integrated within this business process                  
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <sequence name="main">
+        <!-- Receive input from requestor. (Note: This maps to operation defined in SummarizeTimeline.wsdl) -->
+        <receive name="receiveInput" partnerLink="SummarizeService" portType="client:SummarizeTimeline" operation="process" variable="inputVariable" createInstance="yes">
+            <correlations>
+                <correlation set="CorrelationSetRequestId" initiate="yes"/>
+            </correlations>
+        </receive>
+        <scope name="SkipWhenBounded" exitOnStandardFault="no">
+            <variables>
+                <variable name="inputVariableContinue" messageType="client:SummarizeTimelineRequestMessage"/>
+            </variables>
+            <pick name="PickWhenBounded">
+                <bpelx:skipCondition>$inputVariable.payload/@bounded="false"</bpelx:skipCondition>
+                <onMessage variable="inputVariableContinue" partnerLink="SummarizeService" portType="client:SummarizeTimeline" operation="continue">
+                    <correlations>
+                        <correlation set="CorrelationSetRequestId" initiate="no"/>
+                    </correlations>
+                    <empty name="Empty-Means-Continue"/>
+                </onMessage>
+                <onAlarm bpelx:name="Wait30minutes">
+                    <for>'PT30M'</for>
+                    <sequence name="ExitWhenTooLong">
+                        <throw name="ThrowTImeOut30min" faultName="bpelx:timeout"/>
+                    </sequence>
+                </onAlarm>
+            </pick>
+        </scope>
+        <scope name="ScopeRead" exitOnStandardFault="no">
+            <sequence name="If">
+                <if name="If-bounded">
+                    <documentation>
+                        <![CDATA[bounded]]>
+                    </documentation>
+                    <condition>$inputVariable.payload/@bounded="false"</condition>
+                      <assign name="AssignProvided">
+                        <copy>
+                            <from>concat("Id='",$inputVariable.payload/ns1:timeline/@id,"'")</from>
+                            <to>$ReadProjectIn.params/ns3:Filter</to>
+                        </copy>
+                    </assign>
+                    <else>
+                        <if name="IfRAW">
+                            <documentation>RAW<![CDATA[RAW]]></documentation>
+                            <condition>$inputVariable.payload/ns1:timeline/ns1:typeCode='RAW'</condition>
+                            <assign name="AssignCUR">
+                                <copy>
+                                    <from>concat("Id='",$inputVariable.payload/ns1:timeline/@projectId,"-CUR'")</from>
+                                    <to>$ReadProjectIn.params/ns3:Filter</to>
+                                </copy>
+                                <copy>
+                                    <from>'CUR'</from>
+                                    <to>$outputVariable.payload/client:complete/ns1:timeline/ns1:typeCode</to>
+                                </copy>
+                            </assign>
+                            <else>
+                                <documentation>CUR</documentation>
+                                <assign name="AssignAPR">
+                                    <copy>
+                                        <from>concat("Id='",$inputVariable.payload/ns1:timeline/@projectId,"-APR'")</from>
+                                        <to>$ReadProjectIn.params/ns3:Filter</to>
+                                    </copy>
+                                    <copy>
+                                        <from>'APR'</from>
+                                        <to>$outputVariable.payload/client:complete/ns1:timeline/ns1:typeCode</to>
+                                    </copy>
+                                </assign>
+                            </else>
+                        </if>
+                    </else>
+                </if>
+                <assign name="AssignReadProject">
+                    <copy>
+                        <from>$inputVariable.payload/@id</from>
+                        <to>$outputVariable.payload/@id</to>
+                    </copy>
+                    <copy>
+                        <from>ora:getCompositeInstanceId()</from>
+                        <to>$outputVariable.payload/client:complete/@id</to>
+                    </copy>
+                    <copy>
+                        <from>'summarize'</from>
+                        <to>$outputVariable.payload/client:complete/@stageId</to>
+                    </copy>
+                    <copy>
+                        <from>$inputVariable.payload/ns1:timeline/@programId</from>
+                        <to>$outputVariable.payload/client:complete/ns1:timeline/@programId</to>
+                    </copy>
+                    <copy>
+                        <from>$inputVariable.payload/ns1:timeline/@projectId</from>
+                        <to>$outputVariable.payload/client:complete/ns1:timeline/@projectId</to>
+                    </copy>
+                    <copy>
+                        <from><literal><v2:Field xmlns:v2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2">Id</v2:Field></literal></from>
+                        <to>$ReadProjectIn.params/ns3:Field</to>
+                    </copy>
+                    <extensionAssignOperation>
+                        <bpelx:insertAfter>
+                            <bpelx:from><bpelx:literal><v2:Field xmlns:v2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2">Name</v2:Field></bpelx:literal></bpelx:from>
+                            <bpelx:to>$ReadProjectIn.params/ns3:Field</bpelx:to>
+                        </bpelx:insertAfter>
+                    </extensionAssignOperation>
+                    <extensionAssignOperation>
+                        <bpelx:insertAfter>
+                            <bpelx:from><bpelx:literal><v2:Field xmlns:v2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2">ParentEPSObjectId</v2:Field></bpelx:literal></bpelx:from>
+                            <bpelx:to>$ReadProjectIn.params/ns3:Field</bpelx:to>
+                        </bpelx:insertAfter>
+                    </extensionAssignOperation>
+                    <extensionAssignOperation>
+                        <bpelx:insertAfter>
+                            <bpelx:from><bpelx:literal><v2:Field xmlns:v2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2">WBSObjectId</v2:Field></bpelx:literal></bpelx:from>
+                            <bpelx:to>$ReadProjectIn.params/ns3:Field</bpelx:to>
+                        </bpelx:insertAfter>
+                    </extensionAssignOperation>
+                    <extensionAssignOperation>
+                        <bpelx:insertAfter>
+                            <bpelx:from><bpelx:literal><v2:Field xmlns:v2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2">Description</v2:Field></bpelx:literal></bpelx:from>
+                            <bpelx:to>$ReadProjectIn.params/ns3:Field</bpelx:to>
+                        </bpelx:insertAfter>
+                    </extensionAssignOperation>
+                    <extensionAssignOperation>
+                        <bpelx:insertAfter>
+                            <bpelx:from><bpelx:literal><v2:Field xmlns:v2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2">StartDate</v2:Field></bpelx:literal></bpelx:from>
+                            <bpelx:to>$ReadProjectIn.params/ns3:Field</bpelx:to>
+                        </bpelx:insertAfter>
+                    </extensionAssignOperation>
+                    <extensionAssignOperation>
+                        <bpelx:insertAfter>
+                            <bpelx:from><bpelx:literal><v2:Field xmlns:v2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2">FinishDate</v2:Field></bpelx:literal></bpelx:from>
+                            <bpelx:to>$ReadProjectIn.params/ns3:Field</bpelx:to>
+                        </bpelx:insertAfter>
+                    </extensionAssignOperation>
+                </assign>
+                <invoke name="ReadProject" bpelx:invokeAsDetail="no" partnerLink="ProjectService" portType="ns3:ProjectPortType" operation="ReadProjects" inputVariable="ReadProjectIn" outputVariable="ReadProjectOut"/>
+            </sequence>
+        </scope>
+        <scope name="ScopeSummarize" exitOnStandardFault="no">
+            <sequence>
+                <assign name="AssignSummarize">
+                    <copy>
+                        <from>'0'</from>
+                        <to>$SummarizeIn.params/ns4:Timeout</to>
+                    </copy>
+                    <copy>
+                        <from>$ReadProjectOut.result/ns3:Project[1]/ns3:ObjectId</from>
+                        <to>$SummarizeIn.params/ns4:ObjectId</to>
+                    </copy>
+                </assign>
+                <invoke name="Summarize" bpelx:invokeAsDetail="no" partnerLink="JobService" portType="ns4:JobPortType" operation="SummarizeProject" inputVariable="SummarizeIn" outputVariable="SummarizeOut"/>
+                <assign name="AssignLoopJobStatus">
+                    <copy>
+                        <from>'50'</from>
+                        <to>$loopCountJobCount</to>
+                    </copy>
+                    <copy>
+                        <from>$SummarizeOut.result/ns4:JobId</from>
+                        <to>$ReadJobStatusIn.params/ns4:JobId</to>
+                    </copy>
+                </assign>
+                <while name="WhileLoopMoreThen50">
+                    <condition>$loopCountJobCount>0</condition>
+                    <sequence name="Sequence3">
+                        <invoke name="ReadJobStatus" bpelx:invokeAsDetail="no" partnerLink="JobService" portType="ns4:JobPortType" operation="ReadJobStatus" inputVariable="ReadJobStatusIn" outputVariable="ReadJobStatusOut"/>
+                        <if name="IfComplete">
+                            <documentation>
+                                Complete
+                            </documentation>
+                            <condition>starts-with($ReadJobStatusOut.result/ns4:JobStatus,'Complete')</condition>
+                            <assign name="AssignExitLoop">
+                                <copy>
+                                    <from>'0'</from>
+                                    <to>$loopCountJobCount</to>
+                                </copy>
+                            </assign>
+                            <else>
+                                <sequence name="Sequence4">
+                                    <assign name="AssignGoForNextLoop">
+                                        <copy>
+                                            <from>($loopCountJobCount)-1</from>
+                                            <to>$loopCountJobCount</to>
+                                        </copy>
+                                    </assign>
+                                    <wait name="Wait5sec">
+                                        <for>'PT5S'</for>
+                                    </wait>
+                                </sequence>
+                            </else>
+                        </if>
+                    </sequence>
+                </while>
+            </sequence>
+        </scope>
+        <scope name="ScopeAssingOut" exitOnStandardFault="no">
+            <sequence name="Sequence5">
+                <invoke name="ReadSummarizedProject" bpelx:invokeAsDetail="no" partnerLink="ProjectService" portType="ns3:ProjectPortType" operation="ReadProjects" inputVariable="ReadProjectIn" outputVariable="ReadProjectOut"/>
+                <assign name="AssignOut">
+                    <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                        <from>$inputVariable.payload/@id</from>
+                        <to>$outputVariable.payload/@id</to>
+                    </copy>
+                    <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                        <from>$inputVariable.payload/@id</from>
+                        <to>$outputVariable.payload/client:complete/@id</to>
+                    </copy>
+                    <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                        <from>$ReadProjectOut.result/ns3:Project[1]/ns3:Id</from>
+                        <to>$outputVariable.payload/client:complete/ns1:timeline/@id</to>
+                    </copy>
+                    <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                        <from>$ReadProjectOut.result/ns3:Project[1]/ns3:WBSObjectId</from>
+                        <to>$outputVariable.payload/client:complete/ns1:timeline/@referenceId</to>
+                    </copy>
+                    <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                        <from>$ReadProjectOut.result/ns3:Project[1]/ns3:Name</from>
+                        <to>$outputVariable.payload/client:complete/ns1:timeline/ns1:name</to>
+                    </copy>
+                    <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                        <from>$ReadProjectOut.result/ns3:Project[1]/ns3:Description</from>
+                        <to>$outputVariable.payload/client:complete/ns1:timeline/ns1:comments</to>
+                    </copy>
+                    <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                        <from>$ReadProjectOut.result/ns3:Project[1]/ns3:StartDate</from>
+                        <to>$outputVariable.payload/client:complete/ns1:timeline/ns1:startDate</to>
+                    </copy>
+                    <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                        <from>$ReadProjectOut.result/ns3:Project[1]/ns3:FinishDate</from>
+                        <to>$outputVariable.payload/client:complete/ns1:timeline/ns1:finishDate</to>
+                    </copy>
+                    <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                        <from>$inputVariable.payload/ns1:timeline/ns1:baselineTypeObjectId</from>
+                        <to>$outputVariable.payload/client:complete/ns1:timeline/ns1:baselineTypeObjectId</to>
+                    </copy>
+                </assign>
+            </sequence>
+        </scope>
+        <empty name="Monitoring">
+            <bpelx:skipCondition>$inputVariable.payload/@bounded="false"</bpelx:skipCondition>
+        </empty>
+        <!-- 
+          Asynchronous callback to the requester. (Note: the callback location and correlation id is transparently handled using WS-addressing.)
+        -->
+        <invoke name="callbackClient" partnerLink="SummarizeService" portType="client:SummarizeTimelineCallback" operation="callback" inputVariable="outputVariable"/>
+    </sequence>
+</process>

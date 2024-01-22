@@ -1,0 +1,44 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<SDM>
+   <OverallProperties
+      id="OverallProperties1">
+      <property
+         name="y">434.20117</property>
+      <property
+         name="x">91.69141</property>
+   </OverallProperties>
+   <View
+      id="View2">
+      <property
+         name="activityId">view</property>
+      <property
+         name="page">/WEB-INF/com.bayer.ipms.view/fragments/project-D1.jsff</property>
+      <property
+         name="start">true</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>view&lt;/b> (Default Activity)&lt;/p>&lt;p>Activity Type:  View&lt;/p></property>
+      <property
+         name="exceptionHandler">false</property>
+      <property
+         name="y">95.149414</property>
+      <property
+         name="x">501.6914</property>
+      <property
+         name="pageFragment">true</property>
+   </View>
+   <MethodCall
+      id="MethodCall3">
+      <property
+         name="activityId">handleException</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>handleException&lt;/b> (Default Activity)&lt;/p>&lt;p>Activity Type:  Method Call&lt;/p></property>
+      <property
+         name="inherited">true</property>
+      <property
+         name="exceptionHandler">false</property>
+      <property
+         name="y">83.5</property>
+      <property
+         name="x">91.69141</property>
+   </MethodCall>
+</SDM>

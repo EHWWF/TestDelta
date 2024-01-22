@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.0.31"
+                id="ltc_planning_start_ltc_planning_start_startPageDef" Package="com.bayer.ipms.view.pageDefs"
+                SkipValidation="true">
+  <parameters/>
+  <executables>
+    <iterator Binds="LtcAppModule.LtcProcessView" RangeSize="25" DataControl="PrivateAppModuleDataControl" id="LtcProcessViewIterator"/>
+  </executables>
+  <bindings>
+    <methodAction IterBinding="LtcProcessViewIterator" id="start" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="start" IsViewObjectMethod="false" DataControl="PrivateAppModuleDataControl"
+                  InstanceName="bindings.LtcProcessViewIterator.currentRow" IsLocalObjectReference="true"/>
+  </bindings>
+</pageDefinition>

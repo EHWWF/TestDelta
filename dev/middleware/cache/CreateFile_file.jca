@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<adapter-config name="CreateFile" adapter="file" wsdlLocation="CreateFile.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+  
+  <connection-factory location="eis/FileAdapter"/>
+  <endpoint-interaction portType="Create_ptt" operation="Create">
+    <interaction-spec className="oracle.tip.adapter.file.outbound.FileInteractionSpec">
+      <property name="PhysicalDirectory" value="/opt/oracle/soa12.2.1/file_adapter/ipms"/>
+      <property name="Append" value="false"/>
+      <property name="FileNamingConvention" value="file_name_comes_from_bpel.xml"/>
+      <property name="NumberMessages" value="1"/>
+    </interaction-spec>
+  </endpoint-interaction>
+
+</adapter-config>

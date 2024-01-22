@@ -1,0 +1,400 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich" xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <c:set var="bundle" value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+    <f:view>
+        <af:document title="#{bundle.importMissingStudies}" id="d1">
+            <af:resource type="css">
+                .depth0 {
+                    background-color: #CCFFCC;
+                    padding: 4px;
+                }
+
+                .depth1 {
+                    background-color: #D7E1EE;
+                    padding: 4px;
+                }
+
+                .depth2 {
+                    background-color: #FFB6C1;
+                    padding: 4px;
+                }
+
+                .depth3 {
+                    background-color: #F0E08C;
+                    padding: 4px;
+                }
+
+                .depth4 {
+                    background-color: #D3D3D3;
+                    padding: 4px;
+                }
+            </af:resource>
+            <af:resource type="javascript">
+              function scrollTableToTheCurrentRow(evt) {
+                  var editBtn = evt.getSource();
+                  var tableId = editBtn.getParent().getClientId();
+                  var table = AdfPage.PAGE.findComponentByAbsoluteId(tableId);
+                  var selectedRows = table.getSelectedRowKeys();
+                  var selectedRowKey = Object.keys(selectedRows)[0];
+
+                  table.setScrollTopRowKey(selectedRowKey);
+              }
+
+              function handleTreeTableDoubleClick(evt) {
+                  var table = evt.getSource();
+                  AdfCustomEvent.queue(table, "TreeTableDoubleClickEvent", 
+                  {
+                  },
+true);
+                  evt.cancel();
+              }
+              
+              function onSelectAll(evt) {
+                  toggleSelectAll(evt, true);
+              }
+              
+              function onUnselectAll(evt) {
+                  toggleSelectAll(evt, false);
+              }
+              
+              function toggleSelectAll(evt, isSelected) {
+                  var toggleBtn = evt.getSource();
+                  var tableLocator = toggleBtn.getProperty("tableLocator");
+                  var checkboxLocator = toggleBtn.getProperty("checkboxLocator");
+                  var table = toggleBtn.findComponent(tableLocator);
+                  
+                  var nbRows=parseInt(table.getRows());
+                  var tableAbsLocator=table.getAbsoluteLocator();
+                   
+                  while(nbRows--){
+                    var rowCheckbox=AdfPage.PAGE.findComponentByAbsoluteLocator(tableAbsLocator+"["+nbRows+"]"+checkboxLocator);
+                    if(isSelected!=rowCheckbox.getValue()){
+                      rowCheckbox.setValue(isSelected);
+                    }
+                  }
+              }
+            </af:resource>
+            <af:messages id="m1"/>
+            <af:form id="f1">
+                <af:pageTemplate viewId="/WEB-INF/com.bayer.ipms.view/templates/ipms-popup-template.jspx" id="pt1"
+                                 partialTriggers="cmdOk">
+                    <f:facet name="summary">
+                        <af:panelBox text="#{bundle.importSummary}" showDisclosure="true" id="summaryPanel">
+                            <af:panelFormLayout styleClass="AFStretchWidth" fieldWidth="100%" maxColumns="3" rows="2">
+                                <af:panelLabelAndMessage label="#{bindings.ProgramQualifiedName.hints.label}">
+                                    <af:outputText value="#{bindings.ProgramQualifiedName.inputValue}"/>
+                                </af:panelLabelAndMessage>
+                                <af:panelLabelAndMessage label="#{bundle.project}">
+                                    <af:outputText value="#{bindings.ProjectQualifiedName.inputValue}"/>
+                                </af:panelLabelAndMessage>
+                                <af:panelLabelAndMessage label="#{bundle.importStatus}"
+                                                         inlineStyle="white-space: nowrap;"
+                                                         partialTriggers="cmdRefresh poll">
+                                    <af:outputText value="#{bindings.ImportStatus.inputValue}"/>
+                                    <af:outputText value=" (#{bundle.importRefresh})"
+                                                   rendered="#{bindings.ImportStatusCode == 'NEW'}"/>
+                                    <af:image source="/images/busy.gif" id="i3" rendered="#{bindings.ImportStatusCode == 'NEW'}"/>
+                                </af:panelLabelAndMessage>
+                                <af:poll id="poll" interval="5000" rendered="#{bindings.ImportIsSyncing.inputValue}"
+                                         immediate="true" pollListener="#{importStudyBean.onPoll}"/>
+                            </af:panelFormLayout>
+                        </af:panelBox>
+                    </f:facet>
+                    <f:facet name="content">
+                        <af:panelSplitter id="contentSplitter" orientation="vertical" collapsed="true"
+                                          positionedFromEnd="true" disabled="true"
+                                          partialTriggers="pc1:studiesTbl:selectWbsBtn psl3 pc2:setWbsBtn"
+                                          splitterPosition="320">
+                            <f:facet name="first">
+                                <af:panelBox text="#{bundle.importMissingStudiesPanel}" showDisclosure="false"
+                                             type="stretch" id="studiesPanel"
+                                             disclosed="#{not bindings.ImportIsSyncing.inputValue}"
+                                             partialTriggers="poll">
+                                    <af:panelStretchLayout topHeight="auto" bottomHeight="auto" id="psl2">
+                                        <f:facet name="top">
+                                            <af:outputText value="#{bundle.importMissingStudiesText}" id="ot4"/>
+                                        </f:facet>
+                                        <f:facet name="center">
+                                            <af:panelCollection id="pc1" styleClass="AFStretchWidth"
+                                                                featuresOff="detach statusBar">
+                                                <f:facet name="toolbar"/>
+                                                <af:table value="#{bindings.ImportProjectStudyView.collectionModel}"
+                                                          var="row" rows="#{bindings.ImportProjectStudyView.rangeSize}"
+                                                          emptyText="#{bindings.ImportProjectStudyView.viewable ? (bindings.ImportStatusCode.inputValue eq 'NEW' ? bundle.importRefresh : bundle.globalEmptyList) : 'Access Denied.'}"
+                                                          rowBandingInterval="0"
+                                                          selectedRowKeys="#{bindings.ImportProjectStudyView.collectionModel.selectedRow}"
+                                                          selectionListener="#{bindings.ImportProjectStudyView.collectionModel.makeCurrent}"
+                                                          rowSelection="single"
+                                                          fetchSize="#{bindings.ImportProjectStudyView.rangeSize}"
+                                                          queryListener="#{bindings.ImportProjectStudyViewQuery.processQuery}"
+                                                          filterVisible="false" varStatus="vs" id="studiesTbl"
+                                                          columnStretching="last"
+                                                          partialTriggers=":::poll ::selectAllItem ::unselectAllItem :::cmdRefresh :::pc2:setWbsBtn"
+                                                          clientComponent="true"
+                                                          contentDelivery="immediate">
+                                                    <af:column sortProperty="#{bindings.ImportProjectStudyView.hints.IsImport.name}"
+                                                               filterable="false" sortable="false"
+                                                               headerText="#{bindings.ImportProjectStudyView.hints.IsImport.label}"
+                                                               id="c1" width="40" align="center">
+                                                        <af:selectBooleanCheckbox value="#{row.bindings.IsImport.inputValue}"
+                                                                                  label="#{row.bindings.IsImport.label}"
+                                                                                  shortDesc="#{bindings.ImportProjectStudyView.hints.IsImport.tooltip}"
+                                                                                  id="sbc1"
+                                                                                  simple="true" autoSubmit="true"
+                                                                                  disabled="#{bindings.ImportIsSyncing.inputValue}"
+                                                                                  readOnly="#{bindings.ImportStatusCode.inputValue eq 'DONE'}"
+                                                                                  partialTriggers="::selectAllItem ::unselectAllItem"/>
+                                                    </af:column>
+                                                    <af:column sortProperty="#{bindings.ImportProjectStudyView.hints.StudyId.name}"
+                                                               filterable="false" sortable="#{bindings.ImportStatus.inputValue ne 'DONE'}"
+                                                               headerText="#{bindings.ImportProjectStudyView.hints.StudyId.label}"
+                                                               id="c2" width="45">
+                                                        <af:inputText value="#{row.bindings.StudyId.inputValue}"
+                                                                      label="#{bindings.ImportProjectStudyView.hints.StudyId.label}"
+                                                                      required="#{row.bindings.IsImport.inputValue ? 'true' : 'false'}"
+                                                                      columns="#{bindings.ImportProjectStudyView.hints.StudyId.displayWidth}"
+                                                                      maximumLength="#{bindings.ImportProjectStudyView.hints.StudyId.precision}"
+                                                                      shortDesc="#{bindings.ImportProjectStudyView.hints.StudyId.tooltip}"
+                                                                      id="it1"
+                                                                      disabled="#{bindings.ImportIsSyncing.inputValue}"
+                                                                      readOnly="#{bindings.ImportStatusCode.inputValue eq 'DONE'}">
+                                                            <f:validator binding="#{row.bindings.StudyId.validator}"/>
+                                                        </af:inputText>
+                                                    </af:column>
+                                                    <af:column sortProperty="#{bindings.ImportProjectStudyView.hints.Name.name}"
+                                                               filterable="false" sortable="#{bindings.ImportStatus.inputValue ne 'DONE'}"
+                                                               headerText="#{bindings.ImportProjectStudyView.hints.Name.label}"
+                                                               id="c3" width="150">
+                                                        <af:inputText value="#{row.bindings.Name.inputValue}"
+                                                                      label="#{bindings.ImportProjectStudyView.hints.Name.label}"
+                                                                      required="#{row.bindings.IsImport.inputValue ? 'true' : 'false'}"
+                                                                      columns="#{bindings.ImportProjectStudyView.hints.Name.displayWidth}"
+                                                                      maximumLength="#{bindings.ImportProjectStudyView.hints.Name.precision}"
+                                                                      shortDesc="#{bindings.ImportProjectStudyView.hints.Name.tooltip}"
+                                                                      id="studyNameIT"
+                                                                      readOnly="#{not (row.row.newRowState lt 1) or bindings.ImportStatusCode.inputValue eq 'DONE'}"
+                                                                      clientComponent="true" partialTriggers=":::cmdOk"
+                                                                      disabled="#{bindings.ImportIsSyncing.inputValue}">
+                                                            <f:validator binding="#{row.bindings.Name.validator}"/>
+                                                        </af:inputText>
+                                                    </af:column>
+                                                    <af:column sortProperty="#{bindings.ImportProjectStudyView.hints.Phase.name}"
+                                                               filterable="false" sortable="#{bindings.ImportStatus.inputValue ne 'DONE'}"
+                                                               headerText="#{bindings.ImportProjectStudyView.hints.Phase.label}"
+                                                               id="c4" width="50">
+                                                        <af:inputText value="#{row.bindings.Phase.inputValue}"
+                                                                      label="#{bindings.ImportProjectStudyView.hints.Phase.label}"
+                                                                      required="#{bindings.ImportProjectStudyView.hints.Phase.mandatory}"
+                                                                      columns="#{bindings.ImportProjectStudyView.hints.Phase.displayWidth}"
+                                                                      maximumLength="#{bindings.ImportProjectStudyView.hints.Phase.precision}"
+                                                                      shortDesc="#{bindings.ImportProjectStudyView.hints.Phase.tooltip}"
+                                                                      id="it3" readOnly="true">
+                                                            <f:validator binding="#{row.bindings.Phase.validator}"/>
+                                                        </af:inputText>
+                                                    </af:column>
+                                                    <af:column sortProperty="#{bindings.ImportProjectStudyView.hints.IsPlaceholder.name}"
+                                                               filterable="false" sortable="#{bindings.ImportStatus.inputValue ne 'DONE'}"
+                                                               headerText="#{bindings.ImportProjectStudyView.hints.IsPlaceholder.label}"
+                                                               id="c5" width="55" align="center">
+                                                        <af:selectBooleanCheckbox value="#{row.bindings.IsPlaceholder.inputValue}"
+                                                                                  label="#{row.bindings.IsPlaceholder.label}"
+                                                                                  shortDesc="#{bindings.ImportProjectStudyView.hints.IsPlaceholder.tooltip}"
+                                                                                  id="sbc2"
+                                                                                  readOnly="#{row.row.newRowState lt 1 or bindings.ImportStatusCode.inputValue eq 'DONE'}"
+                                                                                  disabled="#{bindings.ImportIsSyncing.inputValue}"/>
+                                                    </af:column>
+                                                    <af:column sortProperty="#{bindings.ImportProjectStudyView.hints.TemplateId.name}"
+                                                               filterable="false" sortable="#{bindings.ImportStatus.inputValue ne 'DONE'}"
+                                                               headerText="#{bindings.ImportProjectStudyView.hints.TemplateId.label}"
+                                                               id="c9" width="150">
+                                                        <af:selectOneChoice value="#{not empty row ? row.bindings.TemplateId.inputValue : ''}"
+                                                                            label="#{not empty row ? row.bindings.TemplateId.label : ''}"
+                                                                            required="#{row.bindings.IsImport.inputValue ? 'true' : 'false'}"
+                                                                            shortDesc="#{bindings.ImportProjectStudyView.hints.TemplateId.tooltip}"
+                                                                            id="soc1"
+                                                                            disabled="#{bindings.ImportIsSyncing.inputValue}"
+                                                                            readOnly="#{bindings.ImportStatusCode.inputValue eq 'DONE'}"
+                                                                            autoSubmit="true">
+                                                            <f:selectItems value="#{row.bindings.TemplateId.items}"
+                                                                           id="si1"/>
+                                                            <f:validator binding="#{not empty row ? row.bindings.TemplateId.validator : null}"/>
+                                                        </af:selectOneChoice>
+                                                    </af:column>
+                                                    <af:column sortProperty="#{bindings.ImportProjectStudyView.hints.ParentWbsName.name}"
+                                                               filterable="false" sortable="#{bindings.ImportStatus.inputValue ne 'DONE'}"
+                                                               headerText="#{bindings.ImportProjectStudyView.hints.ParentWbsName.label}"
+                                                               id="c10" width="200">
+                                                        <af:panelGroupLayout id="pgl3" layout="horizontal">
+                                                            <af:button id="selectWbsBtn" icon="/images/edit.png"
+                                                                       actionListener="#{importStudyBean.onSelectWbs}"
+                                                                       immediate="true"
+                                                                       inlineStyle="margin-right:10px;"
+                                                                       disabled="#{bindings.ImportIsSyncing.inputValue}"
+                                                                       rendered="#{bindings.ImportStatusCode.inputValue ne 'DONE'}">
+                                                                <af:clientListener method="scrollTableToTheCurrentRow"
+                                                                                   type="action"/>
+                                                            </af:button>
+                                                            <af:image source="#{importStudyBean.rowParentWbsIsRootNode[row] ? '/images/open_project.png' : '/images/wbs.png'}"
+                                                                      shortDesc="WBS: #{row.bindings.ParentWbsName.inputValue}"
+                                                                      id="i2"
+                                                                      rendered="#{not empty row.bindings.ParentWbsName.inputValue}"
+                                                                      inlineStyle="margin-right: 4px;"/>
+                                                            <af:inputText value="#{row.bindings.ParentWbsName.inputValue}"
+                                                                          label="#{bindings.ImportProjectStudyView.hints.ParentWbsName.label}"
+                                                                          required="#{row.bindings.IsImport.inputValue ? 'true' : 'false'}"
+                                                                          maximumLength="#{bindings.ImportProjectStudyView.hints.ParentWbsName.precision}"
+                                                                          shortDesc="#{row.bindings.ParentWbsName.inputValue}"
+                                                                          id="it4" readOnly="true"
+                                                                          contentStyle="font-weight: bold;"
+                                                                          simple="true">
+                                                                <f:validator binding="#{row.bindings.ParentWbsName.validator}"/>
+                                                            </af:inputText>
+                                                        </af:panelGroupLayout>
+                                                    </af:column>
+                                                </af:table>
+                                                <f:facet name="viewMenu">
+                                                    <af:group id="g2">
+                                                        <af:commandMenuItem text="#{bundle.importMissingStudiesSelectAll}"
+                                                                            id="selectAllItem"
+                                                                            icon="/images/apply-all.png"
+                                                                            actionListener="#{importStudyBean.selectAll}"
+                                                                            immediate="true"
+                                                                            disabled="#{bindings.ImportIsSyncing.inputValue or bindings.ImportStatusCode.inputValue eq 'DONE'}">
+                                                            <af:clientListener method="onSelectAll" type="action"/>
+                                                            <af:clientAttribute name="tableLocator" value="studiesTbl"/>
+                                                            <af:clientAttribute name="checkboxLocator" value=":sbc1"/>
+                                                        </af:commandMenuItem>
+                                                        <af:commandMenuItem text="#{bundle.importMissingStudiesUnselectAll}"
+                                                                            id="unselectAllItem"
+                                                                            icon="/images/skip-all.png"
+                                                                            actionListener="#{importStudyBean.unselectAll}"
+                                                                            immediate="true"
+                                                                            disabled="#{bindings.ImportIsSyncing.inputValue or bindings.ImportStatusCode.inputValue eq 'DONE'}">
+                                                            <af:clientListener method="onUnselectAll" type="action"/>
+                                                            <af:clientAttribute name="tableLocator" value="studiesTbl"/>
+                                                            <af:clientAttribute name="checkboxLocator" value=":sbc1"/>
+                                                        </af:commandMenuItem>
+                                                    </af:group>
+                                                </f:facet>
+                                            </af:panelCollection>
+                                        </f:facet>
+                                    </af:panelStretchLayout>
+                                </af:panelBox>
+                            </f:facet>
+                            <f:facet name="second">
+                                <af:panelBox text="#{bundle.importMissingStudiesProjectWbs}" id="projectWbsPanel"
+                                             showDisclosure="false" type="stretch">
+                                    <f:facet name="toolbar"/>
+                                    <af:panelStretchLayout id="psl3" topHeight="auto" bottomHeight="auto">
+                                        <f:facet name="bottom"/>
+                                        <f:facet name="center">
+                                            <af:panelCollection id="pc2" featuresOff="statusBar showAsTopToolbarItem">
+                                                <f:facet name="menus"/>
+                                                <f:facet name="toolbar">
+                                                    <af:toolbar id="t1">
+                                                        <af:panelGroupLayout id="pgl2" layout="horizontal">
+                                                            <af:button text="#{bundle.importMissingStudiesSetWbs}"
+                                                                       id="setWbsBtn"
+                                                                       actionListener="#{importStudyBean.onSetWbs}"
+                                                                       immediate="true" icon="/images/commit.png"
+                                                                       inlineStyle="width:64px;"
+                                                                       disabled="true"
+                                                                       partialTriggers="::pc1 ::pc1:studiesTbl:selectWbsBtn"/>
+                                                        </af:panelGroupLayout>
+                                                    </af:toolbar>
+                                                </f:facet>
+                                                <f:facet name="statusbar"/>
+                                                <af:treeTable value="#{bindings.ImportStudyTargetWbsView.treeModel}"
+                                                              var="node"
+                                                              selectionListener="#{importStudyBean.onParentWbsSelection}"
+                                                              rowSelection="single" id="wbsTree"
+                                                              columnStretching="column:c11"
+                                                              fetchSize="500"
+                                                              partialTriggers=":::pc1:studiesTbl:selectWbsBtn"
+                                                              binding="#{importStudyBean.wbsTree}"
+                                                              initiallyExpanded="true"
+                                                              displayRow="selected" summary="Displays the project plan and is used to select a parent WBS for selected study">
+                                                    <f:facet name="nodeStamp">
+                                                        <af:column id="c11"
+                                                                   headerText="#{bindings.ImportStudyTargetWbsView.hints.WbsName.label}"
+                                                                   styleClass="depth#{bindings.ImportStudyTargetWbsView.treeModel.depth mod 5}">
+                                                            <af:group id="g1">
+                                                                <af:image source="#{empty node.ParentWbsId ? '/images/open_project.png' : '/images/wbs.png'}"
+                                                                          shortDesc="WBS: #{node.WbsName}" id="i1"
+                                                                          inlineStyle="margin-right: 4px;"/>
+                                                                <af:outputText value="#{node.WbsName}" id="ot2"
+                                                                               inlineStyle="font-weight:bold;"/>
+                                                            </af:group>
+                                                        </af:column>
+                                                    </f:facet>
+                                                    <f:facet name="pathStamp">
+                                                        <af:outputText value="#{node}" id="ot3"/>
+                                                    </f:facet>
+                                                    <af:column id="c12" width="100"
+                                                               headerText="#{bindings.ImportStudyTargetWbsView.hints.StartDate.label}"
+                                                               styleClass="depth#{bindings.ImportStudyTargetWbsView.treeModel.depth mod 5}">
+                                                        <af:outputText value="#{node.StartDate}" id="ot5">
+                                                            <af:convertDateTime type="date"
+                                                                                pattern="#{bindings.ImportStudyTargetWbsView.hints.StartDate.format}"/>
+                                                        </af:outputText>
+                                                    </af:column>
+                                                    <af:column id="c13" width="100"
+                                                               headerText="#{bindings.ImportStudyTargetWbsView.hints.FinishDate.label}"
+                                                               styleClass="depth#{bindings.ImportStudyTargetWbsView.treeModel.depth mod 5}">
+                                                        <af:outputText value="#{node.FinishDate}" id="ot6">
+                                                            <af:convertDateTime type="date"
+                                                                                pattern="#{bindings.ImportStudyTargetWbsView.hints.FinishDate.format}"/>
+                                                        </af:outputText>
+                                                    </af:column>
+                                                    <af:clientListener method="handleTreeTableDoubleClick"
+                                                                       type="dblClick"/>
+                                                    <af:serverListener type="TreeTableDoubleClickEvent"
+                                                                       method="#{importStudyBean.onWbsTreeDoubleClick}"/>
+                                                </af:treeTable>
+                                            </af:panelCollection>
+                                        </f:facet>
+                                        <f:facet name="start"/>
+                                        <f:facet name="end"/>
+                                        <f:facet name="top">
+                                            <af:panelGroupLayout id="pgl5" layout="vertical">
+                                                <af:outputText value="#{bundle.importMissingStudiesProjectWbsText}"
+                                                               id="ot1"/>
+                                                <af:panelFormLayout id="pfl1" maxColumns="1">
+                                                    <f:facet name="footer"/>
+                                                    <af:inputText label="#{bundle.importMissingStudiesSelectedStudyLabel}"
+                                                                  id="selectedStudy" readOnly="true"
+                                                                  partialTriggers="pc1:studiesTbl:selectWbsBtn"
+                                                                  contentStyle="font-weight: bold;"
+                                                                  labelStyle="font-weight: bold;"/>
+                                                </af:panelFormLayout>
+                                            </af:panelGroupLayout>
+                                        </f:facet>
+                                    </af:panelStretchLayout>
+                                </af:panelBox>
+                            </f:facet>
+                        </af:panelSplitter>
+                    </f:facet>
+                    <f:facet name="controls">
+                        <af:panelGroupLayout layout="horizontal" halign="right" id="pgl1">
+                            <f:facet name="separator">
+                                <af:spacer width="5" id="s12"/>
+                            </f:facet>
+                            <af:button text="#{bundle.import}" id="cmdOk" inlineStyle="font-weight:bold;"
+                                       disabled="#{bindings.ImportIsSyncing.inputValue or bindings.ImportStatusCode.inputValue eq 'DONE'}"
+                                       actionListener="#{importStudyBean.onImport}" action="import" partialSubmit="true"/>
+                            <af:button text="#{bundle.globalRefresh}" id="cmdRefresh" immediate="true"
+                                       action="#{importStudyBean.onRefresh}"/>
+                            <af:button text="#{bundle.globalClose}" id="cmdClose" action="close" immediate="true">
+                                <af:setActionListener from="#{bindings.ImportStatusCode.inputValue}"
+                                                      to="#{requestScope.importStatusCode}"/>
+                            </af:button>
+                        </af:panelGroupLayout>
+                    </f:facet>
+                </af:pageTemplate>
+            </af:form>
+        </af:document>
+    </f:view>
+    <!--oracle-jdev-comment:preferred-managed-bean-name:importStudyBean-->
+</jsp:root>

@@ -1,0 +1,415 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:h="http://java.sun.com/jsf/html"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+  <f:view>
+    <f:loadBundle basename="com.bayer.ipms.view.bundles.viewBundle"
+                  var="bundle"/>
+    <af:document id="d1" title="#{bundle.maintainGenericTimelines}">
+      <af:messages id="m1"/>
+      <af:form id="f1">
+        <af:pageTemplate viewId="/WEB-INF/com.bayer.ipms.view/templates/ipms-popup-template.jspx"
+                         id="pt1">
+          <f:facet name="summary"/>
+          <f:facet name="content">
+            <af:panelTabbed id="pt2">
+              <af:showDetailItem text="#{bundle.gtPhaseDuration}" id="sdi1"
+                                 inflexibleHeight="100" stretchChildren="first">
+                <af:panelCollection id="pcPhD"
+                                    featuresOff="detach viewMenu statusBar"
+                                    styleClass="AFStretchWidth">
+                  <f:facet name="menus"/>
+                  <f:facet name="toolbar">
+                    <af:toolbar id="toolbar1">
+                      <af:commandToolbarButton shortDesc="#{bundle.globalAdd}"
+                                               text="#{bundle.globalAdd}"
+                                               icon="/images/new.png"
+                                               immediate="true"
+                                               actionListener="#{bindings.PhDCreateInsert.execute}"
+                                               id="ctbAdd"/>
+                      <af:commandToolbarButton shortDesc="#{bundle.globalRemove}"
+                                               text="#{bundle.globalRemove}"
+                                               icon="/images/remove.png"
+                                               immediate="true"
+                                               actionListener="#{utilsBean.onDelete}"
+                                               id="ctbDelete">
+                        <f:attribute name="table" value="tblPhD"/>
+                        <f:attribute name="iterator"
+                                     value="#{bindings.PhaseDurationViewIterator}"/>
+                      </af:commandToolbarButton>
+                    </af:toolbar>
+                  </f:facet>
+                  <af:table value="#{bindings.PhaseDurationView.collectionModel}"
+                            var="row"
+                            rows="#{bindings.PhaseDurationView.rangeSize}"
+                            emptyText="#{bindings.PhaseDurationView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                            fetchSize="#{bindings.PhaseDurationView.rangeSize}"
+                            rowBandingInterval="0" rowSelection="multiple"
+                            id="tblPhD" columnStretching="last"
+                            autoHeightRows="0" contentDelivery="immediate"
+                            editingMode="editAll">
+                    <af:column sortProperty="#{bindings.PhaseDurationView.hints.SbeCode.name}"
+                               sortable="true"
+                               headerText="#{bindings.PhaseDurationView.hints.SbeCode.label}"
+                               id="cPhD1" width="200">
+                      <af:selectOneChoice label="#{row.bindings.SbeCode.label}"
+                                          id="selectOneChoice1"
+                                          value="#{row.bindings.SbeCode.inputValue}"
+                                          required="#{bindings.PhaseDurationView.hints.SbeCode.mandatory}"
+                                          shortDesc="#{bindings.PhaseDurationView.hints.SbeCode.tooltip}">
+                        <f:selectItems value="#{row.bindings.SbeCode.items}"
+                                       id="selectItems1"/>
+                      </af:selectOneChoice>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.PhaseDurationView.hints.SubstanceTypeCode.name}"
+                               sortable="true"
+                               headerText="#{bindings.PhaseDurationView.hints.SubstanceTypeCode.label}"
+                               id="cPhD2">
+                      <af:selectOneChoice label="#{row.bindings.SubstanceTypeCode.label}"
+                                          id="selectOneChoice2"
+                                          value="#{row.bindings.SubstanceTypeCode.inputValue}"
+                                          required="#{bindings.PhaseDurationView.hints.SubstanceTypeCode.mandatory}"
+                                          shortDesc="#{bindings.PhaseDurationView.hints.SubstanceTypeCode.tooltip}">
+                        <f:selectItems value="#{row.bindings.SubstanceTypeCode.items}"
+                                       id="selectItems2"/>
+                      </af:selectOneChoice>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.PhaseDurationView.hints.PhaseCode.name}"
+                               sortable="true"
+                               headerText="#{bindings.PhaseDurationView.hints.PhaseCode.label}"
+                               id="cPhD3" width="150">
+                      <af:selectOneChoice label="#{row.bindings.PhaseCode.label}"
+                                          id="selectOneChoice3"
+                                          value="#{row.bindings.PhaseCode.inputValue}"
+                                          required="#{bindings.PhaseDurationView.hints.PhaseCode.mandatory}"
+                                          shortDesc="#{bindings.PhaseDurationView.hints.PhaseCode.tooltip}">
+                        <f:selectItems value="#{row.bindings.PhaseCode.items}"
+                                       id="selectItems3"/>
+                      </af:selectOneChoice>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.PhaseDurationView.hints.Duration.name}"
+                               sortable="true"
+                               headerText="#{bindings.PhaseDurationView.hints.Duration.label}"
+                               id="cPhD4">
+                      <af:inputText value="#{row.bindings.Duration.inputValue}"
+                                    label="#{bindings.PhaseDurationView.hints.Duration.label}"
+                                    columns="#{bindings.PhaseDurationView.hints.Duration.displayWidth}"
+                                    maximumLength="#{bindings.PhaseDurationView.hints.Duration.precision}"
+                                    shortDesc="#{bindings.PhaseDurationView.hints.Duration.tooltip}"
+                                    id="duration">
+                        <f:validator binding="#{row.bindings.Duration.validator}"/>
+                      </af:inputText>
+                    </af:column>
+                  </af:table>
+                </af:panelCollection>
+              </af:showDetailItem>
+              <af:showDetailItem text="#{bundle.gtPhaseMilestones}" id="sdi2"
+                                 stretchChildren="first">
+                <af:panelCollection id="pc1"
+                                    featuresOff="detach viewMenu statusBar"
+                                    styleClass="AFStretchWidth">
+                  <f:facet name="menus"/>
+                  <f:facet name="toolbar">
+                    <af:toolbar id="tools">
+                      <af:commandToolbarButton shortDesc="#{bundle.globalAdd}"
+                                               text="#{bundle.globalAdd}"
+                                               icon="/images/new.png"
+                                               immediate="true"
+                                               actionListener="#{bindings.PhMCreateInsert.execute}"
+                                               id="ctb1"/>
+                      <af:commandToolbarButton shortDesc="#{bundle.globalRemove}"
+                                               text="#{bundle.globalRemove}"
+                                               icon="/images/remove.png"
+                                               immediate="true"
+                                               actionListener="#{utilsBean.onDelete}"
+                                               id="ctb2">
+                        <f:attribute name="table" value="table"/>
+                        <f:attribute name="iterator"
+                                     value="#{bindings.PhaseMilestoneGTViewIterator}"/>
+                      </af:commandToolbarButton>
+                    </af:toolbar>
+                  </f:facet>
+                  <af:table value="#{bindings.PhaseMilestoneGTView.collectionModel}"
+                            var="row"
+                            rows="#{bindings.PhaseMilestoneGTView.rangeSize}"
+                            emptyText="#{bindings.PhaseMilestoneGTView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                            fetchSize="#{bindings.PhaseMilestoneGTView.rangeSize}"
+                            rowBandingInterval="0" rowSelection="multiple"
+                            id="table" columnStretching="last"
+                            autoHeightRows="0" contentDelivery="immediate"
+                            editingMode="editAll">
+                    <af:column sortProperty="#{bindings.PhaseMilestoneGTView.hints.PhaseCode.name}"
+                               sortable="true"
+                               headerText="#{bindings.PhaseMilestoneGTView.hints.PhaseCode.label}"
+                               id="c1" width="150">
+                      <af:selectOneChoice label="#{row.bindings.PhaseCode.label}"
+                                          id="socPhase"
+                                          value="#{row.bindings.PhaseCode.inputValue}"
+                                          required="#{bindings.PhaseMilestoneGTView.hints.PhaseCode.mandatory}"
+                                          shortDesc="#{bindings.PhaseMilestoneGTView.hints.PhaseCode.tooltip}">
+                        <f:selectItems value="#{row.bindings.PhaseCode.items}"
+                                       id="si1"/>
+                      </af:selectOneChoice>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.PhaseMilestoneGTView.hints.MilestoneCode.name}"
+                               sortable="true"
+                               headerText="#{bindings.PhaseMilestoneGTView.hints.MilestoneCode.label}"
+                               id="c2">
+                      <af:selectOneChoice label="#{row.bindings.MilestoneCode.label}"
+                                          id="socMilestone"
+                                          shortDesc="#{bindings.PhaseMilestoneGTView.hints.MilestoneCode.tooltip}"
+                                          required="#{bindings.PhaseMilestoneGTView.hints.MilestoneCode.mandatory}"
+                                          value="#{row.bindings.MilestoneCode.inputValue}">
+                        <f:selectItems value="#{row.bindings.MilestoneCode.items}"
+                                       id="si2"/>
+                      </af:selectOneChoice>
+                    </af:column>
+                  </af:table>
+                </af:panelCollection>
+              </af:showDetailItem>
+              <af:showDetailItem text="#{bundle.gtViewCalculated}" id="sdi3"
+                                 stretchChildren="first">
+                <af:panelCollection id="pc2" featuresOff="detach statusBar">
+                  <f:facet name="menus"/>
+                  <f:facet name="toolbar">
+                    <af:toolbar>
+                      <af:commandToolbarButton icon="/images/export.png"
+                                               text="#{bundle.globalDownload}">
+                        <af:setActionListener from="tbGT"
+                                              to="#{viewScope['exportId']}"/>
+                        <af:setActionListener from="border:1px solid #f2f2f2;background-color:none"
+                                              to="#{viewScope['tableHeaderStyle']}"/>
+                        <af:setActionListener from="border:1px solid #f2f2f2;background-color:none"
+                                              to="#{viewScope['tableDataStyle']}"/>
+                        <af:fileDownloadActionListener filename="CalcGenericTimelines.xls"
+                                                       contentType="text/html;chatset=UTF-8"
+                                                       method="#{utilsBean.exportToExcelWithSuffixG}"/>
+                      </af:commandToolbarButton>
+                    </af:toolbar>
+                  </f:facet>
+                  <af:table value="#{bindings.ProjectGTView.collectionModel}"
+                            var="row" rows="#{bindings.ProjectGTView.rangeSize}"
+                            emptyText="#{bindings.ProjectGTView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                            fetchSize="#{bindings.ProjectGTView.rangeSize}"
+                            rowBandingInterval="0" id="tbGT"
+                            filterModel="#{bindings.ProjectGTViewQuery.queryDescriptor}"
+                            queryListener="#{bindings.ProjectGTViewQuery.processQuery}"
+                            varStatus="vs" rowSelection="single"
+                            contentDelivery="immediate"
+                            styleClass="AFStretchWidth AFStretchHeight"
+                            columnStretching="last">
+                    <af:column sortProperty="#{bindings.ProjectGTView.hints.PId.name}"
+                               sortable="true"
+                               headerText="#{bindings.ProjectGTView.hints.PId.label}"
+                               id="c9" filterable="true">
+                      <af:inputText value="#{row.bindings.PId.inputValue}"
+                                    label="#{bindings.ProjectGTView.hints.PId.label}"
+                                    required="#{bindings.ProjectGTView.hints.PId.mandatory}"
+                                    columns="#{bindings.ProjectGTView.hints.PId.displayWidth}"
+                                    maximumLength="#{bindings.ProjectGTView.hints.PId.precision}"
+                                    shortDesc="#{bindings.ProjectGTView.hints.PId.tooltip}"
+                                    id="it2">
+                        <f:validator binding="#{row.bindings.PId.validator}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ProjectGTView.hints.PName.name}"
+                               sortable="true"
+                               headerText="#{bindings.ProjectGTView.hints.PName.label}"
+                               id="c10" filterable="true">
+                      <af:inputText value="#{row.bindings.PName.inputValue}"
+                                    label="#{bindings.ProjectGTView.hints.PName.label}"
+                                    required="#{bindings.ProjectGTView.hints.PName.mandatory}"
+                                    columns="#{bindings.ProjectGTView.hints.PName.displayWidth}"
+                                    maximumLength="#{bindings.ProjectGTView.hints.PName.precision}"
+                                    shortDesc="#{bindings.ProjectGTView.hints.PName.tooltip}"
+                                    id="it4">
+                        <f:validator binding="#{row.bindings.PName.validator}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ProjectGTView.hints.SbeName.name}"
+                               sortable="true"
+                               headerText="#{bindings.ProjectGTView.hints.SbeName.label}"
+                               id="c3" filterable="true">
+                      <af:inputText value="#{row.bindings.SbeName.inputValue}"
+                                    label="#{bindings.ProjectGTView.hints.SbeName.label}"
+                                    required="#{bindings.ProjectGTView.hints.SbeName.mandatory}"
+                                    columns="#{bindings.ProjectGTView.hints.SbeName.displayWidth}"
+                                    maximumLength="#{bindings.ProjectGTView.hints.SbeName.precision}"
+                                    shortDesc="#{bindings.ProjectGTView.hints.SbeName.tooltip}"
+                                    id="it10">
+                        <f:validator binding="#{row.bindings.SbeName.validator}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ProjectGTView.hints.DsType.name}"
+                               sortable="true"
+                               headerText="#{bindings.ProjectGTView.hints.DsType.label}"
+                               id="c7" filterable="true">
+                      <af:inputText value="#{row.bindings.DsType.inputValue}"
+                                    label="#{bindings.ProjectGTView.hints.DsType.label}"
+                                    required="#{bindings.ProjectGTView.hints.DsType.mandatory}"
+                                    columns="#{bindings.ProjectGTView.hints.DsType.displayWidth}"
+                                    maximumLength="#{bindings.ProjectGTView.hints.DsType.precision}"
+                                    shortDesc="#{bindings.ProjectGTView.hints.DsType.tooltip}"
+                                    id="it9">
+                        <f:validator binding="#{row.bindings.DsType.validator}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ProjectGTView.hints.PhaseName.name}"
+                               sortable="true"
+                               headerText="#{bindings.ProjectGTView.hints.PhaseName.label}"
+                               id="column5" filterable="true">
+                      <af:inputText value="#{row.bindings.PhaseName.inputValue}"
+                                    label="#{bindings.ProjectGTView.hints.PhaseName.label}"
+                                    required="#{bindings.ProjectGTView.hints.PhaseName.mandatory}"
+                                    columns="#{bindings.ProjectGTView.hints.PhaseName.displayWidth}"
+                                    maximumLength="#{bindings.ProjectGTView.hints.PhaseName.precision}"
+                                    shortDesc="#{bindings.ProjectGTView.hints.PhaseName.tooltip}"
+                                    id="inputText5">
+                        <f:validator binding="#{row.bindings.PhaseName.validator}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ProjectGTView.hints.D2.name}"
+                               sortable="true"
+                               headerText="#{bindings.ProjectGTView.hints.D2.label}"
+                               id="column1">
+                      <af:inputText value="#{row.bindings.D2.inputValue}"
+                                    label="#{bindings.ProjectGTView.hints.D2.label}"
+                                    required="#{bindings.ProjectGTView.hints.D2.mandatory}"
+                                    columns="#{bindings.ProjectGTView.hints.D2.displayWidth}"
+                                    maximumLength="#{bindings.ProjectGTView.hints.D2.precision}"
+                                    shortDesc="#{bindings.ProjectGTView.hints.D2.tooltip}"
+                                    id="inputText1">
+                        <f:validator binding="#{row.bindings.D2.validator}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ProjectGTView.hints.D3.name}"
+                               sortable="true"
+                               headerText="#{bindings.ProjectGTView.hints.D3.label}"
+                               id="c12">
+                      <af:inputText value="#{row.bindings.D3.inputValue}"
+                                    label="#{bindings.ProjectGTView.hints.D3.label}"
+                                    required="#{bindings.ProjectGTView.hints.D3.mandatory}"
+                                    columns="#{bindings.ProjectGTView.hints.D3.displayWidth}"
+                                    maximumLength="#{bindings.ProjectGTView.hints.D3.precision}"
+                                    shortDesc="#{bindings.ProjectGTView.hints.D3.tooltip}"
+                                    id="it3">
+                        <f:validator binding="#{row.bindings.D3.validator}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ProjectGTView.hints.D4.name}"
+                               sortable="true"
+                               headerText="#{bindings.ProjectGTView.hints.D4.label}"
+                               id="c5">
+                      <af:inputText value="#{row.bindings.D4.inputValue}"
+                                    label="#{bindings.ProjectGTView.hints.D4.label}"
+                                    required="#{bindings.ProjectGTView.hints.D4.mandatory}"
+                                    columns="#{bindings.ProjectGTView.hints.D4.displayWidth}"
+                                    maximumLength="#{bindings.ProjectGTView.hints.D4.precision}"
+                                    shortDesc="#{bindings.ProjectGTView.hints.D4.tooltip}"
+                                    id="it8">
+                        <f:validator binding="#{row.bindings.D4.validator}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ProjectGTView.hints.D5.name}"
+                               sortable="true"
+                               headerText="#{bindings.ProjectGTView.hints.D5.label}"
+                               id="column2">
+                      <af:inputText value="#{row.bindings.D5.inputValue}"
+                                    label="#{bindings.ProjectGTView.hints.D5.label}"
+                                    required="#{bindings.ProjectGTView.hints.D5.mandatory}"
+                                    columns="#{bindings.ProjectGTView.hints.D5.displayWidth}"
+                                    maximumLength="#{bindings.ProjectGTView.hints.D5.precision}"
+                                    shortDesc="#{bindings.ProjectGTView.hints.D5.tooltip}"
+                                    id="inputText2">
+                        <f:validator binding="#{row.bindings.D5.validator}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ProjectGTView.hints.Poc.name}"
+                               sortable="true"
+                               headerText="#{bindings.ProjectGTView.hints.Poc.label}"
+                               id="column3">
+                      <af:inputText value="#{row.bindings.Poc.inputValue}"
+                                    label="#{bindings.ProjectGTView.hints.Poc.label}"
+                                    required="#{bindings.ProjectGTView.hints.Poc.mandatory}"
+                                    columns="#{bindings.ProjectGTView.hints.Poc.displayWidth}"
+                                    maximumLength="#{bindings.ProjectGTView.hints.Poc.precision}"
+                                    shortDesc="#{bindings.ProjectGTView.hints.Poc.tooltip}"
+                                    id="inputText3">
+                        <f:validator binding="#{row.bindings.Poc.validator}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ProjectGTView.hints.D6.name}"
+                               sortable="true"
+                               headerText="#{bindings.ProjectGTView.hints.D6.label}"
+                               id="c4">
+                      <af:inputText value="#{row.bindings.D6.inputValue}"
+                                    label="#{bindings.ProjectGTView.hints.D6.label}"
+                                    required="#{bindings.ProjectGTView.hints.D6.mandatory}"
+                                    columns="#{bindings.ProjectGTView.hints.D6.displayWidth}"
+                                    maximumLength="#{bindings.ProjectGTView.hints.D6.precision}"
+                                    shortDesc="#{bindings.ProjectGTView.hints.D6.tooltip}"
+                                    id="it1">
+                        <f:validator binding="#{row.bindings.D6.validator}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ProjectGTView.hints.D7.name}"
+                               sortable="true"
+                               headerText="#{bindings.ProjectGTView.hints.D7.label}"
+                               id="c11">
+                      <af:inputText value="#{row.bindings.D7.inputValue}"
+                                    label="#{bindings.ProjectGTView.hints.D7.label}"
+                                    required="#{bindings.ProjectGTView.hints.D7.mandatory}"
+                                    columns="#{bindings.ProjectGTView.hints.D7.displayWidth}"
+                                    maximumLength="#{bindings.ProjectGTView.hints.D7.precision}"
+                                    shortDesc="#{bindings.ProjectGTView.hints.D7.tooltip}"
+                                    id="it7">
+                        <f:validator binding="#{row.bindings.D7.validator}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ProjectGTView.hints.D8.name}"
+                               sortable="true"
+                               headerText="#{bindings.ProjectGTView.hints.D8.label}"
+                               id="c8">
+                      <af:inputText value="#{row.bindings.D8.inputValue}"
+                                    label="#{bindings.ProjectGTView.hints.D8.label}"
+                                    required="#{bindings.ProjectGTView.hints.D8.mandatory}"
+                                    columns="#{bindings.ProjectGTView.hints.D8.displayWidth}"
+                                    maximumLength="#{bindings.ProjectGTView.hints.D8.precision}"
+                                    shortDesc="#{bindings.ProjectGTView.hints.D8.tooltip}"
+                                    id="it6">
+                        <f:validator binding="#{row.bindings.D8.validator}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ProjectGTView.hints.M9.name}"
+                               sortable="true"
+                               headerText="#{bindings.ProjectGTView.hints.M9.label}"
+                               id="c6">
+                      <af:inputText value="#{row.bindings.M9.inputValue}"
+                                    label="#{bindings.ProjectGTView.hints.M9.label}"
+                                    required="#{bindings.ProjectGTView.hints.M9.mandatory}"
+                                    columns="#{bindings.ProjectGTView.hints.M9.displayWidth}"
+                                    maximumLength="#{bindings.ProjectGTView.hints.M9.precision}"
+                                    shortDesc="#{bindings.ProjectGTView.hints.M9.tooltip}"
+                                    id="it5">
+                        <f:validator binding="#{row.bindings.M9.validator}"/>
+                      </af:inputText>
+                    </af:column>
+                  </af:table>
+                </af:panelCollection>
+              </af:showDetailItem>
+            </af:panelTabbed>
+          </f:facet>
+          <f:facet name="controls">
+            <f:subview id="sub1">
+              <af:declarativeComponent viewId="global-ok-cancel.jsff" id="goc">
+                <f:attribute name="showCancel" value="true"/>
+              </af:declarativeComponent>
+            </f:subview>
+          </f:facet>
+        </af:pageTemplate>
+      </af:form>
+    </af:document>
+  </f:view>
+</jsp:root>

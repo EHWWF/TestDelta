@@ -1,0 +1,18 @@
+<adapter-config name="ldapTestEmployee" adapter="ldap" wsdlLocation="../WSDLs/ldapTestEmployee.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+  
+  <connection-factory location="eis/ldap/employee"/>
+  <endpoint-interaction portType="search_ptt" operation="search">
+    <interaction-spec className="oracle.tip.adapter.ldap.outbound.sync.LdapSearchInteractionSpec">
+      <property name="SearchScope" value="wholeSubtree"/>
+      <property name="TimeLimit" value="600"/>
+      <property name="FollowReferrals" value="follow"/>
+      <property name="ReturnAttributes" value="cn,displayName,givenName,sAMAccountName,sn,uid"/>
+      <property name="AliasDereferencing" value="search"/>
+      <property name="SizeLimit" value="10000000"/>
+      <property name="HopLimit" value="4"/>
+      <property name="ReturnAttributesDelimiter" value=","/>
+      <property name="TypesOnly" value="false"/>
+    </interaction-spec>
+  </endpoint-interaction>
+
+</adapter-config>

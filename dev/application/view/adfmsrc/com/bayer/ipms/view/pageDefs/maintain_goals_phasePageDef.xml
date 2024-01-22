@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.1.3.10.8" id="maintain_goals_phasePageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="ProgramAppModule.GoalPhase" DataControl="PrivateAppModuleDataControl" RangeSize="10"
+              id="GoalPhaseIterator" ChangeEventPolicy="ppr"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="GoalPhaseIterator" id="GoalTrackYear">
+      <AttrNames>
+        <Item Value="GoalTrackYear"/>
+      </AttrNames>
+    </attributeValues>
+    <action id="Commit" DataControl="PrivateAppModuleDataControl" RequiresUpdateModel="true"
+            Action="commitTransaction"/>
+  </bindings>
+</pageDefinition>

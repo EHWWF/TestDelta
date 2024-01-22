@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xsd:schema
+		xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+		xmlns:tp="http://xmlns.bayer.com/ipms"
+		xmlns="http://xmlns.bayer.com/ipms/soa"
+		xmlns:ipms-qplan="http://xmlns.bayer.com/ipms/qplan"
+		targetNamespace="http://xmlns.bayer.com/ipms/soa"
+		elementFormDefault="qualified">
+
+	<xsd:import namespace="http://xmlns.bayer.com/ipms" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/types.xsd"/>
+	<xsd:import namespace="http://xmlns.bayer.com/ipms/qplan" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/qplan/qplan.xsd"/>
+
+	<xsd:element name="config">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="program" minOccurs="0">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="epsId" type="xsd:int" />
+							<xsd:element name="obs">
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="rawId" type="xsd:int" />
+										<xsd:element name="currentId" type="xsd:int" />
+										<xsd:element name="approvedId" type="xsd:int" />
+										<xsd:element name="sandboxId" type="xsd:int" />
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="epsMntId" type="xsd:int" />
+							<xsd:element name="obsMnt">
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="rawId" type="xsd:int" />
+										<xsd:element name="currentId" type="xsd:int" />
+										<xsd:element name="approvedId" type="xsd:int" />
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="project" minOccurs="0">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="codeTypeId" type="xsd:int" />
+							<xsd:element name="studyTemplates" minOccurs="0">
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="template" maxOccurs="unbounded">
+											<xsd:complexType>
+												<xsd:sequence>
+													<xsd:element name="name" type="xsd:string" />
+												</xsd:sequence>
+												<xsd:attribute name="id" type="xsd:string" use="required" />
+											</xsd:complexType>
+										</xsd:element>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="baseline" minOccurs="0">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="ltcIdTypeId" type="xsd:int" />
+							<xsd:element name="baselineTypes" minOccurs="0">
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="baselineType" maxOccurs="unbounded">
+											<xsd:complexType>
+												<xsd:sequence>
+													<xsd:element name="name" type="xsd:string" />
+													<xsd:element name="sequenceNumber" type="xsd:int" />
+												</xsd:sequence>
+												<xsd:attribute name="id" type="xsd:string" use="required" />
+											</xsd:complexType>
+										</xsd:element>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="wbs" minOccurs="0">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="studyIdTypeId" type="xsd:int" />
+							<xsd:element name="studyPhaseTypeId" type="xsd:int" />
+							<xsd:element name="placeholderTypeId" type="xsd:int" />
+							<xsd:element name="leadStudyTypeId" type="xsd:int" />
+							<xsd:element name="planPatientsTypeId" type="xsd:int" />
+							<xsd:element name="actualPatientsTypeId" type="xsd:int" />
+							<xsd:element name="planEnteredScreenTypeId" type="xsd:int" />
+							<xsd:element name="actEnteredScreenTypeId" type="xsd:int" />
+							<xsd:element name="studyCountryCountPlanTypeId" type="xsd:int" />
+							<xsd:element name="studyCountryCountTypeId" type="xsd:int" />
+							<xsd:element name="studyUnitCountTypeId" type="xsd:int" />
+							<xsd:element name="studyUnitCountPlanTypeId" type="xsd:int" />
+							<xsd:element name="FTEAvgTypeId" type="xsd:int" />
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="activity" minOccurs="0">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="studyElementIdTypeId" type="xsd:int" />
+							<xsd:element name="integrationTypeId" type="xsd:int" />
+							<xsd:element name="milestoneTypeId" type="xsd:int" />
+							<xsd:element name="phaseTypeId" type="xsd:int" />
+							<xsd:element name="planVersionIdTypeId" type="xsd:int" />
+							<xsd:element name="expenseCommentTypeId" type="xsd:int" />
+							<xsd:element name="studyIdTypeId" type="xsd:int" />
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="role" minOccurs="0">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="profiles" minOccurs="0">
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="profile" maxOccurs="unbounded" minOccurs="0">
+											<xsd:complexType>
+												<xsd:sequence>
+													<xsd:element name="name" type="xsd:string" />
+													<xsd:element name="scope">
+														<xsd:simpleType>
+															<xsd:restriction base="xsd:string">
+																<xsd:enumeration value="Global"/>
+																<xsd:enumeration value="Project"/>
+															</xsd:restriction>
+														</xsd:simpleType>
+													</xsd:element>
+												</xsd:sequence>
+												<xsd:attribute name="id" type="xsd:string" use="required" />
+											</xsd:complexType>
+										</xsd:element>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="groups" minOccurs="0">
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="activeId" type="xsd:int" />
+										<xsd:element name="inactiveId" type="xsd:int" />
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="create">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="tp:messageType">
+					<xsd:choice>
+						<xsd:element ref="tp:program"/>
+						<xsd:element ref="tp:project"/>
+						<xsd:element ref="tp:sandbox"/>
+					</xsd:choice>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="update">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="tp:messageType">
+					<xsd:choice>
+						<xsd:element ref="tp:program"/>
+						<xsd:element ref="tp:project"/>
+						<xsd:element ref="tp:timeline"/>
+						<xsd:element ref="tp:roles"/>
+						<xsd:element ref="tp:functions"/>
+						<xsd:element ref="tp:users"/>
+						<xsd:element ref="tp:leadStudies"/>
+					</xsd:choice>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="move">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="tp:messageType">
+					<xsd:choice>
+						<xsd:element ref="tp:project"/>
+					</xsd:choice>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="read">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="tp:messageType">
+					<xsd:choice>
+						<xsd:element ref="tp:program" />
+						<xsd:element ref="tp:project" />
+						<xsd:element ref="tp:timeline" />
+						<xsd:element ref="config" />
+						<xsd:element ref="tp:ldap" />
+						<xsd:element ref="tp:leadStudies" />
+						<xsd:element ref="tp:baseline" />
+					</xsd:choice>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="delete">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="tp:messageType">
+					<xsd:choice>
+						<xsd:element ref="tp:program"/>
+						<xsd:element ref="tp:project"/>
+						<xsd:element ref="tp:sandbox"/>
+						<xsd:element ref="tp:baselines"/>
+						<xsd:element ref="tp:wbsNodes"/>
+					</xsd:choice>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="terminate" type="tp:messageType"/>
+
+	<xsd:element name="publish">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="tp:messageType">
+					<xsd:choice>
+						<xsd:element ref="tp:timeline" />
+					</xsd:choice>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="summarize">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="tp:messageType">
+					<xsd:choice>
+						<xsd:element ref="tp:timeline" />
+					</xsd:choice>
+					<xsd:attribute name="bounded" type="xsd:boolean" use="required"/>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="identify">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="tp:messageType">
+					<xsd:choice>
+						<xsd:element ref="tp:project" />
+					</xsd:choice>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="estimate">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="tp:messageType">
+					<xsd:sequence>
+						<xsd:element ref="tp:process"/>
+						<xsd:element ref="tp:programs" minOccurs="0" />
+					</xsd:sequence>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="greenList">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="tp:messageType">
+					<xsd:sequence>
+						<xsd:element ref="tp:processFC"/>
+						<xsd:element ref="tp:programs" minOccurs="0" />
+					</xsd:sequence>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="notify">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="tp:messageType">
+					<xsd:choice>
+						<xsd:element ref="tp:notification"/>
+					</xsd:choice>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="request">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="tp:messageType">
+					<xsd:choice>
+						<xsd:element ref="read"/>
+						<xsd:element ref="create"/>
+						<xsd:element ref="update"/>
+						<xsd:element ref="delete"/>
+						<xsd:element ref="move"/>
+						<xsd:element ref="publish"/>
+						<xsd:element ref="summarize"/>
+						<xsd:element ref="identify"/>
+						<xsd:element ref="estimate"/>
+						<xsd:element ref="terminate"/>
+						<xsd:element ref="notify"/>
+						<xsd:element ref="greenList"/>
+						<xsd:element ref="ipms-qplan:callQPlan"/>
+					</xsd:choice>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="response">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="tp:messageType">
+					<xsd:choice>
+						<xsd:element ref="tp:error"/>
+						<xsd:element ref="tp:reject"/>
+						<xsd:element ref="tp:accept"/>
+						<xsd:element ref="complete"/>
+					</xsd:choice>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="complete">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="tp:messageType">
+					<xsd:choice minOccurs="0">
+						<xsd:element ref="tp:program"/>
+						<xsd:element ref="tp:project"/>
+						<xsd:element ref="tp:projects"/>
+						<xsd:element ref="tp:timeline"/>
+						<xsd:element ref="tp:roles"/>
+						<xsd:element ref="tp:functions"/>
+						<xsd:element ref="config"/>
+						<xsd:element ref="tp:users"/>
+						<xsd:element ref="tp:notification"/>
+						<xsd:element ref="tp:sandbox"/>
+						<xsd:element ref="tp:baselines"/>
+						<xsd:element ref="tp:employees"/>
+						<xsd:element ref="tp:leadStudies"/>
+						<xsd:element ref="tp:wbsNodes"/>
+					</xsd:choice>
+					<xsd:attribute name="stageId" type="tp:identifierType" use="optional"/>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+</xsd:schema>

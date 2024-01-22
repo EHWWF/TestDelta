@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.1.3.2.1"
+                id="maintain_lead_studies_setup_lead_study_CreateWithParametersPageDef"
+                Package="com.bayer.ipms.view.pageDefs" SkipValidation="true">
+  <parameters/>
+  <executables>
+    <iterator Binds="ProgramAppModule.LeadStudyInstanceView" DataControl="PrivateAppModuleDataControl" RangeSize="25"
+              id="LeadStudyInstanceViewIterator"/>
+  </executables>
+  <bindings>
+    <action IterBinding="LeadStudyInstanceViewIterator" id="CreateWithParams" RequiresUpdateModel="true"
+            Action="createWithParams">
+      <NamedData NDName="ProjectId" NDValue="#{pageFlowScope.projectId}" NDType="java.lang.String"/>
+    </action>
+  </bindings>
+</pageDefinition>

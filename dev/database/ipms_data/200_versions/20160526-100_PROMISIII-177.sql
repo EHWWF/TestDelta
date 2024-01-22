@@ -1,0 +1,20 @@
+REM INSERTING into HELP_BUNDLE
+SET DEFINE OFF;
+Insert into HELP_BUNDLE (CODE,NAME,DEFINITION,URL) values ('PROJECT_CO_OVERVIEW_CHARACTERISTICS','Controlling Object -> Overview -> Characteristics','Help','about:blank');
+Insert into HELP_BUNDLE (CODE,NAME,DEFINITION,URL) values ('PROJECT_D2PRJ_OVERVIEW_CHARACTERISTICS','D2 Project -> Overview -> Characteristics','Help','about:blank');
+Insert into HELP_BUNDLE (CODE,NAME,DEFINITION,URL) values ('PROJECT_D2PRJ_OVERVIEW_PLANS','D2 Project -> Overview -> Plan Versions','Help','about:blank');
+Insert into HELP_BUNDLE (CODE,NAME,DEFINITION,URL) values ('PROJECT_D3TR_OVERVIEW_CHARACTERISTICS','D3-Transition Project -> Overview -> Characteristics','Help','about:blank');
+Insert into HELP_BUNDLE (CODE,NAME,DEFINITION,URL) values ('PROJECT_D3TR_OVERVIEW_PLANS','D3-Transition Project -> Overview -> Plan Versions','Help','about:blank');
+Insert into HELP_BUNDLE (CODE,NAME,DEFINITION,URL) values ('PROGRAM_GOALS','Development Program -> Goals','Help','about:blank');
+Insert into HELP_BUNDLE (CODE,NAME,DEFINITION,URL) values ('PROJECT_DISCREPANCIES','Development Project -> Dicrepancies','Help','about:blank');
+Insert into HELP_BUNDLE (CODE,NAME,DEFINITION,URL) values ('PROJECT_DEV_OVERVIEW_CHARACTERISTICS','Development Project -> Overview -> Characteristics','Help','about:blank');
+Insert into HELP_BUNDLE (CODE,NAME,DEFINITION,URL) values ('PROJECT_DEV_OVERVIEW_PLANS','Development Project -> Overview -> Plan Versions','Help','about:blank');
+Insert into HELP_BUNDLE (CODE,NAME,DEFINITION,URL) values ('PROJECT_TPP','Development Project -> TPP','Help','about:blank');
+Insert into HELP_BUNDLE (CODE,NAME,DEFINITION,URL) values ('LTC_PROVIDE','Development Project -> Tools -> Provide Long-term Costs','Help','about:blank');
+Insert into HELP_BUNDLE (CODE,NAME,DEFINITION,URL) values ('PROJECT_LG_OVERVIEW_CHARACTERISTICS','Lead Generation Project -> Overview -> Characteristics','Help','about:blank');
+Insert into HELP_BUNDLE (CODE,NAME,DEFINITION,URL) values ('PROJECT_LO_OVERVIEW_CHARACTERISTICS','Lead Optimization Project -> Overview -> Characteristics','Help','about:blank');
+Insert into HELP_BUNDLE (CODE,NAME,DEFINITION,URL) values ('PROJECT_PRDMNT_OVERVIEW_CHARACTERISTICS','Product Maintenance Project -> Overview -> Characteristics','Help','about:blank');
+Insert into HELP_BUNDLE (CODE,NAME,DEFINITION,URL) values ('PROJECT_RS_OVERVIEW_CHARACTERISTICS','Research Project -> Overview -> Characteristics','Help','about:blank');
+Insert into HELP_BUNDLE (CODE,NAME,DEFINITION,URL) values ('WORKITEMS_PROVIDE_LE','Work Items -> Provide Latest Estimates','Help','about:blank');
+Insert into HELP_BUNDLE (CODE,NAME,DEFINITION,URL) values ('PROJECT_PRDMNT_OVERVIEW_PLANS','Product Maintenance Project -> Overview -> Plan Versions','Help','about:blank');
+commit;

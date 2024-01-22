@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="CostsProbabilityExternal"
+  Version="12.2.1.0.31"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="COSTS_PROBABILITY"
+  AliasName="CostsProbability2"
+  BindingStyle="OracleName"
+  RowClass="com.bayer.ipms.model.base.IPMSEntityImpl">
+  <Attribute
+    Name="Id"
+    ColumnName="ID"
+    SQLType="STRUCT"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    TableName="COSTS_PROBABILITY"
+    PrimaryKey="true"/>
+  <Attribute
+    Name="ScopeCode"
+    ColumnName="SCOPE_CODE"
+    SQLType="STRUCT"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    TableName="COSTS_PROBABILITY"
+    DiscrColumn="true"
+    DefaultValue="EXT"/>
+  <Attribute
+    Name="Probability"
+    IsNotNull="true"
+    ColumnName="PROBABILITY"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="INTEGER"
+    TableName="COSTS_PROBABILITY"/>
+  <Attribute
+    Name="FunctionCode"
+    IsUnique="true"
+    ColumnName="FUNCTION_CODE"
+    SQLType="STRUCT"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    TableName="COSTS_PROBABILITY"/>
+  <Attribute
+    Name="StudyElementId"
+    ColumnName="STUDY_ELEMENT_ID"
+    SQLType="STRUCT"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    TableName="COSTS_PROBABILITY"/>
+  <Attribute
+    Name="Lag"
+    IsUnique="true"
+    ColumnName="LAG"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="INTEGER"
+    TableName="COSTS_PROBABILITY"/>
+  <Attribute
+    Name="RuleCode"
+    IsUnique="true"
+    ColumnName="RULE_CODE"
+    SQLType="STRUCT"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    TableName="COSTS_PROBABILITY"/>
+  <Attribute
+    Name="ProjectId"
+    ColumnName="PROJECT_ID"
+    SQLType="STRUCT"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="COSTS_PROBABILITY"/>
+  <Key
+    Name="SysC0044023"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0044023"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.CostsProbabilityExternal.Id"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0048900">
+    <DesignTime>
+      <Attr Name="_isUnique" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0048900"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.CostsProbabilityExternal.ScopeCode"/>
+      <Item Value="com.bayer.ipms.model.entities.CostsProbabilityExternal.FunctionCode"/>
+      <Item Value="com.bayer.ipms.model.entities.CostsProbabilityExternal.RuleCode"/>
+      <Item Value="com.bayer.ipms.model.entities.CostsProbabilityExternal.Lag"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0044102">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0044048"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0044102"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.CostsProbabilityExternal.RuleCode"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0044103">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0043892"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0044103"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.CostsProbabilityExternal.ScopeCode"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0044104">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0043887"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0044104"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.CostsProbabilityExternal.FunctionCode"/>
+    </AttrArray>
+  </Key>
+</Entity>

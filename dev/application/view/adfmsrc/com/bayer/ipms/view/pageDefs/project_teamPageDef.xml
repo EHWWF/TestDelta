@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="11.1.1.64.93" id="project_teamPageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+    <parameters/>
+    <executables>
+        <variableIterator id="variables"/>
+        <iterator id="ProjectMemberViewIterator" Binds="ProgramAppModule.ProjectMemberView"
+                  DataControl="PrivateAppModuleDataControl" RangeSize="100" ChangeEventPolicy="ppr"
+                  CacheResults="true"/>
+        <iterator Binds="ProgramAppModule.ProjectView" RangeSize="100" DataControl="PrivateAppModuleDataControl"
+                  id="ProjectViewIterator" ChangeEventPolicy="ppr"/>
+    </executables>
+    <bindings>
+   
+        <attributeValues IterBinding="ProjectViewIterator" id="AreaCode">
+            <AttrNames>
+                <Item Value="AreaCode"/>
+            </AttrNames>
+        </attributeValues>
+        <tree IterBinding="ProjectMemberViewIterator" id="ProjectMemberView" ChangeEventPolicy="ppr">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.ProjectMemberView" Name="ProjectMemberView0">
+                <AttrNames>
+                    <Item Value="EmployeeName"/>
+                    <Item Value="TeamRoleName"/>
+                    <Item Value="UserRoleCode"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+  
+    </bindings>
+</pageDefinition>

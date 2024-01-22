@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.64.93"
+                id="team_members_view_team_members_view_SetCurrentRowWithKeyValuePageDef"
+                Package="com.bayer.ipms.view.pageDefs" SkipValidation="true">
+  <parameters/>
+  <executables>
+    <iterator id="ProgramViewIterator" Binds="ProgramAppModule.ProgramView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="25" Refresh="never"/>
+  </executables>
+  <bindings>
+    <action IterBinding="ProgramViewIterator" id="setCurrentRowWithKeyValue"
+            InstanceName="PrivateAppModuleDataControl.ProgramAppModule.ProgramView"
+            DataControl="PrivateAppModuleDataControl"
+            RequiresUpdateModel="false" Action="setCurrentRowWithKeyValue">
+      <NamedData NDName="rowKey" NDValue="#{pageFlowScope.programId}"
+                 NDType="java.lang.String"/>
+    </action>
+  </bindings>
+</pageDefinition>

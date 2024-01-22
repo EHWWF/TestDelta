@@ -1,0 +1,2 @@
+alter table project add(import_program_code nvarchar2(20));
+comment on column project.import_program_code is 'Program code is relevant only for Maintenance Projects, but during import from COMBASE (before typification) projects AREA is unknown, thus, program code is saved for all imported projects. This column should be used only as an attribute. Only program_id reference to the PROGRAM.';

@@ -1,0 +1,2 @@
+alter table project add(import_program_name nvarchar2(100));
+comment on column project.import_program_name is 'Program name is relevant only for Maintenance Projects, but during import from COMBASE (before typification) projects AREA is unknown, thus, program name is saved for all imported projects. The size is 100 because P6 also limits to 100';

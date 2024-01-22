@@ -1,0 +1,1 @@
+create index ltc_estimate_is_discre_idx on ltc_estimate(is_discrepancy);

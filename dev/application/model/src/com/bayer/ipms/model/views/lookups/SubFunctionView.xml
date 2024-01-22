@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="windows-1257" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="SubFunctionView"
+  Version="12.2.1.0.31"
+  InheritPersonalization="true"
+  SelectList="SubFunction.CODE, 
+       SubFunction.FUNCTION_CODE, 
+       SubFunction.NAME, 
+       SubFunction.IS_ACTIVE"
+  FromList="SUBFUNCTION SubFunction"
+  OrderBy="SubFunction.IS_ACTIVE desc,SubFunction.FUNCTION_CODE,SubFunction.CODE"
+  BindingStyle="OracleName"
+  CustomQuery="false"
+  RowClass="com.bayer.ipms.model.views.lookups.SubFunctionViewRowImpl"
+  ComponentClass="com.bayer.ipms.model.views.lookups.SubFunctionViewImpl"
+  FetchMode="FETCH_ALL"
+  FetchSize="100"
+  PageIterMode="Full"
+  ViewLinkAccessorRetained="true"
+  RowInterface="com.bayer.ipms.model.views.lookups.common.SubFunctionViewRow"
+  ClientRowProxyName="com.bayer.ipms.model.views.lookups.client.SubFunctionViewRowClient">
+  <DesignTime>
+    <Attr Name="_rowSuperClassName"
+      Value="com.bayer.ipms.model.base.IPMSLookupViewRowImpl"/>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|VarAccess"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <ViewAccessor
+    Name="FunctionView"
+    ViewObjectName="com.bayer.ipms.model.views.lookups.FunctionView"
+    AMUsageName="SharedAppModule"
+    ViewInstanceName="FunctionView"
+    SharedInstance="true"
+    RowLevelBinds="false"/>
+  <EntityUsage
+    Name="SubFunction"
+    Entity="com.bayer.ipms.model.entities.lookups.SubFunction"/>
+  <ViewAttribute
+    Name="Code"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Code"
+    EntityUsage="SubFunction"
+    AliasName="CODE"/>
+  <ViewAttribute
+    Name="FunctionCode"
+    PrecisionRule="true"
+    EntityAttrName="FunctionCode"
+    EntityUsage="SubFunction"
+    AliasName="FUNCTION_CODE">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.lookups.SubFunctionView.FunctionCode_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Name"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Name"
+    EntityUsage="SubFunction"
+    AliasName="NAME">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.lookups.SubFunctionView.Name_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IsActive"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="IsActive"
+    EntityUsage="SubFunction"
+    AliasName="IS_ACTIVE">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.lookups.SubFunctionView.IsActive_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.bayer.ipms.model.bundles.modelBundle"/>
+  </ResourceBundle>
+  <ClientRowInterface
+    Name="__rowClientInterface">
+    <Method
+      Name="getFunctionView"
+      MethodName="getFunctionView">
+      <Return
+        Type="oracle.jbo.RowSet"
+        Name="_return_type_"/>
+    </Method>
+  </ClientRowInterface>
+</ViewObject>

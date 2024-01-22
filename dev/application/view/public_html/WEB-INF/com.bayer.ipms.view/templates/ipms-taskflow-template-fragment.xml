@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-template id="ipms-taskflow-template-fragment">
+    <default-activity id="__2">handleException</default-activity>
+    <managed-bean id="__5">
+      <managed-bean-name id="__4">controllerExceptionHandler</managed-bean-name>
+      <managed-bean-class id="__3">com.bayer.ipms.view.events.ControllerExceptionHandler</managed-bean-class>
+      <managed-bean-scope id="__6">pageFlow</managed-bean-scope>
+    </managed-bean>
+    <exception-handler id="__1">handleException</exception-handler>
+    <method-call id="handleException">
+      <method>#{pageFlowScope.controllerExceptionHandler.handleException}</method>
+      <outcome id="__7">
+        <fixed-outcome>done</fixed-outcome>
+      </outcome>
+    </method-call>
+    <use-page-fragments/>
+  </task-flow-template>
+</adfc-config>

@@ -1,0 +1,12 @@
+//Groovy Scripts for com.bayer.ipms.model.entities.ltc.LtcEstimate
+
+package com.bayer.ipms.model.entities.ltc
+
+import oracle.jbo.script.annotation.ValidatorExpression;
+
+@ValidatorExpression(name="LtcEstimateRule1")
+def LtcEstimateRule1_ValidationRuleScript_ValidationRule()
+{
+if (TypeCode=="LTC" && ScopeCode=="-") { return false} else {return true}
+}
+

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="maintain-help">
+    <template-reference>
+      <document>/WEB-INF/com.bayer.ipms.view/templates/ipms-taskflow-template-page.xml</document>
+      <id>ipms-taskflow-template-page</id>
+    </template-reference>
+    <default-activity>maintain-help-page</default-activity>
+    <transaction>
+      <new-transaction/>
+    </transaction>
+    <data-control-scope>
+      <isolated/>
+    </data-control-scope>
+    <view id="maintain-help-page">
+      <page>/WEB-INF/com.bayer.ipms.view/fragments/maintain-help.jspx</page>
+    </view>
+    <task-flow-return id="ok">
+      <outcome>
+        <name>ok</name>
+        <commit/>
+      </outcome>
+    </task-flow-return>
+    <task-flow-return id="cancel">
+      <outcome>
+        <name>cancel</name>
+        <rollback/>
+      </outcome>
+    </task-flow-return>
+    <method-call id="clearHelpCache">
+      <method>#{administrationBean.clearHelpCache}</method>
+        <outcome>
+        <fixed-outcome>clear</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="Commit">
+      <method>#{bindings.Commit.execute}</method>
+      <outcome>
+        <fixed-outcome>Commit</fixed-outcome>
+      </outcome>
+    </method-call>
+    <control-flow-rule id="__4">
+      <from-activity-id>maintain-help-page</from-activity-id>
+      <control-flow-case id="__6">
+        <from-outcome>cancel</from-outcome>
+        <to-activity-id>cancel</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__3">
+        <from-outcome>ok</from-outcome>
+        <to-activity-id>Commit</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__7">
+      <from-activity-id>clearHelpCache</from-activity-id>
+      <control-flow-case id="__8">
+        <from-outcome>clear</from-outcome>
+        <to-activity-id>ok</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__1">
+      <from-activity-id>Commit</from-activity-id>
+      <control-flow-case id="__2">
+        <from-outcome>Commit</from-outcome>
+        <to-activity-id>clearHelpCache</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+  </task-flow-definition>
+</adfc-config>

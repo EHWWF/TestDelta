@@ -1,0 +1,30 @@
+create or replace view primavera_audit_vw as
+select
+	null oper,
+	null table_name,
+	null pk1,
+	null actv_code_name,
+	null proj_id,
+	null proj_short_name,
+	null audit_date,
+	null prm_user_name,
+	null audit_info
+from dual;
+
+create or replace view primavera_audit_vw as
+	select
+	a.oper,
+	a.table_name,
+	a.pk1,
+	ac.actv_code_name,
+	ta.proj_id,
+	p.proj_short_name,
+	a.audit_date,
+	a.prm_user_name,
+	a.audit_info
+from prmaudit@p6_db a
+inner join taskactv@p6_db ta on (upper(a.table_name) = 'TASK' and ta.task_id = a.pk1)
+inner join project@p6_db p on (ta.proj_id = p.proj_id and p.orig_proj_id is null)
+inner join actvtype@p6_db at on (at.actv_code_type_id = ta.actv_code_type_id)
+left join actvcode@p6_db ac on (ac.actv_code_id = ta.actv_code_id)
+where upper(at.actv_code_type) = 'MILESTONE TYPE';

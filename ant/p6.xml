@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="IPMS" basedir=".." default="readme"
+	xmlns:oprisk="antlib:com.oprisk" xmlns:contrib="antlib:net.sf.antcontrib" xmlns:ora="antlib:net.sf.incanto">
+
+	<path id="classpath">
+		<fileset dir="ant/lib">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+
+	<taskdef name="http" classname="org.missinglink.ant.task.http.HttpClientTask">
+		<classpath refid="classpath"/>
+	</taskdef>
+
+	<taskdef name="xpath" classname="net.uworks.andariel.XPath">
+		<classpath refid="classpath"/>
+	</taskdef>
+
+	<property file="ant/ant.properties"/>
+
+	<!-- help -->
+	<target name="readme">
+		<echo>Available commands in their preferred order of execution:
+				-types - creates code and udf types
+				-codes - uploads code values
+		</echo>
+	</target>
+
+	<!-- configuration -->
+	<target name="cfg">
+	<mkdir dir="ant/log"/>
+	<record name="log/p6.log" action="start" />
+
+		<property name="build.dir" value="dev/primavera"/>
+	</target>
+
+	<!-- codes -->
+	<target name="codes" depends="cfg">
+		<tempfile property="temp.response" deleteonexit="true" suffix=".xml"/>
+		<tempfile property="temp.request" deleteonexit="true" suffix=".xml"/>
+
+		<antcall target="read" inheritall="true">
+			<param name="request">
+				<![CDATA[<ReadActivityCodeTypes xmlns="http://xmlns.oracle.com/Primavera/P6/WS/ActivityCodeType/V1">
+					<Field>Name</Field>
+				</ReadActivityCodeTypes>]]>
+			</param>
+
+			<param name="response" value="${temp.response}"/>
+			<param name="service" value="ActivityCodeTypeService"/>
+		</antcall>
+
+		<xpath file="${temp.response}" expression="//v1:ActivityCodeType[v1:Name='Phase'][1]/v1:ObjectId/text()" outputproperty="type.phase">
+			<namespace uri="http://xmlns.oracle.com/Primavera/P6/WS/ActivityCodeType/V1" prefix="v1"/>
+		</xpath>
+
+		<xpath file="${temp.response}" expression="//v1:ActivityCodeType[v1:Name='Integration Type'][1]/v1:ObjectId/text()" outputproperty="type.integration">
+			<namespace uri="http://xmlns.oracle.com/Primavera/P6/WS/ActivityCodeType/V1" prefix="v1"/>
+		</xpath>
+
+		<xpath file="${temp.response}" expression="//v1:ActivityCodeType[v1:Name='Milestone Type'][1]/v1:ObjectId/text()" outputproperty="type.milestone">
+			<namespace uri="http://xmlns.oracle.com/Primavera/P6/WS/ActivityCodeType/V1" prefix="v1"/>
+		</xpath>
+
+		<sql userid="ipms_data" password="${db.ipms_data.password}"
+			driver="oracle.jdbc.driver.OracleDriver"
+			url="jdbc:oracle:thin:@${db.host}:${db.port}:${db.sid}"
+			classpathref="classpath"
+			print="true" showheaders="false" showtrailers="false"
+			output="${temp.request}">
+
+			<![CDATA[
+				select '<ActivityCode><CodeTypeObjectId>@Milestone Type@</CodeTypeObjectId><CodeValue>'||code||'</CodeValue><Description>'||name||'</Description></ActivityCode>' from milestone
+				union all
+				select '<ActivityCode><CodeTypeObjectId>@Integration Type@</CodeTypeObjectId><CodeValue>'||code||'</CodeValue><Description>'||name||'</Description></ActivityCode>' from integration_type
+				union all
+				select '<ActivityCode><CodeTypeObjectId>@Phase@</CodeTypeObjectId><CodeValue>'||code||'</CodeValue><Description>'||name||'</Description></ActivityCode>' from phase
+			]]>
+		</sql>
+
+		<loadfile property="data" srcfile="${temp.request}" encoding="UTF-8">
+			<filterchain>
+				<replacestring from="@Phase@" to="${type.phase}"/>
+				<replacestring from="@Integration Type@" to="${type.integration}"/>
+				<replacestring from="@Milestone Type@" to="${type.milestone}"/>
+			</filterchain>
+		</loadfile>
+
+		<antcall target="write" inheritall="true">
+			<param name="request"><![CDATA[<CreateActivityCodes xmlns="http://xmlns.oracle.com/Primavera/P6/WS/ActivityCode/V1">${data}</CreateActivityCodes>]]></param>
+			<param name="service" value="ActivityCodeService"/>
+		</antcall>
+	</target>
+
+	<!-- types -->
+	<target name="types" depends="cfg">
+		<contrib:foreach target="type" inheritall="true" param="file">
+			<fileset dir="${build.dir}" includes="*.xml"/>
+		</contrib:foreach>
+	</target>
+
+	<!-- read(request,service,response) -->
+	<target name="read" depends="cfg">
+		<tempfile property="temp.request" deleteonexit="true"/>
+
+		<concat overwrite="yes" destfile="${temp.request}">
+			${request}
+			<header trim="true">
+				<![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+					<soapenv:Header>
+						<wsse:Security soapenv:mustUnderstand="1" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+							<wsse:UsernameToken wsu:Id="UsernameToken-7">
+								<wsse:Username>${p6.user}</wsse:Username>
+								<wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">${p6.password}</wsse:Password>
+							</wsse:UsernameToken>
+						</wsse:Security>
+					</soapenv:Header>
+					<soapenv:Body>]]>
+			</header>
+			<footer trim="true">
+				<![CDATA[</soapenv:Body></soapenv:Envelope>]]>
+			</footer>
+		</concat>
+
+		<http url="${p6.ws}/${service}" method="POST" outfile="${response}">
+			<headers>
+				<header name="Content-Type" value="text/xml;charset=UTF-8"/>
+			</headers>
+			<entity file="${temp.request}"/>
+		</http>
+
+		<delete file="${temp.request}"/>
+	</target>
+
+	<!-- write(request,service) -->
+	<target name="write" depends="cfg">
+		<tempfile property="temp.request" deleteonexit="true" suffix=".xml" />
+		<tempfile property="temp.response" deleteonexit="true" suffix=".xml" />
+
+		<concat overwrite="yes" destfile="${temp.request}">
+			${request}
+			<header trim="true">
+				<![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+					<soapenv:Header>
+						<wsse:Security soapenv:mustUnderstand="1" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+							<wsse:UsernameToken wsu:Id="UsernameToken-7">
+								<wsse:Username>${p6.user}</wsse:Username>
+								<wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">${p6.password}</wsse:Password>
+							</wsse:UsernameToken>
+						</wsse:Security>
+					</soapenv:Header>
+					<soapenv:Body>]]>
+			</header>
+			<footer trim="true">
+				<![CDATA[</soapenv:Body></soapenv:Envelope>]]>
+			</footer>
+		</concat>
+
+		<http url="${p6.ws}/${service}" method="POST" outfile="${temp.response}">
+			<headers>
+				<header name="Content-Type" value="text/xml;charset=UTF-8"/>
+			</headers>
+			<entity file="${temp.request}"/>
+		</http>
+
+		<delete file="${temp.request}"/>
+	</target>
+
+	<!-- type(file) -->
+	<target name="type" depends="cfg">
+		<basename property="file.name" file="${file}" suffix=".xml"/>
+		<loadfile property="file.data" srcfile="${file}" encoding="UTF-8"/>
+
+		<antcall target="write" inheritall="true">
+			<param name="request" value="${file.data}"/>
+			<param name="service" value="${file.name}Service"/>
+		</antcall>
+	 </target>
+
+</project>

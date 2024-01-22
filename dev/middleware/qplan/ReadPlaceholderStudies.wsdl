@@ -1,0 +1,38 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
+<wsdl:definitions
+     name="ReadPlaceholderStudies"
+     targetNamespace="http://xmlns.bayer.com/ipms/qplan"
+     xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+     xmlns:ipms-soa="http://xmlns.bayer.com/ipms/soa"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+     xmlns:ipms-qplan="http://xmlns.bayer.com/ipms/qplan"
+    >
+    <plnk:partnerLinkType name="ReadPlaceholderStudies">
+        <plnk:role name="ReadPlaceholderStudiesProvider" portType="ipms-qplan:ReadPlaceholderStudies"/>
+        <plnk:role name="ReadPlaceholderStudiesRequester" portType="ipms-qplan:ReadPlaceholderStudiesCallback"/>
+    </plnk:partnerLinkType>
+    <wsdl:types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+             xmlns:ipms-soa="http://xmlns.bayer.com/ipms/soa" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:ipms-qplan="http://xmlns.bayer.com/ipms/qplan">
+            <import namespace="http://xmlns.bayer.com/ipms/qplan" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/qplan/qplan.xsd"/>
+            <import namespace="http://xmlns.bayer.com/ipms/soa" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/soa/soa.xsd"/>
+        </schema>
+    </wsdl:types>
+    <wsdl:message name="ReadPlaceholderStudiesRequestMessage">
+        <wsdl:part name="payload" element="ipms-qplan:callQPlan"/>
+    </wsdl:message>
+    <wsdl:message name="ReadPlaceholderStudiesResponseMessage">
+        <wsdl:part name="payload" element="ipms-soa:response"/>
+    </wsdl:message>
+    <wsdl:portType name="ReadPlaceholderStudies">
+        <wsdl:operation name="process">
+            <wsdl:input message="ipms-qplan:ReadPlaceholderStudiesRequestMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:portType name="ReadPlaceholderStudiesCallback">
+        <wsdl:operation name="processResponse">
+            <wsdl:input message="ipms-qplan:ReadPlaceholderStudiesResponseMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+</wsdl:definitions>

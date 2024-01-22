@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="windows-1257" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="Costs"
+  Version="11.1.1.64.93"
+  InheritPersonalization="true"
+  DBObjectType="table"
+  DBObjectName="COSTS"
+  AliasName="Costs"
+  BindingStyle="OracleName"
+  UseGlueCode="false"
+  RowClass="com.bayer.ipms.model.base.IPMSEntityImpl">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Access"/>
+    <AttrArray Name="_publishEvents"/>
+  </DesignTime>
+  <Attribute
+    Name="Id"
+    IsUpdateable="false"
+    Precision="20"
+    ColumnName="ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="COSTS"
+    PrimaryKey="true"
+    RetrievedOnInsert="true"
+    Scale="0">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="ProjectId"
+    IsUpdateable="while_insert"
+    Precision="20"
+    ColumnName="PROJECT_ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="COSTS"
+    Scale="0">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="StudyId"
+    IsUpdateable="while_insert"
+    Precision="20"
+    ColumnName="STUDY_ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="COSTS"
+    Scale="0">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="FunctionCode"
+    IsUpdateable="while_insert"
+    Precision="10"
+    ColumnName="FUNCTION_CODE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="COSTS"
+    Scale="0">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="ScopeCode"
+    IsUpdateable="while_insert"
+    IsNotNull="true"
+    Precision="10"
+    ColumnName="SCOPE_CODE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="COSTS"
+    Scale="0">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="MethodCode"
+    IsUpdateable="while_insert"
+    IsNotNull="true"
+    Precision="10"
+    ColumnName="METHOD_CODE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="COSTS"
+    Scale="0">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="StatusCode"
+    IsUpdateable="while_insert"
+    Precision="10"
+    ColumnName="STATUS_CODE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="COSTS"
+    Scale="0">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="TypeCode"
+    IsUpdateable="while_insert"
+    IsNotNull="true"
+    Precision="10"
+    ColumnName="TYPE_CODE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="COSTS"
+    Scale="0">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="Cost"
+    IsNotNull="true"
+    ColumnName="COST"
+    SQLType="NUMERIC"
+    Type="java.lang.Float"
+    ColumnType="FLOAT"
+    TableName="COSTS">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="22"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="StartDate"
+    IsUpdateable="while_insert"
+    IsNotNull="true"
+    ColumnName="START_DATE"
+    SQLType="TIMESTAMP"
+    Type="oracle.jbo.domain.Date"
+    ColumnType="DATE"
+    TableName="COSTS">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="7"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="FinishDate"
+    IsUpdateable="while_insert"
+    IsNotNull="true"
+    ColumnName="FINISH_DATE"
+    SQLType="TIMESTAMP"
+    Type="oracle.jbo.domain.Date"
+    ColumnType="DATE"
+    TableName="COSTS">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="7"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="CreateDate"
+    IsUpdateable="false"
+    ColumnName="CREATE_DATE"
+    SQLType="TIMESTAMP"
+    Type="oracle.jbo.domain.Date"
+    ColumnType="DATE"
+    TableName="COSTS"
+    RetrievedOnInsert="true">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="7"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="UpdateDate"
+    IsUpdateable="false"
+    ColumnName="UPDATE_DATE"
+    SQLType="TIMESTAMP"
+    Type="oracle.jbo.domain.Date"
+    ColumnType="DATE"
+    TableName="COSTS"
+    ChangeIndicator="true"
+    RetrievedOnUpdate="true"
+    RetrievedOnInsert="true">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="7"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="Comments"
+    Precision="500"
+    ColumnName="COMMENTS"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="COSTS"
+    Scale="0">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="500"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="SubtypeCode"
+    IsUpdateable="while_insert"
+    Precision="10"
+    ColumnName="SUBTYPE_CODE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="COSTS"
+    Scale="0">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="DevelopmentPhaseCode"
+    Precision="10"
+    ColumnName="DEVELOPMENT_PHASE_CODE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="COSTS"
+    Scale="0">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="CreateUserId"
+    IsUpdateable="false"
+    Precision="20"
+    ColumnName="CREATE_USER_ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="COSTS"
+    RetrievedOnInsert="true"
+    Scale="0">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="UpdateUserId"
+    IsUpdateable="false"
+    Precision="20"
+    ColumnName="UPDATE_USER_ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="COSTS"
+    RetrievedOnUpdate="true"
+    RetrievedOnInsert="true"
+    Scale="0">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="SubFunctionCode"
+    Precision="10"
+    Scale="0"
+    ColumnName="SUBFUNCTION_CODE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="COSTS">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="ForecastNumber"
+    ColumnName="FORECAST_NUMBER"
+    SQLType="NUMERIC"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    TableName="COSTS">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="ForecastVersion"
+    ColumnName="FORECAST_VERSION"
+    SQLType="NUMERIC"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    TableName="COSTS">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </Attribute>
+  <Key
+    Name="SysC0012278">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0012278"/>
+      <Attr Name="_checkCondition" Value='"ID" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.Costs.Id"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0012279">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0012279"/>
+      <Attr Name="_checkCondition" Value='"SCOPE_CODE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.Costs.ScopeCode"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0012280">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0012280"/>
+      <Attr Name="_checkCondition" Value='"METHOD_CODE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.Costs.MethodCode"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0012282">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0012282"/>
+      <Attr Name="_checkCondition" Value='"TYPE_CODE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.Costs.TypeCode"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0012283">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0012283"/>
+      <Attr Name="_checkCondition" Value='"COST" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.Costs.Cost"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0012284">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0012284"/>
+      <Attr Name="_checkCondition" Value='"START_DATE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.Costs.StartDate"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0012285">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0012285"/>
+      <Attr Name="_checkCondition" Value='"FINISH_DATE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.Costs.FinishDate"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0012287">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0012287"/>
+      <Attr Name="_checkCondition" Value='"CREATE_DATE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.Costs.CreateDate"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0012289"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0012289"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.Costs.Id"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0015819">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0015819"/>
+      <Attr Name="_checkCondition" Value='"CREATE_USER_ID" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.Costs.CreateUserId"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0012290">
+    <DesignTime>
+      <Attr Name="_isCascadeDelete" Value="true"/>
+      <Attr Name="_referencedKey" Value="SYS_C0011166"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0012290"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.Costs.ProjectId"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0012292">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0012221"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0012292"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.Costs.ScopeCode"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0012293">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0012236"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0012293"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.Costs.MethodCode"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0012294">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0012887"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0012294"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.Costs.StatusCode"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0012295">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0012226"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0012295"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.Costs.TypeCode"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0019364">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0019363"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0019364"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.Costs.SubtypeCode"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0020771">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0020432"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0020771"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.Costs.DevelopmentPhaseCode"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0022165">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0019357"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0022165"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.Costs.SubFunctionCode"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0022218">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0011488"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0022218"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.Costs.FunctionCode"/>
+    </AttrArray>
+  </Key>
+</Entity>

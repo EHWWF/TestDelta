@@ -1,0 +1,1622 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<bpmn:definitions fileRevision="20120601" version="12.1.3" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmnext="http://xmlns.oracle.com/bpm/OracleExtensions" xmlns:ns2="http://www.omg.org/spec/DD/20100524/DI" xmlns:ns4="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:ns3="http://www.omg.org/spec/DD/20100524/DC">
+    <bpmn:process processType="Public" isExecutable="true" name="EstimateLTC" id="EstimateLTC">
+        <bpmn:extensionElements>
+            <bpmnext:OracleExtensions>
+                <bpmnext:FeatureSet>
+                    <bpmnext:BooleanFeature value="false" name="atomic"/>
+                    <bpmnext:BooleanFeature value="false" name="instanceScreenflow"/>
+                    <bpmnext:BooleanFeature value="true" name="relative-coordinates"/>
+                    <bpmnext:BooleanFeature value="true" name="sharePredefineVariables"/>
+                    <bpmnext:BooleanFeature value="true" name="suspendInstanceOnDataAssociationError"/>
+                    <bpmnext:StringFeature value="" name="ANALYTICS_VIEW_IDENTIFIER"/>
+                    <bpmnext:StringFeature value="" name="AUTHOR"/>
+                    <bpmnext:StringFeature value="default" name="GreedyExecutionMode"/>
+                    <bpmnext:StringFeature value="http://xmlns.oracle.com/bpmn/bpmnProcess/EstimateLTC" name="NAMESPACE"/>
+                    <bpmnext:StringFeature value="PROJECT_DEFAULT" name="generatesEvents"/>
+                    <bpmnext:StringFeature value="HORIZONTAL_LAYOUT" name="process-layout"/>
+                    <bpmnext:StringFeature value="1.0" name="scale"/>
+                    <bpmnext:StringFeature value="REGULAR" name="sealType"/>
+                </bpmnext:FeatureSet>
+                <bpmnext:Localization/>
+                <bpmnext:CorrelationKeys>
+                    <bpmnext:CorrelationKey name="ck_compositeId">
+                        <bpmnext:Property propertyQName="{http://xmlns.oracle.com/bpmn/bpmnProcess/bpm}compositeId"/>
+                    </bpmnext:CorrelationKey>
+                </bpmnext:CorrelationKeys>
+                <bpmnext:Conversations>
+                    <bpmnext:Conversation id="CONVERSATION198874801697" type="define_interface">
+                        <bpmnext:DefineInterfaceConversationDefinition exposeSOAPService="true"/>
+                    </bpmnext:Conversation>
+                </bpmnext:Conversations>
+                <bpmnext:ApplicationInfo>
+                    <bpmnext:AppLinkName/>
+                    <bpmnext:Description/>
+                    <bpmnext:AppTags/>
+                    <bpmnext:AppCategory/>
+                    <bpmnext:AppExternalDocuments/>
+                </bpmnext:ApplicationInfo>
+                <bpmnext:ProcessProperties>
+                    <bpmnext:abstract>false</bpmnext:abstract>
+                </bpmnext:ProcessProperties>
+                <bpmnext:MeasurementMarks/>
+                <bpmnext:Counters/>
+            </bpmnext:OracleExtensions>
+        </bpmn:extensionElements>
+        <bpmn:laneSet>
+            <bpmn:lane name="GPM_GPH" id="lane0">
+                <bpmn:extensionElements>
+                    <bpmnext:OracleExtensions>
+                        <bpmnext:GraphicsAttributes backgroundColor="-1761607681">
+                            <bpmnext:Position x="0" y="0"/>
+                            <bpmnext:Size width="809" height="0"/>
+                        </bpmnext:GraphicsAttributes>
+                        <bpmnext:LaneAttributes roleId="GPM_GPH"/>
+                        <bpmnext:FeatureSet/>
+                    </bpmnext:OracleExtensions>
+                </bpmn:extensionElements>
+            </bpmn:lane>
+        </bpmn:laneSet>
+        <bpmn:subProcess triggeredByEvent="false" isForCompensation="false" name="SubProgram" id="ACT19887505137447">
+            <bpmn:extensionElements>
+                <bpmnext:OracleExtensions>
+                    <bpmnext:GraphicsAttributes>
+                        <bpmnext:Position x="696" y="242"/>
+                        <bpmnext:Size width="937" height="323"/>
+                    </bpmnext:GraphicsAttributes>
+                    <bpmnext:FeatureSet>
+                        <bpmnext:BooleanFeature value="false" name="collapsed"/>
+                        <bpmnext:BooleanFeature value="false" name="hasCheckpoint"/>
+                        <bpmnext:BooleanFeature value="false" name="inputValidation"/>
+                        <bpmnext:BooleanFeature value="false" name="isDraft"/>
+                        <bpmnext:BooleanFeature value="false" name="outputValidation"/>
+                        <bpmnext:StringFeature value="[]" name="TagFeature"/>
+                        <bpmnext:StringFeature value="PROCESS_DEFAULT" name="generatesEvents"/>
+                        <bpmnext:StringFeature value="" name="lane"/>
+                        <bpmnext:StringFeature value="Begin Level" name="level"/>
+                        <bpmnext:StringFeature value="USE_PROCESS_PERMISSION" name="sealType"/>
+                    </bpmnext:FeatureSet>
+                    <bpmnext:Localization>
+                        <bpmnext:Label>
+                            <bpmnext:LocalizedContent language="en">SubProgram</bpmnext:LocalizedContent>
+                        </bpmnext:Label>
+                        <bpmnext:Description>
+                            <bpmnext:LocalizedContent language="en">Program SubProcess</bpmnext:LocalizedContent>
+                        </bpmnext:Description>
+                    </bpmnext:Localization>
+                    <bpmnext:FlowNodeProperties/>
+                    <bpmnext:MeasurementMarks/>
+                    <bpmnext:LogHandlers/>
+                </bpmnext:OracleExtensions>
+            </bpmn:extensionElements>
+            <bpmn:ioSpecification>
+                <bpmn:dataInput name="loopDataInput" id="loopDataInput">
+                    <bpmn:extensionElements>
+                        <bpmnext:OracleExtensions>
+                            <bpmnext:TypeRef refType="namespaced" name="program" namespace="http://xmlns.bayer.com/ipms" elementType="ELEMENT" isArray="true" implementationType="businessObject"/>
+                        </bpmnext:OracleExtensions>
+                    </bpmn:extensionElements>
+                </bpmn:dataInput>
+                <bpmn:dataOutput name="loopDataOutput" id="loopDataOutput">
+                    <bpmn:extensionElements>
+                        <bpmnext:OracleExtensions>
+                            <bpmnext:TypeRef refType="namespaced" name="program" namespace="http://xmlns.bayer.com/ipms" elementType="ELEMENT" isArray="true" implementationType="businessObject"/>
+                        </bpmnext:OracleExtensions>
+                    </bpmn:extensionElements>
+                </bpmn:dataOutput>
+                <bpmn:inputSet id="ACT19887505137447_uniqueInputSet">
+                    <bpmn:dataInputRefs>loopDataInput</bpmn:dataInputRefs>
+                </bpmn:inputSet>
+                <bpmn:outputSet id="ACT19887505137447_uniqueOutputSet">
+                    <bpmn:dataOutputRefs>loopDataOutput</bpmn:dataOutputRefs>
+                </bpmn:outputSet>
+            </bpmn:ioSpecification>
+            <bpmn:dataInputAssociation>
+                <bpmn:extensionElements>
+                    <bpmnext:OracleExtensions/>
+                </bpmn:extensionElements>
+                <bpmn:sourceRef>dataEstimate</bpmn:sourceRef>
+                <bpmn:targetRef>loopDataInput</bpmn:targetRef>
+                <bpmn:assignment>
+                    <bpmn:extensionElements>
+                        <bpmnext:OracleExtensions>
+                            <bpmnext:DataAssignment operation="copy" ignoreMissingData="false"/>
+                        </bpmnext:OracleExtensions>
+                    </bpmn:extensionElements>
+                    <bpmn:from xsi:type="bpmn:tFormalExpression" language="http://www.w3.org/1999/XPath" xpathns:ns="http://xmlns.bayer.com/ipms" xpathns:bpmn="http://www.omg.org/bpmn20" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">bpmn:getDataObject('dataEstimate')/ns:programs/ns:program
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:Expression mode="xpath"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                    </bpmn:from>
+                    <bpmn:to xsi:type="bpmn:tFormalExpression" language="http://www.w3.org/1999/XPath" xpathns:bpmn="http://www.omg.org/bpmn20" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">bpmn:getDataInput('loopDataInput')
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:Expression mode="simple"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                    </bpmn:to>
+                </bpmn:assignment>
+            </bpmn:dataInputAssociation>
+            <bpmn:dataOutputAssociation>
+                <bpmn:extensionElements>
+                    <bpmnext:OracleExtensions/>
+                </bpmn:extensionElements>
+                <bpmn:sourceRef>loopDataOutput</bpmn:sourceRef>
+                <bpmn:targetRef>dataEstimate</bpmn:targetRef>
+                <bpmn:assignment>
+                    <bpmn:extensionElements>
+                        <bpmnext:OracleExtensions>
+                            <bpmnext:DataAssignment operation="copy" ignoreMissingData="false"/>
+                        </bpmnext:OracleExtensions>
+                    </bpmn:extensionElements>
+                    <bpmn:from xsi:type="bpmn:tFormalExpression" language="http://www.w3.org/1999/XPath" xpathns:bpmn="http://www.omg.org/bpmn20" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">bpmn:getDataOutput('loopDataOutput')
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:Expression mode="simple"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                    </bpmn:from>
+                    <bpmn:to xsi:type="bpmn:tFormalExpression" language="http://www.w3.org/1999/XPath" xpathns:ns="http://xmlns.bayer.com/ipms" xpathns:bpmn="http://www.omg.org/bpmn20" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">bpmn:getDataObject('dataEstimate')/ns:programs/ns:program
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:Expression mode="xpath"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                    </bpmn:to>
+                </bpmn:assignment>
+            </bpmn:dataOutputAssociation>
+            <bpmn:loopCharacteristics xsi:type="bpmn:tMultiInstanceLoopCharacteristics" isSequential="false" behavior="All" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                <bpmn:loopCardinality xsi:type="bpmn:tFormalExpression"/>
+                <bpmn:loopDataInputRef xmlns="">loopDataInput</bpmn:loopDataInputRef>
+                <bpmn:loopDataOutputRef xmlns="">loopDataOutput</bpmn:loopDataOutputRef>
+                <bpmn:completionCondition xsi:type="bpmn:tFormalExpression"/>
+            </bpmn:loopCharacteristics>
+            <bpmn:scriptTask isForCompensation="false" name="GetProcess" id="ACT19887525432912">
+                <bpmn:extensionElements>
+                    <bpmnext:OracleExtensions>
+                        <bpmnext:GraphicsAttributes>
+                            <bpmnext:Position x="180" y="146"/>
+                        </bpmnext:GraphicsAttributes>
+                        <bpmnext:FeatureSet>
+                            <bpmnext:BooleanFeature value="false" name="hasCheckpoint"/>
+                            <bpmnext:BooleanFeature value="false" name="isDraft"/>
+                            <bpmnext:BooleanFeature value="false" name="outputValidation"/>
+                            <bpmnext:StringFeature value="[]" name="TagFeature"/>
+                            <bpmnext:StringFeature value="PROCESS_DEFAULT" name="generatesEvents"/>
+                            <bpmnext:StringFeature value="" name="lane"/>
+                            <bpmnext:StringFeature value="Begin Level" name="level"/>
+                            <bpmnext:StringFeature value="USE_PROCESS_PERMISSION" name="sealType"/>
+                        </bpmnext:FeatureSet>
+                        <bpmnext:Localization>
+                            <bpmnext:Label>
+                                <bpmnext:LocalizedContent language="en">GetProcess</bpmnext:LocalizedContent>
+                            </bpmnext:Label>
+                            <bpmnext:Description>
+                                <bpmnext:LocalizedContent language="en"></bpmnext:LocalizedContent>
+                            </bpmnext:Description>
+                        </bpmnext:Localization>
+                        <bpmnext:FlowNodeProperties/>
+                        <bpmnext:LogHandlers/>
+                    </bpmnext:OracleExtensions>
+                </bpmn:extensionElements>
+                <bpmn:ioSpecification/>
+                <bpmn:dataOutputAssociation>
+                    <bpmn:extensionElements>
+                        <bpmnext:OracleExtensions>
+                            <bpmnext:OtherRef>dataEstimate</bpmnext:OtherRef>
+                        </bpmnext:OracleExtensions>
+                    </bpmn:extensionElements>
+                    <bpmn:targetRef>dataSubProcess</bpmn:targetRef>
+                    <bpmn:assignment>
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:DataAssignment operation="copy" ignoreMissingData="false"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                        <bpmn:from xsi:type="bpmn:tFormalExpression" language="http://www.w3.org/1999/XPath" xpathns:ns="http://xmlns.bayer.com/ipms" xpathns:bpmn="http://www.omg.org/bpmn20" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">bpmn:getDataObject('dataEstimate')/ns:process
+                            <bpmn:extensionElements>
+                                <bpmnext:OracleExtensions>
+                                    <bpmnext:Expression mode="simple"/>
+                                </bpmnext:OracleExtensions>
+                            </bpmn:extensionElements>
+                        </bpmn:from>
+                        <bpmn:to xsi:type="bpmn:tFormalExpression" language="http://www.w3.org/1999/XPath" xpathns:bpmn="http://www.omg.org/bpmn20" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">bpmn:getDataObject('dataSubProcess')
+                            <bpmn:extensionElements>
+                                <bpmnext:OracleExtensions>
+                                    <bpmnext:Expression mode="simple"/>
+                                </bpmnext:OracleExtensions>
+                            </bpmn:extensionElements>
+                        </bpmn:to>
+                    </bpmn:assignment>
+                </bpmn:dataOutputAssociation>
+            </bpmn:scriptTask>
+            <bpmn:userTask isForCompensation="false" name="ProvideLTC" id="ACT19887543996883">
+                <bpmn:extensionElements>
+                    <bpmnext:OracleExtensions>
+                        <bpmnext:GraphicsAttributes>
+                            <bpmnext:Position x="787" y="180"/>
+                        </bpmnext:GraphicsAttributes>
+                        <bpmnext:FeatureSet>
+                            <bpmnext:BooleanFeature value="false" name="hasCheckpoint"/>
+                            <bpmnext:BooleanFeature value="false" name="isDraft"/>
+                            <bpmnext:BooleanFeature value="false" name="reinitiate"/>
+                            <bpmnext:BooleanFeature value="false" name="manualCreation"/>
+                            <bpmnext:BooleanFeature value="false" name="inputValidation"/>
+                            <bpmnext:BooleanFeature value="false" name="outputValidation"/>
+                            <bpmnext:StringFeature value="[]" name="TagFeature"/>
+                            <bpmnext:StringFeature value="PROCESS_DEFAULT" name="generatesEvents"/>
+                            <bpmnext:StringFeature value="" name="lane"/>
+                            <bpmnext:StringFeature value="Begin Level" name="level"/>
+                            <bpmnext:StringFeature value="USE_PROCESS_PERMISSION" name="sealType"/>
+                            <bpmnext:StringFeature value="REUSE_PAYLOAD" name="reinitiatorPolicy"/>
+                            <bpmnext:StringFeature value="SIMPLE" name="humanTaskType"/>
+                            <bpmnext:StringFeature value="" name="reinitiateSource"/>
+                            <bpmnext:AttributeExpression name="subjectExpressionFeature">
+                                <bpmnext:expression language="http://www.w3.org/1999/XPath" xpathns:ns="http://xmlns.bayer.com/ipms" xpathns:bpmn="http://www.omg.org/bpmn20" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace">concat('Provide LTC and FTE (',bpmn:getDataObject('dataEstimate')/ns:process/ns:tag,'-',bpmn:getDataObject('dataEstimate')/ns:process/ns:processName,'-',bpmn:getActivityInstanceAttribute('ACT19887505137447', 'inputDataItem')/ns:name,')')
+                                    <bpmn:extensionElements>
+                                        <bpmnext:OracleExtensions>
+                                            <bpmnext:Expression mode="xpath"/>
+                                        </bpmnext:OracleExtensions>
+                                    </bpmn:extensionElements>
+                                </bpmnext:expression>
+                            </bpmnext:AttributeExpression>
+                        </bpmnext:FeatureSet>
+                        <bpmnext:HumanTask>
+                            <bpmnext:humanTaskRef refType="namespaced" name="ProvideLTC" namespace="http://xmlns.oracle.com/middleware/bpm/ProvideLTC" elementType="TYPE" implementationType="humanTask"/>
+                        </bpmnext:HumanTask>
+                        <bpmnext:Localization>
+                            <bpmnext:Label>
+                                <bpmnext:LocalizedContent language="en">ProvideLTC</bpmnext:LocalizedContent>
+                            </bpmnext:Label>
+                            <bpmnext:Description>
+                                <bpmnext:LocalizedContent language="en"></bpmnext:LocalizedContent>
+                            </bpmnext:Description>
+                        </bpmnext:Localization>
+                        <bpmnext:FlowNodeProperties/>
+                        <bpmnext:LogHandlers/>
+                    </bpmnext:OracleExtensions>
+                </bpmn:extensionElements>
+                <bpmn:ioSpecification>
+                    <bpmn:dataInput name="dataUsersInProgRole" id="dataUsersInProgRole">
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:TypeRef refType="schema" name="string" namespace="http://www.w3.org/2001/XMLSchema" implementationType="type"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                    </bpmn:dataInput>
+                    <bpmn:dataInput name="dataUsersInGlobalRole" id="dataUsersInGlobalRole">
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:TypeRef refType="schema" name="string" namespace="http://www.w3.org/2001/XMLSchema" implementationType="type"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                    </bpmn:dataInput>
+                    <bpmn:dataInput name="program" id="program">
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:TypeRef refType="namespaced" name="program" namespace="http://xmlns.bayer.com/ipms" elementType="ELEMENT" implementationType="businessObject"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                    </bpmn:dataInput>
+                    <bpmn:dataInput name="process" id="process">
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:TypeRef refType="namespaced" name="process" namespace="http://xmlns.bayer.com/ipms" elementType="ELEMENT" implementationType="businessObject"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                    </bpmn:dataInput>
+                    <bpmn:dataInput name="execData" id="execData">
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:TypeRef refType="namespaced" name="task" namespace="http://xmlns.oracle.com/bpel/workflow/task" elementType="ELEMENT" implementationType="businessObject"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                    </bpmn:dataInput>
+                    <bpmn:dataOutput name="dataUsersInProgRole" id="dataUsersInProgRole">
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:TypeRef refType="schema" name="string" namespace="http://www.w3.org/2001/XMLSchema" implementationType="type"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                    </bpmn:dataOutput>
+                    <bpmn:dataOutput name="dataUsersInGlobalRole" id="dataUsersInGlobalRole">
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:TypeRef refType="schema" name="string" namespace="http://www.w3.org/2001/XMLSchema" implementationType="type"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                    </bpmn:dataOutput>
+                    <bpmn:dataOutput name="program" id="program">
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:TypeRef refType="namespaced" name="program" namespace="http://xmlns.bayer.com/ipms" elementType="ELEMENT" implementationType="businessObject"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                    </bpmn:dataOutput>
+                    <bpmn:dataOutput name="process" id="process">
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:TypeRef refType="namespaced" name="process" namespace="http://xmlns.bayer.com/ipms" elementType="ELEMENT" implementationType="businessObject"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                    </bpmn:dataOutput>
+                    <bpmn:dataOutput name="execData" id="execData">
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:TypeRef refType="namespaced" name="task" namespace="http://xmlns.oracle.com/bpel/workflow/task" elementType="ELEMENT" implementationType="businessObject"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                    </bpmn:dataOutput>
+                    <bpmn:dataOutput name="outcome" id="outcome">
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:TypeRef refType="schema" name="string" namespace="http://www.w3.org/2001/XMLSchema" implementationType="type"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                    </bpmn:dataOutput>
+                    <bpmn:inputSet id="ACT19887543996883_uniqueInputSet">
+                        <bpmn:dataInputRefs>dataUsersInProgRole</bpmn:dataInputRefs>
+                        <bpmn:dataInputRefs>dataUsersInGlobalRole</bpmn:dataInputRefs>
+                        <bpmn:dataInputRefs>program</bpmn:dataInputRefs>
+                        <bpmn:dataInputRefs>process</bpmn:dataInputRefs>
+                        <bpmn:dataInputRefs>execData</bpmn:dataInputRefs>
+                    </bpmn:inputSet>
+                    <bpmn:outputSet id="ACT19887543996883_uniqueOutputSet">
+                        <bpmn:dataOutputRefs>dataUsersInProgRole</bpmn:dataOutputRefs>
+                        <bpmn:dataOutputRefs>dataUsersInGlobalRole</bpmn:dataOutputRefs>
+                        <bpmn:dataOutputRefs>program</bpmn:dataOutputRefs>
+                        <bpmn:dataOutputRefs>process</bpmn:dataOutputRefs>
+                        <bpmn:dataOutputRefs>execData</bpmn:dataOutputRefs>
+                        <bpmn:dataOutputRefs>outcome</bpmn:dataOutputRefs>
+                    </bpmn:outputSet>
+                </bpmn:ioSpecification>
+                <bpmn:dataInputAssociation>
+                    <bpmn:extensionElements>
+                        <bpmnext:OracleExtensions/>
+                    </bpmn:extensionElements>
+                    <bpmn:targetRef>program</bpmn:targetRef>
+                    <bpmn:assignment>
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:DataAssignment operation="copy" ignoreMissingData="false"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                        <bpmn:from xsi:type="bpmn:tFormalExpression" language="http://www.w3.org/1999/XPath" xpathns:bpmn="http://www.omg.org/bpmn20" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">bpmn:getActivityInstanceAttribute('ACT19887505137447', 'inputDataItem')
+                            <bpmn:extensionElements>
+                                <bpmnext:OracleExtensions>
+                                    <bpmnext:Expression mode="simple"/>
+                                </bpmnext:OracleExtensions>
+                            </bpmn:extensionElements>
+                        </bpmn:from>
+                        <bpmn:to xsi:type="bpmn:tFormalExpression" language="http://www.w3.org/1999/XPath" xpathns:bpmn="http://www.omg.org/bpmn20" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">bpmn:getDataInput('program')
+                            <bpmn:extensionElements>
+                                <bpmnext:OracleExtensions>
+                                    <bpmnext:Expression mode="simple"/>
+                                </bpmnext:OracleExtensions>
+                            </bpmn:extensionElements>
+                        </bpmn:to>
+                    </bpmn:assignment>
+                </bpmn:dataInputAssociation>
+                <bpmn:dataInputAssociation>
+                    <bpmn:extensionElements>
+                        <bpmnext:OracleExtensions/>
+                    </bpmn:extensionElements>
+                    <bpmn:sourceRef>dataSubProcess</bpmn:sourceRef>
+                    <bpmn:targetRef>process</bpmn:targetRef>
+                    <bpmn:assignment>
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:DataAssignment operation="copy" ignoreMissingData="false"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                        <bpmn:from xsi:type="bpmn:tFormalExpression" language="http://www.w3.org/1999/XPath" xpathns:bpmn="http://www.omg.org/bpmn20" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">bpmn:getDataObject('dataSubProcess')
+                            <bpmn:extensionElements>
+                                <bpmnext:OracleExtensions>
+                                    <bpmnext:Expression mode="simple"/>
+                                </bpmnext:OracleExtensions>
+                            </bpmn:extensionElements>
+                        </bpmn:from>
+                        <bpmn:to xsi:type="bpmn:tFormalExpression" language="http://www.w3.org/1999/XPath" xpathns:bpmn="http://www.omg.org/bpmn20" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">bpmn:getDataInput('process')
+                            <bpmn:extensionElements>
+                                <bpmnext:OracleExtensions>
+                                    <bpmnext:Expression mode="simple"/>
+                                </bpmnext:OracleExtensions>
+                            </bpmn:extensionElements>
+                        </bpmn:to>
+                    </bpmn:assignment>
+                </bpmn:dataInputAssociation>
+                <bpmn:dataInputAssociation>
+                    <bpmn:extensionElements>
+                        <bpmnext:OracleExtensions/>
+                    </bpmn:extensionElements>
+                    <bpmn:sourceRef>dataUsersInProgRole</bpmn:sourceRef>
+                    <bpmn:targetRef>dataUsersInProgRole</bpmn:targetRef>
+                    <bpmn:assignment>
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:DataAssignment operation="copy" ignoreMissingData="false"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                        <bpmn:from xsi:type="bpmn:tFormalExpression" language="http://www.w3.org/1999/XPath" xpathns:bpmn="http://www.omg.org/bpmn20" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">bpmn:getDataObject('dataUsersInProgRole')
+                            <bpmn:extensionElements>
+                                <bpmnext:OracleExtensions>
+                                    <bpmnext:Expression mode="simple"/>
+                                </bpmnext:OracleExtensions>
+                            </bpmn:extensionElements>
+                        </bpmn:from>
+                        <bpmn:to xsi:type="bpmn:tFormalExpression" language="http://www.w3.org/1999/XPath" xpathns:bpmn="http://www.omg.org/bpmn20" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">bpmn:getDataInput('dataUsersInProgRole')
+                            <bpmn:extensionElements>
+                                <bpmnext:OracleExtensions>
+                                    <bpmnext:Expression mode="simple"/>
+                                </bpmnext:OracleExtensions>
+                            </bpmn:extensionElements>
+                        </bpmn:to>
+                    </bpmn:assignment>
+                </bpmn:dataInputAssociation>
+                <bpmn:dataInputAssociation>
+                    <bpmn:extensionElements>
+                        <bpmnext:OracleExtensions/>
+                    </bpmn:extensionElements>
+                    <bpmn:targetRef>dataUsersInGlobalRole</bpmn:targetRef>
+                    <bpmn:assignment>
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:DataAssignment operation="copy" ignoreMissingData="false"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                        <bpmn:from xsi:type="bpmn:tFormalExpression" language="http://www.w3.org/1999/XPath" xpathns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc" xpathns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">oraext:create-delimited-string(ids:getUsersInAppRole('EstimatesProvide','ipms','false',ids:getDefaultRealmName()),',')
+                            <bpmn:extensionElements>
+                                <bpmnext:OracleExtensions>
+                                    <bpmnext:Expression mode="xpath"/>
+                                </bpmnext:OracleExtensions>
+                            </bpmn:extensionElements>
+                        </bpmn:from>
+                        <bpmn:to xsi:type="bpmn:tFormalExpression" language="http://www.w3.org/1999/XPath" xpathns:bpmn="http://www.omg.org/bpmn20" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">bpmn:getDataInput('dataUsersInGlobalRole')
+                            <bpmn:extensionElements>
+                                <bpmnext:OracleExtensions>
+                                    <bpmnext:Expression mode="simple"/>
+                                </bpmnext:OracleExtensions>
+                            </bpmn:extensionElements>
+                        </bpmn:to>
+                    </bpmn:assignment>
+                </bpmn:dataInputAssociation>
+                <bpmn:resourceRole name="GPM_GPH" id="lane0"/>
+            </bpmn:userTask>
+            <bpmn:subProcess triggeredByEvent="false" isForCompensation="false" name="SubProgramRoles" id="ACT19887589967590">
+                <bpmn:extensionElements>
+                    <bpmnext:OracleExtensions>
+                        <bpmnext:GraphicsAttributes>
+                            <bpmnext:Position x="487" y="163"/>
+                            <bpmnext:Size width="460" height="195"/>
+                        </bpmnext:GraphicsAttributes>
+                        <bpmnext:FeatureSet>
+                            <bpmnext:BooleanFeature value="false" name="collapsed"/>
+                            <bpmnext:BooleanFeature value="false" name="hasCheckpoint"/>
+                            <bpmnext:BooleanFeature value="false" name="inputValidation"/>
+                            <bpmnext:BooleanFeature value="false" name="isDraft"/>
+                            <bpmnext:BooleanFeature value="false" name="outputValidation"/>
+                            <bpmnext:StringFeature value="[]" name="TagFeature"/>
+                            <bpmnext:StringFeature value="PROCESS_DEFAULT" name="generatesEvents"/>
+                            <bpmnext:StringFeature value="" name="lane"/>
+                            <bpmnext:StringFeature value="Begin Level" name="level"/>
+                            <bpmnext:StringFeature value="USE_PROCESS_PERMISSION" name="sealType"/>
+                        </bpmnext:FeatureSet>
+                        <bpmnext:Localization>
+                            <bpmnext:Label>
+                                <bpmnext:LocalizedContent language="en">SubProgramRoles</bpmnext:LocalizedContent>
+                            </bpmnext:Label>
+                            <bpmnext:Description>
+                                <bpmnext:LocalizedContent language="en"></bpmnext:LocalizedContent>
+                            </bpmnext:Description>
+                        </bpmnext:Localization>
+                        <bpmnext:FlowNodeProperties/>
+                        <bpmnext:MeasurementMarks/>
+                        <bpmnext:LogHandlers/>
+                    </bpmnext:OracleExtensions>
+                </bpmn:extensionElements>
+                <bpmn:ioSpecification>
+                    <bpmn:dataInput name="subLoopDataInput" id="subLoopDataInput">
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:TypeRef refType="namespaced" name="role" namespace="http://xmlns.bayer.com/ipms" elementType="ELEMENT" isArray="true" implementationType="businessObject"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                    </bpmn:dataInput>
+                    <bpmn:dataOutput name="subLoopDataOutput" id="subLoopDataOutput">
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:TypeRef refType="namespaced" name="role" namespace="http://xmlns.bayer.com/ipms" elementType="ELEMENT" isArray="true" implementationType="businessObject"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                    </bpmn:dataOutput>
+                    <bpmn:inputSet id="ACT19887589967590_uniqueInputSet">
+                        <bpmn:dataInputRefs>subLoopDataInput</bpmn:dataInputRefs>
+                    </bpmn:inputSet>
+                    <bpmn:outputSet id="ACT19887589967590_uniqueOutputSet">
+                        <bpmn:dataOutputRefs>subLoopDataOutput</bpmn:dataOutputRefs>
+                    </bpmn:outputSet>
+                </bpmn:ioSpecification>
+                <bpmn:dataInputAssociation>
+                    <bpmn:extensionElements>
+                        <bpmnext:OracleExtensions/>
+                    </bpmn:extensionElements>
+                    <bpmn:targetRef>subLoopDataInput</bpmn:targetRef>
+                    <bpmn:assignment>
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:DataAssignment operation="copy" ignoreMissingData="false"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                        <bpmn:from xsi:type="bpmn:tFormalExpression" language="http://www.w3.org/1999/XPath" xpathns:ns="http://xmlns.bayer.com/ipms" xpathns:bpmn="http://www.omg.org/bpmn20" xpathns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">bpmn:getActivityInstanceAttribute('ACT19887505137447', 'inputDataItem')/ns:roles/ns:role[ids:isUserInAppRole(@userId, 'EstimatesProvideAssigned', 'ipms')='true']
+                            <bpmn:extensionElements>
+                                <bpmnext:OracleExtensions>
+                                    <bpmnext:Expression mode="xpath"/>
+                                </bpmnext:OracleExtensions>
+                            </bpmn:extensionElements>
+                        </bpmn:from>
+                        <bpmn:to xsi:type="bpmn:tFormalExpression" language="http://www.w3.org/1999/XPath" xpathns:bpmn="http://www.omg.org/bpmn20" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">bpmn:getDataInput('subLoopDataInput')
+                            <bpmn:extensionElements>
+                                <bpmnext:OracleExtensions>
+                                    <bpmnext:Expression mode="simple"/>
+                                </bpmnext:OracleExtensions>
+                            </bpmn:extensionElements>
+                        </bpmn:to>
+                    </bpmn:assignment>
+                </bpmn:dataInputAssociation>
+                <bpmn:dataOutputAssociation>
+                    <bpmn:extensionElements>
+                        <bpmnext:OracleExtensions/>
+                    </bpmn:extensionElements>
+                    <bpmn:sourceRef>subLoopDataOutput</bpmn:sourceRef>
+                    <bpmn:targetRef>outputDataItem</bpmn:targetRef>
+                    <bpmn:assignment>
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:DataAssignment operation="copy" ignoreMissingData="false"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                        <bpmn:from xsi:type="bpmn:tFormalExpression" language="http://www.w3.org/1999/XPath" xpathns:bpmn="http://www.omg.org/bpmn20" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">bpmn:getDataOutput('subLoopDataOutput')
+                            <bpmn:extensionElements>
+                                <bpmnext:OracleExtensions>
+                                    <bpmnext:Expression mode="simple"/>
+                                </bpmnext:OracleExtensions>
+                            </bpmn:extensionElements>
+                        </bpmn:from>
+                        <bpmn:to xsi:type="bpmn:tFormalExpression" language="http://www.w3.org/1999/XPath" xpathns:ns="http://xmlns.bayer.com/ipms" xpathns:bpmn="http://www.omg.org/bpmn20" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">bpmn:getActivityInstanceAttribute('ACT19887505137447', 'outputDataItem')/ns:roles/ns:role
+                            <bpmn:extensionElements>
+                                <bpmnext:OracleExtensions>
+                                    <bpmnext:Expression mode="simple"/>
+                                </bpmnext:OracleExtensions>
+                            </bpmn:extensionElements>
+                        </bpmn:to>
+                    </bpmn:assignment>
+                </bpmn:dataOutputAssociation>
+                <bpmn:loopCharacteristics xsi:type="bpmn:tMultiInstanceLoopCharacteristics" isSequential="false" behavior="All" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                    <bpmn:loopCardinality xsi:type="bpmn:tFormalExpression"/>
+                    <bpmn:loopDataInputRef xmlns="">subLoopDataInput</bpmn:loopDataInputRef>
+                    <bpmn:loopDataOutputRef xmlns="">subLoopDataOutput</bpmn:loopDataOutputRef>
+                    <bpmn:completionCondition xsi:type="bpmn:tFormalExpression"/>
+                </bpmn:loopCharacteristics>
+                <bpmn:scriptTask isForCompensation="false" name="GetProgramLevelAssignees" id="ACT1988759748991">
+                    <bpmn:extensionElements>
+                        <bpmnext:OracleExtensions>
+                            <bpmnext:GraphicsAttributes>
+                                <bpmnext:Position x="239" y="73"/>
+                            </bpmnext:GraphicsAttributes>
+                            <bpmnext:FeatureSet>
+                                <bpmnext:BooleanFeature value="false" name="hasCheckpoint"/>
+                                <bpmnext:BooleanFeature value="false" name="isDraft"/>
+                                <bpmnext:BooleanFeature value="false" name="outputValidation"/>
+                                <bpmnext:StringFeature value="[]" name="TagFeature"/>
+                                <bpmnext:StringFeature value="PROCESS_DEFAULT" name="generatesEvents"/>
+                                <bpmnext:StringFeature value="" name="lane"/>
+                                <bpmnext:StringFeature value="Begin Level" name="level"/>
+                                <bpmnext:StringFeature value="USE_PROCESS_PERMISSION" name="sealType"/>
+                            </bpmnext:FeatureSet>
+                            <bpmnext:Localization>
+                                <bpmnext:Label>
+                                    <bpmnext:LocalizedContent language="en">GetProgramLevelAssignees</bpmnext:LocalizedContent>
+                                </bpmnext:Label>
+                                <bpmnext:Description>
+                                    <bpmnext:LocalizedContent language="en"></bpmnext:LocalizedContent>
+                                </bpmnext:Description>
+                            </bpmnext:Localization>
+                            <bpmnext:FlowNodeProperties/>
+                            <bpmnext:LogHandlers/>
+                        </bpmnext:OracleExtensions>
+                    </bpmn:extensionElements>
+                    <bpmn:ioSpecification/>
+                    <bpmn:dataOutputAssociation>
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:OtherRef>dataUsersInProgRole</bpmnext:OtherRef>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                        <bpmn:targetRef>dataUsersInProgRole</bpmn:targetRef>
+                        <bpmn:assignment>
+                            <bpmn:extensionElements>
+                                <bpmnext:OracleExtensions>
+                                    <bpmnext:DataAssignment operation="copy" ignoreMissingData="false"/>
+                                </bpmnext:OracleExtensions>
+                            </bpmn:extensionElements>
+                            <bpmn:from xsi:type="bpmn:tFormalExpression" language="http://www.w3.org/1999/XPath" xpathns:bpmn="http://www.omg.org/bpmn20" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">concat(bpmn:getDataObject('dataUsersInProgRole'),',',bpmn:getActivityInstanceAttribute('ACT19887589967590', 'inputDataItem')/@userId)
+                                <bpmn:extensionElements>
+                                    <bpmnext:OracleExtensions>
+                                        <bpmnext:Expression mode="xpath"/>
+                                    </bpmnext:OracleExtensions>
+                                </bpmn:extensionElements>
+                            </bpmn:from>
+                            <bpmn:to xsi:type="bpmn:tFormalExpression" language="http://www.w3.org/1999/XPath" xpathns:bpmn="http://www.omg.org/bpmn20" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">bpmn:getDataObject('dataUsersInProgRole')
+                                <bpmn:extensionElements>
+                                    <bpmnext:OracleExtensions>
+                                        <bpmnext:Expression mode="simple"/>
+                                    </bpmnext:OracleExtensions>
+                                </bpmn:extensionElements>
+                            </bpmn:to>
+                        </bpmn:assignment>
+                    </bpmn:dataOutputAssociation>
+                </bpmn:scriptTask>
+                <bpmn:startEvent isInterrupting="false" name="subProgramRoleStart" id="EVT19887589967522">
+                    <bpmn:extensionElements>
+                        <bpmnext:OracleExtensions>
+                            <bpmnext:GraphicsAttributes>
+                                <bpmnext:Position x="63" y="70"/>
+                            </bpmnext:GraphicsAttributes>
+                            <bpmnext:FeatureSet>
+                                <bpmnext:BooleanFeature value="false" name="hasCheckpoint"/>
+                                <bpmnext:BooleanFeature value="false" name="isDraft"/>
+                                <bpmnext:BooleanFeature value="false" name="isSuspendEvent"/>
+                                <bpmnext:BooleanFeature value="false" name="outputValidation"/>
+                                <bpmnext:StringFeature value="[]" name="TagFeature"/>
+                                <bpmnext:StringFeature value="PROCESS_DEFAULT" name="generatesEvents"/>
+                                <bpmnext:StringFeature value="" name="lane"/>
+                                <bpmnext:StringFeature value="Begin Level" name="level"/>
+                                <bpmnext:StringFeature value="USE_PROCESS_PERMISSION" name="sealType"/>
+                            </bpmnext:FeatureSet>
+                            <bpmnext:Localization>
+                                <bpmnext:Label>
+                                    <bpmnext:LocalizedContent language="en">subProgramRoleStart</bpmnext:LocalizedContent>
+                                </bpmnext:Label>
+                            </bpmnext:Localization>
+                            <bpmnext:FlowNodeProperties/>
+                        </bpmnext:OracleExtensions>
+                    </bpmn:extensionElements>
+                    <bpmn:outputSet/>
+                </bpmn:startEvent>
+                <bpmn:endEvent name="subProgramRoleStart" id="EVT19887589967614">
+                    <bpmn:extensionElements>
+                        <bpmnext:OracleExtensions>
+                            <bpmnext:GraphicsAttributes>
+                                <bpmnext:Position x="404" y="78"/>
+                            </bpmnext:GraphicsAttributes>
+                            <bpmnext:FeatureSet>
+                                <bpmnext:BooleanFeature value="false" name="hasCheckpoint"/>
+                                <bpmnext:BooleanFeature value="false" name="inputValidation"/>
+                                <bpmnext:BooleanFeature value="false" name="isDraft"/>
+                                <bpmnext:StringFeature value="[]" name="TagFeature"/>
+                                <bpmnext:StringFeature value="PROCESS_DEFAULT" name="generatesEvents"/>
+                                <bpmnext:StringFeature value="" name="lane"/>
+                                <bpmnext:StringFeature value="Begin Level" name="level"/>
+                                <bpmnext:StringFeature value="USE_PROCESS_PERMISSION" name="sealType"/>
+                            </bpmnext:FeatureSet>
+                            <bpmnext:Localization>
+                                <bpmnext:Label>
+                                    <bpmnext:LocalizedContent language="en">subProgramRoleStart</bpmnext:LocalizedContent>
+                                </bpmnext:Label>
+                            </bpmnext:Localization>
+                            <bpmnext:FlowNodeProperties/>
+                        </bpmnext:OracleExtensions>
+                    </bpmn:extensionElements>
+                    <bpmn:inputSet/>
+                </bpmn:endEvent>
+                <bpmn:sequenceFlow sourceRef="EVT19887589967522" targetRef="ACT1988759748991" name="sf1988758996765" id="sf1988758996765">
+                    <bpmn:extensionElements>
+                        <bpmnext:OracleExtensions>
+                            <bpmnext:SequenceFlowAttributes/>
+                            <bpmnext:FeatureSet>
+                                <bpmnext:BooleanFeature value="false" name="collapseMessage"/>
+                                <bpmnext:StringFeature value="-2147483648,-2147483648" name="curve"/>
+                                <bpmnext:StringFeature value="STRAIGHT" name="routing"/>
+                            </bpmnext:FeatureSet>
+                        </bpmnext:OracleExtensions>
+                    </bpmn:extensionElements>
+                </bpmn:sequenceFlow>
+                <bpmn:sequenceFlow sourceRef="ACT1988759748991" targetRef="EVT19887589967614" name="sf19887597764118" id="sf19887597764118">
+                    <bpmn:extensionElements>
+                        <bpmnext:OracleExtensions>
+                            <bpmnext:SequenceFlowAttributes/>
+                            <bpmnext:FeatureSet>
+                                <bpmnext:BooleanFeature value="false" name="collapseMessage"/>
+                                <bpmnext:StringFeature value="-2147483648,-2147483648" name="curve"/>
+                                <bpmnext:StringFeature value="STRAIGHT" name="routing"/>
+                            </bpmnext:FeatureSet>
+                        </bpmnext:OracleExtensions>
+                    </bpmn:extensionElements>
+                </bpmn:sequenceFlow>
+            </bpmn:subProcess>
+            <bpmn:startEvent isInterrupting="false" name="subProgramStart" id="EVT1988750526679">
+                <bpmn:extensionElements>
+                    <bpmnext:OracleExtensions>
+                        <bpmnext:GraphicsAttributes>
+                            <bpmnext:Position x="52" y="150"/>
+                        </bpmnext:GraphicsAttributes>
+                        <bpmnext:FeatureSet>
+                            <bpmnext:BooleanFeature value="false" name="hasCheckpoint"/>
+                            <bpmnext:BooleanFeature value="false" name="isDraft"/>
+                            <bpmnext:BooleanFeature value="false" name="isSuspendEvent"/>
+                            <bpmnext:BooleanFeature value="false" name="outputValidation"/>
+                            <bpmnext:StringFeature value="[]" name="TagFeature"/>
+                            <bpmnext:StringFeature value="PROCESS_DEFAULT" name="generatesEvents"/>
+                            <bpmnext:StringFeature value="" name="lane"/>
+                            <bpmnext:StringFeature value="Begin Level" name="level"/>
+                            <bpmnext:StringFeature value="USE_PROCESS_PERMISSION" name="sealType"/>
+                        </bpmnext:FeatureSet>
+                        <bpmnext:Localization>
+                            <bpmnext:Label>
+                                <bpmnext:LocalizedContent language="en">subProgramStart</bpmnext:LocalizedContent>
+                            </bpmnext:Label>
+                        </bpmnext:Localization>
+                        <bpmnext:FlowNodeProperties/>
+                    </bpmnext:OracleExtensions>
+                </bpmn:extensionElements>
+                <bpmn:outputSet/>
+            </bpmn:startEvent>
+            <bpmn:endEvent name="subProgramEnd" id="EVT19887505266860">
+                <bpmn:extensionElements>
+                    <bpmnext:OracleExtensions>
+                        <bpmnext:GraphicsAttributes>
+                            <bpmnext:Position x="895" y="178"/>
+                        </bpmnext:GraphicsAttributes>
+                        <bpmnext:FeatureSet>
+                            <bpmnext:BooleanFeature value="false" name="hasCheckpoint"/>
+                            <bpmnext:BooleanFeature value="false" name="inputValidation"/>
+                            <bpmnext:BooleanFeature value="false" name="isDraft"/>
+                            <bpmnext:StringFeature value="[]" name="TagFeature"/>
+                            <bpmnext:StringFeature value="PROCESS_DEFAULT" name="generatesEvents"/>
+                            <bpmnext:StringFeature value="" name="lane"/>
+                            <bpmnext:StringFeature value="Begin Level" name="level"/>
+                            <bpmnext:StringFeature value="USE_PROCESS_PERMISSION" name="sealType"/>
+                        </bpmnext:FeatureSet>
+                        <bpmnext:Localization>
+                            <bpmnext:Label>
+                                <bpmnext:LocalizedContent language="en">subProgramEnd</bpmnext:LocalizedContent>
+                            </bpmnext:Label>
+                        </bpmnext:Localization>
+                        <bpmnext:FlowNodeProperties/>
+                    </bpmnext:OracleExtensions>
+                </bpmn:extensionElements>
+                <bpmn:inputSet/>
+            </bpmn:endEvent>
+            <bpmn:boundaryEvent cancelActivity="true" attachedToRef="bpmn:ACT19887589967590" name="BoundaryEvent1" id="EVT19887828069431">
+                <bpmn:extensionElements>
+                    <bpmnext:OracleExtensions>
+                        <bpmnext:GraphicsAttributes>
+                            <bpmnext:Position x="717" y="96"/>
+                        </bpmnext:GraphicsAttributes>
+                        <bpmnext:FeatureSet>
+                            <bpmnext:BooleanFeature value="true" name="catchAllErrors"/>
+                            <bpmnext:BooleanFeature value="true" name="catchAllSystemExceptions"/>
+                            <bpmnext:BooleanFeature value="false" name="recoverableError"/>
+                            <bpmnext:BooleanFeature value="false" name="hasCheckpoint"/>
+                            <bpmnext:BooleanFeature value="false" name="isDraft"/>
+                            <bpmnext:BooleanFeature value="false" name="isSuspendEvent"/>
+                            <bpmnext:BooleanFeature value="false" name="outputValidation"/>
+                            <bpmnext:StringFeature value="[]" name="TagFeature"/>
+                            <bpmnext:StringFeature value="PROCESS_DEFAULT" name="generatesEvents"/>
+                            <bpmnext:StringFeature value="" name="lane"/>
+                            <bpmnext:StringFeature value="Begin Level" name="level"/>
+                            <bpmnext:StringFeature value="USE_PROCESS_PERMISSION" name="sealType"/>
+                        </bpmnext:FeatureSet>
+                        <bpmnext:Localization>
+                            <bpmnext:Label>
+                                <bpmnext:LocalizedContent language="en">BoundaryEvent1</bpmnext:LocalizedContent>
+                            </bpmnext:Label>
+                            <bpmnext:Description>
+                                <bpmnext:LocalizedContent language="en"></bpmnext:LocalizedContent>
+                            </bpmnext:Description>
+                        </bpmnext:Localization>
+                        <bpmnext:FlowNodeProperties/>
+                        <bpmnext:LogHandlers/>
+                    </bpmnext:OracleExtensions>
+                </bpmn:extensionElements>
+                <bpmn:dataOutput name="errorInfo" id="errorInfo">
+                    <bpmn:extensionElements>
+                        <bpmnext:OracleExtensions>
+                            <bpmnext:TypeRef refType="schema" name="string" namespace="http://www.w3.org/2001/XMLSchema" implementationType="type"/>
+                        </bpmnext:OracleExtensions>
+                    </bpmn:extensionElements>
+                </bpmn:dataOutput>
+                <bpmn:dataOutput name="faultName" id="faultName">
+                    <bpmn:extensionElements>
+                        <bpmnext:OracleExtensions>
+                            <bpmnext:TypeRef refType="schema" name="string" namespace="http://www.w3.org/2001/XMLSchema" implementationType="type"/>
+                        </bpmnext:OracleExtensions>
+                    </bpmn:extensionElements>
+                </bpmn:dataOutput>
+                <bpmn:dataOutput name="faultNamespace" id="faultNamespace">
+                    <bpmn:extensionElements>
+                        <bpmnext:OracleExtensions>
+                            <bpmnext:TypeRef refType="schema" name="string" namespace="http://www.w3.org/2001/XMLSchema" implementationType="type"/>
+                        </bpmnext:OracleExtensions>
+                    </bpmn:extensionElements>
+                </bpmn:dataOutput>
+                <bpmn:outputSet id="EVT19887828069431_uniqueOutputSet">
+                    <bpmn:dataOutputRefs>errorInfo</bpmn:dataOutputRefs>
+                    <bpmn:dataOutputRefs>faultName</bpmn:dataOutputRefs>
+                    <bpmn:dataOutputRefs>faultNamespace</bpmn:dataOutputRefs>
+                </bpmn:outputSet>
+                <bpmn:errorEventDefinition>
+                    <bpmn:extensionElements>
+                        <bpmnext:OracleExtensions>
+                            <bpmnext:ErrorEvent/>
+                        </bpmnext:OracleExtensions>
+                    </bpmn:extensionElements>
+                </bpmn:errorEventDefinition>
+            </bpmn:boundaryEvent>
+            <bpmn:sequenceFlow sourceRef="EVT1988750526679" targetRef="ACT19887525432912" name="sf19887505266994" id="sf19887505266994">
+                <bpmn:extensionElements>
+                    <bpmnext:OracleExtensions>
+                        <bpmnext:SequenceFlowAttributes/>
+                        <bpmnext:FeatureSet>
+                            <bpmnext:BooleanFeature value="false" name="collapseMessage"/>
+                            <bpmnext:StringFeature value="-2147483648,-2147483648" name="curve"/>
+                            <bpmnext:StringFeature value="STRAIGHT" name="routing"/>
+                        </bpmnext:FeatureSet>
+                    </bpmnext:OracleExtensions>
+                </bpmn:extensionElements>
+            </bpmn:sequenceFlow>
+            <bpmn:sequenceFlow sourceRef="ACT19887525432912" targetRef="ACT19887589967590" name="sf19887526141662" id="sf19887526141662">
+                <bpmn:extensionElements>
+                    <bpmnext:OracleExtensions>
+                        <bpmnext:SequenceFlowAttributes/>
+                        <bpmnext:FeatureSet>
+                            <bpmnext:BooleanFeature value="false" name="collapseMessage"/>
+                            <bpmnext:StringFeature value="-2147483648,-2147483648" name="curve"/>
+                            <bpmnext:StringFeature value="STRAIGHT" name="routing"/>
+                        </bpmnext:FeatureSet>
+                    </bpmnext:OracleExtensions>
+                </bpmn:extensionElements>
+            </bpmn:sequenceFlow>
+            <bpmn:sequenceFlow sourceRef="ACT19887543996883" targetRef="EVT19887505266860" name="sf19887544674814" id="sf19887544674814">
+                <bpmn:extensionElements>
+                    <bpmnext:OracleExtensions>
+                        <bpmnext:SequenceFlowAttributes/>
+                        <bpmnext:FeatureSet>
+                            <bpmnext:BooleanFeature value="false" name="collapseMessage"/>
+                            <bpmnext:StringFeature value="-2147483648,-2147483648" name="curve"/>
+                            <bpmnext:StringFeature value="STRAIGHT" name="routing"/>
+                        </bpmnext:FeatureSet>
+                    </bpmnext:OracleExtensions>
+                </bpmn:extensionElements>
+            </bpmn:sequenceFlow>
+            <bpmn:sequenceFlow sourceRef="ACT19887589967590" targetRef="ACT19887543996883" name="sf19887589967691" id="sf19887589967691">
+                <bpmn:extensionElements>
+                    <bpmnext:OracleExtensions>
+                        <bpmnext:SequenceFlowAttributes/>
+                        <bpmnext:FeatureSet>
+                            <bpmnext:BooleanFeature value="false" name="collapseMessage"/>
+                            <bpmnext:StringFeature value="-2147483648,-2147483648" name="curve"/>
+                            <bpmnext:StringFeature value="STRAIGHT" name="routing"/>
+                        </bpmnext:FeatureSet>
+                    </bpmnext:OracleExtensions>
+                </bpmn:extensionElements>
+            </bpmn:sequenceFlow>
+            <bpmn:sequenceFlow sourceRef="EVT19887828069431" targetRef="EVT19887505266860" name="sf19887830128555" id="sf19887830128555">
+                <bpmn:extensionElements>
+                    <bpmnext:OracleExtensions>
+                        <bpmnext:SequenceFlowAttributes/>
+                        <bpmnext:FeatureSet>
+                            <bpmnext:BooleanFeature value="false" name="collapseMessage"/>
+                            <bpmnext:StringFeature value="-2147483648,-2147483648" name="curve"/>
+                            <bpmnext:StringFeature value="STRAIGHT" name="routing"/>
+                        </bpmnext:FeatureSet>
+                    </bpmnext:OracleExtensions>
+                </bpmn:extensionElements>
+            </bpmn:sequenceFlow>
+            <bpmn:dataObject name="dataUsersInProgRole" id="dataUsersInProgRole">
+                <bpmn:extensionElements>
+                    <bpmnext:OracleExtensions>
+                        <bpmnext:DataObjectType initialize="true">
+                            <bpmnext:TypeRef refType="schema" name="string" namespace="http://www.w3.org/2001/XMLSchema" implementationType="type"/>
+                        </bpmnext:DataObjectType>
+                    </bpmnext:OracleExtensions>
+                </bpmn:extensionElements>
+            </bpmn:dataObject>
+            <bpmn:dataObject name="dataUsersInGlobalRole" id="dataUsersInGlobalRole">
+                <bpmn:extensionElements>
+                    <bpmnext:OracleExtensions>
+                        <bpmnext:DataObjectType initialize="true">
+                            <bpmnext:TypeRef refType="schema" name="string" namespace="http://www.w3.org/2001/XMLSchema" implementationType="type"/>
+                        </bpmnext:DataObjectType>
+                    </bpmnext:OracleExtensions>
+                </bpmn:extensionElements>
+            </bpmn:dataObject>
+            <bpmn:dataObject name="dataSubProgram" id="dataSubProgram">
+                <bpmn:extensionElements>
+                    <bpmnext:OracleExtensions>
+                        <bpmnext:DataObjectType initialize="true">
+                            <bpmnext:TypeRef refType="namespaced" name="program" namespace="http://xmlns.bayer.com/ipms" elementType="ELEMENT" implementationType="businessObject"/>
+                        </bpmnext:DataObjectType>
+                    </bpmnext:OracleExtensions>
+                </bpmn:extensionElements>
+            </bpmn:dataObject>
+            <bpmn:dataObject name="dataSubProcess" id="dataSubProcess">
+                <bpmn:extensionElements>
+                    <bpmnext:OracleExtensions>
+                        <bpmnext:DataObjectType initialize="true">
+                            <bpmnext:TypeRef refType="namespaced" name="process" namespace="http://xmlns.bayer.com/ipms" elementType="ELEMENT" implementationType="businessObject"/>
+                        </bpmnext:DataObjectType>
+                    </bpmnext:OracleExtensions>
+                </bpmn:extensionElements>
+            </bpmn:dataObject>
+        </bpmn:subProcess>
+        <bpmn:scriptTask isForCompensation="false" name="AssignComplete" id="ACT19887548627435">
+            <bpmn:extensionElements>
+                <bpmnext:OracleExtensions>
+                    <bpmnext:GraphicsAttributes>
+                        <bpmnext:Position x="1326" y="240"/>
+                    </bpmnext:GraphicsAttributes>
+                    <bpmnext:FeatureSet>
+                        <bpmnext:BooleanFeature value="false" name="hasCheckpoint"/>
+                        <bpmnext:BooleanFeature value="false" name="isDraft"/>
+                        <bpmnext:BooleanFeature value="false" name="outputValidation"/>
+                        <bpmnext:StringFeature value="[]" name="TagFeature"/>
+                        <bpmnext:StringFeature value="PROCESS_DEFAULT" name="generatesEvents"/>
+                        <bpmnext:StringFeature value="" name="lane"/>
+                        <bpmnext:StringFeature value="Begin Level" name="level"/>
+                        <bpmnext:StringFeature value="USE_PROCESS_PERMISSION" name="sealType"/>
+                    </bpmnext:FeatureSet>
+                    <bpmnext:Localization>
+                        <bpmnext:Label>
+                            <bpmnext:LocalizedContent language="en">AssignComplete</bpmnext:LocalizedContent>
+                        </bpmnext:Label>
+                        <bpmnext:Description>
+                            <bpmnext:LocalizedContent language="en"></bpmnext:LocalizedContent>
+                        </bpmnext:Description>
+                    </bpmnext:Localization>
+                    <bpmnext:FlowNodeProperties/>
+                    <bpmnext:LogHandlers/>
+                </bpmnext:OracleExtensions>
+            </bpmn:extensionElements>
+            <bpmn:ioSpecification/>
+            <bpmn:dataOutputAssociation>
+                <bpmn:extensionElements>
+                    <bpmnext:OracleExtensions>
+                        <bpmnext:OtherRef>dataEstimate</bpmnext:OtherRef>
+                    </bpmnext:OracleExtensions>
+                </bpmn:extensionElements>
+                <bpmn:targetRef>dataResponse</bpmn:targetRef>
+                <bpmn:assignment>
+                    <bpmn:extensionElements>
+                        <bpmnext:OracleExtensions>
+                            <bpmnext:DataAssignment operation="copy" ignoreMissingData="false"/>
+                        </bpmnext:OracleExtensions>
+                    </bpmn:extensionElements>
+                    <bpmn:from xsi:type="bpmn:tFormalExpression" language="http://www.w3.org/1999/XPath" xpathns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">oraext:parseXML('&lt;complete id="" xmlns="http://xmlns.bayer.com/ipms/soa"/&gt;')
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:Expression mode="xml"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                    </bpmn:from>
+                    <bpmn:to xsi:type="bpmn:tFormalExpression" language="http://www.w3.org/1999/XPath" xpathns:bpmn="http://www.omg.org/bpmn20" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">bpmn:getDataObject('dataResponse')
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:Expression mode="simple"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                    </bpmn:to>
+                </bpmn:assignment>
+                <bpmn:assignment>
+                    <bpmn:extensionElements>
+                        <bpmnext:OracleExtensions>
+                            <bpmnext:DataAssignment operation="copy" ignoreMissingData="false"/>
+                        </bpmnext:OracleExtensions>
+                    </bpmn:extensionElements>
+                    <bpmn:from xsi:type="bpmn:tFormalExpression" language="http://www.w3.org/1999/XPath" xpathns:bpmn="http://www.omg.org/bpmn20" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">bpmn:getDataObject('dataEstimate')/@id
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:Expression mode="simple"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                    </bpmn:from>
+                    <bpmn:to xsi:type="bpmn:tFormalExpression" language="http://www.w3.org/1999/XPath" xpathns:ns="http://xmlns.bayer.com/ipms/soa" xpathns:bpmn="http://www.omg.org/bpmn20" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">bpmn:getDataObject('dataResponse')/ns:complete/@id
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:Expression mode="simple"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                    </bpmn:to>
+                </bpmn:assignment>
+            </bpmn:dataOutputAssociation>
+        </bpmn:scriptTask>
+        <bpmn:subProcess triggeredByEvent="true" isForCompensation="false" name="TerminationSubprocess" id="ACT1993720627222">
+            <bpmn:extensionElements>
+                <bpmnext:OracleExtensions>
+                    <bpmnext:GraphicsAttributes>
+                        <bpmnext:Position x="267" y="629"/>
+                        <bpmnext:Size width="344" height="159"/>
+                    </bpmnext:GraphicsAttributes>
+                    <bpmnext:FeatureSet>
+                        <bpmnext:BooleanFeature value="false" name="collapsed"/>
+                        <bpmnext:BooleanFeature value="false" name="hasCheckpoint"/>
+                        <bpmnext:BooleanFeature value="false" name="inputValidation"/>
+                        <bpmnext:BooleanFeature value="false" name="isDraft"/>
+                        <bpmnext:BooleanFeature value="false" name="outputValidation"/>
+                        <bpmnext:StringFeature value="[]" name="TagFeature"/>
+                        <bpmnext:StringFeature value="PROCESS_DEFAULT" name="generatesEvents"/>
+                        <bpmnext:StringFeature value="" name="lane"/>
+                        <bpmnext:StringFeature value="USE_PROCESS_PERMISSION" name="sealType"/>
+                    </bpmnext:FeatureSet>
+                    <bpmnext:Localization>
+                        <bpmnext:Label>
+                            <bpmnext:LocalizedContent language="en">TerminationSubprocess</bpmnext:LocalizedContent>
+                        </bpmnext:Label>
+                        <bpmnext:Description>
+                            <bpmnext:LocalizedContent language="en"></bpmnext:LocalizedContent>
+                        </bpmnext:Description>
+                    </bpmnext:Localization>
+                    <bpmnext:FlowNodeProperties/>
+                    <bpmnext:MeasurementMarks/>
+                    <bpmnext:LogHandlers/>
+                </bpmnext:OracleExtensions>
+            </bpmn:extensionElements>
+            <bpmn:ioSpecification/>
+            <bpmn:startEvent isInterrupting="true" name="StartTermination" id="EVT19937206399172">
+                <bpmn:extensionElements>
+                    <bpmnext:OracleExtensions>
+                        <bpmnext:GraphicsAttributes>
+                            <bpmnext:Position x="53" y="71"/>
+                        </bpmnext:GraphicsAttributes>
+                        <bpmnext:FeatureSet>
+                            <bpmnext:BooleanFeature value="false" name="hasCheckpoint"/>
+                            <bpmnext:BooleanFeature value="false" name="isDraft"/>
+                            <bpmnext:BooleanFeature value="false" name="isSuspendEvent"/>
+                            <bpmnext:BooleanFeature value="false" name="outputValidation"/>
+                            <bpmnext:StringFeature value="[]" name="TagFeature"/>
+                            <bpmnext:StringFeature value="PROCESS_DEFAULT" name="generatesEvents"/>
+                            <bpmnext:StringFeature value="" name="lane"/>
+                            <bpmnext:StringFeature value="Begin Level" name="level"/>
+                            <bpmnext:StringFeature value="USE_PROCESS_PERMISSION" name="sealType"/>
+                        </bpmnext:FeatureSet>
+                        <bpmnext:Localization>
+                            <bpmnext:Label>
+                                <bpmnext:LocalizedContent language="en">StartTermination</bpmnext:LocalizedContent>
+                            </bpmnext:Label>
+                            <bpmnext:Description>
+                                <bpmnext:LocalizedContent language="en"></bpmnext:LocalizedContent>
+                            </bpmnext:Description>
+                        </bpmnext:Localization>
+                        <bpmnext:CorrelationEnabledData>
+                            <bpmnext:OutputCorrelationEnabledData>
+                                <bpmnext:CorrelationItems>
+                                    <bpmnext:CorrelationItem correlationKeyName="ck_compositeId" initiates="false"/>
+                                </bpmnext:CorrelationItems>
+                            </bpmnext:OutputCorrelationEnabledData>
+                        </bpmnext:CorrelationEnabledData>
+                        <bpmnext:Conversational conversation="CONVERSATION198874801697">
+                            <bpmnext:DefineInterfaceConversationalDefinition definedOperationName="terminate"/>
+                        </bpmnext:Conversational>
+                        <bpmnext:FlowNodeProperties/>
+                        <bpmnext:LogHandlers/>
+                    </bpmnext:OracleExtensions>
+                </bpmn:extensionElements>
+                <bpmn:dataOutput name="terminateIn" id="terminateIn">
+                    <bpmn:extensionElements>
+                        <bpmnext:OracleExtensions>
+                            <bpmnext:TypeRef refType="namespaced" name="terminate" namespace="http://xmlns.bayer.com/ipms/soa" elementType="ELEMENT" implementationType="businessObject"/>
+                        </bpmnext:OracleExtensions>
+                    </bpmn:extensionElements>
+                </bpmn:dataOutput>
+                <bpmn:dataOutputAssociation>
+                    <bpmn:extensionElements>
+                        <bpmnext:OracleExtensions/>
+                    </bpmn:extensionElements>
+                    <bpmn:sourceRef>terminateIn</bpmn:sourceRef>
+                    <bpmn:targetRef>projectDOTerminate</bpmn:targetRef>
+                    <bpmn:assignment>
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:DataAssignment operation="copy" ignoreMissingData="false"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                        <bpmn:from xsi:type="bpmn:tFormalExpression" language="http://www.w3.org/1999/XPath" xpathns:bpmn="http://www.omg.org/bpmn20" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">bpmn:getDataOutput('terminateIn')
+                            <bpmn:extensionElements>
+                                <bpmnext:OracleExtensions>
+                                    <bpmnext:Expression mode="simple"/>
+                                </bpmnext:OracleExtensions>
+                            </bpmn:extensionElements>
+                        </bpmn:from>
+                        <bpmn:to xsi:type="bpmn:tFormalExpression" language="http://www.w3.org/1999/XPath" xpathns:bpmn="http://www.omg.org/bpmn20" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">bpmn:getDataObject('projectDOTerminate')
+                            <bpmn:extensionElements>
+                                <bpmnext:OracleExtensions>
+                                    <bpmnext:Expression mode="simple"/>
+                                </bpmnext:OracleExtensions>
+                            </bpmn:extensionElements>
+                        </bpmn:to>
+                    </bpmn:assignment>
+                </bpmn:dataOutputAssociation>
+                <bpmn:outputSet id="EVT19937206399172_uniqueOutputSet">
+                    <bpmn:dataOutputRefs>terminateIn</bpmn:dataOutputRefs>
+                </bpmn:outputSet>
+                <bpmn:messageEventDefinition/>
+            </bpmn:startEvent>
+            <bpmn:endEvent name="StartTermination" id="EVT19937206399485">
+                <bpmn:extensionElements>
+                    <bpmnext:OracleExtensions>
+                        <bpmnext:GraphicsAttributes>
+                            <bpmnext:Position x="286" y="71"/>
+                        </bpmnext:GraphicsAttributes>
+                        <bpmnext:FeatureSet>
+                            <bpmnext:BooleanFeature value="false" name="hasCheckpoint"/>
+                            <bpmnext:BooleanFeature value="false" name="isDraft"/>
+                            <bpmnext:StringFeature value="[]" name="TagFeature"/>
+                            <bpmnext:StringFeature value="PROCESS_DEFAULT" name="generatesEvents"/>
+                            <bpmnext:StringFeature value="" name="lane"/>
+                            <bpmnext:StringFeature value="Begin Level" name="level"/>
+                            <bpmnext:StringFeature value="USE_PROCESS_PERMISSION" name="sealType"/>
+                        </bpmnext:FeatureSet>
+                        <bpmnext:Localization>
+                            <bpmnext:Label>
+                                <bpmnext:LocalizedContent language="en">StartTermination</bpmnext:LocalizedContent>
+                            </bpmnext:Label>
+                            <bpmnext:Description>
+                                <bpmnext:LocalizedContent language="en"></bpmnext:LocalizedContent>
+                            </bpmnext:Description>
+                        </bpmnext:Localization>
+                        <bpmnext:FlowNodeProperties/>
+                    </bpmnext:OracleExtensions>
+                </bpmn:extensionElements>
+                <bpmn:terminateEventDefinition/>
+            </bpmn:endEvent>
+            <bpmn:sequenceFlow sourceRef="EVT19937206399172" targetRef="EVT19937206399485" name="sf19937206399518" id="sf19937206399518">
+                <bpmn:extensionElements>
+                    <bpmnext:OracleExtensions>
+                        <bpmnext:SequenceFlowAttributes/>
+                        <bpmnext:FeatureSet>
+                            <bpmnext:BooleanFeature value="false" name="collapseMessage"/>
+                            <bpmnext:StringFeature value="-2147483648,-2147483648" name="curve"/>
+                            <bpmnext:StringFeature value="STRAIGHT" name="routing"/>
+                        </bpmnext:FeatureSet>
+                    </bpmnext:OracleExtensions>
+                </bpmn:extensionElements>
+            </bpmn:sequenceFlow>
+        </bpmn:subProcess>
+        <bpmn:startEvent isInterrupting="false" name="Start" id="EVT19887480169793">
+            <bpmn:extensionElements>
+                <bpmnext:OracleExtensions>
+                    <bpmnext:GraphicsAttributes>
+                        <bpmnext:Position x="111" y="235"/>
+                    </bpmnext:GraphicsAttributes>
+                    <bpmnext:FeatureSet>
+                        <bpmnext:BooleanFeature value="false" name="hasCheckpoint"/>
+                        <bpmnext:BooleanFeature value="false" name="isDraft"/>
+                        <bpmnext:BooleanFeature value="false" name="isSuspendEvent"/>
+                        <bpmnext:BooleanFeature value="false" name="outputValidation"/>
+                        <bpmnext:StringFeature value="[]" name="TagFeature"/>
+                        <bpmnext:StringFeature value="PROCESS_DEFAULT" name="generatesEvents"/>
+                        <bpmnext:StringFeature value="" name="lane"/>
+                        <bpmnext:StringFeature value="Begin Level" name="level"/>
+                        <bpmnext:StringFeature value="USE_PROCESS_PERMISSION" name="sealType"/>
+                    </bpmnext:FeatureSet>
+                    <bpmnext:Localization>
+                        <bpmnext:Label>
+                            <bpmnext:LocalizedContent language="en">Start</bpmnext:LocalizedContent>
+                        </bpmnext:Label>
+                        <bpmnext:Description>
+                            <bpmnext:LocalizedContent language="en"></bpmnext:LocalizedContent>
+                        </bpmnext:Description>
+                    </bpmnext:Localization>
+                    <bpmnext:CorrelationEnabledData>
+                        <bpmnext:OutputCorrelationEnabledData>
+                            <bpmnext:CorrelationItems>
+                                <bpmnext:CorrelationItem correlationKeyName="ck_compositeId" initiates="true"/>
+                            </bpmnext:CorrelationItems>
+                        </bpmnext:OutputCorrelationEnabledData>
+                    </bpmnext:CorrelationEnabledData>
+                    <bpmnext:Conversational conversation="CONVERSATION198874801697">
+                        <bpmnext:DefineInterfaceConversationalDefinition definedOperationName="start"/>
+                    </bpmnext:Conversational>
+                    <bpmnext:FlowNodeProperties/>
+                    <bpmnext:LogHandlers/>
+                </bpmnext:OracleExtensions>
+            </bpmn:extensionElements>
+            <bpmn:dataOutput name="estimate" id="estimate">
+                <bpmn:extensionElements>
+                    <bpmnext:OracleExtensions>
+                        <bpmnext:TypeRef refType="namespaced" name="estimate" namespace="http://xmlns.bayer.com/ipms/soa" elementType="ELEMENT" implementationType="businessObject"/>
+                    </bpmnext:OracleExtensions>
+                </bpmn:extensionElements>
+            </bpmn:dataOutput>
+            <bpmn:dataOutputAssociation>
+                <bpmn:extensionElements>
+                    <bpmnext:OracleExtensions/>
+                </bpmn:extensionElements>
+                <bpmn:sourceRef>estimate</bpmn:sourceRef>
+                <bpmn:targetRef>dataResponse</bpmn:targetRef>
+                <bpmn:assignment>
+                    <bpmn:extensionElements>
+                        <bpmnext:OracleExtensions>
+                            <bpmnext:DataAssignment operation="copy" ignoreMissingData="false"/>
+                        </bpmnext:OracleExtensions>
+                    </bpmn:extensionElements>
+                    <bpmn:from xsi:type="bpmn:tFormalExpression" language="http://www.w3.org/1999/XPath" xpathns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">oraext:parseXML('&lt;response id="" compositeId="" xmlns="http://xmlns.bayer.com/ipms/soa"/&gt;')
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:Expression mode="xml"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                    </bpmn:from>
+                    <bpmn:to xsi:type="bpmn:tFormalExpression" language="http://www.w3.org/1999/XPath" xpathns:bpmn="http://www.omg.org/bpmn20" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">bpmn:getDataObject('dataResponse')
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:Expression mode="simple"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                    </bpmn:to>
+                </bpmn:assignment>
+                <bpmn:assignment>
+                    <bpmn:extensionElements>
+                        <bpmnext:OracleExtensions>
+                            <bpmnext:DataAssignment operation="copy" ignoreMissingData="false"/>
+                        </bpmnext:OracleExtensions>
+                    </bpmn:extensionElements>
+                    <bpmn:from xsi:type="bpmn:tFormalExpression" language="http://www.w3.org/1999/XPath" xpathns:bpmn="http://www.omg.org/bpmn20" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">bpmn:getDataOutput('estimate')/@id
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:Expression mode="simple"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                    </bpmn:from>
+                    <bpmn:to xsi:type="bpmn:tFormalExpression" language="http://www.w3.org/1999/XPath" xpathns:bpmn="http://www.omg.org/bpmn20" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">bpmn:getDataObject('dataResponse')/@id
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:Expression mode="simple"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                    </bpmn:to>
+                </bpmn:assignment>
+                <bpmn:assignment>
+                    <bpmn:extensionElements>
+                        <bpmnext:OracleExtensions>
+                            <bpmnext:DataAssignment operation="copy" ignoreMissingData="false"/>
+                        </bpmnext:OracleExtensions>
+                    </bpmn:extensionElements>
+                    <bpmn:from xsi:type="bpmn:tFormalExpression" language="http://www.w3.org/1999/XPath" xpathns:bpmn="http://www.omg.org/bpmn20" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">bpmn:getDataOutput('estimate')/@compositeId
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:Expression mode="simple"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                    </bpmn:from>
+                    <bpmn:to xsi:type="bpmn:tFormalExpression" language="http://www.w3.org/1999/XPath" xpathns:bpmn="http://www.omg.org/bpmn20" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">bpmn:getDataObject('dataResponse')/@compositeId
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:Expression mode="simple"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                    </bpmn:to>
+                </bpmn:assignment>
+            </bpmn:dataOutputAssociation>
+            <bpmn:dataOutputAssociation>
+                <bpmn:extensionElements>
+                    <bpmnext:OracleExtensions/>
+                </bpmn:extensionElements>
+                <bpmn:sourceRef>estimate</bpmn:sourceRef>
+                <bpmn:targetRef>dataEstimate</bpmn:targetRef>
+                <bpmn:assignment>
+                    <bpmn:extensionElements>
+                        <bpmnext:OracleExtensions>
+                            <bpmnext:DataAssignment operation="copy" ignoreMissingData="false"/>
+                        </bpmnext:OracleExtensions>
+                    </bpmn:extensionElements>
+                    <bpmn:from xsi:type="bpmn:tFormalExpression" language="http://www.w3.org/1999/XPath" xpathns:bpmn="http://www.omg.org/bpmn20" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">bpmn:getDataOutput('estimate')
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:Expression mode="simple"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                    </bpmn:from>
+                    <bpmn:to xsi:type="bpmn:tFormalExpression" language="http://www.w3.org/1999/XPath" xpathns:bpmn="http://www.omg.org/bpmn20" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">bpmn:getDataObject('dataEstimate')
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:Expression mode="simple"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                    </bpmn:to>
+                </bpmn:assignment>
+            </bpmn:dataOutputAssociation>
+            <bpmn:outputSet id="EVT19887480169793_uniqueOutputSet">
+                <bpmn:dataOutputRefs>estimate</bpmn:dataOutputRefs>
+            </bpmn:outputSet>
+            <bpmn:messageEventDefinition/>
+        </bpmn:startEvent>
+        <bpmn:endEvent name="End" id="EVT19887480169762">
+            <bpmn:extensionElements>
+                <bpmnext:OracleExtensions>
+                    <bpmnext:GraphicsAttributes>
+                        <bpmnext:Position x="1445" y="237"/>
+                    </bpmnext:GraphicsAttributes>
+                    <bpmnext:FeatureSet>
+                        <bpmnext:BooleanFeature value="false" name="hasCheckpoint"/>
+                        <bpmnext:BooleanFeature value="false" name="inputValidation"/>
+                        <bpmnext:BooleanFeature value="false" name="isDraft"/>
+                        <bpmnext:StringFeature value="[]" name="TagFeature"/>
+                        <bpmnext:StringFeature value="PROCESS_DEFAULT" name="generatesEvents"/>
+                        <bpmnext:StringFeature value="" name="lane"/>
+                        <bpmnext:StringFeature value="Begin Level" name="level"/>
+                        <bpmnext:StringFeature value="USE_PROCESS_PERMISSION" name="sealType"/>
+                    </bpmnext:FeatureSet>
+                    <bpmnext:Localization>
+                        <bpmnext:Label>
+                            <bpmnext:LocalizedContent language="en">End</bpmnext:LocalizedContent>
+                        </bpmnext:Label>
+                        <bpmnext:Description>
+                            <bpmnext:LocalizedContent language="en"></bpmnext:LocalizedContent>
+                        </bpmnext:Description>
+                    </bpmnext:Localization>
+                    <bpmnext:Conversational conversation="CONVERSATION198874801697">
+                        <bpmnext:DefineInterfaceConversationalDefinition definedOperationName="callback"/>
+                    </bpmnext:Conversational>
+                    <bpmnext:FlowNodeProperties/>
+                    <bpmnext:LogHandlers/>
+                </bpmnext:OracleExtensions>
+            </bpmn:extensionElements>
+            <bpmn:dataInput name="response" id="response">
+                <bpmn:extensionElements>
+                    <bpmnext:OracleExtensions>
+                        <bpmnext:TypeRef refType="namespaced" name="response" namespace="http://xmlns.bayer.com/ipms/soa" elementType="ELEMENT" implementationType="businessObject"/>
+                    </bpmnext:OracleExtensions>
+                </bpmn:extensionElements>
+            </bpmn:dataInput>
+            <bpmn:dataInputAssociation>
+                <bpmn:extensionElements>
+                    <bpmnext:OracleExtensions/>
+                </bpmn:extensionElements>
+                <bpmn:sourceRef>dataResponse</bpmn:sourceRef>
+                <bpmn:targetRef>response</bpmn:targetRef>
+                <bpmn:assignment>
+                    <bpmn:extensionElements>
+                        <bpmnext:OracleExtensions>
+                            <bpmnext:DataAssignment operation="copy" ignoreMissingData="false"/>
+                        </bpmnext:OracleExtensions>
+                    </bpmn:extensionElements>
+                    <bpmn:from xsi:type="bpmn:tFormalExpression" language="http://www.w3.org/1999/XPath" xpathns:bpmn="http://www.omg.org/bpmn20" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">bpmn:getDataObject('dataResponse')
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:Expression mode="simple"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                    </bpmn:from>
+                    <bpmn:to xsi:type="bpmn:tFormalExpression" language="http://www.w3.org/1999/XPath" xpathns:bpmn="http://www.omg.org/bpmn20" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">bpmn:getDataInput('response')
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:Expression mode="simple"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                    </bpmn:to>
+                </bpmn:assignment>
+            </bpmn:dataInputAssociation>
+            <bpmn:inputSet id="EVT19887480169762_uniqueInputSet">
+                <bpmn:dataInputRefs>response</bpmn:dataInputRefs>
+            </bpmn:inputSet>
+            <bpmn:messageEventDefinition/>
+        </bpmn:endEvent>
+        <bpmn:boundaryEvent cancelActivity="true" attachedToRef="bpmn:ACT19887505137447" name="BoundaryEvent2" id="EVT19887832011222">
+            <bpmn:extensionElements>
+                <bpmnext:OracleExtensions>
+                    <bpmnext:GraphicsAttributes>
+                        <bpmnext:Position x="1160" y="155"/>
+                    </bpmnext:GraphicsAttributes>
+                    <bpmnext:FeatureSet>
+                        <bpmnext:BooleanFeature value="true" name="catchAllErrors"/>
+                        <bpmnext:BooleanFeature value="true" name="catchAllSystemExceptions"/>
+                        <bpmnext:BooleanFeature value="false" name="recoverableError"/>
+                        <bpmnext:BooleanFeature value="false" name="hasCheckpoint"/>
+                        <bpmnext:BooleanFeature value="false" name="isDraft"/>
+                        <bpmnext:BooleanFeature value="false" name="isSuspendEvent"/>
+                        <bpmnext:BooleanFeature value="false" name="outputValidation"/>
+                        <bpmnext:StringFeature value="[]" name="TagFeature"/>
+                        <bpmnext:StringFeature value="PROCESS_DEFAULT" name="generatesEvents"/>
+                        <bpmnext:StringFeature value="" name="lane"/>
+                        <bpmnext:StringFeature value="Begin Level" name="level"/>
+                        <bpmnext:StringFeature value="USE_PROCESS_PERMISSION" name="sealType"/>
+                    </bpmnext:FeatureSet>
+                    <bpmnext:Localization>
+                        <bpmnext:Label>
+                            <bpmnext:LocalizedContent language="en">BoundaryEvent2</bpmnext:LocalizedContent>
+                        </bpmnext:Label>
+                        <bpmnext:Description>
+                            <bpmnext:LocalizedContent language="en"></bpmnext:LocalizedContent>
+                        </bpmnext:Description>
+                    </bpmnext:Localization>
+                    <bpmnext:FlowNodeProperties/>
+                    <bpmnext:LogHandlers/>
+                </bpmnext:OracleExtensions>
+            </bpmn:extensionElements>
+            <bpmn:dataOutput name="errorInfo" id="errorInfo">
+                <bpmn:extensionElements>
+                    <bpmnext:OracleExtensions>
+                        <bpmnext:TypeRef refType="schema" name="string" namespace="http://www.w3.org/2001/XMLSchema" implementationType="type"/>
+                    </bpmnext:OracleExtensions>
+                </bpmn:extensionElements>
+            </bpmn:dataOutput>
+            <bpmn:dataOutput name="faultName" id="faultName">
+                <bpmn:extensionElements>
+                    <bpmnext:OracleExtensions>
+                        <bpmnext:TypeRef refType="schema" name="string" namespace="http://www.w3.org/2001/XMLSchema" implementationType="type"/>
+                    </bpmnext:OracleExtensions>
+                </bpmn:extensionElements>
+            </bpmn:dataOutput>
+            <bpmn:dataOutput name="faultNamespace" id="faultNamespace">
+                <bpmn:extensionElements>
+                    <bpmnext:OracleExtensions>
+                        <bpmnext:TypeRef refType="schema" name="string" namespace="http://www.w3.org/2001/XMLSchema" implementationType="type"/>
+                    </bpmnext:OracleExtensions>
+                </bpmn:extensionElements>
+            </bpmn:dataOutput>
+            <bpmn:dataOutputAssociation>
+                <bpmn:extensionElements>
+                    <bpmnext:OracleExtensions>
+                        <bpmnext:OtherRef>dataEstimate</bpmnext:OtherRef>
+                    </bpmnext:OracleExtensions>
+                </bpmn:extensionElements>
+                <bpmn:sourceRef>errorInfo</bpmn:sourceRef>
+                <bpmn:sourceRef>faultName</bpmn:sourceRef>
+                <bpmn:targetRef>dataResponse</bpmn:targetRef>
+                <bpmn:assignment>
+                    <bpmn:extensionElements>
+                        <bpmnext:OracleExtensions>
+                            <bpmnext:DataAssignment operation="copy" ignoreMissingData="false"/>
+                        </bpmnext:OracleExtensions>
+                    </bpmn:extensionElements>
+                    <bpmn:from xsi:type="bpmn:tFormalExpression" language="http://www.w3.org/1999/XPath" xpathns:bpmn="http://www.omg.org/bpmn20" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">bpmn:getDataOutput('errorInfo')
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:Expression mode="simple"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                    </bpmn:from>
+                    <bpmn:to xsi:type="bpmn:tFormalExpression" language="http://www.w3.org/1999/XPath" xpathns:ns="http://xmlns.bayer.com/ipms" xpathns:bpmn="http://www.omg.org/bpmn20" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">bpmn:getDataObject('dataResponse')/ns:error/ns:description
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:Expression mode="simple"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                    </bpmn:to>
+                </bpmn:assignment>
+                <bpmn:assignment>
+                    <bpmn:extensionElements>
+                        <bpmnext:OracleExtensions>
+                            <bpmnext:DataAssignment operation="copy" ignoreMissingData="false"/>
+                        </bpmnext:OracleExtensions>
+                    </bpmn:extensionElements>
+                    <bpmn:from xsi:type="bpmn:tFormalExpression" language="http://www.w3.org/1999/XPath" xpathns:bpmn="http://www.omg.org/bpmn20" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">bpmn:getDataOutput('faultName')
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:Expression mode="simple"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                    </bpmn:from>
+                    <bpmn:to xsi:type="bpmn:tFormalExpression" language="http://www.w3.org/1999/XPath" xpathns:ns="http://xmlns.bayer.com/ipms" xpathns:bpmn="http://www.omg.org/bpmn20" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">bpmn:getDataObject('dataResponse')/ns:error/ns:code
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:Expression mode="simple"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                    </bpmn:to>
+                </bpmn:assignment>
+                <bpmn:assignment>
+                    <bpmn:extensionElements>
+                        <bpmnext:OracleExtensions>
+                            <bpmnext:DataAssignment operation="copy" ignoreMissingData="false"/>
+                        </bpmnext:OracleExtensions>
+                    </bpmn:extensionElements>
+                    <bpmn:from xsi:type="bpmn:tFormalExpression" language="http://www.w3.org/1999/XPath" xpathns:bpmn="http://www.omg.org/bpmn20" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">bpmn:getDataObject('dataEstimate')/@id
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:Expression mode="simple"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                    </bpmn:from>
+                    <bpmn:to xsi:type="bpmn:tFormalExpression" language="http://www.w3.org/1999/XPath" xpathns:ns="http://xmlns.bayer.com/ipms" xpathns:bpmn="http://www.omg.org/bpmn20" xmlns:xpathns="http://xmlns.oracle.com/bpm/XPathNamespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">bpmn:getDataObject('dataResponse')/ns:error/@id
+                        <bpmn:extensionElements>
+                            <bpmnext:OracleExtensions>
+                                <bpmnext:Expression mode="simple"/>
+                            </bpmnext:OracleExtensions>
+                        </bpmn:extensionElements>
+                    </bpmn:to>
+                </bpmn:assignment>
+            </bpmn:dataOutputAssociation>
+            <bpmn:outputSet id="EVT19887832011222_uniqueOutputSet">
+                <bpmn:dataOutputRefs>errorInfo</bpmn:dataOutputRefs>
+                <bpmn:dataOutputRefs>faultName</bpmn:dataOutputRefs>
+                <bpmn:dataOutputRefs>faultNamespace</bpmn:dataOutputRefs>
+            </bpmn:outputSet>
+            <bpmn:errorEventDefinition>
+                <bpmn:extensionElements>
+                    <bpmnext:OracleExtensions>
+                        <bpmnext:ErrorEvent/>
+                    </bpmnext:OracleExtensions>
+                </bpmn:extensionElements>
+            </bpmn:errorEventDefinition>
+        </bpmn:boundaryEvent>
+        <bpmn:sequenceFlow sourceRef="EVT19887480169793" targetRef="ACT19887505137447" name="sf1988748016974" id="sf1988748016974">
+            <bpmn:extensionElements>
+                <bpmnext:OracleExtensions>
+                    <bpmnext:SequenceFlowAttributes/>
+                    <bpmnext:FeatureSet>
+                        <bpmnext:BooleanFeature value="false" name="collapseMessage"/>
+                        <bpmnext:StringFeature value="-2147483648,-2147483648" name="curve"/>
+                        <bpmnext:StringFeature value="STRAIGHT" name="routing"/>
+                    </bpmnext:FeatureSet>
+                </bpmnext:OracleExtensions>
+            </bpmn:extensionElements>
+        </bpmn:sequenceFlow>
+        <bpmn:sequenceFlow sourceRef="ACT19887505137447" targetRef="ACT19887548627435" name="sf19887505267150" id="sf19887505267150">
+            <bpmn:extensionElements>
+                <bpmnext:OracleExtensions>
+                    <bpmnext:SequenceFlowAttributes/>
+                    <bpmnext:FeatureSet>
+                        <bpmnext:BooleanFeature value="false" name="collapseMessage"/>
+                        <bpmnext:StringFeature value="-2147483648,-2147483648" name="curve"/>
+                        <bpmnext:StringFeature value="STRAIGHT" name="routing"/>
+                    </bpmnext:FeatureSet>
+                </bpmnext:OracleExtensions>
+            </bpmn:extensionElements>
+        </bpmn:sequenceFlow>
+        <bpmn:sequenceFlow sourceRef="ACT19887548627435" targetRef="EVT19887480169762" name="sf1988754904317" id="sf1988754904317">
+            <bpmn:extensionElements>
+                <bpmnext:OracleExtensions>
+                    <bpmnext:SequenceFlowAttributes/>
+                    <bpmnext:FeatureSet>
+                        <bpmnext:BooleanFeature value="false" name="collapseMessage"/>
+                        <bpmnext:StringFeature value="-2147483648,-2147483648" name="curve"/>
+                        <bpmnext:StringFeature value="STRAIGHT" name="routing"/>
+                    </bpmnext:FeatureSet>
+                </bpmnext:OracleExtensions>
+            </bpmn:extensionElements>
+        </bpmn:sequenceFlow>
+        <bpmn:sequenceFlow sourceRef="EVT19887832011222" targetRef="EVT19887480169762" name="sf19887833359058" id="sf19887833359058">
+            <bpmn:extensionElements>
+                <bpmnext:OracleExtensions>
+                    <bpmnext:SequenceFlowAttributes/>
+                    <bpmnext:FeatureSet>
+                        <bpmnext:BooleanFeature value="false" name="collapseMessage"/>
+                        <bpmnext:StringFeature value="-2147483648,-2147483648" name="curve"/>
+                        <bpmnext:StringFeature value="STRAIGHT" name="routing"/>
+                    </bpmnext:FeatureSet>
+                </bpmnext:OracleExtensions>
+            </bpmn:extensionElements>
+        </bpmn:sequenceFlow>
+        <bpmn:dataObject name="dataError" id="dataError">
+            <bpmn:extensionElements>
+                <bpmnext:OracleExtensions>
+                    <bpmnext:DataObjectType initialize="true">
+                        <bpmnext:TypeRef refType="namespaced" name="error" namespace="http://xmlns.bayer.com/ipms" elementType="ELEMENT" implementationType="businessObject"/>
+                    </bpmnext:DataObjectType>
+                </bpmnext:OracleExtensions>
+            </bpmn:extensionElements>
+        </bpmn:dataObject>
+        <bpmn:dataObject name="dataEstimate" id="dataEstimate">
+            <bpmn:extensionElements>
+                <bpmnext:OracleExtensions>
+                    <bpmnext:DataObjectType initialize="true">
+                        <bpmnext:TypeRef refType="namespaced" name="estimate" namespace="http://xmlns.bayer.com/ipms/soa" elementType="ELEMENT" implementationType="businessObject"/>
+                    </bpmnext:DataObjectType>
+                </bpmnext:OracleExtensions>
+            </bpmn:extensionElements>
+        </bpmn:dataObject>
+        <bpmn:dataObject name="dataResponse" id="dataResponse">
+            <bpmn:extensionElements>
+                <bpmnext:OracleExtensions>
+                    <bpmnext:DataObjectType initialize="true">
+                        <bpmnext:TypeRef refType="namespaced" name="response" namespace="http://xmlns.bayer.com/ipms/soa" elementType="ELEMENT" implementationType="businessObject"/>
+                    </bpmnext:DataObjectType>
+                </bpmnext:OracleExtensions>
+            </bpmn:extensionElements>
+        </bpmn:dataObject>
+    </bpmn:process>
+</bpmn:definitions>

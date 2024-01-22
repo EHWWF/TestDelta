@@ -1,0 +1,287 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer
+
+  Created: Fri Feb 22 18:05:27 EET 2013
+  Author:  gytis
+  Type: BPEL 1.1 Process
+  Purpose: Synchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="UpdateProgram"
+               targetNamespace="http://xmlns.bayer.com/ipms/soa"
+               xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+               xmlns:client="http://xmlns.bayer.com/ipms/soa"
+               xmlns:ora="http://schemas.oracle.com/xpath/extension"
+               xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:ns1="http://xmlns.oracle.com/Primavera/P6/WS/EPS/V1"
+         xmlns:bpel2="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ns2="http://xmlns.bayer.com/ipms"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    <!--
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        PARTNERLINKS
+        List of services participating in this BPEL process
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+  <bpelx:annotation>
+    <bpelx:analysis>
+      <bpelx:property name="wsdlFile">
+        <![CDATA[UpdateProgram.wsdl]]>
+      </bpelx:property>
+    </bpelx:analysis>
+  </bpelx:annotation>
+  <partnerLinks>
+    <!--
+      The 'client' role represents the requester of this service. It is
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+    <partnerLink name="UpdateProgramService" partnerLinkType="client:UpdateProgram" myRole="UpdateProgramProvider"
+                 partnerRole="UpdateProgramRequester"/>
+    <partnerLink name="EPSService" partnerLinkType="ns1:EPSService"
+                 partnerRole="EPSPortType"/>
+    <partnerLink name="UpdateRoles.UpdateRolesService"
+                 partnerLinkType="client:UpdateRoles"
+                 partnerRole="UpdateRolesProvider"
+                 myRole="UpdateRolesRequester"/>
+  </partnerLinks>
+
+  <!--
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      VARIABLES
+      List of messages and XML documents used within this BPEL process
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <variables>
+    <!-- Reference to the message passed as input during initiation -->
+    <variable name="inputVariable" messageType="client:UpdateProgramRequestMessage"/>
+
+    <!-- Reference to the message that will be returned to the requester-->
+    <variable name="outputVariable" messageType="client:UpdateProgramResponseMessage"/>
+    <variable name="UpdateEpsIn" messageType="ns1:UpdateEPS"/>
+    <variable name="UpdateEpsOut" messageType="ns1:UpdateEPSResponse"/>
+    <variable name="ReadEpsIn" messageType="ns1:ReadEPS"/>
+    <variable name="ReadEpsOut" messageType="ns1:ReadEPSResponse"/>
+    <variable name="updateRolesIn"
+              messageType="client:UpdateRolesRequestMessage"/>
+    <variable name="updateRolesOut"
+              messageType="client:UpdateRolesResponseMessage"/>
+    <variable name="loopCount" type="xsd:integer"/>
+  </variables>
+  <faultHandlers>
+    <catchAll>
+      <scope name="mainFaultCatchingScope" variableAccessSerializable="no">
+        <variables>
+          <variable name="faultVariable"
+                    messageType="client:UpdateProgramResponseMessage"/>
+        </variables>
+        <sequence name="callbackFault">
+          <assign name="assignFaultOutput">
+            <copy>
+              <from expression="ora:getFaultAsString()"/>
+              <to variable="faultVariable" part="payload"
+                  query="/client:response/ns2:error/ns2:description"/>
+            </copy>
+            <copy>
+              <from expression="ora:getFaultName()"/>
+              <to variable="faultVariable" part="payload"
+                  query="/client:response/ns2:error/ns2:code"/>
+            </copy>
+            <copy>
+              <from variable="inputVariable" part="payload"
+                    query="/client:update/@id"/>
+              <to variable="faultVariable" part="payload"
+                  query="/client:response/ns2:error/@id"/>
+            </copy>
+            <copy>
+              <from variable="inputVariable" part="payload"
+                    query="/client:update/@id"/>
+              <to variable="faultVariable" part="payload"
+                  query="/client:response/@id"/>
+            </copy>
+          </assign>
+          <invoke name="callbackFaultOutput" bpelx:invokeAsDetail="no"
+                  inputVariable="faultVariable"
+                  partnerLink="UpdateProgramService"
+                  portType="client:UpdateProgramCallback" operation="callback"/>
+        </sequence>
+      </scope>
+    </catchAll>
+  </faultHandlers>
+  <!--
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC
+     Set of activities coordinating the flow of messages across the
+     services integrated within this business process
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <sequence name="main">
+
+    <!-- Receive input from requestor. (Note: This maps to operation defined in UpdateProgram.wsdl) -->
+    <receive name="receiveInput" partnerLink="UpdateProgramService" portType="client:UpdateProgram" operation="process" variable="inputVariable" createInstance="yes"/>
+    <flow name="Flow1">
+      <sequence name="Eps">
+        <assign name="AssignLoop">
+          <copy>
+            <from expression="2"/>
+            <to variable="loopCount"/>
+          </copy>
+        </assign>
+        <while name="While2times"
+               condition="bpws:getVariableData('loopCount')>0">
+          <sequence>
+            <switch name="Switch2">
+              <case condition="bpws:getVariableData('loopCount')=1">
+                <bpelx:annotation>
+                  <bpelx:general>
+                    <bpelx:property name="userLabel">
+                      <![CDATA[loop1]]>
+                    </bpelx:property>
+                  </bpelx:general>
+                </bpelx:annotation>
+                <assign name="AssignRead-MNT">
+                  <copy>
+                    <from expression="'Id'"/>
+                    <to variable="ReadEpsIn" part="params"
+                        query="/ns1:ReadEPS/ns1:Field"/>
+                  </copy>
+                  <copy>
+                    <from expression="concat(&quot;Id='MNT-&quot;,bpws:getVariableData('inputVariable','payload','/client:update/ns2:program/@id'),&quot;'&quot;)"/>
+                    <to variable="ReadEpsIn" part="params"
+                        query="/ns1:ReadEPS/ns1:Filter"/>
+                  </copy>
+                    <copy>
+                      <from expression="bpws:getVariableData('loopCount')-1"/>
+                      <to variable="loopCount"/>
+                    </copy>                  
+                </assign>
+              </case>
+              <otherwise>
+                <assign name="AssignRead">
+                  <copy>
+                    <from expression="'Id'"/>
+                    <to variable="ReadEpsIn" part="params"
+                        query="/ns1:ReadEPS/ns1:Field"/>
+                  </copy>
+                  <copy>
+                    <from expression="concat(&quot;Id='&quot;,bpws:getVariableData('inputVariable','payload','/client:update/ns2:program/@id'),&quot;'&quot;)"/>
+                    <to variable="ReadEpsIn" part="params"
+                        query="/ns1:ReadEPS/ns1:Filter"/>
+                  </copy>
+                    <copy>
+                      <from expression="bpws:getVariableData('loopCount')-1"/>
+                      <to variable="loopCount"/>
+                    </copy>                  
+                </assign>
+              </otherwise>
+            </switch>
+            <invoke name="ReadEps" bpelx:invokeAsDetail="no"
+                    inputVariable="ReadEpsIn" outputVariable="ReadEpsOut"
+                    partnerLink="EPSService" portType="ns1:EPSPortType"
+                    operation="ReadEPS"/>
+            <sequence name="SKIP-when-ObjectIdNull"
+                      bpelx:skipCondition="count(bpws:getVariableData('ReadEpsOut','result','/ns1:ReadEPSResponse/ns1:EPS/ns1:ObjectId'))=0">
+              <assign name="AssignUpdate">
+                <copy>
+                  <from variable="inputVariable" part="payload"
+                        query="/client:update/ns2:program/ns2:name"/>
+                  <to variable="UpdateEpsIn" part="params"
+                      query="/ns1:UpdateEPS/ns1:EPS/ns1:Name"/>
+                </copy>
+                <copy>
+                  <from variable="ReadEpsOut" part="result"
+                        query="/ns1:ReadEPSResponse/ns1:EPS/ns1:ObjectId"/>
+                  <to variable="UpdateEpsIn" part="params"
+                      query="/ns1:UpdateEPS/ns1:EPS/ns1:ObjectId"/>
+                </copy>
+              </assign>
+              <invoke name="UpdateEps" bpelx:invokeAsDetail="no"
+                      inputVariable="UpdateEpsIn" outputVariable="UpdateEpsOut"
+                      partnerLink="EPSService" portType="ns1:EPSPortType"
+                      operation="UpdateEPS"/>
+            </sequence>
+          </sequence>
+        </while>
+      </sequence>
+      <sequence name="Roles">
+        <switch name="Switch1">
+          <case condition="count(bpws:getVariableData('inputVariable','payload','/client:update/ns2:program/ns2:roles/ns2:role'))>0">
+            <bpelx:annotation>
+              <bpelx:general>
+                <bpelx:property name="userLabel">
+                  <![CDATA[roles]]>
+                </bpelx:property>
+              </bpelx:general>
+            </bpelx:annotation>
+            <sequence>
+              <assign name="AssignRoles">
+                <copy>
+                  <from variable="inputVariable" part="payload"
+                        query="/client:update/ns2:program/ns2:roles"/>
+                  <to variable="updateRolesIn" part="payload"
+                      query="/client:update/ns2:roles"/>
+                </copy>
+                <copy>
+                  <from variable="inputVariable" part="payload"
+                        query="/client:update/@id"/>
+                  <to variable="updateRolesIn" part="payload"
+                      query="/client:update/@id"/>
+                </copy>
+              </assign>
+              <invoke name="updateRoles" bpelx:invokeAsDetail="no"
+                      inputVariable="updateRolesIn"
+                      partnerLink="UpdateRoles.UpdateRolesService"
+                      portType="client:UpdateRoles" operation="process"/>
+              <receive name="callbackUpdateRoles" createInstance="no"
+                       variable="updateRolesOut"
+                       partnerLink="UpdateRoles.UpdateRolesService"
+                       portType="client:UpdateRolesCallback"
+                       operation="callback"/>
+            </sequence>
+          </case>
+          <otherwise>
+            <empty name="NoRolesProvided"/>
+          </otherwise>
+        </switch>
+      </sequence>
+    </flow>
+    <assign name="AssignOut">
+      <copy>
+        <from variable="inputVariable" part="payload"
+              query="/client:update/ns2:program"/>
+        <to variable="outputVariable" part="payload"
+            query="/client:response/client:complete/ns2:program"/>
+      </copy>
+      <copy>
+        <from variable="inputVariable" part="payload"
+              query="/client:update/@id"/>
+        <to variable="outputVariable" part="payload"
+            query="/client:response/client:complete/@id"/>
+      </copy>
+      <copy>
+        <from variable="inputVariable" part="payload"
+              query="/client:update/@id"/>
+        <to variable="outputVariable" part="payload"
+            query="/client:response/@id"/>
+      </copy>
+    </assign>
+    <invoke name="callbackOutput" bpelx:invokeAsDetail="no"
+            inputVariable="outputVariable" partnerLink="UpdateProgramService"
+            portType="client:UpdateProgramCallback" operation="callback"/>
+    <!-- Generate reply to synchronous request -->
+  </sequence>
+</process>

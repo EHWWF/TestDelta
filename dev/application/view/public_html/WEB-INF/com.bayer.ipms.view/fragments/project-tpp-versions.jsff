@@ -1,0 +1,226 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+  <af:componentDef>
+    <c:set var="bundle" value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+	 
+    <af:panelGroupLayout layout="scroll" styleClass="AFStretchWidth">
+	 
+	     <af:popup id="popConfirm" contentDelivery="lazyUncached">
+          <af:dialog id="diagConfirm" title="#{bundle.globalRemove}"
+                     contentWidth="500"
+                     dialogListener="#{pageFlowScope.tppBean.onTppVersionRemove}">
+            <af:message message="#{bundle.projectTppVersionRemoveConfirmMessage}"
+                        messageType="confirmation"/>
+          </af:dialog>
+        </af:popup>
+        
+          <af:popup id="popCopyConfirm" contentDelivery="lazyUncached">
+          <af:dialog id="diagCopyConfirm" title="#{bundle.projectTppVersionCopy}"
+                     contentWidth="500"
+                     dialogListener="#{pageFlowScope.tppBean.onTppVersionCopy}">
+            <af:message message="#{bundle.projectTppVersionCopyConfirmMessage}"
+                        messageType="confirmation"/>
+          </af:dialog>
+        </af:popup>
+	 
+      <af:subform id="tppversions">
+        <af:panelBox showDisclosure="false">
+          <af:panelCollection id="dc_pc1" styleClass="AFStretchWidth" featuresOff="detach viewMenu statusBar">
+            <f:facet name="toolbar">
+              <af:toolbar id="tb1" rendered="#{rolesBean.TPPEditDevGlobal}">
+                <af:button shortDesc="#{bundle.globalRemove}" text="#{bundle.globalRemove}" icon="/images/remove.png"
+                           immediate="true" 
+                           id="btnRemCat"
+                           disabled="#{bindings.TargetProductProfileVersionsViewIterator.currentRow eq null}"
+                           partialTriggers="tblTppVersions">
+                  <af:showPopupBehavior popupId=":::popConfirm"/>
+                </af:button>
+                 <af:button shortDesc="#{bundle.projectTppVersionCopy}" text="#{bundle.projectTppVersionCopy}"
+                            icon="/images/move.png"
+                           immediate="true" 
+                           id="btnCopyVersion"
+                           disabled="#{bindings.TargetProductProfileVersionsViewIterator.currentRow eq null}"
+                          >
+                  <af:showPopupBehavior popupId=":::popCopyConfirm"/>
+                </af:button>
+              </af:toolbar>
+            </f:facet>
+            <af:table value="#{bindings.TargetProductProfileVersionsView.collectionModel}" styleClass="AFStretchWidth"
+                      var="row" rows="#{bindings.TargetProductProfileVersionsView.rangeSize}"
+                      emptyText="#{bindings.TargetProductProfileVersionsView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                      rowBandingInterval="0"
+                      selectedRowKeys="#{bindings.TargetProductProfileVersionsView.collectionModel.selectedRow}"
+                      selectionListener="#{pageFlowScope.tppBean.onTppVersionSelect}" sortListener="#{pageFlowScope.tppBean.onTppVersionSort}"
+                      fetchSize="#{bindings.TargetProductProfileVersionsView.rangeSize}" id="tblTppVersions"
+                      columnStretching="column:dc_c4" rowSelection="single" autoHeightRows="5"
+                      partialTriggers="::dc_b1">
+              <af:column sortProperty="#{bindings.TargetProductProfileVersionsView.hints.Name.name}" sortable="true"
+                         headerText="#{bindings.TargetProductProfileVersionsView.hints.Name.label}" id="dc_c1"
+                         width="150">
+                <af:outputText value="#{row.Name}" id="dc_cl1"
+                               shortDesc="#{bindings.TargetProductProfileVersionsView.hints.Name.tooltip}"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.TargetProductProfileVersionsView.hints.Version.name}" sortable="true"
+                         headerText="#{bindings.TargetProductProfileVersionsView.hints.Version.label}" id="dc_c2"
+                         width="150">
+                <af:outputText value="#{row.Version}"
+                               shortDesc="#{bindings.TargetProductProfileVersionsView.hints.Version.tooltip}"
+                               id="dc_ot2"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.TargetProductProfileVersionsView.hints.ApprovalDate.name}"
+                         sortable="true"
+                         headerText="#{bindings.TargetProductProfileVersionsView.hints.ApprovalDate.label}" id="dc_c3">
+                <af:outputText value="#{row.ApprovalDate}"
+                               shortDesc="#{bindings.TargetProductProfileVersionsView.hints.ApprovalDate.tooltip}"
+                               id="dc_ot3">
+                  <af:convertDateTime pattern="#{bindings.TargetProductProfileVersionsView.hints.ApprovalDate.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.TargetProductProfileVersionsView.hints.Description.name}"
+                         sortable="true"
+                         headerText="#{bindings.TargetProductProfileVersionsView.hints.Description.label}" id="dc_c4">
+                <af:outputText value="#{row.Description}"
+                               shortDesc="#{bindings.TargetProductProfileVersionsView.hints.Description.tooltip}"
+                               id="dc_ot4"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.TargetProductProfileVersionsView.hints.CreateDate.name}"
+                         sortable="true"
+                         headerText="#{bindings.TargetProductProfileVersionsView.hints.CreateDate.label}" id="dc_c5">
+                <af:outputText value="#{row.CreateDate}"
+                               shortDesc="#{bindings.TargetProductProfileVersionsView.hints.CreateDate.tooltip}">
+                  <af:convertDateTime pattern="#{bindings.TargetProductProfileVersionsView.hints.CreateDate.format}"/>
+                </af:outputText>
+              </af:column>
+            </af:table>
+          </af:panelCollection>
+        </af:panelBox>
+      </af:subform>
+		
+        <af:panelGroupLayout id="pbTppVersionData">
+          <af:panelBox showDisclosure="false" text="#{bundle.projectTppVersion}"
+                       rendered="#{bindings.TargetProductProfileVersionsViewIterator.estimatedRowCount > 0}"
+                       id="dc_pb1">
+            <f:facet name="toolbar">
+              <af:toolbar id="dc_t1">
+                <af:button icon="/images/export.png"
+                           text="#{bundle.globalExportPDF}"
+                           id="ctb_ex_pdf" actionListener="#{pageFlowScope.tppBean.onVersionExportToPDF}" targetFrame="_blank"/>
+              </af:toolbar>
+            </f:facet>
+            <af:panelFormLayout styleClass="AFStretchWidth" fieldWidth="100%" rows="2" id="dc_pfl1">
+              <af:inputText value="#{bindings.TppVersionName.inputValue} v#{bindings.TppVersionVersion.inputValue}"
+                            label="#{bindings.TppVersionName.hints.label}" id="dc_it1"
+                            maximumLength="#{bindings.TppVersionName.hints.precision}"
+                            rows="#{bindings.TppVersionName.hints.displayHeight}"
+                            columns="#{bindings.TppVersionName.hints.displayWidth}" readOnly="true"
+                            shortDesc="#{bindings.TppVersionName.hints.tooltip}"/>
+              <af:inputDate value="#{bindings.TppVersionApprovalDate.inputValue}"
+                            label="#{bindings.TppVersionApprovalDate.hints.label}" id="dc_id1"
+                            columns="#{bindings.TppVersionApprovalDate.hints.displayWidth}" readOnly="true"
+                            shortDesc="#{bindings.TppVersionApprovalDate.hints.tooltip}"/>
+              <af:inputText value="#{bindings.TppVersionIndication.inputValue}"
+                            label="#{bindings.TppVersionIndication.hints.label}" id="dc_it2"
+                            rows="#{bindings.TppVersionIndication.hints.displayHeight}"
+                            columns="#{bindings.TppVersionIndication.hints.displayWidth}" readOnly="true"
+                            maximumLength="#{bindings.TppVersionIndication.hints.precision}"
+                            shortDesc="#{bindings.TppVersionIndication.hints.tooltip}"/>
+              <af:inputText value="#{bindings.TppVersionReferences.inputValue}"
+                            label="#{bindings.TppVersionReferences.hints.label}" id="dc_it3"
+                            rows="#{bindings.TppVersionReferences.hints.displayHeight}"
+                            columns="#{bindings.TppVersionReferences.hints.displayWidth}" readOnly="true"
+                            maximumLength="#{bindings.TppVersionReferences.hints.precision}"
+                            shortDesc="#{bindings.TppVersionReferences.hints.tooltip}"/>
+              <f:facet name="footer">
+                <af:panelCollection id="pctt" styleClass="AFStretchWidth"
+                                    featuresOff="detach statusBar showAsTopToolbarItem">
+                  <f:facet name="toolbar"/>
+                  <af:treeTable id="tblTppVersionValues" var="node"
+                                value="#{bindings.TppProfileCategoryVersionsView.treeModel}"
+                                selectionListener="#{bindings.TppProfileCategoryVersionsView.treeModel.makeCurrent}"
+                                rowSelection="single" fetchSize="#{bindings.TppProfileCategoryVersionsView.rangeSize}"
+                                contentDelivery="immediate" columnStretching="multiple" autoHeightRows="0">
+                    <f:facet name="nodeStamp">
+                      <af:column id="c111" width="250" minimumWidth="150"
+                                 styleClass="depth#{bindings.TppProfileCategoryVersionsView.treeModel.depth mod 3}">
+                        <af:outputText value="#{node.Name} #{node.IsActive or bindings.TppProfileCategoryVersionsView.treeModel.depth > 1?'':bundle.projectTppInactive}"
+                                       id="ot111" inlineStyle="color:#{node.IsActive?'inherit':'#808080'};"/>
+                      </af:column>
+                    </f:facet>
+                    <f:facet name="pathStamp">
+                      <af:outputText value="#{node}" id="ot112"/>
+                    </f:facet>
+                    <af:column id="c1101"
+                               headerText="#{bindings.TppProfileCategoryVersionsView.hints.TppProfileSubcategoryView.TppValuesView.KeyEdvProposition.label}"
+                               styleClass="depth#{bindings.TppProfileCategoryVersionsView.treeModel.depth mod 3}"
+                               width="18%" noWrap="false">
+                      <af:outputText value="#{node.KeyEdvProposition}" id="ot1101"
+                                     styleClass="#{node.UniqueSellingPoint ? 'usp' : ''}"
+                                     rendered="#{bindings.TppProfileCategoryVersionsView.treeModel.depth > 1}"
+                                     shortDesc="#{bindings.TppProfileCategoryVersionsView.hints.TppProfileSubcategoryView.TppValuesView.KeyEdvProposition.tooltip}"/>
+                    </af:column>
+                    <af:column id="c1102"
+                               headerText="#{bindings.TppProfileCategoryVersionsView.hints.TppProfileSubcategoryView.TppValuesView.StandardOfCare.label}"
+                               styleClass="depth#{bindings.TppProfileCategoryVersionsView.treeModel.depth mod 3}"
+                               width="18%" noWrap="false">
+                      <af:outputText value="#{node.StandardOfCare}" id="ot1102"
+                                     styleClass="#{node.UniqueSellingPoint ? 'usp' : ''}"
+                                     rendered="#{bindings.TppProfileCategoryVersionsView.treeModel.depth > 1}"
+                                     shortDesc="#{bindings.TppProfileCategoryVersionsView.hints.TppProfileSubcategoryView.TppValuesView.StandardOfCare.tooltip}"/>
+                    </af:column>
+                    <af:column id="c1103"
+                               headerText="#{bindings.TppProfileCategoryVersionsView.hints.TppProfileSubcategoryView.TppValuesView.TargetedProfile.label}"
+                               styleClass="depth#{bindings.TppProfileCategoryVersionsView.treeModel.depth mod 3}"
+                               width="18%" noWrap="false">
+                      <af:outputText value="#{node.TargetedProfile}" id="ot1103"
+                                     styleClass="#{node.UniqueSellingPoint ? 'usp' : ''}"
+                                     rendered="#{bindings.TppProfileCategoryVersionsView.treeModel.depth > 1}"
+                                     shortDesc="#{bindings.TppProfileCategoryVersionsView.hints.TppProfileSubcategoryView.TppValuesView.TargetedProfile.tooltip}"/>
+                    </af:column>
+                    <af:column id="c1104"
+                               headerText="#{bindings.TppProfileCategoryVersionsView.hints.TppProfileSubcategoryView.TppValuesView.Upside.label}"
+                               styleClass="depth#{bindings.TppProfileCategoryVersionsView.treeModel.depth mod 3}"
+                               width="18%" noWrap="false">
+                      <af:outputText value="#{node.Upside}" id="ot1104"
+                                     styleClass="#{node.UniqueSellingPoint ? 'usp' : ''}"
+                                     rendered="#{bindings.TppProfileCategoryVersionsView.treeModel.depth > 1}"
+                                     shortDesc="#{bindings.TppProfileCategoryVersionsView.hints.TppProfileSubcategoryView.TppValuesView.Upside.tooltip}"/>
+                    </af:column>
+                    <af:column id="c1105"
+                               headerText="#{bindings.TppProfileCategoryVersionsView.hints.TppProfileSubcategoryView.TppValuesView.TargetedIn.label}"
+                               styleClass="depth#{bindings.TppProfileCategoryVersionsView.treeModel.depth mod 3}"
+                               width="12%" noWrap="false">
+                      <af:outputText value="#{node.TargetedIn}" id="ot1105"
+                                     styleClass="#{node.UniqueSellingPoint ? 'usp' : ''}"
+                                     rendered="#{bindings.TppProfileCategoryVersionsView.treeModel.depth > 1}"
+                                     shortDesc="#{bindings.TppProfileCategoryVersionsView.hints.TppProfileSubcategoryView.TppValuesView.TargetedIn.tooltip}"/>
+                    </af:column>
+                    <af:column id="c1106"
+                               headerText="#{bindings.TppProfileCategoryVersionsView.hints.TppProfileSubcategoryView.TppValuesView.KeyDriver.label}"
+                               styleClass="depth#{bindings.TppProfileCategoryVersionsView.treeModel.depth mod 3}"
+                               width="8%" align="center">
+                      <af:selectBooleanCheckbox id="sbc1106" value="#{node.KeyDriver}"
+                                                rendered="#{bindings.TppProfileCategoryVersionsView.treeModel.depth > 1}"
+                                                shortDesc="#{bindings.TppProfileCategoryVersionsView.hints.TppProfileSubcategoryView.TppValuesView.KeyDriver.tooltip}"
+                                                disabled="true" autoSubmit="false"/>
+                    </af:column>
+                    <af:column id="c1107"
+                               headerText="#{bindings.TppProfileCategoryVersionsView.hints.TppProfileSubcategoryView.TppValuesView.UniqueSellingPoint.label}"
+                               styleClass="depth#{bindings.TppProfileCategoryVersionsView.treeModel.depth mod 3}"
+                               width="8%" align="center">
+                      <af:selectBooleanRadio id="sbr1107" group="rbgUniqueSellingPoint"
+                                             value="#{node.UniqueSellingPoint}"
+                                             rendered="#{bindings.TppProfileCategoryVersionsView.treeModel.depth > 1}"
+                                             shortDesc="#{bindings.TppProfileCategoryVersionsView.hints.TppProfileSubcategoryView.TppValuesView.UniqueSellingPoint.tooltip}"
+                                             disabled="true" autoSubmit="false"/>
+                    </af:column>
+                  </af:treeTable>
+                </af:panelCollection>
+              </f:facet>
+            </af:panelFormLayout>
+          </af:panelBox>
+        </af:panelGroupLayout>
+
+    </af:panelGroupLayout>
+  </af:componentDef>
+</jsp:root>

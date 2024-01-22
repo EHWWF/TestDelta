@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="windows-1257" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ImportResources"
+  Version="11.1.1.64.93"
+  InheritPersonalization="true"
+  DBObjectType="table"
+  DBObjectName="IMPORT_RESOURCES"
+  AliasName="ImportResources"
+  BindingStyle="OracleName"
+  UseGlueCode="false"
+  RowClass="com.bayer.ipms.model.base.IPMSEntityImpl">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Access"/>
+    <AttrArray Name="_publishEvents"/>
+  </DesignTime>
+  <Attribute
+    Name="ImportId"
+    IsUpdateable="while_insert"
+    IsNotNull="true"
+    Precision="20"
+    Scale="0"
+    ColumnName="IMPORT_ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="IMPORT_RESOURCES"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="StudyId"
+    IsUpdateable="while_insert"
+    Precision="20"
+    Scale="0"
+    ColumnName="STUDY_ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="IMPORT_RESOURCES">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="MethodCode"
+    IsUpdateable="while_insert"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="METHOD_CODE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="IMPORT_RESOURCES">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="Year"
+    IsNotNull="true"
+    ColumnName="YEAR"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="IMPORT_RESOURCES"
+    Precision="10">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="11"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="Month"
+    IsNotNull="true"
+    ColumnName="MONTH"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="IMPORT_RESOURCES"
+    Precision="10">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="11"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="ReferenceId"
+    IsUpdateable="while_insert"
+    IsNotNull="true"
+    Precision="20"
+    Scale="0"
+    ColumnName="REFERENCE_ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="IMPORT_RESOURCES"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="ProjectId"
+    IsUpdateable="while_insert"
+    IsNotNull="true"
+    Precision="20"
+    Scale="0"
+    ColumnName="PROJECT_ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="IMPORT_RESOURCES"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="SubFunctionCode"
+    IsUpdateable="while_insert"
+    Precision="10"
+    Scale="0"
+    ColumnName="SUBFUNCTION_CODE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="IMPORT_RESOURCES">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="TypeCode"
+    IsUpdateable="while_insert"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="TYPE_CODE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="IMPORT_RESOURCES"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="Demand"
+    Precision="20"
+    Scale="10"
+    ColumnName="DEMAND"
+    SQLType="NUMERIC"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    TableName="IMPORT_RESOURCES">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="22"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="StatusCode"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="STATUS_CODE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="IMPORT_RESOURCES">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="CreateDate"
+    IsUpdateable="false"
+    ColumnName="CREATE_DATE"
+    SQLType="TIMESTAMP"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    TableName="IMPORT_RESOURCES"
+    RetrievedOnInsert="true">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="7"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <FMT_FORMATTER
+          ResId="com.bayer.ipms.model.entities.imports.ImportResources.CreateDate_FMT_FORMATTER"/>
+        <FMT_FORMAT
+          ResId="com.bayer.ipms.model.entities.imports.ImportResources.CreateDate_FMT_FORMAT"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute
+    Name="RowID"
+    IsUpdateable="false"
+    ColumnName="ROWID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="ROWID"
+    PrimaryKey="true"/>
+  <Attribute
+    Name="StatusDescription"
+    Precision="500"
+    Scale="0"
+    ColumnName="STATUS_DESCRIPTION"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="IMPORT_RESOURCES">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="500"/>
+    </DesignTime>
+  </Attribute>
+  <Key
+    Name="SysC0022219">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0022219"/>
+      <Attr Name="_checkCondition" Value='"REFERENCE_ID" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.imports.ImportResources.ReferenceId"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0022220">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0022220"/>
+      <Attr Name="_checkCondition" Value='"IMPORT_ID" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.imports.ImportResources.ImportId"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0022221">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0022221"/>
+      <Attr Name="_checkCondition" Value='"PROJECT_ID" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.imports.ImportResources.ProjectId"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0022223">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0022223"/>
+      <Attr Name="_checkCondition" Value='"METHOD_CODE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.imports.ImportResources.MethodCode"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0022224">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0022224"/>
+      <Attr Name="_checkCondition" Value='"TYPE_CODE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.imports.ImportResources.TypeCode"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0022225">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0022225"/>
+      <Attr Name="_checkCondition" Value='"YEAR" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.imports.ImportResources.Year"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0022226">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0022226"/>
+      <Attr Name="_checkCondition" Value='"MONTH" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.imports.ImportResources.Month"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0022227">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0022227"/>
+      <Attr Name="_checkCondition" Value='"STATUS_CODE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.imports.ImportResources.StatusCode"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0022238">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0022238"/>
+      <Attr Name="_checkCondition" Value='"CREATE_DATE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.imports.ImportResources.CreateDate"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0023865"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0023865"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.imports.ImportResources.ReferenceId"/>
+      <Item
+        Value="com.bayer.ipms.model.entities.imports.ImportResources.ProjectId"/>
+      <Item
+        Value="com.bayer.ipms.model.entities.imports.ImportResources.ImportId"/>
+      <Item
+        Value="com.bayer.ipms.model.entities.imports.ImportResources.TypeCode"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0022230">
+    <DesignTime>
+      <Attr Name="_isCascadeDelete" Value="true"/>
+      <Attr Name="_referencedKey" Value="SYS_C0022118"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0022230"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.imports.ImportResources.ImportId"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0022231">
+    <DesignTime>
+      <Attr Name="_isCascadeDelete" Value="true"/>
+      <Attr Name="_referencedKey" Value="SYS_C0011166"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0022231"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.imports.ImportResources.ProjectId"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0022233">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0012236"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0022233"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.imports.ImportResources.MethodCode"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0022234">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0014025"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0022234"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.imports.ImportResources.TypeCode"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0022235">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0012263"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0022235"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.imports.ImportResources.StatusCode"/>
+    </AttrArray>
+  </Key>
+</Entity>

@@ -1,0 +1,1 @@
+alter table lead_studies add (lpfv_activity_id nvarchar2(50));

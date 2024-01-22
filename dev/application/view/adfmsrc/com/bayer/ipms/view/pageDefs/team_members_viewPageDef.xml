@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.64.93" id="team_members_viewPageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator id="ProgramViewIterator"
+              Binds="ProgramAppModule.ProgramView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="25"/>
+    <iterator id="TeamMemberViewIterator"
+              Binds="ProgramAppModule.TeamMemberView" ChangeEventPolicy="ppr"
+              DataControl="PrivateAppModuleDataControl" RangeSize="500"/>
+    <iterator id="ProjectViewIterator" Binds="ProgramAppModule.ProjectView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="500"/>
+    <searchRegion Criteria="Filter" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="TeamMemberViewIterator" id="FilterQuery"/>
+  </executables>
+  <bindings>     
+     <attributeValues IterBinding="ProjectViewIterator" id="AreaCode">
+            <AttrNames>
+                <Item Value="AreaCode"/>
+            </AttrNames>
+     </attributeValues>
+        
+    <attributeValues IterBinding="ProgramViewIterator" id="Code">
+      <AttrNames>
+        <Item Value="Code"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProgramViewIterator" id="Name">
+      <AttrNames>
+        <Item Value="Name"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="TeamMemberViewIterator" id="TeamMemberCreateInsert"
+            InstanceName="PrivateAppModuleDataControl.ProgramAppModule.TeamMemberView"
+            DataControl="PrivateAppModuleDataControl" RequiresUpdateModel="true"
+            Action="createInsertRow"/>
+    <action IterBinding="TeamMemberViewIterator" id="TeamMemberDelete"
+            InstanceName="PrivateAppModuleDataControl.ProgramAppModule.TeamMemberView"
+            DataControl="PrivateAppModuleDataControl"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <tree IterBinding="TeamMemberViewIterator" id="TeamMemberView" ChangeEventPolicy="ppr">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.TeamMemberView" Name="TeamMemberView0">
+        <AttrNames>
+          <Item Value="EmployeeCode"/>
+          <Item Value="_EmployeeCode"/>
+          <Item Value="EmployeeName"/>
+          <Item Value="Id"/>
+          <Item Value="RoleCode"/>
+          <Item Value="RoleName"/>
+          <Item Value="EmployeeNameSort"/>
+          <Item Value="AssignedProjectIds"/>
+          <Item Value="UserRoleCode"/>
+           <Item Value="HasProject"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="ProjectViewIterator" id="ProjectView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.ProjectView"
+                      Name="ProjectView0">
+        <AttrNames>
+          <Item Value="Id"/>
+          <Item Value="Name"/>
+          <Item Value="IsActive"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <listOfValues StaticList="false" IterBinding="TeamMemberViewIterator"
+                  Uses="LOV_EmployeeCode" id="EmployeeCode"/>
+    <attributeValues IterBinding="TeamMemberViewIterator" id="EmployeeName">
+      <AttrNames>
+        <Item Value="EmployeeName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="TeamMemberViewIterator" id="EmployeeCode1">
+      <AttrNames>
+        <Item Value="EmployeeCode"/>
+      </AttrNames>
+    </attributeValues>
+
+         <methodAction DataControl="PrivateAppModuleDataControl" id="programMenuChangedEventConsumer"
+                      InstanceName="${pageFlowScope.teamMembersBean}" MethodName="programMenuChangedEventConsumer">
+            <NamedData NDName="payload" NDType="java.lang.String" NDValue="paramVal"/>
+        </methodAction>
+   
+
+   <action IterBinding="ProgramViewIterator" id="setCurrentRowWithKeyValue"
+            InstanceName="PrivateAppModuleDataControl.ProgramAppModule.ProgramView"
+            DataControl="PrivateAppModuleDataControl"
+            RequiresUpdateModel="false" Action="setCurrentRowWithKeyValue">
+      <NamedData NDName="rowKey" NDValue=""
+                 NDType="java.lang.String"/>
+   </action>
+  </bindings>
+    <eventMap xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+            <event name="programMenuChangedEvent">
+                <producer region="*">
+                    <consumer region="" handler="programMenuChangedEventConsumer" handleCondition="">
+                        <parameters>
+                            <parameter name="paramVal" value="${data.payLoad}"/>
+                        </parameters>
+                    </consumer>
+                </producer>
+            </event>
+        </eventMap>
+</pageDefinition>

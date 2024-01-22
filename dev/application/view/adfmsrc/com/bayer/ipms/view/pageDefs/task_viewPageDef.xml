@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.64.93" id="task_viewPageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="WorkspaceAppModule.TaskLocalView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="TaskLocalViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator Binds="WorkspaceAppModule.ProjectView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="ProjectViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator Binds="WorkspaceAppModule.ProcessView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="ProcessViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator id="ProgramViewIterator"
+              Binds="WorkspaceAppModule.ProgramView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              ChangeEventPolicy="ppr"/>
+    <iterator id="ConfigurationViewIterator" Binds="ConfigurationView"
+              DataControl="SharedAppModuleDataControl" RangeSize="100"
+              ChangeEventPolicy="ppr"/>
+    <iterator Binds="WorkspaceAppModule.PlanAssumptionRequestView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="PlanAssumptionRequestViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator id="D2ProjectsViewIterator"
+              Binds="ProgramAppModule.D2ProjectsView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="25"/>
+    <iterator id="SAMDProjectsViewIterator"
+              Binds="ProgramAppModule.SAMDProjectsView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="25"/>
+    <iterator Binds="WorkspaceAppModule.LatestEstimatesTagView" DataControl="PrivateAppModuleDataControl"
+              RangeSize="100"
+              id="LatestEstimatesTagViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator id="LtcProcessViewIterator" Binds="WorkspaceAppModule.LtcProcessView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100" ChangeEventPolicy="ppr"/>
+    <iterator id="LtcTagViewIterator" Binds="WorkspaceAppModule.LtcTagView" DataControl="PrivateAppModuleDataControl"
+              RangeSize="25" ChangeEventPolicy="ppr"/>
+    <iterator id="TaskLtcProjectViewIterator" Binds="WorkspaceAppModule.TaskLtcProjectView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100" ChangeEventPolicy="ppr" />
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="TaskLocalViewIterator" id="TaskNumber">
+      <AttrNames>
+        <Item Value="TaskNumber"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="TaskLocalViewIterator" id="TaskTitle">
+      <AttrNames>
+        <Item Value="Title"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="TaskLocalViewIterator" id="TaskState"
+                     ChangeEventPolicy="ppr">
+      <AttrNames>
+        <Item Value="State"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="TaskLocalViewIterator" id="TaskCreatedDate">
+      <AttrNames>
+        <Item Value="CreatedDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProjectViewIterator" id="ProjectCode">
+      <AttrNames>
+        <Item Value="Code"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProjectViewIterator" id="ProjectName">
+      <AttrNames>
+        <Item Value="Name"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProcessViewIterator" id="ProcessName">
+      <AttrNames>
+        <Item Value="Name"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProcessViewIterator" id="ProcessComments">
+      <AttrNames>
+        <Item Value="Comments"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProcessViewIterator" id="ProcessIsNextYear">
+      <AttrNames>
+        <Item Value="IsNextYear"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProcessViewIterator" id="ProcessYear">
+      <AttrNames>
+        <Item Value="Year"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProcessViewIterator"
+                     id="ProcessTerminationDate">
+      <AttrNames>
+        <Item Value="TerminationDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProcessViewIterator" id="ProcessCreateDate">
+      <AttrNames>
+        <Item Value="CreateDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="TaskLocalViewIterator" id="TaskDefinitionName">
+      <AttrNames>
+        <Item Value="TaskDefinitionName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="TaskLocalViewIterator" id="ProjectId">
+      <AttrNames>
+        <Item Value="ProjectID"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProcessViewIterator" id="ProcessId">
+      <AttrNames>
+        <Item Value="Id"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProcessViewIterator" id="ProcessStatusCode">
+      <AttrNames>
+        <Item Value="StatusCode"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="TaskLocalViewIterator" id="ProgramId">
+      <AttrNames>
+        <Item Value="ProgramID"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="TaskLocalViewIterator" id="TaskComment">
+      <AttrNames>
+        <Item Value="Comment"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProgramViewIterator" id="ProgramName">
+      <AttrNames>
+        <Item Value="Name"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProgramViewIterator" id="ProgramCode">
+      <AttrNames>
+        <Item Value="Code"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PlanAssumptionRequestViewIterator"
+                     id="AssumptionRequestName">
+      <AttrNames>
+        <Item Value="Name"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PlanAssumptionRequestViewIterator"
+                     id="AssumptionRequestForecastNo">
+      <AttrNames>
+        <Item Value="ForecastNo"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PlanAssumptionRequestViewIterator"
+                     id="AssumptionRequestTerminationDate">
+      <AttrNames>
+        <Item Value="TerminationDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PlanAssumptionRequestViewIterator"
+                     id="AssumptionRequestCreateDate">
+      <AttrNames>
+        <Item Value="CreateDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PlanAssumptionRequestViewIterator"
+                     id="AssumptionRequestStatusCode">
+      <AttrNames>
+        <Item Value="StatusCode"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PlanAssumptionRequestViewIterator"
+                     id="AssumptionRequestId">
+      <AttrNames>
+        <Item Value="Id"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProjectViewIterator" id="ProjectAbbreviation">
+      <AttrNames>
+        <Item Value="Abbreviation"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="ProjectViewIterator" StaticList="false"
+          Uses="LOV_AreaCode_Dev" id="DevAreaCode" DTSupportsMRU="true"/>
+    <attributeValues IterBinding="ProjectViewIterator" id="CategoryCode">
+      <AttrNames>
+        <Item Value="CategoryCode"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProjectViewIterator" id="SubstanceTypeCode">
+      <AttrNames>
+        <Item Value="SubstanceTypeCode"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProjectViewIterator" id="PhaseCode">
+      <AttrNames>
+        <Item Value="PhaseCode"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProjectViewIterator" id="StateCode">
+      <AttrNames>
+        <Item Value="StateCode"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="ProjectViewIterator" StaticList="false"
+          Uses="LOV_IpownerCode" id="IpownerCode" DTSupportsMRU="true"/>
+    <attributeValues IterBinding="ProjectViewIterator" id="DescriptionPrj">
+      <AttrNames>
+        <Item Value="Description"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="ProjectViewIterator" StaticList="false"
+          Uses="LOV_PredecessorProjectId" id="PredecessorProjectId"
+          DTSupportsMRU="true"/>
+    <attributeValues IterBinding="ProjectViewIterator" id="PriorityCode">
+      <AttrNames>
+        <Item Value="PriorityCode"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProjectViewIterator" id="SourceCode">
+      <AttrNames>
+        <Item Value="SourceCode"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProjectViewIterator" id="IsSyncing">
+      <AttrNames>
+        <Item Value="IsSyncing"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProjectViewIterator" id="ProposedSbeCode">
+      <AttrNames>
+        <Item Value="ProposedSbeCode"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProgramViewIterator" id="QualifiedName">
+      <AttrNames>
+        <Item Value="QualifiedName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LatestEstimatesTagViewIterator" id="LepTagName">
+      <AttrNames>
+        <Item Value="Name"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LatestEstimatesTagViewIterator" id="LetId">
+      <AttrNames>
+        <Item Value="Id"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcProcessViewIterator" id="LtcProcessStatusCode">
+      <AttrNames>
+        <Item Value="StatusCode"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcProcessViewIterator" id="LtcProcessName">
+      <AttrNames>
+        <Item Value="Name"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcProcessViewIterator" id="LtcProcessComments">
+      <AttrNames>
+        <Item Value="Comments"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcProcessViewIterator" id="LtcProcessTerminationDate">
+      <AttrNames>
+        <Item Value="TerminationDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcProcessViewIterator" id="LtcProcessCreateDate">
+      <AttrNames>
+        <Item Value="CreateDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcTagViewIterator" id="LtcTagName">
+      <AttrNames>
+        <Item Value="Name"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcTagViewIterator" id="LtcTagStartYear">
+      <AttrNames>
+        <Item Value="StartYear"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcProcessViewIterator" id="LtcTagId">
+      <AttrNames>
+        <Item Value="LtcTagId"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcProcessViewIterator" id="LtcProcessId">
+      <AttrNames>
+        <Item Value="Id"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="TaskLtcProjectViewIterator" id="LtcProjectView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.ltc.LtcProjectView" Name="LtcProjectView0">
+        <AttrNames>
+          <Item Value="ProjectCode"/>
+          <Item Value="ProjectName"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <methodAction id="prjPrefill" RequiresUpdateModel="true" Action="invokeMethod" MethodName="prefill"
+                  IsViewObjectMethod="false" DataControl="PrivateAppModuleDataControl"
+                  InstanceName="data.PrivateAppModuleDataControl.dataProvider.LtcAppModule">
+      <NamedData NDName="tagId" NDType="java.lang.String"/>
+      <NamedData NDName="processtId" NDType="java.lang.String"/>
+      <NamedData NDName="programId" NDType="java.lang.String"/>
+      <NamedData NDName="projectId" NDType="java.lang.String"/>
+    </methodAction>
+    <attributeValues IterBinding="LtcProcessViewIterator" id="ProcessDescription">
+      <AttrNames>
+        <Item Value="ProcessDescription"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

@@ -1,0 +1,1 @@
+create unique index fte_uk_ind on fte (function_code, month, project_id,study_id,year);

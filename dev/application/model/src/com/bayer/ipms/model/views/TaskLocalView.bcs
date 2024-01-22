@@ -1,0 +1,11 @@
+//Groovy Scripts for com.bayer.ipms.model.views.TaskLocalView
+
+package com.bayer.ipms.model.views
+
+import oracle.jbo.script.annotation.VariableExpression;
+
+@VariableExpression(path="IsPlanAssumptProvideAssigned")
+def IsPlanAssumptProvideAssigned_VariableScript_Variable()
+{
+adf.context.securityContext.isUserInRole("PlanningAssumptionsProvideAssigned")
+}

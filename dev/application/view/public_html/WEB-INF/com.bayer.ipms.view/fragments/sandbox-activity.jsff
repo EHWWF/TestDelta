@@ -1,0 +1,218 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core">
+    <af:componentDef>
+            <af:popup id="popSandAct0" contentDelivery="lazyUncached" >
+                            <af:dialog id="diagComments"
+                                       title="#{bundle.importLog}"
+                                       type="none" contentWidth="950" contentHeight="500" resize="on"
+                                       stretchChildren="first">            
+                <af:pageTemplate viewId="/WEB-INF/com.bayer.ipms.view/templates/ipms-popup-template.jspx" id="tmp">
+                    <f:facet name="summary">
+                        <af:panelBox text="" showDisclosure="false" id="dc_pb2">
+                            <af:panelFormLayout styleClass="AFStretchWidth" fieldWidth="100%" id="dc_pfl1">
+                                <af:inputText label="#{bundle.sandboxProjectId}"
+                                              value="#{empty bindings.SandboxProjectId.inputValue ? bundle.globalNotAvailable : bindings.SandboxProjectId.inputValue}"
+                                              styleClass="#{empty bindings.SandboxProjectId.inputValue ? 'empty' : ''}"
+                                              readOnly="true" id="dc_it1"/>
+                                <af:inputText label="#{bundle.sandboxName}"
+                                              value="#{bindings.SandboxName.inputValue}" readOnly="true" id="dc_it2"/>
+                            </af:panelFormLayout>
+                        </af:panelBox>
+                    </f:facet>
+                    <f:facet name="content">
+                        <af:panelTabbed dimensionsFrom="parent" id="dc_pt1" >
+                            <af:showDetailItem text="#{bundle.importPlan}" stretchChildren="first" id="dc_sdi1">
+                                <af:panelCollection id="pc41" styleClass="AFStretchWidth"
+                                                    featuresOff="detach viewMenu statusBar">
+                                    <af:table value="#{bindings.ImportSandboxTimelinePlanView.collectionModel}"
+                                              var="row" rows="#{bindings.ImportSandboxTimelinePlanView.rangeSize}"
+                                              emptyText="#{bindings.ImportSandboxTimelinePlanView.viewable ? 'No data to display.' : 'Access Denied.'}"
+                                              rowBandingInterval="0"
+                                              selectedRowKeys="#{bindings.ImportSandboxTimelinePlanView.collectionModel.selectedRow}"
+                                              selectionListener="#{bindings.ImportSandboxTimelinePlanView.collectionModel.makeCurrent}"
+                                              rowSelection="single"
+                                              fetchSize="#{bindings.ImportSandboxTimelinePlanView.rangeSize}"
+                                              id="dc_t1">
+                                        <af:column headerText="#{bindings.ImportSandboxTimelinePlanView.hints.ReferenceId.label}"
+                                                   id="dc_c21">
+                                            <af:outputText value="#{row.ReferenceId}"
+                                                           shortDesc="#{bindings.ImportSandboxTimelinePlanView.hints.ReferenceId.tooltip}"
+                                                           id="dc_ot11"/>
+                                        </af:column>
+                                        <af:column headerText="#{bindings.ImportSandboxTimelinePlanView.hints.CreateDate.label}"
+                                                   id="dc_c15">
+                                            <af:outputText value="#{row.CreateDate}"
+                                                           shortDesc="#{bindings.ImportSandboxTimelinePlanView.hints.CreateDate.tooltip}"
+                                                           id="dc_ot14">
+                                                <af:convertDateTime pattern="#{bindings.ImportSandboxTimelinePlanView.hints.CreateDate.format}"/>
+                                            </af:outputText>
+                                        </af:column>
+                                        <af:column headerText="#{bindings.ImportSandboxTimelinePlanView.hints.StudyId.label}"
+                                                   id="dc_c11">
+                                            <af:outputText value="#{row.StudyId}"
+                                                           shortDesc="#{bindings.ImportSandboxTimelinePlanView.hints.StudyId.tooltip}"
+                                                           id="dc_ot12"/>
+                                        </af:column>
+                                        <af:column headerText="#{bindings.ImportSandboxTimelinePlanView.hints.StudyElementId.label}"
+                                                   id="dc_c10">
+                                            <af:outputText value="#{row.StudyElementId}"
+                                                           shortDesc="#{bindings.ImportSandboxTimelinePlanView.hints.StudyElementId.tooltip}"
+                                                           id="dc_ot13"/>
+                                        </af:column>
+                                        <af:column headerText="#{bindings.ImportSandboxTimelinePlanView.hints.OldStartDate.label}"
+                                                   id="dc_c19">
+                                            <af:outputText value="#{row.OldStartDate}"
+                                                           shortDesc="#{bindings.ImportSandboxTimelinePlanView.hints.OldStartDate.tooltip}"
+                                                           id="dc_ot17">
+                                                <af:convertDateTime pattern="#{bindings.ImportSandboxTimelinePlanView.hints.OldStartDate.format}"/>
+                                            </af:outputText>
+                                        </af:column>
+                                        <af:column headerText="#{bindings.ImportSandboxTimelinePlanView.hints.OldFinishDate.label}"
+                                                   id="dc_c18">
+                                            <af:outputText value="#{row.OldFinishDate}"
+                                                           shortDesc="#{bindings.ImportSandboxTimelinePlanView.hints.OldFinishDate.tooltip}"
+                                                           id="dc_ot19">
+                                                <af:convertDateTime pattern="#{bindings.ImportSandboxTimelinePlanView.hints.OldFinishDate.format}"/>
+                                            </af:outputText>
+                                        </af:column>
+                                        <af:column headerText="#{bindings.ImportSandboxTimelinePlanView.hints.NewStartDate.label}"
+                                                   id="dc_c17">
+                                            <af:outputText value="#{row.NewStartDate}"
+                                                           shortDesc="#{bindings.ImportSandboxTimelinePlanView.hints.NewStartDate.tooltip}"
+                                                           id="dc_ot15">
+                                                <af:convertDateTime pattern="#{bindings.ImportSandboxTimelinePlanView.hints.NewStartDate.format}"/>
+                                            </af:outputText>
+                                        </af:column>
+                                        <af:column headerText="#{bindings.ImportSandboxTimelinePlanView.hints.NewFinishDate.label}"
+                                                   id="dc_c16">
+                                            <af:outputText value="#{row.NewFinishDate}"
+                                                           shortDesc="#{bindings.ImportSandboxTimelinePlanView.hints.NewFinishDate.tooltip}"
+                                                           id="dc_ot18">
+                                                <af:convertDateTime pattern="#{bindings.ImportSandboxTimelinePlanView.hints.NewFinishDate.format}"/>
+                                            </af:outputText>
+                                        </af:column>
+                                        <af:column headerText="#{bindings.ImportSandboxTimelinePlanView.hints.ActionName.label}"
+                                                   id="dc_c1">
+                                            <af:outputText value="#{row.ActionName}"
+                                                           shortDesc="#{bindings.ImportSandboxTimelinePlanView.hints.ActionName.tooltip}"
+                                                           id="dc_ot21"
+                                                           inlineStyle="color:#{row.ActionCode != null and row.ActionCode != 'SKIP' ? 'blue' : 'inherit'};"/>
+                                        </af:column>
+                                        <af:column headerText="#{bindings.ImportSandboxTimelinePlanView.hints.StatusName.label}"
+                                                   id="dc_c24">
+                                            <af:outputText value="#{row.StatusName}"
+                                                           shortDesc="#{bindings.ImportSandboxTimelinePlanView.hints.StatusName.tooltip}"
+                                                           id="dc_ot20"
+                                                           inlineStyle="color:#{row.StatusCode == 'FAIL' ? 'red' : 'blue'};"/>
+                                        </af:column>
+                                        <af:column headerText="#{bindings.ImportSandboxTimelinePlanView.hints.StatusDescription.label}"
+                                                   id="dc_c26">
+                                            <af:outputText value="#{row.StatusDescription}"
+                                                           shortDesc="#{bindings.ImportSandboxTimelinePlanView.hints.StatusDescription.tooltip}"
+                                                           id="dc_ot16"/>
+                                        </af:column>
+                                    </af:table> 
+                                </af:panelCollection>
+                            </af:showDetailItem>                         
+                            <af:showDetailItem text="#{bundle.importActuals}" stretchChildren="first" id="dc_sdi5">
+                                <af:panelCollection id="pc14" styleClass="AFStretchWidth"
+                                                    featuresOff="detach viewMenu statusBar">
+                                    <af:table value="#{bindings.ImportSandboxTimelineActView.collectionModel}"
+                                              var="row" rows="#{bindings.ImportSandboxTimelineActView.rangeSize}"
+                                              emptyText="#{bindings.ImportSandboxTimelineActView.viewable ? 'No data to display.' : 'Access Denied.'}"
+                                              rowBandingInterval="0"
+                                              fetchSize="#{bindings.ImportSandboxTimelineActView.rangeSize}"
+                                              id="dc_t2">
+                                        <af:column headerText="#{bindings.ImportSandboxTimelineActView.hints.ReferenceId.label}"
+                                                   id="dc_c56">
+                                            <af:outputText value="#{row.ReferenceId}"
+                                                           shortDesc="#{bindings.ImportSandboxTimelineActView.hints.ReferenceId.tooltip}"
+                                                           id="dc_ot4"/>
+                                        </af:column>
+                                        <af:column headerText="#{bindings.ImportSandboxTimelineActView.hints.CreateDate.label}"
+                                                   id="dc_c50">
+                                            <af:outputText value="#{row.CreateDate}"
+                                                           shortDesc="#{bindings.ImportSandboxTimelineActView.hints.CreateDate.tooltip}"
+                                                           id="dc_ot2">
+                                                <af:convertDateTime pattern="#{bindings.ImportSandboxTimelineActView.hints.CreateDate.format}"/>
+                                            </af:outputText>
+                                        </af:column>
+                                        <af:column headerText="#{bindings.ImportSandboxTimelineActView.hints.StudyId.label}"
+                                                   id="dc_c46">
+                                            <af:outputText value="#{row.StudyId}"
+                                                           shortDesc="#{bindings.ImportSandboxTimelineActView.hints.StudyId.tooltip}"
+                                                           id="dc_ot9"/>
+                                        </af:column>
+                                        <af:column headerText="#{bindings.ImportSandboxTimelineActView.hints.StudyElementId.label}"
+                                                   id="dc_c45">
+                                            <af:outputText value="#{row.StudyElementId}"
+                                                           shortDesc="#{bindings.ImportSandboxTimelineActView.hints.StudyElementId.tooltip}"
+                                                           id="dc_ot8"/>
+                                        </af:column>
+                                        <af:column headerText="#{bindings.ImportSandboxTimelineActView.hints.OldStartDate.label}"
+                                                   id="dc_c54">
+                                            <af:outputText value="#{row.OldStartDate}"
+                                                           shortDesc="#{bindings.ImportSandboxTimelineActView.hints.OldStartDate.tooltip}"
+                                                           id="dc_ot7">
+                                                <af:convertDateTime pattern="#{bindings.ImportSandboxTimelineActView.hints.OldStartDate.format}"/>
+                                            </af:outputText>
+                                        </af:column>
+                                        <af:column headerText="#{bindings.ImportSandboxTimelineActView.hints.OldFinishDate.label}"
+                                                   id="dc_c53">
+                                            <af:outputText value="#{row.OldFinishDate}"
+                                                           shortDesc="#{bindings.ImportSandboxTimelineActView.hints.OldFinishDate.tooltip}"
+                                                           id="dc_ot3">
+                                                <af:convertDateTime pattern="#{bindings.ImportSandboxTimelineActView.hints.OldFinishDate.format}"/>
+                                            </af:outputText>
+                                        </af:column>
+                                        <af:column headerText="#{bindings.ImportSandboxTimelineActView.hints.NewStartDate.label}"
+                                                   id="dc_c52">
+                                            <af:outputText value="#{row.NewStartDate}"
+                                                           shortDesc="#{bindings.ImportSandboxTimelineActView.hints.NewStartDate.tooltip}"
+                                                           id="dc_ot10">
+                                                <af:convertDateTime pattern="#{bindings.ImportSandboxTimelineActView.hints.NewStartDate.format}"/>
+                                            </af:outputText>
+                                        </af:column>
+                                        <af:column headerText="#{bindings.ImportSandboxTimelineActView.hints.NewFinishDate.label}"
+                                                   id="dc_c51">
+                                            <af:outputText value="#{row.NewFinishDate}"
+                                                           shortDesc="#{bindings.ImportSandboxTimelineActView.hints.NewFinishDate.tooltip}"
+                                                           id="dc_ot6">
+                                                <af:convertDateTime pattern="#{bindings.ImportSandboxTimelineActView.hints.NewFinishDate.format}"/>
+                                            </af:outputText>
+                                        </af:column>
+                                        <af:column headerText="#{bindings.ImportSandboxTimelineActView.hints.StatusName.label}"
+                                                   id="dc_c59">
+                                            <af:outputText value="#{row.StatusName}"
+                                                           shortDesc="#{bindings.ImportSandboxTimelineActView.hints.StatusName.tooltip}"
+                                                           id="dc_ot5"
+                                                           inlineStyle="color:#{row.StatusCode == 'FAIL' ? 'red' : 'blue'};"/>
+                                        </af:column>
+                                        <af:column headerText="#{bindings.ImportSandboxTimelineActView.hints.StatusDescription.label}"
+                                                   id="dc_c61">
+                                            <af:outputText value="#{row.StatusDescription}"
+                                                           shortDesc="#{bindings.ImportSandboxTimelineActView.hints.StatusDescription.tooltip}"
+                                                           id="dc_ot1"/>
+                                        </af:column>
+                                    </af:table>
+                                </af:panelCollection>
+                            </af:showDetailItem>                        
+                        </af:panelTabbed>
+                    </f:facet>
+                    <f:facet name="controls">
+                        <f:subview id="sub1">
+                            <af:panelGroupLayout layout="horizontal" halign="right" id="dc_pgl1">
+                                <f:facet name="separator">
+                                    <af:spacer width="5" id="dc_s1"/>
+                                </f:facet>
+                                <af:commandButton text="#{bundle.globalOk}" id="cmdOk" action="ok"
+                                                  inlineStyle="font-weight:bold;"/>
+                            </af:panelGroupLayout>
+                        </f:subview>
+                    </f:facet>
+                </af:pageTemplate>
+                </af:dialog>
+            </af:popup>
+    </af:componentDef>
+</jsp:root>

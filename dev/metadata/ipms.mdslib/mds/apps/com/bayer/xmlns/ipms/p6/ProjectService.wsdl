@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<wsdl:definitions
+
+     targetNamespace="http://xmlns.bayer.com/ipms/p6"
+     xmlns:ns1="http://xmlns.bayer.com/ipms/p6"
+     xmlns:client="http://xmlns.bayer.com/ipms/p6"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+     xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    >
+    <wsdl:documentation>
+        <abstractWSDL>http://soa.ipms:7011/soa-infra/services/default/ipms.p6x/ProjectService.wsdl</abstractWSDL>
+    </wsdl:documentation>
+    <wsdl:types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema">
+            <import namespace="http://xmlns.bayer.com/ipms/p6" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/p6/p6.xsd"/>
+        </schema>
+    </wsdl:types>
+    <wsdl:message name="CloseRequestMessage">
+        <wsdl:part name="payload" element="ns1:close"/>
+    </wsdl:message>
+    <wsdl:message name="ResponseMessage">
+        <wsdl:part name="payload" element="ns1:empty"/>
+    </wsdl:message>
+    <wsdl:message name="ReadWBSRequestMessage">
+        <wsdl:part name="payload" element="ns1:ReadWBS"/>
+    </wsdl:message>
+    <wsdl:message name="ReadWBSResponseMessage">
+        <wsdl:part name="payload" element="ns1:WBS"/>
+    </wsdl:message>
+    <wsdl:message name="UpdateTaskRequestMessage">
+        <wsdl:part name="payload" element="ns1:updateTask"/>
+    </wsdl:message>
+    <wsdl:portType name="ProjectPortType">
+        <wsdl:operation name="close">
+            <wsdl:input message="ns1:CloseRequestMessage"/>
+            <wsdl:output message="ns1:ResponseMessage"/>
+            <wsdl:fault name="projectServiceFault" message="ns1:ResponseMessage"/>
+        </wsdl:operation>
+        <wsdl:operation name="readWBS">
+            <wsdl:input message="ns1:ReadWBSRequestMessage"/>
+            <wsdl:output message="ns1:ReadWBSResponseMessage"/>
+            <wsdl:fault name="projectServiceFault" message="ns1:ReadWBSResponseMessage"/>
+        </wsdl:operation>
+        <wsdl:operation name="updateTask">
+            <wsdl:input message="ns1:UpdateTaskRequestMessage"/>
+            <wsdl:output message="ns1:ResponseMessage"/>
+            <wsdl:fault name="projectServiceFault" message="ns1:ResponseMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="ProjectBinding" type="ns1:ProjectPortType">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="close">
+            <soap:operation style="document" soapAction="close"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="projectServiceFault">
+                <soap:fault name="projectServiceFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="readWBS">
+            <soap:operation style="document" soapAction="readWBS"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="projectServiceFault">
+                <soap:fault name="projectServiceFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="ProjectService">
+        <wsdl:port name="ProjectPort" binding="ns1:ProjectBinding">
+            <soap:address location="http://soa.ipms:7011/soa-infra/services/default/ipms.p6x/ProjectService"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

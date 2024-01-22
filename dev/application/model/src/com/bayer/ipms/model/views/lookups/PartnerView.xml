@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="PartnerView"
+  Version="12.2.1.20.47"
+  InheritPersonalization="merge"
+  SelectList="Partner.CODE, 
+       Partner.DESCRIPTION, 
+       Partner.IS_ACTIVE, 
+       Partner.NAME"
+  FromList="PARTNER Partner"
+  OrderBy="IS_ACTIVE DESC, NAME ASC"
+  BindingStyle="OracleName"
+  CustomQuery="false"
+  AutoRefresh="true"
+  RowClass="com.bayer.ipms.model.base.IPMSLookupViewRowImpl"
+  ComponentClass="com.bayer.ipms.model.base.IPMSViewObjectImpl"
+  PageIterMode="Full">
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="com.bayer.ipms.model.views.lookups.PartnerView_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <EntityUsage
+    Name="Partner"
+    Entity="com.bayer.ipms.model.entities.lookups.Partner"/>
+  <ViewAttribute
+    Name="Code"
+    IsUpdateable="while_insert"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Code"
+    EntityUsage="Partner"
+    AliasName="CODE"/>
+  <ViewAttribute
+    Name="Description"
+    PrecisionRule="true"
+    EntityAttrName="Description"
+    EntityUsage="Partner"
+    AliasName="DESCRIPTION"/>
+  <ViewAttribute
+    Name="IsActive"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="IsActive"
+    EntityUsage="Partner"
+    AliasName="IS_ACTIVE"/>
+  <ViewAttribute
+    Name="Name"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Name"
+    EntityUsage="Partner"
+    AliasName="NAME"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.bayer.ipms.model.bundles.modelBundle"/>
+  </ResourceBundle>
+</ViewObject>

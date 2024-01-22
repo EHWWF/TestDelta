@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<wsdl:definitions
+     name="CacheService"
+     targetNamespace="http://xmlns.bayer.com/ipms/cache"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+     xmlns:tns="http://xmlns.bayer.com/ipms/cache"
+     xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    >
+    <wsdl:documentation>
+        <abstractWSDL>http://soa.ipms:7011/soa-infra/services/default/ipms.cache/CacheService.wsdl</abstractWSDL>
+    </wsdl:documentation>
+    <wsdl:types>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:import namespace="http://xmlns.bayer.com/ipms/cache" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/cache/cache.xsd"/>
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:message name="CacheRequestMessage">
+        <wsdl:part name="payload" element="tns:cache"/>
+    </wsdl:message>
+    <wsdl:portType name="CachePortType">
+        <wsdl:operation name="create">
+            <wsdl:input message="tns:CacheRequestMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="CacheBinding" type="tns:CachePortType">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="create">
+            <soap:operation style="document" soapAction="create"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="CacheService">
+        <wsdl:port name="CachePort" binding="tns:CacheBinding">
+            <soap:address location="http://soa.ipms:7011/soa-infra/services/default/ipms.cache/CacheService"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,563 @@
+<?xml version="1.0" encoding="windows-1257" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="CostsView"
+  Version="11.1.1.64.93"
+  InheritPersonalization="true"
+  SelectList="Costs.ID, 
+       Costs.PROJECT_ID, 
+       Costs.STUDY_ID, 
+       Costs.FUNCTION_CODE, 
+       Costs.SCOPE_CODE, 
+       Costs.METHOD_CODE, 
+       Costs.STATUS_CODE, 
+       Costs.TYPE_CODE, 
+       Costs.COST, 
+       Costs.START_DATE, 
+       Costs.FINISH_DATE, 
+       Costs.CREATE_DATE, 
+       Costs.UPDATE_DATE, 
+       CostsType.NAME AS NAME1, 
+       CostsType.CODE AS CODE1, 
+       CostsScope.NAME AS NAME2, 
+       CostsScope.CODE AS CODE2, 
+       CalculationMethod.NAME AS NAME3, 
+       CalculationMethod.CODE AS CODE3, 
+       FunctionData.NAME AS NAME4, 
+       FunctionData.CODE AS CODE4, 
+       StudyStatus.CODE AS CODE5, 
+       StudyStatus.NAME, 
+       Costs.COMMENTS, 
+       Costs.SUBTYPE_CODE, 
+       CostsSubType.NAME AS NAME5, 
+       CostsSubType.CODE AS CODE6, 
+       Costs.DEVELOPMENT_PHASE_CODE, 
+       DevelopmentPhase.NAME AS NAME6, 
+       DevelopmentPhase.CODE AS CODE7, 
+       Costs.SUBFUNCTION_CODE, 
+       SubFunction.NAME AS NAME7, 
+       SubFunction.CODE, 
+       Costs.FORECAST_NUMBER, 
+       Costs.FORECAST_VERSION"
+  FromList="COSTS Costs, COSTS_TYPE CostsType, COSTS_SCOPE CostsScope, CALCULATION_METHOD CalculationMethod, FUNCTION FunctionData, STUDY_STATUS StudyStatus, COSTS_SUBTYPE CostsSubType, DEVELOPMENT_PHASE DevelopmentPhase, SUBFUNCTION SubFunction"
+  Where="(((((((Costs.TYPE_CODE = CostsType.CODE) AND (Costs.SCOPE_CODE = CostsScope.CODE)) AND (Costs.METHOD_CODE = CalculationMethod.CODE)) AND (Costs.FUNCTION_CODE = FunctionData.CODE(+))) AND (Costs.STATUS_CODE = StudyStatus.CODE(+))) AND (Costs.SUBTYPE_CODE = CostsSubType.CODE(+))) AND (Costs.DEVELOPMENT_PHASE_CODE = DevelopmentPhase.CODE(+))) AND (Costs.SUBFUNCTION_CODE = SubFunction.CODE(+))"
+  BindingStyle="OracleName"
+  CustomQuery="false"
+  RowClass="com.bayer.ipms.model.base.IPMSViewRowImpl"
+  ComponentClass="com.bayer.ipms.model.base.IPMSViewObjectImpl"
+  FetchMode="FETCH_AS_NEEDED"
+  FetchSize="100"
+  PageIterMode="Full"
+  ViewLinkAccessorRetained="true"
+  UseGlueCode="false"
+  Passivate="None">
+  <EntityUsage
+    Name="Costs"
+    Entity="com.bayer.ipms.model.entities.Costs"
+    ReadOnly="true"
+    DeleteParticipant="false"/>
+  <EntityUsage
+    Name="CostsType"
+    Entity="com.bayer.ipms.model.entities.lookups.CostsType"
+    Association="com.bayer.ipms.model.entities.assoc.CostsType"
+    AssociationEnd="com.bayer.ipms.model.entities.assoc.CostsType.CostsType"
+    SourceUsage="com.bayer.ipms.model.views.CostsView.Costs"
+    ReadOnly="true"
+    Reference="true"
+    DeleteParticipant="false"
+    JoinType="INNER JOIN">
+    <DesignTime>
+      <AttrArray Name="_srcAttributes">
+        <Item Value="com.bayer.ipms.model.entities.Costs.TypeCode"/>
+      </AttrArray>
+      <AttrArray Name="_dstAttributes">
+        <Item Value="com.bayer.ipms.model.entities.lookups.CostsType.Code"/>
+      </AttrArray>
+    </DesignTime>
+  </EntityUsage>
+  <EntityUsage
+    Name="CostsScope"
+    Entity="com.bayer.ipms.model.entities.lookups.CostsScope"
+    Association="com.bayer.ipms.model.entities.assoc.CostsScope"
+    AssociationEnd="com.bayer.ipms.model.entities.assoc.CostsScope.CostsScope"
+    SourceUsage="com.bayer.ipms.model.views.CostsView.Costs"
+    ReadOnly="true"
+    Reference="true"
+    DeleteParticipant="false"
+    JoinType="INNER JOIN">
+    <DesignTime>
+      <AttrArray Name="_srcAttributes">
+        <Item Value="com.bayer.ipms.model.entities.Costs.ScopeCode"/>
+      </AttrArray>
+      <AttrArray Name="_dstAttributes">
+        <Item Value="com.bayer.ipms.model.entities.lookups.CostsScope.Code"/>
+      </AttrArray>
+    </DesignTime>
+  </EntityUsage>
+  <EntityUsage
+    Name="CalculationMethod"
+    Entity="com.bayer.ipms.model.entities.lookups.CalculationMethod"
+    Association="com.bayer.ipms.model.entities.assoc.CostsMethod"
+    AssociationEnd="com.bayer.ipms.model.entities.assoc.CostsMethod.CalculationMethod"
+    SourceUsage="com.bayer.ipms.model.views.CostsView.Costs"
+    ReadOnly="true"
+    Reference="true"
+    DeleteParticipant="false"
+    JoinType="INNER JOIN">
+    <DesignTime>
+      <AttrArray Name="_srcAttributes">
+        <Item Value="com.bayer.ipms.model.entities.Costs.MethodCode"/>
+      </AttrArray>
+      <AttrArray Name="_dstAttributes">
+        <Item Value="com.bayer.ipms.model.entities.lookups.CalculationMethod.Code"/>
+      </AttrArray>
+    </DesignTime>
+  </EntityUsage>
+  <EntityUsage
+    Name="FunctionData"
+    Entity="com.bayer.ipms.model.entities.lookups.FunctionData"
+    Association="com.bayer.ipms.model.entities.assoc.CostsFunction"
+    AssociationEnd="com.bayer.ipms.model.entities.assoc.CostsFunction.FunctionData"
+    SourceUsage="com.bayer.ipms.model.views.CostsView.Costs"
+    ReadOnly="true"
+    Reference="true"
+    DeleteParticipant="false"
+    JoinType="LEFT OUTER JOIN">
+    <DesignTime>
+      <AttrArray Name="_srcAttributes">
+        <Item Value="com.bayer.ipms.model.entities.Costs.FunctionCode"/>
+      </AttrArray>
+      <AttrArray Name="_dstAttributes">
+        <Item Value="com.bayer.ipms.model.entities.lookups.FunctionData.Code"/>
+      </AttrArray>
+    </DesignTime>
+  </EntityUsage>
+  <EntityUsage
+    Name="StudyStatus"
+    Entity="com.bayer.ipms.model.entities.lookups.StudyStatus"
+    Association="com.bayer.ipms.model.entities.assoc.CostsStudyStatus"
+    AssociationEnd="com.bayer.ipms.model.entities.assoc.CostsStudyStatus.StudyStatus"
+    SourceUsage="com.bayer.ipms.model.views.CostsView.Costs"
+    ReadOnly="true"
+    Reference="true"
+    DeleteParticipant="false"
+    JoinType="LEFT OUTER JOIN">
+    <DesignTime>
+      <AttrArray Name="_srcAttributes">
+        <Item Value="com.bayer.ipms.model.entities.Costs.StatusCode"/>
+      </AttrArray>
+      <AttrArray Name="_dstAttributes">
+        <Item Value="com.bayer.ipms.model.entities.lookups.StudyStatus.Code"/>
+      </AttrArray>
+    </DesignTime>
+  </EntityUsage>
+  <EntityUsage
+    Name="CostsSubType"
+    Entity="com.bayer.ipms.model.entities.lookups.CostsSubType"
+    Association="com.bayer.ipms.model.entities.assoc.CostsSubType"
+    AssociationEnd="com.bayer.ipms.model.entities.assoc.CostsSubType.CostsSubType"
+    SourceUsage="com.bayer.ipms.model.views.CostsView.Costs"
+    ReadOnly="true"
+    Reference="true"
+    DeleteParticipant="false"
+    JoinType="LEFT OUTER JOIN">
+    <DesignTime>
+      <AttrArray Name="_srcAttributes">
+        <Item Value="com.bayer.ipms.model.entities.Costs.SubtypeCode"/>
+      </AttrArray>
+      <AttrArray Name="_dstAttributes">
+        <Item Value="com.bayer.ipms.model.entities.lookups.CostsSubType.Code"/>
+      </AttrArray>
+    </DesignTime>
+  </EntityUsage>
+  <EntityUsage
+    Name="DevelopmentPhase"
+    Entity="com.bayer.ipms.model.entities.lookups.DevelopmentPhase"
+    Association="com.bayer.ipms.model.entities.assoc.CostsDevelopmentPhase"
+    AssociationEnd="com.bayer.ipms.model.entities.assoc.CostsDevelopmentPhase.DevelopmentPhase"
+    SourceUsage="com.bayer.ipms.model.views.CostsView.Costs"
+    ReadOnly="true"
+    Reference="true"
+    DeleteParticipant="false"
+    JoinType="LEFT OUTER JOIN">
+    <DesignTime>
+      <AttrArray Name="_srcAttributes">
+        <Item Value="com.bayer.ipms.model.entities.Costs.DevelopmentPhaseCode"/>
+      </AttrArray>
+      <AttrArray Name="_dstAttributes">
+        <Item Value="com.bayer.ipms.model.entities.lookups.DevelopmentPhase.Code"/>
+      </AttrArray>
+    </DesignTime>
+  </EntityUsage>
+  <EntityUsage
+    Name="SubFunction"
+    Entity="com.bayer.ipms.model.entities.lookups.SubFunction"
+    Association="com.bayer.ipms.model.entities.assoc.CostsSubFunction"
+    AssociationEnd="com.bayer.ipms.model.entities.assoc.CostsSubFunction.SubFunction"
+    SourceUsage="com.bayer.ipms.model.views.CostsView.Costs"
+    ReadOnly="true"
+    Reference="true"
+    DeleteParticipant="false"
+    JoinType="LEFT OUTER JOIN">
+    <DesignTime>
+      <AttrArray Name="_srcAttributes">
+        <Item Value="com.bayer.ipms.model.entities.Costs.SubFunctionCode"/>
+      </AttrArray>
+      <AttrArray Name="_dstAttributes">
+        <Item Value="com.bayer.ipms.model.entities.lookups.SubFunction.Code"/>
+      </AttrArray>
+    </DesignTime>
+  </EntityUsage>
+  <ViewAttribute
+    Name="Id"
+    IsUpdateable="false"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Id"
+    EntityUsage="Costs"
+    AliasName="ID"/>
+  <ViewAttribute
+    Name="ProjectId"
+    IsUpdateable="while_insert"
+    PrecisionRule="true"
+    EntityAttrName="ProjectId"
+    EntityUsage="Costs"
+    AliasName="PROJECT_ID"/>
+  <ViewAttribute
+    Name="StudyId"
+    IsUpdateable="while_insert"
+    PrecisionRule="true"
+    EntityAttrName="StudyId"
+    EntityUsage="Costs"
+    AliasName="STUDY_ID">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.CostsView.StudyId_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="FunctionCode"
+    IsUpdateable="while_insert"
+    PrecisionRule="true"
+    EntityAttrName="FunctionCode"
+    EntityUsage="Costs"
+    AliasName="FUNCTION_CODE"/>
+  <ViewAttribute
+    Name="ScopeCode"
+    IsUpdateable="while_insert"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="ScopeCode"
+    EntityUsage="Costs"
+    AliasName="SCOPE_CODE"/>
+  <ViewAttribute
+    Name="MethodCode"
+    IsUpdateable="while_insert"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="MethodCode"
+    EntityUsage="Costs"
+    AliasName="METHOD_CODE"/>
+  <ViewAttribute
+    Name="StatusCode"
+    IsUpdateable="while_insert"
+    PrecisionRule="true"
+    EntityAttrName="StatusCode"
+    EntityUsage="Costs"
+    AliasName="STATUS_CODE"/>
+  <ViewAttribute
+    Name="TypeCode"
+    IsUpdateable="while_insert"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="TypeCode"
+    EntityUsage="Costs"
+    AliasName="TYPE_CODE"/>
+  <ViewAttribute
+    Name="Cost"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Cost"
+    EntityUsage="Costs"
+    AliasName="COST"/>
+  <ViewAttribute
+    Name="StartDate"
+    IsUpdateable="while_insert"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="StartDate"
+    EntityUsage="Costs"
+    AliasName="START_DATE">
+    <Properties>
+      <SchemaBasedProperties>
+        <FMT_FORMATTER
+          ResId="com.bayer.ipms.model.views.CostsView.StartDate_FMT_FORMATTER"/>
+        <FMT_FORMAT
+          ResId="com.bayer.ipms.model.views.CostsView.StartDate_FMT_FORMAT"/>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.CostsView.StartDate_LABEL"/>
+        <CONTROLTYPE
+          Value="date"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="FinishDate"
+    IsUpdateable="while_insert"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="FinishDate"
+    EntityUsage="Costs"
+    AliasName="FINISH_DATE">
+    <Properties>
+      <SchemaBasedProperties>
+        <FMT_FORMATTER
+          ResId="com.bayer.ipms.model.views.CostsView.FinishDate_FMT_FORMATTER"/>
+        <FMT_FORMAT
+          ResId="com.bayer.ipms.model.views.CostsView.FinishDate_FMT_FORMAT"/>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.CostsView.FinishDate_LABEL"/>
+        <CONTROLTYPE
+          Value="date"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CreateDate"
+    IsUpdateable="false"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="CreateDate"
+    EntityUsage="Costs"
+    AliasName="CREATE_DATE"/>
+  <ViewAttribute
+    Name="UpdateDate"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="UpdateDate"
+    EntityUsage="Costs"
+    AliasName="UPDATE_DATE"/>
+  <ViewAttribute
+    Name="TypeName"
+    IsUpdateable="false"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Name"
+    EntityUsage="CostsType"
+    AliasName="NAME1">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.CostsView.TypeName_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="_TypeCode"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Code"
+    EntityUsage="CostsType"
+    AliasName="CODE1"/>
+  <ViewAttribute
+    Name="ScopeName"
+    IsUpdateable="false"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Name"
+    EntityUsage="CostsScope"
+    AliasName="NAME2">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.CostsView.ScopeName_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="_ScopeCode"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Code"
+    EntityUsage="CostsScope"
+    AliasName="CODE2"/>
+  <ViewAttribute
+    Name="MethodName"
+    IsUpdateable="false"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Name"
+    EntityUsage="CalculationMethod"
+    AliasName="NAME3">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.CostsView.MethodName_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="_MethodCode"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Code"
+    EntityUsage="CalculationMethod"
+    AliasName="CODE3"/>
+  <ViewAttribute
+    Name="FunctionName"
+    IsUpdateable="false"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Name"
+    EntityUsage="FunctionData"
+    AliasName="NAME4">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.CostsView.FunctionName_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="_FunctionCode"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Code"
+    EntityUsage="FunctionData"
+    AliasName="CODE4"
+    IsUpdateable="while_insert"/>
+  <ViewAttribute
+    Name="_StatusCode"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Code"
+    EntityUsage="StudyStatus"
+    AliasName="CODE5"/>
+  <ViewAttribute
+    Name="StatusName"
+    IsUpdateable="false"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Name"
+    EntityUsage="StudyStatus"
+    AliasName="NAME">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.CostsView.StatusName_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Comments"
+    PrecisionRule="true"
+    EntityAttrName="Comments"
+    EntityUsage="Costs"
+    AliasName="COMMENTS"/>
+  <ViewAttribute
+    Name="SubtypeCode"
+    IsUpdateable="while_insert"
+    PrecisionRule="true"
+    EntityAttrName="SubtypeCode"
+    EntityUsage="Costs"
+    AliasName="SUBTYPE_CODE"/>
+  <ViewAttribute
+    Name="SubTypeName"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Name"
+    EntityUsage="CostsSubType"
+    AliasName="NAME5"/>
+  <ViewAttribute
+    Name="_SubTypeCode"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Code"
+    EntityUsage="CostsSubType"
+    AliasName="CODE6"/>
+  <ViewAttribute
+    Name="DevelopmentPhaseCode"
+    PrecisionRule="true"
+    EntityAttrName="DevelopmentPhaseCode"
+    EntityUsage="Costs"
+    AliasName="DEVELOPMENT_PHASE_CODE"/>
+  <ViewAttribute
+    Name="DevelopmentPhaseName"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Name"
+    EntityUsage="DevelopmentPhase"
+    AliasName="NAME6"/>
+  <ViewAttribute
+    Name="_DevelopmentPhaseCode"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Code"
+    EntityUsage="DevelopmentPhase"
+    AliasName="CODE7"/>
+  <ViewAttribute
+    Name="SubFunctionCode"
+    PrecisionRule="true"
+    EntityAttrName="SubFunctionCode"
+    EntityUsage="Costs"
+    AliasName="SUBFUNCTION_CODE"/>
+  <ViewAttribute
+    Name="SubFunctionName"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Name"
+    EntityUsage="SubFunction"
+    AliasName="NAME7"
+    IsUpdateable="false">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.CostsView.SubFunctionName_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="_SubFunctionCode"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Code"
+    EntityUsage="SubFunction"
+    AliasName="CODE"/>
+  <ViewAttribute
+    Name="ForecastNumber"
+    PrecisionRule="true"
+    EntityAttrName="ForecastNumber"
+    EntityUsage="Costs"
+    AliasName="FORECAST_NUMBER">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.CostsView.ForecastNumber_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ForecastVersion"
+    PrecisionRule="true"
+    EntityAttrName="ForecastVersion"
+    EntityUsage="Costs"
+    AliasName="FORECAST_VERSION">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.CostsView.ForecastVersion_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="Id"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.bayer.ipms.model.bundles.modelBundle"/>
+  </ResourceBundle>
+</ViewObject>

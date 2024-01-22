@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <c:set var="bundle" value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+    <af:componentDef>
+        <af:panelGroupLayout layout="scroll" styleClass="AFStretchWidth">
+            <af:subform id="probabilities-d2">
+                <af:panelBox text="#{bundle.projectPtr}" type="flow" showDisclosure="false"
+                             background="#{pageFlowScope.projectViewBean.editable eq 'studies' ? 'light' : 'default'}">
+                    <f:facet name="toolbar">
+                        <af:toolbar rendered="#{rolesBean.projectEditDev or rolesBean.projectEditD2Prj}" id="t1">
+                            <af:commandToolbarButton icon="/images/edit.png" immediate="true"
+                                                     rendered="#{pageFlowScope.projectViewBean.editable ne 'probabilities-d2'}"
+                                                     disabled="#{not empty pageFlowScope.projectViewBean.editable}"
+                                                     actionListener="#{pageFlowScope.projectViewBean.onEdit}"
+                                                     id="probabilities-d2-edit" text="#{bundle.globalEdit}">
+                                <f:attribute name="target" value="probabilities-d2"/>
+                            </af:commandToolbarButton>
+                            <af:commandToolbarButton rendered="#{pageFlowScope.projectViewBean.editable eq 'probabilities-d2'}"
+                                                     icon="/images/commit.png" id="probabilities-d2-commit"
+                                                     actionListener="#{pageFlowScope.projectViewBean.onCommit}"
+                                                     text="#{bundle.globalOk}"/>
+                            <af:commandToolbarButton rendered="#{pageFlowScope.projectViewBean.editable eq 'probabilities-d2'}"
+                                                     icon="/images/rollback.png"
+                                                     actionListener="#{pageFlowScope.projectViewBean.onRollback}"
+                                                     immediate="true" text="#{bundle.globalCancel}"/>
+                        </af:toolbar>
+                    </f:facet>
+                    <af:panelFormLayout id="dc_pfl1">
+                        <af:selectOneChoice value="#{bindings.PtrForD3Code.inputValue}"
+                                            label="#{bindings.PtrForD3Code.label}"
+                                            required="#{bindings.PtrForD3Code.hints.mandatory}"
+                                            shortDesc="#{bindings.PtrForD3Code.hints.tooltip}" id="dc_soc1"
+                                            readOnly="#{pageFlowScope.projectViewBean.editable ne 'probabilities-d2'}">
+                            <f:selectItems value="#{bindings.PtrForD3Code.items}" id="dc_si1"/>
+                            <f:validator binding="#{bindings.PtrForD3Code.validator}"/>
+                        </af:selectOneChoice>
+                    </af:panelFormLayout>
+                </af:panelBox>
+            </af:subform>
+        </af:panelGroupLayout>
+    </af:componentDef>
+</jsp:root>

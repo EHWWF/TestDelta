@@ -1,0 +1,1 @@
+comment on column project_goal_factor.milestone_code is 'Accordint to the fact that (virtual code) TERMINATION has no Milestone Code in P6 but the column must store termination factor as well for termination, thus, FC ref. could not be used here.';

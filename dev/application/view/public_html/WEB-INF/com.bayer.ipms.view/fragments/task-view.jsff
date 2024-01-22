@@ -1,0 +1,271 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <c:set var="bundle" value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+    <af:pageTemplate viewId="/WEB-INF/com.bayer.ipms.view/templates/ipms-content-template.jspx">
+        <af:resource type="javascript" source="/js/promis-utils.js"/>
+        <af:resource type="javascript">
+          function onWindowOpen(event) {
+              downloadFileWithTimestamp(event.getSource().getProperty('url'), event.getSource().getProperty('fileName'));
+          }
+        </af:resource>
+        <f:attribute name="title" value="#{bundle.task}"/>
+        <f:facet name="popup">
+            <af:group id="popup">
+                <af:declarativeComponent viewId="project-create-popup.jsff" id="popAsId"
+                                         rendered="#{securityContext.userInRole['ProjectEditIdDev']}">
+                    <f:attribute name="areaCode" value="#{bindings.DevAreaCode}"/>
+                    <f:attribute name="bean" value="#{pageFlowScope.taskViewBean}"/>
+                    <f:attribute name="projectType" value="Dev"/>
+                    <f:attribute name="useCase" value="AssignId"/>
+                </af:declarativeComponent>
+                <af:popup id="popReject" contentDelivery="lazyUncached"
+                          rendered="#{bindings.TaskDefinitionName.inputValue eq 'AssignProjectID' and securityContext.userInRole['ProjectEditIdDev']}">
+                    <af:dialog id="diagReject" title="#{bundle.taskReject}" contentWidth="500"
+                               dialogListener="#{pageFlowScope.taskViewBean.onReject}">
+                        <af:panelBox text="#{bundle.globalSummary}" showDisclosure="false" id="pb2">
+                            <af:panelFormLayout styleClass="AFStretchWidth" fieldWidth="100%" id="pfl3">
+                                <af:inputText value="#{bindings.TaskComment.inputValue}"
+                                              label="#{bindings.TaskComment.hints.label}"
+                                              columns="#{bindings.TaskComment.hints.displayWidth}"
+                                              rows="#{bindings.TaskComment.hints.displayHeight}"
+                                              styleClass="AFStretchWidth" contentStyle="width:100%;"
+                                              dimensionsFrom="parent" required="true"
+                                              maximumLength="#{bindings.TaskComment.hints.precision}" id="comment"
+                                              editable="always">
+                                    <f:validator binding="#{bindings.TaskComment.validator}"/>
+                                </af:inputText>
+                            </af:panelFormLayout>
+                        </af:panelBox>
+                    </af:dialog>
+                </af:popup>
+                <af:popup id="popPrefillProfitConfirm" eventContext="launcher" contentDelivery="lazyUncached"
+                          launcherVar="source">
+                    <af:setPropertyListener from="#{source.attributes.prjCode}" to="#{requestScope.prjCode}"
+                                            type="popupFetch"/>
+                    <af:setPropertyListener from="#{source.attributes.prjName}" to="#{requestScope.prjName}"
+                                            type="popupFetch"/>
+                    <af:dialog dialogListener="#{pageFlowScope.taskViewBean.onProjectPrefillProfit}"
+                               title="#{bundle.ltcProjectPrefillFromProfit}" id="d3">
+                        <af:panelBox text="#{bundle.globalSummary}" showDisclosure="false" id="pb7">
+                            <af:panelFormLayout styleClass="AFStretchWidth" fieldWidth="100%" id="pfl8">
+                                <af:inputText label="#{bindings.LtcProjectView.hints.ProjectCode.label}"
+                                              value="#{requestScope.prjCode}" readOnly="true"/>
+                                <af:inputText label="#{bundle.globalName}" value="#{requestScope.prjName}"
+                                              readOnly="true"/>
+                            </af:panelFormLayout>
+                            <af:panelLabelAndMessage label="#{bindings.TagName.hints.label}" id="plam3">
+                                <af:outputText value="#{bindings.TagName.inputValue}"
+                                               shortDesc="#{bindings.TagName.hints.tooltip}" id="ot4"/>
+                            </af:panelLabelAndMessage>
+                        </af:panelBox>
+                        <af:message message="#{af:format2(bundle.ltcProjectPrefillProFitConfirmation, bindings.ConfigurationViewIterator.viewObject.values['LAST-FCT-NUM'], bindings.ConfigurationViewIterator.viewObject.values['LAST-FCT-VER'])}"
+                                    messageType="confirmation" id="m6"/>
+                    </af:dialog>
+                </af:popup>
+            </af:group>
+        </f:facet>
+        <f:facet name="toolbar">
+            <af:group id="tools">
+                <af:menuBar rendered="#{bindings.TaskState.inputValue eq 'ASSIGNED'}" id="mb1">
+                    <af:commandMenuItem text="#{bundle.taskProvideLEvalues}" icon="/images/approve.png" immediate="true"
+                                        rendered="#{bindings.TaskDefinitionName.inputValue eq 'ProvideLatestEstimates1' and (securityContext.userInRole['EstimatesProvide'] or securityContext.userInRole['EstimatesProvideAssigned'])}"
+                                        disabled="#{bindings.ProcessStatusCode ne 'RUN'}" id="cmi4">
+                        <af:clientAttribute name="url"
+                                            value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.requestContextPath}/excel/estimates.xlsm?tagId=#{bindings.LetId.inputValue}&amp;processId=#{bindings.ProcessId.inputValue}&amp;programId=#{bindings.ProgramId.inputValue}"/>
+                        <af:clientAttribute name="fileName" value="estimates.xlsm"/>
+                        <af:clientListener method="onWindowOpen" type="action"/>
+                    </af:commandMenuItem>
+                    <af:commandMenuItem text="#{bundle.taskProvidePlanningAssump}" icon="/images/approve.png"
+                                        immediate="true"
+                                        rendered="#{bindings.TaskDefinitionName.inputValue eq 'ProvidePlanningAssumptions' and (securityContext.userInRole['PlanningAssumptionsProvideAssigned'] or securityContext.userInRole['PlanningAssumptionsProvide'])}"
+                                        disabled="#{bindings.AssumptionRequestStatusCode ne 'RUN'}" id="cmi3">
+                        <af:clientAttribute name="url"
+                                            value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.requestContextPath}/excel/assumptions.xlsm?requestId=#{bindings.AssumptionRequestId.inputValue}#{securityContext.userInRole['PlanningAssumptionsProvide'] ? '&amp;ignorestatus=1' : ''}"/>
+                        <af:clientAttribute name="fileName" value="assumptions.xlsm"/>
+                        <af:clientListener method="onWindowOpen" type="action"/>
+                    </af:commandMenuItem>
+                    <af:commandMenuItem text="#{bundle.taskApprove}" icon="/images/approve.png" immediate="true"
+                                        rendered="#{bindings.TaskDefinitionName.inputValue eq 'AssignProjectID' and securityContext.userInRole['ProjectEditIdDev']}"
+                                        id="cmi2">
+                        <af:showPopupBehavior popupId="popAsId:popCreateProject" triggerType="action"/>
+                    </af:commandMenuItem>
+                    <af:commandMenuItem text="#{bundle.taskReject}" icon="/images/remove.png" immediate="true"
+                                        rendered="#{bindings.TaskDefinitionName.inputValue eq 'AssignProjectID' and securityContext.userInRole['ProjectEditIdDev']}"
+                                        id="cmi1">
+                        <af:showPopupBehavior popupId="popReject" triggerType="action"/>
+                    </af:commandMenuItem>
+                    <af:commandMenuItem text="#{bundle.taskProvideLTCvalues}" icon="/images/approve.png"
+                                        immediate="true"
+                                        rendered="#{bindings.TaskDefinitionName.inputValue eq 'ProvideLTC' and (securityContext.userInRole['EstimatesProvideLTC'] or securityContext.userInRole['EstimatesProvideAssignedLTC'])}"
+                                        disabled="#{bindings.LtcProcessStatusCode ne 'RUN'}" id="cmi5">
+                        <af:clientAttribute name="url"
+                                            value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.requestContextPath}/excel/ltcEstimates.xlsm?tagId=#{bindings.LtcTagId.inputValue}&amp;processId=#{bindings.LtcProcessId.inputValue}&amp;programId=#{bindings.ProgramId.inputValue}&amp;projectId=#{bindings.ProjectId.inputValue}&amp;PD=#{bindings.ProcessDescription.inputValue}&amp;type='LTC'"/>
+                        <af:clientAttribute name="fileName" value="ltcEstimates.xlsm"/>
+                        <af:clientListener method="onWindowOpen" type="action"/>
+                    </af:commandMenuItem>
+                </af:menuBar>
+            </af:group>
+        </f:facet>
+        <f:facet name="content">
+            <af:panelGroupLayout layout="scroll" id="content">
+                <af:panelBox text="#{bundle.globalSummary}" showDisclosure="false" type="flow" id="pb1"
+                             helpTopicId="#{bindings.TaskDefinitionName.inputValue != null and bindings.TaskDefinitionName.inputValue == 'ProvideLatestEstimates1' ? 'HELP_WORKITEMS_PROVIDE_LE':''}">
+                    <af:panelFormLayout styleClass="AFStretchWidth" fieldWidth="100%" id="pfl2">
+                        <af:inputText label="#{bindings.TaskNumber.label}" value="#{bindings.TaskNumber.inputValue}"
+                                      readOnly="true" id="it9"/>
+                        <af:inputText label="#{bindings.TaskTitle.label}" value="#{bindings.TaskTitle.inputValue}"
+                                      readOnly="true" id="it8"/>
+                        <af:inputText label="#{bindings.TaskCreatedDate.label}"
+                                      value="#{bindings.TaskCreatedDate.inputValue}" readOnly="true" id="it7"/>
+                    </af:panelFormLayout>
+                </af:panelBox>
+                <af:panelBox text="#{bundle.estimatesProcess}" showDisclosure="false" type="flow"
+                             rendered="#{bindings.TaskDefinitionName.inputValue != null and bindings.TaskDefinitionName.inputValue == 'ProvideLatestEstimates1'}">
+                    <af:panelFormLayout styleClass="AFStretchWidth" fieldWidth="100%" id="pfl1">
+                        <af:panelLabelAndMessage label="#{bundle.estimatesTagName}" id="plam2">
+                            <af:outputText value="#{bindings.LepTagName.inputValue}"
+                                           shortDesc="#{bindings.LepTagName.hints.tooltip}" id="ot1"/>
+                        </af:panelLabelAndMessage>
+                        <af:inputText label="#{bindings.ProcessName.label}" value="#{bindings.ProcessName.inputValue}"
+                                      readOnly="true" id="it2"/>
+                        <af:inputText label="#{bindings.ProcessComments.label}"
+                                      value="#{bindings.ProcessComments.inputValue}"
+                                      columns="#{bindings.ProcessComments.displayWidth}" readOnly="true"
+                                      styleClass="AFStretchWidth" dimensionsFrom="parent" wrap="soft"
+                                      rows="#{utilsBean.rowCount[bindings.ProcessComments]}"
+                                      contentStyle="min-width:100%;" id="it3"/>
+                        <af:inputText label="#{bindings.ProcessIsNextYear.label}"
+                                      value="#{bindings.ProcessYear.inputValue} #{bindings.ProcessIsNextYear.inputValue ? '-':''} #{bindings.ProcessIsNextYear.inputValue ? bindings.ProcessYear.inputValue + 1:''}"
+                                      readOnly="true" id="it4"/>
+                        <af:inputText label="#{bindings.ProcessTerminationDate.label}"
+                                      value="#{bindings.ProcessTerminationDate.inputValue}" readOnly="true" id="it5"/>
+                        <af:inputText label="#{bindings.ProcessCreateDate.label}"
+                                      value="#{bindings.ProcessCreateDate.inputValue}" readOnly="true" id="it6"/>
+                    </af:panelFormLayout>
+                </af:panelBox>
+                <af:panelBox text="#{bundle.ltcProcess}" showDisclosure="false" type="flow"
+                             rendered="#{bindings.TaskDefinitionName.inputValue != null and bindings.TaskDefinitionName.inputValue == 'ProvideLTC'}"
+                             id="pb6">
+                    <af:panelFormLayout styleClass="AFStretchWidth" fieldWidth="100%" id="pfl7">
+                        <af:panelLabelAndMessage label="#{bundle.ltcTagName}" id="plam4">
+                            <af:outputText value="#{bindings.LtcTagName.inputValue}"
+                                           shortDesc="#{bindings.LtcTagName.hints.tooltip}" id="ot2"/>
+                        </af:panelLabelAndMessage>
+                        <af:inputText label="#{bindings.LtcProcessName.label}"
+                                      value="#{bindings.LtcProcessName.inputValue}" readOnly="true" id="it1"/>
+                        <af:inputText label="#{bindings.LtcProcessComments.label}"
+                                      value="#{bindings.LtcProcessComments.inputValue}"
+                                      columns="#{bindings.LtcProcessComments.displayWidth}" readOnly="true"
+                                      styleClass="AFStretchWidth" dimensionsFrom="parent" wrap="soft"
+                                      rows="#{utilsBean.rowCount[bindings.LtcProcessComments]}"
+                                      contentStyle="min-width:100%;" id="it19"/>
+                        <af:inputText label="#{bindings.LtcTagStartYear.label}"
+                                      value="#{bindings.LtcTagStartYear.inputValue}" readOnly="true" id="it20"/>
+                        <af:inputText label="#{bindings.LtcProcessTerminationDate.label}"
+                                      value="#{bindings.LtcProcessTerminationDate.inputValue}" readOnly="true"
+                                      id="it21"/>
+                        <af:inputText label="#{bundle.ltcProcessStarted}"
+                                      value="#{bindings.LtcProcessCreateDate.inputValue}" readOnly="true" id="it22"/>
+                        <af:inputText value="#{bindings.ProcessDescription.inputValue}"
+                                      label="#{bindings.ProcessDescription.hints.label}"
+                                      columns="#{bindings.LtcProcessComments.displayWidth}" readOnly="true"  
+                                      styleClass="AFStretchWidth" dimensionsFrom="parent" wrap="soft"
+                                      shortDesc="#{bindings.ProcessDescription.hints.tooltip}" 
+                                      contentStyle="min-width:100%;" id="it23"
+                                    rows="#{utilsBean.rowCount[bindings.ProcessDescription]}">
+                        </af:inputText>
+                    </af:panelFormLayout>
+                </af:panelBox>
+                <af:panelBox text="#{bundle.planningAssumpReq}" showDisclosure="false" type="flow"
+                             rendered="#{bindings.TaskDefinitionName.inputValue != null and bindings.TaskDefinitionName.inputValue == 'ProvidePlanningAssumptions'}"
+                             id="pb4">
+                    <af:panelFormLayout styleClass="AFStretchWidth" fieldWidth="100%" id="pfl5">
+                        <af:inputText value="#{bindings.AssumptionRequestName.inputValue}"
+                                      label="#{bindings.AssumptionRequestName.hints.label}" readOnly="true" id="it13"/>
+                        <af:inputText value="#{bindings.AssumptionRequestForecastNo.inputValue}"
+                                      label="#{bindings.AssumptionRequestForecastNo.hints.label}" readOnly="true"
+                                      id="it12"/>
+                        <af:inputText value="#{bindings.AssumptionRequestTerminationDate.inputValue}"
+                                      label="#{bindings.AssumptionRequestTerminationDate.hints.label}" readOnly="true"
+                                      id="it11">
+                            <af:convertDateTime pattern="#{bindings.AssumptionRequestTerminationDate.format}"/>
+                        </af:inputText>
+                        <af:inputText value="#{bindings.AssumptionRequestCreateDate.inputValue}"
+                                      label="#{bindings.AssumptionRequestCreateDate.hints.label}" readOnly="true"
+                                      id="it10">
+                            <af:convertDateTime pattern="#{bindings.AssumptionRequestCreateDate.format}"/>
+                        </af:inputText>
+                    </af:panelFormLayout>
+                </af:panelBox>
+                <af:panelBox text="#{bundle.project}" showDisclosure="false" type="flow"
+                             rendered="#{bindings.TaskDefinitionName.inputValue != null and bindings.TaskDefinitionName.inputValue == 'AssignProjectID'}"
+                             id="pb3">
+                    <af:panelFormLayout styleClass="AFStretchWidth" fieldWidth="100%" id="pfl4">
+                        <af:inputText label="#{bindings.ProjectCode.label}" value="#{bindings.ProjectCode.inputValue}"
+                                      readOnly="true" id="it14"/>
+                        <af:inputText label="#{bindings.ProjectName.label}" value="#{bindings.ProjectName.inputValue}"
+                                      readOnly="true" id="it15"/>
+                        <af:panelLabelAndMessage label="#{bundle.primavera}" id="plam1">
+                            <af:goLink targetFrame="primavera"
+                                       rendered="#{bindings.TaskDefinitionName.inputValue != null}"
+                                       destination="#{bindings.ConfigurationViewIterator.viewObject.values['P6']}/bookmark?uri=navigatetopage&amp;ctx=projectList%3D#{bindings.ProjectViewIterator.currentRow.versions['RAW'].referenceId}%26key%3Dactivities"
+                                       id="gl1">
+                                <af:inputText simple="true" value="#{bundle.primaveraPlan}" readOnly="true"
+                                              inlineStyle="text-decoration:underline;" id="it16"/>
+                            </af:goLink>
+                        </af:panelLabelAndMessage>
+                    </af:panelFormLayout>
+                </af:panelBox>
+                <af:panelBox text="#{bundle.program}" showDisclosure="false" type="flow"
+                             rendered="#{bindings.TaskDefinitionName.inputValue != null and (bindings.TaskDefinitionName.inputValue == 'ProvideLatestEstimates1' or bindings.TaskDefinitionName.inputValue == 'ProvideLTC') and bindings.ProgramCode ne 'RESERVED-PT-D3-TR'}"
+                             id="pb5">
+                    <af:panelFormLayout styleClass="AFStretchWidth" fieldWidth="100%" id="pfl6">
+                        <af:inputText label="#{bindings.ProgramCode.label}" value="#{bindings.ProgramCode.inputValue}"
+                                      readOnly="true" id="it17"/>
+                        <af:inputText label="#{bindings.ProgramName.label}" value="#{bindings.ProgramName.inputValue}"
+                                      readOnly="true" id="it18"/>
+                    </af:panelFormLayout>
+                </af:panelBox>
+                <af:panelBox text="#{bundle.globalProjects}" showDisclosure="false" type="flow"
+                             rendered="#{bindings.TaskDefinitionName.inputValue != null and bindings.TaskDefinitionName.inputValue == 'ProvideLTC'}"
+                             id="pb8" styleClass="AFStretchWidth">
+                    <af:panelCollection id="pcol1s" styleClass="AFStretchWidth" featuresOff="detach statusBar viewMenu">
+                        <f:facet name="toolbar">
+                            <af:toolbar id="tlbPrjsand" partialTriggers="tblPrjPrf"
+                                        rendered="#{securityContext.userInRole['EstimatesTagPrefillLTC'] or securityContext.userInRole['EstimatesProcessProjectPrefillAssignedLTC']}">
+                                <af:group id="dc_g2">
+                                    <af:button id="cmi7" icon="/images/prefill.png"
+                                               disabled="#{bindings.TagIsFrozen.inputValue or bindings.LtcProcessView.estimatedRowCount eq 0}"
+                                               rendered="#{securityContext.userInRole['EstimatesTagPrefillLTC'] or securityContext.userInRole['EstimatesProcessProjectPrefillAssignedLTC']}"
+                                               immediate="true" text="#{bundle.ltcProjectPrefillFromProfit}"
+                                               visible="true">
+                                        <af:clientAttribute name="prjCode"
+                                                            value="#{bindings.TaskLtcProjectViewIterator.currentRow.projectCode}"/>
+                                        <af:clientAttribute name="prjName"
+                                                            value="#{bindings.TaskLtcProjectViewIterator.currentRow.projectName}"/>
+                                        <af:showPopupBehavior popupId="::popPrefillProfitConfirm" triggerType="action"/>
+                                    </af:button>
+                                </af:group>
+                            </af:toolbar>
+                        </f:facet>
+                        <af:table value="#{bindings.LtcProjectView.collectionModel}" var="row"
+                                  rows="#{bindings.LtcProjectView.rangeSize}"
+                                  emptyText="#{bindings.LtcProjectView.viewable ? 'No data to display.' : 'Access Denied.'}"
+                                  rowBandingInterval="0" fetchSize="#{bindings.LtcProjectView.rangeSize}" id="tblPrjPrf"
+                                  selectedRowKeys="#{bindings.LtcProjectView.collectionModel.selectedRow}"
+                                  selectionListener="#{bindings.LtcProjectView.collectionModel.makeCurrent}"
+                                  rowSelection="single" columnStretching="last">
+                            <af:column headerText="#{bindings.LtcProjectView.hints.ProjectCode.label}" id="c1">
+                                <af:outputText value="#{row.ProjectCode}" id="ot3"></af:outputText>
+                            </af:column>
+                            <af:column headerText="#{bundle.globalName}" id="c2">
+                                <af:outputText value="#{row.ProjectName}" id="ot522"></af:outputText>
+                            </af:column>
+                        </af:table>
+                    </af:panelCollection>
+                </af:panelBox>
+            </af:panelGroupLayout>
+        </f:facet>
+    </af:pageTemplate>
+</jsp:root>

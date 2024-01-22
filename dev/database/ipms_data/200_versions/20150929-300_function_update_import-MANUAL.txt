@@ -1,0 +1,128 @@
+set serveroutput on
+declare
+	v_guid sys_guid_transaction.guid%type;
+	v_what nvarchar2(100):='import_functions';
+	v_rowcount number;
+	v_loop pls_integer:=0;
+begin
+	v_guid:=ba_log_pkg.generate_guid;
+	ba_log_pkg.put_guid(v_guid,'DEPLOY', v_what);
+	for rr in (
+					select 
+						to_number(kfu2_no) kfu2_no,
+						kfu2_name,
+						valid_from,
+						valid_to
+					from masterdata.bdo_costcenter_function_main@combase_db--where to_number(kfu2_no)<>84
+					order by to_number(kfu2_no), valid_from --FIFO -> flashback, all rows must be processed
+	) loop
+		v_loop:=v_loop+1;
+		v_rowcount:=0;
+		begin
+			insert into function (code,name,valid_from,valid_to,is_active,create_date) 
+			values(rr.kfu2_no,rr.kfu2_name,rr.valid_from,rr.valid_to,1,sysdate);
+		exception 
+			when dup_val_on_index then
+				update function 
+					set 
+						name=rr.kfu2_name,
+						valid_from=rr.valid_from,
+						valid_to=rr.valid_to,
+						update_date=sysdate
+				where code=to_nchar(rr.kfu2_no)
+				and (name<>rr.kfu2_name or valid_from<>rr.valid_from or nvl(valid_to,sysdate+1)<>nvl(rr.valid_to,sysdate+1));
+				v_rowcount:=sql%rowcount;
+				if v_rowcount>0 then
+					log_pkg.log(v_what, 'rr.kfu2_no='||rr.kfu2_no,'UPDATE!');
+					dbms_output.put_line('rr.kfu2_no='||rr.kfu2_no||';sqlerrm=UPDATE!');
+				end if;
+			when others then
+				log_pkg.log(v_what, 'rr.kfu2_no='||rr.kfu2_no,sqlerrm);
+				dbms_output.put_line('rr.kfu2_no='||rr.kfu2_no||';sqlerrm='||sqlerrm);
+		end;
+		ba_log_pkg.put_guid(v_guid,null,null);
+		commit;
+	end loop;
+	dbms_output.put_line('INSERT:v_loop='||v_loop);
+	merge into function dest
+		using (
+			select
+				code,
+				max(decode (seq, 1, name)) name,
+				max(decode (seq, 1, valid_from)) valid_from,
+				max(decode (seq, 1, valid_to)) valid_to,
+				sum(decode (seq, 1, srccnt, dstcnt)) iud
+			from (
+				select
+					code,name,valid_from,valid_to,
+					srccnt, dstcnt,row_number() over (partition by code order by dstcnt nulls last) seq
+				from (
+					select
+						code,name,valid_from,valid_to
+						,count (src) srccnt, count (dst) dstcnt
+					from (
+							select 
+								to_number(kfu2_no) code,
+								to_nchar(kfu2_name) name,
+								valid_from,
+								valid_to,
+								1 src, 
+								to_number (null) dst
+							from masterdata.bdo_costcenter_function_main@combase_db 
+							where valid_from<=sysdate 
+							and nvl(valid_to,sysdate+1)>sysdate
+						union all
+							select 
+								to_number(code) code,
+								name,
+								valid_from,
+								valid_to,
+								to_number(null) src, 
+								2 dst
+							from function
+							where REGEXP_LIKE(code, '^[[:digit:]]+$')
+					)
+					group by code,name,valid_from,valid_to
+					having count (src) <> count (dst)
+				)
+			)
+			group by code
+		) diff
+		on (dest.code = to_nchar(diff.code))
+		when matched
+		then
+			 update set
+				  dest.name = diff.name
+				 ,dest.valid_from = diff.valid_from
+				 ,dest.valid_to = diff.valid_to
+				 ,update_date=sysdate --delete where (diff.iud = 0) --Delete--will go separatly
+		when not matched
+		then
+			 insert (code,name,valid_from,valid_to,create_date)
+			 values (diff.code,diff.name,diff.valid_from,diff.valid_to,sysdate);
+		v_rowcount:=sql%rowcount; 
+		dbms_output.put_line('MERGE:v_rowcount='||v_rowcount);
+		ba_log_pkg.put_guid(v_guid,null,null);
+		commit;
+			dbms_output.put_line('Logical DELETE for not Used FUNCTIONS.Start...');
+			for ff in (
+						select 
+							to_number(code) code
+						from function
+						where regexp_like(code, '^[[:digit:]]+$')
+						and nvl(valid_to,sysdate+111)>sysdate
+							minus
+						select 
+							to_number(kfu2_no) code
+						from masterdata.bdo_costcenter_function_main@combase_db 
+						where valid_from<=sysdate 
+						and nvl(valid_to,sysdate+1)>sysdate
+						)
+			loop
+				update function set valid_to=sysdate, is_active=0 where code=ff.code;
+			end loop;
+		dbms_output.put_line('Logical DELETE for not Used FUNCTIONS.End...');
+		ba_log_pkg.put_guid(v_guid,null,null);
+		commit;
+end;
+/

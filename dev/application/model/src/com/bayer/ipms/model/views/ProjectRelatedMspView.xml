@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ProjectRelatedMspView"
+  Version="12.2.1.20.47"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="false"
+  RowClass="com.bayer.ipms.model.views.ProjectRelatedMspViewRowImpl"
+  ComponentClass="com.bayer.ipms.model.base.IPMSViewObjectImpl"
+  PageIterMode="Full"
+  RowInterface="com.bayer.ipms.model.views.common.ProjectRelatedMspViewRow"
+  SelectList="ProjectRelatedMsp.ID, 
+       ProjectRelatedMsp.REL_MSP_PROJECT_ID, 
+       ProjectRelatedMsp.PROJECT_ID"
+  FromList="PROJECT_RELATED_MSP ProjectRelatedMsp">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Access"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <EntityUsage
+    Name="ProjectRelatedMsp"
+    Entity="com.bayer.ipms.model.entities.ProjectRelatedMsp"/>
+  <ViewAttribute
+    Name="Id"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="Id"
+    EntityUsage="ProjectRelatedMsp"
+    AliasName="ID"/>
+  <ViewAttribute
+    Name="RelMspProjectId"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="RelMspProjectId"
+    EntityUsage="ProjectRelatedMsp"
+    AliasName="REL_MSP_PROJECT_ID"/>
+  <ViewAttribute
+    Name="ProjectId"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="ProjectId"
+    EntityUsage="ProjectRelatedMsp"
+    AliasName="PROJECT_ID"/>
+</ViewObject>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.0.31" id="ltc_tag_viewPageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="LtcAppModule.LtcProcessView" DataControl="PrivateAppModuleDataControl" RangeSize="500"
+              id="LtcProcessViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator Binds="LtcAppModule.LtcTagView" DataControl="PrivateAppModuleDataControl" RangeSize="25"
+              id="LtcTagViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator id="ConfigurationViewIterator" Binds="ConfigurationView" DataControl="SharedAppModuleDataControl"
+              RangeSize="100" ChangeEventPolicy="ppr"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="LtcProcessViewIterator" id="LtcProcessView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.ltc.LtcProcessView" Name="LtcProcessView0">
+        <AttrNames>
+          <Item Value="QualifiedName"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="LtcTagViewIterator" id="TagName">
+      <AttrNames>
+        <Item Value="Name"/>
+      </AttrNames>
+    </attributeValues>
+    <eventBinding id="ltcEventBinding" Listener="javax.faces.event.ActionListener">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="estimates" eventType="Action Event"
+               customPayLoad=""/>
+      </events>   
+      </eventBinding>
+    <attributeValues IterBinding="LtcTagViewIterator" id="TagIsFrozen">
+      <AttrNames>
+        <Item Value="IsFrozen"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcTagViewIterator" id="TagId">
+      <AttrNames>
+        <Item Value="Id"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcTagViewIterator" id="TagIsForecastProb">
+      <AttrNames>
+        <Item Value="IsForecastProb"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcTagViewIterator" id="ReportDate">
+      <AttrNames>
+        <Item Value="SubmitReportDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcTagViewIterator" id="StartYear">
+      <AttrNames>
+        <Item Value="StartYear"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcTagViewIterator" id="PrefilFromProfitDate">
+      <AttrNames>
+        <Item Value="PrefilFromProfitDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcTagViewIterator" id="CalculateProbDate">
+      <AttrNames>
+        <Item Value="CalculateProbDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcTagViewIterator" id="FcNumbver">
+      <AttrNames>
+        <Item Value="FcNumbver"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcTagViewIterator" id="ForecastVersion">
+      <AttrNames>
+        <Item Value="ForecastVersion"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcTagViewIterator" id="ForecastNumber">
+      <AttrNames>
+        <Item Value="ForecastNumber"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcTagViewIterator" id="NumberOfProfitYears">
+      <AttrNames>
+        <Item Value="NumberOfProfitYears"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcProcessViewIterator" id="ProcessDescription">
+      <AttrNames>
+        <Item Value="ProcessDescription"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

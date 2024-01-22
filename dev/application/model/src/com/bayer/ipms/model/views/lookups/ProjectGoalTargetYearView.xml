@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ProjectGoalTargetYearView"
+  Version="12.1.3.10.8"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="com.bayer.ipms.model.base.IPMSViewRowImpl"
+  ComponentClass="com.bayer.ipms.model.views.lookups.ProjectGoalTargetYearViewImpl"
+  PageIterMode="Full"
+  ComponentInterface="com.bayer.ipms.model.views.lookups.common.ProjectGoalTargetYearView"
+  ClientProxyName="com.bayer.ipms.model.views.lookups.client.ProjectGoalTargetViewClient">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll|VarAccess"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="com.bayer.ipms.model.views.lookups.ProjectGoalTargetYearView_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <SQLQuery><![CDATA[SELECT goal.project_id,   
+       Extract(year FROM goal.target_date) AS TARGET_YEAR   
+FROM   goal   
+GROUP  BY goal.project_id,   
+          Extract(year FROM target_date)   
+ORDER  BY 1,2]]></SQLQuery>
+  <ViewAttribute
+    Name="ProjectId"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="PROJECT_ID"
+    Expression="PROJECT_ID"
+    SQLType="STRUCT"/>
+  <ViewAttribute
+    Name="TargetYear"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="BIGINT"
+    AliasName="TARGET_YEAR"
+    SQLType="NUMERIC"
+    Expression="TARGET_YEAR"/>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="ProjectId"/>
+  </AttrArray>
+  <ClientInterface
+    Name="__clientInterface">
+    <Method
+      Name="afterRollback"
+      MethodName="afterRollback">
+      <Return
+        Name="_return_type_"
+        Type="void"/>
+      <Parameter
+        Name="TransactionEvent"
+        Type="oracle.jbo.server.TransactionEvent"/>
+    </Method>
+    <Method
+      Name="applyCriteria"
+      MethodName="applyCriteria">
+      <Return
+        Name="_return_type_"
+        Type="void"/>
+      <Parameter
+        Name="criteria"
+        Type="java.lang.String"/>
+    </Method>
+    <Method
+      Name="beforeRollback"
+      MethodName="beforeRollback">
+      <Return
+        Name="_return_type_"
+        Type="void"/>
+      <Parameter
+        Name="TransactionEvent"
+        Type="oracle.jbo.server.TransactionEvent"/>
+    </Method>
+    <Method
+      Name="getEstimatedRowCount"
+      MethodName="getEstimatedRowCount">
+      <Return
+        Name="_return_type_"
+        Type="long"/>
+    </Method>
+    <Method
+      Name="removeCriteria"
+      MethodName="removeCriteria">
+      <Return
+        Name="_return_type_"
+        Type="void"/>
+      <Parameter
+        Name="criteria"
+        Type="java.lang.String"/>
+    </Method>
+    <Method
+      Name="supressAuditing"
+      MethodName="supressAuditing">
+      <Return
+        Name="_return_type_"
+        Type="boolean"/>
+    </Method>
+  </ClientInterface>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.bayer.ipms.model.bundles.modelBundle"/>
+  </ResourceBundle>
+</ViewObject>

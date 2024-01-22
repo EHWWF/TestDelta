@@ -1,0 +1,298 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <c:set var="bundle" value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+    <af:pageTemplate viewId="/WEB-INF/com.bayer.ipms.view/templates/ipms-content-template.jspx" id="pt1">
+        <af:resource type="javascript" source="/js/promis-utils.js"/>
+        <af:resource type="javascript">
+          function onWindowOpen(event) {
+              downloadFileWithTimestamp(event.getSource().getProperty('url2'), event.getSource().getProperty('fileName'));
+          }
+
+          function onPopupWindowOpen(event) {
+              if (event.getOutcome() == 'cancel') {
+                  return;
+              }
+              downloadFileWithTimestamp(event.getSource().getProperty('url2'), event.getSource().getProperty('fileName'));
+          }
+        </af:resource>
+        <f:facet name="toolbar">
+            <af:panelGroupLayout id="tools" layout="horizontal">
+                <af:menuBar id="mb1">
+                    <af:menu text="#{bundle.globalView}" id="m1">
+                        <af:commandMenuItem text="#{bundle.estimatesMeeting}" id="cmd2"
+                                            rendered="#{securityContext.userInRole['EstimatesTagMeetingFinalize'] and not bindings.LetIsFrozen.inputValue}"
+                                            disabled="#{not bindings.LetIsMeetingAllowed.inputValue or bindings.LetIsFrozen.inputValue}"
+                                            icon="/images/meeting.png">
+                            <af:showPopupBehavior popupId="popMeeting" triggerType="action"/>
+                        </af:commandMenuItem>
+                        <af:commandMenuItem text="#{bundle.estimatesMeeting}"
+                                            rendered="#{securityContext.userInRole['EstimatesProcessMeetingView'] and (bindings.LetIsFrozen.inputValue or not securityContext.userInRole['EstimatesTagMeetingFinalize'])}"
+                                            immediate="true" id="cmd3" disabled="#{not bindings.LetIsFrozen.inputValue}"
+                                            icon="/images/meeting.png">
+                            <af:clientAttribute name="url2"
+                                                value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.requestContextPath}/excel/estimates-readonly.xlsm?tagId=#{bindings.LetId.inputValue}&amp;processId=#{bindings.ProcessId.inputValue}"/>
+                            <af:clientAttribute name="fileName" value="estimates-readonly.xlsm"/>
+                            <af:clientListener method="onWindowOpen" type="action"/>
+                        </af:commandMenuItem>
+                    </af:menu>
+                    <af:menu text="#{bundle.globalTools}" id="m2"
+                             rendered="#{securityContext.userInRole['EstimatesTagFreeze']}">
+                        <af:commandMenuItem text="#{bundle.estimatesFreeze}" id="cmd22"
+                                            rendered="#{securityContext.userInRole['EstimatesTagFreeze']}"
+                                            disabled="#{bindings.LetIsFrozen.inputValue or not estimatesTagViewBean.freezeAllowed}"
+                                            icon="/images/freeze.png">
+                            <af:showPopupBehavior popupId="popFreezeConfirm" triggerType="action"/>
+                        </af:commandMenuItem>
+                        <af:commandMenuItem text="#{bundle.estimatesUnfreeze}" id="cmd23"
+                                            rendered="#{securityContext.userInRole['EstimatesTagFreeze']}"
+                                            disabled="#{not bindings.LetIsFrozen.inputValue}"
+                                            icon="/images/unfreeze.png">
+                            <af:showPopupBehavior popupId="popUnfreezeConfirm" triggerType="action"/>
+                        </af:commandMenuItem>
+                    </af:menu>
+                </af:menuBar>
+            </af:panelGroupLayout>
+        </f:facet>
+        <f:facet name="content">
+            <af:panelStretchLayout id="content" styleClass="AFStretchWidth" topHeight="auto" dimensionsFrom="parent"
+                                   bottomHeight="0px" inlineStyle="height:100%;">
+                <f:facet name="top">
+                    <af:panelGroupLayout id="pgTagView">
+                        <af:panelBox text="#{bundle.globalSummary}" showDisclosure="false" type="flow" id="summary">
+                            <af:panelGridLayout id="pgl1">
+                                <af:gridRow marginTop="5px" height="auto" marginBottom="5px" id="gr1">
+                                    <af:gridCell marginStart="5px" width="50%" id="gc1">
+                                        <af:inputText value="#{bindings.LetName.inputValue}"
+                                                      label="#{bindings.LetName.hints.label}"
+                                                      required="#{bindings.LetName.hints.mandatory}"
+                                                      columns="#{bindings.LetName.hints.displayWidth}"
+                                                      maximumLength="#{bindings.LetName.hints.precision}"
+                                                      shortDesc="#{bindings.LetName.hints.tooltip}" id="it1"
+                                                      readOnly="true">
+                                            <f:validator binding="#{bindings.LetName.validator}"/>
+                                        </af:inputText>
+                                    </af:gridCell>
+                                    <af:gridCell marginStart="5px" width="50%" marginEnd="5px" id="gc2">
+                                        <af:inputText value="#{bindings.LetIsFrozen.inputValue? bundle.globalYes : bundle.globalNo}"
+                                                      label="#{bindings.LetIsFrozen.hints.label}" readOnly="true"
+                                                      id="it12"/>
+                                    </af:gridCell>
+                                </af:gridRow>
+                                <af:gridRow marginTop="5px" height="auto" marginBottom="5px" id="gr6">
+                                    <af:gridCell marginStart="5px" width="50%" id="gc10">
+                                        <af:panelLabelAndMessage label="#{bindings.StartDataCollection.hints.label}"
+                                                                 rendered="#{not empty bindings.StartDataCollection.inputValue}"
+                                                                 id="plam2">
+                                            <af:outputText value="#{bindings.StartDataCollection.inputValue}"
+                                                           shortDesc="#{bindings.StartDataCollection.hints.tooltip}"
+                                                           id="ot4">
+                                                <af:convertDateTime pattern="#{bindings.StartDataCollection.format}"/>
+                                            </af:outputText>
+                                        </af:panelLabelAndMessage>
+                                    </af:gridCell>
+                                    <af:gridCell marginStart="5px" width="50%" id="gc11">
+                                        <af:inputText value="#{bindings.QualifiedName2.inputValue}" id="it2" 
+                                                      label="#{bindings.QualifiedName2.hints.label}" 
+                                                      readOnly="true"/>
+                                    </af:gridCell>
+                                </af:gridRow>
+                            </af:panelGridLayout>
+                        </af:panelBox>
+                        <af:panelBox text="#{bundle.estimatesPrefillProb}" showDisclosure="false" type="flow" id="pb4">
+                            <af:panelGridLayout id="pgl2">
+                                <af:gridRow marginTop="5px" height="auto" id="gr4">
+                                    <af:gridCell marginStart="5px" width="50%" id="gc5">
+                                        <af:selectOneChoice value="#{bindings.LetCyProbPrefillCode.inputValue}"
+                                                            label="#{bindings.LetCyProbPrefillCode.label}"
+                                                            readOnly="true"
+                                                            unselectedLabel="#{bundle.globalNotAvailable}" id="cyp1">
+                                            <f:selectItems value="#{bindings.LetCyProbPrefillCode.items}" id="si3"/>
+                                        </af:selectOneChoice>
+                                    </af:gridCell>
+                                    <af:gridCell marginStart="5px" width="50%" marginEnd="5px" id="gc7">
+                                        <af:selectOneChoice value="#{bindings.LetCyProbPrefillTagId.inputValue}"
+                                                            label="#{bindings.LetCyProbPrefillTagId.label}"
+                                                            visible="#{bindings.LetCyProbPrefillCode.attributeValue eq 'xLEp'}"
+                                                            readOnly="true"
+                                                            unselectedLabel="#{bundle.globalNotAvailable}"
+                                                            shortDesc="#{bindings.LetCyProbPrefillTagId.hints.tooltip}"
+                                                            id="soc1">
+                                            <f:selectItems value="#{bindings.LetCyProbPrefillTagId.items}" id="si1"/>
+                                        </af:selectOneChoice>
+                                    </af:gridCell>
+                                </af:gridRow>
+                                <af:gridRow marginTop="5px" height="auto" marginBottom="5px" id="gr5">
+                                    <af:gridCell marginStart="5px" width="50%" id="gc8">
+                                        <af:selectOneChoice value="#{bindings.LetNyProbPrefillCode.inputValue}"
+                                                            label="#{bindings.LetNyProbPrefillCode.label}"
+                                                            readOnly="true"
+                                                            rendered="#{estimatesTagViewBean.nextYearProcessAvailable}"
+                                                            unselectedLabel="#{bundle.globalNotAvailable}" id="nyp1">
+                                            <f:selectItems value="#{bindings.LetNyProbPrefillCode.items}" id="si4"/>
+                                        </af:selectOneChoice>
+                                    </af:gridCell>
+                                    <af:gridCell marginStart="5px" width="50%" marginEnd="5px" id="gc9">
+                                        <af:selectOneChoice value="#{bindings.LetNyProbPrefillTagId.inputValue}"
+                                                            label="#{bindings.LetNyProbPrefillTagId.label}"
+                                                            rendered="#{estimatesTagViewBean.nextYearProcessAvailable}"
+                                                            visible="#{bindings.LetNyProbPrefillCode.attributeValue eq 'xLEp'}"
+                                                            readOnly="true"
+                                                            unselectedLabel="#{bundle.globalNotAvailable}"
+                                                            shortDesc="#{bindings.LetNyProbPrefillTagId.hints.tooltip}"
+                                                            id="soc2">
+                                            <f:selectItems value="#{bindings.LetNyProbPrefillTagId.items}" id="si2"/>
+                                        </af:selectOneChoice>
+                                    </af:gridCell>
+                                </af:gridRow>
+                            </af:panelGridLayout>
+                        </af:panelBox>
+                    </af:panelGroupLayout>
+                </f:facet>
+                <f:facet name="center">
+                    <af:panelBox text="#{bundle.estimatesProcesses}" showDisclosure="false" type="stretch"
+                                 id="processes" styleClass="AFStretchWidth">
+                        <af:panelCollection id="pcol1" styleClass="AFStretchWidth"
+                                            featuresOff="detach viewMenu statusBar">
+                            <f:facet name="toolbar">
+                                <af:toolbar id="tlbPrc">
+                                    <af:group id="dc_g1">
+                                        <af:button text="#{bundle.estimatesStart}" id="b1" action="estimates-start"
+                                                   useWindow="true" windowHeight="600" windowWidth="950"
+                                                   rendered="#{securityContext.userInRole['EstimatesProcessStart']}"
+                                                   immediate="true" icon="/images/start.png"
+                                                   returnListener="#{estimatesTagViewBean.onEstimatesStartReturn}"/>
+                                    </af:group>
+                                </af:toolbar>
+                            </f:facet>
+                            <af:table value="#{bindings.LatestEstimatesProcessView.collectionModel}" var="row"
+                                      rows="#{bindings.LatestEstimatesProcessView.rangeSize}"
+                                      emptyText="#{bindings.LatestEstimatesProcessView.viewable ? 'No data to display.' : 'Access Denied.'}"
+                                      rowBandingInterval="0"
+                                      selectedRowKeys="#{bindings.LatestEstimatesProcessView.collectionModel.selectedRow}"
+                                      rowSelection="none" fetchSize="#{bindings.LatestEstimatesProcessView.rangeSize}"
+                                      id="prcTab" columnStretching="column:c1">
+                                <af:column headerText="#{bindings.LatestEstimatesProcessView.hints.QualifiedName.label}"
+                                           id="c1">
+                                    <af:outputText value="#{row.QualifiedName}"
+                                                   shortDesc="#{bindings.LatestEstimatesProcessView.hints.QualifiedName.tooltip}"
+                                                   id="ot1"/>
+                                </af:column>
+                            </af:table>
+                        </af:panelCollection>
+                    </af:panelBox>
+                </f:facet>
+            </af:panelStretchLayout>
+        </f:facet>
+        <f:facet name="popup">
+            <af:group id="popups">
+                <af:popup id="popFreezeConfirm" contentDelivery="lazyUncached">
+                    <af:dialog id="d1" dialogListener="#{estimatesTagViewBean.onTagFreezeConfirm}"
+                               title="#{bundle.estimatesFreeze}">
+                        <af:panelBox text="#{bundle.globalSummary}" id="pb1" showDisclosure="false">
+                            <af:panelLabelAndMessage label="#{bindings.LetName.hints.label}" id="plam1">
+                                <af:outputText value="#{bindings.LetName.inputValue}"
+                                               shortDesc="#{bindings.LetName.hints.tooltip}" id="ot2"/>
+                            </af:panelLabelAndMessage>
+                        </af:panelBox>
+                        <af:message message="#{bundle.estimatesFreezeConfirmation}" messageType="confirmation" id="m3"/>
+                    </af:dialog>
+                </af:popup>
+                <af:popup id="popUnfreezeConfirm" contentDelivery="lazyUncached">
+                    <af:dialog id="d12" type="okCancel" dialogListener="#{estimatesTagViewBean.onTagUnfreezeConfirm}"
+                               title="#{bundle.estimatesUnfreeze}">
+                        <af:panelBox text="#{bundle.globalSummary}" id="pb2" showDisclosure="false">
+                            <af:panelLabelAndMessage label="#{bindings.LetName.hints.label}" id="plam12">
+                                <af:outputText value="#{bindings.LetName.inputValue}"
+                                               shortDesc="#{bindings.LetName.hints.tooltip}" id="ot22"/>
+                            </af:panelLabelAndMessage>
+                        </af:panelBox>
+                        <af:message message="#{bundle.estimatesUnfreezeConfirmation}" messageType="confirmation"
+                                    id="m32"/>
+                    </af:dialog>
+                </af:popup>
+                <af:popup id="popMeeting" contentDelivery="lazyUncached"
+                          popupCanceledListener="#{estimatesTagViewBean.onPopupCancel}"
+                          rendered="#{securityContext.userInRole['EstimatesTagMeetingFinalize']}"
+                          popupFetchListener="#{estimatesTagViewBean.onPopMeetingFetch}">
+                    <af:dialog id="dlgMeeting" title="#{bundle.estimatesMeeting}"
+                               dialogListener="#{estimatesTagViewBean.onPopupSubmit}" contentWidth="800">
+                        <af:clientAttribute name="url2"
+                                            value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.requestContextPath}/excel/estimates.xlsm?tagId=#{bindings.LetId.inputValue}"/>
+                        <af:clientAttribute name="fileName" value="estimates.xlsm"/>
+                        <af:clientListener method="onPopupWindowOpen" type="dialog"/>
+                        <af:panelBox text="#{bundle.globalSummary}" showDisclosure="false" type="flow" id="pb3">
+                            <af:panelFormLayout styleClass="AFStretchWidth" fieldWidth="100%" maxColumns="2" rows="2"
+                                                id="pfl1">
+                                <af:inputText label="#{bundle.estimatesTagName}" value="#{bindings.LetName}"
+                                              readOnly="true" id="it6"/>
+                            </af:panelFormLayout>
+                        </af:panelBox>
+                        <af:panelBox text="#{bundle.estimatesPrefillProb}" showDisclosure="false" type="flow">
+                            <af:panelGridLayout id="pgl22" partialTriggers="cyp12 nyp12">
+                                <af:gridRow marginTop="5px" height="auto" id="gr2">
+                                    <af:gridCell marginStart="5px" width="45%" id="gc3" halign="end">
+                                        <af:selectOneChoice value="#{bindings.LetCyProbPrefillCode.inputValue}"
+                                                            label="#{bindings.LetCyProbPrefillCode.label}"
+                                                            required="false"
+                                                            unselectedLabel="#{bundle.globalNotAvailable}"
+                                                            autoSubmit="true" id="cyp12"
+                                                            disabled="#{not bindings.LetIsPrefillProb.inputValue}">
+                                             <f:selectItems value="#{utilsBean.lookup[bindings.LatestEstimatesTagViewIterator.currentRow.prefillTypeProbabilisticView]}"/>
+                                        </af:selectOneChoice>
+                                    </af:gridCell>
+                                    <af:gridCell width="55%" marginEnd="5px" id="gc4" halign="end">
+                                        <af:selectOneChoice value="#{bindings.LetCyProbPrefillTagId.inputValue}"
+                                                            label="#{bindings.LetCyProbPrefillTagId.label}"
+                                                            required="#{bindings.LetCyProbPrefillCode.attributeValue eq 'xLEp'}"
+                                                            visible="#{bindings.LetCyProbPrefillCode.attributeValue eq 'xLEp'}"
+                                                            unselectedLabel="#{bundle.globalNotAvailable}"
+                                                            shortDesc="#{bindings.LetCyProbPrefillTagId.hints.tooltip}"
+                                                            id="soc12"
+                                                            disabled="#{not bindings.LetIsPrefillProb.inputValue}">
+                                            <f:selectItems value="#{bindings.LetCyProbPrefillTagId.items}" id="si12"/>
+                                            <f:validator binding="#{bindings.LetCyProbPrefillTagId.validator}"/>
+                                        </af:selectOneChoice>
+                                    </af:gridCell>
+                                </af:gridRow>
+                                <af:gridRow marginTop="5px" height="auto" marginBottom="5px" id="gr3"
+                                            rendered="#{estimatesTagViewBean.nextYearProcessAvailable}">
+                                    <af:gridCell marginStart="5px" width="45%" id="gc52" halign="end">
+                                        <af:selectOneChoice value="#{bindings.LetNyProbPrefillCode.inputValue}"
+                                                            label="#{bindings.LetNyProbPrefillCode.label}"
+                                                            required="#{bindings.LetNyProbPrefillCode.hints.mandatory}"
+                                                            unselectedLabel="#{bundle.globalNotAvailable}"
+                                                            autoSubmit="true" id="nyp12"
+                                                            disabled="#{not bindings.LetIsPrefillProb.inputValue}">
+                                            <f:selectItems value="#{utilsBean.lookup[bindings.LatestEstimatesTagViewIterator.currentRow.prefillTypeProbabilisticView]}"/>
+                                        </af:selectOneChoice>
+                                    </af:gridCell>
+                                    <af:gridCell width="55%" marginEnd="5px" id="gc6" halign="end">
+                                        <af:selectOneChoice value="#{bindings.LetNyProbPrefillTagId.inputValue}"
+                                                            label="#{bindings.LetNyProbPrefillTagId.label}"
+                                                            required="#{bindings.LetNyProbPrefillCode.attributeValue eq 'xLEp'}"
+                                                            visible="#{bindings.LetNyProbPrefillCode.attributeValue eq 'xLEp'}"
+                                                            unselectedLabel="#{bundle.globalNotAvailable}"
+                                                            shortDesc="#{bindings.LetNyProbPrefillTagId.hints.tooltip}"
+                                                            id="soc22"
+                                                            disabled="#{not bindings.LetIsPrefillProb.inputValue}">
+                                            <f:selectItems value="#{bindings.LetNyProbPrefillTagId.items}" id="si22"/>
+                                            <f:validator binding="#{bindings.LetNyProbPrefillTagId.validator}"/>
+                                        </af:selectOneChoice>
+                                    </af:gridCell>
+                                </af:gridRow>
+                            </af:panelGridLayout>
+                            <af:panelFormLayout maxColumns="1" rows="1" styleClass="AFStretchWidth" fieldWidth="100%"
+                                                partialTriggers="cyp1 nyp1" id="pfl2">
+                                <af:selectBooleanCheckbox value="#{bindings.LetIsPrefillProb.inputValue}"
+                                                          text="#{bindings.LetIsPrefillProb.label}" autoSubmit="true"
+                                                          id="sbc1"/>
+                            </af:panelFormLayout>
+                        </af:panelBox>
+                    </af:dialog>
+                </af:popup>
+            </af:group>
+        </f:facet>
+        <f:attribute name="title" value="#{bundle.estimatesTag}"/>
+    </af:pageTemplate>
+</jsp:root>

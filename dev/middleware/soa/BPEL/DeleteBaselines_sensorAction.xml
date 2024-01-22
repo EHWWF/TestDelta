@@ -1,0 +1,13 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<actions targetNamespace="http://xmlns.oracle.com/ipms_mw/ipms_soa/DeleteBaselines" xmlns="http://xmlns.oracle.com/bpel/sensor" xmlns:tns="http://xmlns.oracle.com/ipms_mw/ipms_soa/DeleteBaselines" xmlns:pc="http://xmlns.oracle.com/bpel/sensor">
+   <action name="SaveToSOADB" publishName="" publishType="BpelReportsSchema" enabled="true" filter="" publishTarget="">
+      <sensorName>Delete Baseline: Starting deletion process.</sensorName>
+      <sensorName>Delete Baseline: Finishing deletion process.</sensorName>
+      <sensorName>Delete Baseline: Baselines can not be deleted for APR.</sensorName>
+      <sensorName>Delete Baseline: Preparing the list of baselines for deletion.</sensorName>
+      <sensorName>Delete Baseline: One baseline was successfully deleted.</sensorName>
+      <sensorName>Delete Baseline: One baseline was NOT deleted (error occurred).</sensorName>
+      <sensorName>Delete Baseline: Reading all baselines after deletion.</sensorName>
+      <sensorName>Delete Baseline: The list for baseline deletion is empty. Nothing to delete.</sensorName>	  
+   </action>
+</actions>

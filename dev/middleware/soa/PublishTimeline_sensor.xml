@@ -1,0 +1,38 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<sensors targetNamespace="http://xmlns.bayer.com/ipms/soa" xmlns="http://xmlns.oracle.com/bpel/sensor" xmlns:tns="http://xmlns.bayer.com/ipms/soa" xmlns:pc="http://xmlns.oracle.com/bpel/sensor" xmlns:client="http://xmlns.bayer.com/ipms/soa">
+   <sensor sensorName="Publish Timeline: step 1 of 6. Starting publication." classname="oracle.tip.pc.services.reports.dca.agents.BpelActivitySensorAgent" kind="activity" target="receiveInput">
+      <activityConfig evalTime="completion">
+         <variable outputDataType="identifierType" outputNamespace="http://xmlns.bayer.com/ipms" target="$inputVariable/payload/client:publish/@id"/>
+      </activityConfig>
+   </sensor>
+   <sensor sensorName="Publish Timeline: step 2 of 6. Reading configuration." classname="oracle.tip.pc.services.reports.dca.agents.BpelActivitySensorAgent" kind="activity" target="AssignReadTrg">
+      <activityConfig evalTime="completion">
+         <variable outputDataType="identifierType" outputNamespace="http://xmlns.bayer.com/ipms" target="$inputVariable/payload/client:publish/@id"/>
+      </activityConfig>
+   </sensor>
+   <sensor sensorName="Publish Timeline: step 3 of 6. Updating target plan." classname="oracle.tip.pc.services.reports.dca.agents.BpelActivitySensorAgent" kind="activity" target="AlreadyExists">
+      <activityConfig evalTime="completion">
+         <variable outputDataType="identifierType" outputNamespace="http://xmlns.bayer.com/ipms" target="$inputVariable/payload/client:publish/@id"/>
+      </activityConfig>
+   </sensor>
+   <sensor sensorName="Publish Timeline: step 3 of 6. Updating source plan." classname="oracle.tip.pc.services.reports.dca.agents.BpelActivitySensorAgent" kind="activity" target="New">
+      <activityConfig evalTime="completion">
+         <variable outputDataType="identifierType" outputNamespace="http://xmlns.bayer.com/ipms" target="$inputVariable/payload/client:publish/@id"/>
+      </activityConfig>
+   </sensor>
+   <sensor sensorName="Publish Timeline: step 4 of 6. Adjusting plan details." classname="oracle.tip.pc.services.reports.dca.agents.BpelActivitySensorAgent" kind="activity" target="UpdateTrg">
+      <activityConfig evalTime="activation">
+         <variable outputDataType="identifierType" outputNamespace="http://xmlns.bayer.com/ipms" target="$inputVariable/payload/client:publish/@id"/>
+      </activityConfig>
+   </sensor>
+   <sensor sensorName="Publish Timeline: Error occurred, process stopped." classname="oracle.tip.pc.services.reports.dca.agents.BpelActivitySensorAgent" kind="activity" target="assignFaultOutput">
+      <activityConfig evalTime="completion">
+         <variable outputDataType="identifierType" outputNamespace="http://xmlns.bayer.com/ipms" target="$inputVariable/payload/client:publish/@id"/>
+      </activityConfig>
+   </sensor>
+   <sensor sensorName="Publish Timeline: step 5 of 6. Finishing publication (starting summarization)." classname="oracle.tip.pc.services.reports.dca.agents.BpelActivitySensorAgent" kind="activity" target="callbackOutput">
+      <activityConfig evalTime="activation">
+         <variable outputDataType="identifierType" outputNamespace="http://xmlns.bayer.com/ipms" target="$inputVariable/payload/client:publish/@id"/>
+      </activityConfig>
+   </sensor>
+</sensors>

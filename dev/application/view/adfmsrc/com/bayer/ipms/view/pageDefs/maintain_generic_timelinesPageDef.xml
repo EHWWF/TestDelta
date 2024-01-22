@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.64.93" id="maintain_generic_timelinesPageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="Root.ManagementAppModule.PhaseMilestoneGTView"
+              DataControl="PrivateAppModuleDataControl"
+              id="PhaseMilestoneGTViewIterator" CacheResults="true"
+              ChangeEventPolicy="ppr" RangeSize="100"/>
+    <iterator Binds="Root.ManagementAppModule.PhaseDurationView"
+              DataControl="PrivateAppModuleDataControl"
+              id="PhaseDurationViewIterator" CacheResults="true"
+              ChangeEventPolicy="ppr" RangeSize="100"/>
+    <iterator Binds="Root.ManagementAppModule.ProjectGTView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="ProjectGTViewIterator"/>
+    <searchRegion Binds="ProjectGTViewIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="ProjectGTViewQuery"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="PhaseMilestoneGTViewIterator" id="PhaseMilestoneGTView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.PhaseMilestoneView"
+                      Name="PhaseMilestoneGTView0">
+        <AttrNames>
+          <Item Value="PhaseCode"/>
+          <Item Value="MilestoneCode"/>
+          <Item Value="Category"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="PhaseDurationViewIterator" id="PhaseDurationView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.PhaseDurationView"
+                      Name="PhaseDurationView0">
+        <AttrNames>
+          <Item Value="SbeCode"/>
+          <Item Value="SubstanceTypeCode"/>
+          <Item Value="PhaseCode"/>
+          <Item Value="Duration"/>
+          <Item Value="Id"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="PhaseMilestoneGTViewIterator" id="PhMCreateInsert"
+            InstanceName="PrivateAppModuleDataControl.Root.ManagementAppModule.PhaseMilestoneGTView"
+            DataControl="PrivateAppModuleDataControl" RequiresUpdateModel="true"
+            Action="createInsertRow"/>
+    <action IterBinding="PhaseMilestoneGTViewIterator" id="PhMDelete"
+            InstanceName="PrivateAppModuleDataControl.Root.ManagementAppModule.PhaseMilestoneGTView"
+            DataControl="PrivateAppModuleDataControl"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <action IterBinding="PhaseDurationViewIterator" id="PhDCreateInsert"
+            InstanceName="PrivateAppModuleDataControl.Root.ManagementAppModule.PhaseDurationView"
+            DataControl="PrivateAppModuleDataControl" RequiresUpdateModel="true"
+            Action="createInsertRow"/>
+    <action IterBinding="PhaseDurationViewIterator" id="PhDDelete"
+            InstanceName="PrivateAppModuleDataControl.Root.ManagementAppModule.PhaseDurationView"
+            DataControl="PrivateAppModuleDataControl"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <tree IterBinding="ProjectGTViewIterator" id="ProjectGTView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.ProjectGTView"
+                      Name="ProjectGTView0">
+        <AttrNames>
+          <Item Value="PId"/>
+          <Item Value="PName"/>
+          <Item Value="SbeName"/>
+          <Item Value="DsType"/>
+          <Item Value="D2"/>
+          <Item Value="D3"/>
+          <Item Value="D4"/>
+          <Item Value="D6"/>
+          <Item Value="D7"/>
+          <Item Value="D8"/>
+          <Item Value="M9"/>
+          <Item Value="PhaseName"/>
+          <Item Value="M4c"/>
+          <Item Value="Poc"/>
+          <Item Value="D5"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+  </bindings>
+</pageDefinition>

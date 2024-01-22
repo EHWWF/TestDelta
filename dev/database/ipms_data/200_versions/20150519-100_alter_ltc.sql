@@ -1,0 +1,1 @@
+alter table ltc_value drop (fc_int_cost,fc_cro_cost,fc_ecg_cost,fc_oec_cost);

@@ -1,0 +1,1 @@
+alter table costs_fps add constraint costs_fps_function_fk1 foreign key ( function_code ) references function (code) enable;

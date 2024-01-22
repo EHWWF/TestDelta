@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.64.93" id="maintain_announcementsPageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="Root.ManagementAppModule.AnnouncementView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="AnnouncementViewIterator"
+              CacheResults="true"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="AnnouncementViewIterator" id="AnnouncementView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.AnnouncementView"
+                      Name="AnnouncementView0">
+        <AttrNames>
+          <Item Value="StartDate"/>
+          <Item Value="FinishDate"/>
+          <Item Value="Text"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="AnnouncementViewIterator" id="CreateInsert"
+            InstanceName="PrivateAppModuleDataControl.Root.ManagementAppModule.AnnouncementView"
+            DataControl="PrivateAppModuleDataControl" RequiresUpdateModel="true"
+            Action="createInsertRow"/>
+    <action IterBinding="AnnouncementViewIterator" id="Delete"
+            InstanceName="PrivateAppModuleDataControl.Root.ManagementAppModule.AnnouncementView"
+            DataControl="PrivateAppModuleDataControl"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+  </bindings>
+</pageDefinition>

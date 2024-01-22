@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE ViewLink SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewLink
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="LtcProjectEstimates"
+  Version="12.2.1.0.31"
+  InheritPersonalization="merge">
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="com.bayer.ipms.model.views.links.LtcProjectEstimates_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <ViewLinkDefEnd
+    Name="LtcProjectView"
+    Cardinality="1"
+    Source="true"
+    Owner="com.bayer.ipms.model.views.ltc.LtcProjectView">
+    <DesignTime>
+      <Attr Name="_isUpdateable" Value="true"/>
+      <Attr Name="_finderName" Value="LtcProjectView"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.views.ltc.LtcProjectView.Id"/>
+    </AttrArray>
+  </ViewLinkDefEnd>
+  <ViewLinkDefEnd
+    Name="LtcEstimateView"
+    Cardinality="-1"
+    Owner="com.bayer.ipms.model.views.ltc.LtcEstimateView">
+    <DesignTime>
+      <Attr Name="_isUpdateable" Value="true"/>
+      <Attr Name="_finderName" Value="LtcEstimateView"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.views.ltc.LtcEstimateView.LtcProjectId"/>
+    </AttrArray>
+  </ViewLinkDefEnd>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.bayer.ipms.model.bundles.modelBundle"/>
+  </ResourceBundle>
+</ViewLink>

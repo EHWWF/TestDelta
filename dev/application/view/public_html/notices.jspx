@@ -1,0 +1,204 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:h="http://java.sun.com/jsf/html">
+  <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+  <f:view>
+    <f:loadBundle basename="com.bayer.ipms.view.bundles.viewBundle"
+                  var="bundle"/>
+    <af:document title="#{bundle.globalProMIS}" id="doc">
+      <af:messages id="m1"/>
+      <af:form id="frm" usesUpload="true">
+        <af:pageTemplate viewId="/WEB-INF/com.bayer.ipms.view/templates/ipms-page-template.jspx"
+                         id="tmpl">
+          <f:facet name="popup">
+            <af:popup id="popMsgDetails" launcherVar="source"
+                      eventContext="launcher" contentDelivery="lazyUncached"
+                      rendered="#{securityContext.userInRole['FPSLogView']}">
+              <af:setPropertyListener from="#{source.attributes.messageDetails}"
+                                      to="#{requestScope.messageDetails}"
+                                      type="popupFetch"/>
+              <af:dialog id="dlgDet" title="#{bundle.globalDetails}"
+                         contentHeight="500" resize="on" contentWidth="500"
+                         type="ok">
+                <af:panelBox text="#{bundle.globalMessage}" id="pb1"
+                             showDisclosure="false">
+                  <f:facet name="toolbar"/>
+                  <af:panelFormLayout styleClass="AFStretchWidth"
+                                      fieldWidth="100%">
+                    <af:outputFormatted value="#{utilsBean.brFormattedString[requestScope.messageDetails]}"
+                                        id="of1"/>
+                  </af:panelFormLayout>
+                </af:panelBox>
+              </af:dialog>
+            </af:popup>
+          </f:facet>
+          <f:facet name="content">
+            <af:panelStretchLayout topHeight="auto" bottomHeight="0">
+              <f:facet name="top"></f:facet>
+              <f:facet name="center">
+                <af:panelTabbed id="tabPanel" dimensionsFrom="parent"
+                                styleClass="AFStretchWidth">
+                  <af:showDetailItem text="#{bundle.globalNotices}"
+                                     immediate="true" stretchChildren="first"
+                                     id="sdi1"
+                                     rendered="#{securityContext.userInRole['NoticeView']}">
+                    <af:panelStretchLayout id="psl1" topHeight="auto"
+                                           bottomHeight="0">
+                      <f:facet name="top">
+                        <af:query id="gry" headerText="#{bundle.globalSearch}"
+                                  disclosed="true"
+                                  value="#{bindings.NoticeViewQuery.queryDescriptor}"
+                                  model="#{bindings.NoticeViewQuery.queryModel}"
+                                  queryListener="#{bindings.NoticeViewQuery.processQuery}"
+                                  queryOperationListener="#{bindings.NoticeViewQuery.processQueryOperation}"
+                                  resultComponentId="::notices"
+                                  modeChangeVisible="false"
+                                  saveQueryMode="hidden" maxColumns="2" rows="1"
+                                  immediate="true"/>
+                      </f:facet>
+                      <f:facet name="center">
+                        <af:table value="#{bindings.NoticeView.collectionModel}"
+                                  var="row"
+                                  rows="#{bindings.NoticeView.rangeSize}"
+                                  emptyText="#{bindings.NoticeView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                                  fetchSize="#{bindings.NoticeView.rangeSize}"
+                                  rowBandingInterval="0" varStatus="vs"
+                                  rowSelection="none" id="notices"
+                                  columnStretching="last">
+                          <af:column sortProperty="Id" filterable="false"
+                                     filterFeatures="caseInsensitive"
+                                     sortable="false"
+                                     headerText="#{bindings.NoticeView.hints.Id.label}"
+                                     id="c2">
+                            <af:outputText value="#{row.Id}" id="ot3"/>
+                          </af:column>
+                          <af:column sortProperty="Subject" filterable="true"
+                                     filterFeatures="caseInsensitive"
+                                     sortable="true"
+                                     headerText="#{bindings.NoticeView.hints.Subject.label}"
+                                     id="c5" width="200">
+                            <af:outputText value="#{row.Subject}" id="ot1"/>
+                          </af:column>
+                          <af:column sortProperty="CreateDate" filterable="true"
+                                     sortable="true"
+                                     headerText="#{bindings.NoticeView.hints.CreateDate.label}"
+                                     id="c1" width="120">
+                            <af:outputText value="#{row.CreateDate}" id="ot2">
+                              <af:convertDateTime pattern="#{bindings.NoticeView.hints.CreateDate.format}"/>
+                            </af:outputText>
+                          </af:column>
+                          <af:column sortProperty="SeverityCode"
+                                     filterable="true"
+                                     filterFeatures="caseInsensitive"
+                                     sortable="true"
+                                     headerText="#{bindings.NoticeView.hints.SeverityName.label}"
+                                     id="c3" width="200">
+                            <af:outputText value="#{row.SeverityName}"
+                                           id="ot5"/>
+                          </af:column>
+                          <af:column sortProperty="Content" filterable="true"
+                                     filterFeatures="caseInsensitive"
+                                     sortable="false"
+                                     headerText="#{bindings.NoticeView.hints.Content.label}"
+                                     id="c4">
+                            <af:outputText value="#{row.Content}" id="ot4"/>
+                          </af:column>
+                        </af:table>
+                      </f:facet>
+                    </af:panelStretchLayout>
+                  </af:showDetailItem>
+                  <af:showDetailItem text="#{bundle.globalFPSLog}"
+                                     immediate="true" id="sdi2"
+                                     stretchChildren="first"
+                                     rendered="#{securityContext.userInRole['FPSLogView']}">
+                    <af:panelStretchLayout id="psl2" topHeight="auto"
+                                           bottomHeight="0">
+                      <f:facet name="top">
+                        <af:query id="qryId1" headerText="Search"
+                                  disclosed="true"
+                                  value="#{bindings.FPSQuery.queryDescriptor}"
+                                  model="#{bindings.FPSQuery.queryModel}"
+                                  queryListener="#{bindings.FPSQuery.processQuery}"
+                                  queryOperationListener="#{bindings.FPSQuery.processQueryOperation}"
+                                  modeChangeVisible="false"
+                                  saveQueryMode="hidden"
+                                  searchButtonText="#{bundle.globalFilter}"
+                                  resultComponentId="::t1"/>
+                      </f:facet>
+                      <f:facet name="center">
+                        <af:table value="#{bindings.FPSLogView.collectionModel}"
+                                  var="row"
+                                  rows="#{bindings.FPSLogView.rangeSize}"
+                                  emptyText="#{bindings.NoticeView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                                  fetchSize="#{bindings.FPSLogView.rangeSize}"
+                                  rowBandingInterval="0"
+                                  columnStretching="column:c9"
+                                  rowSelection="none" id="t1">
+                          <af:column sortProperty="#{bindings.FPSLogView.hints.CreateDate.name}"
+                                     sortable="true" width="120"
+                                     headerText="#{bindings.FPSLogView.hints.CreateDate.label}"
+                                     id="c6">
+                            <af:outputText value="#{row.CreateDate}" id="ot8">
+                              <af:convertDateTime pattern="#{bindings.FPSLogView.hints.CreateDate.format}"/>
+                            </af:outputText>
+                          </af:column>
+                          <af:column sortProperty="#{bindings.FPSLogView.hints.ProjectCode.name}"
+                                     sortable="true" width="140"
+                                     headerText="#{bindings.FPSLogView.hints.ProjectCode.label}"
+                                     id="c8">
+                            <af:commandLink text="#{row.ProjectCode}" id="cl12"
+                                            action="FPSDetails" useWindow="true"
+                                            windowModalityType="modeless"
+                                            windowWidth="500"
+                                            windowHeight="600">
+                              <af:setActionListener from="#{row.projectId}"
+                                                    to="#{pageFlowScope.projectId}"/>
+                            </af:commandLink>
+                          </af:column>
+                          <af:column sortProperty="#{bindings.FPSLogView.hints.ProjectName.name}"
+                                     sortable="true" width="180"
+                                     headerText="#{bindings.FPSLogView.hints.ProjectName.label}"
+                                     id="c7">
+                            <af:commandLink text="#{row.ProjectName}" id="cl1"
+                                            action="FPSDetails" useWindow="true"
+                                            windowModalityType="modeless"
+                                            windowWidth="500"
+                                            windowHeight="600">
+                              <af:setActionListener from="#{row.projectId}"
+                                                    to="#{pageFlowScope.projectId}"/>
+                            </af:commandLink>
+                          </af:column>
+                          <af:column sortProperty="#{bindings.FPSLogView.hints.ChangeComment.name}"
+                                     sortable="true"
+                                     headerText="#{bindings.FPSLogView.hints.ChangeComment.label}"
+                                     id="c9">
+                            <af:commandLink text="#{row.ChangeComment}"
+                                            id="cl13">
+                              <af:clientAttribute name="messageDetails"
+                                                  value="#{row.ChangeComment}"/>
+                              <af:showPopupBehavior popupId="::popMsgDetails"
+                                                    triggerType="action"/>
+                            </af:commandLink>
+                          </af:column>
+                        </af:table>
+                      </f:facet>
+                    </af:panelStretchLayout>
+                  </af:showDetailItem>
+                </af:panelTabbed>
+              </f:facet>
+            </af:panelStretchLayout>
+          </f:facet>
+          <f:attribute name="tab" value="notices"/>
+        </af:pageTemplate>
+      </af:form>
+      <f:facet name="metaContainer">
+        <f:verbatim>
+          <link type="image/x-icon" href="images/promis.png"
+                rel="shortcut icon"/>
+        </f:verbatim>
+      </f:facet>
+    </af:document>
+  </f:view>
+</jsp:root>

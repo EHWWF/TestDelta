@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ProjectDeviceView"
+  Version="12.2.1.0.31"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="false"
+  RowClass="com.bayer.ipms.model.views.ProjectDeviceViewRowImpl"
+  ComponentClass="com.bayer.ipms.model.base.IPMSViewObjectImpl"
+  PageIterMode="Full"
+  SelectList="ProjectDevice.PROJECT_ID, 
+       ProjectDevice.ID, 
+       ProjectDevice.RELATED_PROJECT_ID, 
+       Project.CODE, 
+       Project.NAME, 
+       Project.ID AS ID1, 
+       Project.UPDATE_DATE"
+  FromList="PROJECT_DEVICE ProjectDevice, PROJECT Project"
+  Where="ProjectDevice.RELATED_PROJECT_ID = Project.ID(+)"
+  FetchMode="FETCH_AS_NEEDED"
+  Passivate="None"
+  RowInterface="com.bayer.ipms.model.views.common.ProjectDeviceViewRow"
+  ClientRowProxyName="com.bayer.ipms.model.views.client.ProjectDeviceViewRowClient">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Access"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="com.bayer.ipms.model.views.ProjectDeviceView_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <EntityUsage
+    Name="ProjectDevice"
+    Entity="com.bayer.ipms.model.entities.ProjectDevice"/>
+  <EntityUsage
+    Name="Project"
+    Entity="com.bayer.ipms.model.entities.Project"
+    ReadOnly="true"
+    Reference="true"
+    DeleteParticipant="false"
+    Association="com.bayer.ipms.model.entities.assoc.ProjectDeviceRelatedProject"
+    AssociationEnd="com.bayer.ipms.model.entities.assoc.ProjectDeviceRelatedProject.Project"
+    SourceUsage="com.bayer.ipms.model.views.ProjectDeviceView.ProjectDevice"
+    JoinType="LEFT OUTER JOIN">
+    <DesignTime>
+      <AttrArray Name="_dstAttributes">
+        <Item Value="com.bayer.ipms.model.entities.Project.Id"/>
+      </AttrArray>
+      <AttrArray Name="_srcAttributes">
+        <Item Value="com.bayer.ipms.model.entities.ProjectDevice.RelatedProjectId"/>
+      </AttrArray>
+    </DesignTime>
+  </EntityUsage>
+  <ViewAttribute
+    Name="ProjectId"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="ProjectId"
+    EntityUsage="ProjectDevice"
+    AliasName="PROJECT_ID"/>
+  <ViewAttribute
+    Name="Id"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Id"
+    EntityUsage="ProjectDevice"
+    AliasName="ID"/>
+  <ViewAttribute
+    Name="RelatedProjectId"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="RelatedProjectId"
+    EntityUsage="ProjectDevice"
+    AliasName="RELATED_PROJECT_ID"/>
+  <ViewAttribute
+    Name="PrjCode"
+    IsUnique="true"
+    PrecisionRule="true"
+    EntityAttrName="Code"
+    EntityUsage="Project"
+    AliasName="CODE">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.ProjectDeviceView.PrjCode_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="PrjName"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Name"
+    EntityUsage="Project"
+    AliasName="NAME">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.ProjectDeviceView.PrjName_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Id1"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="Id"
+    EntityUsage="Project"
+    AliasName="ID1"/>
+  <ViewAttribute
+    Name="UpdateDate"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="UpdateDate"
+    EntityUsage="Project"
+    AliasName="UPDATE_DATE"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.bayer.ipms.model.bundles.modelBundle"/>
+  </ResourceBundle>
+</ViewObject>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.22.48"
+                id="program_view_program_view_maintain_goalsPageDef" Package="com.bayer.ipms.view.flows"
+                SkipValidation="true">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    
+    
+       <iterator Binds="ProgramAppModule.ProjectGoalView" DataControl="PrivateAppModuleDataControl" RangeSize="100"
+                  id="ProjectGoalViewIterator"/>
+     
+
+
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="ProjectGoalViewIterator" id="ProgramGoalId">
+            <AttrNames>
+                <Item Value="Id"/>
+            </AttrNames>
+        </attributeValues>
+  </bindings>
+</pageDefinition>

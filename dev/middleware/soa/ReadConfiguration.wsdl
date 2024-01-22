@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions
+     name="ReadConfiguration"
+     targetNamespace="http://xmlns.bayer.com/ipms/soa"
+     xmlns:ns1="http://xmlns.bayer.com/ipms"
+     xmlns:ns11="http://xmlns.bayer.com/ipms/soa"
+     xmlns:plnk="http://schemas.xmlsoap.org/ws/2003/05/partner-link/"
+     xmlns:client="http://xmlns.bayer.com/ipms/soa"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+
+    <wsdl:types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema">
+            <import namespace="http://xmlns.bayer.com/ipms/soa" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/soa/soa.xsd"/>
+        </schema>
+    </wsdl:types>
+    <wsdl:message name="ReadConfigurationRequestMessage">
+        <wsdl:part name="payload" element="ns1:empty"/>
+    </wsdl:message>
+    <wsdl:message name="ReadConfigurationResponseMessage">
+        <wsdl:part name="payload" element="ns11:config"/>
+    </wsdl:message>
+    <wsdl:message name="ReadConfigurationErrorMessage">
+        <wsdl:part name="payload" element="ns1:error"/>
+    </wsdl:message>    
+    <wsdl:message name="ReadConfigurationReadRequest">
+        <wsdl:part name="payload" element="ns11:read"/>
+    </wsdl:message>
+    <wsdl:message name="ReadConfigurationFullResponse">
+        <wsdl:part name="payload" element="ns11:response"/>
+    </wsdl:message>
+
+
+
+    <wsdl:portType name="ReadConfiguration">
+        <wsdl:operation name="process">
+            <wsdl:input message="client:ReadConfigurationRequestMessage"/>
+        </wsdl:operation>
+        <wsdl:operation name="processRead">
+            <wsdl:input message="client:ReadConfigurationReadRequest"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    
+    <wsdl:portType name="ReadConfigurationCallback">
+            <wsdl:operation name="callback">
+                    <wsdl:input message="client:ReadConfigurationResponseMessage"/>
+            </wsdl:operation>
+            <wsdl:operation name="callbackRead">
+                    <wsdl:input message="client:ReadConfigurationFullResponse"/>
+            </wsdl:operation>
+    </wsdl:portType>
+
+
+
+
+    <plnk:partnerLinkType name="ReadConfiguration">
+            <plnk:role name="ReadConfigurationProvider">
+                    <plnk:portType name="client:ReadConfiguration"/>
+            </plnk:role>
+            <plnk:role name="ReadConfigurationRequester">
+                    <plnk:portType name="client:ReadConfigurationCallback"/>
+            </plnk:role>
+    </plnk:partnerLinkType>
+
+
+
+
+
+
+
+    
+</wsdl:definitions>

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="TppValues"
+  Version="12.2.1.20.47"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="TPP_VALUES"
+  AliasName="TppValues"
+  BindingStyle="OracleName"
+  RowClass="com.bayer.ipms.model.base.IPMSEntityImpl">
+  <Attribute
+    Name="Id"
+    ColumnName="ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+     Precision="30"
+    Scale="0"
+    TableName="TPP_VALUES"
+    PrimaryKey="true"
+    RetrievedOnInsert="true"/>
+  <Attribute
+    Name="TppId"
+    ColumnName="TPP_ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    Precision="30"
+    Scale="0"
+    TableName="TPP_VALUES"
+    IsNotNull="true"
+    />
+  <Attribute
+    Name="SubcategoryCode"
+    IsNotNull="true"
+    ColumnName="SUBCATEGORY_CODE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    Precision="30"
+    Scale="0"
+    TableName="TPP_VALUES"/>
+  <Attribute
+    Name="KeyEdvProposition"
+    ColumnName="KEY_EDV_PROPOSITION"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    Precision="2048"
+    TableName="TPP_VALUES"/>
+  <Attribute
+    Name="StandardOfCare"
+    ColumnName="STANDARD_OF_CARE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    Precision="2048"
+    TableName="TPP_VALUES"/>
+  <Attribute
+    Name="Upside"
+    ColumnName="UPSIDE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    Precision="2048"
+    TableName="TPP_VALUES"/>
+  <Attribute
+    Name="TargetedIn"
+    ColumnName="TARGETED_IN"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    Precision="2048"
+    TableName="TPP_VALUES"/>
+  <Attribute
+    Name="KeyDriver"
+    ColumnName="KEY_DRIVER"
+    SQLType="NUMERIC"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    TableName="TPP_VALUES">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="check_box"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute
+    Name="UniqueSellingPoint"
+    IsNotNull="true"
+    ColumnName="UNIQUE_SELLING_POINT"
+    SQLType="NUMERIC"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    TableName="TPP_VALUES">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="check_box"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute
+    Name="TargetedProfile"
+    ColumnName="TARGETED_PROFILE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    Precision="2048"
+    TableName="TPP_VALUES"
+   >
+  </Attribute>
+  <AccessorAttribute
+    Name="TppSubcategory"
+    Association="com.bayer.ipms.model.entities.assoc.TppSubcategoryValues"
+    AssociationEnd="com.bayer.ipms.model.entities.assoc.TppSubcategoryValues.TppSubcategory"
+    AssociationOtherEnd="com.bayer.ipms.model.entities.assoc.TppSubcategoryValues.TppValues"
+    Type="com.bayer.ipms.model.base.IPMSEntityImpl"
+    IsUpdateable="true"/>
+  <AccessorAttribute
+    Name="TargetProductProfile"
+    Association="com.bayer.ipms.model.entities.assoc.TppProfileValues"
+    AssociationEnd="com.bayer.ipms.model.entities.assoc.TppProfileValues.TargetProductProfile"
+    AssociationOtherEnd="com.bayer.ipms.model.entities.assoc.TppProfileValues.TppValues"
+    Type="com.bayer.ipms.model.base.IPMSEntityImpl"
+    IsUpdateable="true"/>
+  <Key
+    Name="SysC0058530"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0058530"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.TppValues.Id"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="TppValuesTppIdCheck">
+    <DesignTime>
+      <Attr Name="_isNotNull" Value="true"/>
+      <Attr Name="_DBObjectName" Value="TPP_VALUES_TPP_ID_CHECK"/>
+      <Attr Name="_checkCondition" Value='"TPP_ID" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.TppValues.TppId"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0058531">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0058520"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0058531"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.TppValues.TppId"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0058532">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0055435"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0058532"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.TppValues.SubcategoryCode"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="fk_TppValues">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0058479"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_TPP_VALUES"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.TppValues.TppId"/>
+    </AttrArray>
+  </Key>
+</Entity>

@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <af:componentDef>
+        <c:set var="bundle" value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+            <af:panelCollection styleClass="AFStretchWidth" featuresOff="detach statusBar viewMenu">
+                <f:facet name="toolbar">
+                    <af:toolbar>
+                        <af:commandToolbarButton icon="/images/export.png"
+                                                 text="#{bundle.globalDownload}">
+                            <af:exportCollectionActionListener exportedId="resources"
+                                                               type="excelHTML"
+                                                               filename="Resources_ProFIT.xls"
+                                                               title="#{bundle.projectResources}"/>
+                        </af:commandToolbarButton>
+                    </af:toolbar>
+                </f:facet>
+                <af:table value="#{bindings.ResourcesView.collectionModel}"
+                          var="row" rows="#{bindings.ResourcesView.rangeSize}"
+                          emptyText="#{bindings.ResourcesView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                          fetchSize="#{bindings.ResourcesView.rangeSize}"
+                          rowBandingInterval="0"
+                          id="resources"
+                          styleClass="AFStretchWidth"
+                          filterModel="#{bindings.ResourcesViewQuery.queryDescriptor}"
+                          queryListener="#{bindings.ResourcesViewQuery.processQuery}"
+                          filterVisible="false" varStatus="vs"
+                          rowSelection="none" columnStretching="last"
+                          autoHeightRows="0">
+                    <af:column sortProperty="Function" filterable="true"
+                               filterFeatures="caseInsensitive" sortable="true"
+                               headerText="#{bindings.ResourcesView.hints.Function.label}">
+                        <af:outputText value="#{row.Function}"/>
+                    </af:column>
+                    <af:column headerText="#{bindings.ResourcesView.hints.SubFunctionName.label}"
+                               sortProperty="SubFunction"
+                               filterable="true"
+                               filterFeatures="caseInsensitive" sortable="true">
+                        <af:outputText value="#{row.SubFunctionName}"/>
+                    </af:column>
+                    <af:column sortProperty="StudyId" filterable="true"
+                               filterFeatures="caseInsensitive" sortable="true"
+                               headerText="#{bindings.ResourcesView.hints.StudyId.label}">
+                        <af:outputText value="#{row.StudyId}"/>
+                    </af:column>
+                    <af:column sortProperty="Method" filterable="true"
+                               filterFeatures="caseInsensitive" sortable="true"
+                               headerText="#{bindings.ResourcesView.hints.Method.label}">
+                        <af:outputText value="#{row.Method}"/>
+                    </af:column>
+                    <af:column sortProperty="Type" filterable="true"
+                               filterFeatures="caseInsensitive" sortable="true"
+                               headerText="#{bindings.ResourcesView.hints.Type.label}">
+                        <af:outputText value="#{row.Type}" />
+                    </af:column>
+                    <af:column sortProperty="StartDate" filterable="true"
+                               sortable="true"
+                               headerText="#{bindings.ResourcesView.hints.StartDate.label}">
+                        <f:facet name="filter">
+                            <af:inputDate value="#{vs.filterCriteria.StartDate}">
+                                <af:convertDateTime pattern="#{bindings.ResourcesView.hints.StartDate.format}"/>
+                            </af:inputDate>
+                        </f:facet>
+                        <af:outputText value="#{row.StartDate}" >
+                            <af:convertDateTime pattern="#{bindings.ResourcesView.hints.StartDate.format}"/>
+                        </af:outputText>
+                    </af:column>
+                    <af:column sortProperty="FinishDate" filterable="true"
+                               sortable="true"
+                               headerText="#{bindings.ResourcesView.hints.FinishDate.label}">
+                        <f:facet name="filter">
+                            <af:inputDate value="#{vs.filterCriteria.FinishDate}">
+                                <af:convertDateTime pattern="#{bindings.ResourcesView.hints.FinishDate.format}"/>
+                            </af:inputDate>
+                        </f:facet>
+                        <af:outputText value="#{row.FinishDate}" >
+                            <af:convertDateTime pattern="#{bindings.ResourcesView.hints.FinishDate.format}"/>
+                        </af:outputText>
+                    </af:column>
+                    <af:column sortProperty="Demand" filterable="true"
+                               filterFeatures="caseInsensitive" sortable="true"
+                               headerText="#{bindings.ResourcesView.hints.Demand.label}">
+                        <af:outputText value="#{row.Demand}" />
+                    </af:column>
+                </af:table>
+            </af:panelCollection>
+    </af:componentDef>
+</jsp:root>

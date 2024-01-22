@@ -1,0 +1,1 @@
+grant select on ipms_data.sophia_timeline_flat_vw to ipms_repo;

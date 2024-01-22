@@ -1,0 +1,630 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xsd:schema
+		xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+		xmlns="http://xmlns.bayer.com/ipms"
+		targetNamespace="http://xmlns.bayer.com/ipms"
+		elementFormDefault="qualified">
+
+	<xsd:simpleType name="identifierType">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="20"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="nameType">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="100"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="codeType">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="20"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="integrationType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Manual"/>
+			<xsd:enumeration value="Auto"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="messageType">
+		<xsd:attribute name="id" type="identifierType" use="required"/>
+		<xsd:attribute name="compositeId" type="identifierType" use="optional"/>
+		<xsd:attribute name="componentName" type="identifierType" use="optional"/>
+		<xsd:attribute name="p6CreateUser" type="identifierType" use="optional"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="recordType">
+		<xsd:sequence>
+			<xsd:element name="code" type="codeType" minOccurs="0" nillable="true"/>
+			<xsd:element name="name" type="nameType" minOccurs="0" nillable="true"/>
+		</xsd:sequence>
+
+		<xsd:attribute name="id" type="identifierType" use="required"/>
+	</xsd:complexType>
+
+	<xsd:simpleType name="timelineType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="RAW"/>
+			<xsd:enumeration value="CUR"/>
+			<xsd:enumeration value="APR"/>
+			<xsd:enumeration value="SND"/>
+			<xsd:enumeration value="BSL"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="activityType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Task Dependent"/>
+			<xsd:enumeration value="Resource Dependent"/>
+			<xsd:enumeration value="Level of Effort"/>
+			<xsd:enumeration value="Start Milestone"/>
+			<xsd:enumeration value="Finish Milestone"/>
+			<xsd:enumeration value="WBS Summary"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:element name="id" type="identifierType" />
+
+	<xsd:element name="projects">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="project" maxOccurs="unbounded" minOccurs="0"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="programs">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="program" maxOccurs="unbounded" minOccurs="0"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="role">
+		<xsd:complexType>
+			<xsd:attribute name="roleId" type="identifierType" use="required"/>
+			<xsd:attribute name="userId" type="identifierType" use="required"/>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="roles">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="role" maxOccurs="unbounded" minOccurs="0"/>
+				<xsd:element ref="appRoles" maxOccurs="1" minOccurs="0"/>
+			</xsd:sequence>
+
+			<xsd:attribute name="programId" type="identifierType" use="required"/>
+			<xsd:attribute name="projectType" type="identifierType" use="optional"/>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="user" type="recordType"/>
+
+	<xsd:element name="users">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="user" maxOccurs="unbounded" minOccurs="0"/>
+			</xsd:sequence>
+			<xsd:attribute name="projectType" type="identifierType" use="optional"/>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="cwid" type="identifierType"/>
+	<xsd:element name="email" type="xsd:string"/>
+
+	<xsd:element name="cwids">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="cwid" maxOccurs="unbounded" minOccurs="0"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="emails">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="email" maxOccurs="unbounded" minOccurs="0"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="ldap">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="baseDN" type="xsd:string" minOccurs="0" nillable="true"/>
+				<xsd:element name="searchFilter" type="xsd:string" minOccurs="0" nillable="true"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="employee">
+		<xsd:complexType>
+			<xsd:attribute name="cwid" type="identifierType"/>
+			<xsd:attribute name="forename" type="nameType"/>
+			<xsd:attribute name="surname" type="nameType"/>
+			<xsd:attribute name="email" type="nameType"/>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="employees">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="employee" maxOccurs="unbounded" minOccurs="0"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="appRole">
+		<xsd:complexType>
+			<xsd:simpleContent>
+				<xsd:extension base="xsd:string">
+					<xsd:attribute name="refAppRole" type="xsd:string" use="optional"/>
+				</xsd:extension>
+			</xsd:simpleContent>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="appRoles">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="appRole" maxOccurs="unbounded" minOccurs="0"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="notification">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="cwids" maxOccurs="1" minOccurs="0"/>
+				<xsd:element ref="emails" maxOccurs="1" minOccurs="0"/>
+				<xsd:element ref="appRoles" maxOccurs="1" minOccurs="0"/>
+				<xsd:element ref="ldap" maxOccurs="1" minOccurs="0"/>
+				<xsd:element name="subject" type="xsd:string" minOccurs="1" nillable="false"/>
+				<xsd:element name="content" type="xsd:string" minOccurs="1" nillable="false"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="function">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="recordType">
+					<xsd:attribute name="disabled" type="xsd:boolean" use="optional"/>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="functions">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="function" maxOccurs="unbounded" minOccurs="0"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="program">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="recordType">
+					<xsd:sequence>
+						<xsd:element name="areaCode" type="identifierType" minOccurs="0" nillable="true"/>
+						<xsd:element ref="projects" minOccurs="0"/>
+						<xsd:element ref="roles" minOccurs="0"/>
+					</xsd:sequence>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="wbs">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="recordType">
+					<xsd:sequence>
+						<xsd:element name="startDate" type="xsd:dateTime" minOccurs="0" nillable="true"/>
+						<xsd:element name="finishDate" type="xsd:dateTime" minOccurs="0" nillable="true"/>
+						<xsd:element name="studyPhase" type="nameType" minOccurs="0" nillable="true"/>
+						<xsd:element name="sequenceNumber" type="xsd:int" minOccurs="0" nillable="true"/>
+
+						<xsd:element name="planPatients" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="actualPatients" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="planEnteredScreen" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="actEnteredScreen" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="studyCountryCountPlan" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="studyCountryCount" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="studyUnitCount" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="studyUnitCountPlan" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="FTEAvg" type="xsd:string" minOccurs="0" nillable="true"/>
+                        <xsd:element name="categoryObjectId" type="xsd:string" minOccurs="0" nillable="true"/>
+					</xsd:sequence>
+
+					<xsd:attribute name="timelineId" type="identifierType" use="required"/>
+					<xsd:attribute name="studyId" type="identifierType" use="optional"/>
+					<xsd:attribute name="parentId" type="identifierType" use="optional"/>
+					<xsd:attribute name="placeholder" type="xsd:boolean" use="optional"/>
+					<xsd:attribute name="templateId" type="identifierType" use="optional"/>
+					<xsd:attribute name="responseStatus" type="xsd:string" use="optional"/>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="wbsCategory">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="recordType">
+					<xsd:sequence>
+						<xsd:element name="objectId" type="xsd:string" nillable="true"/>
+					</xsd:sequence>
+					<xsd:attribute name="wbsId" type="identifierType" use="optional"/>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:simpleType name="studyElementIdType">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="40"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:element name="activity">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="recordType">
+					<xsd:sequence>
+						<xsd:element name="type" minOccurs="0" nillable="true" type="activityType"/>
+
+						<xsd:element name="functions" minOccurs="0">
+							<xsd:complexType>
+								<xsd:sequence>
+									<xsd:element name="functionCode" type="codeType" maxOccurs="unbounded" minOccurs="0"/>
+								</xsd:sequence>
+							</xsd:complexType>
+						</xsd:element>
+
+						<xsd:element name="planStart" type="xsd:dateTime" minOccurs="0" nillable="true"/>
+						<xsd:element name="planFinish" type="xsd:dateTime" minOccurs="0" nillable="true"/>
+						<xsd:element name="actualStart" type="xsd:dateTime" minOccurs="0" nillable="true"/>
+						<xsd:element name="actualFinish" type="xsd:dateTime" minOccurs="0" nillable="true"/>
+						<xsd:element name="integrationType" type="integrationType" minOccurs="0" nillable="true"/>
+						<xsd:element name="milestoneCode" type="codeType" minOccurs="0" nillable="true"/>
+						<xsd:element name="phaseCode" type="codeType" minOccurs="0" nillable="true"/>
+						<xsd:element name="dateStatus" type="xsd:string" minOccurs="0" nillable="true" />
+						<xsd:element name="wbsCategoryName" type="xsd:string" minOccurs="0" nillable="true" />
+						<xsd:element name="createUser" type="xsd:string" minOccurs="0" nillable="true" />
+					</xsd:sequence>
+
+					<xsd:attribute name="studyElementId" type="studyElementIdType" use="optional"/>
+					<xsd:attribute name="timelineId" type="identifierType" use="required"/>
+					<xsd:attribute name="wbsId" type="identifierType" use="optional"/>
+					<xsd:attribute name="restricted" type="xsd:boolean" use="optional"/>
+					<xsd:attribute name="mustBeDeleted" type="xsd:boolean" use="optional"/>
+					<xsd:attribute name="studyId" type="identifierType" use="optional"/>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:simpleType name="costTypeEnum">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Internal Cost"/>
+			<xsd:enumeration value="External Cost - ECG"/>
+			<xsd:enumeration value="External Cost - CRO"/>
+			<xsd:enumeration value="External Cost - OEC"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:element name="expense">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="recordType">
+					<xsd:sequence>
+						<xsd:element name="functionCode" type="codeType" />
+						<xsd:element name="costType" type="costTypeEnum"/>
+						<xsd:element name="planCost" type="xsd:decimal" />
+						<xsd:element name="comments" type="xsd:string" minOccurs="0" nillable="true" />
+					</xsd:sequence>
+					<xsd:attribute name="wbsId" type="identifierType" use="optional"/>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="wbsNodes">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="wbs" maxOccurs="unbounded" minOccurs="0"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="timeline">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="recordType">
+					<xsd:sequence>
+						<xsd:element name="typeCode" minOccurs="1" type="timelineType"/>
+						<xsd:element name="startDate" type="xsd:dateTime" minOccurs="0" nillable="true"/>
+						<xsd:element name="finishDate" type="xsd:dateTime" minOccurs="0" nillable="true"/>
+						<xsd:element name="lastSummarizedDate" type="xsd:dateTime" minOccurs="0" nillable="true"/>
+						<xsd:element name="createDate" type="xsd:dateTime" minOccurs="0" nillable="true"/>
+						<xsd:element name="comments" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="baselineTypeObjectId" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="baselineOldTypeObjectId" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="baselineOldTargetTypeObjectId" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="ltcId" type="xsd:string" minOccurs="0" nillable="true"/>
+
+						<xsd:element name="wbsNewPlaceholders" minOccurs="0">
+							<xsd:complexType>
+								<xsd:sequence>
+									<xsd:element ref="wbs" maxOccurs="unbounded" minOccurs="0"/>
+								</xsd:sequence>
+							</xsd:complexType>
+						</xsd:element>
+
+						<xsd:element ref="wbsNodes" maxOccurs="unbounded" minOccurs="0"/>
+
+						<xsd:element name="wbsCategories" minOccurs="0">
+							<xsd:complexType>
+								<xsd:sequence>
+									<xsd:element ref="wbsCategory" maxOccurs="unbounded" minOccurs="0"/>
+								</xsd:sequence>
+							</xsd:complexType>
+						</xsd:element>
+
+						<xsd:element name="activities" minOccurs="0">
+							<xsd:complexType>
+								<xsd:sequence>
+									<xsd:element ref="activity" maxOccurs="unbounded" minOccurs="0"/>
+								</xsd:sequence>
+							</xsd:complexType>
+						</xsd:element>
+						
+						<xsd:element name="expenses" minOccurs="0">
+							<xsd:complexType>
+								<xsd:sequence>
+									<xsd:element ref="expense" maxOccurs="unbounded" minOccurs="0"/>
+								</xsd:sequence>
+							</xsd:complexType>
+						</xsd:element>
+					</xsd:sequence>
+
+					<xsd:attribute name="programId" type="identifierType" use="required"/>
+					<xsd:attribute name="projectId" type="identifierType" use="required"/>
+					<xsd:attribute name="referenceId" type="identifierType" use="optional"/>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="baseline">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="recordType">
+					<xsd:sequence>
+						<xsd:element name="baselineTypeObjectId" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="createDate" type="xsd:dateTime" minOccurs="0" nillable="true"/>
+						<xsd:element name="description" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="ltcId" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="studyElementIdList" type="xsd:string" minOccurs="0" nillable="true"/>
+
+						<xsd:element ref="wbsNodes" maxOccurs="unbounded" minOccurs="0"/>
+
+						<xsd:element name="activities" minOccurs="0">
+							<xsd:complexType>
+								<xsd:sequence>
+									<xsd:element ref="activity" maxOccurs="unbounded" minOccurs="0"/>
+								</xsd:sequence>
+							</xsd:complexType>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="baselines">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="baseline" maxOccurs="unbounded" minOccurs="0"/>
+			</xsd:sequence>
+			<xsd:attribute name="timelineId" type="identifierType" use="required"/>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="sandbox">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="recordType">
+					<xsd:attribute name="programId" type="identifierType" use="required"/>
+					<xsd:attribute name="referenceId" type="identifierType" use="optional"/>
+					<xsd:attribute name="sourceReferenceId" type="identifierType" use="optional"/>
+					<xsd:attribute name="removeDateConstraints" type="xsd:boolean" use="optional"/>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="project">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="recordType">
+					<xsd:sequence>
+						<xsd:element name="areaCode" type="identifierType" minOccurs="0" nillable="true"/>
+						<xsd:element name="templateCode" type="identifierType" minOccurs="0" nillable="true"/>
+						<xsd:element name="timelines" minOccurs="0">
+							<xsd:complexType>
+								<xsd:sequence>
+									<xsd:element ref="timeline" maxOccurs="unbounded" minOccurs="0"/>
+								</xsd:sequence>
+							</xsd:complexType>
+						</xsd:element>
+
+						<xsd:element ref="roles" minOccurs="0"/>
+					</xsd:sequence>
+
+					<xsd:attribute name="programId" type="identifierType" use="required"/>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="empty" type="xsd:string"/> <!--DONT DELETE 2014-05-14-->
+
+	<xsd:element name="process">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="recordType">
+					<xsd:sequence>
+						<xsd:element name="terminationDate" type="xsd:dateTime"/>
+						<xsd:element name="tag" type="xsd:string" minOccurs="0" nillable="true"/>
+						<xsd:element name="processName" type="xsd:string" minOccurs="0" nillable="true"/> <!--BPM is not able to see recordType.name so adding dedicated element:processName, PROMIS-571 -->
+					</xsd:sequence>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="processFC">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="recordType">
+					<xsd:sequence>
+						<xsd:element name="forecastNumberPeriod" type="xsd:string"/>
+						<xsd:element name="terminationDate" type="xsd:dateTime"/>
+					</xsd:sequence>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="error">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="messageType">
+					<xsd:sequence>
+						<xsd:element name="code" type="xsd:string"/>
+						<xsd:element name="description" type="xsd:string"/>
+
+						<xsd:element name="rollbacks" minOccurs="0">
+							<xsd:complexType>
+								<xsd:sequence>
+									<xsd:element name="rollback" minOccurs="0" maxOccurs="unbounded">
+										<xsd:complexType>
+											<xsd:sequence>
+												<xsd:element name="name" type="xsd:string" />
+												<xsd:element name="startTime" type="xsd:time" />
+												<xsd:element name="finishTime" type="xsd:time" minOccurs="0" nillable="true"/>
+											</xsd:sequence>
+										</xsd:complexType>
+									</xsd:element>
+								</xsd:sequence>
+							</xsd:complexType>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="reject">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="messageType">
+					<xsd:sequence>
+						<xsd:element name="code" type="xsd:string"/>
+						<xsd:element name="description" type="xsd:string"/>
+					</xsd:sequence>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="accept" type="messageType"/>
+
+	<xsd:element name="leadStudies">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="studies" minOccurs="0">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="study" maxOccurs="unbounded">
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="name" minOccurs="0" maxOccurs="1"/>
+										<xsd:element name="phaseName" minOccurs="0" maxOccurs="1"/>
+										<xsd:element name="errorDetails" minOccurs="0" maxOccurs="1"/>
+									</xsd:sequence>
+									<xsd:attribute name="wbsId" type="xsd:string"/>
+									<xsd:attribute name="isLead" type="xsd:boolean"/>
+									<xsd:attribute name="status" type="xsd:string"/>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="devMilestones" minOccurs="0">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="codeList" maxOccurs="1" type="xsd:string" minOccurs="0"/>
+							<xsd:element name="devMilestone" maxOccurs="unbounded" minOccurs="0">
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="name" type="xsd:string"/>
+									</xsd:sequence>
+									<xsd:attribute name="activityId" type="xsd:string"/>
+									<xsd:attribute name="wbsId" type="xsd:string"/>
+									<xsd:attribute name="type" type="xsd:string"/>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="drvMilestones" minOccurs="0">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="drvMilestone" maxOccurs="unbounded">
+								<xsd:complexType>
+									<xsd:attribute name="activityId" type="xsd:string"/>
+									<xsd:attribute name="studyElementId" type="xsd:string"/>
+									<xsd:attribute name="wbsId" type="xsd:string"/>
+									<xsd:attribute name="type" type="xsd:string"/>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="relationships" minOccurs="0">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="relationship" maxOccurs="unbounded">
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="errorDetails" minOccurs="0" maxOccurs="1"/>
+									</xsd:sequence>
+									<xsd:attribute name="devActivityId" type="xsd:string"/>
+									<xsd:attribute name="drvActivityId" type="xsd:string"/>
+									<xsd:attribute name="type" type="xsd:string"/>
+									<xsd:attribute name="status" type="xsd:string"/>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+			<xsd:attribute name="projectId" type="xsd:string"/>
+		</xsd:complexType>
+</xsd:element>
+</xsd:schema>

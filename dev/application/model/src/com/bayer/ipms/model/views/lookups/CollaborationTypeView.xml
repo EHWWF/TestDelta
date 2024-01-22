@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="CollaborationTypeView"
+  Version="12.2.1.20.47"
+  InheritPersonalization="true"
+  BindingStyle="OracleName"
+  CustomQuery="false"
+  RowClass="com.bayer.ipms.model.base.IPMSLookupViewRowImpl"
+  ComponentClass="com.bayer.ipms.model.base.IPMSViewObjectImpl"
+  PageIterMode="Full"
+  SelectList="CollaborationType.CODE, 
+       CollaborationType.NAME, 
+       CollaborationType.IS_ACTIVE, 
+       CollaborationType.DESCRIPTION"
+  FromList="COLLABORATION_TYPE CollaborationType"
+  OrderBy="IS_ACTIVE DESC, NAME ASC"
+    FetchMode="FETCH_ALL"
+  FetchSize="100"
+  Passivate="None"
+  UseGlueCode="false"
+  AutoRefresh="true">
+  <DesignTime>
+    <Attr Name="_rowSuperClassName" Value="com.bayer.ipms.model.base.IPMSLookupViewRowImpl"/>
+  </DesignTime>
+  <EntityUsage
+    Name="CollaborationType"
+    Entity="com.bayer.ipms.model.entities.lookups.CollaborationType"/>
+  <ViewAttribute
+    Name="Code"
+    IsUpdateable="while_insert"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Code"
+    EntityUsage="CollaborationType"
+    AliasName="CODE"/>
+  <ViewAttribute
+    Name="Name"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Name"
+    EntityUsage="CollaborationType"
+    AliasName="NAME"/>
+  <ViewAttribute
+    Name="IsActive"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="IsActive"
+    EntityUsage="CollaborationType"
+    AliasName="IS_ACTIVE"/>
+  <ViewAttribute
+    Name="Description"
+    PrecisionRule="true"
+    EntityAttrName="Description"
+    EntityUsage="CollaborationType"
+    AliasName="DESCRIPTION"/>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="com.bayer.ipms.model.views.lookups.CollaborationTypeView_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.bayer.ipms.model.bundles.modelBundle"/>
+  </ResourceBundle>
+</ViewObject>

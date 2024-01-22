@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="windows-1257" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ResourcesView"
+  Version="12.1.3.13.52"
+  InheritPersonalization="true"
+  SelectList="Resources.ID, 
+       Resources.PROJECT_ID, 
+       Resources.STUDY_ID, 
+       Resources.FUNCTION_CODE, 
+       Resources.METHOD_CODE, 
+       Resources.TYPE_CODE, 
+       Resources.DEMAND, 
+       Resources.START_DATE, 
+       Resources.FINISH_DATE, 
+       Resources.CREATE_DATE, 
+       Resources.UPDATE_DATE, 
+       FunctionData.NAME, 
+       FunctionData.CODE, 
+       ResourcesType.NAME AS NAME1, 
+       ResourcesType.CODE AS CODE1, 
+       CalculationMethod.NAME AS NAME2, 
+       CalculationMethod.CODE AS CODE2, 
+       Resources.SUBFUNCTION_CODE, 
+       SubFunction.NAME AS NAME3, 
+       SubFunction.CODE AS CODE3"
+  FromList="RESOURCES Resources, FUNCTION FunctionData, RESOURCES_TYPE ResourcesType, CALCULATION_METHOD CalculationMethod, SUBFUNCTION SubFunction"
+  BindingStyle="OracleName"
+  CustomQuery="false"
+  RowClass="com.bayer.ipms.model.base.IPMSViewRowImpl"
+  ComponentClass="com.bayer.ipms.model.base.IPMSViewObjectImpl"
+  PageIterMode="Full"
+  UseGlueCode="false"
+  FetchMode="FETCH_AS_NEEDED"
+  FetchSize="100"
+  ViewLinkAccessorRetained="true"
+  Where="(((Resources.FUNCTION_CODE = FunctionData.CODE(+)) AND (Resources.TYPE_CODE = ResourcesType.CODE)) AND (Resources.METHOD_CODE = CalculationMethod.CODE)) AND (Resources.SUBFUNCTION_CODE = SubFunction.CODE(+))"
+  Passivate="None">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Access|VarAccess"/>
+  </DesignTime>
+  <EntityUsage
+    Name="Resources"
+    Entity="com.bayer.ipms.model.entities.Resources"
+    ReadOnly="true"
+    DeleteParticipant="false"/>
+  <EntityUsage
+    Name="FunctionData"
+    Entity="com.bayer.ipms.model.entities.lookups.FunctionData"
+    Association="com.bayer.ipms.model.entities.assoc.ResourcesFunction"
+    AssociationEnd="com.bayer.ipms.model.entities.assoc.ResourcesFunction.FunctionData"
+    SourceUsage="com.bayer.ipms.model.views.ResourcesView.Resources"
+    ReadOnly="true"
+    Reference="true"
+    DeleteParticipant="false"
+    JoinType="LEFT OUTER JOIN">
+    <DesignTime>
+      <AttrArray Name="_srcAttributes">
+        <Item Value="com.bayer.ipms.model.entities.Resources.FunctionCode"/>
+      </AttrArray>
+      <AttrArray Name="_dstAttributes">
+        <Item Value="com.bayer.ipms.model.entities.lookups.FunctionData.Code"/>
+      </AttrArray>
+    </DesignTime>
+  </EntityUsage>
+  <EntityUsage
+    Name="ResourcesType"
+    Entity="com.bayer.ipms.model.entities.lookups.ResourcesType"
+    Association="com.bayer.ipms.model.entities.assoc.ResourcesType"
+    AssociationEnd="com.bayer.ipms.model.entities.assoc.ResourcesType.ResourcesType"
+    SourceUsage="com.bayer.ipms.model.views.ResourcesView.Resources"
+    ReadOnly="true"
+    Reference="true"
+    DeleteParticipant="false"
+    JoinType="INNER JOIN">
+    <DesignTime>
+      <AttrArray Name="_srcAttributes">
+        <Item Value="com.bayer.ipms.model.entities.Resources.TypeCode"/>
+      </AttrArray>
+      <AttrArray Name="_dstAttributes">
+        <Item Value="com.bayer.ipms.model.entities.lookups.ResourcesType.Code"/>
+      </AttrArray>
+    </DesignTime>
+  </EntityUsage>
+  <EntityUsage
+    Name="CalculationMethod"
+    Entity="com.bayer.ipms.model.entities.lookups.CalculationMethod"
+    Association="com.bayer.ipms.model.entities.assoc.ResourcesMethod"
+    AssociationEnd="com.bayer.ipms.model.entities.assoc.ResourcesMethod.CalculationMethod"
+    SourceUsage="com.bayer.ipms.model.views.ResourcesView.Resources"
+    ReadOnly="true"
+    Reference="true"
+    DeleteParticipant="false"
+    JoinType="INNER JOIN">
+    <DesignTime>
+      <AttrArray Name="_srcAttributes">
+        <Item Value="com.bayer.ipms.model.entities.Resources.MethodCode"/>
+      </AttrArray>
+      <AttrArray Name="_dstAttributes">
+        <Item
+          Value="com.bayer.ipms.model.entities.lookups.CalculationMethod.Code"/>
+      </AttrArray>
+    </DesignTime>
+  </EntityUsage>
+  <EntityUsage
+    Name="SubFunction"
+    Entity="com.bayer.ipms.model.entities.lookups.SubFunction"
+    Association="com.bayer.ipms.model.entities.assoc.ResourcesSubFunction"
+    AssociationEnd="com.bayer.ipms.model.entities.assoc.ResourcesSubFunction.SubFunction"
+    SourceUsage="com.bayer.ipms.model.views.ResourcesView.Resources"
+    ReadOnly="true"
+    Reference="true"
+    DeleteParticipant="false"
+    JoinType="LEFT OUTER JOIN">
+    <DesignTime>
+      <AttrArray Name="_srcAttributes">
+        <Item Value="com.bayer.ipms.model.entities.Resources.SubFunctionCode"/>
+      </AttrArray>
+      <AttrArray Name="_dstAttributes">
+        <Item Value="com.bayer.ipms.model.entities.lookups.SubFunction.Code"/>
+      </AttrArray>
+    </DesignTime>
+  </EntityUsage>
+  <ViewAttribute
+    Name="Id"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Id"
+    EntityUsage="Resources"
+    AliasName="ID"
+    IsUpdateable="false"/>
+  <ViewAttribute
+    Name="ProjectId"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="ProjectId"
+    EntityUsage="Resources"
+    AliasName="PROJECT_ID"
+    IsUpdateable="while_insert"/>
+  <ViewAttribute
+    Name="StudyId"
+    PrecisionRule="true"
+    EntityAttrName="StudyId"
+    EntityUsage="Resources"
+    AliasName="STUDY_ID"
+    IsUpdateable="while_insert">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.ResourcesView.StudyId_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="FunctionCode"
+    PrecisionRule="true"
+    EntityAttrName="FunctionCode"
+    EntityUsage="Resources"
+    AliasName="FUNCTION_CODE"
+    IsUpdateable="while_insert"/>
+  <ViewAttribute
+    Name="MethodCode"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="MethodCode"
+    EntityUsage="Resources"
+    AliasName="METHOD_CODE"
+    IsUpdateable="while_insert"/>
+  <ViewAttribute
+    Name="TypeCode"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="TypeCode"
+    EntityUsage="Resources"
+    AliasName="TYPE_CODE"
+    IsUpdateable="while_insert"/>
+  <ViewAttribute
+    Name="Demand"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Demand"
+    EntityUsage="Resources"
+    AliasName="DEMAND"/>
+  <ViewAttribute
+    Name="StartDate"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="StartDate"
+    EntityUsage="Resources"
+    AliasName="START_DATE"
+    IsUpdateable="while_insert">
+    <Properties>
+      <SchemaBasedProperties>
+        <FMT_FORMATTER
+          ResId="com.bayer.ipms.model.views.ResourcesView.StartDate_FMT_FORMATTER"/>
+        <FMT_FORMAT
+          ResId="com.bayer.ipms.model.views.ResourcesView.StartDate_FMT_FORMAT"/>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.ResourcesView.StartDate_LABEL"/>
+        <CONTROLTYPE
+          Value="date"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="FinishDate"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="FinishDate"
+    EntityUsage="Resources"
+    AliasName="FINISH_DATE"
+    IsUpdateable="while_insert">
+    <Properties>
+      <SchemaBasedProperties>
+        <FMT_FORMATTER
+          ResId="com.bayer.ipms.model.views.ResourcesView.FinishDate_FMT_FORMATTER"/>
+        <FMT_FORMAT
+          ResId="com.bayer.ipms.model.views.ResourcesView.FinishDate_FMT_FORMAT"/>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.ResourcesView.FinishDate_LABEL"/>
+        <CONTROLTYPE
+          Value="date"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CreateDate"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="CreateDate"
+    EntityUsage="Resources"
+    AliasName="CREATE_DATE"
+    IsUpdateable="false"/>
+  <ViewAttribute
+    Name="UpdateDate"
+    PrecisionRule="true"
+    EntityAttrName="UpdateDate"
+    EntityUsage="Resources"
+    AliasName="UPDATE_DATE"
+    IsUpdateable="false"/>
+  <ViewAttribute
+    Name="Function"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Name"
+    EntityUsage="FunctionData"
+    AliasName="NAME"/>
+  <ViewAttribute
+    Name="_FunctionCode"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Code"
+    EntityUsage="FunctionData"
+    AliasName="CODE"/>
+  <ViewAttribute
+    Name="Type"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Name"
+    EntityUsage="ResourcesType"
+    AliasName="NAME1"/>
+  <ViewAttribute
+    Name="_TypeCode"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Code"
+    EntityUsage="ResourcesType"
+    AliasName="CODE1"/>
+  <ViewAttribute
+    Name="Method"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Name"
+    EntityUsage="CalculationMethod"
+    AliasName="NAME2"
+    IsUpdateable="false">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.ResourcesView.Method_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="_MethodCode"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Code"
+    EntityUsage="CalculationMethod"
+    AliasName="CODE2"/>
+  <ViewAttribute
+    Name="SubFunctionCode"
+    PrecisionRule="true"
+    EntityAttrName="SubFunctionCode"
+    EntityUsage="Resources"
+    AliasName="SUBFUNCTION_CODE"/>
+  <ViewAttribute
+    Name="SubFunctionName"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Name"
+    EntityUsage="SubFunction"
+    AliasName="NAME3"
+    IsUpdateable="false">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.ResourcesView.SubFunctionName_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="_SubFunctionCode"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Code"
+    EntityUsage="SubFunction"
+    AliasName="CODE3"/>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="Id"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.bayer.ipms.model.bundles.modelBundle"/>
+  </ResourceBundle>
+</ViewObject>

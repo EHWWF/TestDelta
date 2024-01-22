@@ -1,0 +1,180 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich" xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <c:set var="bundle" value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+    <af:pageTemplate viewId="/WEB-INF/com.bayer.ipms.view/templates/ipms-popup-template.jspx" id="pt1">
+        <f:facet name="content">
+            <af:panelSplitter id="contentSplitter" orientation="horizontal" collapsed="false" splitterPosition="500">
+                <f:facet name="first">
+                    <af:panelBox text="#{bundle.teamMembers}" showDisclosure="false" type="stretch" id="studiesPanel">
+                        <f:facet name="toolbar">
+                            <af:toolbar id="tlbTeamMembers">
+                                <af:group id="grpTeammembers">
+                                    <af:button rendered="#{empty pageFlowScope.editable and (rolesBean.projectEditDev or rolesBean.projectEditD2Prj or rolesBean.projectEditSAMD or rolesBean.projectEditPrdMnt)}"
+                                               icon="/images/edit.png" immediate="true" partialSubmit="false"
+                                               text="#{bundle.globalEdit}" id="teammemberedit">
+                                        <af:setPropertyListener from="#{'teammember'}" to="#{pageFlowScope.editable}"
+                                                                type="action"/>
+                                        <af:setPropertyListener from="#{true}"
+                                                                to="#{pageFlowScope.teamMembersBean.modalModeOn}"
+                                                                type="action"/>
+                                    </af:button>
+                                    <af:button rendered="#{pageFlowScope.editable eq 'teammember'}"
+                                               icon="/images/commit.png" partialSubmit="false"
+                                               actionListener="#{pageFlowScope.teamMembersBean.onCommit}" action="ok"
+                                               text="#{bundle.globalOk}" id="teammemberok"></af:button>
+                                    <af:button rendered="#{pageFlowScope.editable eq 'teammember'}"
+                                               icon="/images/rollback.png" action="cancel" partialSubmit="false"
+                                               immediate="true" text="#{bundle.globalCancel}" id="teammembercancel"
+                                               actionListener="#{pageFlowScope.teamMembersBean.onRollback}">
+                                        <af:resetActionListener/>
+                                        <af:setPropertyListener from="#{null}" to="#{pageFlowScope.editable}"
+                                                                type="action"/>
+                                    </af:button>
+                                </af:group>
+                            </af:toolbar>
+                        </f:facet>
+                        <af:panelStretchLayout topHeight="auto" bottomHeight="auto" id="psl2">
+                            <f:facet name="top">
+                                <af:query id="qryId1" headerText="Filter" disclosed="false" modeChangeVisible="false"
+                                          saveQueryMode="hidden" searchButtonText="#{bundle.globalFilter}"
+                                          displayMode="default" value="#{bindings.FilterQuery.queryDescriptor}"
+                                          model="#{bindings.FilterQuery.queryModel}"
+                                          queryListener="#{bindings.FilterQuery.processQuery}"
+                                          queryOperationListener="#{bindings.FilterQuery.processQueryOperation}"
+                                          resultComponentId="::pc1:tblTeam" rows="1" maxColumns="2"/>
+                            </f:facet>
+                            <f:facet name="center">
+                                <af:panelCollection id="pc1" styleClass="AFStretchWidth" featuresOff="detach statusBar">
+                                    <f:facet name="toolbar">
+                                        <af:toolbar id="tools">
+                                            <af:commandToolbarButton shortDesc="#{bundle.globalAdd}"
+                                                                     text="#{bundle.globalAdd}" icon="images/new.png"
+                                                                     rendered="#{pageFlowScope.editable eq 'teammember'}"
+                                                                     actionListener="#{bindings.TeamMemberCreateInsert.execute}"
+                                                                     id="btnAdd"/>
+                                            <af:commandToolbarButton shortDesc="#{bundle.globalRemove}"
+                                                                     text="#{bundle.globalRemove}"
+                                                                     icon="/images/remove.png"
+                                                                     rendered="#{pageFlowScope.editable eq 'teammember'}"
+                                                                     immediate="true"
+                                                                     actionListener="#{pageFlowScope.teamMembersBean.onDeleteTeamMember}"
+                                                                     id="btnRem">
+                                                <f:attribute name="table" value="tblTeam"/>
+                                                <f:attribute name="iterator"
+                                                             value="#{bindings.TeamMemberViewIterator}"/>
+                                            </af:commandToolbarButton>
+                                        </af:toolbar>
+                                    </f:facet>
+                                    <af:table value="#{bindings.TeamMemberView.collectionModel}" var="row"
+                                              rows="#{bindings.TeamMemberView.rangeSize}" styleClass="AFStretchWidth"
+                                              emptyText="#{bindings.TeamMemberView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                                              fetchSize="#{bindings.TeamMemberView.rangeSize}"
+                                              selectedRowKeys="#{bindings.TeamMemberView.collectionModel.selectedRow}"
+                                              selectionListener="#{pageFlowScope.teamMembersBean.TeamMemberTableSL}"
+                                              rowSelection="single" rowBandingInterval="0" id="tblTeam"
+                                              columnStretching="last" editingMode="editAll" autoHeightRows="0"
+                                              contentDelivery="immediate" partialTriggers="::btnAdd ::btnRem">
+                                        <af:column headerText="#{bindings.TeamMemberView.hints.EmployeeCode.label}"
+                                                   sortProperty="#{bindings.TeamMemberView.hints.EmployeeCode.name}"
+                                                   sortable="true" width="80" id="c1"
+                                                   inlineStyle="#{(row.bindings.HasProject.inputValue == 1 and row.row.entities[0].entityState ne 0) ? 'background-color: #60B1FA;': ''}">
+                                            <af:outputText value="#{row.bindings.EmployeeCode.inputValue}"
+                                                           rendered="#{row.row.entities[0].entityState ne 0}" id="ot1"/>
+                                            <af:inputListOfValues value="#{row.bindings.EmployeeCode.inputValue}"
+                                                                  label="#{bindings.EmployeeCode.hints.label}"
+                                                                  popupTitle="Search and Select: #{bindings.TeamMemberView.hints.EmployeeName.label}"
+                                                                  model="#{pageFlowScope.teamMembersBean.popupLovModel}"
+                                                                  columns="#{bindings.EmployeeCode.hints.displayWidth}"
+                                                                  required="#{bindings.EmployeeCode.hints.mandatory}"
+                                                                  autoSubmit="true"
+                                                                  shortDesc="#{bindings.EmployeeCode.hints.tooltip}"
+                                                                  id="employeeCodeId"
+                                                                  readOnly="#{empty pageFlowScope.editable}"
+                                                                  rendered="#{row.row.entities[0].entityState eq 0}"
+                                                                  simple="true">
+                                                <f:validator binding="#{bindings.EmployeeCode.validator}"/>
+                                            </af:inputListOfValues>
+                                        </af:column>
+                                        <af:column headerText="#{bindings.TeamMemberView.hints.EmployeeName.label}"
+                                                   sortProperty="#{bindings.TeamMemberView.hints.EmployeeNameSort.name}"
+                                                   sortable="true" id="c2" width="130">
+                                            <af:outputText value="#{row.bindings.EmployeeName.inputValue}" id="ot2"/>
+                                        </af:column>
+                                        <af:column headerText="#{bindings.TeamMemberView.hints.RoleCode.label}"
+                                                   sortProperty="#{bindings.TeamMemberView.hints.RoleCode.name}"
+                                                   sortable="true" width="160" id="c3">
+                                            <af:selectOneChoice value="#{row.bindings.RoleCode.inputValue}"
+                                                                label="#{row.bindings.RoleCode.label}"
+                                                                required="#{bindings.TeamMemberView.hints.RoleCode.mandatory}"
+                                                                shortDesc="#{bindings.TeamMemberView.hints.RoleCode.tooltip}"
+                                                                autoSubmit="true"
+                                                                readOnly="#{empty pageFlowScope.editable}" id="socRol">
+                                                <f:selectItems value="#{pageFlowScope.teamMembersBean.rolesLookup[row.row]}"
+                                                               id="siRol"/>
+                                            </af:selectOneChoice>
+                                        </af:column>
+                                        <af:column headerText="#{bindings.TeamMemberView.hints.UserRoleCode.label}"
+                                                   sortProperty="#{bindings.TeamMemberView.hints.v.name}"
+                                                   sortable="true" id="c44" width="50">
+                                            <af:outputText value="#{row.bindings.UserRoleCode.inputValue}" id="ot44"/>
+                                        </af:column>
+                                    </af:table>
+                                </af:panelCollection>
+                            </f:facet>
+                        </af:panelStretchLayout>
+                    </af:panelBox>
+                </f:facet>
+                <f:facet name="second">
+                    <af:panelBox text="Projects assigned to #{bindings.EmployeeName}" id="assignedProjects"
+                                 showDisclosure="false" type="stretch" styleClass="AFStretchWidth">
+                        <f:facet name="toolbar"/>
+                        <af:panelStretchLayout id="psl3" topHeight="auto" bottomHeight="auto"
+                                               styleClass="AFStretchWidth">
+                            <f:facet name="top">
+                                <af:panelBox text="#{bundle.globalFilter}" showDisclosure="true" id="NameSearchid"
+                                             rendered="#{pageFlowScope.editable eq 'teammember'}"
+                                             styleClass="AFStretchWidth">
+                                    <af:inputText label="Project" autoSubmit="true"
+                                                  value="#{pageFlowScope.teamMembersBean.projectFilterValue}"
+                                                  binding="#{pageFlowScope.teamMembersBean.projectFilterIT}" id="it1"/>
+                                    <af:spacer width="10" height="10" id="s1"/>
+                                    <af:panelGroupLayout id="pgl1" layout="horizontal" halign="left" valign="top">
+                                        <af:spacer width="50" height="10" id="s3"/>
+                                        <af:button text="#{bundle.globalFilter}"
+                                                   actionListener="#{pageFlowScope.teamMembersBean.projectSearchAL}"
+                                                   id="b1"/>
+                                        <af:spacer width="10" height="10" id="s2"/>
+                                        <af:button text="Reset" 
+                                                   actionListener="#{pageFlowScope.teamMembersBean.projectResetAL}"
+                                                   id="b2" />
+                                    </af:panelGroupLayout>
+                                </af:panelBox>
+                            </f:facet>
+                            <f:facet name="bottom"/>
+                            <f:facet name="center">
+                                <af:selectManyShuttle value="#{pageFlowScope.teamMembersBean.assignedProjects}"
+                                                      id="sms_asgprojects" autoSubmit="true"
+                                                      disabled="#{empty pageFlowScope.editable}"
+                                                      styleClass="AFStretchWidth" size="12"
+                                                      rendered="#{bindings.EmployeeCode1 ne ''}"
+                                                      leadingHeader="#{bundle.globalAvailable}"
+                                                      trailingHeader="#{bundle.globalSelected}"
+                                                      required="#{bindings.TeamMemberView.hints.AssignedProjectIds.mandatory}">
+                                    <af:forEach var="item" items="#{bindings.ProjectView.rangeSet}">
+                                        <f:selectItem itemLabel="#{item.Name} (#{item.IsActive ? bundle.globalActive : bundle.globalInactive})"
+                                                      itemValue="#{item.Id}" id="si1"/>
+                                    </af:forEach>
+                                </af:selectManyShuttle>
+                            </f:facet>
+                            <f:facet name="start"/>
+                            <f:facet name="end"/>
+                        </af:panelStretchLayout>
+                    </af:panelBox>
+                </f:facet>
+            </af:panelSplitter>
+        </f:facet>
+    </af:pageTemplate>
+    <!--oracle-jdev-comment:preferred-managed-bean-name:importStudyBean-->
+</jsp:root>

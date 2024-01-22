@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="BusinessActivity"
+  Version="12.1.3.10.8"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="BUSINESS_ACTIVITY"
+  AliasName="BusinessActivity"
+  BindingStyle="OracleName"
+  RowClass="com.bayer.ipms.model.base.IPMSEntityImpl">
+  <Attribute
+    Name="BackendName"
+    IsNotNull="true"
+    ColumnName="CODE"
+    SQLType="STRUCT"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    TableName="BUSINESS_ACTIVITY"
+    PrimaryKey="true"
+    RetrievedOnUpdate="true"/>
+  <Attribute
+    Name="FrontendName"
+    IsNotNull="true"
+    ColumnName="NAME"
+    SQLType="STRUCT"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    TableName="BUSINESS_ACTIVITY"
+    RetrievedOnUpdate="true"/>
+  <Attribute
+    Name="CategoryId"
+    IsNotNull="true"
+    ColumnName="CATEGORY_ID"
+    SQLType="STRUCT"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    TableName="BUSINESS_ACTIVITY"
+    RetrievedOnUpdate="true"
+    PrimaryKey="true"/>
+  <Key
+    Name="BusinessActivitiesPk"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="BUSINESS_ACTIVITY_PK"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.lookups.BusinessActivity.BackendName"/>
+      <Item Value="com.bayer.ipms.model.entities.lookups.BusinessActivity.CategoryId"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="fk_BusinessActivity">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="BUSINESSACTIVITYCATEGORY_PRIMA"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_BUSINESS_ACTIVITY"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.lookups.BusinessActivity.CategoryId"/>
+    </AttrArray>
+  </Key>
+</Entity>

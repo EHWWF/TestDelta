@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.0.31" id="ltcEstimatePageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+    <parameters>
+        <parameter id="tagId" value=""/>
+        <parameter id="projectId" value=""/>
+        <parameter id="programId" value=""/>
+        <parameter id="processId" value=""/>
+		<parameter id="PD" value=""/>
+        <parameter id="type" value=""/>
+        <parameter id="scn" value=""/>
+    </parameters>
+    <executables>
+        <variableIterator id="variables">
+            <variable Name="fcNumber" Type="java.lang.String"/>
+            <variable Name="startYear" Type="java.lang.String"/>
+            <variable Name="numberOfProfitYears" Type="java.lang.String"/>
+        </variableIterator>
+        <iterator id="LtcEstimateViewIterator" Binds="LtcAppModule.LtcEstimateView"
+                  DataControl="PrivateAppModuleDataControl" RangeSize="100"/>
+        <iterator id="LtcEstimateDiscrepanciesViewIterator" Binds="LtcAppModule.LtcEstimateDiscrepanciesView"
+                  DataControl="PrivateAppModuleDataControl" RangeSize="100"/>
+        <iterator Binds="LtcAppModule.LtcEstimateReadonlyView" DataControl="PrivateAppModuleDataControl" RangeSize="10"
+                  id="LtcEstimateReadonlyViewIterator"/>
+    </executables>
+    <bindings>
+        <methodAction id="setup" RequiresUpdateModel="true" Action="invokeMethod" MethodName="setup"
+                      IsViewObjectMethod="true" DataControl="PrivateAppModuleDataControl"
+                      InstanceName="PrivateAppModuleDataControl.dataProvider.LtcAppModule.LtcEstimateView">
+            <NamedData NDName="tagId" NDValue="${bindings.tagId}" NDType="java.lang.String"/>
+            <NamedData NDName="processId" NDValue="${bindings.processId}" NDType="java.lang.String"/>
+            <NamedData NDName="programId" NDValue="${bindings.programId}" NDType="java.lang.String"/>
+            <NamedData NDName="projectId" NDValue="${bindings.projectId}" NDType="java.lang.String"/>
+            <NamedData NDName="typeCode" NDValue="${bindings.type}" NDType="java.lang.String"/>
+        </methodAction>
+        <methodAction id="initLtcExcelForm" RequiresUpdateModel="true" Action="invokeMethod"
+                      MethodName="initLtcExcelForm" IsViewObjectMethod="false" DataControl="PrivateAppModuleDataControl"
+                      InstanceName="PrivateAppModuleDataControl.dataProvider.LtcAppModule">
+            <NamedData NDName="tagId" NDValue="${bindings.tagId}" NDType="java.lang.String"/>
+            <NamedData NDName="processId" NDValue="${bindings.processId}" NDType="java.lang.String"/>
+            <NamedData NDName="programId" NDValue="${bindings.programId}" NDType="java.lang.String"/>
+            <NamedData NDName="projectId" NDValue="${bindings.projectId}" NDType="java.lang.String"/>
+        </methodAction>
+        
+         <methodAction id="commitFte" RequiresUpdateModel="true" Action="invokeMethod"
+                      MethodName="commitFte" IsViewObjectMethod="false" DataControl="PrivateAppModuleDataControl"
+                      InstanceName="PrivateAppModuleDataControl.dataProvider.LtcAppModule">
+        </methodAction>
+        <methodAction id="commitLtc" RequiresUpdateModel="true" Action="invokeMethod"
+                      MethodName="commitLtc" IsViewObjectMethod="false" DataControl="PrivateAppModuleDataControl"
+                      InstanceName="PrivateAppModuleDataControl.dataProvider.LtcAppModule">
+        </methodAction>
+        
+        <action IterBinding="LtcEstimateViewIterator" id="DeleteEstimate"
+                InstanceName="PrivateAppModuleDataControl.LtcAppModule.LtcEstimateView"
+                DataControl="PrivateAppModuleDataControl" RequiresUpdateModel="true" Action="removeCurrentRow"/>
+        <action IterBinding="LtcEstimateViewIterator" id="ExecuteWithParamsLtcEstimate"
+                InstanceName="PrivateAppModuleDataControl.LtcAppModule.LtcEstimateView"
+                DataControl="PrivateAppModuleDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+            <NamedData NDName="TypeVar" NDValue="${bindings.type}" NDType="java.lang.String"/>
+            <NamedData NDName="TagIdVar" NDValue="${bindings.tagId}" NDType="java.lang.String"/>
+            <NamedData NDName="ProcessIdVar" NDValue="${bindings.processId}" NDType="java.lang.String"/>
+            <NamedData NDName="ProgramIdVar" NDValue="${bindings.programId}" NDType="java.lang.String"/>
+            <NamedData NDName="ProjectIdVar" NDValue="${bindings.projectId}" NDType="java.lang.String"/>
+            <!-- TODO: change access right "LtcProcessMeetingView" in "UserNameVar" to some existing one -->
+            <NamedData NDName="UserNameVar"
+                       NDValue="${securityContext.userInRole['LtcProcessMeetingView'] ? null : securityContext.userName}"
+                       NDType="java.lang.String"/>
+        </action>
+        
+        <action IterBinding="LtcEstimateDiscrepanciesViewIterator" id="ExecuteWithParamsLtcEstimateDicrepancies"
+                InstanceName="PrivateAppModuleDataControl.LtcAppModule.LtcEstimateDiscrepanciesView"
+                DataControl="PrivateAppModuleDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+            <NamedData NDName="TypeVar" NDValue="${bindings.type}" NDType="java.lang.String"/>
+            <NamedData NDName="TagIdVar" NDValue="${bindings.tagId}" NDType="java.lang.String"/>
+            <NamedData NDName="ProcessIdVar" NDValue="${bindings.processId}" NDType="java.lang.String"/>
+            <NamedData NDName="ProgramIdVar" NDValue="${bindings.programId}" NDType="java.lang.String"/>
+            <NamedData NDName="ProjectIdVar" NDValue="${bindings.projectId}" NDType="java.lang.String"/>
+            <!-- TODO: change access right "LtcProcessMeetingView" in "UserNameVar" to some existing one -->
+            <NamedData NDName="UserNameVar"
+                       NDValue="${securityContext.userInRole['LtcProcessMeetingView'] ? null : securityContext.userName}"
+                       NDType="java.lang.String"/>
+        </action>
+        <action IterBinding="LtcEstimateReadonlyViewIterator" id="ExecuteWithParamsLtcEstimateReadonly"
+                InstanceName="PrivateAppModuleDataControl.LtcAppModule.LtcEstimateReadonlyView"
+                DataControl="PrivateAppModuleDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+            <NamedData NDName="TypeVar" NDValue="${bindings.type}" NDType="java.lang.String"/>
+            <NamedData NDName="TagIdVar" NDValue="${bindings.tagId}" NDType="java.lang.String"/>
+            <NamedData NDName="ProcessIdVar" NDValue="${bindings.processId}" NDType="java.lang.String"/>
+            <NamedData NDName="ProgramIdVar" NDValue="${bindings.programId}" NDType="java.lang.String"/>
+            <NamedData NDName="ProjectIdVar" NDValue="${bindings.projectId}" NDType="java.lang.String"/>
+            <NamedData NDName="ScnVar" NDValue="${bindings.scn}" NDType="java.lang.String"/>
+            <!-- TODO: change access right "LtcProcessMeetingView" in "UserNameVar" to some existing one -->
+            <NamedData NDName="UserNameVar"
+                       NDValue="${securityContext.userInRole['LtcProcessMeetingView'] ? null : securityContext.userName}"
+                       NDType="java.lang.String"/>
+        </action>
+        <tree IterBinding="LtcEstimateViewIterator" id="LtcEstimateView">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.ltc.LtcEstimateView" Name="LtcEstimateView0">
+                <AttrNames>
+                    <Item Value="ProgramName"/>
+                    <Item Value="ProjectCode"/>
+                    <Item Value="ProjectName"/>
+                    <Item Value="StudyId"/>
+                    <Item Value="StudyName"/>
+                    <Item Value="StudyFpfv"/>
+                    <Item Value="StudyLplv"/>
+                    <Item Value="TopFunctionName"/>
+                    <Item Value="FunctionCode"/>
+                    <Item Value="IsExternalFte"/>
+                    <Item Value="ScopeCode"/>
+                    <Item Value="Comments"/>
+                    <Item Value="FcDY1Cost"/>
+                    <Item Value="CostDeviationY1"/>
+                    <Item Value="LtY1Cost"/>
+                    <Item Value="FcDY2Cost"/>
+                    <Item Value="CostDeviationY2"/>
+                    <Item Value="LtY2Cost"/>
+                    <Item Value="FcDY3Cost"/>
+                    <Item Value="CostDeviationY3"/>
+                    <Item Value="LtY3Cost"/>
+                    <Item Value="LtY4Cost"/>
+                    <Item Value="LtY5Cost"/>
+                    <Item Value="LtY6Cost"/>
+                    <Item Value="LtY7Cost"/>
+                    <Item Value="LtY8Cost"/>
+                    <Item Value="LtY9Cost"/>
+                    <Item Value="LtY10Cost"/>
+                    <Item Value="LtY11Cost"/>
+                    <Item Value="LtY12Cost"/>
+                    <Item Value="LtY13Cost"/>
+                    <Item Value="LtY14Cost"/>
+                    <Item Value="LtY15Cost"/>
+                    <Item Value="LtcProjectId"/>
+                    <Item Value="FunctionCostRate"/>
+                    <Item Value="ScopeCode2"/>
+                    <Item Value="ProjectPhaseCode"/>
+                    <Item Value="StudyPhaseCode"/>
+                    <Item Value="StudyProjectPhaseName"/>
+                    <Item Value="IsManual"/>
+                    <Item Value="ProjectPhaseCodeLookup"/>
+                    <Item Value="CostDeviationY4"/>
+                    <Item Value="CostDeviationY10"/>
+                    <Item Value="CostDeviationY11"/>
+                    <Item Value="CostDeviationY12"/>
+                    <Item Value="CostDeviationY13"/>
+                    <Item Value="CostDeviationY14"/>
+                    <Item Value="CostDeviationY15"/>
+                    <Item Value="CostDeviationY5"/>
+                    <Item Value="CostDeviationY6"/>
+                    <Item Value="CostDeviationY7"/>
+                    <Item Value="CostDeviationY8"/>
+                    <Item Value="CostDeviationY9"/>
+                    <Item Value="FcDY10Cost"/>
+                    <Item Value="FcDY11Cost"/>
+                    <Item Value="FcDY12Cost"/>
+                    <Item Value="FcDY13Cost"/>
+                    <Item Value="FcDY14Cost"/>
+                    <Item Value="FcDY15Cost"/>
+                    <Item Value="FcDY4Cost"/>
+                    <Item Value="FcDY5Cost"/>
+                    <Item Value="FcDY6Cost"/>
+                    <Item Value="FcDY7Cost"/>
+                    <Item Value="FcDY8Cost"/>
+                    <Item Value="FcDY9Cost"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <tree IterBinding="LtcEstimateDiscrepanciesViewIterator" id="LtcEstimateDicrepanciesView">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.ltc.LtcEstimateReadonlyView" Name="LtcEstimateView0">
+                <AttrNames>
+                    <Item Value="ProgramName"/>
+                    <Item Value="ProjectCode"/>
+                    <Item Value="ProjectName"/>
+                    <Item Value="ProjectPhaseName"/>
+                    <Item Value="StudyPhaseCode"/>
+                    <Item Value="StudyId"/>
+                    <Item Value="StudyName"/>
+                    <Item Value="StudyFpfv"/>
+                    <Item Value="StudyLplv"/>
+                    <Item Value="TopFunctionName"/>
+                    <Item Value="FunctionName"/>
+                    <Item Value="ExternalFte"/>
+                    <Item Value="ScopeName"/>
+                    <Item Value="Comments"/>
+                    <Item Value="FcDY1Cost"/>
+                    <Item Value="CostDeviationY1"/>
+                    <Item Value="LtY1Cost"/>
+                    <Item Value="FcDY2Cost"/>
+                    <Item Value="CostDeviationY2"/>
+                    <Item Value="LtY2Cost"/>
+                    <Item Value="FcDY3Cost"/>
+                    <Item Value="CostDeviationY3"/>
+                    <Item Value="LtY3Cost"/>
+                    <Item Value="LtY4Cost"/>
+                    <Item Value="LtY5Cost"/>
+                    <Item Value="LtY6Cost"/>
+                    <Item Value="LtY7Cost"/>
+                    <Item Value="LtY8Cost"/>
+                    <Item Value="LtY9Cost"/>
+                    <Item Value="LtY10Cost"/>
+                    <Item Value="LtY11Cost"/>
+                    <Item Value="LtY12Cost"/>
+                    <Item Value="LtY13Cost"/>
+                    <Item Value="LtY14Cost"/>
+                    <Item Value="LtY15Cost"/>
+                    <Item Value="CostDeviationY10"/>
+                    <Item Value="CostDeviationY11"/>
+                    <Item Value="CostDeviationY12"/>
+                    <Item Value="CostDeviationY13"/>
+                    <Item Value="CostDeviationY14"/>
+                    <Item Value="CostDeviationY15"/>
+                    <Item Value="CostDeviationY4"/>
+                    <Item Value="CostDeviationY5"/>
+                    <Item Value="CostDeviationY6"/>
+                    <Item Value="CostDeviationY7"/>
+                    <Item Value="CostDeviationY8"/>
+                    <Item Value="CostDeviationY9"/>
+                    <Item Value="FcDY10Cost"/>
+                    <Item Value="FcDY11Cost"/>
+                    <Item Value="FcDY12Cost"/>
+                    <Item Value="FcDY13Cost"/>
+                    <Item Value="FcDY14Cost"/>
+                    <Item Value="FcDY15Cost"/>
+                    <Item Value="FcDY4Cost"/>
+                    <Item Value="FcDY5Cost"/>
+                    <Item Value="FcDY6Cost"/>
+                    <Item Value="FcDY7Cost"/>
+                    <Item Value="FcDY8Cost"/>
+                    <Item Value="FcDY9Cost"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <action id="Commit" DataControl="PrivateAppModuleDataControl" RequiresUpdateModel="true"
+                Action="commitTransaction"/>
+        <attributeValues IterBinding="variables" id="FcNumber">
+            <AttrNames>
+                <Item Value="fcNumber"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="variables" id="StartYear">
+            <AttrNames>
+                <Item Value="startYear"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="variables" id="NumberOfProfitYears">
+            <AttrNames>
+                <Item Value="numberOfProfitYears"/>
+            </AttrNames>
+        </attributeValues>        
+        <action IterBinding="LtcEstimateViewIterator" id="CreateInsertEstimate"
+                InstanceName="PrivateAppModuleDataControl.LtcAppModule.LtcEstimateView"
+                DataControl="PrivateAppModuleDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+        <tree IterBinding="LtcEstimateReadonlyViewIterator" id="LtcEstimateReadonlyView">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.ltc.LtcEstimateReadonlyView"
+                            Name="LtcEstimateReadonlyView0">
+                <AttrNames>
+                    <Item Value="ProgramName"/>
+                    <Item Value="ProjectCode"/>
+                    <Item Value="ProjectName"/>
+                    <Item Value="ProjectPhaseName"/>
+                    <Item Value="StudyPhaseCode"/>
+                    <Item Value="StudyId"/>
+                    <Item Value="StudyName"/>
+                    <Item Value="StudyFpfv"/>
+                    <Item Value="StudyLplv"/>
+                    <Item Value="TopFunctionName"/>
+                    <Item Value="FunctionName"/>
+                    <Item Value="ExternalFte"/>
+                    <Item Value="ScopeName"/>
+                    <Item Value="Comments"/>
+                    <Item Value="FcDY1Cost"/>
+                    <Item Value="CostDeviationY1"/>
+                    <Item Value="LtY1Cost"/>
+                    <Item Value="FcDY2Cost"/>
+                    <Item Value="CostDeviationY2"/>
+                    <Item Value="LtY2Cost"/>
+                    <Item Value="FcDY3Cost"/>
+                    <Item Value="CostDeviationY3"/>
+                    <Item Value="LtY3Cost"/>
+                    <Item Value="LtY4Cost"/>
+                    <Item Value="LtY5Cost"/>
+                    <Item Value="LtY6Cost"/>
+                    <Item Value="LtY7Cost"/>
+                    <Item Value="LtY8Cost"/>
+                    <Item Value="LtY9Cost"/>
+                    <Item Value="LtY10Cost"/>
+                    <Item Value="LtY11Cost"/>
+                    <Item Value="LtY12Cost"/>
+                    <Item Value="LtY13Cost"/>
+                    <Item Value="LtY14Cost"/>
+                    <Item Value="LtY15Cost"/>
+                    <Item Value="IsDiscrepancy"/>
+                    <Item Value="Y10Fte"/>
+                    <Item Value="Y11Fte"/>
+                    <Item Value="Y12Fte"/>
+                    <Item Value="Y13Fte"/>
+                    <Item Value="Y14Fte"/>
+                    <Item Value="Y15Fte"/>
+                    <Item Value="Y1Fte"/>
+                    <Item Value="Y2Fte"/>
+                    <Item Value="Y3Fte"/>
+                    <Item Value="Y4Fte"/>
+                    <Item Value="Y5Fte"/>
+                    <Item Value="Y6Fte"/>
+                    <Item Value="Y7Fte"/>
+                    <Item Value="Y8Fte"/>
+                    <Item Value="Y9Fte"/>
+                    <Item Value="CostDeviationY10"/>
+                    <Item Value="CostDeviationY11"/>
+                    <Item Value="CostDeviationY12"/>
+                    <Item Value="CostDeviationY13"/>
+                    <Item Value="CostDeviationY14"/>
+                    <Item Value="CostDeviationY15"/>
+                    <Item Value="CostDeviationY4"/>
+                    <Item Value="CostDeviationY5"/>
+                    <Item Value="CostDeviationY6"/>
+                    <Item Value="CostDeviationY7"/>
+                    <Item Value="CostDeviationY8"/>
+                    <Item Value="CostDeviationY9"/>
+                    <Item Value="FcDY10Cost"/>
+                    <Item Value="FcDY11Cost"/>
+                    <Item Value="FcDY12Cost"/>
+                    <Item Value="FcDY13Cost"/>
+                    <Item Value="FcDY14Cost"/>
+                    <Item Value="FcDY15Cost"/>
+                    <Item Value="FcDY4Cost"/>
+                    <Item Value="FcDY5Cost"/>
+                    <Item Value="FcDY6Cost"/>
+                    <Item Value="FcDY7Cost"/>
+                    <Item Value="FcDY8Cost"/>
+                    <Item Value="FcDY9Cost"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <methodAction IterBinding="LtcEstimateViewIterator" id="removeFakeRow" RequiresUpdateModel="true"
+                      Action="invokeMethod" MethodName="removeFakeRow" IsViewObjectMethod="false"
+                      DataControl="PrivateAppModuleDataControl" InstanceName="bindings.LtcEstimateViewIterator.currentRow"
+                      IsLocalObjectReference="true"/>
+    </bindings>
+</pageDefinition>

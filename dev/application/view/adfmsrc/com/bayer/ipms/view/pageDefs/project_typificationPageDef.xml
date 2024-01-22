@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.64.93" id="project_typificationPageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="Root.ProgramAppModule.ProjectView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="ProjectViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator id="ReservedProgramsViewIterator"
+              Binds="Root.ProgramAppModule.ReservedProgramsView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="25"/>
+    <iterator id="AllProgramViewIterator"
+              Binds="Root.ProgramAppModule.AllProgramView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="25"/>
+    <searchRegion Criteria="Unt"
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="ProjectViewIterator" id="UntQuery"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="ProjectViewIterator" id="ProjectView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.ProjectView"
+                      Name="ProjectView0">
+        <AttrNames>
+          <Item Value="Code"/>
+          <Item Value="Name"/>
+          <Item Value="TopGroupCode"/>
+          <Item Value="MainGroupCode"/>
+          <Item Value="SubgroupCode"/>
+          <Item Value="AreaCode"/>
+          <Item Value="IsTypifyExcluded"/>
+          <Item Value="CategoryName"/>
+          <Item Value="MainGroupName"/>
+          <Item Value="TopGroupName"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+ 
+                  
+ <eventBinding id="projectTypifyEventBinding"
+                  Listener="javax.faces.event.ActionListener">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="projectTypify" eventType="Action Event"
+               customPayLoad=""/>
+      </events>
+    </eventBinding>
+    <attributeValues IterBinding="ProjectViewIterator" id="AreaCode">
+      <AttrNames>
+        <Item Value="AreaCode"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+  <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent"/>
+</pageDefinition>

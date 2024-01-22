@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<wsdl:definitions
+     name="TerminateProcess"
+     targetNamespace="http://xmlns.bayer.com/ipms/bpm"
+     xmlns:ns1="http://xmlns.bayer.com/ipms/soa"
+     xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+     xmlns:client="http://xmlns.bayer.com/ipms/bpm"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+     xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    >
+    <wsdl:documentation>
+        <abstractWSDL>http://soa.ipms:7011/soa-infra/services/default/ipms.bpm!1.0/TerminateProcess.wsdl</abstractWSDL>
+    </wsdl:documentation>
+    <plnk:partnerLinkType name="TerminateProcess">
+        <plnk:role name="TerminateProcessRequester" portType="client:TerminateProcessCallback"/>
+        <plnk:role name="TerminateProcessProvider" portType="client:TerminateProcess"/>
+    </plnk:partnerLinkType>
+<wsp:Policy xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" wsu:Id="wsaddr_policy" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy">
+   <wsaw:UsingAddressing xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl"/>
+</wsp:Policy>    <wsdl:types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://xmlns.bayer.com/ipms/soa" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/soa/soa.xsd"/>
+        </schema>
+    </wsdl:types>
+    <wsdl:message name="TerminateProcessRequestMessage">
+        <wsdl:part name="payload" element="ns1:terminate"/>
+    </wsdl:message>
+    <wsdl:message name="TerminateProcessResponseMessage">
+        <wsdl:part name="payload" element="ns1:response"/>
+    </wsdl:message>
+    <wsdl:portType name="TerminateProcess">
+        <wsdl:operation name="process">
+            <wsdl:input message="client:TerminateProcessRequestMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:portType name="TerminateProcessCallback">
+        <wsdl:operation name="callback">
+            <wsdl:input message="client:TerminateProcessResponseMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="TerminateProcessBinding" type="client:TerminateProcess">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+      <wsp:PolicyReference xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" URI="#wsaddr_policy" wsdl:required="false"/>
+        <wsdl:operation name="process">
+            <soap:operation style="document" soapAction="process"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="TerminateProcessCallbackBinding" type="client:TerminateProcessCallback">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="callback">
+            <soap:operation style="document" soapAction="callback"/>
+            <wsdl:input>
+                <soap:body use="literal" namespace="http://xmlns.bayer.com/ipms/bpm"/>
+            </wsdl:input>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="TerminateProcessService_ep">
+        <wsdl:port name="TerminateProcess_pt" binding="client:TerminateProcessBinding">
+            <soap:address location="http://soa.ipms:7011/soa-infra/services/default/ipms.bpm/TerminateProcess.Service"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

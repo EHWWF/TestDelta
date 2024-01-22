@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.0.31" id="ltc_planningPageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+  <parameters/>
+  <executables>
+    <page path="com.bayer.ipms.view.pageDefs.ipms_page_templatePageDef" id="ptb1" Refresh="ifNeeded"/>
+    <iterator Binds="LtcAppModule.LtcTagView" DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="LtcTagViewIterator"/>
+    <iterator id="LtcProcessViewIterator" Binds="LtcAppModule.LtcProcessView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"/>
+    <taskFlow id="dynamicRegion1" taskFlowId="${pageFlowScope.ltcBean2.ltcViewTaskFlowId}"
+              xmlns="http://xmlns.oracle.com/adf/controller/binding" Refresh="ifNeeded" activation="deferred"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="LtcTagViewIterator" id="TagName">
+      <AttrNames>
+        <Item Value="Name"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="LtcTagViewIterator" id="LtcTagView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.ltc.LtcTagView" Name="LtcTagView10">
+        <AttrNames>
+          <Item Value="QualifiedName"/>
+        </AttrNames>
+        <Accessors>
+          <Item Value="LtcProcessView"/>
+        </Accessors>
+      </nodeDefinition>
+      <nodeDefinition DefName="com.bayer.ipms.model.views.ltc.LtcProcessView" Name="LtcTagView11">
+        <AttrNames>
+          <Item Value="QualifiedName"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <methodAction id="receiveEstimatesEvent"
+                  InstanceName="ContextualEventReceiver.dataProvider"
+                  DataControl="ContextualEventReceiver"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="receiveEvent" IsViewObjectMethod="false">
+      <NamedData NDName="payload" NDType="java.lang.Object"/>
+      <NamedData NDName="eventHandler"
+                 NDValue="#{pageFlowScope.ltcBean2.estimatesEventHandler}"
+                 NDType="com.bayer.ipms.view.events.ContextualEventHandler"/>
+    </methodAction>    
+    <action IterBinding="LtcTagViewIterator" id="TagCreateInsert"
+            InstanceName="PrivateAppModuleDataControl.LtcAppModule.LtcTagView"
+            DataControl="PrivateAppModuleDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <attributeValues IterBinding="LtcTagViewIterator" id="StartYear">
+      <AttrNames>
+        <Item Value="StartYear"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcTagViewIterator" id="NextYear">
+      <AttrNames>
+        <Item Value="NextYear"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcTagViewIterator" id="NumberOfProfitYears">
+      <AttrNames>
+        <Item Value="NumberOfProfitYears"/>
+      </AttrNames>
+    </attributeValues>
+    <listOfValues IterBinding="LtcTagViewIterator" StaticList="false" Uses="LOV_NumberOfProfitYears"
+                  id="NumberOfProfitYears1"/>
+  </bindings>
+  <eventMap xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+    <event name="estimates">
+      <producer region="*">
+        <consumer region="" handler="receiveEstimatesEvent">
+          <parameters>
+            <parameter name="payload" value="#{payLoad}"/>
+          </parameters>
+        </consumer>
+      </producer>
+    </event>
+  </eventMap>
+</pageDefinition>

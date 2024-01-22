@@ -1,0 +1,265 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich" xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+          xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <c:set var="bundle" value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <af:pageTemplateDef var="attrs">
+        <af:xmlContent>
+            <component xmlns="http://xmlns.oracle.com/adf/faces/rich/component">
+                <display-name>IPMS Page Template</display-name>
+                <facet>
+                    <facet-name>popup</facet-name>
+                </facet>
+                <facet>
+                    <facet-name>navigation</facet-name>
+                </facet>
+                <facet>
+                    <facet-name>content</facet-name>
+                </facet>
+                <attribute>
+                    <attribute-name>tab</attribute-name>
+                    <attribute-class>java.lang.String</attribute-class>
+                    <required>false</required>
+                </attribute>
+            </component>
+        </af:xmlContent>
+        <af:resource type="javascript">
+       history.pushState(null, null, location.href);
+window.onpopstate = function () {
+    history.go(1);
+};
+
+        </af:resource>
+        <af:resource type="css" source="/skins/ipms.css"/>
+        <af:resource type="css">
+            .rotate {
+                -moz-transition: all 1s ease-in-out;
+                -webkit-transition: all 1s ease-in-out;
+                -o-transition: all 1s ease-in-out;
+                -ms-transition: all 1s ease-in-out;
+                transition: all 1s ease-in-out;
+            }
+
+            .rotate:hover {
+                -moz-transform: rotateY(180deg);
+                -webkit-transform: rotateY(180deg);
+                -o-transform: rotateY(180deg);
+                -ms-transform: rotateY(180deg);
+                transform: rotateY(180deg);
+            }
+        </af:resource>
+        <af:popup id="popAnn" contentDelivery="lazyUncached">
+            <af:dialog id="dlgAnn" title="#{bundle.announcements}" contentWidth="500" resize="on" type="cancel">
+                <af:table value="#{data.com_bayer_ipms_view_ipms_page_templatePageDef.AnnouncementView.collectionModel}"
+                          var="row"
+                          rows="#{data.com_bayer_ipms_view_ipms_page_templatePageDef.AnnouncementView.rangeSize}"
+                          emptyText="#{data.com_bayer_ipms_view_ipms_page_templatePageDef.AnnouncementView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                          fetchSize="#{data.com_bayer_ipms_view_ipms_page_templatePageDef.AnnouncementView.rangeSize}"
+                          rowBandingInterval="0" id="anns" rowSelection="none" columnStretching="last"
+                          autoHeightRows="5" styleClass="AFStretchWidth" contentDelivery="immediate"
+                          partialTriggers="::poll">
+                    <af:column sortable="false"
+                               headerText="#{data.com_bayer_ipms_view_ipms_page_templatePageDef.AnnouncementView.hints.StartDate.label}">
+                        <af:outputText value="#{row.StartDate}">
+                            <af:convertDateTime pattern="#{data.com_bayer_ipms_view_ipms_page_templatePageDef.AnnouncementView.hints.StartDate.format}"/>
+                        </af:outputText>
+                    </af:column>
+                    <af:column sortable="false"
+                               headerText="#{data.com_bayer_ipms_view_ipms_page_templatePageDef.AnnouncementView.hints.FinishDate.label}">
+                        <af:outputText value="#{row.FinishDate}">
+                            <af:convertDateTime pattern="#{data.com_bayer_ipms_view_ipms_page_templatePageDef.AnnouncementView.hints.FinishDate.format}"/>
+                        </af:outputText>
+                    </af:column>
+                    <af:column sortable="false"
+                               headerText="#{data.com_bayer_ipms_view_ipms_page_templatePageDef.AnnouncementView.hints.Text.label}">
+                        <af:inputText value="#{row.Text}"
+                                      columns="#{data.com_bayer_ipms_view_ipms_page_templatePageDef.AnnouncementView.hints.Text.displayWidth}"
+                                      styleClass="AFStretchWidth" dimensionsFrom="parent"
+                                      rows="#{utilsBean.rowCount[row.Text]}" readOnly="true" wrap="soft" simple="true"
+                                      contentStyle="min-width:100%;"/>
+                    </af:column>
+                </af:table>
+            </af:dialog>
+        </af:popup>
+        <af:panelStretchLayout bottomHeight="15" topHeight="60" inlineStyle="background-color:Navy;">
+            <f:facet name="top">
+                <af:panelGridLayout inlineStyle="background-color:White;" styleClass="AFStretchWidth AFStretchHeight">
+                    <af:gridRow height="100%">
+                        <af:gridCell rowSpan="2" inlineStyle="padding:5px 15px 5px 5px;">
+                            <af:image source="/images/promis.JPG" inlineStyle="width:50px; height:50px;"
+                                      styleClass="rotate"/>
+                        </af:gridCell>
+                        <af:gridCell width="100%">
+                            <af:outputText value="#{bundle.globalProMISDetails} #{securityContext.authenticated ? data.com_bayer_ipms_view_ipms_page_templatePageDef.ConfigurationViewIterator.viewObject.values['VERSION'] : ''}"
+                                           styleClass="AFBrandingBarTitle" noWrap="true"
+                                           inlineStyle="font-size:x-large; font-weight:bold;"/>
+                        </af:gridCell>
+                        <af:gridCell halign="end">
+                            <af:menuBar rendered="#{securityContext.authenticated}">
+                                <af:commandMenuItem text="#{bundle.globalGreeting} #{securityContext.userName}"
+                                                    inlineStyle="font-weight:bold;"/>
+                                <af:menu text="#{bundle.globalAdmin}"
+                                         rendered="#{securityContext.userInRole['MaintainProbabilities,MaintainPhases,MaintainAnnouncements,MaintainTPPCategories,MaintainImport,MaintainLookups,MaintainGenericTimelines,MaintainStudies,MaintainIntegration,MaintainUsers,AuditLog,TraceView,MaintainGoalFactors']}">
+                                    <af:commandMenuItem text="#{bundle.maintainProbabilities}"
+                                                        action="maintain-probabilities" useWindow="true"
+                                                        windowWidth="700" immediate="true" id="pt_cmi5"
+                                                        rendered="#{securityContext.userInRole['MaintainProbabilities']}">
+                                       <af:setPropertyListener from="true" to="#{pageFlowScope.modalStateBean.modalModeOff}" type="action" />                 
+                                    </af:commandMenuItem>                    
+                                  <af:commandMenuItem text="#{bundle.maintainStudies}" action="maintain-studies"
+                                                        useWindow="true" windowWidth="700" immediate="true"
+                                                        id="pt_cmi51"
+                                                        rendered="#{securityContext.userInRole['MaintainStudies']}"/>
+                                    <af:commandMenuItem text="#{bundle.maintainPhaseMilestones}"
+                                                        action="maintain-phases" useWindow="true" windowWidth="500"
+                                                        immediate="true" id="pt_cmi4"
+                                                        rendered="#{securityContext.userInRole['MaintainPhases']}"/>
+                                    <af:commandMenuItem text="#{bundle.maintainLookups}" action="maintain-lookups"
+                                                        useWindow="true" windowWidth="800" windowHeight="600"
+                                                        immediate="true" id="pt_cmi8"
+                                                        rendered="#{securityContext.userInRole['MaintainLookups']}"/>
+                                    <af:commandMenuItem text="#{bundle.maintainTppCategories}" action="maintain-tpp"
+                                                        useWindow="true" windowWidth="600" windowHeight="400"
+                                                        immediate="true" id="pt_cmi11"
+                                                        rendered="#{securityContext.userInRole['MaintainTPPCategories']}"/>
+                                    <af:commandMenuItem text="#{bundle.maintainSubFunctions}"
+                                                        action="maintain-subfunctions" useWindow="true"
+                                                        windowWidth="600" immediate="true" id="pt_cmi2"
+                                                        rendered="#{securityContext.userInRole['MaintainLookups']}"/>
+                                    <af:commandMenuItem text="#{bundle.maintainAnnouncements}"
+                                                        action="maintain-announcements" useWindow="true"
+                                                        windowWidth="600" immediate="true" id="pt_cmi6"
+                                                        rendered="#{securityContext.userInRole['MaintainAnnouncements']}"/>
+                                    <af:commandMenuItem text="#{bundle.projectGoalsPhase}" action="switch-goal-tracking"
+                                                        useWindow="true" windowWidth="500" immediate="true"
+                                                        id="pt_cmi366"
+                                                        rendered="#{securityContext.userInRole['MaintainGoalsPhase']}"/>
+                                    <af:commandMenuItem text="#{bundle.maintainGenericTimelines}" id="pt_cmi3"
+                                                        rendered="#{securityContext.userInRole['MaintainGenericTimelines']}"
+                                                        action="maintain-generic-timelines" useWindow="true"
+                                                        windowWidth="950" windowHeight="500" immediate="true"/>
+                                    <af:commandMenuItem text="#{bundle.maintainD1DecisionFactors}" id="pt_cmi88"
+                                                        rendered="#{securityContext.userInRole['MaintainGoalFactors']}"
+                                                        action="maintain-D1-decision-factors" useWindow="true"
+                                                        windowWidth="900" windowHeight="700" immediate="true"/>
+                                    <af:commandMenuItem text="#{bundle.helpMaintain}" action="maintain-help"
+                                                        useWindow="true" windowWidth="#{bundle.globalPopupWidth}"
+                                                        windowHeight="#{bundle.globalPopupHeight}" immediate="true"
+                                                        id="pt_cmi92"
+                                                        rendered="#{securityContext.userInRole['MaintainHelpLinks']}"/>
+                                    <af:commandMenuItem text="#{bundle.maintainTopCategories}" action="maintain-top-template"
+                                                        useWindow="true" windowWidth="600" windowHeight="400"
+                                                        immediate="true" id="pt_cmi7"
+                                                        rendered="#{securityContext.userInRole['MaintainTOPCategories']}"/>                                                        
+                                    <af:separator rendered="#{securityContext.userInRole['MaintainUsers']}" id="pt_s1"></af:separator>
+                                    <af:commandMenuItem text="#{bundle.maintainUsers}" action="maintain-users"
+                                                        immediate="true" id="pt_cmi66"
+                                                        rendered="#{securityContext.userInRole['MaintainUsers']}"/>
+                                </af:menu>
+                                <af:commandMenuItem text="#{bundle.globalQuit}" actionListener="#{loginBean.onLogout}"
+                                                    id="pt_cmi1"/>
+                            </af:menuBar>
+                        </af:gridCell>
+                        <af:gridCell halign="end" inlineStyle="padding:5px 5px 0px 0px;">
+                            <af:statusIndicator rendered="#{securityContext.authenticated}"/>
+                        </af:gridCell>
+                    </af:gridRow>
+                    <af:gridRow>
+                        <af:gridCell width="100%" inlineStyle="padding:5px 5px 5px 0px;">
+                            <af:outputText value="#{fn:substring(data.com_bayer_ipms_view_ipms_page_templatePageDef.Text.inputValue, 0, 100)}"
+                                           noWrap="true" inlineStyle="color:Maroon; font-size:small; font-weight:bold;"
+                                           rendered="#{securityContext.authenticated}" partialTriggers="poll popAnn"/>
+                            <af:commandLink text="#{bundle.globalMore}"
+                                            inlineStyle="color:Maroon; font-size:small; font-weight:bold;"
+                                            rendered="#{securityContext.authenticated}">
+                                <af:showPopupBehavior popupId="popAnn" triggerType="action"/>
+                            </af:commandLink>
+                            <af:poll id="poll" interval="1200000" rendered="#{securityContext.authenticated}"
+                                     immediate="true"/>
+                        </af:gridCell>
+                    </af:gridRow>
+                </af:panelGridLayout>
+            </f:facet>
+            <f:facet name="center">
+                <af:decorativeBox theme="light" topHeight="26px" inlineStyle="margin:5px 0px 0px 5px;">
+                    <f:facet name="top">
+                        <af:group>
+                            <af:facetRef facetName="popup"/>
+                            <af:navigationPane hint="tabs" id="nav1">
+                                <af:commandNavigationItem id="cmdReferences" text="#{bundle.globalWelcome}"
+                                                          action="references" immediate="true"
+                                                          selected="#{attrs.tab eq 'references'}">
+                                                <af:setPropertyListener from="true" to="#{pageFlowScope.modalStateBean.modalModeOff}" type="action" />                 
+                                </af:commandNavigationItem>                       
+                                <af:commandNavigationItem id="cmdPrograms" text="#{bundle.globalProjects}"
+                                                          action="programs" immediate="true"
+                                                          selected="#{attrs.tab eq 'programs'}"
+                                                          rendered="#{securityContext.userInRole['ProgramViewDev,ProgramViewAssignedDev,ProjectViewD1,ProjectViewD2Prj,ProjectViewSAMD,ProjectViewD3Tr,ProjectViewAssignedD3Tr,ProjectViewPrdMnt,ProjectViewAssignedPrdMnt,ProjectViewRs,ProjectViewLg,ProjectViewLo,ProjectViewCo']}"
+                                                          actionListener="#{pageFlowScope.programsBean.onProjectTabClick}">
+                                                <af:setPropertyListener from="true" to="#{pageFlowScope.modalStateBean.modalModeOff}" type="action" />                 
+                                </af:commandNavigationItem>                       
+                                <af:commandNavigationItem id="cmdTasks" text="#{bundle.globalTasks}" action="tasks"
+                                                          immediate="true" selected="#{attrs.tab eq 'tasks'}"
+                                                          rendered="#{securityContext.userInRole['TaskView']}">
+                                                <af:setPropertyListener from="true" to="#{pageFlowScope.modalStateBean.modalModeOff}" type="action" />                 
+                                </af:commandNavigationItem>                       
+                                <af:commandNavigationItem id="cmdNotices" text="#{bundle.globalNotices}"
+                                                          action="notices" immediate="true"
+                                                          selected="#{attrs.tab eq 'notices'}" rendered="false">
+                                                <af:setPropertyListener from="true" to="#{pageFlowScope.modalStateBean.modalModeOff}" type="action" />                 
+                                </af:commandNavigationItem>                       
+                                <af:commandNavigationItem id="cmdEstimates" text="#{bundle.globalEstimates}"
+                                                          action="estimates" immediate="true"
+                                                          selected="#{attrs.tab eq 'estimates'}"
+                                                          rendered="#{securityContext.userInRole['EstimatesTagProcessView']}">
+                                                <af:setPropertyListener from="true" to="#{pageFlowScope.modalStateBean.modalModeOff}" type="action" />                 
+                                </af:commandNavigationItem>                       
+                                <af:commandNavigationItem id="cmdGreenRedList" text="#{bundle.globalGreenRedList}"
+                                                          action="green-red-list" immediate="true"
+                                                          selected="#{attrs.tab eq 'greenRedList'}"
+                                                          rendered="#{securityContext.userInRole['GreenRedListView,PlanningAssumptionsView']}">
+                                                <af:setPropertyListener from="true" to="#{pageFlowScope.modalStateBean.modalModeOff}" type="action" />                 
+                                </af:commandNavigationItem>                       
+                                <af:commandNavigationItem id="cmdGlobalBALog" text="#{bundle.globalBusinessActivityLog}"
+                                                          action="global-ba-log" immediate="true"
+                                                          selected="#{attrs.tab eq 'globalBALog'}"
+                                                          rendered="#{securityContext.userInRole['BusinessActivityLogView']}">
+                                                <af:setPropertyListener from="true" to="#{pageFlowScope.modalStateBean.modalModeOff}" type="action" />                 
+                                </af:commandNavigationItem>                       
+                                <af:commandNavigationItem id="cmdGlobalLTCPlanning" text="#{bundle.globalLongTermCostPlanning}"
+                                                          action="global-ltc-planning" immediate="true"
+                                                          selected="#{attrs.tab eq 'globalLTCPlanning'}"
+                                                          rendered="#{securityContext.userInRole['EstimatesTagProcessViewLTC']}">                                                          
+                                                <af:setPropertyListener from="true" to="#{pageFlowScope.modalStateBean.modalModeOff}" type="action" />                 
+                                </af:commandNavigationItem>                       
+                            </af:navigationPane>
+                        </af:group>
+                    </f:facet>
+                    <f:facet name="center">
+                        <af:panelSplitter orientation="horizontal" splitterPosition="300"
+                                          collapsed="#{not securityContext.authenticated}">
+                            <f:facet name="first">
+                                <af:facetRef facetName="navigation"/>
+                            </f:facet>
+                            <f:facet name="second">
+                                <af:facetRef facetName="content"/>
+                            </f:facet>                           
+                        </af:panelSplitter>
+                    </f:facet>
+                </af:decorativeBox>
+            </f:facet>
+            <f:facet name="bottom">
+                <af:panelBorderLayout inlineStyle="padding:0px 5px; background-color:White; height:16px;"
+                                      styleClass="AFStretchWidth">
+                    <af:outputText value=""/>
+                    <f:facet name="end">
+                        <af:group rendered="#{securityContext.authenticated}">
+                            <af:outputText id="revision" value="@REVISION@" noWrap="true"/>
+                        </af:group>
+                    </f:facet>
+                </af:panelBorderLayout>
+            </f:facet>
+        </af:panelStretchLayout>
+    </af:pageTemplateDef>
+</jsp:root>

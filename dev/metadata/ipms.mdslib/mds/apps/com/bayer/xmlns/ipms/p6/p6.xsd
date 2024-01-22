@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xsd:schema
+		xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+		xmlns="http://xmlns.bayer.com/ipms/p6"
+		targetNamespace="http://xmlns.bayer.com/ipms/p6"
+		elementFormDefault="qualified">
+
+	<xsd:element name="empty" type="xsd:string"/>
+
+	<xsd:element name="close">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="id" type="xsd:integer"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="ReadWBS">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="ObjectId" type="xsd:integer"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="WBS">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="ObjectId" type="xsd:integer"/>
+				<xsd:element name="WBSCategoryObjectId" type="xsd:integer"/>
+				<xsd:element name="WBSCategoryName" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="updateTask">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="createUser" type="xsd:string"/>
+				<xsd:element name="taskId" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	
+</xsd:schema>

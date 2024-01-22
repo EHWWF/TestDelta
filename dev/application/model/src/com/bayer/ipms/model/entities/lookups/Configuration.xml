@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="windows-1257" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="Configuration"
+  Version="12.2.1.0.31"
+  InheritPersonalization="true"
+  DBObjectType="table"
+  DBObjectName="CONFIGURATION"
+  AliasName="Configuration"
+  BindingStyle="JDBC"
+  RowClass="com.bayer.ipms.model.base.IPMSEntityImpl">
+  <Attribute
+    Name="Code"
+    IsUpdateable="false"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="CODE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="CONFIGURATION"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="Name"
+    IsUpdateable="false"
+    IsNotNull="true"
+    Precision="100"
+    Scale="0"
+    ColumnName="NAME"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="CONFIGURATION">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="Value"
+    Precision="500"
+    Scale="0"
+    ColumnName="VALUE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="CONFIGURATION">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="500"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="Details2"
+    IsQueriable="false"
+    ColumnName="DETAILS2"
+    SQLType="CLOB"
+    Type="java.lang.String"
+    ColumnType="CLOB"
+    TableName="CONFIGURATION"/>
+  <Attribute
+    Name="IsResource"
+    IsNotNull="true"
+    Precision="1"
+    Scale="0"
+    ColumnName="IS_RESOURCE"
+    SQLType="NUMERIC"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    TableName="CONFIGURATION"/>
+  <Key
+    Name="SysC0014039">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0014039"/>
+      <Attr Name="_checkCondition" Value='"CODE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.lookups.Configuration.Code"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0014040">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0014040"/>
+      <Attr Name="_checkCondition" Value='"NAME" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.lookups.Configuration.Name"/>
+    </AttrArray>
+  </Key>
+</Entity>

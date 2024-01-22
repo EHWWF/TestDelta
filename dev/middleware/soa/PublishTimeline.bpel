@@ -1,0 +1,1127 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer
+
+  Created: Wed Jan 23 11:05:22 EET 2013
+  Author:  gytis
+  Type: BPEL 1.1 Process
+  Purpose: Synchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="PublishTimeline" targetNamespace="http://xmlns.bayer.com/ipms/soa"
+         xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/" xmlns:client="http://xmlns.bayer.com/ipms/soa"
+         xmlns:ora="http://schemas.oracle.com/xpath/extension" xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:bpel2="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:ns1="http://xmlns.bayer.com/ipms"
+         xmlns:ns01="http://xmlns.bayer.com/ipms/soa"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:ns2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         xmlns:ns3="http://xmlns.oracle.com/Primavera/P6/WS/EPS/V1"
+         xmlns:ns4="http://xmlns.oracle.com/Primavera/P6/WS/UDFValue/V1"
+         xmlns:ns5="http://xmlns.oracle.com/Primavera/P6/WS/ProjectCodeAssignment/V1"
+         xmlns:ns6="http://xmlns.oracle.com/Primavera/P6/WS/WSExport/V2"
+         xmlns:ns7="http://xmlns.oracle.com/Primavera/P6/WS/WSImport/V1" xmlns:ns8="http://xmlns.bayer.com/ipms/p6"
+         xmlns:ns9="http://xmlns.oracle.com/Primavera/P6/WS/Activity/V1"
+         xmlns:ns10="http://xmlns.oracle.com/Primavera/P6/WS/WBS/V2"
+         xmlns:ns11="http://xmlns.oracle.com/Primavera/P6/WS/OBS/V1" xmlns:ns12="http://xmlns.bayer.com/ipms/cache"
+         xmlns:ns13="http://xmlns.oracle.com/Primavera/P6/WS/CostAccount/V1"
+         xmlns:ns14="http://xmlns.oracle.com/Primavera/P6/WS/BaselineProject/V2"
+         xmlns:ess="http://xmlns.oracle.com/scheduler">
+  <!--
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        PARTNERLINKS
+        List of services participating in this BPEL process
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+  <bpelx:annotation>
+    <bpelx:analysis>
+      <bpelx:property name="wsdlFile">
+        <![CDATA[PublishTimeline.wsdl]]>
+      </bpelx:property>
+    </bpelx:analysis>
+  </bpelx:annotation>
+  <partnerLinks>
+    <!--
+      The 'client' role represents the requester of this service. It is
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+    <partnerLink name="PublishTimelineService" partnerLinkType="client:PublishTimeline" myRole="PublishTimelineProvider"
+                 partnerRole="PublishTimelineRequester"/>
+    <partnerLink name="ProjectService" partnerLinkType="ns2:ProjectService" partnerRole="ProjectPortType"/>
+    <partnerLink name="EPSService" partnerLinkType="ns3:EPSService" partnerRole="EPSPortType"/>
+    <partnerLink name="UDFValueService" partnerLinkType="ns4:UDFValueService" partnerRole="UDFValuePortType"/>
+    <partnerLink name="ExportService" partnerLinkType="ns6:ExportService" partnerRole="ExportPortType"/>
+    <partnerLink name="ImportService" partnerLinkType="ns7:ImportService" partnerRole="ImportPortType"/>
+    <partnerLink name="ProjectXService" partnerLinkType="ns8:ProjectXService" partnerRole="ProjectPortType"/>
+    <partnerLink name="ActivityService" partnerLinkType="ns9:ActivityService" partnerRole="ActivityPortType"/>
+    <partnerLink name="WBSService" partnerLinkType="ns10:WBSService" partnerRole="WBSPortType"/>
+    <partnerLink name="OBSService" partnerLinkType="ns11:OBSService" partnerRole="OBSPortType"/>
+    <partnerLink name="SummarizeTimeline.SummarizeService" partnerLinkType="client:SummarizeTimeline"
+                 partnerRole="SummarizeTimelineProvider" myRole="SummarizeTimelineRequester"/>
+    <partnerLink name="ReadConfiguration.ReadConfigurationService" partnerLinkType="client:ReadConfiguration"
+                 partnerRole="ReadConfigurationProvider" myRole="ReadConfigurationRequester"/>
+    <partnerLink name="AdjustActivities.AdjustActivitiesService" partnerLinkType="client:AdjustActivities"
+                 partnerRole="AdjustActivitiesProvider" myRole="AdjustActivitiesRequester"/>
+    <partnerLink name="BaselineProjectService" partnerLinkType="ns14:BaselineProjectService"
+                 partnerRole="BaselineProjectPortType"/>
+  </partnerLinks>
+  <!--
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      VARIABLES
+      List of messages and XML documents used within this BPEL process
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <variables>
+    <!-- Reference to the message passed as input during initiation -->
+    <variable name="inputVariable" messageType="client:PublishTimelineRequestMessage"/>
+    <!-- Reference to the message that will be returned to the requester-->
+    <variable name="outputVariable" messageType="client:PublishTimelineResponseMessage"/>
+    <variable name="ReadTrgIn" messageType="ns2:ReadProjects"/>
+    <variable name="ReadTrgOut" messageType="ns2:ReadProjectsResponse"/>
+    <variable name="ReadSrcIn" messageType="ns2:ReadProjects"/>
+    <variable name="ReadSrcOut" messageType="ns2:ReadProjectsResponse"/>
+    <variable name="ReadEpsIn" messageType="ns3:ReadEPS"/>
+    <variable name="ReadEpsOut" messageType="ns3:ReadEPSResponse"/>
+    <variable name="CopyIn" messageType="ns2:CopyProject"/>
+    <variable name="CopyOut" messageType="ns2:CopyProjectResponse"/>
+    <variable name="BaselineIn" messageType="ns2:CopyProjectAsBaseline"/>
+    <variable name="BaselineOut" messageType="ns2:CopyProjectAsBaselineResponse"/>
+    <variable name="DeleteUDFIn" messageType="ns4:DeleteUDFValues"/>
+    <variable name="DeleteUDFOut" messageType="ns4:DeleteUDFValuesResponse"/>
+    <variable name="ExportSrcIn" messageType="ns6:ExportProject"/>
+    <variable name="ExportSrcOut" messageType="ns6:ExportProjectResponse"/>
+    <!--variable name="DeleteCodesIn"
+              messageType="ns5:DeleteProjectCodeAssignments"/>
+    <variable name="DeleteCodesOut"
+              messageType="ns5:DeleteProjectCodeAssignmentsResponse"/-->
+    <variable name="CloseTrgIn" messageType="ns8:CloseRequestMessage"/>
+    <variable name="ImportTrgIn" messageType="ns7:UpdateExistingProject"/>
+    <variable name="ReadCfgOut" messageType="client:ReadConfigurationResponseMessage"/>
+    <variable name="ReadCfgIn" messageType="client:ReadConfigurationRequestMessage"/>
+    <variable name="UpdateTrgIn" messageType="ns2:UpdateProjects"/>
+    <variable name="UpdateTrgOut" messageType="ns2:UpdateProjectsResponse"/>
+    <variable name="CloseTrgOut" messageType="ns8:ResponseMessage"/>
+    <variable name="ImportTrgOut" messageType="ns7:UpdateExistingProjectResponse"/>
+    <variable name="ReadTrgWbsIn" messageType="ns10:ReadWBS"/>
+    <variable name="ReadTrgWbsOut" messageType="ns10:ReadWBSResponse"/>
+    <variable name="ReadTrgActin" messageType="ns9:ReadActivities"/>
+    <variable name="ReadTrgActOut" messageType="ns9:ReadActivitiesResponse"/>
+    <variable name="DeleteTrgWbsIn" messageType="ns10:DeleteWBS"/>
+    <variable name="DeleteTrgWbsOut" messageType="ns10:DeleteWBSResponse"/>
+    <variable name="DeleteTrgActIn" messageType="ns9:DeleteActivities"/>
+    <variable name="DeleteTrgActOut" messageType="ns9:DeleteActivitiesResponse"/>
+    <variable name="ReadObsIn" messageType="ns11:ReadOBS"/>
+    <variable name="ReadObsOut" messageType="ns11:ReadOBSResponse"/>
+    <variable name="BaselineRawin" messageType="ns2:CopyProjectAsBaseline"/>
+    <variable name="BaselineRawOut" messageType="ns2:CopyProjectAsBaselineResponse"/>
+    <variable name="ReadTrgFinalIn" messageType="ns2:ReadProjects"/>
+    <variable name="ReadTrgFinalOut" messageType="ns2:ReadProjectsResponse"/>
+    <variable name="ProgramEpsId" type="xsd:string"/>
+    <variable name="TgtEpsId" type="xsd:string"/>
+    <variable name="TgtOpsId" type="xsd:string"/>
+    <variable name="ReadProjectEPSPath_In" messageType="ns3:ReadProjectEPSPath"/>
+    <variable name="ReadProjectEPSPath_Out" messageType="ns3:ReadProjectEPSPathResponse"/>
+    <variable name="UpdateSrcIn" messageType="ns2:UpdateProjects"/>
+    <variable name="UpdateSrcOut" messageType="ns2:UpdateProjectsResponse"/>
+  </variables>
+  <faultHandlers>
+    <catchAll>
+      <scope name="mainFaultCatchingScope" variableAccessSerializable="no">
+        <variables>
+          <variable name="outputErrorVariable" messageType="client:PublishTimelineResponseMessage"/>
+        </variables>
+        <sequence name="MainCatchAll">
+          <assign name="assignFaultOutput">
+            <copy>
+              <from variable="inputVariable" part="payload" query="/ns01:publish/@id"/>
+              <to variable="outputErrorVariable" part="payload" query="/ns01:response/@id"/>
+            </copy>
+            <copy>
+              <from variable="inputVariable" part="payload" query="/client:publish/@id"/>
+              <to variable="outputErrorVariable" part="payload" query="/client:response/ns1:error/@id"/>
+            </copy>
+            <copy>
+              <from expression="ora:getFaultName()"/>
+              <to variable="outputErrorVariable" part="payload" query="/ns01:response/ns1:error/ns1:code"/>
+            </copy>
+            <copy>
+              <from expression="ora:getFaultAsString()"/>
+              <to variable="outputErrorVariable" part="payload" query="/ns01:response/ns1:error/ns1:description"/>
+            </copy>
+            <bpelx:remove>
+              <bpelx:target variable="outputErrorVariable" part="payload"
+                            query="/ns01:response/ns01:complete/ns1:timeline"/>
+            </bpelx:remove>
+          </assign>
+          <invoke name="callbackFaultOutput" inputVariable="outputErrorVariable" partnerLink="PublishTimelineService"
+                  portType="client:PublishTimelineCallback" operation="callback" bpelx:invokeAsDetail="no"/>
+        </sequence>
+      </scope>
+    </catchAll>
+  </faultHandlers>
+  <!--
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC
+     Set of activities coordinating the flow of messages across the
+     services integrated within this business process
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <sequence name="main">
+    <!-- Receive input from requestor. (Note: This maps to operation defined in PublishTimeline.wsdl) -->
+    <receive name="receiveInput" partnerLink="PublishTimelineService" portType="client:PublishTimeline"
+             operation="process" variable="inputVariable" createInstance="yes"/>
+    <sequence name="Config">
+      <scope name="ReadConfigFromCache">
+        <variables>
+          <variable name="VariableCache" element="ns12:cache"/>
+        </variables>
+        <faultHandlers>
+          <catchAll>
+            <empty name="Empty2"/>
+          </catchAll>
+        </faultHandlers>
+        <sequence name="ReadConfigFromCache">
+          <assign name="AssignFromCache">
+            <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+              <from expression='ora:readFile("file:///opt/oracle/soa12.2.1/file_adapter/ipms/config.cache", "oramds:/apps/com/bayer/xmlns/ipms/cache/cache.xsd")'/>
+              <to variable="VariableCache" query="/ns12:cache"/>
+            </copy>
+            <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+              <from variable="VariableCache" query="/ns12:cache/*"/>
+              <to variable="ReadCfgOut" part="payload"/>
+            </copy>
+          </assign>
+          <empty name="EmptyBeforeSkip"/>
+        </sequence>
+      </scope>
+      <sequence name="FULL-ReadConfig-SKIP"
+                bpelx:skipCondition="bpws:getVariableData('ReadCfgOut','payload','/client:config/client:program/client:epsId')!=''">
+        <invoke name="ReadConfigurationIn" bpelx:invokeAsDetail="no" inputVariable="ReadCfgIn"
+                partnerLink="ReadConfiguration.ReadConfigurationService" portType="client:ReadConfiguration"
+                operation="process"/>
+        <receive name="ReadConfigurationOut" createInstance="no" variable="ReadCfgOut"
+                 partnerLink="ReadConfiguration.ReadConfigurationService" portType="client:ReadConfigurationCallback"
+                 operation="callback"/>
+      </sequence>
+    </sequence>
+    <sequence name="ReadSourceProject">
+      <assign name="AssignReadSrc">
+        <copy>
+          <from><v2:Field xmlns:v2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2">Id</v2:Field></from>
+          <to variable="ReadSrcIn" part="params" query="/ns2:ReadProjects/ns2:Field"/>
+        </copy>
+        <bpelx:insertAfter>
+          <bpelx:from><v2:Field xmlns:v2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2">ActivityDefaultCalendarName</v2:Field></bpelx:from>
+          <bpelx:to variable="ReadSrcIn" part="params" query="/ns2:ReadProjects/ns2:Field"/>
+        </bpelx:insertAfter>
+        <bpelx:insertAfter>
+          <bpelx:from><v2:Field xmlns:v2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2">ActivityDefaultCalendarObjectId</v2:Field></bpelx:from>
+          <bpelx:to variable="ReadSrcIn" part="params" query="/ns2:ReadProjects/ns2:Field"/>
+        </bpelx:insertAfter>
+        <bpelx:insertAfter>
+          <bpelx:from><v2:Field xmlns:v2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2">Name</v2:Field></bpelx:from>
+          <bpelx:to variable="ReadSrcIn" part="params" query="/ns2:ReadProjects/ns2:Field"/>
+        </bpelx:insertAfter>
+        <bpelx:insertAfter>
+          <bpelx:from><v2:Field xmlns:v2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2">ParentEPSObjectId</v2:Field></bpelx:from>
+          <bpelx:to variable="ReadSrcIn" part="params" query="/ns2:ReadProjects/ns2:Field"/>
+        </bpelx:insertAfter>
+        <bpelx:insertAfter>
+          <bpelx:from><v2:Field xmlns:v2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2">WBSObjectId</v2:Field></bpelx:from>
+          <bpelx:to variable="ReadSrcIn" part="params" query="/ns2:ReadProjects/ns2:Field"/>
+        </bpelx:insertAfter>
+        <copy>
+          <from expression="concat(&quot;Id='&quot;,bpws:getVariableData('inputVariable','payload','/ns01:publish/ns1:timeline/@id'),&quot;'&quot;)"/>
+          <to variable="ReadSrcIn" part="params" query="/ns2:ReadProjects/ns2:Filter"/>
+        </copy>
+      </assign>
+      <invoke name="ReadSrc" inputVariable="ReadSrcIn" outputVariable="ReadSrcOut" partnerLink="ProjectService"
+              portType="ns2:ProjectPortType" operation="ReadProjects" bpelx:invokeAsDetail="no"/>
+    </sequence>
+    <switch name="SwitchAssignByCodeType">
+      <case condition="bpws:getVariableData('inputVariable','payload','/ns01:publish/ns1:timeline/ns1:typeCode')='CUR'">
+        <bpelx:annotation>
+          <bpelx:general>
+            <bpelx:property name="userLabel">cur</bpelx:property>
+          </bpelx:general>
+        </bpelx:annotation>
+        <assign name="AssignIdApr" xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/">
+          <copy>
+            <from expression="'APR'"/>
+            <to variable="outputVariable" part="payload"
+                query="/ns01:response/ns01:complete/ns1:timeline/ns1:typeCode"/>
+          </copy>
+        </assign>
+      </case>
+      <case condition="bpws:getVariableData('inputVariable','payload','/ns01:publish/ns1:timeline/ns1:typeCode')='RAW'">
+        <bpelx:annotation>
+          <bpelx:general>
+            <bpelx:property name="userLabel">raw</bpelx:property>
+          </bpelx:general>
+        </bpelx:annotation>
+        <assign name="AssignIdCur" xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/">
+          <copy>
+            <from expression="'CUR'"/>
+            <to variable="outputVariable" part="payload"
+                query="/ns01:response/ns01:complete/ns1:timeline/ns1:typeCode"/>
+          </copy>
+        </assign>
+      </case>
+      <otherwise>
+        <throw name="ThrowTypeCodeNotCurRaw" faultName="client:publishTimelineFault"/>
+      </otherwise>
+    </switch>
+    <sequence name="ReadEPS">
+      <assign name="AssignReadEpsPath">
+        <copy>
+          <from variable="ReadSrcOut" part="result" query="/ns2:ReadProjectsResponse/ns2:Project/ns2:ObjectId"/>
+          <to variable="ReadProjectEPSPath_In" part="params" query="/ns3:ReadProjectEPSPath/ns3:ProjectObjectId"/>
+        </copy>
+        <copy>
+          <from expression="'Id'"/>
+          <to variable="ReadProjectEPSPath_In" part="params" query="/ns3:ReadProjectEPSPath/ns3:Field"/>
+        </copy>
+      </assign>
+      <invoke name="ReadEPSPath" bpelx:invokeAsDetail="no" inputVariable="ReadProjectEPSPath_In"
+              outputVariable="ReadProjectEPSPath_Out" partnerLink="EPSService" portType="ns3:EPSPortType"
+              operation="ReadProjectEPSPath"/>
+    </sequence>
+    <switch name="FindEpsObs">
+      <case condition="ora:countNodes('ReadProjectEPSPath_Out','result','/ns3:ReadProjectEPSPathResponse/ns3:EPS/ns3:Id[.=&quot;D2&quot;]') = 1">
+        <bpelx:annotation>
+          <bpelx:general>
+            <bpelx:property name="userLabel">
+              <![CDATA[D2]]>
+            </bpelx:property>
+          </bpelx:general>
+        </bpelx:annotation>
+        <assign name="AssignD2" xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/">
+          <copy>
+            <from expression="'D2'"/>
+            <to variable="ProgramEpsId"/>
+          </copy>
+          <copy>
+            <from expression="ora:format(&quot;D2-{1}&quot;, bpws:getVariableData('inputVariable','payload','/client:publish/ns1:timeline/@programId'), bpws:getVariableData('outputVariable','payload','/client:response/client:complete/ns1:timeline/ns1:typeCode'))"/>
+            <to variable="TgtEpsId"/>
+          </copy>
+          <copy>
+            <from expression="ora:format(&quot;RESERVED-D2-{1}&quot;, bpws:getVariableData('inputVariable','payload','/client:publish/ns1:timeline/@programId'), bpws:getVariableData('outputVariable','payload','/client:response/client:complete/ns1:timeline/ns1:typeCode'))"/>
+            <to variable="TgtOpsId"/>
+          </copy>
+        </assign>
+      </case>
+      <case condition="ora:countNodes('ReadProjectEPSPath_Out','result','/ns3:ReadProjectEPSPathResponse/ns3:EPS/ns3:Id[.=&quot;SAMD&quot;]') = 1">
+        <bpelx:annotation>
+          <bpelx:general>
+            <bpelx:property name="userLabel">
+              <![CDATA[SAMD]]>
+            </bpelx:property>
+          </bpelx:general>
+        </bpelx:annotation>
+        <assign name="AssignSAMD" xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/">
+          <copy>
+            <from expression="'SAMD'"/>
+            <to variable="ProgramEpsId"/>
+          </copy>
+          <copy>
+            <from expression="ora:format(&quot;SAMD-{1}&quot;, bpws:getVariableData('inputVariable','payload','/client:publish/ns1:timeline/@programId'), bpws:getVariableData('outputVariable','payload','/client:response/client:complete/ns1:timeline/ns1:typeCode'))"/>
+            <to variable="TgtEpsId"/>
+          </copy>
+          <copy>
+            <from expression="ora:format(&quot;RESERVED-SAMD-{1}&quot;, bpws:getVariableData('inputVariable','payload','/client:publish/ns1:timeline/@programId'), bpws:getVariableData('outputVariable','payload','/client:response/client:complete/ns1:timeline/ns1:typeCode'))"/>
+            <to variable="TgtOpsId"/>
+          </copy>
+        </assign>
+      </case>
+      <case condition="ora:countNodes('ReadProjectEPSPath_Out','result','/ns3:ReadProjectEPSPathResponse/ns3:EPS/ns3:Id[.=&quot;D3TR&quot;]') = 1">
+        <bpelx:annotation>
+          <bpelx:general>
+            <bpelx:property name="userLabel">
+              <![CDATA[D3]]>
+            </bpelx:property>
+          </bpelx:general>
+        </bpelx:annotation>
+        <assign name="AssignD3">
+          <copy>
+            <from expression="'D3TR'"/>
+            <to variable="ProgramEpsId"/>
+          </copy>
+          <copy>
+            <from expression="ora:format(&quot;D3TR-{1}&quot;, bpws:getVariableData('inputVariable','payload','/client:publish/ns1:timeline/@programId'), bpws:getVariableData('outputVariable','payload','/client:response/client:complete/ns1:timeline/ns1:typeCode'))"/>
+            <to variable="TgtEpsId"/>
+          </copy>
+          <copy>
+            <from expression="ora:format(&quot;RESERVED-D3TR-{1}&quot;, bpws:getVariableData('inputVariable','payload','/client:publish/ns1:timeline/@programId'), bpws:getVariableData('outputVariable','payload','/client:response/client:complete/ns1:timeline/ns1:typeCode'))"/>
+            <to variable="TgtOpsId"/>
+          </copy>
+        </assign>
+      </case>
+      <case condition="ora:countNodes('ReadProjectEPSPath_Out','result','/ns3:ReadProjectEPSPathResponse/ns3:EPS/ns3:Id[.=&quot;PRDMNT&quot;]') = 1">
+        <bpelx:annotation>
+          <bpelx:general>
+            <bpelx:property name="userLabel">
+              <![CDATA[MNT]]>
+            </bpelx:property>
+          </bpelx:general>
+        </bpelx:annotation>
+        <assign name="AssignMNT" xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/">
+          <copy>
+            <from expression="ora:format(&quot;MNT-{0}&quot;, bpws:getVariableData('inputVariable','payload','/client:publish/ns1:timeline/@programId'))"/>
+            <to variable="ProgramEpsId"/>
+          </copy>
+          <copy>
+            <from expression="ora:format(&quot;MNT-{0}-{1}&quot;, bpws:getVariableData('inputVariable','payload','/client:publish/ns1:timeline/@programId'), bpws:getVariableData('outputVariable','payload','/client:response/client:complete/ns1:timeline/ns1:typeCode'))"/>
+            <to variable="TgtEpsId"/>
+          </copy>
+          <copy>
+            <from expression="ora:format(&quot;MNT-{0}-{1}&quot;, bpws:getVariableData('inputVariable','payload','/client:publish/ns1:timeline/@programId'), bpws:getVariableData('outputVariable','payload','/client:response/client:complete/ns1:timeline/ns1:typeCode'))"/>
+            <to variable="TgtOpsId"/>
+          </copy>
+        </assign>
+      </case>
+      <otherwise>
+        <assign name="AssignDEV">
+          <copy>
+            <from variable="inputVariable" part="payload" query="/client:publish/ns1:timeline/@programId"/>
+            <to variable="ProgramEpsId"/>
+          </copy>
+          <copy>
+            <from expression="ora:format(&quot;{0}-{1}&quot;, bpws:getVariableData('inputVariable','payload','/client:publish/ns1:timeline/@programId'), bpws:getVariableData('outputVariable','payload','/client:response/client:complete/ns1:timeline/ns1:typeCode'))"/>
+            <to variable="TgtEpsId"/>
+          </copy>
+          <copy>
+            <from expression="ora:format(&quot;{0}-{1}&quot;, bpws:getVariableData('inputVariable','payload','/client:publish/ns1:timeline/@programId'), bpws:getVariableData('outputVariable','payload','/client:response/client:complete/ns1:timeline/ns1:typeCode'))"/>
+            <to variable="TgtOpsId"/>
+          </copy>
+        </assign>
+      </otherwise>
+    </switch>
+    <flow name="ReadALL">
+      <sequence name="Eps">
+        <assign name="AssignReadTrgEpsIn">
+          <copy>
+            <from expression="'Id'"/>
+            <to variable="ReadEpsIn" part="params" query="/ns3:ReadEPS/ns3:Field[1]"/>
+          </copy>
+          <copy>
+            <from expression="ora:format(&quot;ParentObjectId={0} AND Id=''{1}''&quot;, ora:getNodes('ReadProjectEPSPath_Out','result','/ns3:ReadProjectEPSPathResponse/ns3:EPS')[ns3:Id=bpws:getVariableData('ProgramEpsId')]/ns3:ObjectId/text(), bpws:getVariableData('TgtEpsId'))"/>
+            <to variable="ReadEpsIn" part="params" query="/ns3:ReadEPS/ns3:Filter"/>
+          </copy>
+        </assign>
+        <invoke name="ReadTrgEps" bpelx:invokeAsDetail="no" inputVariable="ReadEpsIn" outputVariable="ReadEpsOut"
+                partnerLink="EPSService" portType="ns3:EPSPortType" operation="ReadEPS"/>
+      </sequence>
+      <sequence name="Obs">
+        <assign name="AssignReadObs">
+          <copy>
+            <from expression='"Name"'/>
+            <to variable="ReadObsIn" part="params" query="/ns11:ReadOBS/ns11:Field"/>
+          </copy>
+          <copy>
+            <from expression="concat(&quot;Name='&quot;,bpws:getVariableData('TgtOpsId'),&quot;'&quot;)"/>
+            <to variable="ReadObsIn" part="params" query="/ns11:ReadOBS/ns11:Filter"/>
+          </copy>
+        </assign>
+        <invoke name="ReadObs" bpelx:invokeAsDetail="no" inputVariable="ReadObsIn" outputVariable="ReadObsOut"
+                partnerLink="OBSService" portType="ns11:OBSPortType" operation="ReadOBS"/>
+      </sequence>
+      <sequence name="Target">
+        <assign name="AssignReadTrg">
+          <copy>
+            <from variable="inputVariable" part="payload" query="/ns01:publish/ns1:timeline/@projectId"/>
+            <to variable="outputVariable" part="payload" query="/ns01:response/ns01:complete/ns1:timeline/@projectId"/>
+          </copy>
+          <copy>
+            <from expression="concat(bpws:getVariableData('inputVariable','payload','/ns01:publish/ns1:timeline/@projectId'),'-',bpws:getVariableData('outputVariable','payload','/ns01:response/ns01:complete/ns1:timeline/ns1:typeCode'))"/>
+            <to variable="outputVariable" part="payload" query="/ns01:response/ns01:complete/ns1:timeline/@id"/>
+          </copy>
+          <copy>
+            <from expression="'Id'"/>
+            <to variable="ReadTrgIn" part="params" query="/ns2:ReadProjects/ns2:Field"/>
+          </copy>
+          <bpelx:insertAfter>
+            <bpelx:from><v2:Field xmlns:v2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2">WBSObjectId</v2:Field></bpelx:from>
+            <bpelx:to variable="ReadTrgIn" part="params" query="/ns2:ReadProjects/ns2:Field"/>
+          </bpelx:insertAfter>
+          <copy>
+            <from expression="concat(&quot;Id='&quot;,bpws:getVariableData('outputVariable','payload','/ns01:response/ns01:complete/ns1:timeline/@id'),&quot;'&quot;)"/>
+            <to variable="ReadTrgIn" part="params" query="/ns2:ReadProjects/ns2:Filter"/>
+          </copy>
+        </assign>
+        <invoke name="ReadTrg" bpelx:invokeAsDetail="no" inputVariable="ReadTrgIn" outputVariable="ReadTrgOut"
+                partnerLink="ProjectService" portType="ns2:ProjectPortType" operation="ReadProjects"/>
+      </sequence>
+    </flow>
+    <switch name="ifAPR">
+      <case condition="bpws:getVariableData('inputVariable','payload','/ns01:publish/ns1:timeline/ns1:typeCode')='APR'">
+        <bpelx:annotation>
+          <bpelx:general>
+            <bpelx:property name="userLabel">
+              <![CDATA[APR-empty]]>
+            </bpelx:property>
+          </bpelx:general>
+        </bpelx:annotation>
+        <empty name="Empty-Dont-Create-Baseline"/>
+      </case>
+      <otherwise>
+        <sequence name="SequenceIfRAW">
+          <scope name="ScopeAdjustActivitiesRaw" variableAccessSerializable="no">
+            <variables>
+              <variable name="AdjustActivitiesRawIn" messageType="client:AdjustActivitiesRequestMessage"/>
+              <variable name="AdjustActivitiesRawOut" messageType="client:AdjustActivitiesResponseMessage"/>
+            </variables>
+            <sequence name="SequenceAdjustActivitiesRaw">
+              <assign name="AssignAdjustActivitiesRaw">
+                <copy>
+                  <from variable="ReadSrcOut" part="result" query="/ns2:ReadProjectsResponse/ns2:Project/ns2:Id"/>
+                  <to variable="AdjustActivitiesRawIn" part="payload" query="/ns1:id"/>
+                </copy>
+              </assign>
+              <invoke name="AdjustActivitiesRawIn" bpelx:invokeAsDetail="no" inputVariable="AdjustActivitiesRawIn"
+                      partnerLink="AdjustActivities.AdjustActivitiesService" portType="client:AdjustActivities"
+                      operation="process"/>
+              <receive name="AdjustActivitiesRawOut" createInstance="no" variable="AdjustActivitiesRawOut"
+                       partnerLink="AdjustActivities.AdjustActivitiesService" portType="client:AdjustActivitiesCallback"
+                       operation="callback"/>
+              <sequence name="ErrorAdjustActivitiesRAW-SKIP"
+                        bpelx:skipCondition="bpws:getVariableData('AdjustActivitiesRawOut','payload','/ns1:id')!=''">
+                <throw name="ErrorAdjustActivities" faultName="bpws:invalidReply"/>
+              </sequence>
+            </sequence>
+          </scope>
+          <assign name="AssignBaselineInRaw">
+            <copy>
+              <from variable="ReadSrcOut" part="result" query="/ns2:ReadProjectsResponse/ns2:Project/ns2:ObjectId"/>
+              <to variable="BaselineRawin" part="params" query="/ns2:CopyProjectAsBaseline/ns2:ObjectId"/>
+            </copy>
+          </assign>
+          <invoke name="BaselineRaw" bpelx:invokeAsDetail="no" inputVariable="BaselineRawin"
+                  outputVariable="BaselineRawOut" partnerLink="ProjectService" portType="ns2:ProjectPortType"
+                  operation="CopyProjectAsBaseline"/>
+          <scope name="UpdateRawBaseline">
+            <variables>
+              <variable name="UpdateRawBaselineIn" messageType="ns14:UpdateBaselineProjects"/>
+              <variable name="UpdateRawBaselineOut" messageType="ns14:UpdateBaselineProjectsResponse"/>
+            </variables>
+            <sequence name="SKIP_UpdateRawBaseline"
+                      bpelx:skipCondition="bpws:getVariableData('inputVariable','payload','/client:publish/ns1:timeline/ns1:baselineOldTypeObjectId')='' or bpws:getVariableData('BaselineRawOut','result','/ns2:CopyProjectAsBaselineResponse/ns2:ObjectId')=''">
+              <assign name="AssignUpdateRawBaseline">
+                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                  <from variable="inputVariable" part="payload"
+                        query="/client:publish/ns1:timeline/ns1:baselineOldTypeObjectId"/>
+                  <to variable="UpdateRawBaselineIn" part="params"
+                      query="/ns14:UpdateBaselineProjects/ns14:BaselineProject/ns14:BaselineTypeObjectId"/>
+                </copy>
+                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                  <from variable="BaselineRawOut" part="result"
+                        query="/ns2:CopyProjectAsBaselineResponse/ns2:ObjectId"/>
+                  <to variable="UpdateRawBaselineIn" part="params"
+                      query="/ns14:UpdateBaselineProjects/ns14:BaselineProject/ns14:ObjectId"/>
+                </copy>
+              </assign>
+              <invoke name="UpdateRawBaseline" inputVariable="UpdateRawBaselineIn" outputVariable="UpdateRawBaselineOut"
+                      partnerLink="BaselineProjectService" portType="ns14:BaselineProjectPortType"
+                      operation="UpdateBaselineProjects"/>
+            </sequence>
+          </scope>
+          <sequence name="UpdateSource"
+                    bpelx:skipCondition="bpws:getVariableData('ReadSrcOut','result','/ns2:ReadProjectsResponse/ns2:Project/ns2:ObjectId')=''">
+            <assign name="AssignUpdateSrc">
+              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                <from variable="inputVariable" part="payload" query="/client:publish/ns1:timeline/ns1:comments"/>
+                <to variable="UpdateSrcIn" part="params" query="/ns2:UpdateProjects/ns2:Project/ns2:Description"/>
+              </copy>
+              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                <from variable="ReadSrcOut" part="result" query="/ns2:ReadProjectsResponse/ns2:Project/ns2:ObjectId"/>
+                <to variable="UpdateSrcIn" part="params" query="/ns2:UpdateProjects/ns2:Project/ns2:ObjectId"/>
+              </copy>
+            </assign>
+            <invoke name="UpdateSrc" inputVariable="UpdateSrcIn" outputVariable="UpdateSrcOut"
+                    partnerLink="ProjectService" portType="ns2:ProjectPortType" operation="UpdateProjects"/>
+          </sequence>
+        </sequence>
+      </otherwise>
+    </switch>
+    <sequence name="UpdateLtcInstanceId"
+              bpelx:skipCondition="empty(bpws:getVariableData('inputVariable','payload','/client:publish/ns1:timeline/ns1:ltcId'))">
+      <scope name="UpdateLtcInstanceId">
+        <variables>
+          <variable name="DeleteLtcIdUDFIn" messageType="ns4:DeleteUDFValues"/>
+          <variable name="DeleteLtcIdUDFOut" messageType="ns4:DeleteUDFValuesResponse"/>
+          <variable name="CreateLtcIdUDFIn" messageType="ns4:CreateUDFValues"/>
+          <variable name="CreateLtcIdUDFOut" messageType="ns4:CreateUDFValuesResponse"/>
+        </variables>
+        <sequence name="UpdateLtcInstanceId">
+          <assign name="AssignDeleteLtcUDF">
+            <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+              <from bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="ReadCfgOut" part="payload"
+                    query="/client:config/client:baseline/client:ltcIdTypeId"/>
+              <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="DeleteLtcIdUDFIn"
+                  part="params" query="/ns4:DeleteUDFValues/ns4:ObjectId/ns4:UDFTypeObjectId"/>
+            </copy>
+            <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+              <from bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="ReadSrcOut" part="result"
+                    query="/ns2:ReadProjectsResponse/ns2:Project/ns2:ObjectId"/>
+              <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="DeleteLtcIdUDFIn"
+                  part="params" query="/ns4:DeleteUDFValues/ns4:ObjectId/ns4:ForeignObjectId"/>
+            </copy>
+          </assign>
+          <invoke name="DeleteLtcIdUDF" partnerLink="UDFValueService" inputVariable="DeleteLtcIdUDFIn"
+                  outputVariable="DeleteLtcIdUDFOut" portType="ns4:UDFValuePortType" operation="DeleteUDFValues"/>
+          <assign name="AssignCreateLtcUDF">
+            <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+              <from bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="inputVariable"
+                    part="payload" query="/client:publish/ns1:timeline/ns1:ltcId"/>
+              <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="CreateLtcIdUDFIn"
+                  part="params" query="/ns4:CreateUDFValues/ns4:UDFValue/ns4:Text"/>
+            </copy>
+            <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+              <from bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="ReadCfgOut" part="payload"
+                    query="/client:config/client:baseline/client:ltcIdTypeId"/>
+              <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="CreateLtcIdUDFIn"
+                  part="params" query="/ns4:CreateUDFValues/ns4:UDFValue/ns4:UDFTypeObjectId"/>
+            </copy>
+            <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+              <from bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="ReadSrcOut" part="result"
+                    query="/ns2:ReadProjectsResponse/ns2:Project/ns2:ObjectId"/>
+              <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="CreateLtcIdUDFIn"
+                  part="params" query="/ns4:CreateUDFValues/ns4:UDFValue/ns4:ForeignObjectId"/>
+            </copy>
+          </assign>
+          <invoke name="CreateLtcIdUDF" partnerLink="UDFValueService" inputVariable="CreateLtcIdUDFIn"
+                  outputVariable="CreateLtcIdUDFOut" portType="ns4:UDFValuePortType" operation="CreateUDFValues"/>
+        </sequence>
+      </scope>
+    </sequence>
+    <switch name="SwitchUpdateOrCopy">
+      <case condition="ora:countNodes('ReadTrgOut','result','/ns2:ReadProjectsResponse/ns2:Project') > 0">
+        <bpelx:annotation>
+          <bpelx:general>
+            <bpelx:property name="userLabel">AlreadyExists</bpelx:property>
+          </bpelx:general>
+        </bpelx:annotation>
+        <sequence name="Update">
+          <empty name="AlreadyExists"/>
+          <bpelx:dehydrate name="DehydrateItWillBeLongRunning"/>
+          <assign name="AssignBaselineIn">
+            <copy>
+              <from variable="ReadTrgOut" part="result" query="/ns2:ReadProjectsResponse/ns2:Project/ns2:ObjectId"/>
+              <to variable="BaselineIn" part="params" query="/ns2:CopyProjectAsBaseline/ns2:ObjectId"/>
+            </copy>
+          </assign>
+          <invoke name="Baseline" bpelx:invokeAsDetail="no" inputVariable="BaselineIn" outputVariable="BaselineOut"
+                  partnerLink="ProjectService" portType="ns2:ProjectPortType" operation="CopyProjectAsBaseline"/>
+          <scope name="UpdateXBaseline">
+            <variables>
+              <variable name="UpdateXBaselineIn" messageType="ns14:UpdateBaselineProjects"/>
+              <variable name="UpdateXBaselineOut" messageType="ns14:UpdateBaselineProjectsResponse"/>
+            </variables>
+            <sequence name="SKIP-UpdateXBaseline"
+                      bpelx:skipCondition="bpws:getVariableData('inputVariable','payload','/client:publish/ns1:timeline/ns1:baselineOldTargetTypeObjectId')='' or bpws:getVariableData('BaselineOut','result','/ns2:CopyProjectAsBaselineResponse/ns2:ObjectId')=''">
+              <assign name="AssignUpdateXBaseline">
+                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                  <from variable="inputVariable" part="payload"
+                        query="/client:publish/ns1:timeline/ns1:baselineOldTargetTypeObjectId"/>
+                  <to variable="UpdateXBaselineIn" part="params"
+                      query="/ns14:UpdateBaselineProjects/ns14:BaselineProject/ns14:BaselineTypeObjectId"/>
+                </copy>
+                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                  <from variable="BaselineOut" part="result" query="/ns2:CopyProjectAsBaselineResponse/ns2:ObjectId"/>
+                  <to variable="UpdateXBaselineIn" part="params"
+                      query="/ns14:UpdateBaselineProjects/ns14:BaselineProject/ns14:ObjectId"/>
+                </copy>
+              </assign>
+              <invoke name="UpdateXBaseline" inputVariable="UpdateXBaselineIn" outputVariable="UpdateXBaselineOut"
+                      partnerLink="BaselineProjectService" portType="ns14:BaselineProjectPortType"
+                      operation="UpdateBaselineProjects"/>
+            </sequence>
+          </scope>
+          <assign name="AssignExportIn">
+            <copy>
+              <from><v2:BusinessObjectOptions xmlns:v2="http://xmlns.oracle.com/Primavera/P6/WS/WSExport/V2">
+            <v2:Activity>
+               <v2:Include>true</v2:Include>
+			<v2:Field>Id</v2:Field>
+			<v2:Field>Name</v2:Field>
+			<v2:Field>WBSObjectId</v2:Field>
+			<v2:Field>WBSCode</v2:Field>
+			<v2:Field>PlannedStartDate</v2:Field>
+			<v2:Field>PlannedFinishDate</v2:Field>
+			<v2:Field>ActualStartDate</v2:Field>
+			<v2:Field>ActualFinishDate</v2:Field>
+			<v2:Field>Type</v2:Field>
+			<v2:Field>PrimaryConstraintDate</v2:Field>
+			<v2:Field>PrimaryConstraintType</v2:Field>
+			<v2:Field>SecondaryConstraintDate</v2:Field>
+			<v2:Field>SecondaryConstraintType</v2:Field>         
+            </v2:Activity>
+            <v2:ActivityCode>
+               <v2:Include>true</v2:Include>
+			<v2:Field>ObjectId</v2:Field>
+            </v2:ActivityCode>
+            <v2:ActivityCodeType>
+               <v2:Include>true</v2:Include>
+			<v2:Field>ObjectId</v2:Field>
+            </v2:ActivityCodeType>
+            <v2:Calendar>
+               <v2:Include>false</v2:Include>
+			<v2:Field>ObjectId</v2:Field>
+            </v2:Calendar>
+            <v2:Document>
+               <v2:Include>false</v2:Include>
+			<v2:Field>ObjectId</v2:Field>
+            </v2:Document>
+            <v2:EPS>
+               <v2:Include>false</v2:Include>
+			<v2:Field>ObjectId</v2:Field>
+            </v2:EPS>
+            <v2:OBS>
+               <v2:Include>true</v2:Include>
+			<v2:Field>ObjectId</v2:Field>
+			<v2:Field>Description</v2:Field>
+            </v2:OBS>
+            <v2:Project>
+               <v2:Include>true</v2:Include>
+               <v2:Field>Id</v2:Field>
+               <v2:Field>Name</v2:Field>
+               <v2:Field>StartDate</v2:Field>
+               <v2:Field>FinishDate</v2:Field>
+            </v2:Project>
+            <v2:ProjectCode>
+               <v2:Include>true</v2:Include>
+			<v2:Field>ObjectId</v2:Field>
+            </v2:ProjectCode>
+            <v2:ProjectCodeType>
+               <v2:Include>true</v2:Include>
+			<v2:Field>ObjectId</v2:Field>
+            </v2:ProjectCodeType>
+            <v2:Relationship>
+               <v2:Include>true</v2:Include>
+				<v2:Field>IsPredecessorBaseline</v2:Field>
+				<v2:Field>IsSuccessorBaseline</v2:Field>
+				<v2:Field>Lag</v2:Field>
+				<v2:Field>PredecessorActivityObjectId</v2:Field>
+				<v2:Field>PredecessorProjectObjectId</v2:Field>
+				<v2:Field>SuccessorActivityObjectId</v2:Field>
+				<v2:Field>SuccessorProjectObjectId</v2:Field>
+				<v2:Field>Type</v2:Field>
+            </v2:Relationship>
+            <v2:Resource>
+               <v2:Include>false</v2:Include>
+			<v2:Field>ObjectId</v2:Field>
+            </v2:Resource>
+            <v2:ResourceAssignment>
+               <v2:Include>true</v2:Include>
+			<v2:Field>ActivityId</v2:Field>
+			<v2:Field>RoleId</v2:Field>
+                        <v2:Field>PlannedStartDate</v2:Field>
+                        <v2:Field>PlannedFinishDate</v2:Field>
+            </v2:ResourceAssignment>
+            <v2:Risk>
+               <v2:Include>false</v2:Include>
+			<v2:Field>ObjectId</v2:Field>
+            </v2:Risk>
+            <v2:Role>
+               <v2:Include>true</v2:Include>
+			<v2:Field>ObjectId</v2:Field>
+            </v2:Role>
+            <v2:RoleRate>
+               <v2:Include>false</v2:Include>
+			<v2:Field>ObjectId</v2:Field>
+            </v2:RoleRate>
+            <v2:UDFType>
+               <v2:Include>true</v2:Include>
+			<v2:Field>ObjectId</v2:Field>
+            </v2:UDFType>
+            <v2:UDFValue>
+               <v2:Include>true</v2:Include>
+            </v2:UDFValue>
+            <v2:WBS>
+               <v2:Include>true</v2:Include>
+               <v2:Field>ParentObjectId</v2:Field>
+               <v2:Field>Code</v2:Field>
+               <v2:Field>Name</v2:Field>
+               <v2:Field>StartDate</v2:Field>
+               <v2:Field>FinishDate</v2:Field>
+               <v2:Field>SequenceNumber</v2:Field>
+            </v2:WBS>
+         </v2:BusinessObjectOptions></from>
+              <to variable="ExportSrcIn" part="params" query="/ns6:ExportProject/ns6:BusinessObjectOptions"/>
+            </copy>
+            <copy>
+              <from expression="'UTF-8'"/>
+              <to variable="ExportSrcIn" part="params" query="/ns6:ExportProject/ns6:Encoding"/>
+            </copy>
+            <copy>
+              <from variable="ReadSrcOut" part="result" query="/ns2:ReadProjectsResponse/ns2:Project/ns2:ObjectId"/>
+              <to variable="ExportSrcIn" part="params" query="/ns6:ExportProject/ns6:ProjectObjectId"/>
+            </copy>
+          </assign>
+          <invoke name="ExportSrc" bpelx:invokeAsDetail="no" inputVariable="ExportSrcIn" outputVariable="ExportSrcOut"
+                  partnerLink="ExportService" portType="ns6:ExportPortType" operation="ExportProject"/>
+          <bpelx:dehydrate name="DehydrateAfterExport"/>
+          <flow name="FlowWBS-UDF">
+            <sequence name="Wbs">
+              <assign name="AssignReadTrgWbs">
+                <copy>
+                  <from expression="'ObjectId'"/>
+                  <to variable="ReadTrgWbsIn" part="params" query="/ns10:ReadWBS/ns10:Field"/>
+                </copy>
+                <copy>
+                  <from expression="concat(&quot;ParentObjectId=&quot;,bpws:getVariableData('ReadTrgOut','result','/ns2:ReadProjectsResponse/ns2:Project/ns2:WBSObjectId'))"/>
+                  <to variable="ReadTrgWbsIn" part="params" query="/ns10:ReadWBS/ns10:Filter"/>
+                </copy>
+                <copy>
+                  <from expression="'ObjectId'"/>
+                  <to variable="ReadTrgActin" part="params" query="/ns9:ReadActivities/ns9:Field"/>
+                </copy>
+                <copy>
+                  <from expression="concat(&quot;WBSObjectId=&quot;,bpws:getVariableData('ReadTrgOut','result','/ns2:ReadProjectsResponse/ns2:Project/ns2:WBSObjectId'))"/>
+                  <to variable="ReadTrgActin" part="params" query="/ns9:ReadActivities/ns9:Filter"/>
+                </copy>
+              </assign>
+              <flow name="FlowWBSActivity">
+                <sequence name="Wbs">
+                  <invoke name="ReadTrgWbs" bpelx:invokeAsDetail="no" inputVariable="ReadTrgWbsIn"
+                          outputVariable="ReadTrgWbsOut" partnerLink="WBSService" portType="ns10:WBSPortType"
+                          operation="ReadWBS"/>
+                  <assign name="AssignDeleteTrgWbs">
+                    <bpelx:annotation>
+                      <bpelx:pattern>transformation</bpelx:pattern>
+                    </bpelx:annotation>
+                    <copy>
+                      <from expression="ora:doXSLTransformForDoc('xsl/PublishTimelineDeleteWbs.xsl', $ReadTrgWbsOut.result)"/>
+                      <to variable="DeleteTrgWbsIn" part="params"/>
+                    </copy>
+                  </assign>
+                  <invoke name="DeleteTrgWbs" bpelx:invokeAsDetail="no" inputVariable="DeleteTrgWbsIn"
+                          outputVariable="DeleteTrgWbsOut" partnerLink="WBSService" portType="ns10:WBSPortType"
+                          operation="DeleteWBS"/>
+                </sequence>
+                <sequence name="Activity">
+                  <invoke name="ReadTrgAct" bpelx:invokeAsDetail="no" inputVariable="ReadTrgActin"
+                          outputVariable="ReadTrgActOut" partnerLink="ActivityService" portType="ns9:ActivityPortType"
+                          operation="ReadActivities"/>
+                  <assign name="AssignDeleteTrgAct">
+                    <bpelx:annotation>
+                      <bpelx:pattern>transformation</bpelx:pattern>
+                    </bpelx:annotation>
+                    <copy>
+                      <from expression="ora:doXSLTransformForDoc('xsl/PublishTimelineDeleteAct.xsl', $ReadTrgActOut.result)"/>
+                      <to variable="DeleteTrgActIn" part="params"/>
+                    </copy>
+                  </assign>
+                  <invoke name="DeleteTrgAct" bpelx:invokeAsDetail="no" inputVariable="DeleteTrgActIn"
+                          outputVariable="DeleteTrgActOut" partnerLink="ActivityService" portType="ns9:ActivityPortType"
+                          operation="DeleteActivities"/>
+                </sequence>
+              </flow>
+            </sequence>
+            <sequence name="UDF">
+              <assign name="AssignDeleteUDFIn">
+                <copy>
+                  <from variable="ReadTrgOut" part="result" query="/ns2:ReadProjectsResponse/ns2:Project/ns2:ObjectId"/>
+                  <to variable="DeleteUDFIn" part="params"
+                      query="/ns4:DeleteUDFValues/ns4:ObjectId/ns4:ForeignObjectId"/>
+                </copy>
+                <copy>
+                  <from variable="ReadCfgOut" part="payload" query="/ns01:config/ns01:project/ns01:codeTypeId"/>
+                  <to variable="DeleteUDFIn" part="params"
+                      query="/ns4:DeleteUDFValues/ns4:ObjectId/ns4:UDFTypeObjectId"/>
+                </copy>
+              </assign>
+              <invoke name="DeleteUDF" bpelx:invokeAsDetail="no" inputVariable="DeleteUDFIn"
+                      outputVariable="DeleteUDFOut" partnerLink="UDFValueService" portType="ns4:UDFValuePortType"
+                      operation="DeleteUDFValues"/>
+            </sequence>
+          </flow>
+          <bpelx:dehydrate name="DehydrateBeforeImport"/>
+          <assign name="AssignClose">
+            <copy>
+              <from variable="ReadTrgOut" part="result" query="/ns2:ReadProjectsResponse/ns2:Project/ns2:ObjectId"/>
+              <to variable="CloseTrgIn" part="payload" query="/ns8:close/ns8:id"/>
+            </copy>
+          </assign>
+          <invoke name="CloseTrg" inputVariable="CloseTrgIn" partnerLink="ProjectXService"
+                  portType="ns8:ProjectPortType" operation="close" bpelx:invokeAsDetail="no"
+                  outputVariable="CloseTrgOut"/>
+          <assign name="AssignImport">
+            <copy>
+              <from variable="ReadTrgOut" part="result" query="/ns2:ReadProjectsResponse/ns2:Project/ns2:ObjectId"/>
+              <to variable="ImportTrgIn" part="params" query="/ns7:UpdateExistingProject/ns7:ProjectObjectId"/>
+            </copy>
+            <copy>
+              <from variable="ExportSrcOut" part="result" query="/ns6:ExportProjectResponse/ns6:ProjectData"/>
+              <to variable="ImportTrgIn" part="params" query="/ns7:UpdateExistingProject/ns7:ProjectData"/>
+            </copy>
+            <copy>
+              <from expression="'XML'"/>
+              <to variable="ImportTrgIn" part="params" query="/ns7:UpdateExistingProject/ns7:FileType"/>
+            </copy>
+            <copy>
+              <from expression="false()"/>
+              <to variable="ImportTrgIn" part="params" query="/ns7:UpdateExistingProject/ns7:IgnoreSequenceNumber"/>
+            </copy>
+          </assign>
+          <invoke name="ImportTrg" inputVariable="ImportTrgIn" partnerLink="ImportService" portType="ns7:ImportPortType"
+                  operation="UpdateExistingProject" bpelx:invokeAsDetail="no" outputVariable="ImportTrgOut"/>
+          <assign name="AssignUpdateTrg" xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/">
+            <copy>
+              <from variable="outputVariable" part="payload" query="/ns01:response/ns01:complete/ns1:timeline/@id"/>
+              <to variable="UpdateTrgIn" part="params" query="/ns2:UpdateProjects/ns2:Project/ns2:Id"/>
+            </copy>
+            <copy>
+              <from variable="inputVariable" part="payload" query="/ns01:publish/ns1:timeline/ns1:comments"/>
+              <to variable="UpdateTrgIn" part="params" query="/ns2:UpdateProjects/ns2:Project/ns2:Description"/>
+            </copy>
+            <copy>
+              <from expression="'true'"/>
+              <to variable="UpdateTrgIn" part="params" query="/ns2:UpdateProjects/ns2:Project/ns2:EnableSummarization"/>
+            </copy>
+            <copy>
+              <from expression="20"/>
+              <to variable="UpdateTrgIn" part="params" query="/ns2:UpdateProjects/ns2:Project/ns2:SummarizeToWBSLevel"/>
+            </copy>
+            <copy>
+              <from variable="ReadTrgOut" part="result" query="/ns2:ReadProjectsResponse/ns2:Project/ns2:ObjectId"/>
+              <to variable="UpdateTrgIn" part="params" query="/ns2:UpdateProjects/ns2:Project/ns2:ObjectId"/>
+            </copy>
+            <copy>
+              <from expression="bpws:getVariableData('ReadObsOut','result','/ns11:ReadOBSResponse/ns11:OBS/ns11:ObjectId')"/>
+              <to variable="UpdateTrgIn" part="params" query="/ns2:UpdateProjects/ns2:Project/ns2:OBSObjectId"/>
+            </copy>
+          </assign>
+        </sequence>
+      </case>
+      <otherwise>
+        <sequence name="Copy">
+          <empty name="New"/>
+          <assign name="AssignCopyIn">
+            <copy>
+              <from variable="ReadEpsOut" part="result" query="/ns3:ReadEPSResponse/ns3:EPS/ns3:ObjectId"/>
+              <to variable="CopyIn" part="params" query="/ns2:CopyProject/ns2:EPSObjectId"/>
+            </copy>
+            <copy>
+              <from variable="ReadSrcOut" part="result" query="/ns2:ReadProjectsResponse/ns2:Project/ns2:ObjectId"/>
+              <to variable="CopyIn" part="params" query="/ns2:CopyProject/ns2:ObjectId"/>
+            </copy>
+          </assign>
+          <invoke name="Copy" bpelx:invokeAsDetail="no" inputVariable="CopyIn" outputVariable="CopyOut"
+                  partnerLink="ProjectService" portType="ns2:ProjectPortType" operation="CopyProject"/>
+          <assign name="AssignUpdateTrg">
+            <copy>
+              <from variable="outputVariable" part="payload" query="/ns01:response/ns01:complete/ns1:timeline/@id"/>
+              <to variable="UpdateTrgIn" part="params" query="/ns2:UpdateProjects/ns2:Project/ns2:Id"/>
+            </copy>
+            <copy>
+              <from variable="inputVariable" part="payload" query="/ns01:publish/ns1:timeline/ns1:comments"/>
+              <to variable="UpdateTrgIn" part="params" query="/ns2:UpdateProjects/ns2:Project/ns2:Description"/>
+            </copy>
+            <copy>
+              <from expression="'true'"/>
+              <to variable="UpdateTrgIn" part="params" query="/ns2:UpdateProjects/ns2:Project/ns2:EnableSummarization"/>
+            </copy>
+            <copy>
+              <from expression="20"/>
+              <to variable="UpdateTrgIn" part="params" query="/ns2:UpdateProjects/ns2:Project/ns2:SummarizeToWBSLevel"/>
+            </copy>
+            <copy>
+              <from variable="CopyOut" part="result" query="/ns2:CopyProjectResponse/ns2:ObjectId"/>
+              <to variable="UpdateTrgIn" part="params" query="/ns2:UpdateProjects/ns2:Project/ns2:ObjectId"/>
+            </copy>
+            <copy>
+              <from expression="bpws:getVariableData('ReadObsOut','result','/ns11:ReadOBSResponse/ns11:OBS/ns11:ObjectId')"/>
+              <to variable="UpdateTrgIn" part="params" query="/ns2:UpdateProjects/ns2:Project/ns2:OBSObjectId"/>
+            </copy>
+          </assign>
+        </sequence>
+      </otherwise>
+    </switch>
+    <assign name="AssignUpdateTrg">
+      <copy>
+        <from bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="ReadSrcOut" part="result"
+              query="/ns2:ReadProjectsResponse/ns2:Project/ns2:Name"/>
+        <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="UpdateTrgIn" part="params"
+            query="/ns2:UpdateProjects/ns2:Project/ns2:Name"/>
+      </copy>
+      <copy>
+        <from bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="ReadSrcOut" part="result"
+              query="/ns2:ReadProjectsResponse/ns2:Project/ns2:ActivityDefaultCalendarName"/>
+        <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="UpdateTrgIn" part="params"
+            query="/ns2:UpdateProjects/ns2:Project/ns2:ActivityDefaultCalendarName"/>
+      </copy>
+      <copy>
+        <from bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="ReadSrcOut" part="result"
+              query="/ns2:ReadProjectsResponse/ns2:Project/ns2:ActivityDefaultCalendarObjectId"/>
+        <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="UpdateTrgIn" part="params"
+            query="/ns2:UpdateProjects/ns2:Project/ns2:ActivityDefaultCalendarObjectId"/>
+      </copy>
+    </assign>
+    <invoke name="UpdateTrg" bpelx:invokeAsDetail="no" inputVariable="UpdateTrgIn" outputVariable="UpdateTrgOut"
+            partnerLink="ProjectService" portType="ns2:ProjectPortType" operation="UpdateProjects"/>
+    <scope name="ScopeAdjustActivitiesTrg" variableAccessSerializable="no">
+      <variables>
+        <variable name="AdjustActivitiesTrgIn" messageType="client:AdjustActivitiesRequestMessage"/>
+        <variable name="AdjustActivitiesTrgOut" messageType="client:AdjustActivitiesResponseMessage"/>
+      </variables>
+      <sequence name="SequenceAdjustActivitiesTrg">
+        <assign name="AssignAdjustActivitiesTrg">
+          <copy>
+            <from variable="outputVariable" part="payload" query="/ns01:response/ns01:complete/ns1:timeline/@id"/>
+            <to variable="AdjustActivitiesTrgIn" part="payload" query="/ns1:id"/>
+          </copy>
+        </assign>
+        <invoke name="AdjustActivitiesTrgIn" bpelx:invokeAsDetail="no" inputVariable="AdjustActivitiesTrgIn"
+                partnerLink="AdjustActivities.AdjustActivitiesService" portType="client:AdjustActivities"
+                operation="process"/>
+        <receive name="AdjustActivitiesTrgOut" createInstance="no" variable="AdjustActivitiesTrgOut"
+                 partnerLink="AdjustActivities.AdjustActivitiesService" portType="client:AdjustActivitiesCallback"
+                 operation="callback"/>
+        <sequence name="ErrorAdjustActivitiesTrg-SKIP"
+                  bpelx:skipCondition="bpws:getVariableData('AdjustActivitiesTrgOut','payload','/ns1:id')!=''">
+          <throw name="ErrorAdjustActivities" faultName="bpws:invalidReply"/>
+        </sequence>
+      </sequence>
+    </scope>
+    <sequence name="ReadTarget">
+      <assign name="AssignReadTrgIn">
+        <copy>
+          <from expression="concat('ObjectId=',bpws:getVariableData('UpdateTrgIn','params','/ns2:UpdateProjects/ns2:Project/ns2:ObjectId'))"/>
+          <to variable="ReadTrgFinalIn" part="params" query="/ns2:ReadProjects/ns2:Filter"/>
+        </copy>
+        <copy>
+          <from><v2:Field xmlns:v2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2">Name</v2:Field></from>
+          <to variable="ReadTrgFinalIn" part="params" query="/ns2:ReadProjects/ns2:Field"/>
+        </copy>
+        <bpelx:insertAfter>
+          <bpelx:from><v2:Field xmlns:v2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2">Id</v2:Field></bpelx:from>
+          <bpelx:to variable="ReadTrgFinalIn" part="params" query="/ns2:ReadProjects/ns2:Field"/>
+        </bpelx:insertAfter>
+        <bpelx:insertAfter>
+          <bpelx:from><v2:Field xmlns:v2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2">Description</v2:Field></bpelx:from>
+          <bpelx:to variable="ReadTrgFinalIn" part="params" query="/ns2:ReadProjects/ns2:Field"/>
+        </bpelx:insertAfter>
+        <bpelx:insertAfter>
+          <bpelx:from><v2:Field xmlns:v2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2">WBSObjectId</v2:Field></bpelx:from>
+          <bpelx:to variable="ReadTrgFinalIn" part="params" query="/ns2:ReadProjects/ns2:Field"/>
+        </bpelx:insertAfter>
+        <bpelx:insertAfter>
+          <bpelx:from><v2:Field xmlns:v2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2">StartDate</v2:Field></bpelx:from>
+          <bpelx:to variable="ReadTrgFinalIn" part="params" query="/ns2:ReadProjects/ns2:Field"/>
+        </bpelx:insertAfter>
+        <bpelx:insertAfter>
+          <bpelx:from><v2:Field xmlns:v2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2">FinishDate</v2:Field></bpelx:from>
+          <bpelx:to variable="ReadTrgFinalIn" part="params" query="/ns2:ReadProjects/ns2:Field"/>
+        </bpelx:insertAfter>
+      </assign>
+      <invoke name="ReadTrg" inputVariable="ReadTrgFinalIn" outputVariable="ReadTrgFinalOut"
+              partnerLink="ProjectService" portType="ns2:ProjectPortType" operation="ReadProjects"
+              bpelx:invokeAsDetail="no"/>
+    </sequence>
+    <assign name="AssignOut">
+      <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+        <from variable="inputVariable" part="payload" query="/client:publish/@id"/>
+        <to variable="outputVariable" part="payload" query="/client:response/@id"/>
+      </copy>
+      <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+        <from variable="inputVariable" part="payload" query="/client:publish/@id"/>
+        <to variable="outputVariable" part="payload" query="/client:response/client:complete/@id"/>
+      </copy>
+      <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+        <from expression="'publish'"/>
+        <to variable="outputVariable" part="payload" query="/client:response/client:complete/@stageId"/>
+      </copy>
+      <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+        <from variable="ReadTrgFinalOut" part="result" query="/ns2:ReadProjectsResponse/ns2:Project[1]/ns2:Id"/>
+        <to variable="outputVariable" part="payload" query="/ns01:response/ns01:complete/ns1:timeline/@id"/>
+      </copy>
+      <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+        <from variable="inputVariable" part="payload" query="/ns01:publish/ns1:timeline/@projectId"/>
+        <to variable="outputVariable" part="payload" query="/ns01:response/ns01:complete/ns1:timeline/@projectId"/>
+      </copy>
+      <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+        <from variable="inputVariable" part="payload" query="/ns01:publish/ns1:timeline/@programId"/>
+        <to variable="outputVariable" part="payload" query="/ns01:response/ns01:complete/ns1:timeline/@programId"/>
+      </copy>
+      <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+        <from variable="ReadTrgFinalOut" part="result"
+              query="/ns2:ReadProjectsResponse/ns2:Project[1]/ns2:WBSObjectId"/>
+        <to variable="outputVariable" part="payload" query="/ns01:response/ns01:complete/ns1:timeline/@referenceId"/>
+      </copy>
+      <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+        <from variable="ReadTrgFinalOut" part="result"
+              query="/ns2:ReadProjectsResponse/ns2:Project[1]/ns2:Description"/>
+        <to variable="outputVariable" part="payload" query="/ns01:response/ns01:complete/ns1:timeline/ns1:comments"/>
+      </copy>
+      <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+        <from variable="ReadTrgFinalOut" part="result" query="/ns2:ReadProjectsResponse/ns2:Project[1]/ns2:Name"/>
+        <to variable="outputVariable" part="payload" query="/ns01:response/ns01:complete/ns1:timeline/ns1:name"/>
+      </copy>
+      <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+        <from variable="ReadTrgFinalOut" part="result" query="/ns2:ReadProjectsResponse/ns2:Project[1]/ns2:StartDate"/>
+        <to variable="outputVariable" part="payload" query="/ns01:response/ns01:complete/ns1:timeline/ns1:startDate"/>
+      </copy>
+      <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+        <from variable="ReadTrgFinalOut" part="result" query="/ns2:ReadProjectsResponse/ns2:Project[1]/ns2:FinishDate"/>
+        <to variable="outputVariable" part="payload" query="/ns01:response/ns01:complete/ns1:timeline/ns1:finishDate"/>
+      </copy>
+      <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+        <from variable="inputVariable" part="payload" query="/client:publish/ns1:timeline/ns1:baselineTypeObjectId"/>
+        <to variable="outputVariable" part="payload"
+            query="/ns01:response/ns01:complete/ns1:timeline/ns1:baselineTypeObjectId"/>
+      </copy>
+      <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+        <from bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="inputVariable" part="payload"
+              query="/client:publish/ns1:timeline/ns1:ltcId"/>
+        <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="outputVariable" part="payload"
+            query="/client:response/client:complete/ns1:timeline/ns1:ltcId"/>
+      </copy>
+      <bpelx:remove>
+        <bpelx:target variable="outputVariable" part="payload" query="/ns01:response/ns1:error"/>
+      </bpelx:remove>
+    </assign>
+    <invoke name="callbackOutput" bpelx:invokeAsDetail="no" inputVariable="outputVariable"
+            partnerLink="PublishTimelineService" portType="client:PublishTimelineCallback" operation="callback"/>
+    <!-- Generate reply to synchronous request -->
+    <scope name="Summarize" variableAccessSerializable="no">
+      <variables>
+        <variable name="SummarizeIn" messageType="client:SummarizeTimelineRequestMessage"/>
+      </variables>
+      <faultHandlers>
+        <catchAll>
+          <empty name="CallAfterPublish"/>
+        </catchAll>
+      </faultHandlers>
+      <sequence name="Summarize">
+        <assign name="AssignSummarize">
+          <copy>
+            <from variable="inputVariable" part="payload" query="/client:publish/@id"/>
+            <to variable="SummarizeIn" part="payload" query="/client:summarize/@id"/>
+          </copy>
+          <copy>
+            <from expression="'true'"/>
+            <to variable="SummarizeIn" part="payload" query="/client:summarize/@bounded"/>
+          </copy>
+          <copy>
+            <from variable="inputVariable" part="payload" query="/client:publish/ns1:timeline"/>
+            <to variable="SummarizeIn" part="payload" query="/client:summarize/ns1:timeline"/>
+          </copy>
+        </assign>
+        <invoke name="Summarize" bpelx:invokeAsDetail="no" inputVariable="SummarizeIn"
+                partnerLink="SummarizeTimeline.SummarizeService" portType="client:SummarizeTimeline"
+                operation="continue"/>
+      </sequence>
+    </scope>
+  </sequence>
+</process>

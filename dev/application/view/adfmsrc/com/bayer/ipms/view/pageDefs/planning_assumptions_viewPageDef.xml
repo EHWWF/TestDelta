@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.64.93" id="planning_assumptions_viewPageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="Root.ProgramAppModule.PlanAssumptionRequestView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="25"
+              id="PlanAssumptionRequestViewIterator"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="PlanAssumptionRequestViewIterator" id="Name">
+      <AttrNames>
+        <Item Value="Name"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PlanAssumptionRequestViewIterator"
+                     id="ForecastNo">
+      <AttrNames>
+        <Item Value="ForecastNo"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PlanAssumptionRequestViewIterator"
+                     id="TerminationDate">
+      <AttrNames>
+        <Item Value="TerminationDate"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

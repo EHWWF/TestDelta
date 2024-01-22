@@ -1,0 +1,1 @@
+alter table latest_estimates_process drop (project_ids);

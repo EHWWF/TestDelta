@@ -1,0 +1,63 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<BC4JConfig version="11.1" xmlns="http://xmlns.oracle.com/bc4j/configuration">
+   <AppModuleConfigBag ApplicationName="com.bayer.ipms.model.services.SharedAppModule">
+      <AppModuleConfig oracle.adfm.useSharedTransactionForFrame="false" jbo.project="com.bayer.ipms.model.adfModel" ApplicationName="com.bayer.ipms.model.services.SharedAppModule" DeployPlatform="LOCAL" name="SharedAppModuleShared">
+         <AM-Pooling jbo.ampool.dynamicjdbccredentials="false" jbo.ampool.resetnontransactionalstate="false" jbo.ampool.minavailablesize="1" jbo.ampool.maxpoolsize="1" jbo.ampool.maxavailablesize="1" jbo.ampool.maxinactiveage="28800000" jbo.ampool.timetolive="-1" jbo.recyclethreshold="1" jbo.ampool.isuseexclusive="false" jbo.ampool.initpoolsize="1" jbo.ampool.monitorsleepinterval="28800000"/>
+         <Security AppModuleJndiName="com.bayer.ipms.model.services.SharedAppModule"/>
+         <Custom ns0:JDBCDataSource="jdbc/IPMSDataSource" ns0:jbo.ampool.issupportspassivation="false" xmlns:ns0="http://xmlns.oracle.com/bc4j/configuration"/>
+      </AppModuleConfig>
+   </AppModuleConfigBag>
+   <AppModuleConfigBag ApplicationName="com.bayer.ipms.model.services.PrivateAppModule">
+      <AppModuleConfig oracle.adfm.useSharedTransactionForFrame="false" jbo.project="com.bayer.ipms.model.adfModel" ApplicationName="com.bayer.ipms.model.services.PrivateAppModule" DeployPlatform="LOCAL" name="PrivateAppModuleLocal" >
+         <AM-Pooling jbo.ampool.dynamicjdbccredentials="false" jbo.ampool.minavailablesize="10" jbo.ampool.maxpoolsize="100" jbo.ampool.maxavailablesize="100" jbo.ampool.maxinactiveage="28800000" jbo.recyclethreshold="100" jbo.ampool.initpoolsize="10" jbo.ampool.monitorsleepinterval="28800000"/>
+         <Security AppModuleJndiName="com.bayer.ipms.model.services.PrivateAppModule"/>
+         <Custom ns0:JDBCDataSource="jdbc/IPMSDataSource" ns0:ns0="http://xmlns.oracle.com/bc4j/configuration" xmlns:ns0="http://xmlns.oracle.com/bc4j/configuration"/>
+      </AppModuleConfig>
+   </AppModuleConfigBag>
+   <AppModuleConfigBag ApplicationName="com.bayer.ipms.model.services.ProgramAppModule" >
+      <AppModuleConfig oracle.adfm.useSharedTransactionForFrame="false" name="ProgramAppModuleLocal" jbo.project="com.bayer.ipms.model.adfModel" ApplicationName="com.bayer.ipms.model.services.ProgramAppModule" DeployPlatform="LOCAL">
+         <Database jbo.TypeMapEntries="Java"/>
+         <Security AppModuleJndiName="com.bayer.ipms.model.services.ProgramAppModule"/>
+         <Custom ns0:JDBCDataSource="java:comp/env/jdbc/IPMSDatabaseDS" xmlns:ns0="http://xmlns.oracle.com/bc4j/configuration"/>
+      </AppModuleConfig>
+      <AppModuleConfig name="ProgramAppModuleShared" jbo.project="com.bayer.ipms.model.adfModel" ApplicationName="com.bayer.ipms.model.services.ProgramAppModule" DeployPlatform="LOCAL">
+         <AM-Pooling jbo.ampool.maxpoolsize="1" jbo.ampool.isuseexclusive="false"/>
+         <Database jbo.TypeMapEntries="Java"/>
+         <Security AppModuleJndiName="com.bayer.ipms.model.services.ProgramAppModule"/>
+         <Custom ns0:JDBCDataSource="java:comp/env/jdbc/IPMSDatabaseDS" xmlns:ns0="http://xmlns.oracle.com/bc4j/configuration"/>
+      </AppModuleConfig>
+   </AppModuleConfigBag>
+   <AppModuleConfigBag ApplicationName="com.bayer.ipms.model.services.ManagementAppModule">
+      <AppModuleConfig oracle.adfm.useSharedTransactionForFrame="false" name="ManagementAppModuleLocal" jbo.project="com.bayer.ipms.model.adfModel" ApplicationName="com.bayer.ipms.model.services.ManagementAppModule" DeployPlatform="LOCAL">
+         <Database jbo.TypeMapEntries="Java"/>
+         <Security AppModuleJndiName="com.bayer.ipms.model.services.ManagementAppModule"/>
+         <Custom ns0:JDBCDataSource="java:comp/env/jdbc/IPMSDatabaseDS" xmlns:ns0="http://xmlns.oracle.com/bc4j/configuration"/>
+      </AppModuleConfig>
+      <AppModuleConfig name="ManagementAppModuleShared" jbo.project="com.bayer.ipms.model.adfModel" ApplicationName="com.bayer.ipms.model.services.ManagementAppModule" DeployPlatform="LOCAL">
+         <AM-Pooling jbo.ampool.maxpoolsize="1" jbo.ampool.isuseexclusive="false"/>
+         <Database jbo.TypeMapEntries="Java"/>
+         <Security AppModuleJndiName="com.bayer.ipms.model.services.ManagementAppModule"/>
+         <Custom ns0:JDBCDataSource="java:comp/env/jdbc/IPMSDatabaseDS" xmlns:ns0="http://xmlns.oracle.com/bc4j/configuration"/>
+      </AppModuleConfig>
+   </AppModuleConfigBag>
+   <AppModuleConfigBag ApplicationName="com.bayer.ipms.model.services.EstimatesAppModule"/>
+   <AppModuleConfigBag ApplicationName="com.bayer.ipms.model.services.ImportAppModule">
+      <AppModuleConfig oracle.adfm.useSharedTransactionForFrame="false" jbo.project="com.bayer.ipms.model.adfModel" ApplicationName="com.bayer.ipms.model.services.ImportAppModule" DeployPlatform="LOCAL" name="ImportAppModule">
+         <AM-Pooling jbo.ampool.dynamicjdbccredentials="false" jbo.ampool.minavailablesize="1" jbo.ampool.maxpoolsize="20" jbo.ampool.maxavailablesize="20" jbo.ampool.maxinactiveage="300000" jbo.recyclethreshold="20" jbo.ampool.initpoolsize="1" jbo.ampool.monitorsleepinterval="300000"/>
+         <Database jbo.TypeMapEntries="Java"/>
+         <Security AppModuleJndiName="com.bayer.ipms.model.services.ImportAppModule"/>
+         <Custom ns0:JDBCDataSource="jdbc/IPMSDataSource" ns0:ns0="http://xmlns.oracle.com/bc4j/configuration" xmlns:ns0="http://xmlns.oracle.com/bc4j/configuration"/>
+      </AppModuleConfig>
+   </AppModuleConfigBag>
+   <AppModuleConfigBag ApplicationName="com.bayer.ipms.model.services.ReportAppModule"/>
+   <AppModuleConfigBag ApplicationName="com.bayer.ipms.model.services.WorkspaceAppModule"/>
+   <AppModuleConfigBag ApplicationName="com.bayer.ipms.model.services.PrivateAppModule2">
+      <AppModuleConfig oracle.adfm.useSharedTransactionForFrame="false" jbo.project="com.bayer.ipms.model.adfModel" ApplicationName="com.bayer.ipms.model.services.PrivateAppModule2" DeployPlatform="LOCAL" name="PrivateAppModule2Local">
+         <AM-Pooling jbo.ampool.dynamicjdbccredentials="false" jbo.ampool.minavailablesize="1" jbo.ampool.maxpoolsize="20" jbo.ampool.maxavailablesize="20" jbo.ampool.maxinactiveage="28800000" jbo.recyclethreshold="20" jbo.ampool.initpoolsize="1" jbo.ampool.monitorsleepinterval="28800000"/>
+         <Database jbo.TypeMapEntries="Java"/>
+         <Security AppModuleJndiName="com.bayer.ipms.model.services.PrivateAppModule2"/>
+         <Custom ns0:JDBCDataSource="jdbc/IPMSDataSource" ns0:ns0="http://xmlns.oracle.com/bc4j/configuration" xmlns:ns0="http://xmlns.oracle.com/bc4j/configuration"/>
+      </AppModuleConfig>
+   </AppModuleConfigBag>
+   <AppModuleConfigBag ApplicationName="com.bayer.ipms.model.services.LtcAppModule"/>
+</BC4JConfig>

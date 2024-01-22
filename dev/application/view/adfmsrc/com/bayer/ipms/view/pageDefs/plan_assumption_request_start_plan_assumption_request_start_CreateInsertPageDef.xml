@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.64.93"
+                id="plan_assumption_request_start_plan_assumption_request_start_CreateInsertPageDef"
+                Package="com.bayer.ipms.view.pageDefs" SkipValidation="true">
+  <parameters/>
+  <executables>
+    <iterator Binds="Root.ProgramAppModule.PlanAssumptionRequestView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="25"
+              id="PlanAssumptionRequestViewIterator" ChangeEventPolicy="ppr"/>
+  </executables>
+  <bindings>
+    <action IterBinding="PlanAssumptionRequestViewIterator"
+            id="CreateInsert" RequiresUpdateModel="true"
+            Action="createInsertRow"
+            InstanceName="PrivateAppModuleDataControl.Root.ProgramAppModule.PlanAssumptionRequestView"
+            DataControl="PrivateAppModuleDataControl"/>
+  </bindings>
+</pageDefinition>

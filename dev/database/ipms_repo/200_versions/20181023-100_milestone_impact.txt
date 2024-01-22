@@ -1,0 +1,8 @@
+alter table milestone_impact_fct add promis_project_id nvarchar2(20);
+prompt --
+prompt --
+prompt --ERROR, FEHLER: it just a note for deployment that manual task (afer the whole installation is done) must be executed. Following sql call
+prompt --begin ipms_repo.job_pkg.refresh_milestone_imp_dim; commit; end;
+prompt --
+prompt --
+prompt --

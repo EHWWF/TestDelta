@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="windows-1257" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="DevelopmentPhaseView"
+  Version="12.1.3.10.8"
+  InheritPersonalization="true"
+  SelectList="DevelopmentPhase.IS_ACTIVE, 
+       DevelopmentPhase.NAME, 
+       DevelopmentPhase.CODE"
+  FromList="DEVELOPMENT_PHASE DevelopmentPhase"
+  OrderBy="IS_ACTIVE DESC, NAME ASC"
+  BindingStyle="OracleName"
+  CustomQuery="false"
+  RowClass="com.bayer.ipms.model.base.IPMSLookupViewRowImpl"
+  ComponentClass="com.bayer.ipms.model.base.IPMSViewObjectImpl"
+  FetchMode="FETCH_ALL"
+  FetchSize="100"
+  Passivate="None"
+  PageIterMode="Full"
+  RangeSize="-1">
+  <DesignTime>
+    <Attr Name="_rowSuperClassName"
+      Value="com.bayer.ipms.model.base.IPMSLookupViewRowImpl"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="com.bayer.ipms.model.views.lookups.DevelopmentPhaseView_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <EntityUsage
+    Name="DevelopmentPhase"
+    Entity="com.bayer.ipms.model.entities.lookups.DevelopmentPhase"
+    ReadOnly="true"
+    DeleteParticipant="false"/>
+  <ViewAttribute
+    Name="IsActive"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="IsActive"
+    EntityUsage="DevelopmentPhase"
+    AliasName="IS_ACTIVE"/>
+  <ViewAttribute
+    Name="Name"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Name"
+    EntityUsage="DevelopmentPhase"
+    AliasName="NAME"/>
+  <ViewAttribute
+    Name="Code"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Code"
+    EntityUsage="DevelopmentPhase"
+    AliasName="CODE"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.bayer.ipms.model.bundles.modelBundle"/>
+  </ResourceBundle>
+</ViewObject>

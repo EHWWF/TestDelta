@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.0.31"
+                id="activities_set_phases_activities_set_phases_CreateWithParametersPageDef"
+                Package="com.bayer.ipms.view.pageDefs" SkipValidation="true">
+    <parameters/>
+    <executables>
+        <iterator Binds="ImportAppModule.ImportView" DataControl="PrivateAppModuleDataControl" RangeSize="25"
+                  id="ImportViewIterator"/>
+    </executables>
+    <bindings>
+        <action IterBinding="ImportViewIterator" id="CreateWithParams" RequiresUpdateModel="true"
+                Action="createWithParams"
+                InstanceName="PrivateAppModuleDataControl.ImportAppModule.ImportView">
+            <NamedData NDName="ProjectId" NDType="java.lang.String" NDValue="#{pageFlowScope.projectId}"/>
+            <NamedData NDName="TypeMask" NDType="java.math.BigDecimal" NDValue="4096"/>
+            <NamedData NDName="IsManual" NDValue="1" NDType="java.lang.Integer"/>
+            <NamedData NDName="Source" NDValue="PROMIS" NDType="java.lang.String"/>
+        </action>
+    </bindings>
+</pageDefinition>

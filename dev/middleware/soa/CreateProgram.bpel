@@ -1,0 +1,718 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer
+
+  Created: Fri Jan 04 09:11:47 EET 2013
+  Author:  gytis
+  Type: BPEL 1.1 Process
+  Purpose: Synchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="CreateProgram" targetNamespace="http://xmlns.bayer.com/ipms/soa"
+         xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/" xmlns:client="http://xmlns.bayer.com/ipms/soa"
+         xmlns:ora="http://schemas.oracle.com/xpath/extension" xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/" xmlns:ns1="http://xmlns.bayer.com/ipms"
+         xmlns:ns11="http://xmlns.bayer.com/ipms/soa"
+         xmlns:bpel2="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ns2="http://xmlns.oracle.com/Primavera/P6/WS/EPS/V1"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         xmlns:ns3="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2"
+         xmlns:ns4="http://xmlns.oracle.com/Primavera/P6/WS/OBS/V1" xmlns:ns5="http://xmlns.bayer.com/ipms/cache">
+  <!--
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        PARTNERLINKS
+        List of services participating in this BPEL process
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+  <bpelx:annotation>
+    <bpelx:analysis>
+      <bpelx:property name="wsdlFile">
+        <![CDATA[CreateProgram.wsdl]]>
+      </bpelx:property>
+    </bpelx:analysis>
+  </bpelx:annotation>
+  <partnerLinks>
+    <!--
+      The 'client' role represents the requester of this service. It is
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+    <partnerLink name="CreateProgramService" partnerLinkType="client:CreateProgram" myRole="CreateProgramProvider"
+                 partnerRole="CreateProgramRequester"/>
+    <partnerLink name="EPSService" partnerLinkType="ns2:EPSService" partnerRole="EPSPortType"/>
+    <partnerLink name="OBSService" partnerLinkType="ns4:OBSService" partnerRole="OBSPortType"/>
+    <partnerLink name="ReadConfiguration.ReadConfigurationService" partnerLinkType="client:ReadConfiguration"
+                 partnerRole="ReadConfigurationProvider" myRole="ReadConfigurationRequester"/>
+  </partnerLinks>
+  <!--
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      VARIABLES
+      List of messages and XML documents used within this BPEL process
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <variables>
+    <!-- Reference to the message passed as input during initiation -->
+    <variable name="inputVariable" messageType="client:CreateProgramRequestMessage"/>
+    <!-- Reference to the message that will be returned to the requester-->
+    <variable name="outputVariable" messageType="client:CreateProgramResponseMessage"/>
+    <variable name="createEPSInput" messageType="ns2:CreateEPS"/>
+    <variable name="createEPSOutput" messageType="ns2:CreateEPSResponse"/>
+    <variable name="createEPSLocal" messageType="ns2:CreateEPS"/>
+    <variable name="ReadCfgIn" messageType="client:ReadConfigurationRequestMessage"/>
+    <variable name="ReadCfgOut" messageType="client:ReadConfigurationResponseMessage"/>
+    <variable name="createOBSInput" messageType="ns4:CreateOBS"/>
+    <variable name="createOBSOutput" messageType="ns4:CreateOBSResponse"/>
+    <variable name="DeleteCreatedOBSIn" messageType="ns4:DeleteOBS"/>
+    <variable name="DeleteCreatedOBSOut" messageType="ns4:DeleteOBSResponse"/>
+    <variable name="faultVariable" messageType="client:CreateProgramResponseMessage"/>
+    <variable name="DeleteCreatedEPSIn" messageType="ns2:DeleteEPS"/>
+    <variable name="DeleteCreatedEPSOut" messageType="ns2:DeleteEPSResponse"/>
+    <variable name="ParentEPSId" type="xsd:string"/>
+    <variable name="ReadReservedEPSIn" messageType="ns2:ReadEPS"/>
+    <variable name="ReadReservedEPSOut" messageType="ns2:ReadEPSResponse"/>
+    <variable name="rawBaseId" type="xsd:string"/>
+    <variable name="currentBaseId" type="xsd:string"/>
+    <variable name="approveBasedId" type="xsd:string"/>
+    <variable name="MntDevProgramId" type="xsd:string"/>
+    <variable name="CheckIfExistsEpsIn" messageType="ns2:ReadEPS"/>
+    <variable name="CheckIfExistsEpsOut" messageType="ns2:ReadEPSResponse"/>
+    <variable name="loopCount" type="xsd:integer"/>
+    <variable name="UpdateEPSNameIn" messageType="ns2:UpdateEPS"/>
+    <variable name="UpdateEPSNameOut" messageType="ns2:UpdateEPSResponse"/>
+  </variables>
+  <faultHandlers>
+    <catchAll>
+      <sequence name="MainFaultCatching">
+        <compensate name="CompensateAll"/>
+        <assign name="assignFaultOutput">
+          <copy>
+            <from expression="ora:getFaultAsString()"/>
+            <to variable="faultVariable" part="payload" query="/client:response/ns1:error/ns1:description"/>
+          </copy>
+          <copy>
+            <from expression="ora:getFaultName()"/>
+            <to variable="faultVariable" part="payload" query="/client:response/ns1:error/ns1:code"/>
+          </copy>
+          <copy>
+            <from variable="inputVariable" part="payload" query="/client:create/@id"/>
+            <to variable="faultVariable" part="payload" query="/client:response/ns1:error/@id"/>
+          </copy>
+          <copy>
+            <from variable="inputVariable" part="payload" query="/client:create/@id"/>
+            <to variable="faultVariable" part="payload" query="/client:response/@id"/>
+          </copy>
+        </assign>
+        <invoke name="callbackFaultOutput" bpelx:invokeAsDetail="no" inputVariable="faultVariable"
+                partnerLink="CreateProgramService" portType="client:CreateProgramCallback" operation="callback"/>
+      </sequence>
+    </catchAll>
+  </faultHandlers>
+  <!--
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC
+     Set of activities coordinating the flow of messages across the
+     services integrated within this business process
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <sequence name="main">
+    <!-- Receive input from requestor. (Note: This maps to operation defined in CreateProgram.wsdl) -->
+    <receive name="receiveInput" partnerLink="CreateProgramService" portType="client:CreateProgram" operation="process"
+             variable="inputVariable" createInstance="yes"/>
+    <sequence name="ReadConfig">
+      <scope name="ReadConfigFromCache" variableAccessSerializable="no">
+        <variables>
+          <variable name="VariableCache" element="ns5:cache"/>
+        </variables>
+        <faultHandlers>
+          <catchAll>
+            <empty name="Empty1"/>
+          </catchAll>
+        </faultHandlers>
+        <sequence name="ReadConfigFromCache">
+          <assign name="AssignFromCache">
+            <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+              <from expression='ora:readFile("file:///opt/oracle/soa12.2.1/file_adapter/ipms/config.cache", "oramds:/apps/com/bayer/xmlns/ipms/cache/cache.xsd")'/>
+              <to variable="VariableCache" query="/ns5:cache"/>
+            </copy>
+            <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+              <from variable="VariableCache" query="/ns5:cache/*"/>
+              <to variable="ReadCfgOut" part="payload"/>
+            </copy>
+            <copy>
+              <from expression="2"/>
+              <to variable="loopCount"/>
+            </copy>
+          </assign>
+          <empty name="EmptyBeforeSkip"/>
+        </sequence>
+      </scope>
+      <sequence name="FULL-ReadConfig-SKIP"
+                bpelx:skipCondition="bpws:getVariableData('ReadCfgOut','payload','/client:config/client:program/client:epsId')!=''">
+        <assign name="AssignReadCfgIn">
+          <copy>
+            <from expression="'cfg'"/>
+            <to variable="ReadCfgIn" part="payload" query="/ns1:empty"/>
+          </copy>
+        </assign>
+        <invoke name="ReadConfigurationIn" bpelx:invokeAsDetail="no" inputVariable="ReadCfgIn"
+                partnerLink="ReadConfiguration.ReadConfigurationService" portType="client:ReadConfiguration"
+                operation="process"/>
+        <receive name="ReadConfigurationOut" createInstance="no" variable="ReadCfgOut"
+                 partnerLink="ReadConfiguration.ReadConfigurationService" portType="client:ReadConfigurationCallback"
+                 operation="callback"/>
+      </sequence>
+    </sequence>
+    <switch name="RESERVED-or-DEV-MNT">
+      <case condition="starts-with(bpws:getVariableData('inputVariable','payload','/client:create/ns1:program/ns1:code'),'RESERVED-PT-D')">
+        <bpelx:annotation>
+          <bpelx:pattern>RESERVED-PT-D</bpelx:pattern>
+          <bpelx:general>
+            <bpelx:property name="userLabel">
+              <![CDATA[RESERVED-PT-D]]>
+            </bpelx:property>
+          </bpelx:general>
+        </bpelx:annotation>
+        <sequence name="RESERVED-name">
+          <switch name="AssignReadMainEPS">
+            <case condition="bpws:getVariableData('inputVariable','payload','/client:create/ns1:program/ns1:code')='RESERVED-PT-PRD-MNT'">
+              <bpelx:annotation>
+                <bpelx:general>
+                  <bpelx:property name="userLabel">
+                    <![CDATA[Product Maintenance]]>
+                  </bpelx:property>
+                </bpelx:general>
+              </bpelx:annotation>
+              <assign name="AssignMNT">
+                <copy>
+                  <from expression="'PRDMNT'"/>
+                  <to variable="ParentEPSId"/>
+                </copy>
+                <copy>
+                  <from><v1:ReadEPS xmlns:v1="http://xmlns.oracle.com/Primavera/P6/WS/EPS/V1"><v1:Field>Id</v1:Field><v1:Filter>Id='PRDMNT'</v1:Filter></v1:ReadEPS></from>
+                  <to variable="ReadReservedEPSIn" part="params" query="/ns2:ReadEPS"/>
+                </copy>
+              </assign>
+            </case>
+            <case condition="bpws:getVariableData('inputVariable','payload','/client:create/ns1:program/ns1:code')='RESERVED-PT-D3-TR'">
+              <bpelx:annotation>
+                <bpelx:pattern>D3</bpelx:pattern>
+                <bpelx:general>
+                  <bpelx:property name="userLabel">
+                    <![CDATA[D3]]>
+                  </bpelx:property>
+                </bpelx:general>
+              </bpelx:annotation>
+              <assign name="AssignD3">
+                <copy>
+                  <from expression="'D3TR'"/>
+                  <to variable="ParentEPSId"/>
+                </copy>
+                <copy>
+                  <from><v1:ReadEPS xmlns:v1="http://xmlns.oracle.com/Primavera/P6/WS/EPS/V1">
+                    <v1:Field>Id</v1:Field>
+                    <v1:Filter>Id='D3TR'</v1:Filter>
+                    </v1:ReadEPS></from>
+                  <to variable="ReadReservedEPSIn" part="params" query="/ns2:ReadEPS"/>
+                </copy>
+              </assign>
+            </case>
+            <case condition="bpws:getVariableData('inputVariable','payload','/client:create/ns1:program/ns1:code')='RESERVED-PT-D2-PRJ'">
+              <bpelx:annotation>
+                <bpelx:pattern>D2</bpelx:pattern>
+                <bpelx:general>
+                  <bpelx:property name="userLabel">
+                    <![CDATA[D2]]>
+                  </bpelx:property>
+                </bpelx:general>
+              </bpelx:annotation>
+              <assign name="AssignD2">
+                <copy>
+                  <from expression="'D2'"/>
+                  <to variable="ParentEPSId"/>
+                </copy>
+                <copy>
+                  <from><v1:ReadEPS xmlns:v1="http://xmlns.oracle.com/Primavera/P6/WS/EPS/V1"><v1:Field>Id</v1:Field><v1:Filter>Id='D2'</v1:Filter></v1:ReadEPS></from>
+                  <to variable="ReadReservedEPSIn" part="params" query="/ns2:ReadEPS"/>
+                </copy>
+              </assign>
+            </case>
+            <otherwise>
+              <throw name="InvalidProgramCode" faultName="bpelx:invalidVariables"/>
+            </otherwise>
+          </switch>
+          <invoke name="ReadReservedEPS" bpelx:invokeAsDetail="no" inputVariable="ReadReservedEPSIn"
+                  outputVariable="ReadReservedEPSOut" partnerLink="EPSService" portType="ns2:EPSPortType"
+                  operation="ReadEPS"/>
+          <switch name="Switch3">
+            <case condition="count(bpws:getVariableData('ReadReservedEPSOut','result','/ns2:ReadEPSResponse/ns2:EPS'))=0">
+              <bpelx:annotation>
+                <bpelx:general>
+                  <bpelx:property name="userLabel">
+                    <![CDATA[MISSING]]>
+                  </bpelx:property>
+                </bpelx:general>
+              </bpelx:annotation>
+              <throw name="MissingProgram" faultName="bpws:invalidReply"/>
+            </case>
+            <otherwise>
+              <empty name="NotMissingDoNothing"/>
+            </otherwise>
+          </switch>
+        </sequence>
+      </case>
+      <case condition="bpws:getVariableData('inputVariable','payload','/client:create/ns1:program/ns1:code')='RESERVED-PT-SAMD'">
+        <bpelx:annotation>
+          <bpelx:pattern>RESERVED-PT-SAMD</bpelx:pattern>
+          <bpelx:general>
+            <bpelx:property name="userLabel">
+              <![CDATA[RESERVED-PT-SAMD]]>
+            </bpelx:property>
+          </bpelx:general>
+        </bpelx:annotation>
+        <sequence name="RESERVED-name">
+          <switch name="AssignReadMainEPS">
+            <case condition="bpws:getVariableData('inputVariable','payload','/client:create/ns1:program/ns1:code')='RESERVED-PT-SAMD'">
+              <bpelx:annotation>
+                <bpelx:pattern>SAMD</bpelx:pattern>
+                <bpelx:general>
+                  <bpelx:property name="userLabel">
+                    <![CDATA[SAMD]]>
+                  </bpelx:property>
+                </bpelx:general>
+              </bpelx:annotation>
+              <assign name="AssignSAMD">
+                <copy>
+                  <from expression="'SAMD'"/>
+                  <to variable="ParentEPSId"/>
+                </copy>
+                <copy>
+                  <from><v1:ReadEPS xmlns:v1="http://xmlns.oracle.com/Primavera/P6/WS/EPS/V1"><v1:Field>Id</v1:Field><v1:Filter>Id='SAMD'</v1:Filter></v1:ReadEPS></from>
+                  <to variable="ReadReservedEPSIn" part="params" query="/ns2:ReadEPS"/>
+                </copy>
+              </assign>
+            </case>
+            <otherwise>
+              <throw name="InvalidProgramCode" faultName="bpelx:invalidVariables"/>
+            </otherwise>
+          </switch>
+          <invoke name="ReadReservedEPS" bpelx:invokeAsDetail="no" inputVariable="ReadReservedEPSIn"
+                  outputVariable="ReadReservedEPSOut" partnerLink="EPSService" portType="ns2:EPSPortType"
+                  operation="ReadEPS"/>
+          <switch name="Switch3">
+            <case condition="count(bpws:getVariableData('ReadReservedEPSOut','result','/ns2:ReadEPSResponse/ns2:EPS'))=0">
+              <bpelx:annotation>
+                <bpelx:general>
+                  <bpelx:property name="userLabel">
+                    <![CDATA[MISSING]]>
+                  </bpelx:property>
+                </bpelx:general>
+              </bpelx:annotation>
+              <throw name="MissingProgram" faultName="bpws:invalidReply"/>
+            </case>
+            <otherwise>
+              <empty name="NotMissingDoNothing"/>
+            </otherwise>
+          </switch>
+        </sequence>
+      </case>
+      <otherwise>
+        <sequence name="DEVelopment-MNT">
+          <while name="WhileLoopCount" condition="bpws:getVariableData('loopCount')>0">
+            <sequence name="LoopMntDev">
+              <switch name="MNT-or-DEV">
+                <case condition="bpws:getVariableData('loopCount')=1">
+                  <bpelx:annotation>
+                    <bpelx:general>
+                      <bpelx:property name="userLabel">
+                        <![CDATA[DEV]]>
+                      </bpelx:property>
+                    </bpelx:general>
+                  </bpelx:annotation>
+                  <sequence name="DEV">
+                    <assign name="AssignIfExistsEps">
+                      <copy>
+                        <from expression='"Id"'/>
+                        <to variable="CheckIfExistsEpsIn" part="params" query="/ns2:ReadEPS/ns2:Field"/>
+                      </copy>
+                      <copy>
+                        <from expression="concat(&quot;Id='&quot;,bpws:getVariableData('inputVariable','payload','/client:create/ns1:program/@id'),&quot;' and ParentObjectId='&quot;,bpws:getVariableData('ReadCfgOut','payload','/client:config/client:program/client:epsId'),&quot;'&quot;)"/>
+                        <to variable="CheckIfExistsEpsIn" part="params" query="/ns2:ReadEPS/ns2:Filter"/>
+                      </copy>
+                    </assign>
+                    <invoke name="CheckIfExistsEps" bpelx:invokeAsDetail="no" inputVariable="CheckIfExistsEpsIn"
+                            outputVariable="CheckIfExistsEpsOut" partnerLink="EPSService" portType="ns2:EPSPortType"
+                            operation="ReadEPS"/>
+                    <switch name="IfExists">
+                      <case condition="count(bpws:getVariableData('CheckIfExistsEpsOut','result','/ns2:ReadEPSResponse/ns2:EPS'))=0">
+                        <bpelx:annotation>
+                          <bpelx:general>
+                            <bpelx:property name="userLabel">
+                              <![CDATA[NotExists]]>
+                            </bpelx:property>
+                          </bpelx:general>
+                        </bpelx:annotation>
+                        <assign name="DevAssignEpsObs">
+                          <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                            <from variable="ReadCfgOut" part="payload"
+                                  query="/client:config/client:program/client:obs/client:rawId"/>
+                            <to variable="rawBaseId"/>
+                          </copy>
+                          <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                            <from variable="ReadCfgOut" part="payload"
+                                  query="/client:config/client:program/client:obs/client:currentId"/>
+                            <to variable="currentBaseId"/>
+                          </copy>
+                          <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                            <from variable="ReadCfgOut" part="payload"
+                                  query="/client:config/client:program/client:obs/client:approvedId"/>
+                            <to variable="approveBasedId"/>
+                          </copy>
+                          <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                            <from variable="ReadCfgOut" part="payload" query="/ns11:config/ns11:program/ns11:epsId"/>
+                            <to variable="createEPSInput" part="params"
+                                query="/ns2:CreateEPS/ns2:EPS/ns2:ParentObjectId"/>
+                          </copy>
+                          <copy>
+                            <from variable="inputVariable" part="payload" query="/client:create/ns1:program/@id"/>
+                            <to variable="MntDevProgramId"/>
+                          </copy>
+                        </assign>
+                      </case>
+                      <otherwise>
+                        <sequence name="UpdateEPSName">
+                          <assign name="AssignEPSUpdate">
+                            <copy>
+                              <from variable="CheckIfExistsEpsOut" part="result"
+                                    query="/ns2:ReadEPSResponse/ns2:EPS/ns2:ObjectId"/>
+                              <to variable="UpdateEPSNameIn" part="params" query="/ns2:UpdateEPS/ns2:EPS/ns2:ObjectId"/>
+                            </copy>
+                            <copy>
+                              <from expression="bpws:getVariableData('inputVariable','payload','/client:create/ns1:program/ns1:name')"/>
+                              <to variable="UpdateEPSNameIn" part="params" query="/ns2:UpdateEPS/ns2:EPS/ns2:Name"/>
+                            </copy>
+                          </assign>
+                          <invoke name="UpdateEPSName" bpelx:invokeAsDetail="no" inputVariable="UpdateEPSNameIn"
+                                  outputVariable="UpdateEPSNameOut" partnerLink="EPSService" portType="ns2:EPSPortType"
+                                  operation="UpdateEPS"/>
+                        </sequence>
+                      </otherwise>
+                    </switch>
+                  </sequence>
+                </case>
+                <case condition="bpws:getVariableData('inputVariable','payload','/client:create/ns1:program/ns1:areaCode')='PRD-MNT' and bpws:getVariableData('loopCount')=2">
+                  <bpelx:annotation>
+                    <bpelx:general>
+                      <bpelx:property name="userLabel">
+                        <![CDATA[PRD-MNT]]>
+                      </bpelx:property>
+                    </bpelx:general>
+                  </bpelx:annotation>
+                  <sequence name="PRD-MNT">
+                    <assign name="AssignIfExistsEps">
+                      <copy>
+                        <from expression='"Id"'/>
+                        <to variable="CheckIfExistsEpsIn" part="params" query="/ns2:ReadEPS/ns2:Field"/>
+                      </copy>
+                      <copy>
+                        <from expression="concat(&quot;Id='MNT-&quot;,bpws:getVariableData('inputVariable','payload','/client:create/ns1:program/@id'),&quot;' and ParentObjectId='&quot;,bpws:getVariableData('ReadCfgOut','payload','/client:config/client:program/client:epsMntId'),&quot;'&quot;)"/>
+                        <to variable="CheckIfExistsEpsIn" part="params" query="/ns2:ReadEPS/ns2:Filter"/>
+                      </copy>
+                    </assign>
+                    <invoke name="CheckIfExistsEps" bpelx:invokeAsDetail="no" inputVariable="CheckIfExistsEpsIn"
+                            outputVariable="CheckIfExistsEpsOut" partnerLink="EPSService" portType="ns2:EPSPortType"
+                            operation="ReadEPS"/>
+                    <switch name="IfExists">
+                      <case condition="count(bpws:getVariableData('CheckIfExistsEpsOut','result','/ns2:ReadEPSResponse/ns2:EPS'))=0">
+                        <bpelx:annotation>
+                          <bpelx:general>
+                            <bpelx:property name="userLabel">
+                              <![CDATA[NotExists]]>
+                            </bpelx:property>
+                          </bpelx:general>
+                        </bpelx:annotation>
+                        <assign name="AssignNotExists">
+                          <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                            <from variable="ReadCfgOut" part="payload"
+                                  query="/client:config/client:program/client:obsMnt/client:rawId"/>
+                            <to variable="rawBaseId"/>
+                          </copy>
+                          <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                            <from variable="ReadCfgOut" part="payload"
+                                  query="/client:config/client:program/client:obsMnt/client:currentId"/>
+                            <to variable="currentBaseId"/>
+                          </copy>
+                          <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                            <from variable="ReadCfgOut" part="payload"
+                                  query="/client:config/client:program/client:obsMnt/client:approvedId"/>
+                            <to variable="approveBasedId"/>
+                          </copy>
+                          <copy>
+                            <from expression="concat('MNT-',bpws:getVariableData('inputVariable','payload','/client:create/ns1:program/@id'))"/>
+                            <to variable="MntDevProgramId"/>
+                          </copy>
+                          <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                            <from variable="ReadCfgOut" part="payload" query="/ns11:config/ns11:program/ns11:epsMntId"/>
+                            <to variable="createEPSInput" part="params"
+                                query="/ns2:CreateEPS/ns2:EPS/ns2:ParentObjectId"/>
+                          </copy>
+                        </assign>
+                      </case>
+                      <otherwise>
+                        <sequence name="UpdateEPSName">
+                          <assign name="AssignEPSUpdate">
+                            <copy>
+                              <from variable="CheckIfExistsEpsOut" part="result"
+                                    query="/ns2:ReadEPSResponse/ns2:EPS/ns2:ObjectId"/>
+                              <to variable="UpdateEPSNameIn" part="params" query="/ns2:UpdateEPS/ns2:EPS/ns2:ObjectId"/>
+                            </copy>
+                            <copy>
+                              <from expression="bpws:getVariableData('inputVariable','payload','/client:create/ns1:program/ns1:name')"/>
+                              <to variable="UpdateEPSNameIn" part="params" query="/ns2:UpdateEPS/ns2:EPS/ns2:Name"/>
+                            </copy>
+                          </assign>
+                          <invoke name="UpdateEPSName" bpelx:invokeAsDetail="no" inputVariable="UpdateEPSNameIn"
+                                  outputVariable="UpdateEPSNameOut" partnerLink="EPSService" portType="ns2:EPSPortType"
+                                  operation="UpdateEPS"/>
+                        </sequence>
+                      </otherwise>
+                    </switch>
+                  </sequence>
+                </case>
+                <otherwise>
+                  <empty name="DoNothing"/>
+                </otherwise>
+              </switch>
+              <assign name="AssignLoopCount">
+                <copy>
+                  <from expression="bpws:getVariableData('loopCount')-1"/>
+                  <to variable="loopCount"/>
+                </copy>
+              </assign>
+              <sequence name="SKIP-whn-no-create" bpelx:skipCondition="bpws:getVariableData('rawBaseId')=''">
+                <sequence name="EPS">
+                  <assign name="assignRequestCreateRoot">
+                    <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                      <from variable="inputVariable" part="payload" query="/client:create/ns1:program/ns1:name"/>
+                      <to variable="createEPSInput" part="params" query="/ns2:CreateEPS/ns2:EPS/ns2:Name"/>
+                    </copy>
+                    <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                      <from variable="MntDevProgramId"/>
+                      <to variable="createEPSInput" part="params" query="/ns2:CreateEPS/ns2:EPS/ns2:Id"/>
+                    </copy>
+                  </assign>
+                  <scope name="createRoot-SKIP" variableAccessSerializable="no"
+                         bpelx:skipCondition="count(bpws:getVariableData('createEPSInput','params','/ns2:CreateEPS/ns2:EPS/ns2:Id'))=0">
+                    <compensationHandler>
+                      <scope name="CompensationEPS" variableAccessSerializable="no">
+                        <faultHandlers>
+                          <catchAll>
+                            <empty name="SkipCompensationError"/>
+                          </catchAll>
+                        </faultHandlers>
+                        <sequence name="CompensationEPS-SKIP"
+                                  bpelx:skipCondition="count(bpws:getVariableData('createEPSOutput','result','/ns2:CreateEPSResponse/ns2:ObjectId'))=0">
+                          <assign name="AssignStartCompensation">
+                            <copy bpelx:insertMissingToData="yes">
+                              <from expression="'createRoot'"/>
+                              <to variable="faultVariable" part="payload"
+                                  query="/client:response/ns1:error/ns1:rollbacks/ns1:rollback/ns1:name"/>
+                            </copy>
+                            <copy bpelx:insertMissingToData="yes">
+                              <from expression="xp20:current-dateTime()"/>
+                              <to variable="faultVariable" part="payload"
+                                  query="/client:response/ns1:error/ns1:rollbacks/ns1:rollback/ns1:startTime"/>
+                            </copy>
+                            <copy bpelx:insertMissingToData="yes" bpelx:ignoreMissingFromData="yes">
+                              <from variable="createEPSOutput" part="result"
+                                    query="/ns2:CreateEPSResponse/ns2:ObjectId"/>
+                              <to variable="DeleteCreatedEPSIn" part="params" query="/ns2:DeleteEPS/ns2:ObjectId"/>
+                            </copy>
+                          </assign>
+                          <invoke name="DeleteCreatedEPS" bpelx:invokeAsDetail="no" inputVariable="DeleteCreatedEPSIn"
+                                  outputVariable="DeleteCreatedEPSOut" partnerLink="EPSService"
+                                  portType="ns2:EPSPortType" operation="DeleteEPS"/>
+                          <assign name="AssignEndCompensation">
+                            <copy bpelx:insertMissingToData="yes">
+                              <from expression="xp20:current-dateTime()"/>
+                              <to variable="faultVariable" part="payload"
+                                  query="/client:response/ns1:error/ns1:rollbacks/ns1:rollback[ns1:name='createRoot']/ns1:finishTime"/>
+                            </copy>
+                          </assign>
+                        </sequence>
+                      </scope>
+                    </compensationHandler>
+                    <invoke name="createRoot" bpelx:invokeAsDetail="no" inputVariable="createEPSInput"
+                            outputVariable="createEPSOutput" partnerLink="EPSService" portType="ns2:EPSPortType"
+                            operation="CreateEPS"/>
+                  </scope>
+                </sequence>
+                <sequence name="OBS">
+                  <assign name="AssignOBS">
+                    <bpelx:remove>
+                      <bpelx:target variable="createOBSInput" part="params" query="/ns4:CreateOBS/ns4:OBS"/>
+                    </bpelx:remove>
+                    <bpelx:append>
+                      <bpelx:from expression="oraext:parseXML(concat('&lt;OBS xmlns=&quot;http://xmlns.oracle.com/Primavera/P6/WS/OBS/V1&quot;>&lt;Name>',bpws:getVariableData('MntDevProgramId'),'-RAW&lt;/Name>&lt;ParentObjectId>',bpws:getVariableData('rawBaseId'),'&lt;/ParentObjectId>&lt;/OBS>'))"/>
+                      <bpelx:to variable="createOBSInput" part="params" query="/ns4:CreateOBS"/>
+                    </bpelx:append>
+                    <bpelx:append>
+                      <bpelx:from expression="oraext:parseXML(concat('&lt;OBS xmlns=&quot;http://xmlns.oracle.com/Primavera/P6/WS/OBS/V1&quot;>&lt;Name>',bpws:getVariableData('MntDevProgramId'),'-CUR&lt;/Name>&lt;ParentObjectId>',bpws:getVariableData('currentBaseId'),'&lt;/ParentObjectId>&lt;/OBS>'))"/>
+                      <bpelx:to variable="createOBSInput" part="params" query="/ns4:CreateOBS"/>
+                    </bpelx:append>
+                    <bpelx:append>
+                      <bpelx:from expression="oraext:parseXML(concat('&lt;OBS xmlns=&quot;http://xmlns.oracle.com/Primavera/P6/WS/OBS/V1&quot;>&lt;Name>',bpws:getVariableData('MntDevProgramId'),'-APR&lt;/Name>&lt;ParentObjectId>',bpws:getVariableData('approveBasedId'),'&lt;/ParentObjectId>&lt;/OBS>'))"/>
+                      <bpelx:to variable="createOBSInput" part="params" query="/ns4:CreateOBS"/>
+                    </bpelx:append>
+                  </assign>
+                  <scope name="createOBS-SKIP" variableAccessSerializable="no"
+                         bpelx:skipCondition="count(bpws:getVariableData('createOBSInput','params','/ns4:CreateOBS/ns4:OBS/ns4:Name'))=0">
+                    <compensationHandler>
+                      <scope name="CompensationOBS" variableAccessSerializable="no">
+                        <faultHandlers>
+                          <catchAll>
+                            <empty name="SkipCompensationError"/>
+                          </catchAll>
+                        </faultHandlers>
+                        <sequence name="CompensationOBS-SKIP"
+                                  bpelx:skipCondition="count(bpws:getVariableData('createOBSOutput','result','/ns4:CreateOBSResponse/ns4:ObjectId'))=0">
+                          <assign name="AssignStartCompensation">
+                            <copy>
+                              <from expression="'createOBS'"/>
+                              <to variable="faultVariable" part="payload"
+                                  query="/client:response/ns1:error/ns1:rollbacks/ns1:rollback/ns1:name"/>
+                            </copy>
+                            <copy>
+                              <from expression="xp20:current-dateTime()"/>
+                              <to variable="faultVariable" part="payload"
+                                  query="/client:response/ns1:error/ns1:rollbacks/ns1:rollback/ns1:startTime"/>
+                            </copy>
+                            <bpelx:copyList>
+                              <bpelx:from variable="createOBSOutput" part="result"
+                                          query="/ns4:CreateOBSResponse/ns4:ObjectId"/>
+                              <bpelx:to variable="DeleteCreatedOBSIn" part="params"
+                                        query="/ns4:DeleteOBS/ns4:ObjectId"/>
+                            </bpelx:copyList>
+                          </assign>
+                          <invoke name="DeleteCreatedOBS-SKIP" inputVariable="DeleteCreatedOBSIn"
+                                  outputVariable="DeleteCreatedOBSOut" partnerLink="OBSService"
+                                  portType="ns4:OBSPortType" operation="DeleteOBS" bpelx:invokeAsDetail="no"
+                                  bpelx:skipCondition="count(bpws:getVariableData('DeleteCreatedOBSIn','params','/ns4:DeleteOBS/ns4:ObjectId'))=0"/>
+                          <assign name="AssignEndCompensation">
+                            <copy bpelx:insertMissingToData="yes">
+                              <from expression="xp20:current-dateTime()"/>
+                              <to variable="faultVariable" part="payload"
+                                  query="/client:response/ns1:error/ns1:rollbacks/ns1:rollback[ns1:name='createOBS']/ns1:finishTime"/>
+                            </copy>
+                          </assign>
+                        </sequence>
+                      </scope>
+                    </compensationHandler>
+                    <invoke name="createOBS" bpelx:invokeAsDetail="no" inputVariable="createOBSInput"
+                            outputVariable="createOBSOutput" partnerLink="OBSService" portType="ns4:OBSPortType"
+                            operation="CreateOBS"/>
+                  </scope>
+                </sequence>
+                <assign name="assignRequestCreateSub">
+                  <copy>
+                    <from variable="createEPSOutput" part="result" query="/ns2:CreateEPSResponse/ns2:ObjectId"/>
+                    <to variable="createEPSLocal" part="params" query="/ns2:CreateEPS/ns2:EPS/ns2:ParentObjectId"/>
+                  </copy>
+                  <bpelx:remove>
+                    <bpelx:target variable="createEPSInput" part="params" query="/ns2:CreateEPS/ns2:EPS"/>
+                  </bpelx:remove>
+                  <copy>
+                    <from expression="concat(bpws:getVariableData('MntDevProgramId'),'-RAW')"/>
+                    <to variable="createEPSLocal" part="params" query="/ns2:CreateEPS/ns2:EPS/ns2:Id"/>
+                  </copy>
+                  <copy>
+                    <from expression="'Raw'"/>
+                    <to variable="createEPSLocal" part="params" query="/ns2:CreateEPS/ns2:EPS/ns2:Name"/>
+                  </copy>
+                  <copy>
+                    <from expression="bpws:getVariableData('rawBaseId')"/>
+                    <to variable="createEPSLocal" part="params" query="/ns2:CreateEPS/ns2:EPS/ns2:OBSObjectId"/>
+                  </copy>
+                  <bpelx:append>
+                    <bpelx:from variable="createEPSLocal" part="params" query="/ns2:CreateEPS/ns2:EPS"/>
+                    <bpelx:to variable="createEPSInput" part="params" query="/ns2:CreateEPS"/>
+                  </bpelx:append>
+                  <copy>
+                    <from expression="concat(bpws:getVariableData('MntDevProgramId'),'-CUR')"/>
+                    <to variable="createEPSLocal" part="params" query="/ns2:CreateEPS/ns2:EPS/ns2:Id"/>
+                  </copy>
+                  <copy>
+                    <from expression="'Current'"/>
+                    <to variable="createEPSLocal" part="params" query="/ns2:CreateEPS/ns2:EPS/ns2:Name"/>
+                  </copy>
+                  <copy>
+                    <from expression="bpws:getVariableData('currentBaseId')"/>
+                    <to variable="createEPSLocal" part="params" query="/ns2:CreateEPS/ns2:EPS/ns2:OBSObjectId"/>
+                  </copy>
+                  <bpelx:append>
+                    <bpelx:from variable="createEPSLocal" part="params" query="/ns2:CreateEPS/ns2:EPS"/>
+                    <bpelx:to variable="createEPSInput" part="params" query="/ns2:CreateEPS"/>
+                  </bpelx:append>
+                  <copy>
+                    <from expression="concat(bpws:getVariableData('MntDevProgramId'),'-APR')"/>
+                    <to variable="createEPSLocal" part="params" query="/ns2:CreateEPS/ns2:EPS/ns2:Id"/>
+                  </copy>
+                  <copy>
+                    <from expression="'Approved'"/>
+                    <to variable="createEPSLocal" part="params" query="/ns2:CreateEPS/ns2:EPS/ns2:Name"/>
+                  </copy>
+                  <copy>
+                    <from expression="bpws:getVariableData('approveBasedId')"/>
+                    <to variable="createEPSLocal" part="params" query="/ns2:CreateEPS/ns2:EPS/ns2:OBSObjectId"/>
+                  </copy>
+                  <bpelx:append>
+                    <bpelx:from variable="createEPSLocal" part="params" query="/ns2:CreateEPS/ns2:EPS"/>
+                    <bpelx:to variable="createEPSInput" part="params" query="/ns2:CreateEPS"/>
+                  </bpelx:append>
+                </assign>
+                <invoke name="createSub" bpelx:invokeAsDetail="no" inputVariable="createEPSInput"
+                        outputVariable="createEPSOutput" partnerLink="EPSService" portType="ns2:EPSPortType"
+                        operation="CreateEPS"/>
+                <assign name="CleanRawBaseId">
+                  <copy>
+                    <from expression="''"/>
+                    <to variable="rawBaseId"/>
+                  </copy>
+                  <bpelx:remove>
+                    <bpelx:target variable="createEPSInput" part="params" query="/ns2:CreateEPS/ns2:EPS"/>
+                  </bpelx:remove>
+                </assign>
+              </sequence>
+            </sequence>
+          </while>
+        </sequence>
+      </otherwise>
+    </switch>
+    <assign name="assignOutput">
+      <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+        <from variable="inputVariable" part="payload" query="/client:create/ns1:program"/>
+        <to variable="outputVariable" part="payload" query="/client:response/client:complete/ns1:program"/>
+      </copy>
+      <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+        <from variable="inputVariable" part="payload" query="/client:create/@id"/>
+        <to variable="outputVariable" part="payload" query="/client:response/client:complete/@id"/>
+      </copy>
+      <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+        <from variable="inputVariable" part="payload" query="/client:create/@id"/>
+        <to variable="outputVariable" part="payload" query="/client:response/@id"/>
+      </copy>
+    </assign>
+    <invoke name="callbackOutput" bpelx:invokeAsDetail="no" inputVariable="outputVariable"
+            partnerLink="CreateProgramService" portType="client:CreateProgramCallback" operation="callback"/>
+    <!-- Generate reply to synchronous request -->
+  </sequence>
+</process>

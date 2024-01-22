@@ -1,0 +1,55 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<taskDefinition targetNamespace="http://xmlns.oracle.com/middleware/bpm/ProvidePlanningAssumptions" xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20" xmlns:ora="http://schemas.oracle.com/xpath/extension" xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc" xmlns:task="http://xmlns.oracle.com/bpel/workflow/task" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://xmlns.oracle.com/bpel/workflow/taskDefinition" xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions" xmlns:bpel2="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns1="http://xmlns.oracle.com/bpel/workflow/common" xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue" xmlns:evidence="http://xmlns.oracle.com/bpel/workflow/TaskEvidenceService" xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath" xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath" xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions" xmlns:ns0="http://xmlns.bayer.com/ipms">
+   <name>ProvidePlanningAssumptions</name>
+   <id>${domain_id}_${process_id}_${process_revision}_ProvidePlanningAssumptions</id>
+   <title type="XPATH">
+      <value>string('Provide Planning Assumptions')</value>
+   </title>
+   <priority>3</priority>
+   <process processId="" processVersion=""/>
+   <routingSlip xmlns="http://xmlns.oracle.com/bpel/workflow/routingSlip" routingType="TEMPLATE">
+      <globalConfiguration>
+         <applicationContext>OracleBPMProcessRolesApp</applicationContext>
+         <taskOwner type="STATIC" identityType="application_role">bpm.ProcessOwner</taskOwner>
+         <sharePayloadConfiguration>
+            <type>USE_SYSTEM_WIDE_GLOBAL_CONFIGURATION</type>
+         </sharePayloadConfiguration>
+      </globalConfiguration>
+      <participants isAdhocRoutingSupported="false">
+         <stage name="Stage1">
+            <participant name="default.DefaultPerformer">
+               <resource type="XPATH" identityType="user">/task:task/task:payload/task:dataUsersInProgRole</resource>
+               <resource type="XPATH" identityType="user">/task:task/task:payload/task:dataUsersInGlobalRole</resource>
+            </participant>
+         </stage>
+      </participants>
+      <onErrorParticipant>
+         <resource type="STATIC" identityType="application_role">bpm.ProcessOwner</resource>
+      </onErrorParticipant>
+      <notification includeTaskAttachments="false" actionable="false" secureNotifications="false" oneNotificationPerUserPerAction="false" hideWorklistUrlInEmail="false">
+         <groupNotificationConfiguration>SEND_INDIVIDUAL_NOTIFICATION</groupNotificationConfiguration>
+      </notification>
+   </routingSlip>
+   <workflowConfiguration xmlns:ns1="http://www.w3.org/2001/XMLSchema" xmlns="http://xmlns.oracle.com/bpel/workflow/configuration" features="ucm,RSCUSTOMIZATION,RSCUSTOMIZATION,RSCUSTOMIZATION">
+      <outcomes>
+         <outcome>SUBMIT</outcome>
+      </outcomes>
+      <payload xmlSchemaDefinition="xsd/ProvidePlanningAssumptionsPayload.xsd" externalSchema="false" typedTaskSchemaLocation="xsd/ProvidePlanningAssumptionsWorkflowTask.xsd">
+         <messageAttribute name="processFC" attributeType="ELEMENT" type="ns0:processFC" updatable="true" external="false"/>
+         <messageAttribute name="dataUsersInProgRole" attributeType="SIMPLE_TYPE" type="ns1:string" updatable="true" external="false"/>
+         <messageAttribute name="dataUsersInGlobalRole" attributeType="SIMPLE_TYPE" type="ns1:string" updatable="true" external="false"/>
+      </payload>
+      <bpelEventListener>false</bpelEventListener>
+      <bpelNoCallbacks>false</bpelNoCallbacks>
+      <showCompleteGraphicalHistory>true</showCompleteGraphicalHistory>
+      <reevalTranslatablesOnUpdate>false</reevalTranslatablesOnUpdate>
+      <preActionMandatoryUserSteps/>
+      <allowInitiatorEditParticipants>false</allowInitiatorEditParticipants>
+      <allowParticipantsEditParticipants>false</allowParticipantsEditParticipants>
+      <globalCreationTask>false</globalCreationTask>
+      <enableAutoClaim>true</enableAutoClaim>
+      <workflowConditions/>
+      <taskSequenceTypes>USERAPPROVALS</taskSequenceTypes>
+      <taskSequenceTypes>AGGREGATE</taskSequenceTypes>
+   </workflowConfiguration>
+</taskDefinition>

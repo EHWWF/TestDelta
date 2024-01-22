@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<adapter-config name="ResponseService" adapter="aq" wsdlLocation="ResponseService.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+  
+  <connection-factory location="eis/AQ/IPMSPool" UIConnectionName="IPMSDatabase"/>
+  <endpoint-interaction portType="enqueue_ptt" operation="enqueue">
+    <interaction-spec className="oracle.tip.adapter.aq.outbound.AQEnqueueInteractionSpec">
+      <property name="QueueName" value="RESPONSE_AQ"/>
+      <property name="DatabaseSchema" value="IPMS_DATA"/>
+    </interaction-spec>
+  </endpoint-interaction>
+
+</adapter-config>

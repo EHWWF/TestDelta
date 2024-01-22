@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="import-study">
+    <template-reference>
+      <document id="__2">/WEB-INF/com.bayer.ipms.view/templates/ipms-taskflow-template-page.xml</document>
+      <id id="__1">ipms-taskflow-template-page</id>
+    </template-reference>
+    <default-activity id="__34">SetCurrentRowWithKeyValue</default-activity>
+    <transaction id="__81">
+      <requires-transaction/>
+    </transaction>
+    <data-control-scope id="__82">
+      <isolated/>
+    </data-control-scope>
+    <input-parameter-definition id="__21">
+      <name id="__4">projectId</name>
+      <value>#{pageFlowScope.projectId}</value>
+      <class>java.lang.String</class>
+      <required/>
+    </input-parameter-definition>
+    <managed-bean id="__23">
+      <managed-bean-name id="__25">importStudyBean</managed-bean-name>
+      <managed-bean-class id="__24">com.bayer.ipms.view.beans.ImportStudyBean</managed-bean-class>
+      <managed-bean-scope id="__22">pageFlow</managed-bean-scope>
+    </managed-bean>
+    <view id="import-study3">
+      <page>/WEB-INF/com.bayer.ipms.view/fragments/import-study.jspx</page>
+    </view>
+    <task-flow-return id="ok">
+      <outcome id="__8">
+        <name>ok</name>
+        <commit/>
+      </outcome>
+    </task-flow-return>
+    <task-flow-return id="cance">
+      <outcome id="__12">
+        <name>cance</name>
+        <rollback/>
+      </outcome>
+    </task-flow-return>
+    <method-call id="CreateWithParameters">
+      <method>#{bindings.CreateWithParams.execute}</method>
+      <outcome id="__29">
+        <fixed-outcome>CreateWithParams</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="cancel">
+      <method>#{bindings.cancel.execute}</method>
+      <outcome id="__32">
+        <fixed-outcome>cancel</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="SetCurrentRowWithKeyValue">
+      <method>#{bindings.setCurrentRowWithKeyValue.execute}</method>
+      <outcome id="__33">
+        <fixed-outcome>setCurrentRowWithKeyValue</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="Commit">
+      <method>#{bindings.Commit.execute}</method>
+      <outcome id="__109">
+        <fixed-outcome>Commit</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="start">
+      <method>#{bindings.start.execute}</method>
+      <outcome id="__120">
+        <fixed-outcome>start</fixed-outcome>
+      </outcome>
+    </method-call>
+    <control-flow-rule id="__41">
+      <from-activity-id id="__42">import-study3</from-activity-id>
+      <control-flow-case id="__44">
+        <from-outcome id="__45">ok</from-outcome>
+        <to-activity-id id="__43">ok</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__35">
+      <from-activity-id id="__36">SetCurrentRowWithKeyValue</from-activity-id>
+      <control-flow-case id="__39">
+        <from-outcome id="__37">setCurrentRowWithKeyValue</from-outcome>
+        <to-activity-id id="__38">CreateWithParameters</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__60">
+      <from-activity-id id="__61">cancel</from-activity-id>
+      <control-flow-case id="__62">
+        <from-outcome id="__63">cancel</from-outcome>
+        <to-activity-id id="__64">cance</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__65">
+      <from-activity-id id="__66">*</from-activity-id>
+      <control-flow-case id="__68">
+        <from-outcome id="__69">cancel</from-outcome>
+        <to-activity-id id="__67">cancel</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__110">
+      <from-activity-id id="__111">CreateWithParameters</from-activity-id>
+      <control-flow-case id="__113">
+        <from-outcome id="__112">CreateWithParams</from-outcome>
+        <to-activity-id id="__114">Commit</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__121">
+      <from-activity-id id="__122">Commit</from-activity-id>
+      <control-flow-case id="__124">
+        <from-outcome id="__123">Commit</from-outcome>
+        <to-activity-id id="__125">start</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__126">
+      <from-activity-id id="__127">start</from-activity-id>
+      <control-flow-case id="__128">
+        <from-outcome id="__130">start</from-outcome>
+        <to-activity-id id="__129">import-study3</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+  </task-flow-definition>
+</adfc-config>

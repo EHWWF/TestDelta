@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="project-view">
+    <template-reference>
+      <document id="__2">/WEB-INF/com.bayer.ipms.view/templates/ipms-taskflow-template-fragment.xml</document>
+      <id id="__1">ipms-taskflow-template-fragment</id>
+    </template-reference>
+    <default-activity id="__3">view</default-activity>
+    <input-parameter-definition id="__15">
+      <name>projectType</name>
+      <value>#{pageFlowScope.projectType}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <managed-bean id="__50">
+      <managed-bean-name id="__47">projectViewBean</managed-bean-name>
+      <managed-bean-class id="__48">com.bayer.ipms.view.beans.ProjectViewBean</managed-bean-class>
+      <managed-bean-scope id="__49">pageFlow</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__34">
+      <managed-bean-name>tppBean</managed-bean-name>
+      <managed-bean-class>com.bayer.ipms.view.beans.TppBean</managed-bean-class>
+      <managed-bean-scope>pageFlow</managed-bean-scope>
+    </managed-bean>
+    <exception-handler id="__17">handleException</exception-handler>
+    <view id="view">
+      <page>/WEB-INF/com.bayer.ipms.view/fragments/project-view.jsff</page>
+    </view>
+    <task-flow-call id="import-view">
+      <task-flow-reference>
+        <document>/WEB-INF/com.bayer.ipms.view/flows/import-view.xml</document>
+        <id>import-view</id>
+      </task-flow-reference>
+      <input-parameter id="__18">
+        <name>projectId</name>
+        <value>#{requestScope.projectId}</value>
+      </input-parameter>
+      <run-as-dialog>
+        <display-type id="__41">
+          <inline-popup/>
+        </display-type>
+      </run-as-dialog>
+    </task-flow-call>
+    <task-flow-call id="import-run">
+      <task-flow-reference>
+        <document>/WEB-INF/com.bayer.ipms.view/flows/import-run.xml</document>
+        <id>import-run</id>
+      </task-flow-reference>
+      <input-parameter id="__4">
+        <name>projectId</name>
+        <value>#{requestScope.projectId}</value>
+      </input-parameter>
+      <input-parameter id="__22">
+        <name>importSource</name>
+        <value>#{requestScope.importSource}</value>
+      </input-parameter>
+      <input-parameter id="__39">
+        <name>projectName</name>
+        <value>#{requestScope.projectName}</value>
+      </input-parameter>
+      <input-parameter id="__40">
+        <name>projectCode</name>
+        <value>#{requestScope.projectCode}</value>
+      </input-parameter>
+      <input-parameter id="__42">
+        <name>projectIsLead</name>
+        <value>#{requestScope.projectIsLead}</value>
+      </input-parameter>
+      <run-as-dialog>
+        <display-type id="__12">
+          <inline-popup/>
+        </display-type>
+      </run-as-dialog>
+    </task-flow-call>
+    <task-flow-call id="import-study">
+      <task-flow-reference>
+        <document>/WEB-INF/com.bayer.ipms.view/flows/import-study.xml</document>
+        <id>import-study</id>
+      </task-flow-reference>
+      <input-parameter id="__27">
+        <name>projectId</name>
+        <value>#{requestScope.projectId}</value>
+      </input-parameter>
+      <run-as-dialog>
+        <display-type id="__26">
+          <inline-popup/>
+        </display-type>
+      </run-as-dialog>
+    </task-flow-call>
+    <task-flow-call id="ltc-provide">
+      <task-flow-reference>
+        <document>/WEB-INF/com.bayer.ipms.view/flows/ltc-provide.xml</document>
+        <id>ltc-provide</id>
+      </task-flow-reference>
+      <input-parameter id="__32">
+        <name>projectId</name>
+        <value>#{requestScope.projectId}</value>
+      </input-parameter>
+      <input-parameter id="__33">
+        <name>objectName</name>
+        <value>#{requestScope.projectQualifiedName}</value>
+      </input-parameter>
+      <run-as-dialog>
+        <display-type id="__31">
+          <inline-popup/>
+        </display-type>
+      </run-as-dialog>
+    </task-flow-call>
+        <task-flow-call id="maintain-goals">
+      <task-flow-reference>
+        <document>/WEB-INF/com.bayer.ipms.view/flows/maintain-goals.xml</document>
+        <id>maintain-goals</id>
+      </task-flow-reference>
+      <input-parameter id="__ss32">
+        <name>programGoalId</name>
+        <value>#{pageFlowScope.projectViewBean.programGoalId}</value>
+      </input-parameter>
+      <input-parameter id="__7">
+        <name>programId</name>
+        <value>#{pageFlowScope.projectViewBean.programId}</value>
+      </input-parameter>
+      <input-parameter id="__52">
+        <name>projectId</name>
+        <value>#{pageFlowScope.projectViewBean.projectId}</value>
+      </input-parameter>
+      <run-as-dialog>
+        <display-type>
+          <inline-popup/>
+        </display-type>
+      </run-as-dialog>
+    </task-flow-call>
+
+    <task-flow-call id="import-missing-studies">
+      <task-flow-reference>
+        <document>/WEB-INF/com.bayer.ipms.view/flows/import-missing-studies.xml</document>
+        <id>import-missing-studies</id>
+      </task-flow-reference>
+      <input-parameter id="__35">
+        <name>projectId</name>
+        <value>#{requestScope.projectId}</value>
+      </input-parameter>
+      <input-parameter id="__14">
+        <name>studyId</name>
+        <value>#{requestScope.studyId}</value>
+      </input-parameter>
+      <run-as-dialog>
+        <display-type>
+          <inline-popup/>
+        </display-type>
+      </run-as-dialog>
+    </task-flow-call>
+    <task-flow-call id="maintain-lead-studies">
+      <task-flow-reference>
+        <document>/WEB-INF/com.bayer.ipms.view/flows/maintain-lead-studies.xml</document>
+        <id>setup-lead-study</id>
+      </task-flow-reference>
+      <input-parameter id="__16">
+        <name>projectCode</name>
+        <value>#{requestScope.projectCode}</value>
+      </input-parameter>
+      <input-parameter id="__19">
+        <name>projectName</name>
+        <value>#{requestScope.projectName}</value>
+      </input-parameter>
+      <run-as-dialog>
+        <display-type>
+          <inline-popup/>
+        </display-type>
+      </run-as-dialog>
+    </task-flow-call>
+    <task-flow-call id="remove-studies">
+      <task-flow-reference>
+        <document>/WEB-INF/com.bayer.ipms.view/flows/remove-studies.xml</document>
+        <id>remove-study</id>
+      </task-flow-reference>
+      <input-parameter id="__37">
+        <name>projectCode</name>
+        <value>#{requestScope.projectCode}</value>
+      </input-parameter>
+      <input-parameter id="__38">
+        <name>projectName</name>
+        <value>#{requestScope.projectName}</value>
+      </input-parameter>
+      <run-as-dialog>
+        <display-type>
+          <inline-popup/>
+        </display-type>
+      </run-as-dialog>
+    </task-flow-call>
+    <task-flow-call id="activities-set-phases">
+      <task-flow-reference>
+        <document>/WEB-INF/com.bayer.ipms.view/flows/activities-set-phases.xml</document>
+        <id>activities-set-phases</id>
+      </task-flow-reference>
+      <input-parameter id="__44">
+        <name>projectCode</name>
+        <value>#{requestScope.projectCode}</value>
+      </input-parameter>
+      <input-parameter id="__45">
+        <name>projectName</name>
+        <value>#{requestScope.projectName}</value>
+      </input-parameter>
+      <input-parameter id="__46">
+        <name>projectId</name>
+        <value>#{requestScope.projectId}</value>
+      </input-parameter>
+      <run-as-dialog>
+        <display-type>
+          <inline-popup/>
+        </display-type>
+      </run-as-dialog>
+    </task-flow-call>
+    <control-flow-rule id="__6">
+      <from-activity-id id="__s7">view</from-activity-id>
+      <control-flow-case id="__8">
+        <from-outcome id="__9">import-view</from-outcome>
+        <to-activity-id id="__51">import-view</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__10">
+        <from-outcome id="__11">import-run</from-outcome>
+        <to-activity-id id="__5">import-run</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__24">
+        <from-outcome id="__25">import-study</from-outcome>
+        <to-activity-id id="__23">import-study</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__28">
+        <from-outcome id="__30">ltc-provide</from-outcome>
+        <to-activity-id id="__29">ltc-provide</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__36">
+        <from-outcome>import-missing-studies</from-outcome>
+        <to-activity-id>import-missing-studies</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__13">
+        <from-outcome>setup-lead-studies</from-outcome>
+        <to-activity-id>maintain-lead-studies</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__20">
+        <from-outcome>remove-studies</from-outcome>
+        <to-activity-id>remove-studies</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__43">
+        <from-outcome>activities-set-phases</from-outcome>
+        <to-activity-id>activities-set-phases</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__21">
+        <from-outcome>maintain-goals</from-outcome>
+        <to-activity-id>maintain-goals</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

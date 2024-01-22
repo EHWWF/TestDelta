@@ -1,0 +1,1 @@
+alter table ltc_estimate modify (is_manual number(1) default 1);

@@ -1,0 +1,17 @@
+//Groovy Scripts for com.bayer.ipms.model.views.LeadStudyMapView
+
+package com.bayer.ipms.model.views
+
+import oracle.jbo.script.annotation.ValidatorExpression;
+
+@ValidatorExpression(name="IsDrvMlstnAvailable", attributeName="LsiId2")
+def LsiId2_IsDrvMlstnAvailable_ValidationRuleScript_ValidationRule()
+{
+if (NewStudyWbsId!=null){
+if (DrvMlstnCode=="3200") {return FpfvActivityId!=null}
+else if (DrvMlstnCode=="3500") {return LpfvActivityId!=null}
+else if (DrvMlstnCode=="3604") {return PCActivityId!=null}
+else {return LplvActivityId!=null}
+} else return true
+}
+

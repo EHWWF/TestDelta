@@ -1,0 +1,247 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:dvt="http://xmlns.oracle.com/dss/adf/faces" xmlns:h="http://java.sun.com/jsf/html">
+    <?audit suppress oracle.ide.xml.validation-error?>
+    <af:componentDef>
+        <c:set var="bundle" value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+        <af:panelStretchLayout topHeight="auto" styleClass="AFStretchWidth">
+            <f:facet name="top"></f:facet>
+            <f:facet name="center">
+                <af:panelBox text="#{bundle.projectCostsFromCSGED}" showDisclosure="false" styleClass="AFStretchWidth"
+                             type="stretch">
+                    <af:panelStretchLayout id="dc_psl1">
+                        <f:facet name="bottom"/>
+                        <f:facet name="center">
+                            <dvt:pivotTable id="pt2" value="#{bindings.CostsSophiaPivotView.pivotTableModel}"
+                                            summary="sophia costs" modelName="pt1Model" var="cellData"
+                                            varStatus="cellStatus" splitMode="enabled" styleClass="AFStretchWidth"
+                                            contentDelivery="lazy" layerLabelMode="rendered" columnFetchSize="28"
+                                            sizing="auto" inlineStyle="table-layout:inherit; height:auto;"
+                                            scrollPolicy="scroll" rowFetchSize="65">
+                                <dvt:headerCell>
+                                    <af:switcher facetName="#{cellData.layerName}" defaultFacet="Default" id="dc_s1">
+                                        <f:facet name="DataLayer">
+                                            <af:outputText value="#{cellData.label}" id="dc_ot1"/>
+                                        </f:facet>
+                                        <f:facet name="Year">
+                                            <af:outputText value="#{cellData.dataValue}" id="dc_ot2">
+                                                <af:convertNumber groupingUsed="false"
+                                                                  pattern="#{bindings.CostsSophiaPivotView.hints.Year.format}"/>
+                                            </af:outputText>
+                                        </f:facet>                                        
+                                        <f:facet name="TypeCode">
+                                            <af:outputText value="#{cellData.dataValue}" id="dc_ot4"/>
+                                        </f:facet>
+                                        <f:facet name="MethodCode">
+                                            <af:outputText value="#{cellData.dataValue}" id="dc_ot5"/>
+                                        </f:facet>
+                                        <f:facet name="ScopeCode">
+                                            <af:outputText value="#{cellData.dataValue}" id="dc_ot6"/>
+                                        </f:facet>
+                                        <f:facet name="Default">
+                                            <af:outputText value="#{cellData.dataValue}" id="dc_ot9"/>
+                                        </f:facet>
+                                        <f:facet name="ProjectName">
+                                            <af:outputText value="#{cellData.dataValue}" id="dc_ot10"/>
+                                        </f:facet>
+                                        <f:facet name="FunctionName">
+                                            <af:outputText value="#{cellData.dataValue}" id="dc_ot12"/>
+                                        </f:facet>
+                                        <f:facet name="StudyName">
+                                            <af:outputText value="#{cellData.dataValue}" id="dc_ot7"/>
+                                        </f:facet>
+                                        <f:facet name="Activity">
+                                            <af:outputText value="#{cellData.dataValue}" id="dc_ot72"/>
+                                        </f:facet>
+                                        
+                                    </af:switcher>
+                                </dvt:headerCell>
+                                <dvt:dataCell inlineStyle="min-width:9ch;">
+                                    <af:switcher facetName="#{cellStatus.members.DataLayer.value}"
+                                                 defaultFacet="Default" id="dc_s2">
+                                        <f:facet name="Cost">
+                                            <af:outputText value="#{cellData.dataValue}" id="dc_ot3">
+                                                <af:convertNumber groupingUsed="false"
+                                                                  pattern="#{bindings.CostsSophiaPivotView.hints.Cost.format}"/>
+                                            </af:outputText>
+                                        </f:facet>
+                                        <f:facet name="Default">
+                                            <af:outputText value="#{cellData.dataValue}" id="dc_ot11"/>
+                                        </f:facet>
+                                    </af:switcher>
+                                </dvt:dataCell>
+                            </dvt:pivotTable>
+                        </f:facet>
+                        <f:facet name="start">
+                            <af:table value="#{bindings.CostSophiaPivotExportView.collectionModel}" var="row"
+                                      rows="#{bindings.CostSophiaPivotExportView.rangeSize}"
+                                      emptyText="#{bindings.CostSophiaPivotExportView.viewable ? 'No data to display.' : 'Access Denied.'}"
+                                      rowBandingInterval="0" fetchSize="#{bindings.CostSophiaPivotExportView.rangeSize}"
+                                      id="costs_sophia" rendered="false">
+                                <af:column headerText="Project Name" id="dc_c1">
+                                    <af:inputText value="#{row.bindings.ProjectName.inputValue}"
+                                                  label="#{bindings.CostSophiaPivotExportView.hints.ProjectName.label}"
+                                                  required="#{bindings.CostSophiaPivotExportView.hints.ProjectName.mandatory}"
+                                                  columns="#{bindings.CostSophiaPivotExportView.hints.ProjectName.displayWidth}"
+                                                  maximumLength="#{bindings.CostSophiaPivotExportView.hints.ProjectName.precision}"
+                                                  shortDesc="#{bindings.CostSophiaPivotExportView.hints.ProjectName.tooltip}"
+                                                  id="dc_it1">
+                                        <f:validator binding="#{row.bindings.ProjectName.validator}"/>
+                                    </af:inputText>
+                                </af:column>
+                                <af:column headerText="Study Name" id="dc_c2">
+                                    <af:inputText value="#{row.bindings.StudyName.inputValue}"
+                                                  label="#{bindings.CostSophiaPivotExportView.hints.StudyName.label}"
+                                                  required="#{bindings.CostSophiaPivotExportView.hints.StudyName.mandatory}"
+                                                  columns="#{bindings.CostSophiaPivotExportView.hints.StudyName.displayWidth}"
+                                                  maximumLength="#{bindings.CostSophiaPivotExportView.hints.StudyName.precision}"
+                                                  shortDesc="#{bindings.CostSophiaPivotExportView.hints.StudyName.tooltip}"
+                                                  id="dc_it2">
+                                        <f:validator binding="#{row.bindings.StudyName.validator}"/>
+                                    </af:inputText>
+                                </af:column>
+                                     <af:column headerText="Activity" id="dc_c22">
+                                    <af:inputText value="#{row.bindings.ProjectActivityId.inputValue}"
+                                                  label="#{bindings.CostSophiaPivotExportView.hints.ProjectActivityId.label}"
+                                                  required="#{bindings.CostSophiaPivotExportView.hints.ProjectActivityId.mandatory}"
+                                                  columns="#{bindings.CostSophiaPivotExportView.hints.ProjectActivityId.displayWidth}"
+                                                  maximumLength="#{bindings.CostSophiaPivotExportView.hints.ProjectActivityId.precision}"
+                                                  shortDesc="#{bindings.CostSophiaPivotExportView.hints.ProjectActivityId.tooltip}"
+                                                  id="dc_it22">
+                                        <f:validator binding="#{row.bindings.ProjectActivityId.validator}"/>
+                                    </af:inputText>
+                                </af:column>
+                                <af:column headerText="Function Name" id="dc_c3">
+                                    <af:inputText value="#{row.bindings.FunctionName.inputValue}"
+                                                  label="#{bindings.CostSophiaPivotExportView.hints.FunctionName.label}"
+                                                  required="#{bindings.CostSophiaPivotExportView.hints.FunctionName.mandatory}"
+                                                  columns="#{bindings.CostSophiaPivotExportView.hints.FunctionName.displayWidth}"
+                                                  maximumLength="#{bindings.CostSophiaPivotExportView.hints.FunctionName.precision}"
+                                                  shortDesc="#{bindings.CostSophiaPivotExportView.hints.FunctionName.tooltip}"
+                                                  id="dc_it3">
+                                        <f:validator binding="#{row.bindings.FunctionName.validator}"/>
+                                    </af:inputText>
+                                </af:column>
+                                <af:column headerText="Subfunction Name" id="dc_c4">
+                                    <af:inputText value="#{row.bindings.SubfunctionName.inputValue}"
+                                                  label="#{bindings.CostSophiaPivotExportView.hints.SubfunctionName.label}"
+                                                  required="#{bindings.CostSophiaPivotExportView.hints.SubfunctionName.mandatory}"
+                                                  columns="#{bindings.CostSophiaPivotExportView.hints.SubfunctionName.displayWidth}"
+                                                  maximumLength="#{bindings.CostSophiaPivotExportView.hints.SubfunctionName.precision}"
+                                                  shortDesc="#{bindings.CostSophiaPivotExportView.hints.SubfunctionName.tooltip}"
+                                                  id="dc_it4">
+                                        <f:validator binding="#{row.bindings.SubfunctionName.validator}"/>
+                                    </af:inputText>
+                                </af:column>
+                                <af:column headerText="Scope" id="dc_c5">
+                                    <af:inputText value="#{row.bindings.ScopeCode.inputValue}"
+                                                  label="#{bindings.CostSophiaPivotExportView.hints.ScopeCode.label}"
+                                                  required="#{bindings.CostSophiaPivotExportView.hints.ScopeCode.mandatory}"
+                                                  columns="#{bindings.CostSophiaPivotExportView.hints.ScopeCode.displayWidth}"
+                                                  maximumLength="#{bindings.CostSophiaPivotExportView.hints.ScopeCode.precision}"
+                                                  shortDesc="#{bindings.CostSophiaPivotExportView.hints.ScopeCode.tooltip}"
+                                                  id="dc_it5">
+                                        <f:validator binding="#{row.bindings.ScopeCode.validator}"/>
+                                    </af:inputText>
+                                </af:column>
+                                <af:column headerText="Method" id="dc_c6">
+                                    <af:inputText value="#{row.bindings.MethodCode.inputValue}"
+                                                  label="#{bindings.CostSophiaPivotExportView.hints.MethodCode.label}"
+                                                  required="#{bindings.CostSophiaPivotExportView.hints.MethodCode.mandatory}"
+                                                  columns="#{bindings.CostSophiaPivotExportView.hints.MethodCode.displayWidth}"
+                                                  maximumLength="#{bindings.CostSophiaPivotExportView.hints.MethodCode.precision}"
+                                                  shortDesc="#{bindings.CostSophiaPivotExportView.hints.MethodCode.tooltip}"
+                                                  id="dc_it6">
+                                        <f:validator binding="#{row.bindings.MethodCode.validator}"/>
+                                    </af:inputText>
+                                </af:column>
+                                <af:column headerText="Type" id="dc_c7">
+                                    <af:inputText value="#{row.bindings.TypeCode.inputValue}"
+                                                  label="#{bindings.CostSophiaPivotExportView.hints.TypeCode.label}"
+                                                  required="#{bindings.CostSophiaPivotExportView.hints.TypeCode.mandatory}"
+                                                  columns="#{bindings.CostSophiaPivotExportView.hints.TypeCode.displayWidth}"
+                                                  maximumLength="#{bindings.CostSophiaPivotExportView.hints.TypeCode.precision}"
+                                                  shortDesc="#{bindings.CostSophiaPivotExportView.hints.TypeCode.tooltip}"
+                                                  id="dc_it7">
+                                        <f:validator binding="#{row.bindings.TypeCode.validator}"/>
+                                    </af:inputText>
+                                </af:column>
+                                <af:column headerText="#{bindings.CostSophiaPivotExportView.hints.Year.label}"
+                                           id="dc_c9">
+                                    <af:inputText value="#{row.bindings.Year.inputValue}"
+                                                  label="#{bindings.CostSophiaPivotExportView.hints.Year.label}"
+                                                  required="#{bindings.CostSophiaPivotExportView.hints.Year.mandatory}"
+                                                  columns="#{bindings.CostSophiaPivotExportView.hints.Year.displayWidth}"
+                                                  maximumLength="#{bindings.CostSophiaPivotExportView.hints.Year.precision}"
+                                                  shortDesc="#{bindings.CostSophiaPivotExportView.hints.Year.tooltip}"
+                                                  id="dc_it8">
+                                        <f:validator binding="#{row.bindings.Year.validator}"/>
+                                        <af:convertNumber groupingUsed="false"
+                                                          pattern="#{bindings.CostSophiaPivotExportView.hints.Year.format}"/>
+                                    </af:inputText>
+                                </af:column>
+                                <af:column headerText="#{bindings.CostSophiaPivotExportView.hints.Month.label}"
+                                           id="dc_c10">
+                                    <af:inputText value="#{row.bindings.Month.inputValue}"
+                                                  label="#{bindings.CostSophiaPivotExportView.hints.Month.label}"
+                                                  required="#{bindings.CostSophiaPivotExportView.hints.Month.mandatory}"
+                                                  columns="#{bindings.CostSophiaPivotExportView.hints.Month.displayWidth}"
+                                                  maximumLength="#{bindings.CostSophiaPivotExportView.hints.Month.precision}"
+                                                  shortDesc="#{bindings.CostSophiaPivotExportView.hints.Month.tooltip}"
+                                                  id="dc_it9">
+                                        <f:validator binding="#{row.bindings.Month.validator}"/>
+                                    </af:inputText>
+                                </af:column>
+                                <af:column headerText="#{bindings.CostSophiaPivotExportView.hints.Cost.label}"
+                                           id="dc_c11">
+                                    <af:inputText value="#{row.bindings.Cost.inputValue}"
+                                                  label="#{bindings.CostSophiaPivotExportView.hints.Cost.label}"
+                                                  required="#{bindings.CostSophiaPivotExportView.hints.Cost.mandatory}"
+                                                  columns="#{bindings.CostSophiaPivotExportView.hints.Cost.displayWidth}"
+                                                  maximumLength="#{bindings.CostSophiaPivotExportView.hints.Cost.precision}"
+                                                  shortDesc="#{bindings.CostSophiaPivotExportView.hints.Cost.tooltip}"
+                                                  id="dc_it10">
+                                        <f:validator binding="#{row.bindings.Cost.validator}"/>
+                                        <af:convertNumber groupingUsed="false"
+                                                          pattern="#{bindings.CostSophiaPivotExportView.hints.Cost.format}"/>
+                                    </af:inputText>
+                                </af:column>
+                            </af:table>
+                        </f:facet>
+                        <f:facet name="end"/>
+                        <f:facet name="top">
+                            <dvt:pivotFilterBar id="pfb1" value="#{bindings.CostsSophiaPivotView.pivotFilterBarModel}"
+                                                modelName="pt1Model" styleClass="AFStretchWidth"
+                                                filterLabelVisible="true"/>
+                        </f:facet>
+                    </af:panelStretchLayout>
+                    <f:facet name="toolbar">
+                        <af:toolbar id="dc_t1">
+                            <af:button icon="/images/export.png" text="#{bundle.globalDownload}">
+                                <af:setActionListener from="pt2" to="#{viewScope['exportId']}"/>
+                                <af:setActionListener from="border:1px solid #f2f2f2;background-color:none"
+                                                      to="#{viewScope['tableHeaderStyle']}"/>
+                                <af:setActionListener from="border:1px solid #f2f2f2;background-color:none"
+                                                      to="#{viewScope['tableDataStyle']}"/>
+                                <af:fileDownloadActionListener filename="Costs_FPS.xls"
+                                                               contentType="text/html;charset=UTF-8"
+                                                               method="#{utilsBean.exportToExcelPivot}"/>
+                            </af:button>
+                          <af:button icon="/images/export.png" text="#{bundle.globalDownloadAllData}">
+                                <af:setActionListener from="pt2" to="#{viewScope['exportId']}"/>
+                                <af:setActionListener from="border:1px solid #f2f2f2;background-color:none"
+                                                      to="#{viewScope['tableHeaderStyle']}"/>
+                                <af:setActionListener from="border:1px solid #f2f2f2;background-color:none"
+                                                      to="#{viewScope['tableDataStyle']}"/>
+                                <af:fileDownloadActionListener filename="Cost_FPS_all-data.xls"
+                                                               contentType="text/html;charset=UTF-8"
+                                                               method="#{utilsBean.exportVOCostFPSToExcel}"/>
+                            </af:button>                            
+                        </af:toolbar>
+                    </f:facet>
+                </af:panelBox>
+            </f:facet>
+        </af:panelStretchLayout>
+    </af:componentDef>
+</jsp:root>

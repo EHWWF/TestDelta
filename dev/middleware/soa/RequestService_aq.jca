@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<adapter-config name="RequestService" adapter="aq" wsdlLocation="RequestService.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+  
+  <connection-factory location="eis/AQ/IPMSPool" UIConnectionName="IPMSDatabase"/>
+  <endpoint-activation portType="dequeue_ptt" operation="dequeue">
+    <activation-spec className="oracle.tip.adapter.aq.inbound.AQDequeueActivationSpec">
+      <property name="QueueName" value="REQUEST_AQ"/>
+      <property name="DatabaseSchema" value="IPMS_DATA"/>
+    </activation-spec>
+  </endpoint-activation>
+
+</adapter-config>

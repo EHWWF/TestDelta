@@ -1,0 +1,47 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
+<wsdl:definitions
+     name="CreateProject"
+     targetNamespace="http://xmlns.bayer.com/ipms/soa"
+     xmlns:ns2="http://xmlns.oracle.com/Primavera/P6/V18.8.4/API/BusinessObjects"
+     xmlns:ns1="http://xmlns.bayer.com/ipms/soa"
+     xmlns:plnk="http://schemas.xmlsoap.org/ws/2003/05/partner-link/"
+     xmlns:ns3="http://xmlns.bayer.com/ipms/cache"
+     xmlns:client="http://xmlns.bayer.com/ipms/soa"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    >
+    <plnk:partnerLinkType name="CreateProject">
+        <plnk:role name="CreateProjectProvider">
+            <plnk:portType name="client:CreateProject"/>
+        </plnk:role>
+        <plnk:role name="CreateProjectRequester">
+            <plnk:portType name="client:CreateProjectCallback"/>
+        </plnk:role>
+    </plnk:partnerLinkType>
+    <wsdl:types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema">
+            <import namespace="http://xmlns.bayer.com/ipms/soa" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/soa/soa.xsd"/>
+        </schema>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:import namespace="http://xmlns.oracle.com/Primavera/P6/V18.8.4/API/BusinessObjects" schemaLocation="oramds:/apps/com/oracle/xmlns/Primavera/P6/V18.8.4/API/BusinessObjects/p6apibo.xsd"/>
+        </xsd:schema>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:import namespace="http://xmlns.bayer.com/ipms/cache" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/cache/cache.xsd"/>
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:message name="CreateProjectRequestMessage">
+        <wsdl:part name="payload" element="ns1:create"/>
+    </wsdl:message>
+    <wsdl:message name="CreateProjectResponseMessage">
+        <wsdl:part name="payload" element="ns1:response"/>
+    </wsdl:message>
+    <wsdl:portType name="CreateProject">
+        <wsdl:operation name="process">
+            <wsdl:input message="ns1:CreateProjectRequestMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:portType name="CreateProjectCallback">
+        <wsdl:operation name="callback">
+            <wsdl:input message="ns1:CreateProjectResponseMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+</wsdl:definitions>

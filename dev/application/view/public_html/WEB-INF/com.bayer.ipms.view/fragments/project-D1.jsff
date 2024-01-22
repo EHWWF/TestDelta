@@ -1,0 +1,451 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:h="http://java.sun.com/jsf/html">
+    <c:set var="bundle" value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+    <af:pageTemplate viewId="/WEB-INF/com.bayer.ipms.view/templates/ipms-content-template.jspx" id="page">
+        <f:facet name="content">
+            <af:panelStretchLayout topHeight="auto" bottomHeight="0" styleClass="AFStretchWidth" id="content"
+                                   inlineStyle="height:100%;">
+                <f:facet name="top"></f:facet>
+                <f:facet name="center">
+                    <af:panelTabbed id="tools" dimensionsFrom="parent">
+                        <af:showDetailItem text="#{bundle.projectD1Imported}" immediate="true"
+                                           rendered="#{rolesBean.projectViewD1}" id="sdi2"
+                                           disclosureListener="#{pageFlowScope.projectD1ViewBean.onProjectD1TabDiscl}"
+                                           stretchChildren="first">
+                            <af:panelStretchLayout topHeight="auto" bottomHeight="0" styleClass="AFStretchWidth"
+                                                   id="contentD1">
+                                <f:facet name="top">
+                                    <af:query id="qryId1" headerText="#{bundle.globalFilter}" disclosed="true"
+                                              value="#{bindings.ProjectD1FilterQuery.queryDescriptor}"
+                                              model="#{bindings.ProjectD1FilterQuery.queryModel}"
+                                              queryListener="#{bindings.ProjectD1FilterQuery.processQuery}"
+                                              queryOperationListener="#{bindings.ProjectD1FilterQuery.processQueryOperation}"
+                                              modeChangeVisible="false" saveQueryMode="hidden"
+                                              searchButtonText="#{bundle.globalFilter}" labelAlignment="start"
+                                              resultComponentId="::pcolD1a" rows="1" maxColumns="5"/>
+                                </f:facet>
+                                <f:facet name="center">
+                                    <af:panelBox id="pcolD1a" showDisclosure="false"
+                                                 styleClass="AFStretchWidth AFStretchHeight" type="stretch">
+                                        <f:facet name="toolbar">
+                                            <af:toolbar id="tools123">
+                                                <af:group>
+                                                    <af:button id="prjD1Untypify" text="#{bundle.globalUntypify}"
+                                                               icon="/images/undo.png" immediate="true"
+                                                               rendered="#{rolesBean.projectTypified and not empty pageFlowScope.projectD1ViewBean.editable}">
+                                                        <af:showPopupBehavior popupId="popUntypify"
+                                                                              triggerType="action"/>
+                                                    </af:button>
+                                                </af:group>
+                                                <af:group>
+                                                    <af:button rendered="#{empty pageFlowScope.projectD1ViewBean.editable and rolesBean.projectEditD1 }"
+                                                               icon="/images/edit.png" immediate="true"
+                                                               actionListener="#{pageFlowScope.projectD1ViewBean.onEdit}"
+                                                               text="#{bundle.globalEdit}" id="prjD1edit">
+                                                        <f:attribute name="target" value="prjD1trg"/>
+                                                    </af:button>
+                                                    <af:button rendered="#{not empty pageFlowScope.projectD1ViewBean.editable}"
+                                                               icon="/images/commit.png"
+                                                               actionListener="#{pageFlowScope.projectD1ViewBean.onCommit}"
+                                                               text="#{bundle.globalOk}" id="prjD1ok"/>
+                                                    <af:button rendered="#{not empty pageFlowScope.projectD1ViewBean.editable}"
+                                                               icon="/images/rollback.png"
+                                                               actionListener="#{pageFlowScope.projectD1ViewBean.onD1Rollback}"
+                                                               immediate="true" text="#{bundle.globalCancel}"
+                                                               id="prD1cancel"/>
+                                                </af:group>
+                                            </af:toolbar>
+                                        </f:facet>
+                                        <af:table value="#{bindings.ProjectD1View.collectionModel}" var="row"
+                                                  rows="#{bindings.ProjectD1View.rangeSize}"
+                                                  emptyText="#{bindings.ProjectD1View.viewable ? 'No data to display.' : 'Access Denied.'}"
+                                                  rowBandingInterval="0" fetchSize="#{bindings.ProjectD1View.rangeSize}"
+                                                  id="tbPrjD1"
+                                                  selectedRowKeys="#{bindings.ProjectD1View.collectionModel.selectedRow}"
+                                                  selectionListener="#{bindings.ProjectD1View.collectionModel.makeCurrent}"
+                                                  rowSelection="single" summary=" " autoHeightRows="0"
+                                                  columnStretching="column:c3"
+                                                  editingMode="#{pageFlowScope.projectD1ViewBean.editable eq 'prjD1trg'}"
+                                                  styleClass="AFStretchHeight">
+                                            <af:column headerText="#{bundle.projectD1Id}" id="c2"
+                                                       sortProperty="#{bindings.ProjectD1View.hints.Code.name}"
+                                                       sortable="true" rowHeader="true" align="left" width="50">
+                                                <af:outputText value="#{row.Code}"
+                                                               shortDesc="#{bindings.ProjectD1View.hints.Code.tooltip}"
+                                                               id="ot8"/>
+                                            </af:column>
+                                            <af:column headerText="#{bindings.ProjectD1View.hints.Name.label}" id="c3"
+                                                       sortProperty="#{bindings.ProjectD1View.hints.Name.name}"
+                                                       sortable="true" width="130">
+                                                <af:outputText value="#{row.Name}"
+                                                               shortDesc="#{bindings.ProjectD1View.hints.Name.tooltip}"
+                                                               id="ot6"/>
+                                            </af:column>
+                                            <af:column headerText="#{bundle.projectD1Active}"
+                                                       id="c20"
+                                                       sortProperty="#{bindings.ProjectD1View.hints.IsActive.name}"
+                                                       sortable="true" width="30" inlineStyle="text-align:center;">
+                                                <af:selectBooleanCheckbox value="#{row.IsActive}"
+                                                                          label="#{row.bindings.IsActive.label}"
+                                                                          shortDesc="#{bindings.ProjectD1View.hints.IsActive.tooltip}"
+                                                                          disabled="#{empty pageFlowScope.projectD1ViewBean.editable}"
+                                                                          id="sbc1" partialTriggers="collab"/>
+                                            </af:column>
+                                            <af:column headerText="#{bindings.ProjectD1View.hints.Trg.label}" id="c4"
+                                                       sortProperty="#{bindings.ProjectD1View.hints.Trg.name}"
+                                                       sortable="true" width="150">
+                                                <af:outputText value="#{row.Trg}"
+                                                               shortDesc="#{bindings.ProjectD1View.hints.Trg.tooltip}"
+                                                               id="ot5"/>
+                                            </af:column>
+                                            <af:column headerText="#{bindings.ProjectD1View.hints.Er.label}" id="c5"
+                                                       sortProperty="#{bindings.ProjectD1View.hints.Er.name}"
+                                                       sortable="true" width="150">
+                                                <af:outputText value="#{row.Er}"
+                                                               shortDesc="#{bindings.ProjectD1View.hints.Er.tooltip}"
+                                                               id="ot1"/>
+                                            </af:column>
+                                            <af:column headerText="#{bindings.ProjectD1View.hints.TargetGeneCode.label}"
+                                                       id="c6"
+                                                       sortProperty="#{bindings.ProjectD1View.hints.TargetGeneCode.name}"
+                                                       sortable="true">
+                                                <af:outputText value="#{row.TargetGeneCode}"
+                                                               shortDesc="#{bindings.ProjectD1View.hints.TargetGeneCode.tooltip}"
+                                                               id="ot4"/>
+                                            </af:column>
+                                            <af:column sortProperty="#{bindings.ProjectD1View.hints.TcCode.name}"
+                                                       sortable="true"
+                                                       headerText="#{bindings.ProjectD1View.hints.TcCode.label}"
+                                                       id="c26">
+                                                <af:selectOneChoice value="#{row.bindings.TcCode.inputValue}"
+                                                                    label="#{bindings.ProjectD1View.hints.TcCode.label}"
+                                                                    partialTriggers="collab"
+                                                                    required="#{bindings.ProjectD1View.hints.TcCode.mandatory}"
+                                                                    unselectedLabel="#{bundle.globalNotAvailable}"
+                                                                    readOnly="#{empty pageFlowScope.projectD1ViewBean.editable}"
+                                                                    styleClass="#{empty pageFlowScope.projectD1ViewBean.editable and row.bindings.TcCode.inputValue eq null ? 'empty' : ''}"
+                                                                    id="soc3">
+                                                    <f:selectItems value="#{utilsBean.lookup[bindings.ProjectD1ViewIterator.currentRow.targetClassView]}"
+                                                                   id="dc_si7"/>
+                                                </af:selectOneChoice>
+                                            </af:column>
+                                            <af:column sortProperty="#{bindings.ProjectD1View.hints.ToCode.name}"
+                                                       sortable="true"
+                                                       headerText="#{bindings.ProjectD1View.hints.ToCode.label}"
+                                                       id="c27">
+                                                <af:selectOneChoice value="#{row.bindings.ToCode.inputValue}"
+                                                                    label="#{bindings.ProjectD1View.hints.ToCode.label}"
+                                                                    partialTriggers="collab"
+                                                                    required="#{bindings.ProjectD1View.hints.ToCode.mandatory}"
+                                                                    unselectedLabel="#{bundle.globalNotAvailable}"
+                                                                    readOnly="#{empty pageFlowScope.projectD1ViewBean.editable}"
+                                                                    styleClass="#{empty pageFlowScope.projectD1ViewBean.editable and row.bindings.ToCode.inputValue eq null ? 'empty' : ''}"
+                                                                    id="soc4">
+                                                    <f:selectItems value="#{utilsBean.lookup[bindings.ProjectD1ViewIterator.currentRow.targetOriginView]}"
+                                                                   id="dc_si9"/>
+                                                </af:selectOneChoice>
+                                            </af:column>
+                                            <af:column headerText="#{bindings.ProjectD1View.hints.DetailsModality.label}"
+                                                       id="c7"
+                                                       sortable="true"
+                                                       sortProperty="#{bindings.ProjectD1View.hints.DetailsModality.name}">
+                                              
+                                                              
+                                                 <af:selectManyChoice id="smcPhP" value="#{row.row.detailsModalityCodes}"
+                                                        label=""
+                                                        contentStyle="white-space: normal;"
+                                                        simple="true"  partialTriggers="collab" autoSubmit="true"
+                                                        required="#{bindings.DetailsModality.hints.mandatory}"
+                                                        shortDesc="#{bindings.DetailsModality.hints.tooltip}"
+                                                        readOnly="#{empty pageFlowScope.projectD1ViewBean.editable }">
+                                                            <f:selectItems value="#{utilsBean.lookup[bindings.ProjectD1ViewIterator.currentRow.projectModalityView]}"
+                                                                                   id="siPhP"/>
+                                                </af:selectManyChoice>
+                                            </af:column>
+                                            <af:column sortProperty="#{bindings.ProjectD1View.hints.SourceCode.name}"
+                                                       sortable="true"
+                                                       headerText="#{bindings.ProjectD1View.hints.SourceCode.label}"
+                                                       id="c22">
+                                                <af:selectOneChoice value="#{row.bindings.SourceCode.inputValue}"
+                                                                    label="#{bindings.ProjectD1View.hints.SourceCode.label}"
+                                                                    required="#{bindings.ProjectD1View.hints.SourceCode.mandatory}"
+                                                                    unselectedLabel="#{bundle.globalNotAvailable}"
+                                                                    partialTriggers="collab"
+                                                                    readOnly="#{empty pageFlowScope.projectD1ViewBean.editable}"
+                                                                    styleClass="#{empty pageFlowScope.projectD1ViewBean.editable and row.bindings.SourceCode.inputValue eq null ? 'empty' : ''}"
+                                                                    id="soc2">
+                                                    <f:selectItems value="#{utilsBean.lookup[bindings.ProjectD1ViewIterator.currentRow.projectSourceView]}"
+                                                                   id="dc_si6"/>
+                                                </af:selectOneChoice>
+                                            </af:column>
+                                            <af:column sortProperty="#{bindings.ProjectD1View.hints.SubstanceTypeCode.name}"
+                                                       sortable="true"
+                                                       headerText="#{bindings.ProjectD1View.hints.SubstanceTypeCode.label}"
+                                                       id="c21">
+                                                <af:selectOneChoice value="#{row.bindings.SubstanceTypeCode.inputValue}"
+                                                                    label="#{row.bindings.SubstanceTypeCode.label}"
+                                                                    partialTriggers="collab"
+                                                                    readOnly="#{empty pageFlowScope.projectD1ViewBean.editable}"
+                                                                    unselectedLabel="#{bundle.globalNotAvailable}"
+                                                                    styleClass="#{empty pageFlowScope.projectD1ViewBean.editable and row.bindings.SubstanceTypeCode.inputValue eq null ? 'empty' : ''}"
+                                                                    id="soc5">
+                                                    <f:selectItems value="#{utilsBean.lookup[bindings.ProjectD1ViewIterator.currentRow.substanceTypeView]}"
+                                                                   id="dc_si8"/>
+                                                </af:selectOneChoice>
+                                            </af:column>
+                                            <af:column headerText="#{bundle.projectD1DecisionDate}" id="c8"
+                                                       sortProperty="#{bindings.ProjectD1View.hints.D1DecisionDate.name}"
+                                                       sortable="true" width="80">
+                                                <af:inputDate value="#{row.bindings.D1DecisionDate.inputValue}"
+                                                              partialTriggers="collab"
+                                                              required="#{bindings.ProjectD1View.hints.D1DecisionDate.mandatory}"
+                                                              columns="#{bindings.ProjectD1View.hints.D1DecisionDate.displayWidth}"
+                                                              shortDesc="#{bindings.ProjectD1View.hints.D1DecisionDate.tooltip}"
+                                                              id="id1"
+                                                              readOnly="#{empty pageFlowScope.projectD1ViewBean.editable}">
+                                                    <f:validator binding="#{row.bindings.D1DecisionDate.validator}"/>
+                                                    <af:convertDateTime pattern="#{bindings.ProjectD1View.hints.D1DecisionDate.format}"/>
+                                                </af:inputDate>
+                                            </af:column>
+                                            <af:column headerText="#{bindings.ProjectD1View.hints.StartHtsDate.label}"
+                                                       id="c9"
+                                                       sortProperty="#{bindings.ProjectD1View.hints.StartHtsDate.name}"
+                                                       sortable="true" width="80">
+                                                <af:inputDate value="#{row.bindings.StartHtsDate.inputValue}"
+                                                              partialTriggers="collab"
+                                                              required="#{bindings.ProjectD1View.hints.StartHtsDate.mandatory}"
+                                                              columns="#{bindings.ProjectD1View.hints.StartHtsDate.displayWidth}"
+                                                              shortDesc="#{bindings.ProjectD1View.hints.StartHtsDate.tooltip}"
+                                                              id="id2"
+                                                              readOnly="#{empty pageFlowScope.projectD1ViewBean.editable}">
+                                                    <f:validator binding="#{row.bindings.StartHtsDate.validator}"/>
+                                                    <af:convertDateTime pattern="#{bindings.ProjectD1View.hints.StartHtsDate.format}"/>
+                                                </af:inputDate>
+                                            </af:column>
+                                            <af:column headerText="#{bindings.ProjectD1View.hints.LsaDate.label}"
+                                                       id="c16"
+                                                       sortProperty="#{bindings.ProjectD1View.hints.LsaDate.name}"
+                                                       sortable="true" width="80">
+                                                <af:inputDate value="#{row.bindings.LsaDate.inputValue}"
+                                                              partialTriggers="collab"
+                                                              required="#{bindings.ProjectD1View.hints.LsaDate.mandatory}"
+                                                              columns="#{bindings.ProjectD1View.hints.LsaDate.displayWidth}"
+                                                              shortDesc="#{bindings.ProjectD1View.hints.LsaDate.tooltip}"
+                                                              readOnly="#{empty pageFlowScope.projectD1ViewBean.editable}"
+                                                              id="id3">
+                                                    <f:validator binding="#{row.bindings.LsaDate.validator}"/>
+                                                    <af:convertDateTime pattern="#{bindings.ProjectD1View.hints.LsaDate.format}"/>
+                                                </af:inputDate>
+                                            </af:column>
+                                            <af:column sortProperty="#{bindings.ProjectD1View.hints.D2PlannedDate.name}"
+                                                       sortable="true"
+                                                       headerText="#{bindings.ProjectD1View.hints.D2PlannedDate.label}"
+                                                       id="c24" width="80">
+                                                <af:inputDate value="#{row.bindings.D2PlannedDate.inputValue}"
+                                                              label="#{bindings.ProjectD1View.hints.D2PlannedDate.label}"
+                                                              partialTriggers="collab"
+                                                              required="#{bindings.ProjectD1View.hints.D2PlannedDate.mandatory}"
+                                                              columns="#{bindings.ProjectD1View.hints.D2PlannedDate.displayWidth}"
+                                                              readOnly="#{empty pageFlowScope.projectD1ViewBean.editable}"
+                                                              shortDesc="#{bindings.ProjectD1View.hints.D2PlannedDate.tooltip}"
+                                                              id="id6">
+                                                    <f:validator binding="#{row.bindings.D2PlannedDate.validator}"/>
+                                                    <af:convertDateTime pattern="#{bindings.ProjectD1View.hints.D2PlannedDate.format}"/>
+                                                </af:inputDate>
+                                            </af:column>
+                                            <af:column sortProperty="#{bindings.ProjectD1View.hints.D2AchievedDate.name}"
+                                                       sortable="true"
+                                                       headerText="#{bindings.ProjectD1View.hints.D2AchievedDate.label}"
+                                                       id="c25" width="80">
+                                                <af:inputDate value="#{row.bindings.D2AchievedDate.inputValue}"
+                                                              partialTriggers="collab"
+                                                              label="#{bindings.ProjectD1View.hints.D2AchievedDate.label}"
+                                                              required="#{bindings.ProjectD1View.hints.D2AchievedDate.mandatory}"
+                                                              columns="#{bindings.ProjectD1View.hints.D2AchievedDate.displayWidth}"
+                                                              readOnly="#{empty pageFlowScope.projectD1ViewBean.editable}"
+                                                              shortDesc="#{bindings.ProjectD1View.hints.D2AchievedDate.tooltip}"
+                                                              id="id5">
+                                                    <f:validator binding="#{row.bindings.D2AchievedDate.validator}"/>
+                                                    <af:convertDateTime pattern="#{bindings.ProjectD1View.hints.D2AchievedDate.format}"/>
+                                                </af:inputDate>
+                                            </af:column>
+                                            <af:column headerText="#{bundle.projectD1TerminationDate}"
+                                                       sortProperty="#{bindings.ProjectD1View.hints.TerminationDate.name}"
+                                                       sortable="true" id="c17" width="80">
+                                                <af:inputDate value="#{row.bindings.TerminationDate.inputValue}"
+                                                              partialTriggers="collab"
+                                                              required="#{bindings.ProjectD1View.hints.TerminationDate.mandatory}"
+                                                              columns="#{bindings.ProjectD1View.hints.TerminationDate.displayWidth}"
+                                                              shortDesc="#{bindings.ProjectD1View.hints.TerminationDate.tooltip}"
+                                                              readOnly="#{empty pageFlowScope.projectD1ViewBean.editable}"
+                                                              id="id4">
+                                                    <f:validator binding="#{row.bindings.TerminationDate.validator}"/>
+                                                    <af:convertDateTime pattern="#{bindings.ProjectD1View.hints.TerminationDate.format}"/>
+                                                </af:inputDate>
+                                            </af:column>
+                                            <af:column headerText="#{bundle.projectD1TerminationReason}"
+                                                       sortProperty="#{bindings.ProjectD1View.hints.TerminationCode.name}"
+                                                       sortable="true" id="c18" width="150">
+                                                <af:selectOneChoice value="#{row.bindings.TerminationCode.inputValue}"
+                                                                    label="#{bundle.projectD1TerminationReason}"
+                                                                    partialTriggers="collab" id="soc9"
+                                                                    unselectedLabel="#{bundle.globalNotAvailable}"
+                                                                    readOnly="#{empty pageFlowScope.projectD1ViewBean.editable}">
+                                                    <f:selectItems value="#{row.bindings.TerminationCode.items}"
+                                                                   id="si1"/>
+                                                    <f:validator binding="#{row.bindings.TerminationCode.validator}"/>
+                                                </af:selectOneChoice>
+                                            </af:column>
+                                            <af:column sortProperty="#{bindings.ProjectD1View.hints.PtrForD2Code.name}"
+                                                       sortable="true"
+                                                       headerText="#{bindings.ProjectD1View.hints.PtrForD2Code.label}"
+                                                       id="c23" width="60">
+                                                <af:selectOneChoice value="#{row.bindings.PtrForD2Code.inputValue}"
+                                                                    label="#{row.bindings.PtrForD2Code.label}"
+                                                                    partialTriggers="collab"
+                                                                    required="#{bindings.ProjectD1View.hints.PtrForD2Code.mandatory}"
+                                                                    readOnly="#{empty pageFlowScope.projectD1ViewBean.editable}"
+                                                                    shortDesc="#{bindings.ProjectD1View.hints.PtrForD2Code.tooltip}"
+                                                                    id="soc1">
+                                                    <f:selectItems value="#{row.bindings.PtrForD2Code.items}" id="si2"/>
+                                                    <f:validator binding="#{row.bindings.PtrForD2Code.validator}"/>
+                                                </af:selectOneChoice>
+                                            </af:column>
+                                            <af:column sortProperty="#{bindings.ProjectD1View.hints.IsCollaboration.name}"
+                                                       sortable="true"
+                                                       headerText="#{bindings.ProjectD1View.hints.IsCollaboration.label}"
+                                                       id="c232" width="65">
+                                                <af:selectBooleanCheckbox value="#{row.bindings.IsCollaboration.inputValue}"
+                                                                          shortDesc="#{bindings.ProjectD1View.hints.IsCollaboration.tooltip}"
+                                                                          id="collab"
+                                                                          readOnly="#{empty pageFlowScope.projectD1ViewBean.editable}"
+                                                                          autoSubmit="true" immediate="true"/>
+                                            </af:column>
+                                            <af:column sortProperty="#{bindings.ProjectD1View.hints.DetailsPartner.name}"
+                                                       sortable="true"
+                                                       headerText="#{bindings.ProjectD1View.hints.DetailsPartner.label}"
+                                                       id="c233" width="200">
+                                                <af:outputText value="#{row.bindings.DetailsPartner.inputValue}"
+                                                               id="ot9"
+                                                               shortDesc="#{row.bindings.DetailsPartner.inputValue}"
+                                                               rendered="#{empty pageFlowScope.projectD1ViewBean.editable}"/>
+                                                <af:inputText value="#{row.bindings.DetailsPartner.inputValue}"
+                                                              id="it19"
+                                                              rendered="#{row.bindings.IsCollaboration.inputValue and not empty pageFlowScope.projectD1ViewBean.editable}"
+                                                              rows="3" wrap="off" partialTriggers="collab"/>
+                                            </af:column>
+                                            <af:column headerText="#{bundle.projectD1ImportDate}" id="c19" width="80">
+                                                <af:outputText value="#{row.CreateDate}"
+                                                               shortDesc="#{bindings.ProjectD1View.hints.CreateDate.tooltip}"
+                                                               id="ot7">
+                                                    <af:convertDateTime pattern="#{bindings.ProjectD1View.hints.CreateDate.format}"/>
+                                                </af:outputText>
+                                            </af:column>
+                                            <af:column sortProperty="#{bindings.ProjectD1View.hints.DetailsComment.name}"
+                                                       sortable="true"
+                                                       headerText="#{bindings.ProjectD1View.hints.DetailsComment.label}"
+                                                       id="c28" width="200">
+                                                <af:outputText value="#{row.bindings.DetailsComment.inputValue}"
+                                                               id="ot15"
+                                                               shortDesc="#{row.bindings.DetailsComment.inputValue}"
+                                                               rendered="#{empty pageFlowScope.projectD1ViewBean.editable}"/>
+                                                <af:inputText value="#{row.bindings.DetailsComment.inputValue}" id="it1"
+                                                              rendered="#{not empty pageFlowScope.projectD1ViewBean.editable}"
+                                                              rows="3" wrap="off" partialTriggers="collab"/>
+                                            </af:column>
+                                        </af:table>
+                                    </af:panelBox>
+                                </f:facet>
+                            </af:panelStretchLayout>
+                        </af:showDetailItem>
+                        <af:showDetailItem text="#{bundle.projectD1AvaliableForImp}" immediate="true"
+                                           rendered="#{rolesBean.projectImportD1}" id="sdi1" stretchChildren="first">
+                            <af:panelCollection id="pcol1" featuresOff="detach viewMenu statusBar"
+                                                styleClass="AFStretchWidth AFStretchHeight">
+                                <f:facet name="toolbar">
+                                    <af:toolbar id="tlbImpPrjD1Apply">
+                                        <af:commandToolbarButton icon="/images/apply-all.png"
+                                                                 text="#{bundle.globalApply}" id="cmdImpD1Apply"
+                                                                 actionListener="#{pageFlowScope.projectD1ViewBean.onImportD1}"></af:commandToolbarButton>
+                                    </af:toolbar>
+                                </f:facet>
+                                <af:table value="#{bindings.ImportD1View.collectionModel}" var="row"
+                                          emptyText="#{bindings.ImportD1View.viewable ? 'No data to display.' : 'Access Denied.'}"
+                                          rowBandingInterval="0" rows="#{bindings.ImportD1View.rangeSize}"
+                                          fetchSize="#{bindings.ImportD1View.rangeSize}" id="tbImpD1"
+                                          columnStretching="multiple" summary=" " autoHeightRows="0"
+                                          filterVisible="true"
+                                          filterModel="#{bindings.ImportD1ViewQuery.queryDescriptor}"
+                                          queryListener="#{bindings.ImportD1ViewQuery.processQuery}" varStatus="vs">
+                                    <af:column sortProperty="#{bindings.ImportD1View.hints.ProjectId.name}"
+                                               sortable="true"
+                                               headerText="#{bundle.projectD1Id}" id="c1"
+                                               rowHeader="true" width="5%" align="left" filterable="true">
+                                        <af:outputText value="#{row.ProjectId}"
+                                                       shortDesc="#{bindings.ImportD1View.hints.ProjectId.tooltip}"
+                                                       id="ot2">
+                                            <af:convertNumber groupingUsed="false"
+                                                              pattern="#{bindings.ImportD1View.hints.ProjectId.format}"/>
+                                        </af:outputText>
+                                    </af:column>
+                                    <af:column sortProperty="#{bindings.ImportD1View.hints.ProjectName.name}"
+                                               sortable="true"
+                                               headerText="#{bindings.ImportD1View.hints.ProjectName.label}" id="c10"
+                                               width="15%" filterable="true">
+                                        <af:outputText value="#{row.ProjectName}"
+                                                       shortDesc="#{bindings.ImportD1View.hints.ProjectName.tooltip}"
+                                                       id="ot10"/>
+                                    </af:column>
+                                    <af:column sortProperty="#{bindings.ImportD1View.hints.Trg.name}" sortable="true"
+                                               headerText="#{bindings.ImportD1View.hints.Trg.label}" id="c11"
+                                               width="15%" filterable="true">
+                                        <af:outputText value="#{row.Trg}"
+                                                       shortDesc="#{bindings.ImportD1View.hints.Trg.tooltip}"
+                                                       id="ot11"/>
+                                    </af:column>
+                                    <af:column sortProperty="#{bindings.ImportD1View.hints.Er.name}" sortable="true"
+                                               headerText="#{bindings.ImportD1View.hints.Er.label}" id="c12" width="20%"
+                                               filterable="true">
+                                        <af:outputText value="#{row.Er}"
+                                                       shortDesc="#{bindings.ImportD1View.hints.Er.tooltip}" id="ot12"/>
+                                    </af:column>
+                                    <af:column sortProperty="#{bindings.ImportD1View.hints.TargetGeneCode.name}"
+                                               sortable="true"
+                                               headerText="#{bindings.ImportD1View.hints.TargetGeneCode.label}" id="c13"
+                                               width="20%" filterable="true">
+                                        <af:outputText value="#{row.TargetGeneCode}"
+                                                       shortDesc="#{bindings.ImportD1View.hints.TargetGeneCode.tooltip}"
+                                                       id="ot13"/>
+                                    </af:column>
+                                    <af:column sortProperty="#{bindings.ImportD1View.hints.StatusCode.name}"
+                                               sortable="true"
+                                               headerText="#{bindings.ImportD1View.hints.StatusCode.label}" id="c15"
+                                               align="center" width="5%">
+                                        <af:selectBooleanCheckbox value="#{row.bindings.StatusCode.inputValue}"
+                                                                  label="#{bindings.ImportD1View.hints.StatusCode.label}"
+                                                                  shortDesc="#{bindings.ImportD1View.hints.StatusCode.tooltip}"
+                                                                  id="sbc2" autoSubmit="false"/>
+                                    </af:column>
+                                </af:table>
+                            </af:panelCollection>
+                        </af:showDetailItem>
+                    </af:panelTabbed>
+                </f:facet>
+            </af:panelStretchLayout>
+        </f:facet>
+        <f:attribute name="title" value="#{bundle.projectD1}"/>
+        <f:facet name="popup">
+            <af:group id="popups">
+                <af:popup id="popUntypify" contentDelivery="lazyUncached" rendered="#{rolesBean.projectTypified}">
+                    <af:dialog id="dlgReport" title="#{bundle.globalUntypify}"
+                               dialogListener="#{pageFlowScope.projectD1ViewBean.onUntypify}" contentWidth="500">
+                        <af:message message="#{bundle.projectUntypifyD1PrjConfirmation}" messageType="confirmation"
+                                    id="m5"/>
+                    </af:dialog>
+                </af:popup>
+            </af:group>
+        </f:facet>
+    </af:pageTemplate>
+</jsp:root>

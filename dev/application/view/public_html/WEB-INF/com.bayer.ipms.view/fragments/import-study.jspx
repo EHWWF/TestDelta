@@ -1,0 +1,167 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <c:set var="bundle"
+           value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+    <f:view>
+        <af:document id="d1" title="#{bundle.importPlaceholderFps}">
+            <af:messages id="m1"/>
+            <af:form id="f1">
+                <af:pageTemplate viewId="/WEB-INF/com.bayer.ipms.view/templates/ipms-popup-template.jspx"
+                                 id="pt1" partialTriggers="cmdRefresh cmdOk">
+                    <af:resource type="css">.depth0 { background-color:#CCFFCC;
+                                            } .depth1 {
+                                            background-color:#D7E1EE; } .depth2
+                                            { background-color:#FFB6C1; }
+                                            .depth3 { background-color:#F0E08C;
+                                            } .depth4 {
+                                            background-color:#D3D3D3; }</af:resource>
+                    <f:facet name="summary">
+                        <af:panelBox text="#{bundle.project}"
+                                     showDisclosure="true">
+                            <af:panelFormLayout styleClass="AFStretchWidth"
+                                                fieldWidth="100%" maxColumns="2"
+                                                rows="2">
+                                <af:panelLabelAndMessage label="#{bindings.ProjectCode.hints.label}">
+                                    <af:outputText value="#{bindings.ProjectCode.inputValue == null ? bundle.globalNotAvailable : bindings.ProjectCode.inputValue}"
+                                                   inlineStyle="font-weight:#{bindings.ProjectCode.inputValue == null ? 'bold' : 'normal'}; color:#{bindings.ProjectCode.inputValue == null ? 'red' : 'inherit'};"/>
+                                </af:panelLabelAndMessage>
+                                <af:panelLabelAndMessage label="#{bindings.ProjectName.hints.label}">
+                                    <af:outputText value="#{bindings.ProjectName.inputValue}"/>
+                                </af:panelLabelAndMessage>
+                                <af:panelLabelAndMessage label="#{bindings.ProjectIsLead.hints.label}">
+                                    <af:outputText value="#{bindings.ProjectIsLead.inputValue ? bundle.globalYes : bundle.globalNo}"/>
+                                </af:panelLabelAndMessage>
+                                <af:panelLabelAndMessage label="#{bundle.importStatus}"
+                                                         inlineStyle="white-space: nowrap;">
+                                    <af:outputText value="#{bindings.ImportStatusName.inputValue}"/>
+                                    <af:outputText value=" (#{bundle.importRefresh})"
+                                                   rendered="#{bindings.ImportStatusCode == 'NEW'}"/>
+                                </af:panelLabelAndMessage>
+                                <af:poll id="poll" interval="5000"
+                                         rendered="#{bindings.ImportIsSyncing.inputValue}"
+                                         pollListener="#{pageFlowScope.importStudyBean.onPoll}"
+                                         immediate="true"/>
+                            </af:panelFormLayout>
+                        </af:panelBox>
+                    </f:facet>
+                    <f:facet name="content">
+                        <af:panelBox text="#{bundle.importDetails}"
+                                     showDisclosure="false" type="stretch"
+                                     id="pb3">
+                            <af:panelStretchLayout topHeight="auto"
+                                                   bottomHeight="0">
+                                <f:facet name="top"></f:facet>
+                                <f:facet name="center">
+                                    <af:panelCollection id="pc1"
+                                                        styleClass="AFStretchWidth"
+                                                        featuresOff="detach statusBar">
+                                        <f:facet name="toolbar"></f:facet>
+                                        <af:treeTable value="#{bindings.ImportStudyDataView.treeModel}"
+                                                      var="node" id="tree"
+                                                      columnStretching="column:c2"
+                                                      fetchSize="#{bindings.ImportStudyDataViewIterator.rangeSize}"
+                                                      selectionListener="#{bindings.ImportStudyDataView.treeModel.makeCurrent}"
+                                                      autoHeightRows="12"
+                                                      rowSelection="single">
+                                            <f:facet name="nodeStamp">
+                                                <af:column id="c1"
+                                                           headerText="#{bindings.ImportStudyDataView.hints.StudyId.label}">
+                                                    <af:outputText value="#{node.StudyId}"
+                                                                   id="ot11"/>
+                                                </af:column>
+                                            </f:facet>
+                                            <af:column id="c2"
+                                                       headerText="#{bindings.ImportStudyDataView.hints.Name.label}">
+                                                <af:outputText value="#{node.Name}"
+                                                               id="ot12"/>
+                                            </af:column>
+                                            <af:column id="c3"
+                                                       headerText="#{bindings.ImportStudyDataView.hints.StatusName.label}">
+                                                <af:outputText value="#{node.StatusName}"
+                                                               id="ot13"
+                                                               inlineStyle="color:#{node.StatusCode == 'FAIL' ? 'red' : node.StatusCode != 'OLD' ? 'blue' : 'inherit'};"/>
+                                            </af:column>
+                                            <af:column id="c32" width="120"
+                                                       headerText="#{bindings.ImportStudyDataView.hints.IsExisting.label}">
+                                                <af:outputText value="#{node.IsExisting ? bundle.globalYes : bundle.globalNo}"
+                                                               id="ot132"/>
+                                            </af:column>
+                                            <af:column id="c11"
+                                                       headerText="#{bindings.ImportStudyDataView.hints.OldStartDate.label}">
+                                                <af:outputText value="#{node.OldStartDate}"
+                                                               id="ot111">
+                                                    <af:convertDateTime pattern="#{bindings.ImportStudyDataView.hints.OldStartDate.format}"/>
+                                                </af:outputText>
+                                            </af:column>
+                                            <af:column id="c12"
+                                                       headerText="#{bindings.ImportStudyDataView.hints.OldFinishDate.label}">
+                                                <af:outputText value="#{node.OldFinishDate}"
+                                                               id="ot112">
+                                                    <af:convertDateTime pattern="#{bindings.ImportStudyDataView.hints.OldFinishDate.format}"/>
+                                                </af:outputText>
+                                            </af:column>
+                                            <af:column id="c13"
+                                                       headerText="#{bindings.ImportStudyDataView.hints.StartDate.label}">
+                                                <af:outputText value="#{node.StartDate}"
+                                                               id="ot113">
+                                                    <af:convertDateTime pattern="#{bindings.ImportStudyDataView.hints.StartDate.format}"/>
+                                                </af:outputText>
+                                            </af:column>
+                                            <af:column id="c14"
+                                                       headerText="#{bindings.ImportStudyDataView.hints.FinishDate.label}">
+                                                <af:outputText value="#{node.FinishDate}"
+                                                               id="ot114">
+                                                    <af:convertDateTime pattern="#{bindings.ImportStudyDataView.hints.FinishDate.format}"/>
+                                                </af:outputText>
+                                            </af:column>
+                                            <af:column id="c21"
+                                                       headerText="#{bindings.ImportStudyDataView.hints.ActionCode.label}">
+                                                <af:selectOneChoice id="importAction"
+                                                                    disabled="#{bindings.ImportStatusCode != 'READY'}"
+                                                                    value="#{node.bindings.ActionCode.inputValue}"
+                                                                    visible="#{node.bindings.StatusCode == 'READY'}">
+                                                    <f:selectItems id="si2"
+                                                                   value="#{utilsBean.lookup[bindings.ImportStudyDataView.currentRow.importActionView1]}"/>
+                                                </af:selectOneChoice>
+                                            </af:column>
+                                        </af:treeTable>
+                                    </af:panelCollection>
+                                </f:facet>
+                            </af:panelStretchLayout>
+                        </af:panelBox>
+                    </f:facet>
+                    <f:facet name="controls">
+                        <af:panelGroupLayout layout="horizontal" halign="right"
+                                             id="pgl1">
+                            <f:facet name="separator">
+                                <af:spacer width="5" id="s12"/>
+                            </f:facet>
+                            <af:commandButton text="#{bundle.globalOk}"
+                                              id="cmdOk"
+                                              inlineStyle="font-weight:bold;"
+                                              action="#{pageFlowScope.importStudyBean.onSubmit}"
+                                              partialSubmit="true"
+                                              disabled="#{bindings.ImportStatusCode != 'READY'}"/>
+                            <af:commandButton text="#{bundle.globalRefresh}"
+                                              id="cmdRefresh" immediate="true"
+                                              disabled="#{bindings.ImportStatusCode == 'READY' or not bindings.ImportIsSyncing.inputValue}"
+                                              action="#{pageFlowScope.importStudyBean.onRefresh}"/>
+                            <af:commandButton text="#{bundle.globalCancel}"
+                                              id="cmdCancel"
+                                              rendered="#{bindings.ImportStatusCode != 'DONE' and bindings.ImportStatusCode != 'SEND'}"
+                                              action="cancel" immediate="true"/>
+                            <af:commandButton text="#{bundle.globalClose}"
+                                              id="cmdClose"
+                                              rendered="#{bindings.ImportStatusCode == 'DONE' or bindings.ImportStatusCode == 'SEND'}"
+                                              action="ok" immediate="true"/>
+                        </af:panelGroupLayout>
+                    </f:facet>
+                </af:pageTemplate>
+            </af:form>
+        </af:document>
+    </f:view>
+</jsp:root>

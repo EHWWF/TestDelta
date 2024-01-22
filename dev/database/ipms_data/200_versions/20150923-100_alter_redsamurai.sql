@@ -1,0 +1,1 @@
+alter table redsam_audit_queries modify (bindvars varchar2(4000));

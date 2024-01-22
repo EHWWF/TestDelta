@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.22.48"
+                id="team_members_view2_team_members_view2_reQueryPageDef" Package="com.bayer.ipms.view.flows"
+                SkipValidation="true">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator id="TeamMemberViewIterator"
+              Binds="ProgramAppModule.TeamMemberView" ChangeEventPolicy="none"
+              DataControl="PrivateAppModuleDataControl" RangeSize="25" Refresh="never"/>
+  </executables>
+  <bindings/>
+</pageDefinition>

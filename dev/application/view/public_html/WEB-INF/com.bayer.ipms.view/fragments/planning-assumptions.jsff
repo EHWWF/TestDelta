@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <c:set var="bundle" value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+    <af:panelSplitter id="dc_ps1" styleClass="AFStretchWidth AFStretchHeight"
+                      splitterPosition="250">
+      <f:facet name="first">
+        <af:panelAccordion id="pa1" rendered="#{securityContext.userInRole['PlanningAssumptionsView']}">
+          <af:showDetailItem text="#{bundle.requestAll}" id="navAll"
+                             stretchChildren="first">
+            <f:facet name="toolbar">
+              <af:menuBar id="toolbar" partialTriggers="cmdRefresh">
+                <af:commandMenuItem id="cmdNew" icon="/images/start.png"
+                                    useWindow="true"
+                                    text="#{bundle.planningAssumpReqStart}"
+                                    windowWidth="900" immediate="true"
+                                    rendered="#{securityContext.userInRole['PlanningAssumptionsStart']}"
+                                    windowHeight="600"
+                                    returnListener="#{PlanningAssumptionBean.onStartReturn}"
+                                    visible="#{bindings.LastPlanAssumptionStatusCode.currentRow == null or bindings.LastPlanAssumptionStatusCode.inputValue=='FIN'}"
+                                    action="plan-assumption-request-start"/>
+                <af:commandMenuItem id="cmdRefresh" icon="/images/reload.png"
+                                    text="#{bundle.globalRefresh}"
+                                    immediate="true"
+                                    action="#{PlanningAssumptionBean.onTreeRefresh}"/>
+              </af:menuBar>
+            </f:facet>
+            <af:tree value="#{bindings.PlanAssumptionRequestView.treeModel}"
+                     var="node"
+                     selectionListener="#{bindings.PlanAssumptionRequestView.treeModel.makeCurrent}"
+                     rowSelection="single" id="tree"
+                     selectedRowKeys="#{bindings.PlanAssumptionRequestView.collectionModel.selectedRow}"
+                     contentDelivery="immediate"
+                     displayRow="first"
+                     fetchSize="#{bindings.PlanAssumptionRequestView.rangeSize}"
+                     partialTriggers="::cmdNew ::cmdRefresh">
+              <f:facet name="nodeStamp">
+                <af:group id="dc_g1">
+                  <af:outputText value="#{node}" id="dc_ot1"/>
+                </af:group>
+              </f:facet>
+            </af:tree>
+          </af:showDetailItem>
+        </af:panelAccordion>
+      </f:facet>
+      <f:facet name="second">
+        <af:declarativeComponent id="paView" viewId="planning-assumptions-view.jsff"/>
+      </f:facet>
+    </af:panelSplitter>
+</jsp:root>

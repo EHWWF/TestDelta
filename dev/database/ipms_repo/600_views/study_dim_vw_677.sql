@@ -1,0 +1,135 @@
+CREATE OR REPLACE FORCE EDITIONABLE VIEW "IPMS_REPO"."STUDY_DIM_VW" ("STUDY_ID", "LATEST_STUDY", "WBS_ID", "PROJECT_ID", "TIMELINE_ID", "TIMELINE_TYPE_CODE", "NAME", "STUDY_NAME", "PHASE", "START_DATE", "FINISH_DATE", "FPFV", "LPLV", "DMC_PLAN", "DMC_ACTUAL", "STATUS_CODE", "STATUS", "IS_OBLIGATION", "IS_PROBING", "IS_GPDC_APPROVED", "MMU_CODE", "MMU_NAME", "STUDY_MODUS_NAME", "CLIN_PLAN_TYPE", "PLAN_PATIENTS", "ACTUAL_PATIENTS", "STUDY_UNIT_COUNT", "STUDY_UNIT_COUNT_PLAN", "INT_EXT_FLAG", "CSRAPP", "PRCOMPL", "CDBLOCK", "IS_LEAD", "FTE_AVG", "IS_TIMELINE_AUTO_IMPORT") AS 
+  select
+	cast(study_id as varchar2(100)) study_id,
+	latest_study,
+	cast(wbs_id as varchar2(100)) wbs_id,
+	project_id,
+	cast(timeline_id as varchar2(20)) timeline_id,
+	--baseline_id,
+	--root_timeline_id,
+	cast(timeline_type_code as varchar2(10)) timeline_type_code,
+	cast(name as varchar2(100)) name,
+	cast(replace(study_name,nvl(study_id,'#')||': ') as varchar2(120)) study_name,
+	cast(phase as varchar2(100)) phase,
+	start_date,
+	finish_date,
+	fpfv,
+	lplv,
+	dmc_plan,
+	dmc_actual,
+	status_code,
+	status,
+	is_obligation,
+	is_probing,
+	is_gpdc_approved,
+	mmu_code,
+	mmu_name,
+	study_modus_name,
+	clin_plan_type,
+	plan_patients,
+	actual_patients,
+	study_unit_count,
+	study_unit_count_plan,
+	int_ext_flag,
+	csrapp,
+	prcompl,
+	cdblock,
+	is_lead,
+	fte_avg,
+    is_timeline_auto_import
+from (
+	select
+		to_char(s.id) as study_id,--UDF
+		--decode(sd.rank,1,1,0) as latest_study,
+		decode(sd.timeline_type_code,null,0,1) as latest_study,
+		s.wbs_id,--WBS
+		s.project_id,
+		s.timeline_id,
+		null baseline_id,
+		s.timeline_id as root_timeline_id,
+		s.timeline_type_code,
+		s.name,--WBS
+		s.study_name,
+		s.phase,--UDF
+		s.start_date,--WBS
+		s.finish_date,--WBS
+		s.fpfv,--Activity
+		s.lplv,--Activity
+		s.dmc_plan,
+		s.dmc_actual,
+		s.status_code,
+		status.name as status,
+		is_obligation,
+		is_probing,
+		is_gpdc_approved,
+		therapeutic_group_code as mmu_code,
+		therapeutic_group_desc as mmu_name,
+		study_modus_name,
+		clin_plan_type,
+		s.plan_patients,
+		s.actual_patients,
+		s.study_unit_count,
+		s.study_unit_count_plan,
+		s.int_ext_flag,
+		s.csrapp,
+		s.prcompl,
+		s.cdblock,
+		s.is_lead,
+		s.fte_avg,
+        s.is_timeline_auto_import
+	from ipms_data.study_data_vw s
+	left join (
+		select timeline_type_code, project_id, id from (
+			select
+				row_number() over(partition by sd.id,sd.project_id order by sd.timeline_type_code) as rank,
+				sd.timeline_type_code,
+				sd.project_id,
+				sd.id
+			from ipms_data.study_data_vw sd
+			where sd.timeline_type_code in ('APR','CUR','RAW')
+		) where rank=1
+	) sd on (sd.timeline_type_code=s.timeline_type_code and sd.project_id=s.project_id and sd.id=s.id)
+	left join ipms_data.study_status status on (status.code = s.status_code)
+		union all
+	select
+		s.id as study_id,
+		0 latest_study,
+		s.wbs_id,
+		s.project_id,
+		to_nchar(s.timeline_id) as timeline_id,
+		s.baseline_id,
+		s.root_timeline_id,
+		to_nchar(s.timeline_type_code),
+		s.name,
+		s.study_name,
+		s.phase,
+		s.start_date,
+		s.finish_date,
+		s.fpfv,
+		s.lplv,
+		s.dmc_plan,
+		s.dmc_actual,
+		s.status_code,
+		status.name as status,
+		is_obligation,
+		is_probing,
+		is_gpdc_approved,
+		therapeutic_group_code as mmu_code,
+		therapeutic_group_desc as mmu_name,
+		study_modus_name,
+		clin_plan_type,
+		to_number(s.plan_patients) as plan_patients,
+		to_number(s.actual_patients) as actual_patients,
+		to_number(s.study_unit_count) as study_unit_count,
+		to_number(s.study_unit_count_plan) as study_unit_count_plan,
+		s.int_ext_flag,
+		s.csrapp,
+		s.prcompl,
+		s.cdblock,
+		s.is_lead,
+		to_number(s.fte_avg),--to_number(replace(s.fte_avg,'.',',')) as fte_avg, --from XML we got . but e.g. from Sophia we got comma. DE - must be comma,but during deployment via ANT ...NLS must be explicetly set: ToDo
+        to_number(s.is_timeline_auto_import)
+    from ipms_data.baseline_study_data_vw s
+	left join ipms_data.study_status status on (status.code = s.status_code)
+	where replace(s.id,' ') is not null--there were some strange cases when ID from Baseline was just spacebar
+);

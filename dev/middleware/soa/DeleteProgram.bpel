@@ -1,0 +1,258 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Wed Jul 03 13:36:37 CEST 2013
+  Author:  algis
+  Type: BPEL 2.0 Process
+  Purpose: Synchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="DeleteProgram"
+               targetNamespace="http://xmlns.bayer.com/ipms/soa"
+               xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+               xmlns:client="http://xmlns.bayer.com/ipms/soa"
+               xmlns:ora="http://schemas.oracle.com/xpath/extension"
+               xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ns1="http://xmlns.oracle.com/Primavera/P6/WS/EPS/V1"
+         xmlns:ns2="http://xmlns.bayer.com/ipms/soa"
+         xmlns:ns3="http://xmlns.bayer.com/ipms"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:ns4="http://xmlns.oracle.com/Primavera/P6/WS/OBS/V1" xmlns:ui="http://xmlns.oracle.com/soa/designer">
+
+    
+    <!-- 
+	<import namespace="http://xmlns.oracle.com/ipms_mw/ipms_soa/DeleteProgram" location="DeleteProgram.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        PARTNERLINKS                                                      
+        List of services participating in this BPEL process               
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+  <import namespace="http://xmlns.bayer.com/ipms/soa" location="DeleteProgram.wsdl"
+          importType="http://schemas.xmlsoap.org/wsdl/" ui:processWSDL="true"/>
+  <partnerLinks>
+    <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+    <partnerLink name="DeleteProgramService"
+                 partnerLinkType="client:DeleteProgram" myRole="DeleteProgramProvider"
+                 partnerRole="DeleteProgramRequester"/>
+    <partnerLink name="EPSService" partnerLinkType="ns1:EPSService"
+                 partnerRole="EPSPortType"/>
+    <partnerLink name="OBSService" partnerLinkType="ns4:OBSService"
+                 partnerRole="OBSPortType"/>
+  </partnerLinks>
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      VARIABLES                                                        
+      List of messages and XML documents used within this BPEL process 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <variables>
+    <!-- Reference to the message passed as input during initiation -->
+    <variable name="inputVariable" messageType="client:DeleteProgramRequestMessage"/>
+    <!-- Reference to the message that will be returned to the requester-->
+    <variable name="outputVariable" messageType="client:DeleteProgramResponseMessage"/>
+    <variable name="ReadEpsIn" messageType="ns1:ReadEPS"/>
+    <variable name="ReadEpsOut" messageType="ns1:ReadEPSResponse"/>
+    <variable name="DeleteEpsIn" messageType="ns1:DeleteEPS"/>
+    <variable name="DeleteEpsOut" messageType="ns1:DeleteEPSResponse"/>
+    <variable name="DeleteOBSin" messageType="ns4:DeleteOBS"/>
+    <variable name="DeleteOBSout" messageType="ns4:DeleteOBSResponse"/>
+    <variable name="ReadOBSin" messageType="ns4:ReadOBS"/>
+    <variable name="ReadOBSout" messageType="ns4:ReadOBSResponse"/>
+    <variable name="faultVariable" messageType="client:DeleteProgramResponseMessage"/>    
+  </variables>
+  <faultHandlers>
+    <catchAll>
+      <sequence name="MainCatchAll">
+        <compensate name="CompensateAll"/>
+        <assign name="assignFaultOutput">
+          <copy>
+            <from>ora:getFaultAsString()</from>
+            <to>$faultVariable.payload/ns3:error/ns3:description</to>
+          </copy>
+          <copy>
+            <from>ora:getFaultName()</from>
+            <to>$faultVariable.payload/ns3:error/ns3:code</to>
+          </copy>
+          <copy>
+            <from>$inputVariable.payload/@id</from>
+            <to>$faultVariable.payload/ns3:error/@id</to>
+          </copy>
+          <copy>
+            <from>$inputVariable.payload/@id</from>
+            <to>$faultVariable.payload/@id</to>
+          </copy>
+        </assign>
+        <invoke name="callbackFaultOutput" bpelx:invokeAsDetail="no"
+                partnerLink="DeleteProgramService"
+                portType="client:DeleteProgramCallback" operation="callback"
+                inputVariable="faultVariable"/>
+      </sequence>
+    </catchAll>
+  </faultHandlers>
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC                                               
+     Set of activities coordinating the flow of messages across the    
+     services integrated within this business process                  
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <sequence name="main">
+
+    <!-- Receive input from requestor. (Note: This maps to operation defined in DeleteProgram.wsdl) -->
+    <receive name="receiveInput" partnerLink="DeleteProgramService" portType="client:DeleteProgram" operation="process" variable="inputVariable" createInstance="yes"/>
+    <flow name="EPSandOBS">
+      <sequence name="EPS">
+        <assign name="AssignRead">
+          <copy>
+            <from>'Id'</from>
+            <to>$ReadEpsIn.params/ns1:Field</to>
+          </copy>
+          <copy>
+            <from>concat("Id='",$inputVariable.payload/ns3:program/@id,"'")</from>
+            <to>$ReadEpsIn.params/ns1:Filter</to>
+          </copy>
+        </assign>
+        <invoke name="ReadEps" bpelx:invokeAsDetail="no"
+                partnerLink="EPSService" portType="ns1:EPSPortType"
+                operation="ReadEPS" inputVariable="ReadEpsIn"
+                outputVariable="ReadEpsOut"/>
+        <assign name="AssignDelete">
+          <copy>
+            <from>$ReadEpsOut.result/ns1:EPS/ns1:ObjectId</from>
+            <to>$DeleteEpsIn.params/ns1:ObjectId</to>
+          </copy>
+        </assign>
+      </sequence>
+      <sequence name="OBS">
+        <assign name="AssignReadOBS">
+          <copy>
+            <from>'Name'</from>
+            <to>$ReadOBSin.params/ns4:Field</to>
+          </copy>
+          <extensionAssignOperation>
+            <bpelx:insertAfter>
+              <bpelx:from><bpelx:literal><v1:Field xmlns:v1="http://xmlns.oracle.com/Primavera/P6/WS/OBS/V1">ParentObjectId</v1:Field></bpelx:literal></bpelx:from>
+              <bpelx:to>$ReadOBSin.params/ns4:Field</bpelx:to>
+            </bpelx:insertAfter>
+          </extensionAssignOperation>
+          <copy>
+            <from>concat("Name like '",$inputVariable.payload/ns3:program/@id,"-%'")</from>
+            <to>$ReadOBSin.params/ns4:Filter</to>
+          </copy>
+        </assign>
+        <invoke name="ReadOBS" bpelx:invokeAsDetail="no"
+                partnerLink="OBSService" portType="ns4:OBSPortType"
+                operation="ReadOBS" inputVariable="ReadOBSin"
+                outputVariable="ReadOBSout"/>
+        <assign name="AssignDeleteOBS">
+          <extensionAssignOperation>
+            <bpelx:copyList>
+              <bpelx:from>$ReadOBSout.result/ns4:OBS/ns4:ObjectId</bpelx:from>
+              <bpelx:to>$DeleteOBSin.params/ns4:ObjectId</bpelx:to>
+            </bpelx:copyList>
+          </extensionAssignOperation>
+        </assign>
+        <sequence name="DeleteOBS-SKIP-Count0">
+          <bpelx:skipCondition>count($DeleteOBSin.params/ns4:ObjectId)=0</bpelx:skipCondition>
+          <scope name="DeleteOBS" exitOnStandardFault="no">
+            <compensationHandler>
+              <scope name="CompensationOBS" exitOnStandardFault="no">
+                <variables>
+                  <variable name="CreateDeletedOBSIn"
+                            messageType="ns4:CreateOBS"/>
+                  <variable name="CreateDeletedOBSOut"
+                            messageType="ns4:CreateOBSResponse"/>
+                </variables>
+                <faultHandlers>
+                  <catchAll>
+                    <empty name="IgnoreCompensationError"/>
+                  </catchAll>
+                </faultHandlers>
+                <sequence name="CompensationOBS-SKIP">
+                  <bpelx:skipCondition>count($DeleteOBSin.params/ns4:ObjectId)=0</bpelx:skipCondition>
+                  <assign name="AssignStartRollback">
+                    <copy bpelx:insertMissingToData="yes">
+                      <from>'DeleteOBS'</from>
+                      <to>$faultVariable.payload/ns3:error/ns3:rollbacks/ns3:rollback/ns3:name</to>
+                    </copy>
+                    <copy bpelx:insertMissingToData="yes">
+                      <from>xp20:current-dateTime()</from>
+                      <to>$faultVariable.payload/ns3:error/ns3:rollbacks/ns3:rollback/ns3:startTime</to>
+                    </copy>
+                    <copy ignoreMissingFromData="yes"
+                          bpelx:insertMissingToData="yes">
+                      <from>$ReadOBSout.result/ns4:OBS</from>
+                      <to>$CreateDeletedOBSIn.params/ns4:OBS</to>
+                    </copy>
+                  </assign>
+                  <invoke name="CreateDeletedOBS" bpelx:invokeAsDetail="no"
+                          partnerLink="OBSService" portType="ns4:OBSPortType"
+                          operation="CreateOBS"
+                          inputVariable="CreateDeletedOBSIn"
+                          outputVariable="CreateDeletedOBSOut"/>
+                  <sequence name="AssignEndRollback-SKIP-Count0">
+                    <assign name="AssignEndRollback">
+                      <bpelx:skipCondition>count($CreateDeletedOBSOut.result/ns4:ObjectId)=0</bpelx:skipCondition>
+                      <copy bpelx:insertMissingToData="yes">
+                        <from>xp20:current-dateTime()</from>
+                        <to>$faultVariable.payload/ns3:error/ns3:rollbacks/ns3:rollback[ns3:name='DeleteOBS']/ns3:finishTime</to>
+                      </copy>
+                    </assign>
+                  </sequence>
+                </sequence>
+              </scope>
+            </compensationHandler>
+            <invoke name="DeleteOBS" bpelx:invokeAsDetail="no"
+                    partnerLink="OBSService" portType="ns4:OBSPortType"
+                    operation="DeleteOBS" inputVariable="DeleteOBSin"
+                    outputVariable="DeleteOBSout"/>
+          </scope>
+        </sequence>
+      </sequence>
+    </flow>
+    <sequence name="DeleteEps-SKIP-Count0">
+      <bpelx:skipCondition>count($DeleteEpsIn.params/ns1:ObjectId)=0</bpelx:skipCondition>
+      <invoke name="DeleteEps" bpelx:invokeAsDetail="no"
+              partnerLink="EPSService" portType="ns1:EPSPortType"
+              operation="DeleteEPS" inputVariable="DeleteEpsIn"
+              outputVariable="DeleteEpsOut"/>
+    </sequence>
+    <assign name="AssignOut">
+      <copy>
+        <from>$inputVariable.payload/ns3:program</from>
+        <to>$outputVariable.payload/client:complete/ns3:program</to>
+      </copy>
+      <copy>
+        <from>$inputVariable.payload/@id</from>
+        <to>$outputVariable.payload/client:complete/@id</to>
+      </copy>
+      <copy>
+        <from>$inputVariable.payload/@id</from>
+        <to>$outputVariable.payload/@id</to>
+      </copy>
+    </assign>
+    <invoke name="callbackOutput" bpelx:invokeAsDetail="no"
+            partnerLink="DeleteProgramService"
+            portType="client:DeleteProgramCallback" operation="callback"
+            inputVariable="outputVariable"/>
+    <!-- Generate reply to synchronous request -->
+  </sequence>
+</process>

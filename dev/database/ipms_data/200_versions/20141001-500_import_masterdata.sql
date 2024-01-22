@@ -1,0 +1,1 @@
+alter table import_masterdata add(project_name nvarchar2(254));

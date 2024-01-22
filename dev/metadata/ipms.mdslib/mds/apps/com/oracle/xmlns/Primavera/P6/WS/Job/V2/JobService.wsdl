@@ -1,0 +1,634 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI (http://jax-ws.java.net). RI's version is JAX-WS RI 2.2.11-b150616.1732 svn-revision#a247ba216861f2c0baac9a3657c5690bce0c744d. --><wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://xmlns.oracle.com/Primavera/P6/WS/Job/V2" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:intgfault="http://xmlns.oracle.com/Primavera/P6/WS/IntegrationFaultType/V1" targetNamespace="http://xmlns.oracle.com/Primavera/P6/WS/Job/V2" name="JobService">
+    <wsdl:types>
+        <xsd:schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" targetNamespace="http://xmlns.oracle.com/Primavera/P6/WS/Job/V2" elementFormDefault="qualified">
+			<xsd:import namespace="http://xmlns.oracle.com/Primavera/P6/WS/IntegrationFaultType/V1" schemaLocation="oramds:/apps/com/oracle/xmlns/Primavera/P6/WS/IntegrationFaultType/V1/IntegrationFault.xsd"/>
+            <xsd:complexType name="SummarizeProject">
+                <xsd:sequence>
+                    <xsd:element name="ObjectId" type="xsd:int"/>
+                    <xsd:element name="Timeout" type="xsd:int" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="SummarizeProjectResponse">
+                <xsd:sequence>
+                    <xsd:element name="JobId" type="xsd:string"/>
+                    <xsd:element name="JobStatus" type="tns:JobStatusType"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="SummarizeProject" type="tns:SummarizeProject"/>
+            <xsd:element name="SummarizeProjectResponse" type="tns:SummarizeProjectResponse"/>
+			
+			<xsd:complexType name="UpdateBaseline">
+                <xsd:sequence>
+                    <xsd:element name="ObjectId" type="xsd:int"/>
+					<xsd:element name="BaselineProjId" type="xsd:int"/>
+                    <xsd:element name="Timeout" type="xsd:int" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="UpdateBaselineResponse">
+                <xsd:sequence>
+                    <xsd:element name="JobId" type="xsd:string"/>
+                    <xsd:element name="JobStatus" type="tns:JobStatusType"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="UpdateBaseline" type="tns:UpdateBaseline"/>
+            <xsd:element name="UpdateBaselineResponse" type="tns:UpdateBaselineResponse"/>
+			
+            <xsd:complexType name="SummarizeEPS">
+                <xsd:sequence>
+                    <xsd:element name="ObjectId" type="xsd:int"/>
+                    <xsd:element name="Timeout" type="xsd:int" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="SummarizeEPSResponse">
+                <xsd:sequence>
+                    <xsd:element name="JobId" type="xsd:string"/>
+                    <xsd:element name="JobStatus" type="tns:JobStatusType"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="SummarizeEPS" type="tns:SummarizeEPS"/>
+            <xsd:element name="SummarizeEPSResponse" type="tns:SummarizeEPSResponse"/>
+
+            <xsd:complexType name="Schedule">
+                <xsd:sequence>
+                    <xsd:element name="ProjectObjectId" type="xsd:int"/>
+                    <xsd:element name="NewDataDate" type="xsd:dateTime" minOccurs="0"/>
+                    <xsd:element name="Timeout" type="xsd:int" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="ScheduleResponse">
+                <xsd:sequence>
+                    <xsd:element name="JobId" type="xsd:string"/>
+                    <xsd:element name="JobStatus" type="tns:JobStatusType"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="Schedule" type="tns:Schedule"/>
+            <xsd:element name="ScheduleResponse" type="tns:ScheduleResponse"/>
+
+            <xsd:complexType name="Level">
+                <xsd:sequence>
+                    <xsd:element name="ProjectObjectId" type="xsd:int"/>
+                    <xsd:element name="Timeout" type="xsd:int" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="LevelResponse">
+                <xsd:sequence>
+                    <xsd:element name="JobId" type="xsd:string"/>
+                    <xsd:element name="JobStatus" type="tns:JobStatusType"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="Level" type="tns:Level"/>
+            <xsd:element name="LevelResponse" type="tns:LevelResponse"/>
+
+	     <xsd:complexType name="SendToUnifier">
+                <xsd:sequence>
+                    <xsd:element name="ProjectObjectId" type="xsd:int" maxOccurs="unbounded"/>
+                    <xsd:element name="Timeout" type="xsd:int" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="SendToUnifierResponse">
+                <xsd:sequence>
+                    <xsd:element name="JobId" type="xsd:string"/>
+                    <xsd:element name="JobStatus" type="tns:JobStatusType"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="SendToUnifier" type="tns:SendToUnifier"/>
+            <xsd:element name="SendToUnifierResponse" type="tns:SendToUnifierResponse"/>
+		
+	     <xsd:complexType name="SummarizeCBS">
+                <xsd:sequence>
+                    <xsd:element name="ProjectObjectId" type="xsd:int" maxOccurs="1"/>
+                    <xsd:element name="Timeout" type="xsd:int" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="SummarizeCBSResponse">
+                <xsd:sequence>
+                    <xsd:element name="JobId" type="xsd:string"/>
+                    <xsd:element name="JobStatus" type="tns:JobStatusType"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="SummarizeCBS" type="tns:SummarizeCBS"/>
+            <xsd:element name="SummarizeCBSResponse" type="tns:SummarizeCBSResponse"/>
+			
+			<xsd:complexType name="ScheduleCheck">
+                <xsd:sequence>
+                    <xsd:element name="ProjectObjectId" type="xsd:int" maxOccurs="unbounded"/>
+                    <xsd:element name="Timeout" type="xsd:int" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="ScheduleCheckResponse">
+                <xsd:sequence>
+                    <xsd:element name="JobId" type="xsd:string"/>
+                    <xsd:element name="JobStatus" type="tns:JobStatusType"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="ScheduleCheck" type="tns:ScheduleCheck"/>
+            <xsd:element name="ScheduleCheckResponse" type="tns:ScheduleCheckResponse"/>
+			
+            <xsd:complexType name="ApplyActuals">
+                <xsd:sequence>
+                    <xsd:element name="ProjectObjectId" type="xsd:int"/>
+                    <xsd:element name="NewDataDate" type="xsd:dateTime" minOccurs="0"/>
+                    <xsd:element name="Timeout" type="xsd:int" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="ApplyActualsResponse">
+                <xsd:sequence>
+                    <xsd:element name="JobId" type="xsd:string"/>
+                    <xsd:element name="JobStatus" type="tns:JobStatusType"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="ApplyActuals" type="tns:ApplyActuals"/>
+            <xsd:element name="ApplyActualsResponse" type="tns:ApplyActualsResponse"/>
+
+            <xsd:complexType name="StorePeriodPerformance">
+                <xsd:sequence>
+                    <xsd:element name="ProjectObjectId" type="xsd:int" maxOccurs="unbounded"/>
+                    <xsd:element name="FinancialPeriodObjectId" type="xsd:int"/>
+                    <xsd:element name="Timeout" type="xsd:int" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="StorePeriodPerformanceResponse">
+                <xsd:sequence>
+                    <xsd:element name="JobId" type="xsd:string"/>
+                    <xsd:element name="JobStatus" type="tns:JobStatusType"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="StorePeriodPerformance" type="tns:StorePeriodPerformance"/>
+            <xsd:element name="StorePeriodPerformanceResponse" type="tns:StorePeriodPerformanceResponse"/>
+
+            <xsd:complexType name="ReadJobStatus">
+                <xsd:sequence>
+                    <xsd:element name="JobId" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="ReadJobStatusResponse">
+                <xsd:sequence>
+                    <xsd:element name="JobStatus" type="tns:JobStatusType"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="ReadJobStatus" type="tns:ReadJobStatus"/>
+            <xsd:element name="ReadJobStatusResponse" type="tns:ReadJobStatusResponse"/>
+
+            <xsd:complexType name="ReadJobLog">
+                <xsd:sequence>
+                    <xsd:element name="JobId" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="ReadJobLogResponse">
+                <xsd:sequence>
+                    <xsd:element name="JobLog" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="ReadJobLog" type="tns:ReadJobLog"/>
+            <xsd:element name="ReadJobLogResponse" type="tns:ReadJobLogResponse"/>
+
+            <xsd:complexType name="RecalculateAssignmentCosts">
+                <xsd:sequence>
+                    <xsd:element name="ProjectObjectId" type="xsd:int"/>
+                    <xsd:element name="SynchronizeOvertimeFactor" type="xsd:boolean"/>
+                    <xsd:element name="Timeout" type="xsd:int" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="RecalculateAssignmentCostsResponse">
+                <xsd:sequence>
+                    <xsd:element name="JobId" type="xsd:string"/>
+                    <xsd:element name="JobStatus" type="tns:JobStatusType"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="RecalculateAssignmentCosts" type="tns:RecalculateAssignmentCosts"/>
+            <xsd:element name="RecalculateAssignmentCostsResponse" type="tns:RecalculateAssignmentCostsResponse"/>
+
+            <xsd:complexType name="CancelJob">
+                <xsd:sequence>
+                    <xsd:element name="JobId" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="CancelJobResponse">
+                <xsd:sequence>
+                    <xsd:element name="JobStatus" type="tns:JobStatusType"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="CancelJob" type="tns:CancelJob"/>
+            <xsd:element name="CancelJobResponse" type="tns:CancelJobResponse"/>
+
+            <xsd:element name="GetCurrentJobs"/>
+            <xsd:complexType name="GetCurrentJobsResponse">
+                <xsd:sequence>
+                    <xsd:element name="JobInfo" type="tns:JobInfoType" minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="GetCurrentJobsResponse" type="tns:GetCurrentJobsResponse"/>
+
+            <xsd:simpleType name="JobStatusType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="Pending"/>
+                    <xsd:enumeration value="Running"/>
+                    <xsd:enumeration value="Complete"/>
+                    <xsd:enumeration value="Failed"/>
+                    <xsd:enumeration value="Cancelled"/>
+                    <xsd:enumeration value="Completed With Errors"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="JobInfoType">
+                <xsd:sequence>
+                    <xsd:element name="JobId" type="xsd:string"/>
+                    <xsd:element name="JobType">
+                        <xsd:simpleType>
+                            <xsd:restriction base="xsd:string">
+                                <xsd:enumeration value="Apply Actuals"/>
+                                <xsd:enumeration value="Level"/>
+                                <xsd:enumeration value="Recalculate Assignment Costs"/>
+                                <xsd:enumeration value="Schedule"/>
+                                <xsd:enumeration value="Store Period Performance"/>
+                                <xsd:enumeration value="Summarize"/>
+                                <xsd:enumeration value="Sync Actual This Period"/>
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="JobStatus" type="tns:JobStatusType"/>
+                    <xsd:element name="SubmittedDate" type="xsd:dateTime"/>
+                    <xsd:element name="LastRunDate" type="xsd:dateTime" minOccurs="0"/>
+                    <xsd:element name="ProjectObjectId" type="xsd:int" minOccurs="0" maxOccurs="unbounded"/>
+                    <xsd:element name="EPSObjectId" type="xsd:int" minOccurs="0" maxOccurs="unbounded"/>
+                    <xsd:element name="WorkerHost" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:schema>
+    </wsdl:types>
+
+    <wsdl:message name="SummarizeProject">
+        <wsdl:part name="params" element="tns:SummarizeProject"/>
+    </wsdl:message>
+    <wsdl:message name="SummarizeProjectResponse">
+        <wsdl:part name="result" element="tns:SummarizeProjectResponse"/>
+    </wsdl:message>
+    <wsdl:message name="UpdateBaseline">
+        <wsdl:part name="params" element="tns:UpdateBaseline"/>
+    </wsdl:message>
+    <wsdl:message name="UpdateBaselineResponse">
+        <wsdl:part name="result" element="tns:UpdateBaselineResponse"/>
+    </wsdl:message>
+    <wsdl:message name="SummarizeEPS">
+        <wsdl:part name="params" element="tns:SummarizeEPS"/>
+    </wsdl:message>
+    <wsdl:message name="SummarizeEPSResponse">
+        <wsdl:part name="result" element="tns:SummarizeEPSResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="Schedule">
+        <wsdl:part name="params" element="tns:Schedule"/>
+    </wsdl:message>
+    <wsdl:message name="ScheduleResponse">
+        <wsdl:part name="result" element="tns:ScheduleResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="Level">
+        <wsdl:part name="params" element="tns:Level"/>
+    </wsdl:message>
+    <wsdl:message name="LevelResponse">
+        <wsdl:part name="result" element="tns:LevelResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="SendToUnifier">
+        <wsdl:part name="params" element="tns:SendToUnifier"/>
+    </wsdl:message>
+    <wsdl:message name="SendToUnifierResponse">
+        <wsdl:part name="result" element="tns:SendToUnifierResponse"/>
+    </wsdl:message>
+
+	<wsdl:message name="SummarizeCBS">
+        <wsdl:part name="params" element="tns:SummarizeCBS"/>
+    </wsdl:message>
+    <wsdl:message name="SummarizeCBSResponse">
+        <wsdl:part name="result" element="tns:SummarizeCBSResponse"/>
+    </wsdl:message>
+	
+	<wsdl:message name="ScheduleCheck">
+        <wsdl:part name="params" element="tns:ScheduleCheck"/>
+    </wsdl:message>
+    <wsdl:message name="ScheduleCheckResponse">
+        <wsdl:part name="result" element="tns:ScheduleCheckResponse"/>
+    </wsdl:message>
+	
+    <wsdl:message name="ApplyActuals">
+        <wsdl:part name="params" element="tns:ApplyActuals"/>
+    </wsdl:message>
+    <wsdl:message name="ApplyActualsResponse">
+        <wsdl:part name="result" element="tns:ApplyActualsResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="StorePeriodPerformance">
+        <wsdl:part name="params" element="tns:StorePeriodPerformance"/>
+    </wsdl:message>
+    <wsdl:message name="StorePeriodPerformanceResponse">
+        <wsdl:part name="result" element="tns:StorePeriodPerformanceResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="RecalculateAssignmentCosts">
+        <wsdl:part name="params" element="tns:RecalculateAssignmentCosts"/>
+    </wsdl:message>
+    <wsdl:message name="RecalculateAssignmentCostsResponse">
+        <wsdl:part name="result" element="tns:RecalculateAssignmentCostsResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="ReadJobStatus">
+        <wsdl:part name="params" element="tns:ReadJobStatus"/>
+    </wsdl:message>
+    <wsdl:message name="ReadJobStatusResponse">
+        <wsdl:part name="result" element="tns:ReadJobStatusResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="ReadJobLog">
+        <wsdl:part name="params" element="tns:ReadJobLog"/>
+    </wsdl:message>
+    <wsdl:message name="ReadJobLogResponse">
+        <wsdl:part name="result" element="tns:ReadJobLogResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="CancelJob">
+        <wsdl:part name="params" element="tns:CancelJob"/>
+    </wsdl:message>
+    <wsdl:message name="CancelJobResponse">
+        <wsdl:part name="result" element="tns:CancelJobResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="GetCurrentJobs">
+        <wsdl:part name="params" element="tns:GetCurrentJobs"/>
+    </wsdl:message>
+    <wsdl:message name="GetCurrentJobsResponse">
+        <wsdl:part name="result" element="tns:GetCurrentJobsResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="IntegrationFault">
+        <wsdl:part name="fault" element="intgfault:IntegrationFault"/>
+    </wsdl:message>
+
+    <wsdl:portType name="JobPortType">
+        <wsdl:operation name="SummarizeProject">
+            <wsdl:input name="SummarizeProjectRequest" message="tns:SummarizeProject"/>
+            <wsdl:output name="SummarizeProjectResponse" message="tns:SummarizeProjectResponse"/>
+            <wsdl:fault name="IntegrationFault" message="tns:IntegrationFault"/>
+        </wsdl:operation>
+	<wsdl:operation name="UpdateBaseline">
+            <wsdl:input name="UpdateBaselineRequest" message="tns:UpdateBaseline"/>
+            <wsdl:output name="UpdateBaselineResponse" message="tns:UpdateBaselineResponse"/>
+            <wsdl:fault name="IntegrationFault" message="tns:IntegrationFault"/>
+        </wsdl:operation>
+        <wsdl:operation name="SummarizeEPS">
+            <wsdl:input name="SummarizeEPSRequest" message="tns:SummarizeEPS"/>
+            <wsdl:output name="SummarizeEPSResponse" message="tns:SummarizeEPSResponse"/>
+            <wsdl:fault name="IntegrationFault" message="tns:IntegrationFault"/>
+        </wsdl:operation>
+        <wsdl:operation name="Schedule">
+            <wsdl:input name="ScheduleRequest" message="tns:Schedule"/>
+            <wsdl:output name="ScheduleResponse" message="tns:ScheduleResponse"/>
+            <wsdl:fault name="IntegrationFault" message="tns:IntegrationFault"/>
+        </wsdl:operation>
+        <wsdl:operation name="Level">
+            <wsdl:input name="LevelRequest" message="tns:Level"/>
+            <wsdl:output name="LevelResponse" message="tns:LevelResponse"/>
+            <wsdl:fault name="IntegrationFault" message="tns:IntegrationFault"/>
+        </wsdl:operation>
+	<wsdl:operation name="SendToUnifier">
+            <wsdl:input name="SendToUnifierRequest" message="tns:SendToUnifier"/>
+            <wsdl:output name="SendToUnifierResponse" message="tns:SendToUnifierResponse"/>
+            <wsdl:fault name="IntegrationFault" message="tns:IntegrationFault"/>
+        </wsdl:operation>
+	<wsdl:operation name="SummarizeCBS">
+            <wsdl:input name="SummarizeCBSRequest" message="tns:SummarizeCBS"/>
+            <wsdl:output name="SummarizeCBSResponse" message="tns:SummarizeCBSResponse"/>
+            <wsdl:fault name="IntegrationFault" message="tns:IntegrationFault"/>
+        </wsdl:operation>
+		<wsdl:operation name="ScheduleCheck">
+            <wsdl:input name="ScheduleCheckRequest" message="tns:ScheduleCheck"/>
+            <wsdl:output name="ScheduleCheckResponse" message="tns:ScheduleCheckResponse"/>
+            <wsdl:fault name="IntegrationFault" message="tns:IntegrationFault"/>
+        </wsdl:operation>
+        <wsdl:operation name="ApplyActuals">
+            <wsdl:input name="ApplyActualsRequest" message="tns:ApplyActuals"/>
+            <wsdl:output name="ApplyActualsResponse" message="tns:ApplyActualsResponse"/>
+            <wsdl:fault name="IntegrationFault" message="tns:IntegrationFault"/>
+        </wsdl:operation>
+        <wsdl:operation name="StorePeriodPerformance">
+            <wsdl:input name="StorePeriodPerformanceRequest" message="tns:StorePeriodPerformance"/>
+            <wsdl:output name="StorePeriodPerformanceResponse" message="tns:StorePeriodPerformanceResponse"/>
+            <wsdl:fault name="IntegrationFault" message="tns:IntegrationFault"/>
+        </wsdl:operation>
+        <wsdl:operation name="RecalculateAssignmentCosts">
+            <wsdl:input name="RecalculateAssignmentCostsRequest" message="tns:RecalculateAssignmentCosts"/>
+            <wsdl:output name="RecalculateAssignmentCostsResponse" message="tns:RecalculateAssignmentCostsResponse"/>
+            <wsdl:fault name="IntegrationFault" message="tns:IntegrationFault"/>
+        </wsdl:operation>
+        <wsdl:operation name="ReadJobStatus">
+            <wsdl:input name="ReadJobStatusRequest" message="tns:ReadJobStatus"/>
+            <wsdl:output name="ReadJobStatusResponse" message="tns:ReadJobStatusResponse"/>
+            <wsdl:fault name="IntegrationFault" message="tns:IntegrationFault"/>
+        </wsdl:operation>
+        <wsdl:operation name="ReadJobLog">
+            <wsdl:input name="ReadJobLogRequest" message="tns:ReadJobLog"/>
+            <wsdl:output name="ReadJobLogResponse" message="tns:ReadJobLogResponse"/>
+            <wsdl:fault name="IntegrationFault" message="tns:IntegrationFault"/>
+        </wsdl:operation>
+        <wsdl:operation name="CancelJob">
+            <wsdl:input name="CancelJobRequest" message="tns:CancelJob"/>
+            <wsdl:output name="CancelJobResponse" message="tns:CancelJobResponse"/>
+            <wsdl:fault name="IntegrationFault" message="tns:IntegrationFault"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetCurrentJobs">
+            <wsdl:input name="GetCurrentJobsRequest" message="tns:GetCurrentJobs"/>
+            <wsdl:output name="GetCurrentJobsResponse" message="tns:GetCurrentJobsResponse"/>
+            <wsdl:fault name="IntegrationFault" message="tns:IntegrationFault"/>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:binding name="JobPortBinding" type="tns:JobPortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="SummarizeProject">
+            <soap:operation soapAction="SummarizeProject" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="IntegrationFault">
+                <soap:fault name="IntegrationFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+	<wsdl:operation name="UpdateBaseline">
+            <soap:operation soapAction="UpdateBaseline" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="IntegrationFault">
+                <soap:fault name="IntegrationFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="SummarizeEPS">
+            <soap:operation soapAction="SummarizeEPS" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="IntegrationFault">
+                <soap:fault name="IntegrationFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="Schedule">
+            <soap:operation soapAction="Schedule" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="IntegrationFault">
+                <soap:fault name="IntegrationFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="Level">
+            <soap:operation soapAction="Level" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="IntegrationFault">
+                <soap:fault name="IntegrationFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+	    <wsdl:operation name="SendToUnifier">
+            <soap:operation soapAction="SendToUnifier" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="IntegrationFault">
+                <soap:fault name="IntegrationFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+		<wsdl:operation name="SummarizeCBS">
+            <soap:operation soapAction="SummarizeCBS" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="IntegrationFault">
+                <soap:fault name="IntegrationFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+		<wsdl:operation name="ScheduleCheck">
+            <soap:operation soapAction="ScheduleCheck" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="IntegrationFault">
+                <soap:fault name="IntegrationFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="ApplyActuals">
+            <soap:operation soapAction="ApplyActuals" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="IntegrationFault">
+                <soap:fault name="IntegrationFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="StorePeriodPerformance">
+            <soap:operation soapAction="StorePeriodPerformance" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="IntegrationFault">
+                <soap:fault name="IntegrationFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="RecalculateAssignmentCosts">
+            <soap:operation soapAction="RecalculateAssignmentCosts" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="IntegrationFault">
+                <soap:fault name="IntegrationFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="ReadJobStatus">
+            <soap:operation soapAction="ReadJobStatus" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="IntegrationFault">
+                <soap:fault name="IntegrationFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="ReadJobLog">
+            <soap:operation soapAction="ReadJobLog" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="IntegrationFault">
+                <soap:fault name="IntegrationFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="CancelJob">
+            <soap:operation soapAction="CancelJob" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="IntegrationFault">
+                <soap:fault name="IntegrationFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GetCurrentJobs">
+            <soap:operation soapAction="GetCurrentJobs" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="IntegrationFault">
+                <soap:fault name="IntegrationFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <wsdl:service name="JobService">
+        <wsdl:port name="JobPort" binding="tns:JobPortBinding">
+            <soap:address location="http://p6.ipms:8206/p6ws/services/JobService"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

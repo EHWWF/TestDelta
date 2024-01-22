@@ -1,0 +1,121 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich" xmlns:h="http://java.sun.com/jsf/html">
+  <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+  <f:view>
+    <f:loadBundle basename="com.bayer.ipms.view.bundles.viewBundle" var="bundle"/>
+    <af:document title="#{bundle.globalProMIS}" id="doc">
+      <af:messages id="m1"/>
+      <af:form id="frm" usesUpload="true">
+        <af:pageTemplate viewId="/WEB-INF/com.bayer.ipms.view/templates/ipms-page-template.jspx" id="tmpl">
+          <f:facet name="content">
+            <af:panelStretchLayout topHeight="auto" bottomHeight="0" styleClass="AFStretchWidth" id="contentGoalFactor">
+              <f:facet name="top">
+                <af:query id="qryId1" headerText="Search" disclosed="true"
+                          value="#{bindings.GlobalBALogViewQuery.queryDescriptor}"
+                          model="#{bindings.GlobalBALogViewQuery.queryModel}"
+                          queryListener="#{bindings.GlobalBALogViewQuery.processQuery}"
+                          queryOperationListener="#{bindings.GlobalBALogViewQuery.processQueryOperation}"
+                          modeChangeVisible="false" saveQueryMode="hidden" 
+                          labelAlignment="start" searchButtonText="#{bundle.globalFilter}" resultComponentId="::t1"
+                          maxColumns="2" rows="4"></af:query>
+              </f:facet>
+              <f:facet name="center">
+                <af:panelBox id="pDecFactr1" showDisclosure="false" styleClass="AFStretchWidth AFStretchHeight"
+                             type="stretch" partialTriggers="pDecFactr1">
+                  <f:facet name="toolbar">
+                    <af:toolbar id="t2">
+                      <af:commandToolbarButton icon="/images/export.png" text="#{bundle.globalDownload}" id="ctb1">
+                        <af:setActionListener from="t1" to="#{viewScope['exportId']}"/>
+                        <af:setActionListener from="border:1px solid #f2f2f2;background-color:none"
+                                              to="#{viewScope['tableHeaderStyle']}"/>
+                        <af:setActionListener from="border:1px solid #f2f2f2;background-color:none"
+                                              to="#{viewScope['tableDataStyle']}"/>
+                        <af:fileDownloadActionListener filename="GlobalBALog.xls" contentType="text/html;chatset=UTF-8"
+                                                       method="#{utilsBean.exportToExcelNoSuffixG}"/>
+                      </af:commandToolbarButton>
+                    </af:toolbar>
+                  </f:facet>
+                  <af:table value="#{bindings.GlobalBALogView.collectionModel}" var="row"
+                            rows="#{bindings.GlobalBALogView.rangeSize}"
+                            emptyText="#{bindings.GlobalBALogView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                            rowBandingInterval="0" fetchSize="#{bindings.GlobalBALogView.rangeSize}" id="t1"
+                            columnStretching="multiple">
+                    <af:column headerText="#{bindings.GlobalBALogView.hints.FrontendName.label}" id="c9" width="30%"
+                               sortProperty="#{bindings.GlobalBALogView.hints.FrontendName.name}" sortable="true">
+                      <af:outputText value="#{row.FrontendName}"
+                                     shortDesc="#{bindings.GlobalBALogView.hints.FrontendName.tooltip}"
+                                     rendered="#{row.BaCode ne 'messagefps'}" id="ot1"/>
+                      <af:commandLink text="#{row.FrontendName}" id="cl12" action="FPSDetails" useWindow="true"
+                                      windowModalityType="modeless" windowWidth="500" windowHeight="600"
+                                      rendered="#{row.BaCode eq 'messagefps'}">
+                        <af:setActionListener from="#{row.ProjectId}" to="#{pageFlowScope.projectId}"/>
+                        <af:setActionListener from="#{row.ChangeComment}" to="#{pageFlowScope.messageDetails}"/>
+                      </af:commandLink>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.GlobalBALogView.hints.ProgramId.name}"
+                               headerText="#{bindings.GlobalBALogView.hints.ProgramId.label}" id="c2" width="5%"
+                               sortable="true">
+                      <af:outputText value="#{row.ProgramId}"
+                                     shortDesc="#{bindings.GlobalBALogView.hints.ProgramId.tooltip}" id="ot2"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.GlobalBALogView.hints.ProgramName.name}"
+                               headerText="#{bindings.GlobalBALogView.hints.ProgramName.label}" id="c3" width="15%"
+                               sortable="true">
+                      <af:outputText value="#{row.ProgramName}"
+                                     shortDesc="#{bindings.GlobalBALogView.hints.ProgramName.tooltip}" id="ot3"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.GlobalBALogView.hints.ProjectCode.name}"
+                               headerText="#{bindings.GlobalBALogView.hints.ProjectCode.label}" id="c4" width="5%"
+                               sortable="true">
+                      <af:outputText value="#{row.ProjectCode}"
+                                     shortDesc="#{bindings.GlobalBALogView.hints.ProjectCode.tooltip}" id="ot4"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.GlobalBALogView.hints.ProjectName.name}"
+                               headerText="#{bindings.GlobalBALogView.hints.ProjectName.label}" id="c5" width="10%"
+                               sortable="true">
+                      <af:outputText value="#{row.ProjectName}"
+                                     shortDesc="#{bindings.GlobalBALogView.hints.ProjectName.tooltip}" id="ot5"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.GlobalBALogView.hints.CreateDate.name}"
+                               headerText="#{bindings.GlobalBALogView.hints.CreateDate.label}" id="c7" width="10%"
+                               sortable="true">
+                      <af:outputText value="#{row.CreateDate}"
+                                     shortDesc="#{bindings.GlobalBALogView.hints.CreateDate.tooltip}" id="ot9">
+                        <af:convertDateTime pattern="#{bindings.GlobalBALogView.hints.CreateDate.format}"/>
+                      </af:outputText>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.GlobalBALogView.hints.LogUserId.name}"
+                               headerText="#{bindings.GlobalBALogView.hints.LogUserId.label}" id="c8" width="10%"
+                               sortable="true">
+                      <af:outputText value="#{row.LogUserId}"
+                                     shortDesc="#{bindings.GlobalBALogView.hints.LogUserId.tooltip}" id="ot8"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.GlobalBALogView.hints.StatusCode.name}" sortable="true"
+                               headerText="#{bindings.GlobalBALogView.hints.StatusCode.label}" id="c1">
+                      <af:selectOneChoice value="#{row.bindings.StatusCode.inputValue}"
+                                          label="#{row.bindings.StatusCode.label}"
+                                          readOnly="true"
+                                          required="#{bindings.GlobalBALogView.hints.StatusCode.mandatory}"
+                                          shortDesc="#{bindings.GlobalBALogView.hints.StatusCode.tooltip}" id="soc1">
+                        <f:selectItems value="#{row.bindings.StatusCode.items}" id="si1"/>
+                        <f:validator binding="#{row.bindings.StatusCode.validator}"/>
+                      </af:selectOneChoice>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.GlobalBALogView.hints.Description.name}"
+                               headerText="#{bindings.GlobalBALogView.hints.Description.label}" id="c82" width="15%"
+                               sortable="true">
+                      <af:outputText value="#{row.Description}"
+                                     shortDesc="#{bindings.GlobalBALogView.hints.Description.tooltip}" id="ot82"/>
+                    </af:column>
+                  </af:table>
+                </af:panelBox>
+              </f:facet>
+            </af:panelStretchLayout>
+          </f:facet>
+          <f:attribute name="tab" value="globalBALog"/>
+        </af:pageTemplate>
+      </af:form>
+    </af:document>
+  </f:view>
+</jsp:root>

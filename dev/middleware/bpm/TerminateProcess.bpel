@@ -1,0 +1,202 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Thu Oct 02 13:01:56 CEST 2014
+  Author:  algis
+  Type: BPEL 2.0 Process
+  Purpose: Asynchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="TerminateProcess"
+         targetNamespace="http://xmlns.bayer.com/ipms/bpm"
+         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:client="http://xmlns.bayer.com/ipms/bpm"
+         xmlns:ora="http://schemas.oracle.com/xpath/extension"
+         xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ns1="http://xmlns.bayer.com/ipms/soa/EstimateCosts"
+         xmlns:ns2="http://xmlns.bayer.com/ipms/soa/ProvideAssumptions"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:ns3="http://xmlns.bayer.com/ipms/soa"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:ns4="http://xmlns.bayer.com/ipms" xmlns:ui="http://xmlns.oracle.com/soa/designer"
+         xmlns:ns5="http://xmlns.oracle.com/bpmn/bpmnProcess/EstimateLTC" xmlns:ess="http://xmlns.oracle.com/scheduler">
+
+    <import namespace="http://xmlns.bayer.com/ipms/bpm" location="TerminateProcess.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"
+            ui:processWSDL="true"/>
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        PARTNERLINKS                                                      
+        List of services participating in this BPEL process               
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    --> 
+    <partnerLinks>
+        <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+        <partnerLink name="TerminateProcessService" partnerLinkType="client:TerminateProcess" myRole="TerminateProcessProvider" partnerRole="TerminateProcessRequester"/>
+        <partnerLink name="EstimateCosts.EstimateCosts.service"
+                     partnerLinkType="ns1:EstimateCosts.EstimateCosts.service"
+                     partnerRole="EstimateCostsPortType"
+                     myRole="EstimateCostsPortTypeCallBack"/>
+        <partnerLink name="ProvideAssumptions.ProvideAssumptions.service"
+                     partnerLinkType="ns2:ProvideAssumptions.ProvideAssumptions.service"
+                     partnerRole="ProvideAssumptionsPortType"
+                     myRole="ProvideAssumptionsPortTypeCallBack"/>
+        <partnerLink name="EstimateLTC.EstimateLTC.service" partnerLinkType="ns5:EstimateLTC.EstimateLTC.service"
+                     partnerRole="EstimateLTCPortType" myRole="EstimateLTCPortTypeCallBack"/>
+    </partnerLinks>
+
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        VARIABLES                                                        
+        List of messages and XML documents used within this BPEL process 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <variables>
+        <!-- Reference to the message passed as input during initiation -->
+        <variable name="inputVariable" messageType="client:TerminateProcessRequestMessage"/>
+
+        <!-- Reference to the message that will be sent back to the requester during callback -->
+        <variable name="outputVariable" messageType="client:TerminateProcessResponseMessage"/>
+        <variable name="EstimateCostsIn" messageType="ns1:terminate"/>
+        <variable name="AssumptionsIn" messageType="ns2:teminate"/>
+        <variable name="TerminateLTCIn" messageType="ns5:terminate"/>
+    </variables>
+    <faultHandlers>
+        <catchAll>
+            <scope name="CallbackFault" exitOnStandardFault="no">
+                <variables>
+                    <variable name="faultVariable"
+                              messageType="client:TerminateProcessResponseMessage"/>
+                </variables>
+                <sequence name="CallbackFault">
+                    <assign name="AssignFault">
+                        <copy>
+                            <from>ora:getFaultAsString()</from>
+                            <to>$faultVariable.payload/ns4:error/ns4:description</to>
+                        </copy>
+                        <copy>
+                            <from>ora:getFaultName()</from>
+                            <to>$faultVariable.payload/ns4:error/ns4:code</to>
+                        </copy>
+                        <copy>
+                            <from>$inputVariable.payload/@id</from>
+                            <to>$faultVariable.payload/ns4:error/@id</to>
+                        </copy>
+                        <copy>
+                            <from>$inputVariable.payload/@id</from>
+                            <to>$faultVariable.payload/@id</to>
+                        </copy>
+                    </assign>
+                    <invoke name="FaultCallback" bpelx:invokeAsDetail="no"
+                            partnerLink="TerminateProcessService"
+                            portType="client:TerminateProcessCallback"
+                            operation="callback" inputVariable="faultVariable"/>
+                </sequence>
+            </scope>
+        </catchAll>
+    </faultHandlers>
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+       ORCHESTRATION LOGIC                                               
+       Set of activities coordinating the flow of messages across the    
+       services integrated within this business process                  
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <sequence name="main">
+        <!-- Receive input from requestor. (Note: This maps to operation defined in TerminateProcess.wsdl) -->
+        <receive name="receiveInput" partnerLink="TerminateProcessService" portType="client:TerminateProcess" operation="process" variable="inputVariable" createInstance="yes"/>
+        <if name="IfComponent">
+            <documentation>
+                <![CDATA[EstimateCosts]]>
+            </documentation>
+            <condition>$inputVariable.payload/@componentName='EstimateCosts'</condition>
+            <sequence name="terminateLE">
+                <assign name="AssignEstimateCosts">
+                    <copy>
+                        <from>$inputVariable.payload</from>
+                        <to>$EstimateCostsIn.parameters/ns3:terminate</to>
+                    </copy>
+                </assign>
+                <invoke name="EstimateCosts" bpelx:invokeAsDetail="no"
+                        partnerLink="EstimateCosts.EstimateCosts.service"
+                        portType="ns1:EstimateCostsPortType"
+                        operation="terminate" inputVariable="EstimateCostsIn"/>
+            </sequence>
+            <elseif>
+                <documentation>
+                    <![CDATA[ProvideAssumptions]]>
+                </documentation>
+                <condition>$inputVariable.payload/@componentName='ProvideAssumptions'</condition>
+                <sequence name="terminateAssumptions">
+                    <assign name="AssignAssumptions">
+                        <copy>
+                            <from>$inputVariable.payload</from>
+                            <to>$AssumptionsIn.parameters/ns3:terminate</to>
+                        </copy>
+                    </assign>
+                    <invoke name="Assumptions" bpelx:invokeAsDetail="no"
+                            partnerLink="ProvideAssumptions.ProvideAssumptions.service"
+                            portType="ns2:ProvideAssumptionsPortType"
+                            operation="teminate" inputVariable="AssumptionsIn"/>
+                </sequence>
+            </elseif>
+            <elseif>
+                <documentation>
+                    <![CDATA[EstimateLTC]]>
+                </documentation>
+                <condition expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$inputVariable.payload/@componentName='EstimateLTC'</condition>
+                <sequence name="TerminateLTC">
+                    <assign name="AssignTermianteLTC">
+                        <copy>
+                            <from>$inputVariable.payload</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$TerminateLTCIn.parameters/ns3:terminate</to>
+                        </copy>
+                    </assign>
+                    <invoke name="TerminateLTC" bpelx:invokeAsDetail="no" partnerLink="EstimateLTC.EstimateLTC.service"
+                            portType="ns5:EstimateLTCPortType" operation="terminate" inputVariable="TerminateLTCIn"/>
+                </sequence>
+            </elseif>
+            <else>
+                <throw name="InvalidComponentName"
+                       faultName="bpel:invalidVariables"/>
+            </else>
+        </if>
+        <assign name="AssignOut">
+            <copy>
+                <from>$inputVariable.payload/@id</from>
+                <to>$outputVariable.payload/@id</to>
+            </copy>
+            <copy>
+                <from>$inputVariable.payload/@id</from>
+                <to>$outputVariable.payload/ns3:complete/@id</to>
+            </copy>
+            <copy>
+                <from>$inputVariable.payload/@compositeId</from>
+                <to>$outputVariable.payload/ns3:complete/@compositeId</to>
+            </copy>
+            <copy>
+                <from>$inputVariable.payload/@componentName</from>
+                <to>$outputVariable.payload/ns3:complete/@componentName</to>
+            </copy>
+        </assign>
+        <!-- 
+          Asynchronous callback to the requester. (Note: the callback location and correlation id is transparently handled using WS-addressing.)
+        -->
+        <invoke name="callbackClient" partnerLink="TerminateProcessService" portType="client:TerminateProcessCallback" operation="callback" inputVariable="outputVariable"/>
+    </sequence>
+</process>

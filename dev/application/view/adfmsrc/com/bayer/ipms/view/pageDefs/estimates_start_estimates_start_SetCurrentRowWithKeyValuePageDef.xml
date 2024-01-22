@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.64.93"
+                id="estimates_start_estimates_start_SetCurrentRowWithKeyValuePageDef"
+                Package="com.bayer.ipms.view.flows">
+  <parameters/>
+  <executables>
+    <iterator Binds="Root.EstimatesAppModule.LatestEstimatesProcessView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="25"
+              id="LatestEstimatesProcessViewIterator"/>
+  </executables>
+  <bindings>
+    <action IterBinding="LatestEstimatesProcessViewIterator"
+            id="setCurrentRowWithKeyValue" RequiresUpdateModel="false"
+            Action="setCurrentRowWithKeyValue">
+      <NamedData NDName="rowKey" NDValue="#{pageFlowScope.processId}"
+                 NDType="java.lang.String"/>
+    </action>
+  </bindings>
+</pageDefinition>

@@ -1,0 +1,51 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
+<wsdl:definitions
+     name="ReadTimeline"
+     targetNamespace="http://xmlns.bayer.com/ipms/soa"
+     xmlns:ns2="http://xmlns.oracle.com/Primavera/P6/V18.8.4/API/BusinessObjects"
+     xmlns:ns1="http://xmlns.bayer.com/ipms/soa"
+     xmlns:plnk="http://schemas.xmlsoap.org/ws/2003/05/partner-link/"
+     xmlns:ns3="http://xmlns.bayer.com/ipms/cache"
+     xmlns:client="http://xmlns.bayer.com/ipms/soa"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+     xmlns:ns4="http://xmlns.bayer.com/ipms"
+    >
+    <plnk:partnerLinkType name="ReadTimeline">
+        <plnk:role name="ReadTimelineProvider">
+            <plnk:portType name="client:ReadTimeline"/>
+        </plnk:role>
+        <plnk:role name="ReadTimelineRequester">
+            <plnk:portType name="client:ReadTimelineCallback"/>
+        </plnk:role>
+    </plnk:partnerLinkType>
+    <wsdl:types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema">
+            <import namespace="http://xmlns.bayer.com/ipms/soa" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/soa/soa.xsd"/>
+        </schema>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:import namespace="http://xmlns.oracle.com/Primavera/P6/V18.8.4/API/BusinessObjects" schemaLocation="oramds:/apps/com/oracle/xmlns/Primavera/P6/V18.8.4/API/BusinessObjects/p6apibo.xsd"/>
+        </xsd:schema>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:import namespace="http://xmlns.bayer.com/ipms/cache" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/cache/cache.xsd"/>
+        </xsd:schema>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:import namespace="http://xmlns.bayer.com/ipms" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/types.xsd"/>
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:message name="ReadTimelineRequestMessage">
+        <wsdl:part name="payload" element="ns1:read"/>
+    </wsdl:message>
+    <wsdl:message name="ReadTimelineResponseMessage">
+        <wsdl:part name="payload" element="ns1:response"/>
+    </wsdl:message>
+    <wsdl:portType name="ReadTimeline">
+        <wsdl:operation name="process">
+            <wsdl:input message="ns1:ReadTimelineRequestMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:portType name="ReadTimelineCallback">
+        <wsdl:operation name="callback">
+            <wsdl:input message="ns1:ReadTimelineResponseMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+</wsdl:definitions>

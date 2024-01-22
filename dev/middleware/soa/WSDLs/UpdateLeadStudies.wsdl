@@ -1,0 +1,39 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
+<wsdl:definitions
+     name="UpdateLeadStudies"
+     targetNamespace="http://xmlns.bayer.com/ipms/soa"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+     xmlns:client="http://xmlns.bayer.com/ipms/soa"
+     xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+     xmlns:ns1="http://xmlns.oracle.com/Primavera/P6/WS/IntegrationFaultType/V1"
+    >
+    <plnk:partnerLinkType name="UpdateLeadStudies">
+        <plnk:role name="UpdateLeadStudiesProvider" portType="client:UpdateLeadStudies"/>
+        <plnk:role name="UpdateLeadStudiesRequester" portType="client:UpdateLeadStudiesCallback"/>
+    </plnk:partnerLinkType>
+    <wsdl:types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema">
+            <import namespace="http://xmlns.bayer.com/ipms/soa" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/soa/soa.xsd"/>
+        </schema>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:import namespace="http://xmlns.oracle.com/Primavera/P6/WS/IntegrationFaultType/V1"
+                 schemaLocation="oramds:/apps/com/oracle/xmlns/Primavera/P6/WS/IntegrationFaultType/V1/IntegrationFault.xsd"/>
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:message name="UpdateLeadStudiesRequestMessage">
+        <wsdl:part name="payload" element="client:update"/>
+    </wsdl:message>
+    <wsdl:message name="UpdateLeadStudiesResponseMessage">
+        <wsdl:part name="payload" element="client:response"/>
+    </wsdl:message>
+    <wsdl:portType name="UpdateLeadStudies">
+        <wsdl:operation name="process">
+            <wsdl:input message="client:UpdateLeadStudiesRequestMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:portType name="UpdateLeadStudiesCallback">
+        <wsdl:operation name="processResponse">
+            <wsdl:input message="client:UpdateLeadStudiesResponseMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+</wsdl:definitions>

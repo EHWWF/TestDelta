@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="IPMS" basedir=".." default="readme"
+	xmlns:oprisk="antlib:com.oprisk" xmlns:contrib="antlib:net.sf.antcontrib" xmlns:ora="antlib:net.sf.incanto">
+
+	<path id="classpath">
+		<fileset dir="ant/lib">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+
+	<property file="ant/ant.properties"/>
+
+	<taskdef name="http" classname="org.missinglink.ant.task.http.HttpClientTask">
+		<classpath refid="classpath"/>
+	</taskdef>
+
+	<taskdef name="xpath" classname="net.uworks.andariel.XPath">
+		<classpath refid="classpath"/>
+	</taskdef>
+
+	<taskdef name="wldeploy" classname="weblogic.ant.taskdefs.management.WLDeploy">
+		<classpath location="${oracle1213.wlserver.lib.path}/weblogic.jar"/>
+	</taskdef>
+
+	<target name="readme">
+		<echo>Available commands in their preferred order of execution:
+				-undeploy - undeploy all from weblogic
+				-deploy - deploy all into weblogic
+		</echo>
+	</target>
+
+	<!-- configuration -->
+	<target name="cfg">
+		<tstamp>
+			<format property="timestamp" pattern="yyyy-MM-dd_HH-mm-ss"/>
+		</tstamp>
+		<mkdir dir="ant/log"/>
+		<record name="log/wls_${timestamp}.log" action="start" />
+	</target>
+
+	<!-- undeploy -->
+	<target name="undeploy" depends="cfg,undeploy.app,undeploy.mw">
+	</target>
+
+	<!-- undeploy -->
+	<target name="undeploy.app" depends="cfg">
+		<antcall target="undeploy.ear" inheritall="true">
+			<param name="name" value="ipms"/>
+		</antcall>
+	</target>
+
+	<!-- undeploy -->
+	<target name="undeploy.mw" depends="cfg">
+		<antcall target="undeploy.sar" inheritall="true">
+			<param name="name" value="ipms.soa"/>
+		</antcall>
+
+		<antcall target="undeploy.sar" inheritall="true">
+			<param name="name" value="ipms.p6x"/>
+		</antcall>
+
+		<antcall target="undeploy.sar" inheritall="true">
+			<param name="name" value="ipms.cache"/>
+		</antcall>
+
+		<antcall target="undeploy.sar" inheritall="true">
+			<param name="name" value="ipms.ums"/>
+		</antcall>
+
+		<antcall target="undeploy.sar" inheritall="true">
+			<param name="name" value="ipms.bpm"/>
+		</antcall>
+
+		<antcall target="undeploy.sar" inheritall="true">
+			<param name="name" value="ipms.test"/>
+		</antcall>
+
+		<antcall target="undeploy.sar" inheritall="true">
+			<param name="name" value="ipms.qplan"/>
+		</antcall>
+	</target>
+
+	<!-- undeploy.soa -->
+	<target name="undeploy.soa" depends="cfg">
+		<antcall target="undeploy.sar" inheritall="true">
+			<param name="name" value="ipms.soa"/>
+		</antcall>
+	</target>
+
+	<!-- undeploy.ums -->
+	<target name="undeploy.ums" depends="cfg">
+		<antcall target="undeploy.sar" inheritall="true">
+			<param name="name" value="ipms.ums"/>
+		</antcall>
+	</target>
+
+	<!-- undeploy.bpm -->
+	<target name="undeploy.bpm" depends="cfg">
+		<antcall target="undeploy.sar" inheritall="true">
+			<param name="name" value="ipms.bpm"/>
+		</antcall>
+	</target>
+
+	<!-- undeploy.cache -->
+	<target name="undeploy.cache" depends="cfg">
+		<antcall target="undeploy.sar" inheritall="true">
+			<param name="name" value="ipms.cache"/>
+		</antcall>
+	</target>
+
+	<!-- undeploy.p6x -->
+	<target name="undeploy.p6x" depends="cfg">
+		<antcall target="undeploy.sar" inheritall="true">
+			<param name="name" value="ipms.p6x"/>
+		</antcall>
+	</target>
+
+	<!-- undeploy.test -->
+	<target name="undeploy.test" depends="cfg">
+		<antcall target="undeploy.sar" inheritall="true">
+			<param name="name" value="ipms.test"/>
+		</antcall>
+	</target>
+
+	<!-- undeploy.qplan -->
+	<target name="undeploy.qplan" depends="cfg">
+		<antcall target="undeploy.sar" inheritall="true">
+			<param name="name" value="ipms.qplan"/>
+		</antcall>
+	</target>
+
+	<!-- deploy -->
+	<target name="deploy" depends="cfg,deploy.mds,deploy.mw,deploy.app">
+	</target>
+
+	<!-- deploy -->
+	<target name="deploy.mds" depends="cfg">
+		<antcall target="deploy.sar" inheritall="true">
+			<param name="file" value="dev/metadata/deploy/ipms-mds.zip"/>
+		</antcall>
+	</target>
+
+	<!-- deploy -->
+	<target name="deploy.mw" depends="cfg">
+		<antcall target="deploy.sar" inheritall="true">
+			<param name="file" value="dev/middleware/deploy/ipms-mw.zip"/>
+		</antcall>
+	</target>
+
+	<!-- deploy -->
+	<target name="deploy.app" depends="cfg">
+		<antcall target="deploy.ear" inheritall="true">
+			<param name="file" value="dev/application/deploy/ipms-app.ear"/>
+			<param name="name" value="ipms"/>
+		</antcall>
+	</target>
+
+	<!-- deploy -->
+	<target name="deploy.soa" depends="cfg">
+		<antcall target="deploy.sar" inheritall="true">
+			<param name="file" value="dev/middleware/deploy/sca_ipms-soa.jar"/>
+		</antcall>
+	</target>
+
+	<!-- deploy -->
+	<target name="deploy.p6x" depends="cfg">
+		<antcall target="deploy.sar" inheritall="true">
+			<param name="file" value="dev/middleware/deploy/sca_ipms-p6x.jar"/>
+		</antcall>
+	</target>
+
+	<!-- deploy -->
+	<target name="deploy.cache" depends="cfg">
+		<antcall target="deploy.sar" inheritall="true">
+			<param name="file" value="dev/middleware/deploy/sca_ipms-cache.jar"/>
+		</antcall>
+	</target>
+
+	<!-- deploy.ums -->
+	<target name="deploy.ums" depends="cfg">
+		<antcall target="deploy.sar" inheritall="true">
+			<param name="file" value="dev/middleware/deploy/sca_ipms-ums.jar"/>
+		</antcall>
+	</target>
+
+	<!-- deploy.test -->
+	<target name="deploy.test" depends="cfg">
+		<antcall target="deploy.sar" inheritall="true">
+			<param name="file" value="dev/middleware/deploy/sca_ipms-test.jar"/>
+		</antcall>
+	</target>
+
+	<!-- deploy.bpm -->
+	<target name="deploy.bpm" depends="cfg">
+		<antcall target="deploy.sar" inheritall="true">
+			<param name="file" value="dev/middleware/deploy/sca_ipms-bpm.jar"/>
+		</antcall>
+	</target>
+
+		<!-- deploy.qplan -->
+	<target name="deploy.qplan" depends="cfg">
+		<antcall target="deploy.sar" inheritall="true">
+			<param name="file" value="dev/middleware/deploy/sca_ipms-qplan.jar"/>
+		</antcall>
+	</target>
+
+	<!-- deploy.ear(file,name) -->
+	<target name="deploy.ear" depends="cfg">
+		<property name="ear.path" location="${file}"/>
+		<dirname property="ear.dir" file="${file}"/>
+
+		<wldeploy
+			action="undeploy"
+			name="${name}"
+			user="${wls.user}" password="${wls.password}"
+			adminurl="${wls.admin.url}" targets="adf_server1"
+			failonerror="false" />
+
+		<wldeploy
+			action="deploy" verbose="true" debug="true"
+			name="${name}" source="${ear.path}"
+			user="${wls.user}" password="${wls.password}"
+			upload="true"
+			plan="${ear.dir}/ipms-plan.xml"
+			adminurl="${wls.admin.url}" targets="adf_server1" />
+	</target>
+
+	<!-- undeploy.ear(name) -->
+	<target name="undeploy.ear" depends="cfg">
+		<wldeploy
+			action="undeploy"
+			name="${name}"
+			user="${wls.user}" password="${wls.password}"
+			adminurl="${wls.admin.url}" targets="adf_server1"
+			failonerror="false" />
+	</target>
+
+	<!-- deploy.sar(file) -->
+	<target name="deploy.sar" depends="cfg">
+		<property name="sar.path" location="${file}"/>
+
+		<ant antfile="${oracle.wlserver.ant.path}/ant-sca-deploy.xml" target="deploy" inheritall="false">
+			<property name="serverURL" value="${wls.soainfra.url}"/>
+			<property name="user" value="${wls.user}"/>
+			<property name="password" value="${wls.password}"/>
+			<property name="sarLocation" value="${sar.path}"/>
+			<property name="overwrite" value="true"/>
+		</ant>
+	</target>
+
+	<!-- undeploy.sar(name) -->
+	<target name="undeploy.sar" depends="cfg">
+		<ant antfile="${oracle.wlserver.ant.path}/ant-sca-deploy.xml" target="undeploy" inheritall="false">
+			<property name="serverURL" value="${wls.soainfra.url}"/>
+			<property name="user" value="${wls.user}"/>
+			<property name="password" value="${wls.password}"/>
+			<property name="compositeName" value="${name}"/>
+		</ant>
+	</target>
+
+</project>

@@ -1,0 +1,12 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<actions targetNamespace="http://xmlns.bayer.com/ipms/soa" xmlns="http://xmlns.oracle.com/bpel/sensor" xmlns:tns="http://xmlns.bayer.com/ipms/soa" xmlns:pc="http://xmlns.oracle.com/bpel/sensor">
+   <action name="SaveToSOADB" publishName="" publishType="BpelReportsSchema" enabled="true">
+      <sensorName>Publish Timeline: step 1 of 6. Starting publication.</sensorName>
+      <sensorName>Publish Timeline: Error occurred, process stopped.</sensorName>
+      <sensorName>Publish Timeline: step 4 of 6. Adjusting plan details.</sensorName>
+      <sensorName>Publish Timeline: step 2 of 6. Reading configuration.</sensorName>
+      <sensorName>Publish Timeline: step 3 of 6. Updating target plan.</sensorName>
+      <sensorName>Publish Timeline: step 3 of 6. Updating source plan.</sensorName>
+      <sensorName>Publish Timeline: step 5 of 6. Finishing publication (starting summarization).</sensorName>
+   </action>
+</actions>

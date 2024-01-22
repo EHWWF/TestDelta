@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE ViewLink SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewLink
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="LeadStudyMapLsInst"
+  Version="12.1.3.2.1"
+  InheritPersonalization="merge">
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="com.bayer.ipms.model.views.links.LeadStudyMapLsInst_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <ViewLinkDefEnd
+    Name="LeadStudyMap"
+    Cardinality="-1"
+    Source="true"
+    Owner="com.bayer.ipms.model.views.LeadStudyMapView">
+    <DesignTime>
+      <Attr Name="_finderName" Value="LeadStudyMap"/>
+      <Attr Name="_isUpdateable" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.views.LeadStudyMapView.LsiId"/>
+    </AttrArray>
+  </ViewLinkDefEnd>
+  <ViewLinkDefEnd
+    Name="LeadStudyInstanceView"
+    Cardinality="1"
+    Owner="com.bayer.ipms.model.views.LeadStudyInstanceView">
+    <DesignTime>
+      <Attr Name="_finderName" Value="LeadStudyInstanceView"/>
+      <Attr Name="_isUpdateable" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.views.LeadStudyInstanceView.Id"/>
+    </AttrArray>
+  </ViewLinkDefEnd>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.bayer.ipms.model.bundles.modelBundle"/>
+  </ResourceBundle>
+</ViewLink>

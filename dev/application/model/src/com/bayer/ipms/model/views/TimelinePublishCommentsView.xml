@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="TimelinePublishCommentsView"
+  Version="12.1.3.2.1"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="com.bayer.ipms.model.views.TimelinePublishCommentsViewRowImpl"
+  ComponentClass="com.bayer.ipms.model.base.IPMSViewObjectImpl"
+  PageIterMode="Full"
+  RowInterface="com.bayer.ipms.model.views.common.TimelinePublishCommentsViewRow"
+  ClientRowProxyName="com.bayer.ipms.model.views.client.TimelinePublishCommentsViewRowClient">
+  <DesignTime>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_codeGenFlag2" Value="Access"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="com.bayer.ipms.model.views.TimelinePublishCommentsView_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <SQLQuery><![CDATA[select max(id) id, project_id, comments, max(create_date) create_date from (
+with hier (id,project_id,comments,hlevel,create_date) as 
+(
+select t.id,t.project_id, t.comments, 1, nvl(t.update_date,t.create_date) from timeline t 
+union all
+select b.id,tl.project_id, b.description comments, h.hlevel+1, b.create_date_p6 from timeline_baseline b join timeline tl on tl.id=b.timeline_id 
+join hier h on (h.id=b.timeline_id)
+)
+select  id, project_id, comments,create_date from hier 
+where comments is not null
+) group by project_id, comments
+order by create_date desc]]></SQLQuery>
+  <ViewAttribute
+    Name="Id"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="ID"
+    Expression="ID"
+    SQLType="VARCHAR"/>
+  <ViewAttribute
+    Name="ProjectId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="PROJECT_ID"
+    Expression="PROJECT_ID"
+    SQLType="VARCHAR"/>
+  <ViewAttribute
+    Name="Comments"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="COMMENTS"
+    Expression="COMMENTS"
+    SQLType="VARCHAR"/>
+  <ViewAttribute
+    Name="CreateDate"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    AliasName="CREATE_DATE"
+    Expression="CREATE_DATE"
+    SQLType="DATE"/>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="Id"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.bayer.ipms.model.bundles.modelBundle"/>
+  </ResourceBundle>
+</ViewObject>

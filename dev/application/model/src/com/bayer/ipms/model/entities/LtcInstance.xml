@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="LtcInstance"
+  Version="12.2.1.0.31"
+  InheritPersonalization="true"
+  DBObjectType="table"
+  DBObjectName="LTC_INSTANCE"
+  AliasName="LtcInstance"
+  BindingStyle="OracleName"
+  RowClass="com.bayer.ipms.model.base.IPMSEntityImpl">
+  <Attribute
+    Name="Id"
+    ColumnName="ID"
+    SQLType="NUMERIC"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    TableName="LTC_INSTANCE"
+    PrimaryKey="true"
+    IsUpdateable="false"
+    RetrievedOnInsert="true">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="ProjectId"
+    Precision="20"
+    Scale="0"
+    ColumnName="PROJECT_ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="LTC_INSTANCE"
+    IsUpdateable="false"
+    RetrievedOnInsert="true">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="StatusCode"
+    Precision="10"
+    Scale="0"
+    ColumnName="STATUS_CODE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="LTC_INSTANCE"
+    RetrievedOnInsert="true"
+    RetrievedOnUpdate="true">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="CreateDate"
+    ColumnName="CREATE_DATE"
+    SQLType="TIMESTAMP"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    TableName="LTC_INSTANCE"
+    IsUpdateable="false"
+    RetrievedOnInsert="true">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="7"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="IsSyncing"
+    ColumnName="IS_SYNCING"
+    SQLType="NUMERIC"
+    Type="java.lang.Boolean"
+    ColumnType="BIT"
+    TableName="LTC_INSTANCE"
+    RetrievedOnInsert="true">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="2"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="SandboxId"
+    Precision="10"
+    Scale="0"
+    ColumnName="SANDBOX_ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="LTC_INSTANCE">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="ExcelReport"
+    ColumnName="EXCEL_REPORT"
+    SQLType="STRUCT"
+    Type="java.sql.Clob"
+    ColumnType="NCLOB"
+    TableName="LTC_INSTANCE"/>
+  <Attribute
+    Name="StageNumber"
+    Precision="3"
+    Scale="0"
+    ColumnName="STAGE_NUMBER"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="LTC_INSTANCE"/>
+  <AccessorAttribute
+    Name="LtcPlan"
+    Association="com.bayer.ipms.model.entities.assoc.LtcInstancePlan"
+    AssociationEnd="com.bayer.ipms.model.entities.assoc.LtcInstancePlan.LtcPlan"
+    AssociationOtherEnd="com.bayer.ipms.model.entities.assoc.LtcInstancePlan.LtcInstance"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <AccessorAttribute
+    Name="Project"
+    Association="com.bayer.ipms.model.entities.assoc.ProjectLtcInstance"
+    AssociationEnd="com.bayer.ipms.model.entities.assoc.ProjectLtcInstance.Project"
+    AssociationOtherEnd="com.bayer.ipms.model.entities.assoc.ProjectLtcInstance.LtcInstance"
+    Type="com.bayer.ipms.model.base.IPMSEntityImpl"
+    IsUpdateable="true"/>
+  <Key
+    Name="SysC0055115">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0055115"/>
+      <Attr Name="_checkCondition" Value='"ID" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes"/>
+  </Key>
+  <Key
+    Name="SysC0055116">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0055116"/>
+      <Attr Name="_checkCondition" Value='"STATUS_CODE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes"/>
+  </Key>
+  <Key
+    Name="SysC0055117">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0055117"/>
+      <Attr Name="_checkCondition" Value='"CREATE_DATE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes"/>
+  </Key>
+  <Key
+    Name="SysC0055118">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0055118"/>
+      <Attr Name="_checkCondition" Value='"IS_SYNCING" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes"/>
+  </Key>
+  <Key
+    Name="SysC0055119">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0055119"/>
+      <Attr Name="_checkCondition" Value="is_syncing in (1,0)"/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.LtcInstance.IsSyncing"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0055120"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0055120"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.LtcInstance.Id"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0055121">
+    <DesignTime>
+      <Attr Name="_isCascadeDelete" Value="true"/>
+      <Attr Name="_referencedKey" Value="SYS_C0043880"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0055121"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.LtcInstance.ProjectId"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0055122">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0043901"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0055122"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.LtcInstance.StatusCode"/>
+    </AttrArray>
+  </Key>
+</Entity>

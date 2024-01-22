@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="project-team">
+    <template-reference>
+      <document>/WEB-INF/com.bayer.ipms.view/templates/ipms-taskflow-template-fragment.xml</document>
+      <id>ipms-taskflow-template-fragment</id>
+    </template-reference>
+    <default-activity>initScreen</default-activity>
+    <data-control-scope>
+      <shared/>
+    </data-control-scope>
+    <input-parameter-definition id="__3">
+      <name>projectType</name>
+      <value>#{pageFlowScope.projectType}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+      <managed-bean id="__36s">
+      <managed-bean-name id="__34s">projectTeamBean</managed-bean-name>
+      <managed-bean-class id="__3s5">com.bayer.ipms.view.beans.ProjectTeamBean</managed-bean-class>
+      <managed-bean-scope id="__3s3">request</managed-bean-scope>
+    </managed-bean>
+    <view id="project-team-view">
+      <page>/WEB-INF/com.bayer.ipms.view/fragments/project-team.jsff</page>
+    </view>
+<task-flow-call id="team-members-view">
+      <task-flow-reference>
+        <document>/WEB-INF/com.bayer.ipms.view/flows/team-members-view2.xml</document>
+        <id>team-members-view2</id>
+      </task-flow-reference>
+      <input-parameter id="__53">
+        <name>programId</name>
+        <value>#{bindings.ProgramId.inputValue}</value>
+      </input-parameter>
+      <input-parameter id="__54">
+        <name>projectId</name>
+        <value>#{bindings.ProjectId.inputValue}</value>
+      </input-parameter>
+      <input-parameter id="__55">
+        <name>projectType</name>
+        <value>#{pageFlowScope.projectType}</value>
+      </input-parameter>
+    </task-flow-call>
+  
+    <method-call id="requery">
+      <method>#{projectTeamBean.requery}</method>
+      <outcome>
+        <fixed-outcome>ok</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="initScreen">
+      <method>#{projectTeamBean.initScreen}</method>
+      <outcome>
+        <fixed-outcome>next</fixed-outcome>
+      </outcome>
+    </method-call>
+    <control-flow-rule id="__1">
+      <from-activity-id>project-team-view</from-activity-id>
+      <control-flow-case id="__2">
+        <from-outcome>edit-team-members</from-outcome>
+        <to-activity-id>team-members-view</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__4">
+      <from-activity-id>team-members-view</from-activity-id>
+      <control-flow-case id="__5">
+        <from-outcome>taskFlowReturn</from-outcome>
+        <to-activity-id>requery</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__6">
+      <from-activity-id>requery</from-activity-id>
+      <control-flow-case id="__7">
+        <to-activity-id>project-team-view</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__8">
+      <from-activity-id>initScreen</from-activity-id>
+      <control-flow-case id="__9">
+        <from-outcome>next</from-outcome>
+        <to-activity-id>project-team-view</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

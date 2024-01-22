@@ -1,0 +1,318 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Created: Fri Aug 30 15:10:35 CEST 2013
+  Author:  algis
+  Type: BPEL 2.0 Process
+  Purpose: Synchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="UpdateFunctions"
+               targetNamespace="http://xmlns.bayer.com/ipms/soa"
+               xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+               xmlns:client="http://xmlns.bayer.com/ipms/soa"
+               xmlns:ora="http://schemas.oracle.com/xpath/extension"
+               xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:ns1="http://xmlns.bayer.com/ipms"
+         xmlns:ns11="http://xmlns.bayer.com/ipms/soa"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:ns2="http://xmlns.oracle.com/Primavera/P6/WS/Role/V1"
+         xmlns:ns3="http://xmlns.oracle.com/Primavera/P6/WS/WBS/V2"
+         xmlns:ns4="http://xmlns.bayer.com/ipms/cache"
+         xmlns:ns5="http://xmlns.oracle.com/Primavera/P6/WS/CostAccount/V1"
+         xmlns:ui="http://xmlns.oracle.com/soa/designer">
+  <import namespace="http://xmlns.bayer.com/ipms/soa" location="UpdateFunctions.wsdl"
+          importType="http://schemas.xmlsoap.org/wsdl/" ui:processWSDL="true"/>
+  <import namespace="http://xmlns.bayer.com/ipms/cache"
+          location="oramds:/apps/com/bayer/xmlns/ipms/cache/cache.xsd"
+          importType="http://www.w3.org/2001/XMLSchema"/>
+  <partnerLinks>
+    <partnerLink name="UpdateFunctionsService" partnerLinkType="client:UpdateFunctions" myRole="UpdateFunctionsProvider"
+                 partnerRole="UpdateFunctionsRequester"/>
+    <partnerLink name="RoleService" partnerLinkType="ns2:RoleService"
+                 partnerRole="RolePortType"/>
+    <partnerLink name="ReadConfiguration.ReadConfigurationService"
+                 partnerLinkType="client:ReadConfiguration"
+                 partnerRole="ReadConfigurationProvider"
+                 myRole="ReadConfigurationRequester"/>
+    <partnerLink name="CostAccountService"
+                 partnerLinkType="ns5:CostAccountService"
+                 partnerRole="CostAccountPortType"/>
+  </partnerLinks>
+
+  <variables>
+    <variable name="inputVariable" messageType="client:UpdateFunctionsRequestMessage"/>
+    <variable name="outputVariable" messageType="client:UpdateFunctionsResponseMessage"/>
+    <variable name="ReadCfgIn"
+              messageType="client:ReadConfigurationRequestMessage"/>
+    <variable name="ReadCfgOut"
+              messageType="client:ReadConfigurationResponseMessage"/>
+  </variables>
+  <faultHandlers>
+    <catchAll>
+      <scope name="mainFaultCatchingScope" exitOnStandardFault="no">
+        <variables>
+          <variable name="faultVariable"
+                    messageType="client:UpdateFunctionsResponseMessage"/>
+        </variables>
+        <sequence name="Error">
+          <assign name="assignFaultOutput">
+            <copy>
+              <from>ora:getFaultAsString()</from>
+              <to>$faultVariable.payload/ns1:error/ns1:description</to>
+            </copy>
+            <copy>
+              <from>ora:getFaultName()</from>
+              <to>$faultVariable.payload/ns1:error/ns1:code</to>
+            </copy>
+            <copy>
+              <from>$inputVariable.payload/@id</from>
+              <to>$faultVariable.payload/ns1:error/@id</to>
+            </copy>
+            <copy>
+              <from>$inputVariable.payload/@id</from>
+              <to>$faultVariable.payload/@id</to>
+            </copy>
+          </assign>
+          <invoke name="callbackFaultOutput" bpelx:invokeAsDetail="no"
+                  partnerLink="UpdateFunctionsService"
+                  portType="client:UpdateFunctionsCallback"
+                  operation="callback" inputVariable="faultVariable"/>
+        </sequence>
+      </scope>
+    </catchAll>
+  </faultHandlers>
+  <sequence name="main">
+
+    <!-- Receive input from requestor. (Note: This maps to operation defined in UpdateFunctions.wsdl) -->
+    <receive name="receiveInput" partnerLink="UpdateFunctionsService" portType="client:UpdateFunctions" operation="process" variable="inputVariable" createInstance="yes"/>
+    <sequence name="ReadConfig">
+      <scope name="ReadCfgFromFile">
+        <variables>
+          <variable name="VariableCache" element="ns4:cache"/>
+        </variables>
+        <faultHandlers>
+          <catchAll>
+            <empty name="Empty1"/>
+          </catchAll>
+        </faultHandlers>
+        <sequence name="ReadCfgFromFile">
+          <assign name="AssignFromCache">
+            <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+              <from>ora:readFile("file:///opt/oracle/soa12.2.1/file_adapter/ipms/config.cache", "oramds:/apps/com/bayer/xmlns/ipms/cache/cache.xsd")</from>
+              <to>$VariableCache/ns4:cache</to>
+            </copy>
+            <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+              <from>$VariableCache/ns4:cache/*</from>
+              <to>$ReadCfgOut.payload</to>
+            </copy>
+          </assign>
+          <empty name="EmptyBeforeSkip"/>
+        </sequence>
+      </scope>
+      <sequence name="FullReadCfg-SKIP">
+        <bpelx:skipCondition>($ReadCfgOut.payload/client:program/client:epsId)!=''</bpelx:skipCondition>
+        <assign name="AssignStartVariablesAndOutput">
+          <copy>
+            <from>'empty'</from>
+            <to>$ReadCfgIn.payload</to>
+          </copy>
+          <copy>
+            <from>$inputVariable.payload/ns1:functions</from>
+            <to>$outputVariable.payload/client:complete/ns1:functions</to>
+          </copy>
+          <copy>
+            <from>$inputVariable.payload/@id</from>
+            <to>$outputVariable.payload/client:complete/@id</to>
+          </copy>
+          <copy>
+            <from>$inputVariable.payload/@id</from>
+            <to>$outputVariable.payload/@id</to>
+          </copy>
+        </assign>
+        <invoke name="ReadConfigurationIn" bpelx:invokeAsDetail="no"
+                partnerLink="ReadConfiguration.ReadConfigurationService"
+                portType="client:ReadConfiguration" operation="process"
+                inputVariable="ReadCfgIn"/>
+        <receive name="ReadConfigurationOut" createInstance="no"
+                 partnerLink="ReadConfiguration.ReadConfigurationService"
+                 portType="client:ReadConfigurationCallback"
+                 operation="callback" variable="ReadCfgOut"/>
+      </sequence>
+    </sequence>
+    <scope name="Roles" exitOnStandardFault="no">
+      <variables>
+        <variable name="ReadRolesIn" messageType="ns2:ReadRoles"/>
+        <variable name="ReadRolesOut" messageType="ns2:ReadRolesResponse"/>
+        <variable name="UpdateRolesIn" messageType="ns2:UpdateRoles"/>
+        <variable name="UpdateRolesOut" messageType="ns2:UpdateRolesResponse"/>
+        <variable name="CreateRolesIn" messageType="ns2:CreateRoles"/>
+        <variable name="CreateRolesOut" messageType="ns2:CreateRolesResponse"/>
+      </variables>
+      <sequence name="SequenceMain">
+        <sequence name="SelectAllFromP6">
+          <assign name="AssignReadRoles">
+            <copy>
+              <from><literal><v2:Field xmlns:v2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2">ParentObjectId</v2:Field></literal></from>
+              <to>$ReadRolesIn.params/ns2:Field</to>
+            </copy>
+            <extensionAssignOperation>
+              <bpelx:insertAfter>
+                <bpelx:from><bpelx:literal><v2:Field xmlns:v2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2">Id</v2:Field></bpelx:literal></bpelx:from>
+                <bpelx:to>$ReadRolesIn.params/ns2:Field</bpelx:to>
+              </bpelx:insertAfter>
+            </extensionAssignOperation>
+            <extensionAssignOperation>
+              <bpelx:insertAfter>
+                <bpelx:from><bpelx:literal><v2:Field xmlns:v2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2">Name</v2:Field></bpelx:literal></bpelx:from>
+                <bpelx:to>$ReadRolesIn.params/ns2:Field</bpelx:to>
+              </bpelx:insertAfter>
+            </extensionAssignOperation>
+            <copy>
+              <from>concat("ParentObjectId in ('",$ReadCfgOut.payload/ns11:role/ns11:groups/ns11:activeId, "','",$ReadCfgOut.payload/ns11:role/ns11:groups/ns11:inactiveId,"')")</from>
+              <to>$ReadRolesIn.params/ns2:Filter</to>
+            </copy>
+          </assign>
+          <invoke name="ReadRoles" bpelx:invokeAsDetail="no"
+                  partnerLink="RoleService" portType="ns2:RolePortType"
+                  operation="ReadRoles" inputVariable="ReadRolesIn"
+                  outputVariable="ReadRolesOut"/>
+        </sequence>
+        <sequence name="PrepareAndMakeUpdate">
+          <assign name="TransformUpdateRoles">
+            <bpelx:annotation>
+              <bpelx:pattern patternName="bpelx:transformation"/>
+            </bpelx:annotation>
+            <copy>
+              <from>ora:doXSLTransformForDoc("xsl/UpdateFunctionsUpdateRoles.xsl", $inputVariable.payload, "ReadCfgOut.payload", $ReadCfgOut.payload, "ReadRolesOut.result", $ReadRolesOut.result)</from>
+              <to variable="UpdateRolesIn" part="params"/>
+            </copy>
+          </assign>
+          <invoke name="UpdateRoles" partnerLink="RoleService"
+                  portType="ns2:RolePortType" operation="UpdateRoles"
+                  inputVariable="UpdateRolesIn" outputVariable="UpdateRolesOut"
+                  bpelx:invokeAsDetail="no"/>
+        </sequence>
+        <sequence name="CreateMissingRoles">
+          <assign name="TransformCreateRoles">
+            <bpelx:annotation>
+              <bpelx:pattern patternName="bpelx:transformation"/>
+            </bpelx:annotation>
+            <copy>
+              <from>ora:doXSLTransformForDoc("xsl/UpdateFunctionsCreateRoles.xsl", $ReadRolesOut.result, "inputVariable.payload", $inputVariable.payload, "ReadCfgOut.payload", $ReadCfgOut.payload)</from>
+              <to variable="CreateRolesIn" part="params"/>
+            </copy>
+          </assign>
+          <sequence name="CreateRole-SKIP">
+            <bpelx:skipCondition>count($CreateRolesIn.params/ns2:Role)=0</bpelx:skipCondition>
+            <invoke name="CreateRoles" partnerLink="RoleService"
+                    portType="ns2:RolePortType" operation="CreateRoles"
+                    inputVariable="CreateRolesIn"
+                    outputVariable="CreateRolesOut" bpelx:invokeAsDetail="no"/>
+          </sequence>
+        </sequence>
+      </sequence>
+    </scope>
+    <scope name="CostAccounts" exitOnStandardFault="no">
+      <variables>
+        <variable name="ReadCostAccounts_In"
+                  messageType="ns5:ReadCostAccounts"/>
+        <variable name="ReadCostAccounts_Out"
+                  messageType="ns5:ReadCostAccountsResponse"/>
+        <variable name="CreateCostAccounts_In"
+                  messageType="ns5:CreateCostAccounts"/>
+        <variable name="CreateCostAccounts_Out"
+                  messageType="ns5:CreateCostAccountsResponse"/>
+        <variable name="UpdateCostAccounts_In"
+                  messageType="ns5:UpdateCostAccounts"/>
+        <variable name="UpdateCostAccounts_Out"
+                  messageType="ns5:UpdateCostAccountsResponse"/>
+      </variables>
+      <sequence name="Sequence2">
+        <assign name="ReadCostAccounts_In">
+          <copy>
+            <from><literal><ReadCostAccounts xmlns="http://xmlns.oracle.com/Primavera/P6/WS/CostAccount/V1">
+	<Field>Id</Field>
+	<Field>Name</Field>
+</ReadCostAccounts></literal></from>
+            <to>$ReadCostAccounts_In.params</to>
+          </copy>
+        </assign>
+        <invoke name="ReadCostAccounts"
+                partnerLink="CostAccountService"
+                portType="ns5:CostAccountPortType" operation="ReadCostAccounts"
+                inputVariable="ReadCostAccounts_In" bpelx:invokeAsDetail="no"
+                outputVariable="ReadCostAccounts_Out"/>
+        <flow name="Flow1">
+          <sequence name="Sequence">
+            <assign name="CreateCostAccounts_In">
+              <bpelx:annotation>
+                <bpelx:pattern patternName="bpelx:transformation"/>
+              </bpelx:annotation>
+              <copy>
+                <from>ora:doXSLTransformForDoc("xsl/UpdateFunctionsCreateCostAccnts.xsl", $inputVariable.payload, "ReadCostAccounts_Out.result", $ReadCostAccounts_Out.result)</from>
+                <to variable="CreateCostAccounts_In" part="params"/>
+              </copy>
+            </assign>
+            <invoke name="CreateCostAccounts"
+                    partnerLink="CostAccountService"
+                    portType="ns5:CostAccountPortType"
+                    operation="CreateCostAccounts"
+                    inputVariable="CreateCostAccounts_In"
+                    outputVariable="CreateCostAccounts_Out"
+                    bpelx:invokeAsDetail="no">
+              <bpelx:skipCondition>empty($CreateCostAccounts_In.params/ns5:CostAccount)</bpelx:skipCondition>
+            </invoke>
+          </sequence>
+          <sequence name="Sequence3">
+            <assign name="UpdateCostAccounts_In">
+              <bpelx:annotation>
+                <bpelx:pattern patternName="bpelx:transformation"/>
+              </bpelx:annotation>
+              <copy>
+                <from>ora:doXSLTransformForDoc("xsl/UpdateFunctionsUpdateCostAccnts.xsl", $inputVariable.payload, "ReadCostAccounts_Out.result", $ReadCostAccounts_Out.result)</from>
+                <to variable="UpdateCostAccounts_In" part="params"/>
+              </copy>
+            </assign>
+            <invoke name="UpdateCostAccounts"
+                    partnerLink="CostAccountService"
+                    portType="ns5:CostAccountPortType"
+                    operation="UpdateCostAccounts"
+                    inputVariable="UpdateCostAccounts_In"
+                    outputVariable="UpdateCostAccounts_Out"
+                    bpelx:invokeAsDetail="no">
+              <bpelx:skipCondition>empty($UpdateCostAccounts_In.params/ns5:CostAccount)</bpelx:skipCondition>
+            </invoke>
+          </sequence>
+        </flow>
+      </sequence>
+    </scope>
+    <assign name="AssignMsgId">
+      <copy>
+        <from>$inputVariable.payload/@id</from>
+        <to>$outputVariable.payload/@id</to>
+      </copy>
+      <copy>
+        <from>$inputVariable.payload/@id</from>
+        <to>$outputVariable.payload/client:complete/@id</to>
+      </copy>
+    </assign>
+    <!-- Generate reply to synchronous request -->
+    <invoke name="callbackOutput" bpelx:invokeAsDetail="no"
+            partnerLink="UpdateFunctionsService"
+            portType="client:UpdateFunctionsCallback" operation="callback"
+            inputVariable="outputVariable"/>
+  </sequence>
+</process>

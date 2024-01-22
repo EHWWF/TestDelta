@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="GoalPhase"
+  Version="12.2.1.0.31"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="com.bayer.ipms.model.views.GoalPhaseRowImpl"
+  ComponentClass="com.bayer.ipms.model.views.GoalPhaseImpl"
+  PageIterMode="Full"
+  RowInterface="com.bayer.ipms.model.views.common.GoalPhaseRow"
+  ClientRowProxyName="com.bayer.ipms.model.views.client.GoalPhaseRowClient">
+  <DesignTime>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|VarAccess"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="com.bayer.ipms.model.views.GoalPhase_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <SQLQuery><![CDATA[select code  as code,  
+       value as goal_track_year  
+ from configuration c where c.code = 'GOAL_TRACK_YEAR']]></SQLQuery>
+  <EntityUsage
+    Name="Configuration"
+    Entity="com.bayer.ipms.model.entities.lookups.Configuration"/>
+  <ViewAttribute
+    Name="Code"
+    IsUpdateable="false"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Code"
+    EntityUsage="Configuration"
+    AliasName="CODE"/>
+    <ViewAttribute
+    Name="GoalTrackYear"
+    PrecisionRule="true"
+    AliasName="VALUE"
+    EntityAttrName="Value"
+    EntityUsage="Configuration">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.GoalPhase.GoalTrackYear_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  
+  <ClientRowInterface
+    Name="__rowClientInterface">
+    <Method
+      Name="updateRefDate"
+      MethodName="updateRefDate">
+      <Return
+        Name="_return_type_"
+        Type="void"/>
+    </Method>
+  </ClientRowInterface>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.bayer.ipms.model.bundles.modelBundle"/>
+  </ResourceBundle>
+</ViewObject>

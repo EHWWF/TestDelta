@@ -1,0 +1,17 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
+<wsdl:definitions
+     name="BaselineTypeService"
+     targetNamespace="http://xmlns.oracle.com/Primavera/P6/WS/BaselineType/V1"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+     xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+     xmlns:plnk="http://schemas.xmlsoap.org/ws/2003/05/partner-link/"
+     xmlns:tns="http://xmlns.oracle.com/Primavera/P6/WS/BaselineType/V1"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    >
+    <plnk:partnerLinkType name="BaselineTypeService">
+        <plnk:role name="BaselineTypePortType">
+            <plnk:portType name="tns:BaselineTypePortType"/>
+        </plnk:role>
+    </plnk:partnerLinkType>
+    <wsdl:import namespace="http://xmlns.oracle.com/Primavera/P6/WS/BaselineType/V1" location="../wsdl/BaselineTypeService.wsdl"/>
+</wsdl:definitions>

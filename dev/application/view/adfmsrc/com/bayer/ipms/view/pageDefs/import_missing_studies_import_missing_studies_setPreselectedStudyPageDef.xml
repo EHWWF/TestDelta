@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.1.3.10.8"
+                id="import_missing_studies_import_missing_studies_setPreselectedStudyPageDef"
+                Package="com.bayer.ipms.view.pageDefs" SkipValidation="true">
+  <parameters/>
+  <executables/>
+  <bindings>
+    <methodAction id="setPreselectedStudy" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="setPreselectedStudy" IsViewObjectMethod="true" DataControl="PrivateAppModuleDataControl"
+                  InstanceName="data.PrivateAppModuleDataControl.dataProvider.ImportAppModule.ImportProjectStudyView"
+                  ReturnName="data.PrivateAppModuleDataControl.methodResults.setPreselectedStudy_PrivateAppModuleDataControl_dataProvider_ImportAppModule_ImportProjectStudyView_setPreselectedStudy_result">
+      <NamedData NDName="value" NDValue="#{pageFlowScope.studyId}" NDType="java.lang.String"/>
+    </methodAction>
+  </bindings>
+</pageDefinition>

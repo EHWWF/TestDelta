@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="11.1.1.64.93" id="referencesPageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+    <parameters/>
+    <executables>
+        <variableIterator id="variables"/>
+        <iterator Binds="ManagementAppModule.ReferenceView" DataControl="PrivateAppModuleDataControl" RangeSize="100"
+                  id="ReferenceViewIterator"/>
+        <page path="com.bayer.ipms.view.pageDefs.ipms_page_templatePageDef" id="tmpl"/>
+        <iterator Binds="ManagementAppModule.WelcomeTextView" DataControl="PrivateAppModuleDataControl" RangeSize="25"
+                  id="WelcomeTextViewIterator"/>
+    </executables>
+    <bindings>
+        <tree IterBinding="ReferenceViewIterator" id="ReferenceView" ChangeEventPolicy="ppr">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.ReferenceView" Name="ReferenceView">
+                <AttrNames>
+                    <Item Value="Title"/>
+                    <Item Value="Link"/>
+                    <Item Value="Type"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <action IterBinding="ReferenceViewIterator" id="ReferenceCreateInsert" DataControl="PrivateAppModuleDataControl"
+                RequiresUpdateModel="true" Action="createInsertRow"/>
+        <action IterBinding="ReferenceViewIterator" id="ReferenceDelete" RequiresUpdateModel="false"
+                Action="removeCurrentRow"/>
+        <attributeValues IterBinding="WelcomeTextViewIterator" id="WelcomeText">
+            <AttrNames>
+                <Item Value="Details2"/>
+            </AttrNames>
+        </attributeValues>
+    </bindings>
+</pageDefinition>

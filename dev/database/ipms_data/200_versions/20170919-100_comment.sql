@@ -1,0 +1,1 @@
+comment on column ltc_estimate.type_code is 'LTC Estimate could have two types of Sheets: LTC or FTE.';

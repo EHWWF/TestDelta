@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="plan-assumption-request-start">
+    <template-reference>
+      <document>/WEB-INF/com.bayer.ipms.view/templates/ipms-taskflow-template-page.xml</document>
+      <id>ipms-taskflow-template-page</id>
+    </template-reference>
+    <default-activity id="__1">CreateInsert</default-activity>
+    <transaction id="__5">
+      <new-transaction/>
+    </transaction>
+    <data-control-scope id="__6">
+      <isolated/>
+    </data-control-scope>
+    <managed-bean id="__37">
+      <managed-bean-name id="__19">PlanningAssumptionBean</managed-bean-name>
+      <managed-bean-class id="__38">com.bayer.ipms.view.beans.PlanningAssumptionBean</managed-bean-class>
+      <managed-bean-scope id="__36">request</managed-bean-scope>
+    </managed-bean>
+    <exception-handler id="__2">handleException</exception-handler>
+    <method-call id="CreateInsert">
+      <method>#{bindings.CreateInsert.execute}</method>
+      <outcome id="__7">
+        <fixed-outcome>CreateInsert</fixed-outcome>
+      </outcome>
+    </method-call>
+    <view id="Init">
+      <page>/WEB-INF/com.bayer.ipms.view/fragments/planning-assumption-request-start.jspx</page>
+    </view>
+    <task-flow-return id="cancel">
+      <outcome id="__13">
+        <name>cancel</name>
+        <rollback/>
+      </outcome>
+    </task-flow-return>
+    <method-call id="Commit">
+      <method>#{bindings.Commit.execute}</method>
+      <outcome id="__20">
+        <fixed-outcome>Commit</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="start">
+      <method>#{bindings.start.execute}</method>
+      <outcome id="__24">
+        <fixed-outcome>start</fixed-outcome>
+      </outcome>
+    </method-call>
+    <task-flow-return id="ok">
+      <outcome id="__30">
+        <name>ok</name>
+        <commit/>
+      </outcome>
+    </task-flow-return>
+    <method-call id="setBaCode">
+      <method>#{utilsBean.setBaCode2}</method>
+      <parameter>
+        <class>java.lang.String</class>
+        <value>PlanningAssumptionsStart</value>
+      </parameter>
+      <outcome>
+        <fixed-outcome>set</fixed-outcome>
+      </outcome>
+    </method-call>
+    
+    <method-call id="clearBaCode">
+      <method>#{utilsBean.clearBaCode}</method>
+      <outcome>
+        <fixed-outcome>set</fixed-outcome>
+      </outcome>
+    </method-call>
+    <control-flow-rule id="__8">
+      <from-activity-id id="__9">CreateInsert</from-activity-id>
+      <control-flow-case id="__10">
+        <from-outcome id="__12">CreateInsert</from-outcome>
+        <to-activity-id id="__11">Init</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__14">
+      <from-activity-id id="__15">Init</from-activity-id>
+      <control-flow-case id="__17">
+        <from-outcome id="__18">cancel</from-outcome>
+        <to-activity-id id="__16">cancel</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__21">
+        <from-outcome id="__23">ok</from-outcome>
+        <to-activity-id id="__22">setBaCode</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__25">
+      <from-activity-id id="__26">Commit</from-activity-id>
+      <control-flow-case id="__28">
+        <from-outcome id="__29">Commit</from-outcome>
+        <to-activity-id id="__27">start</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__31">
+      <from-activity-id id="__32">start</from-activity-id>
+      <control-flow-case id="__34">
+        <from-outcome id="__33">start</from-outcome>
+        <to-activity-id id="__35">clearBaCode</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__3">
+      <from-activity-id>clearBaCode</from-activity-id>
+      <control-flow-case id="__4">
+        <from-outcome>set</from-outcome>
+        <to-activity-id>ok</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__39">
+      <from-activity-id>setBaCode</from-activity-id>
+      <control-flow-case id="__40">
+        <from-outcome>set</from-outcome>
+        <to-activity-id>Commit</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+  </task-flow-definition>
+</adfc-config>

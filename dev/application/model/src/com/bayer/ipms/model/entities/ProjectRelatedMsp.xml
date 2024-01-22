@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ProjectRelatedMsp"
+  Version="12.2.1.20.47"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="PROJECT_RELATED_MSP"
+  AliasName="ProjectRelatedMsp"
+  BindingStyle="OracleName"
+  RowClass="com.bayer.ipms.model.base.IPMSEntityImpl">
+  <Attribute
+    Name="Id"
+    ColumnName="ID"
+    SQLType="NUMERIC"
+    Type="java.lang.String"
+    ColumnType="NUMBER"
+    TableName="PROJECT_RELATED_MSP"
+    PrimaryKey="true"
+    RetrievedOnInsert="true"
+    IsUpdateable="false"
+    IsNotNull="true"/>
+  <Attribute
+    Name="RelMspProjectId"
+    IsNotNull="true"
+    Precision="30"
+    ColumnName="REL_MSP_PROJECT_ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="PROJECT_RELATED_MSP">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="30"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="ProjectId"
+    IsNotNull="true"
+    ColumnName="PROJECT_ID"
+    SQLType="STRUCT"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="PROJECT_RELATED_MSP"/>
+  <Key
+    Name="PrjMspCreateByCnn">
+    <DesignTime>
+      <Attr Name="_checkCondition" Value='"CREATE_USER_ID" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+      <Attr Name="_DBObjectName" Value="PRJ_MSP_CREATE_BY_CNN"/>
+    </DesignTime>
+    <AttrArray Name="Attributes"/>
+  </Key>
+  <Key
+    Name="PrjRelMspCreateDateCnn">
+    <DesignTime>
+      <Attr Name="_checkCondition" Value='"CREATE_DATE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+      <Attr Name="_DBObjectName" Value="PRJ_REL_MSP_CREATE_DATE_CNN"/>
+    </DesignTime>
+    <AttrArray Name="Attributes"/>
+  </Key>
+  <Key
+    Name="PrjRelMspIdCnn">
+    <DesignTime>
+      <Attr Name="_checkCondition" Value='"REL_MSP_PROJECT_ID" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+      <Attr Name="_DBObjectName" Value="PRJ_REL_MSP_ID_CNN"/>
+    </DesignTime>
+    <AttrArray Name="Attributes"/>
+  </Key>
+  <Key
+    Name="PrjRelMspPk"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PRJ_REL_MSP_PK"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.ProjectRelatedMsp.Id"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="PrjRelMspUpdateByCnn">
+    <DesignTime>
+      <Attr Name="_checkCondition" Value='"UPDATE_USER_ID" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+      <Attr Name="_DBObjectName" Value="PRJ_REL_MSP_UPDATE_BY_CNN"/>
+    </DesignTime>
+    <AttrArray Name="Attributes"/>
+  </Key>
+  <Key
+    Name="PrjRelMspUpdateDateCnn">
+    <DesignTime>
+      <Attr Name="_checkCondition" Value='"UPDATE_DATE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+      <Attr Name="_DBObjectName" Value="PRJ_REL_MSP_UPDATE_DATE_CNN"/>
+    </DesignTime>
+    <AttrArray Name="Attributes"/>
+  </Key>
+  <Key
+    Name="ProjectRelatedMspIdCheck">
+    <DesignTime>
+      <Attr Name="_isNotNull" Value="true"/>
+      <Attr Name="_checkCondition" Value='"ID" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+      <Attr Name="_DBObjectName" Value="PROJECT_RELATED_MSP_ID_CHECK"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.ProjectRelatedMsp.Id"/>
+    </AttrArray>
+  </Key>
+</Entity>

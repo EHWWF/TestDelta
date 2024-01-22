@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.61.92" id="programsPageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="ProgramAppModule.ProgramView" RangeSize="500"
+              DataControl="PrivateAppModuleDataControl" id="ProgramViewIterator"
+              ChangeEventPolicy="ppr"/>
+    <taskFlow id="dynamicRegion1"
+              taskFlowId="${pageFlowScope.programsBean.contentFlowId}"
+              activation="deferred"
+              xmlns="http://xmlns.oracle.com/adf/controller/binding"
+              Refresh="ifNeeded">
+      <parameters>
+        <parameter id="projectType"
+                   value="#{pageFlowScope.programsBean.projectType}"/>
+      </parameters>
+    </taskFlow>
+    <iterator id="ProjectViewIterator" Binds="ProgramAppModule.ProjectView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"/>
+    <searchRegion Criteria="Dev"
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="ProgramViewIterator" id="DevQuery"/>
+    <iterator Binds="ProjectSearchStatus" RangeSize="10"
+              DataControl="SharedAppModuleDataControl"
+              id="ProjectSearchStatusIterator"/>
+    <searchRegion Criteria="PrdMnt"
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="ProgramViewIterator" id="PrdMntQuery"/>
+    <searchRegion Criteria="Lg"
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="ProjectViewIterator" id="LgQuery"/>
+    <searchRegion Criteria="D2Prj"
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="ProjectViewIterator" id="D2PrjQuery"/>
+    <searchRegion Criteria="SAMD"
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="ProjectViewIterator" id="SAMDQuery"/>
+    <searchRegion Criteria="D3Tr"
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="ProjectViewIterator" id="D3TrQuery"/>
+    <searchRegion Criteria="Rs"
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="ProjectViewIterator" id="RsQuery"/>
+    <searchRegion Criteria="Lo"
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="ProjectViewIterator" id="LoQuery"/>
+    <searchRegion Criteria="Co"
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="ProjectViewIterator" id="CoQuery"/>
+    <iterator Binds="ProgramAppModule.SandboxView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="10"
+              id="SandboxViewIterator"/>
+    <iterator id="ProjectAreaViewIterator" Binds="ManagementAppModule.ProjectAreaView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="25"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="ProgramViewIterator" id="ProgramView"
+          ChangeEventPolicy="none">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.ProgramView"
+                      Name="ProgramView0">
+        <AttrNames>
+          <Item Value="QualifiedName"/>
+        </AttrNames>
+        <Accessors>
+          <Item Value="ProjectView"/>
+        </Accessors>
+      </nodeDefinition>
+      <nodeDefinition DefName="com.bayer.ipms.model.views.ProjectView"
+                      Name="ProgramView1">
+        <AttrNames>
+          <Item Value="QualifiedName"/>
+          <Item Value="IsActive"/>
+          <Item Value="ProgramId"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <methodAction id="receiveProjectEvent"
+                  InstanceName="ContextualEventReceiver.dataProvider"
+                  DataControl="ContextualEventReceiver"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="receiveEvent" IsViewObjectMethod="false">
+      <NamedData NDName="payload" NDType="java.lang.Object"/>
+      <NamedData NDName="eventHandler"
+                 NDValue="#{pageFlowScope.programsBean.projectEventHandler}"
+                 NDType="com.bayer.ipms.view.events.ContextualEventHandler"/>
+    </methodAction>
+    <methodAction id="receiveProgramEvent"
+                  InstanceName="ContextualEventReceiver.dataProvider"
+                  DataControl="ContextualEventReceiver"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="receiveEvent" IsViewObjectMethod="false">
+      <NamedData NDName="payload" NDValue="" NDType="java.lang.Object"/>
+      <NamedData NDName="eventHandler"
+                 NDValue="#{pageFlowScope.programsBean.programEventHandler}"
+                 NDType="com.bayer.ipms.view.events.ContextualEventHandler"/>
+    </methodAction>
+    <methodAction id="receiveProjectTypifyEvent"
+                  InstanceName="ContextualEventReceiver.dataProvider"
+                  DataControl="ContextualEventReceiver"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="receiveEvent" IsViewObjectMethod="false">
+      <NamedData NDName="payload" NDValue="" NDType="java.lang.Object"/>
+      <NamedData NDName="eventHandler"
+                 NDValue="#{pageFlowScope.programsBean.projectTypifyEventHandler}"
+                 NDType="com.bayer.ipms.view.events.ContextualEventHandler"/>
+    </methodAction>
+    <attributeValues IterBinding="ProgramViewIterator" id="Code">
+      <AttrNames>
+        <Item Value="Code"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProgramViewIterator" id="Name">
+      <AttrNames>
+        <Item Value="Name"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProgramViewIterator" id="Substance">
+      <AttrNames>
+        <Item Value="Substance"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProgramViewIterator" id="Description">
+      <AttrNames>
+        <Item Value="Description"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="ProjectSearchStatusIterator" id="ProjectSearchStatus">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.lookups.ProjectSearchStatusView"
+                      Name="ProjectSearchStatus0">
+        <AttrNames>
+          <Item Value="Code"/>
+          <Item Value="Name"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="ProjectViewIterator" id="ProjectView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.ProjectView"
+                      Name="ProjectView0">
+        <AttrNames>
+          <Item Value="QualifiedName"/>
+          <Item Value="IsActive"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="ProjectViewIterator" id="ProjectCode">
+      <AttrNames>
+        <Item Value="Code"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProjectViewIterator" id="ProjectName">
+      <AttrNames>
+        <Item Value="Name"/>
+      </AttrNames>
+    </attributeValues>
+    <list Uses="LOV_AreaCode_D2Prj" StaticList="false"
+          IterBinding="ProjectViewIterator" id="D2PrjAreaCode"/>
+    <list Uses="LOV_AreaCode_SAMD" StaticList="false"
+          IterBinding="ProjectViewIterator" id="SAMDAreaCode"/>
+    <attributeValues IterBinding="ProjectViewIterator" id="ProjectAbbreviation">
+      <AttrNames>
+        <Item Value="Abbreviation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProjectViewIterator" id="CategoryCode">
+      <AttrNames>
+        <Item Value="CategoryCode"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProjectViewIterator" id="StateCode">
+      <AttrNames>
+        <Item Value="StateCode"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProjectViewIterator" id="SubstanceTypeCode">
+      <AttrNames>
+        <Item Value="SubstanceTypeCode"/>
+      </AttrNames>
+    </attributeValues>
+    <list Uses="LOV_IpownerCode" StaticList="false"
+          IterBinding="ProjectViewIterator" id="IpownerCode"/>
+    <attributeValues IterBinding="ProjectViewIterator" id="DescriptionPrj">
+      <AttrNames>
+        <Item Value="Description"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProjectViewIterator" id="PriorityCode">
+      <AttrNames>
+        <Item Value="PriorityCode"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProjectViewIterator" id="SourceCode">
+      <AttrNames>
+        <Item Value="SourceCode"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProjectViewIterator" id="ProposedSbeCode">
+      <AttrNames>
+        <Item Value="ProposedSbeCode"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="ProgramViewIterator" id="ProgramCreate"
+            InstanceName="PrivateAppModuleDataControl.ProgramAppModule.ProgramView"
+            DataControl="PrivateAppModuleDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="ProjectViewIterator" id="ProjectCreate"
+            InstanceName="PrivateAppModuleDataControl.ProgramAppModule.ProjectView"
+            DataControl="PrivateAppModuleDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <attributeValues IterBinding="ProjectViewIterator" id="DetailsModality">
+      <AttrNames>
+        <Item Value="DetailsModality"/>
+      </AttrNames>
+    </attributeValues>
+    
+    
+      <methodAction id="changeProgramOrProjectProducer" InstanceName="PrivateAppModuleDataControl.ProgramAppModule.ProgramView"
+                      DataControl="PrivateAppModuleDataControl" RequiresUpdateModel="true" Action="invokeMethod"
+                      MethodName="changeProgramOrProjectProducer" IsViewObjectMethod="false"
+                      ReturnName="PrivateAppModuleDataControl.methodResults.changeProgramOrProjectProducer_PrivateAppModuleDataControl_dataProvider_changeProgramOrProjectProducer_result">
+            <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+                <event name="programMenuChangedEvent"/>
+            </events>
+        </methodAction>
+        
+        
+  </bindings>
+  <eventMap xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+    <event name="project">
+      <producer region="*">
+        <consumer region="" handler="receiveProjectEvent" handleCondition="">
+          <parameters>
+            <parameter name="payload" value="#{payLoad}"/>
+          </parameters>
+        </consumer>
+      </producer>
+    </event>
+    <event name="program">
+      <producer region="*">
+        <consumer region="" handler="receiveProgramEvent" handleCondition="">
+          <parameters>
+            <parameter name="payload" value="#{payLoad}"/>
+          </parameters>
+        </consumer>
+      </producer>
+    </event>
+    <event name="projectTypify">
+      <producer region="*">
+        <consumer region="" handler="receiveProjectTypifyEvent"
+                  handleCondition="">
+          <parameters>
+            <parameter name="payload" value="#{payLoad}"/>
+          </parameters>
+        </consumer>
+      </producer>
+    </event>
+  </eventMap>
+  <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent"/>
+</pageDefinition>

@@ -1,0 +1,1 @@
+alter table import_masterdata add(program_name nvarchar2(100));

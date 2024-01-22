@@ -1,0 +1,2 @@
+alter table ltc_tag add number_of_profit_years number default 3 constraint ltc_tag_nr_of_profit_y_cnn not null;
+comment on column ltc_tag.number_of_profit_years is 'The number of years for ProFIT planning. Default 3 years.';

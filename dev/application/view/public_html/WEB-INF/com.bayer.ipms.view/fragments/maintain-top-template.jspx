@@ -1,0 +1,193 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich" xmlns:h="http://java.sun.com/jsf/html">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <f:view>
+        <f:loadBundle basename="com.bayer.ipms.view.bundles.viewBundle" var="bundle"/>
+        <af:document title="#{bundle.maintainTopCategories}" id="d1">
+            <af:messages id="m1"/>
+            <af:form id="f1">
+                <af:pageTemplate viewId="/WEB-INF/com.bayer.ipms.view/templates/ipms-popup-template.jspx" id="pt1">
+                    <f:facet name="summary"/>
+                    <f:facet name="content">
+                        <af:panelGroupLayout id="pgl1" layout="scroll">
+                            <af:panelBox text="#{bundle.topCategories}" type="flow" showDisclosure="false" id="pb2">
+                                <af:panelCollection id="pc1" styleClass="AFStretchWidth"
+                                                    featuresOff="detach viewMenu statusBar">
+                                    <f:facet name="toolbar">
+                                        <af:toolbar id="tb1">
+                                            <af:button shortDesc="#{bundle.globalAdd}" 
+													   text="#{bundle.globalAdd}" icon="/images/new.png"
+                                                       actionListener="#{administrationBean.onCreateTopTemplateCat}"
+                                                       id="btnAddCat"/>
+                                            <af:button shortDesc="#{bundle.globalRemove}" 
+													   text="#{bundle.globalRemove}"                                                       
+                                                       icon="/images/remove.png" immediate="true"
+                                                       disabled="#{bindings.CategoryModifyDate.inputValue ne null}"
+                                                       actionListener="#{bindings.DeleteCat.execute}" id="btnRemCat"
+                                                       partialTriggers="tabTopCat btnAddCat">
+                                                <f:attribute name="table" value="t1"/>
+                                                <f:attribute name="iterator"
+                                                             value="#{bindings.ProgramTopCategoryViewIterator}"/>
+                                            </af:button>
+                                        </af:toolbar>
+                                    </f:facet>
+                                    <af:table value="#{bindings.ProgramTopCategoryView.collectionModel}" var="row"
+                                              rows="#{bindings.ProgramTopCategoryView.rangeSize}"
+                                              emptyText="#{bindings.ProgramTopCategoryView.viewable ? 'No data to display.' : 'Access Denied.'}"
+                                              rowBandingInterval="0"
+                                              selectedRowKeys="#{bindings.ProgramTopCategoryView.collectionModel.selectedRow}"
+                                              selectionListener="#{bindings.ProgramTopCategoryView.collectionModel.makeCurrent}"
+                                              rowSelection="single"
+                                              fetchSize="#{bindings.ProgramTopCategoryView.rangeSize}"
+                                              id="tabTopCat" autoHeightRows="5"
+                                              columnStretching="last">
+                                        <af:column headerText="#{bindings.ProgramTopCategoryView.hints.Code.label}"
+                                                   id="c1">
+                                            <af:inputText value="#{row.bindings.Code.inputValue}"
+                                                          label="#{bindings.ProgramTopCategoryView.hints.Code.label}"
+                                                          required="#{bindings.ProgramTopCategoryView.hints.Code.mandatory}"
+                                                          columns="#{bindings.ProgramTopCategoryView.hints.Code.displayWidth}"
+                                                          maximumLength="#{bindings.ProgramTopCategoryView.hints.Code.precision}"
+                                                          shortDesc="#{bindings.ProgramTopCategoryView.hints.Code.tooltip}"
+                                                          readOnly="#{row.bindings.ModifyDate.inputValue ne null}"
+                                                          autoSubmit="true"
+                                                          id="it1">
+                                                <f:validator binding="#{row.bindings.Code.validator}"/>
+                                            </af:inputText>
+                                        </af:column>
+                                        <af:column headerText="#{bindings.ProgramTopCategoryView.hints.Name.label}"
+                                                   id="c2">
+                                            <af:inputText value="#{row.bindings.Name.inputValue}"
+                                                          label="#{bindings.ProgramTopCategoryView.hints.Name.label}"
+                                                          required="#{bindings.ProgramTopCategoryView.hints.Name.mandatory}"
+                                                          columns="#{bindings.ProgramTopCategoryView.hints.Name.displayWidth}"
+                                                          maximumLength="#{bindings.ProgramTopCategoryView.hints.Name.precision}"
+                                                          shortDesc="#{bindings.ProgramTopCategoryView.hints.Name.tooltip}"
+                                                          autoSubmit="true"
+                                                          id="it2">
+                                                <f:validator binding="#{row.bindings.Name.validator}"/>
+                                            </af:inputText>
+                                        </af:column>
+                                        <af:column headerText="#{bindings.ProgramTopCategoryView.hints.IsActive.label}"
+                                                   id="c3">
+                                            <af:selectBooleanCheckbox value="#{row.bindings.IsActive.inputValue}"
+                                                                      label="#{bindings.ProgramTopCategoryView.hints.IsActive.label}"
+                                                                      required="false" id="sbc3" autoSubmit="true"
+                                                                      valueChangeListener="#{administrationBean.onTopTemplateCatActiveValueChange}"/>
+                                        </af:column>
+                                        <af:column headerText="#{bindings.ProgramTopCategoryView.hints.IsIndication.label}"
+                                                   id="c5">
+                                            <af:selectBooleanCheckbox value="#{row.bindings.IsIndication.inputValue}"
+                                                                      label="#{bindings.ProgramTopCategoryView.hints.IsIndication.label}"
+                                                                      required="false" id="sbc1"/>
+                                        </af:column>
+                                        <af:column headerText="#{bindings.ProgramTopCategoryView.hints.Description.label}"
+                                                   id="c4" width="160">
+                                            <af:inputText value="#{row.bindings.Description.inputValue}"
+                                                          label="#{bindings.ProgramTopCategoryView.hints.Description.label}"
+                                                          required="#{bindings.ProgramTopCategoryView.hints.Description.mandatory}"
+                                                          columns="#{bindings.ProgramTopCategoryView.hints.Description.displayWidth}"
+                                                          maximumLength="#{bindings.ProgramTopCategoryView.hints.Description.precision}"
+                                                          shortDesc="#{bindings.ProgramTopCategoryView.hints.Description.tooltip}"
+                                                          id="it4">
+                                                <f:validator binding="#{row.bindings.Description.validator}"/>
+                                            </af:inputText>
+                                        </af:column>
+                                    </af:table>
+                                </af:panelCollection>
+                            </af:panelBox>
+                            <af:panelBox text="#{bundle.topSubcategories}" type="flow" showDisclosure="false" id="pb1">
+                                <af:panelCollection id="pc2" styleClass="AFStretchWidth"
+                                                    featuresOff="detach viewMenu statusBar">
+                                    <f:facet name="toolbar">
+                                        <af:toolbar id="tb2">
+                                            <af:button shortDesc="#{bundle.globalAdd}" 
+                                                       text="#{bundle.globalAdd}" icon="/images/new.png"
+                                                       immediate="true"
+                                                       actionListener="#{bindings.CreateInsertSub.execute}"
+                                                       id="btnAddSubCat" partialTriggers="::pc1:tabTopCat"/>
+                                            <af:button shortDesc="#{bundle.globalRemove}" 
+                                                       text="#{bundle.globalRemove}"
+                                                       disabled="#{bindings.ProgramTopSubCategoryViewIterator.currentRow eq null or bindings.SubcategoryModifyDate.inputValue ne null}"
+                                                       icon="/images/remove.png" immediate="true"                                                     
+                                                       actionListener="#{bindings.DeleteSub.execute}" id="btnRemSubCat"
+                                                       partialTriggers="tabTopSubc btnAddSubCat"/>
+                                           <f:attribute name="table" value="t2"/>
+                                           <f:attribute name="iterator"
+                                                         value="#{bindings.ProgramTopSubCategoryViewIterator}"/>
+                                        </af:toolbar>
+                                    </f:facet>
+                                    <af:table value="#{bindings.ProgramTopSubCategoryView.collectionModel}" var="row"
+                                              rows="#{bindings.ProgramTopSubCategoryView.rangeSize}"
+                                              emptyText="#{bindings.ProgramTopSubCategoryView.viewable ? 'No data to display.' : 'Access Denied.'}"
+                                              rowBandingInterval="0"
+                                              selectedRowKeys="#{bindings.ProgramTopSubCategoryView.collectionModel.selectedRow}"
+                                              selectionListener="#{bindings.ProgramTopSubCategoryView.collectionModel.makeCurrent}"
+                                              rowSelection="single"
+                                              fetchSize="#{bindings.ProgramTopSubCategoryView.rangeSize}"
+                                              id="tabTopSubc" autoHeightRows="5"
+                                              partialTriggers=":::pc1 :::pc1:tabTopCat ::btnAddSubCat"
+                                              columnStretching="last">
+                                        <af:column headerText="#{bindings.ProgramTopSubCategoryView.hints.Code.label}"
+                                                   id="c6">
+                                            <af:inputText value="#{row.bindings.Code.inputValue}"
+                                                          label="#{bindings.ProgramTopSubCategoryView.hints.Code.label}"
+                                                          required="#{bindings.ProgramTopSubCategoryView.hints.Code.mandatory}"
+                                                          columns="#{bindings.ProgramTopSubCategoryView.hints.Code.displayWidth}"
+                                                          maximumLength="#{bindings.ProgramTopSubCategoryView.hints.Code.precision}"
+                                                          shortDesc="#{bindings.ProgramTopSubCategoryView.hints.Code.tooltip}"
+                                                          readOnly="#{row.bindings.ModifyDate.inputValue ne null}"
+                                                          autoSubmit="true"
+                                                          id="it3">
+                                                <f:validator binding="#{row.bindings.Code.validator}"/>
+                                            </af:inputText>
+                                        </af:column>
+                                        <af:column headerText="#{bindings.ProgramTopSubCategoryView.hints.Name.label}"
+                                                   id="c7">
+                                            <af:inputText value="#{row.bindings.Name.inputValue}"
+                                                          label="#{bindings.ProgramTopSubCategoryView.hints.Name.label}"
+                                                          required="#{bindings.ProgramTopSubCategoryView.hints.Name.mandatory}"
+                                                          columns="#{bindings.ProgramTopSubCategoryView.hints.Name.displayWidth}"
+                                                          maximumLength="#{bindings.ProgramTopSubCategoryView.hints.Name.precision}"
+                                                          shortDesc="#{bindings.ProgramTopSubCategoryView.hints.Name.tooltip}"
+                                                          id="it5">
+                                                <f:validator binding="#{row.bindings.Name.validator}"/>
+                                            </af:inputText>
+                                        </af:column>
+                                        <af:column headerText="#{bindings.ProgramTopSubCategoryView.hints.IsActive.label}"
+                                                   id="c8" width="60" align="center">
+                                            <af:selectBooleanCheckbox value="#{row.bindings.IsActive.inputValue}"
+                                                                      label="#{bindings.ProgramTopCategoryView.hints.IsActive.label}"
+                                                                      disabled="#{not bindings.ProgramTopCategoryViewIterator.currentRow.isActive}"
+                                                                      required="false" id="sbc2" autoSubmit="true"/>
+                                        </af:column>
+                                        <af:column headerText="#{bindings.ProgramTopSubCategoryView.hints.Description.label}"
+                                                   id="c9" width="160">
+                                            <af:inputText value="#{row.bindings.Description.inputValue}"
+                                                          label="#{bindings.ProgramTopSubCategoryView.hints.Description.label}"
+                                                          required="#{bindings.ProgramTopSubCategoryView.hints.Description.mandatory}"
+                                                          columns="#{bindings.ProgramTopSubCategoryView.hints.Description.displayWidth}"
+                                                          maximumLength="#{bindings.ProgramTopSubCategoryView.hints.Description.precision}"
+                                                          shortDesc="#{bindings.ProgramTopSubCategoryView.hints.Description.tooltip}"
+                                                          id="it7">
+                                                <f:validator binding="#{row.bindings.Description.validator}"/>
+                                            </af:inputText>
+                                        </af:column>
+                                    </af:table>
+                                </af:panelCollection>
+                            </af:panelBox>
+                        </af:panelGroupLayout>
+                    </f:facet>
+                    <f:facet name="controls">
+                        <f:subview id="sub1">
+                            <af:declarativeComponent viewId="global-ok-cancel.jsff" id="goc">
+                                <f:attribute name="showCancel" value="true"/>
+                            </af:declarativeComponent>
+                        </f:subview>
+                    </f:facet>
+                </af:pageTemplate>
+            </af:form>
+        </af:document>
+    </f:view>
+</jsp:root>

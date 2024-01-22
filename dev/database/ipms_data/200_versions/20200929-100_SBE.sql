@@ -1,0 +1,1 @@
+alter table strategic_business_entity add constraint sbe_is_notvisible_notact_cnn check(is_active||':'||is_visible in ('0:0','1:1','1:0'));

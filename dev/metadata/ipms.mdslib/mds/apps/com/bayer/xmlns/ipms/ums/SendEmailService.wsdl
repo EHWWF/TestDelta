@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<wsdl:definitions
+     name="SendEmail"
+     targetNamespace="http://xmlns.bayer.com/ipms/soa"
+     xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+     xmlns:client="http://xmlns.bayer.com/ipms/soa"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+     xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    >
+    <wsdl:documentation>
+        <abstractWSDL>http://soa.ipms:7011/soa-infra/services/default/ipms.ums!1.0/SendEmail.wsdl</abstractWSDL>
+    </wsdl:documentation>
+    <plnk:partnerLinkType name="SendEmail">
+        <plnk:role name="SendEmailProvider" portType="client:SendEmail"/>
+        <plnk:role name="SendEmailRequester" portType="client:SendEmailCallback"/>
+    </plnk:partnerLinkType>
+	<wsp:Policy xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" wsu:Id="wsaddr_policy" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy">
+	   <wsaw:UsingAddressing xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl"/>
+	</wsp:Policy>
+	<wsdl:types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+             xmlns:client="http://xmlns.bayer.com/ipms/soa" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            <import namespace="http://xmlns.bayer.com/ipms/soa" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/soa/soa.xsd"/>
+            <element name="userList">
+                <complexType>
+                    <sequence>
+                        <element name="user" type="string" minOccurs="0" maxOccurs="unbounded"/>
+                    </sequence>
+                </complexType>
+            </element>
+        </schema>
+    </wsdl:types>
+    <wsdl:message name="SendEmailResponseMessage">
+        <wsdl:part name="payload" element="client:response"/>
+    </wsdl:message>
+    <wsdl:message name="SendEmailRequestMessage">
+        <wsdl:part name="payload" element="client:notify"/>
+    </wsdl:message>
+    <wsdl:message name="SendEmailUserList">
+        <wsdl:part name="payload" element="userList"/>
+    </wsdl:message>
+    <wsdl:portType name="SendEmailCallback">
+        <wsdl:operation name="callback">
+            <wsdl:input message="client:SendEmailResponseMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:portType name="SendEmail">
+        <wsdl:operation name="execute">
+            <wsdl:input message="client:SendEmailRequestMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="SendEmailBinding" type="client:SendEmail">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsp:PolicyReference xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" URI="#wsaddr_policy" wsdl:required="false"/>
+        <wsdl:operation name="execute">
+            <soap:operation style="document" soapAction="execute"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+        </wsdl:operation>
+    </wsdl:binding>
+    <!--wsdl:binding name="SendEmailCallbackBinding" type="client:SendEmailCallback">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="callback">
+            <soap:operation style="document" soapAction="callback"/>
+            <wsdl:input>
+                <soap:body use="literal" namespace="http://xmlns.bayer.com/ipms/soa"/>
+            </wsdl:input>
+        </wsdl:operation>
+    </wsdl:binding-->
+    <wsdl:service name="SendEmailService">
+        <wsdl:port name="SendEmail_pt" binding="client:SendEmailBinding">
+            <soap:address location="http://soa.ipms:7011/soa-infra/services/default/ipms.ums/SendEmailService"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

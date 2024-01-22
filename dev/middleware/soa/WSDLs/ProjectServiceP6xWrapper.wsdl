@@ -1,0 +1,17 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
+<wsdl:definitions
+    
+     targetNamespace="http://xmlns.bayer.com/ipms/p6"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+     xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+     xmlns:plnk="http://schemas.xmlsoap.org/ws/2003/05/partner-link/"
+     xmlns:client="http://xmlns.bayer.com/ipms/p6"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    >
+    <plnk:partnerLinkType name="ProjectXService">
+        <plnk:role name="ProjectPortType">
+            <plnk:portType name="client:ProjectPortType"/>
+        </plnk:role>
+    </plnk:partnerLinkType>
+    <wsdl:import namespace="http://xmlns.bayer.com/ipms/p6" location="oramds:/apps/com/bayer/xmlns/ipms/p6/ProjectService.wsdl"/>
+</wsdl:definitions>

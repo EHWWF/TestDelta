@@ -1,0 +1,1 @@
+alter table import_study_data add(old_start_date date, old_finish_date date);

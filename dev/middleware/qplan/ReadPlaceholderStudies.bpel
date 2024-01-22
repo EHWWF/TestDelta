@@ -1,0 +1,113 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Thu Feb 05 16:56:37 EET 2015
+  Author:  donatas
+  Type: BPEL 2.0 Process
+  Purpose: Asynchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="ReadPlaceholderStudies"
+         targetNamespace="http://xmlns.bayer.com/ipms/qplan"
+         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:client="http://xmlns.bayer.com/ipms/qplan"
+         xmlns:ora="http://schemas.oracle.com/xpath/extension"
+         xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ns1="https://quickplan-p.bayer-ag.com/services"
+         xmlns:ns2="http://xmlns.bayer.com/ipms"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:ns3="http://xmlns.bayer.com/ipms/soa" xmlns:ui="http://xmlns.oracle.com/soa/designer">
+    <import namespace="http://xmlns.bayer.com/ipms/soa"
+            location="oramds:/apps/com/bayer/xmlns/ipms/soa/soa.xsd"
+            importType="http://www.w3.org/2001/XMLSchema"/>
+    <import namespace="http://xmlns.bayer.com/ipms/qplan" location="ReadPlaceholderStudies.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"
+            ui:processWSDL="true"/>
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        PARTNERLINKS                                                      
+        List of services participating in this BPEL process               
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    --> 
+    <partnerLinks>
+        <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+        <partnerLink name="ReadPlaceholderStudies" partnerLinkType="client:ReadPlaceholderStudies" myRole="ReadPlaceholderStudiesProvider" partnerRole="ReadPlaceholderStudiesRequester"/>
+        <partnerLink name="IProMISInterface"
+                     partnerLinkType="ns1:IProMISInterface"
+                     partnerRole="IProMISInterface"/>
+    </partnerLinks>
+
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        VARIABLES                                                        
+        List of messages and XML documents used within this BPEL process 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <variables>
+        <!-- Reference to the message passed as input during initiation -->
+        <variable name="inputVariable" messageType="client:ReadPlaceholderStudiesRequestMessage"/>
+
+        <!-- Reference to the message that will be sent back to the requester during callback -->
+        <variable name="outputVariable" messageType="client:ReadPlaceholderStudiesResponseMessage"/>
+        <variable name="GetStudyList_Input"
+                  messageType="ns1:IProMISInterface_GetStudyList_InputMessage"/>
+        <variable name="GetStudyList_Output"
+                  messageType="ns1:IProMISInterface_GetStudyList_OutputMessage"/>
+        <variable name="timeline" element="ns2:timeline"/>
+    </variables>
+
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+       ORCHESTRATION LOGIC                                               
+       Set of activities coordinating the flow of messages across the    
+       services integrated within this business process                  
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <sequence name="main">
+        <!-- Receive input from requestor. (Note: This maps to operation defined in ReadPlaceholderStudies.wsdl) -->
+        <receive name="receiveInput" partnerLink="ReadPlaceholderStudies" portType="client:ReadPlaceholderStudies" operation="process" variable="inputVariable" createInstance="yes"/>
+        <assign name="assignGetStudyList">
+            <copy>
+                <from>$inputVariable.payload/client:readPlaceholderStudies/@projectCode</from>
+                <to>$GetStudyList_Input.parameters/ns1:projectId</to>
+            </copy>
+        </assign>
+        <invoke name="invokeGetStudyList" bpelx:invokeAsDetail="no"
+                partnerLink="IProMISInterface" portType="ns1:IProMISInterface"
+                operation="GetStudyList" inputVariable="GetStudyList_Input"
+                outputVariable="GetStudyList_Output"/>
+        <assign name="transformTimeline">
+            <bpelx:annotation>
+                <bpelx:pattern patternName="bpelx:transformation"/>
+            </bpelx:annotation>
+            <copy>
+                <from>ora:doXSLTransformForDoc("xsl/GetStudyList_to_timeline.xsl", $inputVariable.payload, "GetStudyList_Output.parameters", $GetStudyList_Output.parameters)</from>
+                <to variable="timeline"/>
+            </copy>
+        </assign>
+        <assign name="assignOutput">
+            <copy>
+                <from>$timeline</from>
+                <to>$outputVariable.payload/ns3:complete/ns2:timeline</to>
+            </copy>
+            <copy>
+                <from>$inputVariable.payload/@id</from>
+                <to>$outputVariable.payload/@id</to>
+            </copy>
+            <copy>
+                <from>$inputVariable.payload/@id</from>
+                <to>$outputVariable.payload/ns3:complete/@id</to>
+            </copy>
+        </assign>
+        <!-- 
+          Asynchronous callback to the requester. (Note: the callback location and correlation id is transparently handled using WS-addressing.)
+        -->
+        <invoke name="callbackClient" partnerLink="ReadPlaceholderStudies" portType="client:ReadPlaceholderStudiesCallback" operation="processResponse" inputVariable="outputVariable"/>
+    </sequence>
+</process>

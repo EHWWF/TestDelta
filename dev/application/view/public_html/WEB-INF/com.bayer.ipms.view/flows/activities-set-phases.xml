@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="activities-set-phases">
+    <template-reference>
+      <document>/WEB-INF/com.bayer.ipms.view/templates/ipms-taskflow-template-page.xml</document>
+      <id>ipms-taskflow-template-page</id>
+    </template-reference>
+    <default-activity>receive-data</default-activity>
+    <data-control-scope>
+      <shared/>
+    </data-control-scope>
+    <input-parameter-definition id="__23">
+      <name>projectCode</name>
+      <value>#{pageFlowScope.projectCode}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__24">
+      <name>projectName</name>
+      <value>#{pageFlowScope.projectName}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__17">
+      <name>projectId</name>
+      <value>#{pageFlowScope.projectId}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <managed-bean id="__72">
+      <managed-bean-name>activitiesPhasesBean</managed-bean-name>
+      <managed-bean-class>com.bayer.ipms.view.beans.ActivitiesPhasesBean</managed-bean-class>
+      <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <view id="receive-data">
+      <page>/WEB-INF/com.bayer.ipms.view/fragments/activities-set-phases.jspx</page>
+      <train-stop>
+        <display-name>Receive</display-name>
+        <outcome>start</outcome>
+      </train-stop>
+    </view>
+    <view id="maintain">
+      <page>/WEB-INF/com.bayer.ipms.view/fragments/activities-set-phases.jspx</page>
+      <train-stop>
+        <display-name>Maintain</display-name>
+      </train-stop>
+    </view>
+    <task-flow-return id="cancel">
+      <outcome>
+        <name>cancel</name>
+      </outcome>
+    </task-flow-return>
+    <method-call id="loadActivities">
+      <method>#{requestScope.activitiesPhasesBean.loadActivities}</method>
+		  
+      <outcome>
+            <fixed-outcome>setup</fixed-outcome>
+      </outcome>
+    </method-call>
+    <view id="submit">
+      <page>/WEB-INF/com.bayer.ipms.view/fragments/activities-set-phases.jspx</page>
+      <train-stop>
+        <display-name>Submit</display-name>
+      </train-stop>
+    </view>
+    <view id="complete">
+      <page>/WEB-INF/com.bayer.ipms.view/fragments/activities-set-phases.jspx</page>
+      <train-stop>
+        <display-name>Complete</display-name>
+      </train-stop>
+    </view>
+    <method-call id="submitActivities">
+      <method>#{activitiesPhasesBean.submitActivities}</method>
+		<outcome>
+        <fixed-outcome>submit</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="CreateWithParameters">
+      <method>#{bindings.CreateWithParams.execute}</method>
+      <outcome>
+        <fixed-outcome>CreateWithParams</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="Commit">
+      <method>#{bindings.Commit.execute}</method>
+      <outcome>
+        <fixed-outcome>Commit</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="Commit1">
+      <method>#{bindings.Commit.execute}</method>
+      <outcome>
+        <fixed-outcome>Commit</fixed-outcome>
+      </outcome>
+    </method-call>
+    <train/>
+    <control-flow-rule id="__1">
+      <from-activity-id>*</from-activity-id>
+      <control-flow-case id="__8">
+        <from-outcome>cancel</from-outcome>
+        <to-activity-id>cancel</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__20">
+      <from-activity-id>submit</from-activity-id>
+      <control-flow-case id="__25">
+        <from-outcome>submit</from-outcome>
+        <to-activity-id>submitActivities</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__2">
+      <from-activity-id>receive-data</from-activity-id>
+      <control-flow-case id="__3">
+       <from-outcome>receive</from-outcome>
+        <to-activity-id>CreateWithParameters</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__11">
+      <from-activity-id>Commit</from-activity-id>
+      <control-flow-case id="__12">
+        <from-outcome>Commit</from-outcome>
+        <to-activity-id>loadActivities</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__13">
+      <from-activity-id>maintain</from-activity-id>
+      <control-flow-case id="__14">
+        <from-outcome>submit</from-outcome>
+        <to-activity-id>Commit1</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__15">
+      <from-activity-id>Commit1</from-activity-id>
+      <control-flow-case id="__16">
+        <from-outcome>Commit</from-outcome>
+        <to-activity-id>submit</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__18">
+      <from-activity-id>CreateWithParameters</from-activity-id>
+      <control-flow-case id="__22">
+        <from-outcome>CreateWithParams</from-outcome>
+        <to-activity-id>Commit</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__26">
+      <from-activity-id>submitActivities</from-activity-id>
+      <control-flow-case id="__27">
+        <from-outcome>submit</from-outcome>
+        <to-activity-id>complete</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__4">
+      <from-activity-id>loadActivities</from-activity-id>
+      <control-flow-case id="__5">
+        <from-outcome>setup</from-outcome>
+        <to-activity-id>maintain</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+  </task-flow-definition>
+</adfc-config>

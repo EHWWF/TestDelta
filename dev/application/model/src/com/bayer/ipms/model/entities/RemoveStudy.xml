@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="RemoveStudy"
+  Version="12.2.1.0.31"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="REMOVE_STUDY_VW"
+  AliasName="RemoveStudy"
+  BindingStyle="OracleName"
+  RowClass="com.bayer.ipms.model.base.IPMSEntityImpl">
+  <Attribute
+    Name="ProjectId"
+    IsUpdateable="false"
+    ColumnName="PROJECT_ID"
+    SQLType="STRUCT"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    TableName="REMOVE_STUDY_VW"
+    PrimaryKey="true"
+    IsNotNull="true"/>
+  <Attribute
+    Name="Name"
+    IsUpdateable="false"
+    Precision="4000"
+    ColumnName="NAME"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="REMOVE_STUDY_VW">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="4000"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.entities.RemoveStudy.Name_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute
+    Name="Phase"
+    IsUpdateable="false"
+    Precision="4000"
+    ColumnName="PHASE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="REMOVE_STUDY_VW">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="4000"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.entities.RemoveStudy.Phase_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute
+    Name="Status"
+    ColumnName="STATUS"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="REMOVE_STUDY_VW"
+    IsUpdateable="false">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.entities.RemoveStudy.Status_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute
+    Name="StudyModusName"
+    ColumnName="STUDY_MODUS_NAME"
+    SQLType="STRUCT"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="REMOVE_STUDY_VW"
+    IsUpdateable="false">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.entities.RemoveStudy.StudyModusName_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute
+    Name="StudyId"
+    IsNotNull="true"
+    ColumnName="STUDY_ID"
+    SQLType="STRUCT"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="REMOVE_STUDY_VW"
+    PrimaryKey="true"
+    IsUpdateable="false">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.entities.RemoveStudy.StudyId_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute
+    Name="IsDelete"
+    IsNotNull="true"
+    ColumnName="IS_DELETE"
+    SQLType="NUMERIC"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    TableName="REMOVE_STUDY_VW">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.entities.RemoveStudy.IsDelete_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Key
+    Name="RemoveStudyVwProjectIdCheck">
+    <DesignTime>
+      <Attr Name="_isNotNull" Value="true"/>
+      <Attr Name="_checkCondition" Value='"PROJECT_ID" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+      <Attr Name="_DBObjectName" Value="REMOVE_STUDY_VW_PROJECT_ID_CHE"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.RemoveStudy.ProjectId"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="RemovestudyPrimaryKey"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="REMOVESTUDY_PRIMARY_KEY"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.RemoveStudy.ProjectId"/>
+      <Item Value="com.bayer.ipms.model.entities.RemoveStudy.StudyId"/>
+    </AttrArray>
+  </Key>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.bayer.ipms.model.bundles.modelBundle"/>
+  </ResourceBundle>
+</Entity>

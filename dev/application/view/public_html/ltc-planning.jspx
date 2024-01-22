@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <f:view>
+        <f:loadBundle basename="com.bayer.ipms.view.bundles.viewBundle" var="bundle"/>
+        <af:document title="#{bundle.globalProMIS}" id="doc">
+            <af:messages id="m1"/>
+            <af:form id="form" usesUpload="true">
+                <af:pageTemplate viewId="/WEB-INF/com.bayer.ipms.view/templates/ipms-page-template.jspx" id="tmpl"
+                                 value="#{bindings.ptb1}">
+                    <f:facet name="navigation">
+                        <af:panelHeader text="#{bundle.ltcPlanning}" id="ph1"
+                                        rendered="#{securityContext.userInRole['EstimatesTagProcessViewLTC']}">
+                            <af:panelCollection id="pc111" styleClass="AFStretchWidth"
+                                                featuresOff="detach statusBar showAsTopToolbarItem">
+                                <f:facet name="toolbar">
+                                    <af:menuBar id="toolbar" partialTriggers="cmdRefresh">
+                                        <af:commandMenuItem id="cmdNewtag" icon="/images/new.png"
+                                                            text="#{bundle.ltcTagCreate}" immediate="true"
+                                                            rendered="#{securityContext.userInRole['EstimatesTagCreateLTC']}">
+                                            <af:showPopupBehavior popupId="::createLtcTagPopup"/>
+                                        </af:commandMenuItem>
+                                        <af:commandMenuItem id="cmdRefresh" icon="/images/reload.png"
+                                                            text="#{bundle.globalRefresh}"
+                                                            action="#{pageFlowScope.ltcBean2.onEstimatesRefresh}"
+                                                            immediate="true"/>
+                                    </af:menuBar>
+                                </f:facet>
+                                <af:tree value="#{bindings.LtcTagView.treeModel}" var="node"
+                                         contentDelivery="immediate" displayRow="first" rowSelection="single" id="ltcPlTree" 
+                                         selectionListener="#{pageFlowScope.ltcBean2.onProcessTreeSelect}"
+                                         fetchSize="#{bindings.LtcTagView.rangeSize}">
+                                    <?audit suppress oracle.adf.faces.compreqsummary?>
+                                    <f:facet name="nodeStamp">
+                                        <af:outputText value="#{node}" id="ot2"/>
+                                    </f:facet>
+                                </af:tree>
+                            </af:panelCollection>
+                        </af:panelHeader>
+                    </f:facet>
+                    <f:facet name="popup">
+                        <af:popup childCreation="deferred" autoCancel="disabled" id="createLtcTagPopup"
+                                  contentDelivery="lazyUncached"
+                                  popupFetchListener="#{pageFlowScope.ltcBean2.onCreateTagPopupFetch}"
+                                  popupCanceledListener="#{pageFlowScope.ltcBean2.onCreateTagPopupCancel}">
+                            <af:dialog id="d1" title="#{bundle.ltcTagCreate}"
+                                       dialogListener="#{pageFlowScope.ltcBean2.onTagCreate}" contentWidth="500">
+                                <f:facet name="buttonBar"/>
+                                <af:panelBox text="#{bundle.globalSummary}" id="ltcpb1"  showDisclosure="false">
+                                    <f:facet name="toolbar"/>
+                                     <af:panelFormLayout styleClass="AFStretchWidth" fieldWidth="100%" id="pfl1"
+                                                         maxColumns="3" rows="2">
+                                    <af:inputText value="#{bindings.TagName.inputValue}"
+                                                  label="#{bindings.TagName.hints.label}"
+                                                  required="#{bindings.TagName.hints.mandatory}"
+                                                  columns="#{bindings.TagName.hints.displayWidth}"
+                                                  maximumLength="#{bindings.TagName.hints.precision}"
+                                                  shortDesc="#{bindings.TagName.hints.tooltip}" id="it1">
+                                        <f:validator binding="#{bindings.TagName.validator}"/>
+                                    </af:inputText>
+                                    <af:selectOneRadio value="#{bindings.StartYear.inputValue}"
+                                                       label="#{bindings.StartYear.label}"
+                                                       required="#{bindings.StartYear.hints.mandatory}"
+                                                       id="next" inlineStyle="padding-right:5px;">
+                                        <af:selectItem label="#{bindings.StartYear.inputValue}" value="#{bindings.StartYear.inputValue}"
+                                                       id="si1"/>
+                                        <af:selectItem label="#{bindings.NextYear.inputValue}" value="#{bindings.NextYear.inputValue}"
+                                                       id="si2"/>
+                                    </af:selectOneRadio>
+                                    <af:inputText  id="it2" inlineStyle="visibility:hidden"/>
+                                        <af:inputComboboxListOfValues id="numberOfProfitYears1Id"
+                                                                      popupTitle="Search and Select: #{bindings.NumberOfProfitYears1.hints.label}"
+                                                                      value="#{bindings.NumberOfProfitYears1.inputValue}"
+                                                                      label="#{bindings.NumberOfProfitYears1.hints.label}"
+                                                                      model="#{bindings.NumberOfProfitYears1.listOfValuesModel}"
+                                                                      required="#{bindings.NumberOfProfitYears1.hints.mandatory}"
+                                                                      columns="#{bindings.NumberOfProfitYears1.hints.displayWidth}"
+                                                                      shortDesc="#{bindings.NumberOfProfitYears1.hints.tooltip}">
+                                            <f:validator binding="#{bindings.NumberOfProfitYears1.validator}"/>
+                                            <af:convertNumber groupingUsed="false"
+                                                              pattern="#{bindings.NumberOfProfitYears1.format}"/>
+                                        </af:inputComboboxListOfValues>
+                                        <!--af:inputText  id="it23" inlineStyle="visibility:hidden"/>
+                                        <af:inputText label="years" id="it3" readOnly="true"
+                                                      inlineStyle="text-indent:-2mm; text-align: left; border-style: double ;"/-->
+                                    </af:panelFormLayout>
+                                </af:panelBox>
+                            </af:dialog>
+                        </af:popup>
+                    </f:facet>
+                    <f:facet name="content">
+                        <af:region value="#{bindings.dynamicRegion1.regionModel}" id="r2"/>
+                    </f:facet>                    
+                    <f:attribute name="tab" value="globalLTCPlanning"/>
+                </af:pageTemplate>
+            </af:form>
+            <f:facet name="metaContainer">
+                <f:verbatim><?audit suppress oracle.adf.faces.verbatimUsage?>                                     <link type="image/x-icon"
+                                                                                                                        href="images/promis.png"
+                                                                                                                        rel="shortcut icon"/>                 </f:verbatim>
+            </f:facet>
+        </af:document>
+    </f:view>
+</jsp:root>

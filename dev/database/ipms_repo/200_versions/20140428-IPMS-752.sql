@@ -1,0 +1,10 @@
+drop view program_dim;
+drop view project_dim;
+drop view bayname_vw;
+drop view function_dim;
+drop view latest_estimate_dim;
+drop view resource_fct;
+drop view cost_fct;
+drop view headcount_fct;
+drop view latest_estimate_fct;
+drop view pts_phase_vw;

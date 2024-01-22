@@ -1,0 +1,275 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <c:set var="bundle"
+           value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+    <f:view>
+        <af:document id="d1"
+                     title="#{pageFlowScope.importSource eq 'FPS' ? bundle.importTimelineFps : pageFlowScope.importSource eq 'RAPT' ? bundle.importTimelineRapt : bundle.importTimeline}">
+            <af:messages id="m1"/>
+            <af:form id="f1">
+                <af:pageTemplate viewId="/WEB-INF/com.bayer.ipms.view/templates/ipms-popup-template.jspx"
+                                 id="pt1" partialTriggers="cmdRefresh cmdOk">
+                    <af:resource type="css">.depth0 { background-color:#CCFFCC;
+                                            } .depth1 {
+                                            background-color:#D7E1EE; } .depth2
+                                            { background-color:#FFB6C1; }
+                                            .depth3 { background-color:#F0E08C;
+                                            } .depth4 {
+                                            background-color:#D3D3D3; }</af:resource>
+                    <f:facet name="summary">
+                        <af:panelBox text="#{pageFlowScope.sandboxId == null ? bundle.project : bundle.sandbox}"
+                                     showDisclosure="true">
+                            <af:panelFormLayout styleClass="AFStretchWidth"
+                                                fieldWidth="100%" maxColumns="2"
+                                                rows="2">
+                                <af:panelLabelAndMessage label="#{pageFlowScope.sandboxId == null ? bundle.globalId : bundle.sandboxProjectId}">
+                                    <af:outputText value="#{pageFlowScope.sandboxId == null ? pageFlowScope.projectCode : pageFlowScope.sandboxCode}"
+                                                   inlineStyle="font-weight:#{pageFlowScope.projectCode == null ? 'bold' : 'normal'}; color:#{pageFlowScope.projectCode == null ? 'red' : 'inherit'};"/>
+                                </af:panelLabelAndMessage>
+                                <af:panelLabelAndMessage label="#{pageFlowScope.sandboxId == null ? bundle.globalName : bundle.sandboxName}">
+                                    <af:outputText value="#{pageFlowScope.sandboxId == null ? pageFlowScope.projectName : pageFlowScope.sandboxName}"/>
+                                </af:panelLabelAndMessage>
+                                <af:panelLabelAndMessage label="#{bundle.projectIsLead}"
+                                                         visible = "#{pageFlowScope.sandboxId == null ? true : false}">
+                                    <af:outputText value="#{pageFlowScope.projectIsLead=='false'?bundle.globalNo:bundle.globalYes}"/>
+                                </af:panelLabelAndMessage>
+                                <af:panelLabelAndMessage label="#{bundle.importStatus}"
+                                                         inlineStyle="white-space: nowrap;">
+                                    <af:outputText value="#{bindings.ImportStatusName.inputValue}"/>
+                                    <af:outputText value=" (#{bundle.importRefresh})"
+                                                   rendered="#{bindings.ImportStatusCode == 'NEW'}"/>
+                                </af:panelLabelAndMessage>
+                                <af:poll id="poll" interval="5000"
+                                         rendered="#{bindings.ImportIsSyncing.inputValue}"
+                                         pollListener="#{pageFlowScope.importTimelineBean.onPoll}"
+                                         immediate="true"/>
+                            </af:panelFormLayout>
+                        </af:panelBox>
+                    </f:facet>
+                    <f:facet name="content">
+                        <af:panelBox text="#{bundle.importDetails}"
+                                     showDisclosure="false" type="stretch"
+                                     id="pb3">
+                            <af:panelStretchLayout topHeight="auto"
+                                                   bottomHeight="0"
+                                                   id="content">
+                                <f:facet name="top">
+                                    <af:panelGroupLayout layout="horizontal"
+                                                         xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                                                         id="pgl2"
+                                                         halign="center"
+                                                         partialTriggers="cb22">
+                                        <af:selectBooleanCheckbox label="#{bindings.ImportTimelineView.hints.StudyRelated.label}"
+                                                                  id="sbc12"
+                                                                  value="#{pageFlowScope.importTimelineBean.searchStudyRelated}"
+                                                                  partialTriggers="cb22"/>
+                                        <af:spacer width="10" height="40"
+                                                   id="s25"/>
+                                        <af:selectBooleanCheckbox label="#{bindings.ImportTimelineView.hints.Failed.label}"
+                                                                  id="sbc1"
+                                                                  value="#{pageFlowScope.importTimelineBean.searchFailed}"
+                                                                  partialTriggers="cb22"/>
+                                        <af:spacer width="10" height="40"
+                                                   id="s24"/>
+                                        <af:selectOneChoice label="#{bindings.ImportTimelineView.hints.StatusName.label}"
+                                                            id="soc12"
+                                                            value="#{pageFlowScope.importTimelineBean.searchImportStatus}"
+                                                            partialTriggers="cb22">
+                                            <af:selectItem value="" id="si4"/>
+                                            <f:selectItems value="#{utilsBean.lookup[bindings.ImportTimelineView.currentRow.importStatusView]}"
+                                                           id="si12"/>
+                                        </af:selectOneChoice>
+                                        <af:spacer width="10" height="40"
+                                                   id="s23"/>
+                                        <af:selectOneChoice label="#{bindings.ImportTimelineView.hints.StudyId.label}"
+                                                            id="soc1"
+                                                            value="#{pageFlowScope.importTimelineBean.searchStudy}"
+                                                            rendered="#{pageFlowScope.importSource ne 'RAPT'}"
+                                                            partialTriggers="cb22">
+                                            <af:selectItem value="" id="si42"/>
+                                            <f:selectItems value="#{utilsBean.lookup[bindings.ImportTimelineStudyViewIterator.viewObject]}"
+                                                           id="si1"/>
+                                        </af:selectOneChoice>
+                                        <af:spacer width="10" height="40"
+                                                   id="s2"/>
+                                        <af:commandButton text="#{bundle.globalSearch}"
+                                                          id="cb2"
+                                                          actionListener="#{pageFlowScope.importTimelineBean.onSearch}"/>
+                                        <af:spacer width="4" height="40"
+                                                   id="s22"/>
+                                        <af:commandButton text="#{bundle.globalReset}"
+                                                          id="cb22"
+                                                          actionListener="#{pageFlowScope.importTimelineBean.onReset}"/>
+                                    </af:panelGroupLayout>
+                                </f:facet>
+                                <f:facet name="center">
+                                    <af:panelCollection id="pc1"
+                                                        styleClass="AFStretchWidth"
+                                                        featuresOff="detach statusBar">
+                                        <f:facet name="toolbar">
+                                            <af:toolbar id="tbar"
+                                                        visible="true">
+                                                <af:commandToolbarButton text="#{bundle.importTimeLineApplyAll}"
+                                                                         icon="/images/apply-all.png"
+                                                                         id="cmdApplyAll"
+                                                                         immediate="true"
+                                                                         action="#{pageFlowScope.importTimelineBean.onApplyAll}"
+                                                                         disabled="#{bindings.ImportStatusCode != 'READY' or bindings.ImportIsSyncing.inputValue}"
+                                                                         visible="false"/>
+                                                <af:commandToolbarButton text="#{bundle.importTimeLineApplyAll}"
+                                                                         icon="/images/apply-restricted.png"
+                                                                         id="cmdApplyAllRestr"
+                                                                         immediate="true"
+                                                                         action="#{pageFlowScope.importTimelineBean.onApplyAllRestrictions}"
+                                                                         disabled="#{bindings.ImportStatusCode != 'READY' or bindings.ImportIsSyncing.inputValue}"/>
+                                                <af:commandToolbarButton text="#{bundle.importTimeLineSkipAll}"
+                                                                         icon="/images/skip-all.png"
+                                                                         id="cmdSkipAll"
+                                                                         immediate="true"
+                                                                         action="#{pageFlowScope.importTimelineBean.onSkipAll}"
+                                                                         disabled="#{bindings.ImportStatusCode != 'READY' or bindings.ImportIsSyncing.inputValue}"/>
+                                            </af:toolbar>
+                                        </f:facet>
+                                        <af:treeTable value="#{bindings.ImportTimelineView.treeModel}"
+                                                      var="node" id="tree"
+                                                      columnStretching="column:c1"
+                                                      fetchSize="#{bindings.ImportTimelineViewIterator.rangeSize}"
+                                                      partialTriggers="::cmdApplyAll ::cmdApplyAllRestr ::cmdSkipAll socWbs :::cb2"
+                                                      disclosedRowKeys="#{pageFlowScope.importTimelineViewBean.disclosedTreeKeys}"
+                                                      contentDelivery="immediate"
+                                                      autoHeightRows="12" rowSelection="single">
+                                            <f:facet name="nodeStamp">
+                                                <af:column id="c1"
+                                                           headerText="#{bindings.ImportTimelineView.hints.Name.label}"
+                                                           styleClass="depth#{bindings.ImportTimelineView.treeModel.depth mod 5}">
+                                                    <af:outputText value="#{node.Name == null ? bundle.importNotMatched : node.Name}"
+                                                                   id="ot11"/>
+                                                </af:column>
+                                            </f:facet>
+                                            <af:column id="c2"
+                                                       headerText="#{bindings.ImportTimelineView.hints.BusinessId.label}"
+                                                       styleClass="depth#{bindings.ImportTimelineView.treeModel.depth mod 5}">
+                                                <af:outputText value="#{node.BusinessId}"
+                                                               id="ot12"/>
+                                            </af:column>
+                                            <af:column id="c3"
+                                                       headerText="#{bindings.ImportTimelineView.hints.StatusName.label}"
+                                                       styleClass="depth#{bindings.ImportTimelineView.treeModel.depth mod 5}">
+                                                <af:outputText value="#{node.StatusName}"
+                                                               id="ot13"
+                                                               inlineStyle="color:#{node.StatusCode == 'FAIL' ? 'red' : node.StatusCode != 'OLD' ? 'blue' : 'inherit'};"
+                                                               rendered="#{node.WbsId == null}"/>
+                                            </af:column>
+                                            <af:column id="c32"
+                                                       headerText="#{bindings.ImportTimelineView.hints.DateStatus.label}"
+                                                       styleClass="depth#{bindings.ImportTimelineView.treeModel.depth mod 5}"
+                                                       rendered="#{pageFlowScope.importSource eq 'FPS'}">
+                                                <af:outputText value="#{node.DateStatus}"
+                                                               id="ot132"
+                                                               rendered="#{node.WbsId == null}"/>
+                                            </af:column>
+                                            <af:column id="c11"
+                                                       headerText="#{bindings.ImportTimelineView.hints.OldStartDate.label}"
+                                                       styleClass="depth#{bindings.ImportTimelineView.treeModel.depth mod 5}">
+                                                <af:outputText value="#{node.OldStartDate}"
+                                                               id="ot111">
+                                                    <af:convertDateTime pattern="#{bindings.ImportTimelineView.hints.OldStartDate.format}"/>
+                                                </af:outputText>
+                                            </af:column>
+                                            <af:column id="c12"
+                                                       headerText="#{bindings.ImportTimelineView.hints.OldFinishDate.label}"
+                                                       styleClass="depth#{bindings.ImportTimelineView.treeModel.depth mod 5}">
+                                                <af:outputText value="#{node.OldFinishDate}"
+                                                               id="ot112">
+                                                    <af:convertDateTime pattern="#{bindings.ImportTimelineView.hints.OldFinishDate.format}"/>
+                                                </af:outputText>
+                                            </af:column>
+                                            <af:column id="c13"
+                                                       headerText="#{bindings.ImportTimelineView.hints.NewStartDate.label}"
+                                                       styleClass="depth#{bindings.ImportTimelineView.treeModel.depth mod 5}">
+                                                <af:outputText value="#{node.NewStartDate}"
+                                                               id="ot113">
+                                                    <af:convertDateTime pattern="#{bindings.ImportTimelineView.hints.NewStartDate.format}"/>
+                                                </af:outputText>
+                                            </af:column>
+                                            <af:column id="c14"
+                                                       headerText="#{bindings.ImportTimelineView.hints.NewFinishDate.label}"
+                                                       styleClass="depth#{bindings.ImportTimelineView.treeModel.depth mod 5}">
+                                                <af:outputText value="#{node.NewFinishDate}"
+                                                               id="ot114">
+                                                    <af:convertDateTime pattern="#{bindings.ImportTimelineView.hints.NewFinishDate.format}"/>
+                                                </af:outputText>
+                                            </af:column>
+                                            <af:column id="c21"
+                                                       headerText="#{bindings.ImportTimelineView.hints.ActionName.label}"
+                                                       styleClass="depth#{bindings.ImportTimelineView.treeModel.depth mod 5}">
+                                                <af:switcher id="s1"
+                                                             facetName="#{node.bindings.NodeType.inputValue}"
+                                                             defaultFacet="Default">
+                                                    <f:facet name="Wbs">
+                                                        <af:selectOneChoice id="socWbs"
+                                                                            simple="true"
+                                                                            value="#{node.bindings.ActionCode.inputValue}"
+                                                                            valueChangeListener="#{pageFlowScope.importTimelineBean.onWbsAction}"
+                                                                            autoSubmit="true"
+                                                                            immediate="true"
+                                                                            valuePassThru="true"
+                                                                            disabled="#{bindings.ImportStatusCode != 'READY'}">
+                                                            <f:selectItems id="si2"
+                                                                           value="#{utilsBean.lookup[bindings.ImportTimelineView.currentRow.importActionView]}"/>
+                                                        </af:selectOneChoice>
+                                                    </f:facet>
+                                                    <f:facet name="Activity">
+                                                        <af:selectOneChoice id="socAct"
+                                                                            simple="true"
+                                                                            value="#{node.bindings.ActionCode.inputValue}"
+                                                                            valuePassThru="true"
+                                                                            immediate="true"
+                                                                            disabled="#{bindings.ImportStatusCode != 'READY'}">
+                                                            <f:selectItems id="si3"
+                                                                           value="#{utilsBean.lookup[bindings.ImportTimelineView.currentRow.importActionView]}"/>
+                                                        </af:selectOneChoice>
+                                                    </f:facet>
+                                                    <f:facet name="Default"/>
+                                                </af:switcher>
+                                            </af:column>
+                                        </af:treeTable>
+                                    </af:panelCollection>
+                                </f:facet>
+                            </af:panelStretchLayout>
+                        </af:panelBox>
+                    </f:facet>
+                    <f:facet name="controls">
+                        <af:panelGroupLayout layout="horizontal" halign="right"
+                                             id="pgl1">
+                            <f:facet name="separator">
+                                <af:spacer width="5" id="s12"/>
+                            </f:facet>
+                            <af:commandButton text="#{bundle.globalOk}"
+                                              id="cmdOk"
+                                              inlineStyle="font-weight:bold;"
+                                              action="#{pageFlowScope.importTimelineBean.onSubmit}"
+                                              disabled="#{bindings.ImportStatusCode != 'READY'}"/>
+                            <af:commandButton text="#{bundle.globalRefresh}"
+                                              id="cmdRefresh" immediate="true"
+                                              disabled="#{bindings.ImportStatusCode == 'READY' or not bindings.ImportIsSyncing.inputValue}"
+                                              action="#{pageFlowScope.importTimelineBean.onRefresh}"/>
+                            <af:commandButton text="#{bundle.globalCancel}"
+                                              id="cmdCancel"
+                                              rendered="#{bindings.ImportStatusCode != 'DONE' and bindings.ImportStatusCode != 'SEND'}"
+                                              action="cancel" immediate="true"/>
+                            <af:commandButton text="#{bundle.globalClose}"
+                                              id="cmdClose"
+                                              rendered="#{bindings.ImportStatusCode == 'DONE' or bindings.ImportStatusCode == 'SEND'}"
+                                              action="ok" immediate="true"/>
+                        </af:panelGroupLayout>
+                    </f:facet>
+                </af:pageTemplate>
+            </af:form>
+        </af:document>
+    </f:view>
+</jsp:root>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="DeleteProgram"
+             targetNamespace="http://xmlns.bayer.com/ipms/soa"
+             xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:client="http://xmlns.bayer.com/ipms/soa"
+             xmlns:ns1="http://xmlns.bayer.com/ipms/soa"
+             xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype">
+
+	<wsdl:types>
+		<schema xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://xmlns.bayer.com/ipms/soa" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/soa/soa.xsd" />
+		</schema>
+	</wsdl:types>
+
+	<wsdl:message name="DeleteProgramRequestMessage">
+		<wsdl:part name="payload" element="ns1:delete" />
+	</wsdl:message>
+	<wsdl:message name="DeleteProgramResponseMessage">
+		<wsdl:part name="payload" element="ns1:response" />
+	</wsdl:message>
+
+	<wsdl:portType name="DeleteProgram">
+		<wsdl:operation name="process">
+			<wsdl:input  message="client:DeleteProgramRequestMessage" />
+		</wsdl:operation>
+	</wsdl:portType>
+        
+	<wsdl:portType name="DeleteProgramCallback">
+		<wsdl:operation name="callback">
+			<wsdl:input  message="client:DeleteProgramResponseMessage" />			
+		</wsdl:operation>
+	</wsdl:portType>
+        
+	<plnk:partnerLinkType name="DeleteProgram">
+            <plnk:role name="DeleteProgramProvider" portType="client:DeleteProgram"/>
+            <plnk:role name="DeleteProgramRequester" portType="client:DeleteProgramCallback"/>
+	</plnk:partnerLinkType>
+        
+</wsdl:definitions>

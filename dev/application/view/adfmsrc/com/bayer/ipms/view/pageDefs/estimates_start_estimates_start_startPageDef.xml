@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.64.93"
+                id="estimates_start_estimates_start_startPageDef"
+                Package="com.bayer.ipms.view.pageDefs" SkipValidation="true">
+  <parameters/>
+  <executables>
+    <iterator Binds="EstimatesAppModule.LatestEstimatesProcessView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="LatestEstimatesProcessViewIterator"/>
+  </executables>
+  <bindings>
+    <methodAction IterBinding="LatestEstimatesProcessViewIterator" id="start"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="start" IsViewObjectMethod="false"
+                  DataControl="PrivateAppModuleDataControl"
+                  InstanceName="bindings.LatestEstimatesProcessViewIterator.currentRow"
+                  IsLocalObjectReference="true"/>
+  </bindings>
+</pageDefinition>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.64.93"
+                id="FPS_details_FPS_details_jspx_ExecuteWithParamsPageDef"
+                Package="com.bayer.ipms.view.pageDefs" SkipValidation="true">
+  <parameters/>
+  <executables>
+    <iterator Binds="Root.ProgramAppModule.AllQplanMasterdataView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="25"
+              id="AllQplanMasterdataViewIterator" Refresh="never"/>
+  </executables>
+  <bindings>
+    <action IterBinding="AllQplanMasterdataViewIterator" id="ExecuteWithParams"
+            RequiresUpdateModel="true" Action="executeWithParams">
+      <NamedData NDName="ProjectIdVar" NDValue="#{pageFlowScope.projectId}"
+                 NDType="java.lang.String"/>
+    </action>
+  </bindings>
+</pageDefinition>

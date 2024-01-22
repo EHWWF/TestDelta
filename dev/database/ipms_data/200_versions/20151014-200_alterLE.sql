@@ -1,0 +1,1 @@
+alter table latest_estimates_tag add(previous_let_id nvarchar2(45) references latest_estimates_tag(id));

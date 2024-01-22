@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="remove-study">
+    <template-reference>
+      <document>/WEB-INF/com.bayer.ipms.view/templates/ipms-taskflow-template-page.xml</document>
+      <id>ipms-taskflow-template-page</id>
+    </template-reference>
+    <default-activity>receive-data</default-activity>
+    <data-control-scope>
+      <shared/>
+    </data-control-scope>
+    <input-parameter-definition id="__23">
+      <name>projectCode</name>
+      <value>#{pageFlowScope.projectCode}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__24">
+      <name>projectName</name>
+      <value>#{pageFlowScope.projectName}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <managed-bean id="__17">
+      <managed-bean-name>RS</managed-bean-name>
+      <managed-bean-class>com.bayer.ipms.view.beans.RemoveStudiesBean</managed-bean-class>
+      <managed-bean-scope>pageFlow</managed-bean-scope>
+    </managed-bean>
+    <view id="receive-data">
+      <page>/WEB-INF/com.bayer.ipms.view/fragments/remove-studies.jspx</page>
+      <train-stop>
+        <display-name>Receive</display-name>
+        <outcome>start</outcome>
+      </train-stop>
+    </view>
+    <view id="select">
+      <page>/WEB-INF/com.bayer.ipms.view/fragments/remove-studies.jspx</page>
+      <train-stop>
+        <display-name>Select</display-name>
+      </train-stop>
+    </view>
+    <task-flow-return id="cancel">
+      <outcome>
+        <name>cancel</name>
+      </outcome>
+    </task-flow-return>
+    <view id="submit">
+      <page>/WEB-INF/com.bayer.ipms.view/fragments/remove-studies.jspx</page>
+      <train-stop>
+        <display-name>Submit</display-name>
+      </train-stop>
+    </view>
+    <view id="complete">
+      <page>/WEB-INF/com.bayer.ipms.view/fragments/remove-studies.jspx</page>
+      <train-stop>
+        <display-name>Complete</display-name>
+      </train-stop>
+    </view>
+    <method-call id="setSyncing">
+      <method>#{pageFlowScope.RS.setSyncing}</method>
+      <outcome>
+        <fixed-outcome>set</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="Commit">
+      <method>#{bindings.Commit.execute}</method>
+      <outcome>
+        <fixed-outcome>Commit</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="retrieveStudies">
+      <method>#{pageFlowScope.RS.retrieveStudies}</method>
+      <outcome>
+        <fixed-outcome>select</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="Commit1">
+      <method>#{bindings.Commit.execute}</method>
+      <outcome>
+        <fixed-outcome>Commit</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="setSyncing1">
+      <method>#{pageFlowScope.RS.setSyncing}</method>
+      <outcome>
+        <fixed-outcome>set</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="Commit2">
+      <method>#{bindings.Commit.execute}</method>
+      <outcome>
+        <fixed-outcome>Commit</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="submitStudies">
+      <method>#{pageFlowScope.RS.submitStudies}</method>
+      <outcome>
+        <fixed-outcome>complete</fixed-outcome>
+      </outcome>
+    </method-call>
+    <train/>
+    <control-flow-rule id="__1">
+      <from-activity-id>*</from-activity-id>
+      <control-flow-case id="__8">
+        <from-outcome>cancel</from-outcome>
+        <to-activity-id>cancel</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__2">
+      <from-activity-id>receive-data</from-activity-id>
+      <control-flow-case id="__3">
+        <from-outcome>receive</from-outcome>
+        <to-activity-id>setSyncing</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__9">
+      <from-activity-id>setSyncing</from-activity-id>
+      <control-flow-case id="__10">
+        <from-outcome>set</from-outcome>
+        <to-activity-id>Commit</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__4">
+      <from-activity-id>Commit</from-activity-id>
+      <control-flow-case id="__5">
+        <from-outcome>Commit</from-outcome>
+        <to-activity-id>retrieveStudies</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__11">
+      <from-activity-id>retrieveStudies</from-activity-id>
+      <control-flow-case id="__12">
+        <from-outcome>select</from-outcome>
+        <to-activity-id>select</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__13">
+      <from-activity-id>Commit1</from-activity-id>
+      <control-flow-case id="__14">
+        <from-outcome>Commit</from-outcome>
+        <to-activity-id>setSyncing1</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__6">
+      <from-activity-id>select</from-activity-id>
+      <control-flow-case id="__7">
+        <from-outcome>submit</from-outcome>
+        <to-activity-id>Commit1</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__15">
+      <from-activity-id>submit</from-activity-id>
+      <control-flow-case id="__16">
+        <from-outcome>submit</from-outcome>
+        <to-activity-id>submitStudies</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__18">
+      <from-activity-id>setSyncing1</from-activity-id>
+      <control-flow-case id="__19">
+        <from-outcome>set</from-outcome>
+        <to-activity-id>Commit2</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__20">
+      <from-activity-id>Commit2</from-activity-id>
+      <control-flow-case id="__21">
+        <from-outcome>Commit</from-outcome>
+        <to-activity-id>submit</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__22">
+      <from-activity-id>submitStudies</from-activity-id>
+      <control-flow-case id="__25">
+        <from-outcome>complete</from-outcome>
+        <to-activity-id>complete</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+  </task-flow-definition>
+</adfc-config>

@@ -1,0 +1,3 @@
+alter table ltc_estimate add(timeline_id nvarchar2(30));
+alter table ltc_estimate add(wbs_id nvarchar2(100));
+comment on column ltc_estimate.wbs_id is 'In order to freeze data close to the source LTC_ESTIMATE should all related data,columns, values that needed later for data export to ipms_repo.';

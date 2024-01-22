@@ -1,0 +1,1 @@
+begin job_pkg.setup_fun_sub_status; commit; end;

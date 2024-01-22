@@ -1,0 +1,3 @@
+update prefill_type set is_active=0 where code='xLEp';
+commit;
+alter table latest_estimates_tag add (CY_PROB_PREFILL_CODE NVARCHAR2(10),NY_PROB_PREFILL_CODE NVARCHAR2(10),IS_PREFILL_PROB NUMBER(1,0) DEFAULT 0 NOT NULL ENABLE,IS_FORECAST_PROB NUMBER(1,0) DEFAULT 0 NOT NULL ENABLE);

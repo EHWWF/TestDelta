@@ -1,0 +1,10 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<xs:schema targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/updateTask" xmlns="http://xmlns.oracle.com/pcbpel/adapter/db/updateTask" elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+   <xs:element name="updateTaskInput" type="updateTaskInput"/>
+   <xs:complexType name="updateTaskInput">
+      <xs:sequence>
+         <xs:element name="p_create_user" type="xs:string" nillable="true"/>
+         <xs:element name="p_task_id" type="xs:string" nillable="true"/>
+      </xs:sequence>
+   </xs:complexType>
+</xs:schema>

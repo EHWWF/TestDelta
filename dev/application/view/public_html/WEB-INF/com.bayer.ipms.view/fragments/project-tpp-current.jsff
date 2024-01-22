@@ -1,0 +1,278 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <af:componentDef>
+        <c:set var="bundle" value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+        <af:subform id="tppcurrent">
+            <af:resource type="css">
+                .depth0 {
+                    background-color: #E8E8F0;
+                }
+
+                .depth1 {
+                    background-color: #F0F0F4;
+                }
+
+                .depth2 {
+                    background-color: #F8F8F8;
+                }
+
+                .usp {
+                    color: #D00000
+                }
+            </af:resource>
+            <af:popup id="popCreateTppVersion" popupCanceledListener="#{pageFlowScope.tppBean.onCreateTppVersionPopupCancel}"
+                      popupFetchListener="#{pageFlowScope.tppBean.onCreateTppVersionPopupFetch}" contentDelivery="lazyUncached">
+                <af:dialog id="dlgCreateTppVersion" title="#{bundle.projectTppCreateVersion}" contentWidth="800"
+                           dialogListener="#{pageFlowScope.tppBean.onCreateTppVersion}">
+                    <af:panelBox text="#{bundle.globalSummary}" showDisclosure="false" type="flow" id="pbTppVersion">
+                        <af:panelFormLayout id="pflTppVersion" styleClass="AFStretchWidth" fieldWidth="100%">
+                            <af:inputText value="#{pageFlowScope.tppBean.tppVersionName}"
+                                          label="#{bindings.TppVersionName.hints.label}" id="vit1"
+                                          maximumLength="#{bindings.TppVersionName.hints.precision}"
+                                          rows="#{bindings.TppVersionName.hints.displayHeight}"
+                                          columns="#{bindings.TppVersionName.hints.displayWidth}"
+                                          shortDesc="#{bindings.TppVersionName.hints.tooltip}"/>
+                            <af:inputDate value="#{pageFlowScope.tppBean.tppVersionAppDate}"
+                                          label="#{bindings.TppVersionApprovalDate.hints.label}" id="vid1"
+                                          columns="#{bindings.TppVersionApprovalDate.hints.displayWidth}"
+                                          shortDesc="#{bindings.TppVersionApprovalDate.hints.tooltip}">
+                                <af:convertDateTime pattern="#{bindings.TppVersionApprovalDate.format}"/>
+                            </af:inputDate>
+                            <af:inputText value="#{pageFlowScope.tppBean.tppVersionDescription}"
+                                          label="#{bindings.TppVersionDescription.hints.label}" id="vit2"
+                                          required="#{bindings.TppVersionDescription.hints.mandatory}"
+                                          rows="#{bindings.TppVersionDescription.hints.displayHeight}"
+                                          columns="#{bindings.TppVersionDescription.hints.displayWidth}"
+                                          maximumLength="#{bindings.TppVersionDescription.hints.precision}"
+                                          shortDesc="#{bindings.TppVersionDescription.hints.tooltip}"/>
+                        </af:panelFormLayout>
+                    </af:panelBox>
+                </af:dialog>
+            </af:popup>
+            <af:panelBox showDisclosure="false" type="stretch" styleClass="AFStretchWidth"
+                         background="#{pageFlowScope.tppBean.editable eq 'tppcurrent' ? 'light' : 'default'}">
+                <f:facet name="toolbar">
+                    <af:toolbar rendered="#{rolesBean.TPPEditDev}">
+                        <af:commandToolbarButton rendered="#{empty pageFlowScope.tppBean.editable and bindings.TppCurrentVersion.inputValue eq 'Current'}"
+                                                 icon="/images/new.png" immediate="true"
+                                                 text="#{bundle.projectTppCreateVersion}" id="ctb_crv">
+                            <af:showPopupBehavior popupId="popCreateTppVersion" triggerType="action"/>
+                        </af:commandToolbarButton>
+                        <af:commandToolbarButton rendered="#{empty pageFlowScope.tppBean.editable and empty bindings.TppCurrentVersion.inputValue}"
+                                                 icon="/images/new.png" immediate="true"
+                                                 actionListener="#{pageFlowScope.tppBean.onEdit}"
+                                                 text="#{bundle.globalAdd}" id="ctb_cr"
+                                                 action="#{pageFlowScope.tppBean.onTppAdd}">
+                            <f:attribute name="target" value="tppcurrent"/>
+                        </af:commandToolbarButton>
+                        
+                        <af:button rendered="#{empty pageFlowScope.tppBean.editable and bindings.TppCurrentVersion.inputValue eq 'Current'}"
+                                   icon="/images/export.png" text="#{bundle.globalExportPDF}" id="ctb_ex_pdf"
+                                   actionListener="#{pageFlowScope.tppBean.onCurrentExportToPDF}" targetFrame="_blank"/>
+                                   
+                        <af:commandToolbarButton rendered="#{empty pageFlowScope.tppBean.editable and bindings.TppCurrentVersion.inputValue eq 'Current'}"
+                                                 icon="/images/edit.png" immediate="true"
+                                                 actionListener="#{pageFlowScope.tppBean.onEdit}"
+                                                 text="#{bundle.globalEdit}" id="ctb_ed">
+                            <f:attribute name="target" value="tppcurrent"/>
+                        </af:commandToolbarButton>
+                        <af:commandToolbarButton rendered="#{pageFlowScope.tppBean.editable eq 'tppcurrent'}"
+                                                 icon="/images/commit.png"
+                                                 actionListener="#{pageFlowScope.tppBean.onCommit}"
+                                                 text="#{bundle.globalOk}" id="tppok"/>
+                        <af:commandToolbarButton rendered="#{pageFlowScope.tppBean.editable eq 'tppcurrent'}"
+                                                 icon="/images/rollback.png"
+                                                 actionListener="#{pageFlowScope.tppBean.onRollback}"
+                                                  text="#{bundle.globalCancel}" id="ctb_cn"/>
+                    </af:toolbar>
+                </f:facet>
+                <af:panelStretchLayout id="dc_psl1" topHeight="85px">
+                    <f:facet name="center">
+                        <af:panelSplitter id="dc_ps1" orientation="vertical" splitterPosition="85">
+                            <f:facet name="first">
+                                <af:panelFormLayout id="pfl1" rows="2" fieldWidth="100%"
+                                                    rendered="#{not(empty pageFlowScope.tppBean.editable and empty bindings.TppCurrentVersion.inputValue)}">
+                                    <af:inputText value="#{bindings.TppCurrentName.inputValue}"
+                                                  label="#{bindings.TppCurrentName.hints.label}" id="dc_it1"
+                                                  required="#{bindings.TppCurrentName.hints.mandatory}"
+                                                  maximumLength="#{bindings.TppCurrentName.hints.precision}"
+                                                  rows="#{bindings.TppCurrentName.hints.displayHeight}"
+                                                  columns="#{bindings.TppCurrentName.hints.displayWidth}"
+                                                  readOnly="#{pageFlowScope.tppBean.editable ne 'tppcurrent'}"
+                                                  dimensionsFrom="parent"
+                                                  shortDesc="#{bindings.TppCurrentName.hints.tooltip}">
+                                        <f:validator binding="#{bindings.TppCurrentName.validator}"/>
+                                    </af:inputText>
+                                    <af:inputDate value="#{bindings.TppCurrentApprovalDate.inputValue}"
+                                                  label="#{bindings.TppCurrentApprovalDate.hints.label}" id="dc_id1"
+                                                  required="#{bindings.TppCurrentApprovalDate.hints.mandatory}"
+                                                  columns="#{bindings.TppCurrentApprovalDate.hints.displayWidth}"
+                                                  readOnly="#{pageFlowScope.tppBean.editable ne 'tppcurrent'}"
+                                                  shortDesc="#{bindings.TppCurrentApprovalDate.hints.tooltip}">
+                                        <f:validator binding="#{bindings.TppCurrentApprovalDate.validator}"/>
+                                        <af:convertDateTime pattern="#{bindings.TppCurrentApprovalDate.format}"/>
+                                    </af:inputDate>
+                                    <af:inputText value="#{bindings.TppCurrentIndication.inputValue}"
+                                                  label="#{bindings.TppCurrentIndication.hints.label}" id="dc_it2"
+                                                  required="#{bindings.TppCurrentIndication.hints.mandatory}"
+                                                  rows="#{bindings.TppCurrentIndication.hints.displayHeight}"
+                                                  columns="#{bindings.TppCurrentIndication.hints.displayWidth}"
+                                                  readOnly="#{pageFlowScope.tppBean.editable ne 'tppcurrent'}"
+                                                  maximumLength="#{bindings.TppCurrentIndication.hints.precision}"
+                                                  shortDesc="#{bindings.TppCurrentIndication.hints.tooltip}">
+                                        <f:validator binding="#{bindings.TppCurrentIndication.validator}"/>
+                                    </af:inputText>
+                                    <af:inputText value="#{bindings.TppCurrentReferences.inputValue}"
+                                                  label="#{bindings.TppCurrentReferences.hints.label}" id="dc_it3"
+                                                  required="#{bindings.TppCurrentReferences.hints.mandatory}"
+                                                  rows="#{bindings.TppCurrentIndication.hints.displayHeight}"
+                                                  columns="#{bindings.TppCurrentReferences.hints.displayWidth}"
+                                                  readOnly="#{pageFlowScope.tppBean.editable ne 'tppcurrent'}"
+                                                  maximumLength="#{bindings.TppCurrentReferences.hints.precision}"
+                                                  shortDesc="#{bindings.TppCurrentReferences.hints.tooltip}">
+                                        <f:validator binding="#{bindings.TppCurrentReferences.validator}"/>
+                                    </af:inputText>
+                                </af:panelFormLayout>
+                            </f:facet>
+                            <f:facet name="second">
+                                <af:panelCollection id="pc1"
+                                                    rendered="#{not empty bindings.TppCurrentCreateDate.inputValue}"
+                                                    featuresOff="detach statusBar showAsTopToolbarItem">
+                                    <f:facet name="toolbar">
+                                        <af:toolbar rendered="#{rolesBean.TPPEditDev}" id="dc_t1">
+                                            <af:button rendered="#{pageFlowScope.tppBean.editable eq 'tppcurrent'}"
+                                                       icon="/images/new.png" actionListener="#{pageFlowScope.tppBean.onTppvAdd}"
+                                                       immediate="true" text="#{bundle.globalAdd}" id="tppvadd"
+                                                       shortDesc="#{bundle.projectTppValueAdd}" disabled="true"/>
+                                            <af:button rendered="#{pageFlowScope.tppBean.editable eq 'tppcurrent'}"
+                                                       icon="/images/remove.png"
+                                                       actionListener="#{pageFlowScope.tppBean.onTppvRemove}" immediate="true"
+                                                       text="#{bundle.globalRemove}" id="tppvremove"
+                                                       shortDesc="#{bundle.projectTppValueRemove}" disabled="true"/>
+                                        </af:toolbar>
+                                    </f:facet>
+                                    <af:treeTable id="tpptab" var="node"
+                                                  value="#{bindings.TppProfileCategoryView.treeModel}"
+                                                  selectionListener="#{pageFlowScope.tppBean.onTppCatTreeSelect}"
+                                                  rowSelection="single"
+                                                  fetchSize="#{bindings.TppProfileCategoryView.rangeSize}"
+                                                  contentDelivery="immediate" columnStretching="multiple"
+                                                  partialTriggers="::tppvadd ::tppvremove">
+                                        <f:facet name="nodeStamp">
+                                            <af:column id="c111" width="250" minimumWidth="150"
+                                                       styleClass="depth#{bindings.TppProfileCategoryView.treeModel.depth mod 3}">
+                                                <af:outputText value="#{node.Name} #{node.IsActive or bindings.TppProfileCategoryView.treeModel.depth > 1?'':bundle.projectTppInactive}"
+                                                               id="ot111"
+                                                               inlineStyle="color:#{node.IsActive?'inherit':'#808080'};"/>
+                                            </af:column>
+                                        </f:facet>
+                                        <f:facet name="pathStamp">
+                                            <af:outputText value="#{node}" id="ot112"/>
+                                        </f:facet>
+                                        <af:column id="c1101" headerText="#{bundle.projectTppKeyEdvProposition}"
+                                                   styleClass="depth#{bindings.TppProfileCategoryView.treeModel.depth mod 3}"
+                                                   width="18%" noWrap="false">
+                                            <af:inputText value="#{node.KeyEdvProposition}" id="it1101m"
+                                                          rows="#{bindings.TppProfileCategoryView.hints.TppProfileSubcategoryView.TppValuesView.KeyEdvProposition.displayHeight}"
+                                                          columns="#{bindings.TppProfileCategoryView.hints.TppProfileSubcategoryView.TppValuesView.KeyEdvProposition.displayWidth}"
+                                                          required="#{bindings.TppProfileCategoryView.hints.TppProfileSubcategoryView.TppValuesView.KeyEdvProposition.mandatory}"
+                                                          rendered="#{pageFlowScope.tppBean.editable eq 'tppcurrent' and bindings.TppProfileCategoryView.treeModel.depth > 1}"
+                                                          maximumLength="#{bindings.TppProfileCategoryView.hints.TppProfileSubcategoryView.TppValuesView.KeyEdvProposition.precision}"
+                                                          shortDesc="#{bindings.TppProfileCategoryView.hints.TppProfileSubcategoryView.TppValuesView.KeyEdvProposition.tooltip}"/>
+                                            <af:outputText value="#{node.KeyEdvProposition}" id="ot1101"
+                                                           styleClass="#{node.UniqueSellingPoint ? 'usp' : ''}"
+                                                           rendered="#{pageFlowScope.tppBean.editable ne 'tppcurrent'}"
+                                                           shortDesc="#{bindings.TppProfileCategoryView.hints.TppProfileSubcategoryView.TppValuesView.KeyEdvProposition.tooltip}"/>
+                                        </af:column>
+                                        <af:column id="c1102" headerText="#{bundle.projectTppStandardOfCare}"
+                                                   styleClass="depth#{bindings.TppProfileCategoryView.treeModel.depth mod 3}"
+                                                   width="18%" noWrap="false">
+                                            <af:inputText value="#{node.StandardOfCare}" id="it1102m"
+                                                          rows="#{bindings.TppProfileCategoryView.hints.TppProfileSubcategoryView.TppValuesView.StandardOfCare.displayHeight}"
+                                                          columns="#{bindings.TppProfileCategoryView.hints.TppProfileSubcategoryView.TppValuesView.StandardOfCare.displayWidth}"
+                                                          required="#{bindings.TppProfileCategoryView.hints.TppProfileSubcategoryView.TppValuesView.StandardOfCare.mandatory}"
+                                                          rendered="#{pageFlowScope.tppBean.editable eq 'tppcurrent' and bindings.TppProfileCategoryView.treeModel.depth > 1}"
+                                                          maximumLength="#{bindings.TppProfileCategoryView.hints.TppProfileSubcategoryView.TppValuesView.StandardOfCare.precision}"
+                                                          shortDesc="#{bindings.TppProfileCategoryView.hints.TppProfileSubcategoryView.TppValuesView.StandardOfCare.tooltip}"/>
+                                            <af:outputText value="#{node.StandardOfCare}" id="ot1102"
+                                                           styleClass="#{node.UniqueSellingPoint ? 'usp' : ''}"
+                                                           rendered="#{pageFlowScope.tppBean.editable ne 'tppcurrent'}"
+                                                           shortDesc="#{bindings.TppProfileCategoryView.hints.TppProfileSubcategoryView.TppValuesView.StandardOfCare.tooltip}"/>
+                                        </af:column>
+                                        <af:column id="c1103" headerText="#{bundle.projectTppTargetedProfile}"
+                                                   styleClass="depth#{bindings.TppProfileCategoryView.treeModel.depth mod 3}"
+                                                   width="18%" noWrap="false">
+                                            <af:inputText value="#{node.TargetedProfile}" id="it1103m"
+                                                          rows="#{bindings.TppProfileCategoryView.hints.TppProfileSubcategoryView.TppValuesView.TargetedProfile.displayHeight}"
+                                                          columns="#{bindings.TppProfileCategoryView.hints.TppProfileSubcategoryView.TppValuesView.TargetedProfile.displayWidth}"
+                                                          required="#{bindings.TppProfileCategoryView.hints.TppProfileSubcategoryView.TppValuesView.TargetedProfile.mandatory}"
+                                                          rendered="#{pageFlowScope.tppBean.editable eq 'tppcurrent' and bindings.TppProfileCategoryView.treeModel.depth > 1}"
+                                                          maximumLength="#{bindings.TppProfileCategoryView.hints.TppProfileSubcategoryView.TppValuesView.TargetedProfile.precision}"
+                                                          shortDesc="#{bindings.TppProfileCategoryView.hints.TppProfileSubcategoryView.TppValuesView.TargetedProfile.tooltip}"/>
+                                            <af:outputText value="#{node.TargetedProfile}" id="ot1103"
+                                                           styleClass="#{node.UniqueSellingPoint ? 'usp' : ''}"
+                                                           rendered="#{pageFlowScope.tppBean.editable ne 'tppcurrent'}"
+                                                           shortDesc="#{bindings.TppProfileCategoryView.hints.TppProfileSubcategoryView.TppValuesView.TargetedProfile.tooltip}"/>
+                                        </af:column>
+                                        <af:column id="c1104" headerText="#{bundle.projectTppUpside}"
+                                                   styleClass="depth#{bindings.TppProfileCategoryView.treeModel.depth mod 3}"
+                                                   width="18%" noWrap="false">
+                                            <af:inputText value="#{node.Upside}" id="it1104m"
+                                                          rows="#{bindings.TppProfileCategoryView.hints.TppProfileSubcategoryView.TppValuesView.Upside.displayHeight}"
+                                                          columns="#{bindings.TppProfileCategoryView.hints.TppProfileSubcategoryView.TppValuesView.Upside.displayWidth}"
+                                                          required="#{bindings.TppProfileCategoryView.hints.TppProfileSubcategoryView.TppValuesView.Upside.mandatory}"
+                                                          rendered="#{pageFlowScope.tppBean.editable eq 'tppcurrent' and bindings.TppProfileCategoryView.treeModel.depth > 1}"
+                                                          maximumLength="#{bindings.TppProfileCategoryView.hints.TppProfileSubcategoryView.TppValuesView.Upside.precision}"
+                                                          shortDesc="#{bindings.TppProfileCategoryView.hints.TppProfileSubcategoryView.TppValuesView.Upside.tooltip}"/>
+                                            <af:outputText value="#{node.Upside}" id="ot1104"
+                                                           styleClass="#{node.UniqueSellingPoint ? 'usp' : ''}"
+                                                           rendered="#{pageFlowScope.tppBean.editable ne 'tppcurrent'}"
+                                                           shortDesc="#{bindings.TppProfileCategoryView.hints.TppProfileSubcategoryView.TppValuesView.Upside.tooltip}"/>
+                                        </af:column>
+                                        <af:column id="c1105" headerText="#{bundle.projectTppTargetedIn}"
+                                                   styleClass="depth#{bindings.TppProfileCategoryView.treeModel.depth mod 3}"
+                                                   width="12%" noWrap="false">
+                                            <af:inputText value="#{node.TargetedIn}" id="it1105m"
+                                                          rows="#{bindings.TppProfileCategoryView.hints.TppProfileSubcategoryView.TppValuesView.TargetedIn.displayHeight}"
+                                                          columns="#{bindings.TppProfileCategoryView.hints.TppProfileSubcategoryView.TppValuesView.TargetedIn.displayWidth}"
+                                                          required="#{bindings.TppProfileCategoryView.hints.TppProfileSubcategoryView.TppValuesView.TargetedIn.mandatory}"
+                                                          rendered="#{pageFlowScope.tppBean.editable eq 'tppcurrent' and bindings.TppProfileCategoryView.treeModel.depth > 1}"
+                                                          maximumLength="#{bindings.TppProfileCategoryView.hints.TppProfileSubcategoryView.TppValuesView.TargetedIn.precision}"
+                                                          shortDesc="#{bindings.TppProfileCategoryView.hints.TppProfileSubcategoryView.TppValuesView.TargetedIn.tooltip}"/>
+                                            <af:outputText value="#{node.TargetedIn}" id="ot1105"
+                                                           styleClass="#{node.UniqueSellingPoint ? 'usp' : ''}"
+                                                           rendered="#{pageFlowScope.tppBean.editable ne 'tppcurrent'}"
+                                                           shortDesc="#{bindings.TppProfileCategoryView.hints.TppProfileSubcategoryView.TppValuesView.TargetedIn.tooltip}"/>
+                                        </af:column>
+                                        <af:column id="c1106" headerText="#{bundle.projectTppKeyDriver}"
+                                                   styleClass="depth#{bindings.TppProfileCategoryView.treeModel.depth mod 3}"
+                                                   width="8%" align="center">
+                                            <af:selectBooleanCheckbox id="sbc1106" value="#{node.KeyDriver}"
+                                                                      required="#{bindings.TppProfileCategoryView.hints.TppProfileSubcategoryView.TppValuesView.KeyDriver.mandatory}"
+                                                                      shortDesc="#{bindings.TppProfileCategoryView.hints.TppProfileSubcategoryView.TppValuesView.KeyDriver.tooltip}"
+                                                                      rendered="#{bindings.TppProfileCategoryView.treeModel.depth == 2}"
+                                                                      disabled="#{pageFlowScope.tppBean.editable ne 'tppcurrent'}"
+                                                                      autoSubmit="false"/>
+                                        </af:column>
+                                        <af:column id="c1107" headerText="#{bundle.projectTppUniqueSellingPoint}"
+                                                   styleClass="depth#{bindings.TppProfileCategoryView.treeModel.depth mod 3}"
+                                                   width="8%" align="center">
+                                            <af:selectBooleanRadio id="sbr1107" group="rbgUniqueSellingPoint"
+                                                                   value="#{node.UniqueSellingPoint}"
+                                                                   required="#{bindings.TppProfileCategoryView.hints.TppProfileSubcategoryView.TppValuesView.UniqueSellingPoint.mandatory}"
+                                                                   shortDesc="#{bindings.TppProfileCategoryView.hints.TppProfileSubcategoryView.TppValuesView.UniqueSellingPoint.tooltip}"
+                                                                   rendered="#{bindings.TppProfileCategoryView.treeModel.depth == 2}"
+                                                                   disabled="#{pageFlowScope.tppBean.editable ne 'tppcurrent'}"
+                                                                   autoSubmit="false"/>
+                                        </af:column>
+                                    </af:treeTable>
+                                </af:panelCollection>
+                            </f:facet>
+                        </af:panelSplitter>
+                    </f:facet>
+                </af:panelStretchLayout>
+            </af:panelBox>
+        </af:subform>
+    </af:componentDef>
+</jsp:root>

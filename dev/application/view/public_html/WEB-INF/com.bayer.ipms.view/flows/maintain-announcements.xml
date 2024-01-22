@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="windows-1257" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="maintain-announcements">
+    <template-reference>
+      <document id="__2">/WEB-INF/com.bayer.ipms.view/templates/ipms-taskflow-template-page.xml</document>
+      <id id="__1">ipms-taskflow-template-page</id>
+    </template-reference>
+    <default-activity id="__35">edit</default-activity>
+    <transaction id="__3">
+      <new-transaction/>
+    </transaction>
+    <data-control-scope id="__4">
+      <isolated/>
+    </data-control-scope>
+    <exception-handler id="__12">handleException</exception-handler>
+    <view id="edit">
+      <page>/WEB-INF/com.bayer.ipms.view/fragments/maintain-announcements.jspx</page>
+    </view>
+    <method-call id="setBaCode">
+      <method>#{utilsBean.setBaCode2}</method>
+      <parameter>
+            <class>java.lang.String</class>
+            <value>MaintainAnnouncements</value>
+      </parameter>
+      <outcome>
+            <fixed-outcome>set</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="clearBaCode">
+      <method>#{utilsBean.clearBaCode}</method>
+      <outcome>
+            <fixed-outcome>clear</fixed-outcome>
+      </outcome>
+    </method-call>		    
+    <task-flow-return id="ok">
+      <outcome id="__5">
+        <name>ok</name>
+        <commit/>
+      </outcome>
+    </task-flow-return>
+    <task-flow-return id="cancel">
+      <outcome id="__6">
+        <name>cancel</name>
+        <rollback/>
+      </outcome>
+    </task-flow-return>
+    <method-call id="Commit">
+      <method>#{bindings.Commit.execute}</method>
+      <outcome>
+        <fixed-outcome>Commit</fixed-outcome>
+      </outcome>
+    </method-call>
+    <control-flow-rule id="__7">
+      <from-activity-id id="__8">edit</from-activity-id>
+      <control-flow-case id="__9">
+        <from-outcome id="__11">ok</from-outcome>
+        <to-activity-id id="__10">setBaCode</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__15">
+      <from-activity-id id="__16">*</from-activity-id>
+      <control-flow-case id="__18">
+        <from-outcome id="__19">cancel</from-outcome>
+        <to-activity-id id="__17">cancel</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__13">
+      <from-activity-id>setBaCode</from-activity-id>
+      <control-flow-case id="__14">
+        <from-outcome>set</from-outcome>
+        <to-activity-id>Commit</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__20">
+      <from-activity-id>Commit</from-activity-id>
+      <control-flow-case id="__21">
+        <from-outcome>Commit</from-outcome>
+        <to-activity-id>clearBaCode</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__22">
+      <from-activity-id>clearBaCode</from-activity-id>
+      <control-flow-case id="__23">
+        <from-outcome>clear</from-outcome>
+        <to-activity-id>ok</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+  </task-flow-definition>
+</adfc-config>

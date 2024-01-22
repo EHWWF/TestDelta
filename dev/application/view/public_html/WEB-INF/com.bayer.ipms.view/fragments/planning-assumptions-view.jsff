@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <c:set var="bundle"
+           value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+    <af:pageTemplate viewId="/WEB-INF/com.bayer.ipms.view/templates/ipms-content-template.jspx">
+        <f:facet name="toolbar">
+            <af:panelGroupLayout id="tools" layout="horizontal">
+                <af:menuBar>
+                    <af:menu text="#{bundle.globalView}">
+                        <af:commandMenuItem text="#{bundle.globalRefresh}"
+                                            icon="/images/reload.png"
+                                            immediate="true"
+                                            action="#{PlanningAssumptionBean.onRefresh}"/>
+                    </af:menu>
+                    <af:menu text="#{bundle.globalTools}"
+                             rendered="#{securityContext.userInRole['PlanningAssumptionsStart']}">
+                        <af:commandMenuItem text="#{bundle.planningAssumpReqFinish}"
+                                            rendered="#{securityContext.userInRole['PlanningAssumptionsStart']}"
+                                            immediate="true"
+                                            action="#{PlanningAssumptionBean.onTerminate}"
+                                            disabled="#{bindings.StatusCode.inputValue eq 'FIN' or bindings.IsSyncing.inputValue}"
+                                            icon="/images/stop.png"
+                                            id="cmdTerminate"/>
+                    </af:menu>
+                </af:menuBar>
+            </af:panelGroupLayout>
+        </f:facet>
+        <f:facet name="content">
+            <af:panelGroupLayout layout="scroll" id="content">
+                <af:poll id="poll2" interval="30000"
+                         rendered="#{bindings.IsSyncing.inputValue}"
+                         pollListener="#{PlanningAssumptionBean.onPoll}"
+                         immediate="true"/>
+                <af:panelBox text="#{bundle.globalSummary}"
+                             showDisclosure="false" type="flow">
+                    <af:panelFormLayout styleClass="AFStretchWidth">
+                        <af:inputText label="#{bindings.Name.hints.label}"
+                                              value="#{bindings.Name.inputValue}"
+                                              readOnly="true"/>
+                        <af:inputText label="#{bindings.ForecastNo.hints.label}"
+                                              value="#{bindings.ForecastNo.inputValue}"
+                                              readOnly="true"/>
+                        <af:inputText value="#{bindings.TerminationDate.inputValue}"
+                                      label="#{bindings.TerminationDate.hints.label}"
+                                      required="#{bindings.TerminationDate.hints.mandatory}"
+                                      columns="#{bindings.TerminationDate.hints.displayWidth}"
+                                      maximumLength="#{bindings.TerminationDate.hints.precision}"
+                                      shortDesc="#{bindings.TerminationDate.hints.tooltip}"
+                                      readOnly="true">
+                            <af:convertDateTime pattern="#{bindings.TerminationDate.format}"/>
+                        </af:inputText>
+                        <af:inputText value="#{bindings.CreateDate.inputValue}"
+                                      label="#{bindings.CreateDate.hints.label}"
+                                      required="#{bindings.CreateDate.hints.mandatory}"
+                                      columns="#{bindings.CreateDate.hints.displayWidth}"
+                                      maximumLength="#{bindings.CreateDate.hints.precision}"
+                                      shortDesc="#{bindings.CreateDate.hints.tooltip}"
+                                      readOnly="true">
+                            <af:convertDateTime pattern="#{bindings.CreateDate.format}"/>
+                        </af:inputText>
+                        <af:inputDate value="#{bindings.StatusCode.inputValue=='FIN' ? bindings.StatusDate.inputValue : ''}"
+                                      label="#{bindings.StatusDate.hints.label}"
+                                      required="#{bindings.StatusDate.hints.mandatory}"
+                                      shortDesc="#{bindings.StatusDate.hints.tooltip}"
+                                      readOnly="true">
+                            <af:convertDateTime pattern="#{bindings.StatusDate.format}"/>
+                        </af:inputDate>
+                    </af:panelFormLayout>
+                </af:panelBox>
+            </af:panelGroupLayout>
+        </f:facet>
+        <f:attribute name="title" value="#{bundle.planningAssumpReq}"/>
+        <f:attribute name="message"
+                     value="#{bindings.IsSyncing.inputValue ? bundle.globalIsSyncingWarning2 : ''}"/>
+    </af:pageTemplate>
+</jsp:root>

@@ -1,0 +1,1 @@
+alter table cost_ltc_process_dim add is_frozen number(1,0);

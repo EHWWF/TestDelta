@@ -1,0 +1,1 @@
+alter table project add(gt_calculation_date date);

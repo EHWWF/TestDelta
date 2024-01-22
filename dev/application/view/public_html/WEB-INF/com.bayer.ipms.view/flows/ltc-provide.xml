@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="ltc-provide">
+    <template-reference>
+      <document id="__2">/WEB-INF/com.bayer.ipms.view/templates/ipms-taskflow-template-page.xml</document>
+      <id id="__1">ipms-taskflow-template-page</id>
+    </template-reference>
+    <default-activity id="__58">CreateWithParameters</default-activity>
+    <transaction id="__7">
+      <requires-transaction/>
+    </transaction>
+    <data-control-scope id="__6">
+      <shared/>
+    </data-control-scope>
+    <input-parameter-definition id="__5">
+      <name id="__12">projectId</name>
+      <value>#{pageFlowScope.projectId}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__13">
+      <name id="__15">sandboxId</name>
+      <value>#{pageFlowScope.sandboxId}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__31">
+      <name id="__32">objectName</name>
+      <value>#{pageFlowScope.objectName}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <managed-bean id="__16">
+      <managed-bean-name id="__30">ltcBean</managed-bean-name>
+      <managed-bean-class id="__18">com.bayer.ipms.view.beans.LtcBean</managed-bean-class>
+      <managed-bean-scope id="__17">pageFlow</managed-bean-scope>
+    </managed-bean>
+    <view id="ltc-provide1">
+      <page>/WEB-INF/com.bayer.ipms.view/fragments/ltc-provide.jspx</page>
+      <input-page-parameter>
+        <from-value>#{pageFlowScope.objectName}</from-value>
+        <to-value>#{requestScope.objectName}</to-value>
+      </input-page-parameter>
+    </view>
+    <task-flow-return id="cancel">
+      <outcome id="__4">
+        <name>cancel</name>
+        <rollback/>
+      </outcome>
+    </task-flow-return>
+    <method-call id="setBaCode">
+      <method>#{utilsBean.setBaCode2}</method>
+      <parameter>
+            <class>java.lang.String</class>
+            <value>LTCprovide</value>
+      </parameter>
+      <outcome>
+            <fixed-outcome>set</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="clearBaCode">
+      <method>#{utilsBean.clearBaCode}</method>
+      <outcome>
+            <fixed-outcome>clear</fixed-outcome>
+      </outcome>
+    </method-call>	    
+    <method-call id="Commit">
+      <method>#{bindings.Commit.execute}</method>
+      <outcome id="__28">
+        <fixed-outcome>Commit</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="CreateWithParameters">
+      <method>#{bindings.CreateWithParams.execute}</method>
+      <outcome id="__57">
+        <fixed-outcome>CreateWithParams</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="launch">
+      <method>#{bindings.launch.execute}</method>
+      <outcome id="__3">
+        <fixed-outcome>launch</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="submit">
+      <method>#{bindings.submit.execute}</method>
+      <outcome id="__40">
+        <fixed-outcome>submit</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="clearBaCode2">
+      <method>#{utilsBean.clearBaCode}</method>
+      <outcome>
+        <fixed-outcome>clear</fixed-outcome>
+      </outcome>
+    </method-call>
+    <control-flow-rule id="__8">
+      <from-activity-id id="__9">ltc-provide1</from-activity-id>
+      <control-flow-case id="__11">
+        <from-outcome id="__14">cancel</from-outcome>
+        <to-activity-id id="__10">clearBaCode2</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__42">
+        <from-outcome id="__43">submit</from-outcome>
+        <to-activity-id id="__41">submit</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__59">
+      <from-activity-id id="__60">CreateWithParameters</from-activity-id>
+      <control-flow-case id="__61">
+        <from-outcome id="__63">CreateWithParams</from-outcome>
+        <to-activity-id id="__62">setBaCode</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__19">
+      <from-activity-id id="__20">launch</from-activity-id>
+      <control-flow-case id="__22">
+        <from-outcome id="__21">launch</from-outcome>
+        <to-activity-id id="__23">ltc-provide1</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__24">
+      <from-activity-id id="__25">Commit</from-activity-id>
+      <control-flow-case id="__29">
+        <from-outcome id="__27">Commit</from-outcome>
+        <to-activity-id id="__26">launch</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__44">
+      <from-activity-id id="__45">submit</from-activity-id>
+      <control-flow-case id="__47">
+        <from-outcome id="__48">submit</from-outcome>
+        <to-activity-id id="__46">clearBaCode</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__33">
+      <from-activity-id>setBaCode</from-activity-id>
+      <control-flow-case id="__34">
+        <from-outcome>set</from-outcome>
+        <to-activity-id>Commit</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__35">
+      <from-activity-id>clearBaCode</from-activity-id>
+      <control-flow-case id="__36">
+        <from-outcome>clear</from-outcome>
+        <to-activity-id>ltc-provide1</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__38">
+      <from-activity-id>clearBaCode2</from-activity-id>
+      <control-flow-case id="__39">
+        <from-outcome>clear</from-outcome>
+        <to-activity-id>cancel</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+  </task-flow-definition>
+</adfc-config>

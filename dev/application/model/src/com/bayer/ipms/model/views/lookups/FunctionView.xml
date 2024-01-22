@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="windows-1257" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="FunctionView"
+  Version="12.1.3.2.1"
+  InheritPersonalization="true"
+  SelectList="FunctionData.CODE, 
+       FunctionData.NAME, 
+       FunctionData.IS_ACTIVE, 
+       FunctionData.DESCRIPTION"
+  FromList="FUNCTION FunctionData"
+  OrderBy="FunctionData.IS_ACTIVE desc,FunctionData.NAME"
+  BindingStyle="OracleName"
+  CustomQuery="false"
+  RowClass="com.bayer.ipms.model.base.IPMSLookupViewRowImpl"
+  ComponentClass="com.bayer.ipms.model.views.lookups.FunctionViewImpl"
+  ComponentInterface="com.bayer.ipms.model.views.lookups.common.FunctionView"
+  ClientProxyName="com.bayer.ipms.model.views.lookups.client.FunctionViewClient"
+  FetchMode="FETCH_ALL"
+  FetchSize="100"
+  PageIterMode="Full"
+  ViewLinkAccessorRetained="true"
+  AutoRefresh="true">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_rowSuperClassName"
+      Value="com.bayer.ipms.model.base.IPMSLookupViewRowImpl"/>
+  </DesignTime>
+  <EntityUsage
+    Name="FunctionData"
+    Entity="com.bayer.ipms.model.entities.lookups.FunctionData"/>
+  <ViewAttribute
+    Name="Code"
+    IsUpdateable="while_insert"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Code"
+    EntityUsage="FunctionData"
+    AliasName="CODE"/>
+  <ViewAttribute
+    Name="Name"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Name"
+    EntityUsage="FunctionData"
+    AliasName="NAME"/>
+  <ViewAttribute
+    Name="IsActive"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="IsActive"
+    EntityUsage="FunctionData"
+    AliasName="IS_ACTIVE">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.lookups.FunctionView.IsActive_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="QualifiedName"
+    IsUpdateable="false"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR">
+    <TransientExpression><![CDATA[Name + " (" + Code + ")"]]></TransientExpression>
+    <Dependencies>
+      <Item
+        Value="Code"/>
+      <Item
+        Value="Name"/>
+    </Dependencies>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Description"
+    PrecisionRule="true"
+    EntityAttrName="Description"
+    EntityUsage="FunctionData"
+    AliasName="DESCRIPTION">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH
+          Value="100"/>
+        <DISPLAYHEIGHT
+          Value="5"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ClientInterface
+    Name="__clientInterface">
+    <Method
+      Name="send"
+      MethodName="send">
+      <Return
+        Type="void"
+        Name="_return_type_"/>
+    </Method>
+  </ClientInterface>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.bayer.ipms.model.bundles.modelBundle"/>
+  </ResourceBundle>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="com.bayer.ipms.model.views.lookups.FunctionView_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+</ViewObject>

@@ -1,0 +1,77 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<SDM>
+   <OverallProperties
+      id="OverallProperties1">
+      <property
+         name="x">91.5</property>
+      <property
+         name="y">434.20117</property>
+   </OverallProperties>
+   <View
+      id="View2">
+      <property
+         name="activityId">ltc-view1</property>
+      <property
+         name="pageFragment">true</property>
+      <property
+         name="x">91.5</property>
+      <property
+         name="start">true</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>ltc-view1&lt;/b> (Default Activity)&lt;/p>&lt;p>Activity Type:  View&lt;/p></property>
+      <property
+         name="y">266.1494</property>
+      <property
+         name="page">/WEB-INF/com.bayer.ipms.view/fragments/ltc-view.jsff</property>
+      <property
+         name="exceptionHandler">false</property>
+   </View>
+   <MethodCall
+      id="MethodCall3">
+      <property
+         name="activityId">handleException</property>
+      <property
+         name="inherited">true</property>
+      <property
+         name="x">91.5</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>handleException&lt;/b> (Default Activity)&lt;/p>&lt;p>Activity Type:  Method Call&lt;/p></property>
+      <property
+         name="y">83.5</property>
+      <property
+         name="exceptionHandler">true</property>
+   </MethodCall>
+   <TaskFlowCall
+      id="TaskFlowCall4">
+      <property
+         name="runAsDialog">true</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>ltc-planning-start&lt;/b>&lt;/p>&lt;p>Activity Type:  Task Flow Call&lt;/p></property>
+      <property
+         name="activityId">ltc-planning-start</property>
+      <property
+         name="x">480.34277</property>
+      <property
+         name="y">262.1494</property>
+      <property
+         name="documentReference">/WEB-INF/com.bayer.ipms.view/flows/ltc-planning-start.xml</property>
+      <property
+         name="exceptionHandler">false</property>
+      <property
+         name="taskFlowId">ltc-planning-start</property>
+   </TaskFlowCall>
+   <ControlFlowCase
+      islink="true"
+      id="ControlFlowCase5"
+      from="View2"
+      to="TaskFlowCall4">
+      <property
+         name="tosrcid">__9</property>
+      <property
+         name="fromOutcome">ltc-update</property>
+      <property
+         name="fromsrcid">__5</property>
+      <property
+         name="sdm:polyPoints">R50,132.5,265.79883,439.34277,261.79883,L50</property>
+   </ControlFlowCase>
+</SDM>

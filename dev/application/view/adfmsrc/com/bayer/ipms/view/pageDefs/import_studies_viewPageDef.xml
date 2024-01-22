@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.1.3.10.8" id="import_studies_viewPageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator id="ProgramViewIterator" Binds="ProgramAppModule.ProgramView" DataControl="PrivateAppModuleDataControl"
+              RangeSize="25"/>
+    <iterator id="ProjectViewIterator" Binds="ProgramAppModule.ProjectView" DataControl="PrivateAppModuleDataControl"
+              RangeSize="25"/>
+    <iterator Binds="ImportAppModule.ImportView" DataControl="PrivateAppModuleDataControl" RangeSize="10"
+              id="ImportViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator Binds="ImportAppModule.ImportProjectStudyView" DataControl="PrivateAppModuleDataControl" RangeSize="25"
+              id="ImportProjectStudyViewIterator"/>
+    <searchRegion Binds="ImportProjectStudyViewIterator" Criteria="ImportProjectStudies"
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="ImportProjectStudyViewQuery"/>
+    <iterator Binds="ImportAppModule.ImportStudyTargetWbsView" DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="ImportStudyTargetWbsViewIterator"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="ProgramViewIterator" id="ProgramQualifiedName">
+      <AttrNames>
+        <Item Value="QualifiedName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProjectViewIterator" id="ProjectQualifiedName">
+      <AttrNames>
+        <Item Value="QualifiedName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ImportViewIterator" id="ImportIsSyncing">
+      <AttrNames>
+        <Item Value="IsSyncing"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ImportViewIterator" id="ImportStatus">
+      <AttrNames>
+        <Item Value="StatusName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ImportViewIterator" id="ImportStatusCode">
+      <AttrNames>
+        <Item Value="StatusCode"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="ImportProjectStudyViewIterator" id="ImportProjectStudyView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.imports.ImportStudyView" Name="ImportProjectStudyView0">
+        <AttrNames>
+          <Item Value="IsImport"/>
+          <Item Value="StudyId"/>
+          <Item Value="Name"/>
+          <Item Value="Phase"/>
+          <Item Value="IsPlaceholder"/>
+          <Item Value="IsGpdcApproved"/>
+          <Item Value="IsObligation"/>
+          <Item Value="IsProbing"/>
+          <Item Value="TemplateId"/>
+          <Item Value="ParentWbsName"/>
+          <Item Value="ParentWbsSelectedKeys"/>
+          <Item Value="ParentWbsDisclosedKeys"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="ImportStudyTargetWbsViewIterator" id="ImportStudyTargetWbsView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.imports.ImportStudyTargetWbsView"
+                      Name="ImportStudyTargetWbsView0">
+        <AttrNames>
+          <Item Value="WbsName"/>
+          <Item Value="StartDate"/>
+          <Item Value="FinishDate"/>
+          <Item Value="WbsId"/>
+          <Item Value="ParentWbsId"/>
+        </AttrNames>
+        <Accessors>
+          <Item Value="ProjectIdImportStudyTargetWbsView_2"/>
+        </Accessors>
+      </nodeDefinition>
+    </tree>
+  </bindings>
+</pageDefinition>

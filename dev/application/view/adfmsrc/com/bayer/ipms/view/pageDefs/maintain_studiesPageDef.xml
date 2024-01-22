@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.64.93" id="maintain_studiesPageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="Root.ManagementAppModule.StudyStatusView" RangeSize="100"
+              DataControl="PrivateAppModuleDataControl"
+              id="StudyStatusViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator Binds="Root.ManagementAppModule.ConfigurationView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="ConfigurationViewIterator" ChangeEventPolicy="ppr"
+              CacheResults="true"/>
+    <invokeAction Binds="setCurrentRowWithKeyValue" id="setCurrentRow"
+                  Refresh="always"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="StudyStatusViewIterator" id="StudyStatusView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.lookups.StudyStatusView"
+                      Name="StudyStatusView0">
+        <AttrNames>
+          <Item Value="Name"/>
+          <Item Value="Code"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="ConfigurationViewIterator" id="Value">
+      <AttrNames>
+        <Item Value="Value"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="ConfigurationViewIterator"
+            id="setCurrentRowWithKeyValue"
+            InstanceName="PrivateAppModuleDataControl.Root.ManagementAppModule.ConfigurationView"
+            DataControl="PrivateAppModuleDataControl"
+            RequiresUpdateModel="false" Action="setCurrentRowWithKeyValue">
+      <NamedData NDName="rowKey" NDValue="STD-MM" NDType="java.lang.String"/>
+    </action>
+  </bindings>
+</pageDefinition>

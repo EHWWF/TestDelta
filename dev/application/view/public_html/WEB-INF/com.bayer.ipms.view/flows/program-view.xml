@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="program-view">
+    <template-reference>
+      <document id="__2">/WEB-INF/com.bayer.ipms.view/templates/ipms-taskflow-template-fragment.xml</document>
+      <id id="__1">ipms-taskflow-template-fragment</id>
+    </template-reference>
+    <default-activity id="__4">view</default-activity>
+    <data-control-scope id="__19">
+      <shared/>
+    </data-control-scope>
+    <input-parameter-definition id="__5">
+      <name id="__10">projectType</name>
+      <value>#{pageFlowScope.projectType}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <managed-bean id="__6">
+      <managed-bean-name id="__8">programViewBean</managed-bean-name>
+      <managed-bean-class id="__15">com.bayer.ipms.view.beans.ProgramViewBean</managed-bean-class>
+      <managed-bean-scope id="__9">pageFlow</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__31">
+      <managed-bean-name>topBean</managed-bean-name>
+      <managed-bean-class>com.bayer.ipms.view.beans.TopBean</managed-bean-class>
+      <managed-bean-scope>pageFlow</managed-bean-scope>
+    </managed-bean>
+    <exception-handler id="__3">handleException</exception-handler>
+    <view id="view">
+      <page>/WEB-INF/com.bayer.ipms.view/fragments/program-view.jsff</page>
+      <input-page-parameter>
+        <from-value>#{pageFlowScope.projectType}</from-value>
+        <to-value>#{pageFlowScope.projectType}</to-value>
+      </input-page-parameter>
+    </view>
+    <task-flow-call id="ltc-provide">
+      <task-flow-reference>
+        <document>/WEB-INF/com.bayer.ipms.view/flows/ltc-provide.xml</document>
+        <id>ltc-provide</id>
+      </task-flow-reference>
+      <input-parameter id="__25">
+        <name>sandboxId</name>
+        <value>#{requestScope.sandboxId}</value>
+      </input-parameter>
+      <input-parameter id="__26">
+        <name>objectName</name>
+        <value>#{requestScope.sandboxName}</value>
+      </input-parameter>
+      <run-as-dialog>
+        <display-type id="__23">
+          <inline-popup/>
+        </display-type>
+      </run-as-dialog>
+    </task-flow-call>
+    <task-flow-call id="import-run">
+      <task-flow-reference>
+        <document>/WEB-INF/com.bayer.ipms.view/flows/import-run.xml</document>
+        <id>import-run</id>
+      </task-flow-reference>
+      <input-parameter id="__34">
+        <name>projectId</name>
+        <value>#{requestScope.projectId}</value>
+      </input-parameter>
+      <input-parameter id="__44">
+        <name>importSource</name>
+        <value>#{requestScope.importSource}</value>
+      </input-parameter>
+      <input-parameter id="__27">
+        <name>sandboxId</name>
+        <value>#{requestScope.sandboxId}</value>
+      </input-parameter>
+      <input-parameter id="__29">
+        <name>sandboxName</name>
+        <value>#{requestScope.sandboxName}</value>
+      </input-parameter>
+      <input-parameter id="__30">
+        <name>sandboxCode</name>
+        <value>#{requestScope.sandboxCode}</value>
+      </input-parameter>
+      <run-as-dialog>
+        <display-type id="__28">
+          <inline-popup/>
+        </display-type>
+      </run-as-dialog>
+    </task-flow-call>
+    <task-flow-call id="maintain-goals">
+      <task-flow-reference>
+        <document>/WEB-INF/com.bayer.ipms.view/flows/maintain-goals.xml</document>
+        <id>maintain-goals</id>
+      </task-flow-reference>
+      <input-parameter id="__32">
+        <name>programGoalId</name>
+        <value>#{pageFlowScope.programViewBean.programGoalId}</value>
+      </input-parameter>
+      <input-parameter id="__7">
+        <name>programId</name>
+        <value>#{pageFlowScope.programViewBean.programId}</value>
+      </input-parameter>
+      <run-as-dialog>
+        <display-type>
+          <inline-popup/>
+        </display-type>
+      </run-as-dialog>
+    </task-flow-call>
+    <control-flow-rule id="__11">
+      <from-activity-id id="__12">view</from-activity-id>
+      <control-flow-case id="__22">
+        <from-outcome id="__24">ltc-provide</from-outcome>
+        <to-activity-id id="__21">ltc-provide</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__40">
+        <from-outcome id="__41">import-run</from-outcome>
+        <to-activity-id id="__45">import-run</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__16">
+        <from-outcome>maintain-goals</from-outcome>
+        <to-activity-id>maintain-goals</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  
+  </task-flow-definition>
+</adfc-config>

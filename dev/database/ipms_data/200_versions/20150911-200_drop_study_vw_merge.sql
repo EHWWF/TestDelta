@@ -1,0 +1,1 @@
+drop table study_vw_merge;

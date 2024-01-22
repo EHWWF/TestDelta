@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="CollaborationType"
+  Version="12.2.1.20.47"
+  InheritPersonalization="true"
+  DBObjectType="table"
+  DBObjectName="COLLABORATION_TYPE"
+  AliasName="CollaborationType"
+  BindingStyle="OracleName"
+  UseGlueCode="false"
+  RowClass="com.bayer.ipms.model.base.IPMSEntityImpl">
+  <Attribute
+    Name="Code"
+    IsNotNull="true"
+    ColumnName="CODE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="COLLABORATION_TYPE"
+    PrimaryKey="true"
+    Precision="10"
+    Scale="0"
+    IsUpdateable="while_insert"/>
+  <Attribute
+    Name="Name"
+    IsNotNull="true"
+    ColumnName="NAME"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="COLLABORATION_TYPE"
+    Precision="100"
+    Scale="0">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+    </Attribute>
+  <Attribute
+    Name="IsActive"
+    IsNotNull="true"
+    Precision="1"
+    ColumnName="IS_ACTIVE"
+    SQLType="NUMERIC"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    TableName="COLLABORATION_TYPE"
+    PrecisionRule="false">
+    
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="2"/>
+    </DesignTime>
+    </Attribute>
+  <Attribute
+    Name="Description"
+    ColumnName="DESCRIPTION"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="COLLABORATION_TYPE"
+    Precision="500"
+    Scale="0">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="500"/>
+    </DesignTime>
+    </Attribute>
+  <Key
+    Name="CollaborationTypeIsActiveCheck">
+    <DesignTime>
+      <Attr Name="_isNotNull" Value="true"/>
+      <Attr Name="_checkCondition" Value='"IS_ACTIVE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+      <Attr Name="_DBObjectName" Value="COLLABORATION_TYPE_IS_ACTIVE_CHECK"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.lookups.CollaborationType.IsActive"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="CollaborationTypeNameCheck">
+    <DesignTime>
+      <Attr Name="_isNotNull" Value="true"/>
+      <Attr Name="_checkCondition" Value='"NAME" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+      <Attr Name="_DBObjectName" Value="COLLABORATION_TYPE_NAME_CHECK"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.lookups.CollaborationType.Name"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="CollaborationTypePrimaryKey"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="COLLABORATION_TYPE_PRIMARY_KEY"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.lookups.CollaborationType.Code"/>
+    </AttrArray>
+  </Key>
+</Entity>

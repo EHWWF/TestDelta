@@ -1,0 +1,1 @@
+create sequence LE_project_id_seq maxvalue 9999999999999999999 minvalue 1 cycle;

@@ -1,0 +1,12 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<schema targetNamespace="http://xmlns.oracle.com/bpel/workflow/task" xmlns:tns="http://xmlns.oracle.com/bpel/workflow/task" attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:ns0="http://xmlns.bayer.com/ipms" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <import namespace="http://xmlns.bayer.com/ipms" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/types.xsd"/>
+   <import namespace="http://xmlns.bayer.com/ipms" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/soa/soa.xsd"/>
+   <complexType name="ProvidePlanningAssumptionsPayloadType">
+      <sequence>
+         <element ref="ns0:processFC"/>
+         <element name="dataUsersInProgRole" type="xsd:string"/>
+         <element name="dataUsersInGlobalRole" type="xsd:string"/>
+      </sequence>
+   </complexType>
+</schema>

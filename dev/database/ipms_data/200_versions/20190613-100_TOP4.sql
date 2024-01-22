@@ -1,0 +1,3 @@
+alter table program_top_version drop constraint program_top_v_parent_id_fk;
+alter table program_top_value drop constraint program_top_val_ver_fk;
+alter table program_top_value modify program_version_id number constraint program_top_val_ver_fk references program_top_version(id) on delete cascade;

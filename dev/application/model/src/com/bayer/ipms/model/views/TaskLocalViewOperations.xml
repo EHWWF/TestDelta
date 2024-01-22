@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<!DOCTYPE OperationDefinitions SYSTEM "jbo_03_01.dtd">
+<OperationDefinitions xmlns="http://xmlns.oracle.com/bc4j" Name="TaskLocalViewOperations">
+  <ExpressionCodeSource
+    Name="TaskLocalViewRow"
+    Type="Static"
+    URI="com/bayer/ipms/model/views/TaskLocalViewRow.bcs"/>
+  <ExpressionCodeSource
+    Name="TaskLocalView"
+    Type="Static"
+    URI="com/bayer/ipms/model/views/TaskLocalView.bcs"/>
+  <ExpressionCodeSource
+    Name="TaskLocalViewRow"
+    Type="Static"
+    URI="com/bayer/ipms/model/views/TaskLocalViewRow.bcs"/>
+  <ExpressionCodeSource
+    Name="TaskLocalView"
+    Type="Static"
+    URI="com/bayer/ipms/model/views/TaskLocalView.bcs"/>
+  <ExpressionCodeSource
+    Name="TaskLocalViewRow"
+    Type="Static"
+    URI="com/bayer/ipms/model/views/TaskLocalViewRow.bcs"/>
+</OperationDefinitions>

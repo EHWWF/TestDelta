@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.62.29" id="maintain_phasesPageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="Root.ManagementAppModule.PhaseMilestoneView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="PhaseMilestoneViewIterator" ChangeEventPolicy="ppr"
+              CacheResults="true"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="PhaseMilestoneViewIterator" id="PhaseMilestoneView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.PhaseMilestoneView"
+                      Name="PhaseMilestoneView0">
+        <AttrNames>
+          <Item Value="PhaseCode"/>
+          <Item Value="MilestoneCode"/>
+          <Item Value="Category"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="PhaseMilestoneViewIterator" id="CreateInsert"
+            InstanceName="PrivateAppModuleDataControl.Root.ManagementAppModule.PhaseMilestoneView"
+            DataControl="PrivateAppModuleDataControl" RequiresUpdateModel="true"
+            Action="createInsertRow"/>
+    <action IterBinding="PhaseMilestoneViewIterator" id="Delete"
+            InstanceName="PrivateAppModuleDataControl.Root.ManagementAppModule.PhaseMilestoneView"
+            DataControl="PrivateAppModuleDataControl"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+  </bindings>
+</pageDefinition>

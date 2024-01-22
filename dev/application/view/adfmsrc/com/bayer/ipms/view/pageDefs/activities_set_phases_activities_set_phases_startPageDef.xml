@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.0.31"
+                id="activities_set_phases_activities_set_phases_startPageDef" Package="com.bayer.ipms.view.pageDefs"
+                SkipValidation="true">
+  <parameters/>
+  <executables>
+    <iterator Binds="ImportAppModule.ImportView" DataControl="PrivateAppModuleDataControl" RangeSize="25"
+              id="ImportViewIterator"/>
+  </executables>
+  <bindings>
+    <methodAction IterBinding="ImportViewIterator" id="start" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="start" IsViewObjectMethod="false" DataControl="PrivateAppModuleDataControl"
+                  InstanceName="bindings.ImportViewIterator.currentRow" IsLocalObjectReference="true"/>
+  </bindings>
+</pageDefinition>

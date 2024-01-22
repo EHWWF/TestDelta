@@ -1,0 +1,1 @@
+alter table latest_estimates_tag add (is_meeting_allowed number(1) default 0 not null);

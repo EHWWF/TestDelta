@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ProjectView2"
+  Version="12.2.1.0.31"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="com.bayer.ipms.model.views.ProjectView2RowImpl"
+  ComponentClass="com.bayer.ipms.model.base.IPMSViewObjectImpl"
+  PageIterMode="Full"
+  RowInterface="com.bayer.ipms.model.views.common.ProjectView2Row"
+  ClientRowProxyName="com.bayer.ipms.model.views.client.ProjectView2RowClient">
+  <DesignTime>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_codeGenFlag2" Value="Access"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="com.bayer.ipms.model.views.ProjectView2_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <ViewAccessor
+    Name="PhaseTransitionD3"
+    ViewObjectName="com.bayer.ipms.model.views.lookups.PhaseTransitionView"
+    RowLevelBinds="true"/>
+  <ViewAccessor
+    Name="PhaseTransitionView"
+    ViewObjectName="com.bayer.ipms.model.views.lookups.PhaseTransitionView"
+    RowLevelBinds="true"/>
+  <ListBinding
+    Name="LOV_PtrForD3Code"
+    ListVOName="PhaseTransitionView"
+    ListRangeSize="-1"
+    NullValueFlag="start"
+    NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="PtrForD3Code"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="Code"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="Name"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <SQLQuery><![CDATA[select prj.id, 
+nvl2(succ_prj.id,succ_prj.name||' ('||succ_prj.code||')',null) succ_project_quaified_name, 
+nvl2(pred_prj.id,pred_prj.name||' ('||pred_prj.code||')',null) pred_project_quaified_name, 
+prj.ptr_for_d3_code, 
+get_prj_last_imp_date(prj.id) last_import_date, 
+prj.update_date, 
+prj.medical_device_spec,
+prj.ptr_comment ptr_comment
+from project prj 
+left join project succ_prj on succ_prj.id=prj.succ_project_id 
+left join project pred_prj on pred_prj.id=prj.predecessor_project_id]]></SQLQuery>
+  <EntityUsage
+    Name="Project"
+    Entity="com.bayer.ipms.model.entities.Project"/>
+  <ViewAttribute
+    Name="Id"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="Id"
+    EntityUsage="Project"
+    AliasName="ID"/>
+  <ViewAttribute
+    Name="SuccProjectQualifiedName"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="SUCC_PROJECT_QUAIFIED_NAME"
+    Expression="SUCC_PROJECT_QUAIFIED_NAME"
+    SQLType="VARCHAR">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.ProjectView2.SuccProjectQualifiedName_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="PredProjectQualifiedName"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="PRED_PROJECT_QUAIFIED_NAME"
+    Expression="PRED_PROJECT_QUAIFIED_NAME"
+    SQLType="VARCHAR">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.ProjectView2.PredProjectQualifiedName_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="PtrForD3Code"
+    PrecisionRule="true"
+    AliasName="PTR_FOR_D3_CODE"
+    EntityAttrName="PtrForD3Code"
+    EntityUsage="Project"
+    LOVName="LOV_PtrForD3Code">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.ProjectView2.PtrForD3Code_LABEL"/>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LastImportDate"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    AliasName="LAST_IMPORT_DATE"
+    Expression="LAST_IMPORT_DATE"
+    SQLType="DATE">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.ProjectView2.LastImportDate_LABEL"/>
+        <FMT_FORMAT
+          ResId="com.bayer.ipms.model.views.ProjectView2.LastImportDate_FMT_FORMAT"/>
+        <FMT_FORMATTER
+          ResId="com.bayer.ipms.model.views.ProjectView2.LastImportDate_FMT_FORMATTER"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="UpdateDate"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    AliasName="UPDATE_DATE"
+    Expression="UPDATE_DATE"
+    SQLType="DATE"/>
+  <ViewAttribute
+    Name="MedicalDeviceSpec"
+    IsQueriable="false"
+    PrecisionRule="true"
+    EntityAttrName="MedicalDeviceSpec"
+    EntityUsage="Project"
+    AliasName="MEDICAL_DEVICE_SPEC"/>
+  <ViewAttribute
+    Name="PtrComment"
+    PrecisionRule="true"
+    EntityAttrName="PtrComment"
+    EntityUsage="Project"
+    AliasName="PTR_COMMENT">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.ProjectView2.PtrComment_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewLinkAccessor
+    Name="ProjectView"
+    ViewLink="com.bayer.ipms.model.views.links.PrjPrj2"
+    Type="oracle.jbo.Row"
+    Reversed="true"
+    IsUpdateable="false"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.bayer.ipms.model.bundles.modelBundle"/>
+  </ResourceBundle>
+</ViewObject>

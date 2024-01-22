@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="PhaseEstimatedView"
+  Version="12.1.3.10.8"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="com.bayer.ipms.model.views.lookups.PhaseEstimatedViewRowImpl"
+  ComponentClass="com.bayer.ipms.model.base.IPMSViewObjectImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_codeGenFlag2" Value="Access"/>
+    <Attr Name="_rowSuperClassName" Value="com.bayer.ipms.model.base.IPMSLookupViewRowImpl"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="com.bayer.ipms.model.views.lookups.PhaseEstimatedView_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <SQLQuery><![CDATA[select    
+    code,    
+    name,    
+    is_active,    
+    ordering         
+from phase_estimated      
+order by ordering]]></SQLQuery>
+  <ViewAttribute
+    Name="Code"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="CODE"
+    Expression="CODE"
+    SQLType="VARCHAR"/>
+  <ViewAttribute
+    Name="Name"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="NAME"
+    Expression="NAME"
+    SQLType="VARCHAR"/>
+  <ViewAttribute
+    Name="IsActive"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Scale="0"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    AliasName="IS_ACTIVE"
+    Expression="IS_ACTIVE"
+    SQLType="BIT"/>
+  <ViewAttribute
+    Name="Ordering"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    AliasName="ORDERING"
+    Expression="ORDERING"
+    SQLType="NUMERIC"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.bayer.ipms.model.bundles.modelBundle"/>
+  </ResourceBundle>
+</ViewObject>

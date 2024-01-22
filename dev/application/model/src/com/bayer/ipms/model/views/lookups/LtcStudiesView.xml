@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="LtcStudiesView"
+  Version="12.2.1.0.31"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="com.bayer.ipms.model.base.IPMSViewRowImpl"
+  ComponentClass="com.bayer.ipms.model.base.IPMSViewObjectImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_isExpertMode" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="com.bayer.ipms.model.views.lookups.LtcStudiesView_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="LtcProjectIdVar"
+    Kind="where"
+    Type="java.lang.String"/>
+  <Variable
+    Name="SelectedStudyIdVar"
+    Kind="where"
+    Type="java.lang.String"/>
+  <SQLQuery><![CDATA[select
+    std.study_id id,
+    min(std.phase_code) phase_code,
+    min(std.name)       name,
+    min(std.fpfv)       fpfv,
+    min(std.lplv)       lplv,
+    min(phs.name) project_phase_name
+from  study_data_vw std
+    join timeline_wbs_category wca
+        on wca.timeline_id = std.timeline_id and wca.wbs_id = std.wbs_id
+    join ltc_project ltcprj on ltcprj.project_id=std.project_id
+    join milestone mls on mls.wbs_category=wca.category_name and is_active=1
+    join ltc_milestone_phase_mapping mpm on mpm.milestone_code=mls.code
+    join phase phs on phs.code=mpm.phase_code
+where std.timeline_type_code='RAW'
+      and ltcprj.id = :LtcProjectIdVar
+      and (std.study_id=:SelectedStudyIdVar or :SelectedStudyIdVar is null)
+group by
+    std.study_id
+having count(1) =1
+order by std.study_id]]></SQLQuery>
+  <ViewAttribute
+    Name="Id"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="ID"
+    Expression="ID"
+    SQLType="VARCHAR"/>
+  <ViewAttribute
+    Name="PhaseCode"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="PHASE_CODE"
+    Expression="PHASE_CODE"
+    SQLType="VARCHAR"/>
+  <ViewAttribute
+    Name="Name"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="4000"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="NAME"
+    Expression="NAME"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="4000"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Fpfv"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    AliasName="FPFV"
+    Expression="FPFV"
+    SQLType="DATE">
+    <Properties>
+      <SchemaBasedProperties>
+        <FMT_FORMAT
+          ResId="com.bayer.ipms.model.views.lookups.LtcStudiesView.Fpfv_FMT_FORMAT"/>
+        <FMT_FORMATTER
+          ResId="com.bayer.ipms.model.views.lookups.LtcStudiesView.Fpfv_FMT_FORMATTER"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Lplv"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    AliasName="LPLV"
+    Expression="LPLV"
+    SQLType="DATE">
+    <Properties>
+      <SchemaBasedProperties>
+        <FMT_FORMATTER
+          ResId="com.bayer.ipms.model.views.lookups.LtcStudiesView.Lplv_FMT_FORMATTER"/>
+        <FMT_FORMAT
+          ResId="com.bayer.ipms.model.views.lookups.LtcStudiesView.Lplv_FMT_FORMAT"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ProjectPhaseName"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="PROJECT_PHASE_NAME"
+    Expression="PROJECT_PHASE_NAME"
+    SQLType="STRUCT"/>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="Id"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.bayer.ipms.model.bundles.modelBundle"/>
+  </ResourceBundle>
+</ViewObject>

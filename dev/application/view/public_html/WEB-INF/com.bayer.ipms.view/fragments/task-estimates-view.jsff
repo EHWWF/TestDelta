@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <c:set var="bundle" value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+    <af:pageTemplate viewId="/WEB-INF/com.bayer.ipms.view/templates/ipms-content-template.jspx">
+        <af:resource type="javascript" source="/js/promis-utils.js"/>
+        <af:resource type="javascript">
+          function onWindowOpen2(event) {
+              downloadFileWithTimestamp(event.getSource().getProperty('url2'), event.getSource().getProperty('fileName'));
+          }
+        </af:resource>
+        <f:attribute name="title" value="#{bundle.task}"/>
+        <f:facet name="toolbar">
+            <af:menuBar id="tools">
+                <af:commandMenuItem text="#{bundle.taskViewLEValues}" icon="/images/approve.png" immediate="true">
+                    <af:clientAttribute name="url2"
+                                        value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.requestContextPath}/excel/estimates-readonly.xlsm?tagId=#{bindings.LetId.inputValue}&amp;processId=#{bindings.ProcessId.inputValue}&amp;programId=#{bindings.ProgramId.inputValue}"/>
+                    <af:clientAttribute name="fileName" value="estimates-readonly.xlsm"/>
+                    <af:clientListener method="onWindowOpen2" type="action"/>
+                </af:commandMenuItem>
+            </af:menuBar>
+        </f:facet>
+        <f:facet name="content">
+            <af:panelGroupLayout layout="scroll" id="content">
+                <af:panelBox text="#{bundle.estimatesProcess}" showDisclosure="false" type="flow">
+                    <af:panelFormLayout styleClass="AFStretchWidth" fieldWidth="100%">
+                        <af:inputText label="#{bindings.Name.label}" value="#{bindings.Name}" readOnly="true"/>
+                        <af:inputText label="#{bindings.Comments.label}" value="#{bindings.Comments}"
+                                      columns="#{bindings.Comments.displayWidth}"
+                                      rows="#{utilsBean.rowCount[bindings.Comments]}" readOnly="true"
+                                      styleClass="AFStretchWidth" dimensionsFrom="parent" wrap="soft"
+                                      contentStyle="min-width:100%;"/>
+                        <af:inputText label="#{bindings.IsNextYear.label}"
+                                      value="#{bindings.Year.inputValue} #{bindings.IsNextYear.inputValue ? '-':''} #{bindings.IsNextYear.inputValue ? bindings.Year.inputValue + 1:''}"
+                                      readOnly="true"/>
+                        <af:inputText label="#{bindings.TerminationDate.label}" value="#{bindings.TerminationDate}"
+                                      readOnly="true"/>
+                        <af:inputText label="#{bindings.CreateDate.label}" value="#{bindings.CreateDate}"
+                                      readOnly="true"/>
+                        <af:inputText label="#{bindings.StatusDate.label}" value="#{bindings.StatusDate}"
+                                      readOnly="true"/>
+                    </af:panelFormLayout>
+                </af:panelBox>
+                <af:panelBox text="#{bundle.program}" showDisclosure="false" type="flow">
+                    <af:panelFormLayout styleClass="AFStretchWidth" fieldWidth="100%">
+                        <af:inputText label="#{bindings.ProgramCode.label}" value="#{bindings.ProgramCode.inputValue}"
+                                      readOnly="true"/>
+                        <af:inputText label="#{bindings.ProgramName.label}" value="#{bindings.ProgramName.inputValue}"
+                                      readOnly="true"/>
+                    </af:panelFormLayout>
+                </af:panelBox>
+            </af:panelGroupLayout>
+        </f:facet>
+    </af:pageTemplate>
+</jsp:root>

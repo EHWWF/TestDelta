@@ -1,0 +1,39 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
+<wsdl:definitions
+     name="DeleteBaselines"
+     targetNamespace="http://xmlns.oracle.com/ipms_mw/ipms_soa/DeleteBaselines"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+     xmlns:client="http://xmlns.oracle.com/ipms_mw/ipms_soa/DeleteBaselines"
+     xmlns:ns1="http://xmlns.bayer.com/ipms/soa"
+     xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+     xmlns:ns2="http://xmlns.bayer.com/ipms/cache"
+    >
+    <plnk:partnerLinkType name="DeleteBaselines">
+        <plnk:role name="DeleteBaselinesProvider" portType="client:DeleteBaselines"/>
+        <plnk:role name="DeleteBaselinesRequester" portType="client:DeleteBaselinesCallback"/>
+    </plnk:partnerLinkType>
+    <wsdl:types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema">
+            <import namespace="http://xmlns.bayer.com/ipms/soa" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/soa/soa.xsd"/>
+        </schema>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:import namespace="http://xmlns.bayer.com/ipms/cache" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/cache/cache.xsd"/>
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:message name="DeleteBaselinesRequestMessage">
+        <wsdl:part name="payload" element="ns1:delete"/>
+    </wsdl:message>
+    <wsdl:message name="DeleteBaselinesResponseMessage">
+        <wsdl:part name="payload" element="ns1:response"/>
+    </wsdl:message>
+    <wsdl:portType name="DeleteBaselines">
+        <wsdl:operation name="process">
+            <wsdl:input message="client:DeleteBaselinesRequestMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:portType name="DeleteBaselinesCallback">
+        <wsdl:operation name="processResponse">
+            <wsdl:input message="client:DeleteBaselinesResponseMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+</wsdl:definitions>

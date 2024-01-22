@@ -1,0 +1,38 @@
+create sequence le_project_id_seq minvalue 1 maxvalue 999999999999999999 increment by 1 start with 1;
+truncate table latest_estimates_project drop storage;
+create or replace trigger latest_estimates_project_tr
+before insert on latest_estimates_project
+for each row
+begin
+	if :new.id is null then
+		select le_project_id_seq.nextval into :new.id from dual;
+	end if;
+end;
+/
+insert into latest_estimates_project (id,process_id,project_id)
+select
+	null,
+	lep.id process_id,
+	lep_prj.column_value project_id
+from latest_estimates_process lep
+cross join table(lep.project_ids) lep_prj;
+commit;
+set serveroutput on
+begin
+	for rr in (
+	select
+		null,
+		lep.id process_id,
+		lep_prj.column_value project_id
+	from latest_estimates_process lep
+	cross join table(lep.project_ids) lep_prj)
+		loop
+		  begin
+			insert into latest_estimates_project (id,process_id,project_id) values(null,rr.process_id,rr.project_id);
+			commit;
+			dbms_output.put_line(rr.process_id||'->'||rr.project_id);
+		  exception when dup_val_on_index then null; 
+		   when others then dbms_output.put_line(rr.process_id||'->'||rr.project_id||';ERROR='||sqlerrm);
+		  end;
+		end loop;
+exception when others then dbms_output.put_line(sqlerrm);end;

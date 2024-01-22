@@ -1,0 +1,43 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
+<wsdl:definitions
+	 name="UpdateProject"
+	 targetNamespace="http://xmlns.bayer.com/ipms/qplan"
+	 xmlns:ns1="http://schemas.oracle.com/bpel/extension"
+	 xmlns:plnk="http://schemas.xmlsoap.org/ws/2003/05/partner-link/"
+	 xmlns:client="http://xmlns.bayer.com/ipms/qplan"
+	 xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	 xmlns:ipms-soa="http://xmlns.bayer.com/ipms/soa"
+	 xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	 xmlns:ipms-qplan="http://xmlns.bayer.com/ipms/qplan"
+	>
+	<plnk:partnerLinkType name="UpdateProject">
+		<plnk:role name="UpdateProjectProvider">
+			<plnk:portType name="client:UpdateProject"/>
+		</plnk:role>
+		<plnk:role name="UpdateProjectRequester">
+			<plnk:portType name="client:UpdateProjectCallback"/>
+		</plnk:role>
+	</plnk:partnerLinkType>
+	<wsdl:types>
+		<xsd:schema>
+			<xsd:import namespace="http://xmlns.bayer.com/ipms/qplan" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/qplan/qplan.xsd"/>
+			<xsd:import namespace="http://xmlns.bayer.com/ipms/soa" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/soa/soa.xsd"/>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="UpdateProjectRequestMessage">
+		<wsdl:part name="payload" element="client:callQPlan"/>
+	</wsdl:message>
+	<wsdl:message name="UpdateProjectResponseMessage">
+		<wsdl:part name="payload" element="ipms-soa:response"/>
+	</wsdl:message>
+	<wsdl:portType name="UpdateProject">
+		<wsdl:operation name="process">
+			<wsdl:input message="client:UpdateProjectRequestMessage"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:portType name="UpdateProjectCallback">
+		<wsdl:operation name="processResponse">
+			<wsdl:input message="client:UpdateProjectResponseMessage"/>
+		</wsdl:operation>
+	</wsdl:portType>
+</wsdl:definitions>

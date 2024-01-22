@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<wsdl:definitions
+    
+     targetNamespace="http://xmlns.bayer.com/ipms/soa/ProvideAssumptions"
+     xmlns:plnk="http://schemas.xmlsoap.org/ws/2003/05/partner-link/"
+     xmlns:tns="http://xmlns.bayer.com/ipms/soa/ProvideAssumptions"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+     xmlns:tns6="http://xmlns.bayer.com/ipms/soa"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+     xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/"
+     xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+     xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+    >
+    <wsdl:documentation>
+        <abstractWSDL>http://soa.ipms:7011/soa-infra/services/default/ipms.bpm!1.0/ProvideAssumptions.wsdl</abstractWSDL>
+    </wsdl:documentation>
+    <plnk:partnerLinkType name="ProvideAssumptionsPortTypePartnerLinkType">
+        <plnk:role name="ProvideAssumptionsPortTypeProvider">
+            <plnk:portType name="tns:ProvideAssumptionsPortType"/>
+        </plnk:role>
+    </plnk:partnerLinkType>
+<wsp:Policy xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" wsu:Id="wsaddr_policy" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy">
+   <wsaw:UsingAddressing xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl"/>
+</wsp:Policy>    <wsdl:types>
+        <xsd:schema targetNamespace="http://xmlns.bayer.com/ipms/soa/ProvideAssumptions">
+            <xsd:import namespace="http://xmlns.bayer.com/ipms/soa" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/soa/soa.xsd"/>
+            <xsd:element name="teminate">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element ref="tns6:terminate"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="start">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element ref="tns6:greenList"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="callbackResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element ref="tns6:response"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:message name="callbackResponse">
+        <wsdl:part name="parameters" element="tns:callbackResponse"/>
+    </wsdl:message>
+    <wsdl:message name="teminate">
+        <wsdl:part name="parameters" element="tns:teminate"/>
+    </wsdl:message>
+    <wsdl:message name="start">
+        <wsdl:part name="parameters" element="tns:start"/>
+    </wsdl:message>
+    <wsdl:portType name="ProvideAssumptionsPortTypeCallBack">
+        <wsdl:operation name="callback">
+            <wsdl:input message="tns:callbackResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:portType name="ProvideAssumptionsPortType">
+        <wsdl:operation name="teminate">
+            <wsdl:input message="tns:teminate"/>
+        </wsdl:operation>
+        <wsdl:operation name="start">
+            <wsdl:input message="tns:start"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="ProvideAssumptionsPortTypeCallBackBinding" type="tns:ProvideAssumptionsPortTypeCallBack">
+        <wsdlsoap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="callback">
+            <wsdlsoap:operation style="document" soapAction="callback"/>
+            <wsdl:input>
+                <wsdlsoap:body use="literal" namespace="http://xmlns.bayer.com/ipms/soa/ProvideAssumptions"/>
+            </wsdl:input>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="ProvideAssumptionsBinding" type="tns:ProvideAssumptionsPortType">
+        <wsdlsoap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+      <wsp:PolicyReference xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" URI="#wsaddr_policy" wsdl:required="false"/>
+        <wsdl:operation name="teminate">
+            <wsdlsoap:operation style="document" soapAction="teminate"/>
+            <wsdl:input>
+                <wsdlsoap:body use="literal"/>
+            </wsdl:input>
+        </wsdl:operation>
+        <wsdl:operation name="start">
+            <wsdlsoap:operation style="document" soapAction="start"/>
+            <wsdl:input>
+                <wsdlsoap:body use="literal"/>
+            </wsdl:input>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="ProvideAssumptions.service">
+        <wsdl:port name="ProvideAssumptionsPort" binding="tns:ProvideAssumptionsBinding">
+            <wsdlsoap:address location="http://soa.ipms:7011/soa-infra/services/default/ipms.bpm/ProvideAssumptions.service"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

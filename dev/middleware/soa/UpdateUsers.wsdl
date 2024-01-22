@@ -1,0 +1,46 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
+<wsdl:definitions
+     name="UpdateUsers"
+     targetNamespace="http://xmlns.bayer.com/ipms/soa"
+     xmlns:ns2="http://xmlns.bayer.com/ipms/cache"
+     xmlns:ns1="http://xmlns.bayer.com/ipms"
+     xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+     xmlns:client="http://xmlns.bayer.com/ipms/soa"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    >
+    <plnk:partnerLinkType name="UpdateUsers">
+        <plnk:role name="UpdateUsersProvider" portType="client:UpdateUsers"/>
+        <plnk:role name="UpdateUsersRequester" portType="client:UpdateUsersCallback"/>
+    </plnk:partnerLinkType>
+    <wsdl:types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+             xmlns:client="http://xmlns.bayer.com/ipms/soa" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:ns1="http://xmlns.bayer.com/ipms">
+            <import namespace="http://xmlns.bayer.com/ipms/soa" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/soa/soa.xsd"/>
+        </schema>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://xmlns.bayer.com/ipms"
+             xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:client="http://xmlns.bayer.com/ipms/soa"
+             xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            <xsd:import namespace="http://xmlns.bayer.com/ipms" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/types.xsd"/>
+        </xsd:schema>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:import namespace="http://xmlns.bayer.com/ipms/cache" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/cache/cache.xsd"/>
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:message name="UpdateUsersRequestMessage">
+        <wsdl:part name="payload" element="client:update"/>
+    </wsdl:message>
+    <wsdl:message name="UpdateUsersResponseMessage">
+        <wsdl:part name="payload" element="client:response"/>
+    </wsdl:message>
+    <wsdl:portType name="UpdateUsers">
+        <wsdl:operation name="process">
+            <wsdl:input message="client:UpdateUsersRequestMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:portType name="UpdateUsersCallback">
+        <wsdl:operation name="callback">
+            <wsdl:input message="client:UpdateUsersResponseMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+</wsdl:definitions>

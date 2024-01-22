@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ProjectPlanningCodeView"
+  Version="12.2.1.0.31"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="false"
+  RowClass="com.bayer.ipms.model.base.IPMSLookupViewRowImpl"
+  ComponentClass="com.bayer.ipms.model.base.IPMSViewObjectImpl"
+  PageIterMode="Full"
+  FetchSize="100"
+  FetchMode="FETCH_AS_NEEDED"
+  SelectList="ProjectPlanningCode.CODE, 
+       ProjectPlanningCode.NAME, 
+       ProjectPlanningCode.IS_ACTIVE, 
+       ProjectPlanningCode.CREATE_DATE, 
+       ProjectPlanningCode.UPDATE_DATE"
+  FromList="PROJECT_PLANNING_CODE ProjectPlanningCode"
+  OrderBy="ProjectPlanningCode.IS_ACTIVE desc">
+  <DesignTime>
+    <Attr Name="_rowSuperClassName" Value="com.bayer.ipms.model.base.IPMSLookupViewRowImpl"/>
+  </DesignTime>
+  <EntityUsage
+    Name="ProjectPlanningCode"
+    Entity="com.bayer.ipms.model.entities.lookups.ProjectPlanningCode"/>
+  <ViewAttribute
+    Name="Code"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Code"
+    EntityUsage="ProjectPlanningCode"
+    AliasName="CODE"/>
+  <ViewAttribute
+    Name="Name"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Name"
+    EntityUsage="ProjectPlanningCode"
+    AliasName="NAME"/>
+  <ViewAttribute
+    Name="IsActive"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="IsActive"
+    EntityUsage="ProjectPlanningCode"
+    AliasName="IS_ACTIVE"/>
+  <ViewAttribute
+    Name="CreateDate"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="CreateDate"
+    EntityUsage="ProjectPlanningCode"
+    AliasName="CREATE_DATE"
+    IsUpdateable="false"/>
+  <ViewAttribute
+    Name="UpdateDate"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="UpdateDate"
+    EntityUsage="ProjectPlanningCode"
+    AliasName="UPDATE_DATE"
+    IsUpdateable="false"/>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="com.bayer.ipms.model.views.lookups.ProjectPlanningCodeView_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.bayer.ipms.model.bundles.modelBundle"/>
+  </ResourceBundle>
+</ViewObject>

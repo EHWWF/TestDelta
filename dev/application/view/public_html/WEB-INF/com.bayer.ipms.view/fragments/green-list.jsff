@@ -1,0 +1,321 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <af:componentDef>
+        <c:set var="bundle" value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+        <af:resource type="javascript" source="/js/promis-utils.js"/>
+        <af:resource type="javascript">
+          function onWindowOpen(event) {
+              downloadFileWithTimestamp(event.getSource().getProperty('url'), event.getSource().getProperty('fileName'));
+          }
+        </af:resource>
+        <af:panelStretchLayout topHeight="auto" styleClass="AFStretchWidth">
+            <f:facet name="top"></f:facet>
+            <f:facet name="center">
+                <af:panelCollection styleClass="AFStretchWidth" id="greenListPanelCollection"
+                                    featuresOff="detach statusBar">
+                    <f:facet name="toolbar">
+                        <af:toolbar>
+                            <af:commandToolbarButton icon="/images/reload.png" text="#{bundle.globalRefresh}"
+                                                     immediate="true"
+                                                     action="#{PlanningAssumptionBean.onRefreshGreenListOnly}"/>
+                            <af:commandToolbarButton icon="/images/export.png" text="#{bundle.globalDownload}">
+                                <af:setActionListener from="tbGrLst" to="#{viewScope['exportId']}"/>
+                                <af:setActionListener from="border:1px solid #f2f2f2;background-color:none"
+                                                      to="#{viewScope['tableHeaderStyle']}"/>
+                                <af:setActionListener from="border:1px solid #f2f2f2;background-color:none"
+                                                      to="#{viewScope['tableDataStyle']}"/>
+                                <af:fileDownloadActionListener filename="GreenList.xls"
+                                                               contentType="text/html;chatset=UTF-8"
+                                                               method="#{utilsBean.exportToExcelNoSuffixG}"/>
+                            </af:commandToolbarButton>
+                            <af:commandToolbarButton icon="/images/approve.png" text="#{bundle.planningAssumpProvide}"
+                                                     rendered="#{securityContext.userInRole['PlanningAssumptionsProvide']}">
+                                <af:clientAttribute name="url"
+                                                    value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.requestContextPath}/excel/assumptions.xlsm?requestId=#{bindings.LastPlanAssumptionRequestId.inputValue}&amp;ignorestatus=1"/>
+                                <af:clientAttribute name="fileName" value="assumptions.xlsm"/>
+                                <af:clientListener method="onWindowOpen" type="action"/>
+                            </af:commandToolbarButton>
+                            <af:commandToolbarButton icon="/images/undo.png" text="#{bundle.globalResetFilter}"
+                                                     immediate="true"
+                                                     actionListener="#{PlanningAssumptionBean.ResetGreenListFilter}"/>
+                        </af:toolbar>
+                    </f:facet>
+                    <af:panelGroupLayout layout="horizontal" halign="right" inlineStyle="white-space:nowrap">
+                        <af:message id="m2" message="#{bundle.milestonesLegend}" inlineStyle="font-style:italic;"/>
+                    </af:panelGroupLayout>
+                    <af:table value="#{bindings.GreenListProjectView.collectionModel}" var="row"
+                              rows="#{bindings.GreenListProjectView.rangeSize}"
+                              emptyText="#{bindings.GreenListProjectView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                              fetchSize="#{bindings.GreenListProjectView.rangeSize}" rowBandingInterval="0" id="tbGrLst"
+                              selectionListener="#{bindings.GreenListProjectView.collectionModel.makeCurrent}"
+                              filterVisible="true" varStatus="vs" rowSelection="single"
+                              styleClass="AFStretchWidth AFStretchHeight" autoHeightRows="0" contentDelivery="immediate"
+                              columnStretching="last" scrollPolicy="auto"
+                              filterModel="#{bindings.GreenListProjectViewQuery.queryDescriptor}"
+                              queryListener="#{bindings.GreenListProjectViewQuery.processQuery}">
+                        <af:column sortProperty="#{bindings.GreenListProjectView.hints.Code.name}" sortable="true"
+                                   filterable="true" filterFeatures="caseInsensitive"
+                                   headerText="#{bindings.GreenListProjectView.hints.Code.label}" id="dc_c1">
+                            <af:outputText value="#{row.Code}" id="dc_ot5"/>
+                            <f:facet name="filter">
+                                <af:inputText label="dummy" id="codeFilter" value="#{vs.filterCriteria.Code}"/>
+                            </f:facet>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.GreenListProjectView.hints.Name.name}" sortable="true"
+                                   filterable="true" filterFeatures="caseInsensitive"
+                                   headerText="#{bindings.GreenListProjectView.hints.Name.label}" id="dc_c4">
+                            <af:outputText value="#{row.Name}" id="dc_ot3"/>
+                            <f:facet name="filter">
+                                <af:inputText label="dummy" id="nameFilter" value="#{vs.filterCriteria.Name}"/>
+                            </f:facet>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.GreenListProjectView.hints.GbuName.name}" sortable="true"
+                                   filterable="true" filterFeatures="caseInsensitive"
+                                   headerText="#{bindings.GreenListProjectView.hints.GbuName.label}" id="dc_c13">
+                            <af:outputText value="#{row.GbuName}" id="dc_ot14"/>
+                            <f:facet name="filter">
+                                <af:inputText label="dummy" id="gbuNameFilter" value="#{vs.filterCriteria.GbuName}"/>
+                            </f:facet>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.GreenListProjectView.hints.SbeName.name}" sortable="true"
+                                   filterable="true" filterFeatures="caseInsensitive"
+                                   headerText="#{bindings.GreenListProjectView.hints.SbeName.label}" id="dc_c11">
+                            <af:outputText value="#{row.SbeName}" id="dc_ot7"/>
+                            <f:facet name="filter">
+                                <af:inputText label="dummy" id="sbeNameFilter" value="#{vs.filterCriteria.SbeName}"/>
+                            </f:facet>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.GreenListProjectView.hints.MainGroupName.name}"
+                                   sortable="true" filterable="true" filterFeatures="caseInsensitive"
+                                   headerText="#{bindings.GreenListProjectView.hints.MainGroupName.label}" id="dc_c9">
+                            <af:outputText value="#{row.MainGroupName}" id="dc_ot1"/>
+                            <f:facet name="filter">
+                                <af:inputText label="dummy" id="mainGroupNameFilter"
+                                              value="#{vs.filterCriteria.MainGroupName}"/>
+                            </f:facet>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.GreenListProjectView.hints.IsPortfolio.name}"
+                                   sortable="true" filterable="true" filterFeatures="caseInsensitive"
+                                   headerText="#{bindings.GreenListProjectView.hints.IsPortfolio.label}" id="dc_c3">
+                            <af:selectBooleanCheckbox value="#{row.IsPortfolio}" readOnly="true"/>
+                            <f:facet name="filter">
+                                <af:selectOneChoice id="selIsPortfolio" value="#{vs.filterCriteria.IsPortfolio}"
+                                                    autoSubmit="true" unselectedLabel="">
+                                    <af:selectItem label="Yes" value="true"/>
+                                    <af:selectItem label="No" value="false"/>
+                                </af:selectOneChoice>
+                            </f:facet>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.GreenListProjectView.hints.IsTerminated.name}"
+                                   sortable="true" filterable="true" filterFeatures="caseInsensitive"
+                                   headerText="#{bindings.GreenListProjectView.hints.IsTerminated.label}" id="dc_c8">
+                            <af:selectBooleanCheckbox value="#{row.IsTerminated}" readOnly="true"/>
+                            <f:facet name="filter">
+                                <af:selectOneChoice id="selIsTerminated" value="#{vs.filterCriteria.IsTerminated}"
+                                                    autoSubmit="true" unselectedLabel="">
+                                    <af:selectItem label="Yes" value="true"/>
+                                    <af:selectItem label="No" value="false"/>
+                                </af:selectOneChoice>
+                            </f:facet>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.GreenListProjectView.hints.IsOnHold.name}" sortable="true"
+                                   filterable="true" filterFeatures="caseInsensitive"
+                                   headerText="#{bindings.GreenListProjectView.hints.IsOnHold.label}" id="dc_c14">
+                            <af:selectBooleanCheckbox value="#{row.IsOnHold}" readOnly="true"/>
+                            <f:facet name="filter">
+                                <af:selectOneChoice id="selIsOnHold" value="#{vs.filterCriteria.IsOnHold}"
+                                                    autoSubmit="true" unselectedLabel="">
+                                    <af:selectItem label="Yes" value="true"/>
+                                    <af:selectItem label="No" value="false"/>
+                                </af:selectOneChoice>
+                            </f:facet>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.GreenListProjectView.hints.ControllingProjectType.name}"
+                                   sortable="true" filterable="true" filterFeatures="caseInsensitive"
+                                   headerText="#{bindings.GreenListProjectView.hints.ControllingProjectType.label}"
+                                   id="dc_c5">
+                            <af:outputText value="#{row.ControllingProjectType}" id="dc_ot6"/>
+                            <f:facet name="filter">
+                                <af:inputText label="dummy" id="controllingProjectTypeFilter"
+                                              value="#{vs.filterCriteria.ControllingProjectType}"/>
+                            </f:facet>
+                        </af:column>
+                        <af:column headerText="#{bindings.GreenListProjectView.hints.SubstanceTypeName.label}"
+                                   sortable="true" filterable="true"
+                                   sortProperty="#{bindings.GreenListProjectView.hints.SubstanceTypeName.name}"
+                                   id="dc_c262">
+                            <af:outputText value="#{row.SubstanceTypeName}" id="dc_ot262"/>
+                            <f:facet name="filter">
+                                <af:inputText label="dummy" id="SubstanceTypeNameFilter"
+                                              value="#{vs.filterCriteria.SubstanceTypeName}"/>
+                            </f:facet>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.GreenListProjectView.hints.CommentPreviousFc.name}"
+                                   sortable="false" filterable="false"
+                                   headerText="#{bindings.GreenListProjectView.hints.CommentPreviousFc.label}"
+                                   id="dc_c12">
+                            <af:outputFormatted value="#{row.CommentPreviousFc}" id="dc_of1"
+                                                converter="com.bayer.ipms.view.converters.LinefeedConverter"/>
+                            <f:facet name="filter">
+                                <af:inputText label="dummy" id="commentPreviousFcFilter"
+                                              value="#{vs.filterCriteria.CommentPreviousFc}"/>
+                            </f:facet>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.GreenListProjectView.hints.CurrentComment.name}"
+                                   sortable="false" filterable="false"
+                                   headerText="#{bindings.GreenListProjectView.hints.CurrentComment.label}" id="dc_c10">
+                            <af:outputFormatted value="#{row.CurrentComment}" id="dc_of2"
+                                                converter="com.bayer.ipms.view.converters.LinefeedConverter"/>
+                            <f:facet name="filter">
+                                <af:inputText label="dummy" id="currentCommentFilter"
+                                              value="#{vs.filterCriteria.CurrentComment}"/>
+                            </f:facet>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.GreenListProjectView.hints.PriorityName.name}"
+                                   sortable="true" filterable="true" filterFeatures="caseInsensitive"
+                                   headerText="#{bindings.GreenListProjectView.hints.PriorityName.label}" id="dc_c211">
+                            <af:outputText value="#{row.PriorityName}" id="dc_ot211"/>
+                            <f:facet name="filter">
+                                <af:inputText label="dummy" id="priorityNameFilter"
+                                              value="#{vs.filterCriteria.PriorityName}"/>
+                            </f:facet>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.GreenListProjectView.hints.PhaseName.name}" sortable="true"
+                                   filterable="true" filterFeatures="caseInsensitive"
+                                   headerText="#{bindings.GreenListProjectView.hints.PhaseName.label}" id="dc_c2">
+                            <af:outputText value="#{row.PhaseName}" id="dc_ot2"/>
+                            <f:facet name="filter">
+                                <af:inputText label="dummy" id="phaseNameFilter"
+                                              value="#{vs.filterCriteria.PhaseName}"/>
+                            </f:facet>
+                        </af:column>
+                        <af:column headerText="#{bindings.GreenListProjectView.hints.PccD3Date.label}" id="dc_c7"
+                                   sortable="true" filterable="true"
+                                   sortProperty="#{bindings.GreenListProjectView.hints.PccD3Date.name}"
+                                   inlineStyle="color:#{(row.PccD3DateSource == '3' ? '#0033CC' : (row.PccD3DateSource == '2' ? '#990000' : (row.PccD3DateSource == '1' ? 'Gray' : 'Black')))};">
+                            <af:outputText value="#{row.PccD3Date}" id="dc_ot4"/>
+                            <f:facet name="filter">
+                                <af:inputText label="dummy" id="d3DateFilter" value="#{vs.filterCriteria.PccD3Date}"/>
+                            </f:facet>
+                        </af:column>
+                        <af:column headerText="#{bindings.GreenListProjectView.hints.D4Date.label}" sortable="true"
+                                   sortProperty="#{bindings.GreenListProjectView.hints.D4Date.name}" id="dc_c15"
+                                   filterable="true"
+                                   inlineStyle="color:#{(row.D4DateSource == '3' ? '#0033CC' : (row.D4DateSource == '2' ? '#990000' : (row.D4DateSource == '1' ? 'Gray' : 'Black')))};">
+                            <af:outputText value="#{row.D4Date}" id="dc_ot15"/>
+                            <f:facet name="filter">
+                                <af:inputText label="dummy" id="d4DateFilter" value="#{vs.filterCriteria.D4Date}"/>
+                            </f:facet>
+                        </af:column>
+                        <af:column headerText="#{bindings.GreenListProjectView.hints.D5Date.label}" sortable="true"
+                                   sortProperty="#{bindings.GreenListProjectView.hints.D5Date.name}" id="dc_c16"
+                                   filterable="true"
+                                   inlineStyle="color:#{(row.D5DateSource == '3' ? '#0033CC' : (row.D5DateSource == '2' ? '#990000' : (row.D5DateSource == '1' ? 'Gray' : 'Black')))};">
+                            <af:outputText value="#{row.D5Date}" id="dc_ot16"/>
+                            <f:facet name="filter">
+                                <af:inputText label="dummy" id="d5DateFilter" value="#{vs.filterCriteria.D5Date}"/>
+                            </f:facet>
+                        </af:column>
+                        <af:column headerText="#{bindings.GreenListProjectView.hints.PocDate.label}" sortable="true"
+                                   sortProperty="#{bindings.GreenListProjectView.hints.PocDate.name}" id="dc_c17"
+                                   filterable="true"
+                                   inlineStyle="color:#{(row.PocDateSource == '3' ? '#0033CC' : (row.PocDateSource == '2' ? '#990000' : (row.PocDateSource == '1' ? 'Gray' : 'Black')))};">
+                            <af:outputText value="#{row.PocDate}" id="dc_ot17"/>
+                            <f:facet name="filter">
+                                <af:inputText label="dummy" id="pocDateFilter" value="#{vs.filterCriteria.PocDate}"/>
+                            </f:facet>
+                        </af:column>
+                        <af:column headerText="#{bindings.GreenListProjectView.hints.D6Date.label}" sortable="true"
+                                   sortProperty="#{bindings.GreenListProjectView.hints.D6Date.name}" id="dc_c18"
+                                   filterable="true"
+                                   inlineStyle="color:#{(row.D6DateSource == '3' ? '#0033CC' : (row.D6DateSource == '2' ? '#990000' : (row.D6DateSource == '1' ? 'Gray' : 'Black')))};">
+                            <af:outputText value="#{row.D6Date}" id="dc_ot18"/>
+                            <f:facet name="filter">
+                                <af:inputText label="dummy" id="d6DateFilter" value="#{vs.filterCriteria.D6Date}"/>
+                            </f:facet>
+                        </af:column>
+                        <af:column headerText="#{bindings.GreenListProjectView.hints.D7Date.label}" sortable="true"
+                                   sortProperty="#{bindings.GreenListProjectView.hints.D7Date.name}" id="dc_c19"
+                                   filterable="true"
+                                   inlineStyle="color:#{(row.D7DateSource == '3' ? '#0033CC' : (row.D7DateSource == '2' ? '#990000' : (row.D7DateSource == '1' ? 'Gray' : 'Black')))};">
+                            <af:outputText value="#{row.D7Date}" id="dc_ot19"/>
+                            <f:facet name="filter">
+                                <af:inputText label="dummy" id="d7DateFilter" value="#{vs.filterCriteria.D7Date}"/>
+                            </f:facet>
+                        </af:column>
+                        <af:column headerText="#{bindings.GreenListProjectView.hints.D8Date.label}" sortable="true"
+                                   sortProperty="#{bindings.GreenListProjectView.hints.D8Date.name}" id="dc_c20"
+                                   filterable="true"
+                                   inlineStyle="color:#{(row.D8DateSource == '3' ? '#0033CC' : (row.D8DateSource == '2' ? '#990000' : (row.D8DateSource == '1' ? 'Gray' : 'Black')))};">
+                            <af:outputText value="#{row.D8Date}" id="dc_ot20"/>
+                            <f:facet name="filter">
+                                <af:inputText label="dummy" id="d8DateFilter" value="#{vs.filterCriteria.D8Date}"/>
+                            </f:facet>
+                        </af:column>
+                        <af:column headerText="#{bindings.GreenListProjectView.hints.ProbabilityPreclinical.label}"
+                                   sortable="true" filterable="true"
+                                   sortProperty="#{bindings.GreenListProjectView.hints.ProbabilityPreclinical.name}"
+                                   id="dc_c21">
+                            <af:outputText value="#{row.ProbabilityPreclinical}" id="dc_ot21"/>
+                            <f:facet name="filter">
+                                <af:inputText label="dummy" id="probabilityPreclinicalFilter"
+                                              value="#{vs.filterCriteria.ProbabilityPreclinical}"/>
+                            </f:facet>
+                        </af:column>
+                        <af:column headerText="#{bindings.GreenListProjectView.hints.ProbabilityPhase1.label}"
+                                   sortable="true" filterable="true"
+                                   sortProperty="#{bindings.GreenListProjectView.hints.ProbabilityPhase1.name}"
+                                   id="dc_c22">
+                            <af:outputText value="#{row.ProbabilityPhase1}" id="dc_ot22"/>
+                            <f:facet name="filter">
+                                <af:inputText label="dummy" id="probabilityPhase1Filter"
+                                              value="#{vs.filterCriteria.ProbabilityPhase1}"/>
+                            </f:facet>
+                        </af:column>
+                        <af:column headerText="#{bindings.GreenListProjectView.hints.ProbabilityPhase2.label}"
+                                   sortable="true" filterable="true"
+                                   sortProperty="#{bindings.GreenListProjectView.hints.ProbabilityPhase2.name}"
+                                   id="dc_c23">
+                            <af:outputText value="#{row.ProbabilityPhase2}" id="dc_ot23"/>
+                            <f:facet name="filter">
+                                <af:inputText label="dummy" id="probabilityPhase2Filter"
+                                              value="#{vs.filterCriteria.ProbabilityPhase2}"/>
+                            </f:facet>
+                        </af:column>
+                        <af:column headerText="#{bindings.GreenListProjectView.hints.ProbabilityPhase3.label}"
+                                   sortable="true" filterable="true"
+                                   sortProperty="#{bindings.GreenListProjectView.hints.ProbabilityPhase3.name}"
+                                   id="dc_c24">
+                            <af:outputText value="#{row.ProbabilityPhase3}" id="dc_ot24"/>
+                            <f:facet name="filter">
+                                <af:inputText label="dummy" id="probabilityPhase3Filter"
+                                              value="#{vs.filterCriteria.ProbabilityPhase3}"/>
+                            </f:facet>
+                        </af:column>
+                        <af:column headerText="#{bindings.GreenListProjectView.hints.ProbabilitySubmission.label}"
+                                   sortable="true" filterable="true"
+                                   sortProperty="#{bindings.GreenListProjectView.hints.ProbabilitySubmission.name}"
+                                   id="dc_c25">
+                            <af:outputText value="#{row.ProbabilitySubmission}" id="dc_ot25"/>
+                            <f:facet name="filter">
+                                <af:inputText label="dummy" id="probabilitySubmissionFilter"
+                                              value="#{vs.filterCriteria.ProbabilitySubmission}"/>
+                            </f:facet>
+                        </af:column>
+                        <af:column headerText="#{bindings.GreenListProjectView.hints.ProbabilityTotal.label}"
+                                   sortable="true" filterable="true"
+                                   sortProperty="#{bindings.GreenListProjectView.hints.ProbabilityTotal.name}"
+                                   id="dc_c26">
+                            <af:outputText value="#{row.ProbabilityTotal}" id="dc_ot26"/>
+                            <f:facet name="filter">
+                                <af:inputText label="dummy" id="probabilityTotalFilter"
+                                              value="#{vs.filterCriteria.ProbabilityTotal}"/>
+                            </f:facet>
+                        </af:column>
+                    </af:table>
+                </af:panelCollection>
+            </f:facet>
+        </af:panelStretchLayout>
+    </af:componentDef>
+</jsp:root>

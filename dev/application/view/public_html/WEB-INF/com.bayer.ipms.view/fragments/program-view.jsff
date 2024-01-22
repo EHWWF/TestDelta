@@ -1,0 +1,268 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:h="http://java.sun.com/jsf/html">
+    <c:set var="bundle" value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+    <af:pageTemplate viewId="/WEB-INF/com.bayer.ipms.view/templates/ipms-content-template.jspx" id="page">
+        <af:resource type="javascript">
+          function onProjectTableClick(evt) {
+              var table = evt.getSource();
+              AdfCustomEvent.queue(table, "onProjectTableClick", 
+              {
+              },
+              true);
+              evt.cancel();
+          }
+        </af:resource>
+        <f:facet name="popup">
+            <af:group id="popup">
+                <af:declarativeComponent viewId="project-create-popup.jsff" id="popCompPrj">
+                    <f:attribute name="areaCode" value="#{bindings.DevAreaCode}"/>
+                    <f:attribute name="bean" value="#{pageFlowScope.programViewBean}"/>
+                    <f:attribute name="projectType" value="#{pageFlowScope.projectType}"/>
+                </af:declarativeComponent>
+                <af:popup id="popDelete" contentDelivery="lazyUncached" rendered="#{rolesBean.programDeleteDev }">
+                    <af:dialog id="dlgDelete" title="#{bundle.programDelete}"
+                               dialogListener="#{pageFlowScope.programViewBean.onDelete}" contentWidth="500">
+                        <af:panelBox text="#{bundle.globalSummary}" showDisclosure="false" type="flow">
+                            <af:panelFormLayout styleClass="AFStretchWidth" fieldWidth="100%">
+                                <af:inputText label="#{bindings.Code.hints.label}" value="#{bindings.Code.inputValue}"
+                                              readOnly="true"/>
+                                <af:inputText label="#{bindings.Name.hints.label}" value="#{bindings.Name.inputValue}"
+                                              readOnly="true"/>
+                            </af:panelFormLayout>
+                        </af:panelBox>
+                        <af:message message="#{bundle.programDeleteWarning}" messageType="warning"/>
+                    </af:dialog>
+                </af:popup>
+                <af:popup id="popEdit" contentDelivery="lazyUncached"
+                          popupCanceledListener="#{pageFlowScope.programViewBean.onPopupCancel}"
+                          rendered="#{rolesBean.programEditDev}">
+                    <af:dialog id="dlgEdit" title="#{bundle.programRename}"
+                               dialogListener="#{pageFlowScope.programViewBean.onRename}" contentWidth="500">
+                        <af:panelBox text="#{bundle.globalSummary}" showDisclosure="false" type="flow">
+                            <af:panelFormLayout styleClass="AFStretchWidth" fieldWidth="100%">
+                                <af:inputText value="#{bindings.Code.inputValue}" label="#{bindings.Code.hints.label}"
+                                              readOnly="true"/>
+                                <af:inputText value="#{bindings.Name.inputValue}" label="#{bindings.Name.hints.label}"
+                                              required="#{bindings.Name.hints.mandatory}"
+                                              columns="#{bindings.Name.hints.displayWidth}"
+                                              maximumLength="#{bindings.Name.hints.precision}"
+                                              shortDesc="#{bindings.Name.hints.tooltip}" id="edName">
+                                    <f:validator binding="#{bindings.Name.validator}"/>
+                                </af:inputText>
+                            </af:panelFormLayout>
+                        </af:panelBox>
+                    </af:dialog>
+                </af:popup>
+                <af:popup contentDelivery="lazyUncached" id="popSandboxCreate"
+                          popupCanceledListener="#{pageFlowScope.programViewBean.onSandboxCreatePopupCancel}"
+                          popupFetchListener="#{  pageFlowScope.programViewBean.onSandboxCreatePopupFetch}">
+                    <af:dialog id="dlgSndCreate"
+                               title="#{pageFlowScope.programViewBean.onSandboxPopupOpen eq 'ModifySource' ? bundle.sandboxModifySource : bundle.sandboxCreate }"
+                               dialogListener="#{pageFlowScope.programViewBean.onSandboxCreate}" contentWidth="500">
+                        <af:panelBox text="#{bundle.globalSummary}" showDisclosure="false" type="flow"
+                                     id="panelBoxSand1">
+                            <af:panelFormLayout id="panelFormLayoutSand1" styleClass="AFStretchWidth" fieldWidth="100%">
+                                <af:inputText value="#{bindings.QualifiedName.inputValue}"
+                                              label="#{bundle.sandboxInProgram}" id="sndprogramname" readOnly="true"/>
+                                <af:selectOneChoice value="#{bindings.TimelineIdList.inputValue}"
+                                                    label="#{bundle.sandboxSource}" required="false" id="soc1"
+                                                    autoSubmit="#{pageFlowScope.programViewBean.onSandboxPopupOpen eq 'ModifySource' ? false : true}"
+                                                    valueChangeListener="#{pageFlowScope.programViewBean.onSourceProjectChange}">
+                                    <f:selectItems value="#{bindings.TimelineIdList.items}" id="si1"/>
+                                </af:selectOneChoice>
+                                <af:inputText value="#{bindings.SandboxProjectId.inputValue}"
+                                              label="#{bundle.sandboxProjectId}" required="true"
+                                              columns="#{bindings.SandboxProjectId.hints.displayWidth}"
+                                              maximumLength="#{bindings.SandboxProjectId.hints.precision}"
+                                              shortDesc="#{bindings.SandboxProjectId.hints.tooltip}" id="prjscode"
+                                              disabled="#{pageFlowScope.programViewBean.onSandboxPopupOpen eq 'ModifySource' ? true : false}"
+                                              readOnly="#{pageFlowScope.programViewBean.onSandboxPopupOpen eq 'ModifySource' ? true : false}">
+                                    <af:validateRegExp pattern="[a-zA-z0-9-()~!@#$%^:;,./?|\{}' ]*"
+                                                       messageDetailNoMatch=" "/>
+                                    <f:validator binding="#{bindings.SandboxProjectId.validator}"/>
+                                </af:inputText>
+                                <af:inputText label="#{bundle.sandboxName}" value="#{bindings.SandboxName.inputValue}"
+                                              required="true" shortDesc="#{bindings.SandboxName.hints.tooltip}"
+                                              id="prjsname2" columns="#{bindings.SandboxName.hints.displayWidth}"
+                                              maximumLength="#{bindings.SandboxName.hints.precision}"
+                                              disabled="#{pageFlowScope.programViewBean.onSandboxPopupOpen eq 'ModifySource' ? true : false}"
+                                              readOnly="#{pageFlowScope.programViewBean.onSandboxPopupOpen eq 'ModifySource' ? true : false}">
+                                    <af:validateRegExp pattern="[a-zA-z0-9-()~!@#$%^:;,./?|\{}' ]*"
+                                                       messageDetailNoMatch=" "/>
+                                    <f:validator binding="#{bindings.SandboxName.validator}"/>
+                                </af:inputText>
+                                <af:inputText value="#{bindings.SandboxDescription.inputValue}"
+                                              label="#{bundle.sandboxDescription}"
+                                              required="#{bindings.SandboxDescription.hints.mandatory}"
+                                              shortDesc="#{bindings.SandboxDescription.hints.tooltip}" id="prjsdescr"
+                                              rows="4" columns="#{bindings.SandboxDescription.hints.displayWidth}"
+                                              maximumLength="#{bindings.SandboxDescription.hints.precision}"
+                                              disabled="#{pageFlowScope.programViewBean.onSandboxPopupOpen eq 'ModifySource' ? true : false}"
+                                              readOnly="#{pageFlowScope.programViewBean.onSandboxPopupOpen eq 'ModifySource' ? true : false}"
+                                              partialTriggers="soc1">
+                                    <f:validator binding="#{bindings.SandboxProjectId.validator}"/>
+                                </af:inputText>
+                                <af:selectBooleanCheckbox value="#{bindings.IsDateConstraints1.inputValue}"
+                                                          label="#{bundle.sandboxRemoveDateConstraint}"
+                                                          shortDesc="#{bindings.IsDateConstraints1.hints.tooltip}"
+                                                          id="sbc2" selected="true"
+                                                          disabled="#{pageFlowScope.programViewBean.onSandboxPopupOpen eq 'ModifySource' ? true : false}"/>
+                            </af:panelFormLayout>
+                        </af:panelBox>
+                    </af:dialog>
+                </af:popup>
+            </af:group>
+        </f:facet>
+        <f:facet name="toolbar">
+            <af:panelGroupLayout id="tools" layout="horizontal">
+                <af:poll id="poll" interval="30000"
+                         rendered="#{bindings.ProgramViewIterator.currentRow != null and bindings.IsSyncing.inputValue}"
+                         pollListener="#{pageFlowScope.programViewBean.onPoll}" immediate="true"/>
+                <af:menuBar rendered="#{bindings.ProgramViewIterator.currentRow != null}" id="menu"
+                            disabled="#{not empty pageFlowScope.programViewBean.editable or pageFlowScope.programViewBean.modalMode}">
+                    <af:menu text="#{bundle.globalEdit}"
+                             rendered="#{not bindings.IsRecycleBin.inputValue and (rolesBean.programEditDev or rolesBean.programDeleteDev or rolesBean.programRolesDev or rolesBean.programRolesPrdMnt or rolesBean.programTeamDev or rolesBean.programTeamPrdMnt)}">
+                        <af:commandMenuItem text="#{bundle.globalRename}" icon="/images/edit.png"
+                                            disabled="#{bindings.IsSyncing.inputValue}"
+                                            rendered="#{rolesBean.programEditDev}" immediate="true">
+                            <af:showPopupBehavior popupId="popEdit" triggerType="action"/>
+                        </af:commandMenuItem>
+                        <af:commandMenuItem text="#{bundle.globalRemove}" icon="/images/remove.png" immediate="true"
+                                            rendered="#{rolesBean.programDeleteDev or rolesBean.programDeletePrdMnt}"
+                                            disabled="#{bindings.IsSyncing.inputValue or bindings.HasProjects.inputValue}">
+                            <af:showPopupBehavior popupId="popDelete" triggerType="action"/>
+                        </af:commandMenuItem>
+                       
+                    </af:menu>
+                    <af:menu text="#{bundle.globalView}">
+                        <af:commandMenuItem text="#{bundle.globalRefresh}" icon="/images/reload.png" immediate="true"
+                                            action="#{pageFlowScope.programViewBean.onRefresh}"/>
+                    </af:menu>
+                    <af:menu text="#{bundle.globalTools}"
+                             rendered="#{not bindings.IsRecycleBin.inputValue and (rolesBean.programMaintainIntegration)}">
+                        <af:commandMenuItem text="#{bundle.globalUnlock}" icon="/images/unlock.png"
+                                            actionListener="#{pageFlowScope.programViewBean.onUnlock}"
+                                            disabled="#{not bindings.IsSyncing.inputValue}" immediate="true"/>
+                        <af:commandMenuItem text="#{bundle.globalReceive}" icon="/images/download.png"
+                                            actionListener="#{pageFlowScope.programViewBean.onReceive}"
+                                            disabled="#{bindings.IsSyncing.inputValue}" immediate="true"/>
+                        <af:separator/>
+                        <af:commandMenuItem text="#{bundle.globalSend}" icon="/images/upload.png"
+                                            actionListener="#{pageFlowScope.programViewBean.onSend}"
+                                            disabled="#{bindings.IsSyncing.inputValue}" immediate="true"/>
+                    </af:menu>
+                </af:menuBar>
+            </af:panelGroupLayout>
+        </f:facet>
+        <f:facet name="content">
+            <af:panelStretchLayout id="content" styleClass="AFStretchWidth" topHeight="auto" dimensionsFrom="parent"
+                                   bottomHeight="0px" inlineStyle="height:100%;">
+                <f:facet name="top">
+                    <af:panelBox text="#{bundle.globalSummary}" showDisclosure="false" type="flow" id="summary"
+                                 background="#{pageFlowScope.programViewBean.editable eq 'summary' ? 'light' : 'default'}">
+                        <f:facet name="toolbar">
+                            <af:toolbar rendered="#{not bindings.IsRecycleBin.inputValue and rolesBean.programEditDev}">
+                                <af:commandToolbarButton rendered="#{empty pageFlowScope.programViewBean.editable or pageFlowScope.programViewBean.modalMode}"
+                                                         icon="/images/edit.png" immediate="true"
+                                                         actionListener="#{pageFlowScope.programViewBean.onEdit}"
+                                                         partialSubmit="true" text="#{bundle.globalEdit}">
+                                    <f:attribute name="target" value="summary"/>
+                                </af:commandToolbarButton>
+                                <af:commandToolbarButton rendered="#{pageFlowScope.programViewBean.editable eq 'summary'}"
+                                                         icon="/images/commit.png"
+                                                         actionListener="#{pageFlowScope.programViewBean.onCommit}"
+                                                         text="#{bundle.globalOk}"/>
+                                <af:commandToolbarButton rendered="#{pageFlowScope.programViewBean.editable eq 'summary'}"
+                                                         icon="/images/rollback.png"
+                                                         actionListener="#{pageFlowScope.programViewBean.onRollback}"
+                                                         immediate="true" text="#{bundle.globalCancel}"/>
+                            </af:toolbar>
+                        </f:facet>
+                        <af:panelFormLayout id="pfrm1" maxColumns="2" rows="3" fieldWidth="100%">
+                            <af:inputText label="#{bindings.Code.hints.label}" value="#{bindings.Code.inputValue}"
+                                          id="code" readOnly="true"/>
+                            <af:inputText value="#{bindings.Name.inputValue}" label="#{bindings.Name.hints.label}"
+                                          id="name" readOnly="true"/>
+                            <af:inputText value="#{bindings.Substance.inputValue}"
+                                          label="#{bindings.Substance.hints.label}"
+                                          required="#{bindings.Substance.hints.mandatory}"
+                                          columns="#{bindings.Substance.hints.displayWidth}"
+                                          maximumLength="#{bindings.Substance.hints.precision}"
+                                          shortDesc="#{bindings.Substance.hints.tooltip}" styleClass="AFStretchWidth"
+                                          contentStyle="width:100%;" dimensionsFrom="parent"
+                                          rows="#{bindings.Substance.hints.displayHeight}"
+                                          rendered="#{not bindings.IsRecycleBin.inputValue}"
+                                          readOnly="#{pageFlowScope.programViewBean.editable ne 'summary'}" id="subst">
+                                <f:validator binding="#{bindings.Substance.validator}"/>
+                            </af:inputText>
+                            <af:inputText value="#{bindings.Description.inputValue}"
+                                          label="#{bindings.Description.hints.label}"
+                                          required="#{bindings.Description.hints.mandatory}" styleClass="AFStretchWidth"
+                                          contentStyle="width:100%;" dimensionsFrom="parent"
+                                          columns="#{bindings.Description.hints.displayWidth}"
+                                          maximumLength="#{bindings.Description.hints.precision}"
+                                          shortDesc="#{bindings.Description.hints.tooltip}"
+                                          rendered="#{not bindings.IsRecycleBin.inputValue}"
+                                          readOnly="#{pageFlowScope.programViewBean.editable ne 'summary'}" id="descr"
+                                          rows="#{bindings.Description.hints.displayHeight}">
+                                <f:validator binding="#{bindings.Description.validator}"/>
+                            </af:inputText>
+                        </af:panelFormLayout>
+                    </af:panelBox>
+                </f:facet>
+                <f:facet name="center">
+                    <af:panelTabbed id="prgTabPanel" dimensionsFrom="parent" binding="#{requestScope.prgTabPanel}"
+                                    styleClass="AFStretchWidth AFStretchHeight">
+                        <af:showDetailItem text="#{bundle.programProjects}" immediate="true" stretchChildren="first"
+                                           disclosureListener="#{pageFlowScope.programViewBean.tabDisclosure}"
+                                           disabled="#{not empty pageFlowScope.programViewBean.editable or pageFlowScope.programViewBean.modalMode}"
+                                           id="sdiProjects">
+                            <af:declarativeComponent id="prgPrjt" viewId="program-project.jsff"/>
+                        </af:showDetailItem>
+                        <af:showDetailItem text="#{bundle.programSandboxes}" immediate="true" stretchChildren="first"
+                                           disclosureListener="#{pageFlowScope.programViewBean.tabDisclosure}"
+                                           disabled="#{not empty pageFlowScope.programViewBean.editable or pageFlowScope.programViewBean.modalMode}"
+                                           id="sdiSandbox">
+                            <af:declarativeComponent id="prgSndb" viewId="program-sandbox.jsff"/>
+                        </af:showDetailItem>
+                        <af:showDetailItem text="#{bundle.projectGoalTab}" immediate="true" stretchChildren="first"
+                                           disabled="#{not empty pageFlowScope.programViewBean.editable or pageFlowScope.programViewBean.modalMode}" id="sdiGoals"
+                                           disclosureListener="#{pageFlowScope.programViewBean.tabDisclosure}"
+                                           rendered="#{pageFlowScope.projectType eq 'Dev' and rolesBean.goalsViewDev}">
+                            <af:declarativeComponent id="prgGoal" viewId="program-goal.jsff"/>
+                        </af:showDetailItem> 
+                        <af:showDetailItem text="#{bundle.programTop}" immediate="true" stretchChildren="first"
+                                           rendered="#{pageFlowScope.projectType eq 'Dev' and rolesBean.programTOPViewDev}"
+                                           disabled="#{not empty pageFlowScope.programViewBean.editable or pageFlowScope.programViewBean.modalMode}" id="sdiTop"
+                                           disclosureListener="#{pageFlowScope.programViewBean.tabDisclosure}">
+                            <af:region value="#{bindings.programtop1.regionModel}" id="r2"/>
+                        </af:showDetailItem>
+                        <af:showDetailItem text="#{bundle.programTeamMembers}" immediate="true" stretchChildren="first"
+                                           rendered="#{rolesBean.programTeamDev or rolesBean.programTeamPrdMnt}"
+                                           disabled="#{not empty pageFlowScope.programViewBean.editable or pageFlowScope.programViewBean.modalMode}" id="sdiTeamMembers"
+                                           disclosureListener="#{pageFlowScope.programViewBean.tabDisclosure}">
+                            <af:region value="#{bindings.teammembersview21.regionModel}" id="r1"/>
+                        </af:showDetailItem>
+                         <af:showDetailItem text="#{bundle.accessRoles}" immediate="true" stretchChildren="first"
+                                           rendered="#{rolesBean.programTeamDev or rolesBean.programTeamPrdMnt}"
+                                           disabled="#{not empty pageFlowScope.programViewBean.editable or pageFlowScope.programViewBean.modalMode}" id="sdiRoles"
+                                           disclosureListener="#{pageFlowScope.programViewBean.tabDisclosure}">
+                            
+                             <af:declarativeComponent viewId="program-roles.jsff" id="tabRoles"
+                                         rendered="#{rolesBean.programRolesDev or rolesBean.programRolesPrdMnt}">
+                                <f:attribute name="projectType" value="#{pageFlowScope.projectType}"/>
+                                <f:attribute name="bean" value="#{pageFlowScope.programViewBean}"/>
+                             </af:declarativeComponent>
+                        </af:showDetailItem>
+                       
+                        
+                    </af:panelTabbed>
+                </f:facet>
+            </af:panelStretchLayout>
+        </f:facet>
+        <f:attribute name="title" value="#{bundle.program} #{bindings.Name.inputValue}"/>
+        <f:attribute name="message" value="#{bindings.IsSyncing.inputValue ? bundle.globalIsSyncingWarning : ''}"/>
+    </af:pageTemplate>
+</jsp:root>

@@ -1,0 +1,103 @@
+create or replace view ltc_imported_costs_profit_vw as
+with all_costs as (
+		-- Initial cost mapping and filtering.
+		-- All! ACT and FCT costs come from one source: Sophia/ProFIT
+		-- Treat ACT OEI costs as OEC costs.
+		-- Treat OEC costs as project-level costs even if study id is provided.
+		-- The view should be used only in one place: LTC prefil from ProFIT
+		select 
+			cst.project_id,
+			--null decision_start,
+			cst.study_id, 
+			nvl(sfn.function_code, cst.function_code) as function_code,
+			cost_type_code,
+			start_date,
+			finish_date,
+			cost as act_cost, --ACT
+			start_date as act_cost_start_date,
+			finish_date as act_cost_finish_date,
+			to_number(null) as fct_cost_fps,
+			to_date(null) as fct_cost_fps_start_date,
+			to_date(null) as fct_cost_fps_finish_date
+		from (
+			select
+				project_id, 
+				decode(subtype_code, 'OEC', to_nchar(null), 'OEI', to_nchar(null), study_id) as study_id,
+				function_code, 
+				subfunction_code,
+				decode(subtype_code, null, to_nchar('INT'), 'OEI', to_nchar('OEC'), subtype_code) as cost_type_code,
+				start_date,
+				finish_date,
+				cost
+			from costs 
+			where method_code='DET'
+			--and (scope_code='EXT' and subtype_code in ('ECG','CRO','OEC', 'OEI') or scope_code='INT' and subtype_code is null)
+			and scope_code||subtype_code in ('EXTECG','EXTCRO','EXTOEC', 'EXTOEI','INT')
+			and type_code ='ACT'
+		) cst
+		left join subfunction sfn on (sfn.code=cst.subfunction_code)
+		where nvl(sfn.function_code, cst.function_code) is not null
+			union all
+		select 
+			cst.project_id,
+			--cst.decision_start,
+			cst.study_id, 
+			nvl(sfn.function_code, cst.function_code) as function_code,
+			cost_type_code,
+			start_date,
+			finish_date,
+			to_number(null) as act_cost,
+			to_date(null) as act_cost_start_date,
+			to_date(null) as act_cost_finish_date,
+			cost as fct_cost_fps, --FCT
+			start_date as fct_cost_fps_start_date,
+			finish_date as fct_cost_fps_finish_date
+		from (
+			select
+				project_id, 
+				--decision_start,
+				decode(subtype_code, 'OEC', to_nchar(null), study_id) as study_id,
+				function_code,
+				subfunction_code,
+				nvl(subtype_code, 'INT') as cost_type_code,
+				start_date,
+				finish_date,
+				cost
+			from costs
+			where method_code='DET'
+			--and (scope_code='EXT' and subtype_code in ('ECG','CRO','OEC') or scope_code='INT' and subtype_code is null)
+			and scope_code||subtype_code in ('EXTECG','EXTCRO','EXTOEC', 'INT')
+			and type_code='FCT' 
+		) cst
+		left join subfunction sfn on (sfn.code=cst.subfunction_code)
+		where nvl(sfn.function_code, cst.function_code) is not null
+)		
+select
+	tl.id as timeline_id,
+	--cst.decision_start,
+	nvl(to_nchar(w.wbs_id), tl.reference_id) as wbs_id,
+	decode(w.wbs_id, null, 1, 0) as is_root_wbs,
+	to_nchar(w.study_id) as study_id,
+	cst.function_code,
+	cst.cost_type_code,
+	cst.start_date,
+	cst.finish_date,
+	cst.act_cost,
+	act_cost_start_date,
+	act_cost_finish_date,
+	cst.fct_cost_fps,
+	fct_cost_fps_start_date,
+	fct_cost_fps_finish_date
+from timeline tl
+left join (
+	select
+		sbx.id as sandbox_id, 
+		sbx.snd_timeline_id as timeline_id, 
+		sbx.timeline_id as src_timeline_id, 
+		sbx_src_tl.project_id as src_project_id 
+	from program_sandbox sbx
+	inner join timeline sbx_src_tl on (sbx_src_tl.id=sbx.timeline_id)
+) sb on tl.project_id is null and sb.timeline_id=tl.id
+inner join all_costs cst on (cst.project_id=nvl(tl.project_id, sb.src_project_id))
+left join timeline_wbs w on (w.timeline_id=tl.id and w.study_id=cst.study_id)
+where (cst.study_id is null or cst.study_id=w.study_id);

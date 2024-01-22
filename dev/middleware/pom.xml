@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>ipms-mw</groupId>
+    <artifactId>ipms-mw</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <modules>
+        <!-- Add project modules -->
+    	<module>ipms.bpm</module>
+    	<module>ipms.cache</module>
+    	<module>mockup.qplan</module>
+    	<module>ipms.p6x</module>
+    	<module>ipms.qplan</module>
+    	<module>ipms.soa</module>
+    	<module>ipms.test</module>
+    	<module>ipms.ums</module>
+    </modules>
+</project>

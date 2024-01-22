@@ -1,0 +1,1 @@
+create index costs_study_id_idx on costs (study_id);

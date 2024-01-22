@@ -1,0 +1,202 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE JboProject SYSTEM "jbo_03_01.dtd">
+<!---->
+
+<JboProject
+   xmlns="http://xmlns.oracle.com/bc4j"
+   Name="adfModel"
+   Version="12.2.1.20.47"
+   SeparateXMLFiles="true"
+   PackageName="com.bayer.ipms.model">
+   <DesignTime>
+      <Attr Name="_jprName" Value="../../../../../ipms.adf.model.jpr"/>
+      <Attr Name="_appModuleNames1"
+         Value="com.bayer.ipms.model.services.PrivateAppModule"/>
+      <Attr Name="_appModuleNames0"
+         Value="com.bayer.ipms.model.services.SharedAppModule"/>
+      <Attr Name="_jbo.TypeMapEntries" Value="Java"/>
+      <Attr Name="_NamedConnection" Value="IPMSDatabase"/>
+      <Attr Name="_appModuleNames2" Value="com.bayer.ipms.model.services.PrivateAppModule2"/>
+      <Attr Name="_appModuleNames3" Value="com.bayer.ipms.model.services.LtcAppModule"/>
+      <Attr Name="_domainNames0" Value="com.bayer.ipms.model.views.lookups.Nvarchar2"/>
+      <Attr Name="_domainNames1" Value="com.bayer.ipms.model.entities.ltc.Nvarchar2"/>
+      <Attr Name="_domainNames2" Value="com.bayer.ipms.model.views.Nvarchar2"/>
+      <Attr Name="_domainNames3" Value="com.bayer.ipms.model.entities.imports.Nvarchar2"/>
+      <Attr Name="_domainNames4" Value="com.bayer.ipms.model.entities.Nvarchar2"/>
+      <Attr Name="_domainNames5" Value="com.bayer.ipms.model.entities.Xmltype"/>
+      <Attr Name="_domainNames6" Value="com.bayer.ipms.model.views.ltc.Nvarchar2"/>
+      <Attr Name="_domainNames7" Value="com.bayer.ipms.model.entities.lookups.Nvarchar2"/>
+   </DesignTime>
+   <Properties>
+      <CustomProperties>
+         <Property
+            Name="oracle.home"
+            Value="/oracle/jdevmw/jdeveloper"/>
+      </CustomProperties>
+   </Properties>
+   <Containee
+      Name="assoc"
+      PackageName="com.bayer.ipms.model.entities.assoc"
+      ObjectType="JboPackage">
+      <DesignTime>
+         <Attr Name="_AS" Value="true"/>
+      </DesignTime>
+   </Containee>
+   <Containee
+      Name="discrepancies"
+      PackageName="com.bayer.ipms.model.entities.discrepancies"
+      ObjectType="JboPackage">
+      <DesignTime>
+         <Attr Name="_EO" Value="true"/>
+      </DesignTime>
+   </Containee>
+   <Containee
+      Name="entities"
+      PackageName="com.bayer.ipms.model.entities"
+      ObjectType="JboPackage">
+      <DesignTime>
+         <Attr Name="_EO" Value="true"/>
+         <Attr Name="_AS" Value="true"/>
+         <Attr Name="_DO" Value="true"/>
+      </DesignTime>
+   </Containee>
+   <Containee
+      Name="estimates"
+      PackageName="com.bayer.ipms.model.entities.estimates"
+      ObjectType="JboPackage">
+      <DesignTime>
+         <Attr Name="_EO" Value="true"/>
+      </DesignTime>
+   </Containee>
+   <Containee
+      Name="imports"
+      PackageName="com.bayer.ipms.model.entities.imports"
+      ObjectType="JboPackage">
+      <DesignTime>
+         <Attr Name="_EO" Value="true"/>
+         <Attr Name="_DO" Value="true"/>
+      </DesignTime>
+   </Containee>
+   <Containee
+      Name="lookups"
+      PackageName="com.bayer.ipms.model.entities.lookups"
+      ObjectType="JboPackage">
+      <DesignTime>
+         <Attr Name="_EO" Value="true"/>
+         <Attr Name="_AM" Value="true"/>
+         <Attr Name="_DO" Value="true"/>
+      </DesignTime>
+   </Containee>
+   <Containee
+      Name="ltc"
+      PackageName="com.bayer.ipms.model.entities.ltc"
+      ObjectType="JboPackage">
+      <DesignTime>
+         <Attr Name="_EO" Value="true"/>
+         <Attr Name="_DO" Value="true"/>
+      </DesignTime>
+   </Containee>
+   <Containee
+      Name="services"
+      PackageName="com.bayer.ipms.model.services"
+      ObjectType="JboPackage">
+      <DesignTime>
+         <Attr Name="_AM" Value="true"/>
+      </DesignTime>
+   </Containee>
+   <Containee
+      Name="discrepancies"
+      PackageName="com.bayer.ipms.model.views.discrepancies"
+      ObjectType="JboPackage"/>
+   <Containee
+      Name="estimates"
+      PackageName="com.bayer.ipms.model.views.estimates"
+      ObjectType="JboPackage">
+      <DesignTime>
+         <Attr Name="_VO" Value="true"/>
+      </DesignTime>
+   </Containee>
+   <Containee
+      Name="imports"
+      PackageName="com.bayer.ipms.model.views.imports"
+      ObjectType="JboPackage">
+      <DesignTime>
+         <Attr Name="_VO" Value="true"/>
+      </DesignTime>
+   </Containee>
+   <Containee
+      Name="links"
+      PackageName="com.bayer.ipms.model.views.links"
+      ObjectType="JboPackage">
+      <DesignTime>
+         <Attr Name="_VL" Value="true"/>
+      </DesignTime>
+   </Containee>
+   <Containee
+      Name="lookups"
+      PackageName="com.bayer.ipms.model.views.lookups"
+      ObjectType="JboPackage">
+      <DesignTime>
+         <Attr Name="_VO" Value="true"/>
+         <Attr Name="_DO" Value="true"/>
+      </DesignTime>
+   </Containee>
+   <Containee
+      Name="ltc"
+      PackageName="com.bayer.ipms.model.views.ltc"
+      ObjectType="JboPackage">
+      <DesignTime>
+         <Attr Name="_VO" Value="true"/>
+         <Attr Name="_DO" Value="true"/>
+      </DesignTime>
+   </Containee>
+   <Containee
+      Name="views"
+      PackageName="com.bayer.ipms.model.views"
+      ObjectType="JboPackage">
+      <DesignTime>
+         <Attr Name="_VO" Value="true"/>
+         <Attr Name="_DO" Value="true"/>
+      </DesignTime>
+   </Containee>
+   <AppModuleUsage
+      Name="ProgramAppModule"
+      FullName="com.bayer.ipms.model.services.ProgramAppModule"
+      ConfigurationName="com.bayer.ipms.model.services.null"
+      SharedScope="1"/>
+   <AppModuleUsage
+      Name="PrivateAppModule"
+      FullName="com.bayer.ipms.model.services.PrivateAppModule"
+      ConfigurationName="com.bayer.ipms.model.services.local.PrivateAppModuleLocal"
+      SharedScope="1"/>
+   <AppModuleUsage
+      Name="SharedAppModule"
+      FullName="com.bayer.ipms.model.services.SharedAppModule"
+      ConfigurationName="com.bayer.ipms.model.services.SharedAppModuleShared"
+      SharedScope="2"/>
+   <AppModuleUsage
+      Name="EstimatesAppModule"
+      FullName="com.bayer.ipms.model.services.EstimatesAppModule"
+      ConfigurationName="com.bayer.ipms.model.services.null"
+      SharedScope="1"/>
+   <AppModuleUsage
+      Name="ImportAppModule"
+      FullName="com.bayer.ipms.model.services.ImportAppModule"
+      ConfigurationName="com.bayer.ipms.model.services.null"
+      SharedScope="1"/>
+   <AppModuleUsage
+      Name="ManagementAppModule"
+      FullName="com.bayer.ipms.model.services.ManagementAppModule"
+      ConfigurationName="com.bayer.ipms.model.services.null"
+      SharedScope="1"/>
+   <AppModuleUsage
+      Name="ReportAppModule"
+      FullName="com.bayer.ipms.model.services.ReportAppModule"
+      ConfigurationName="com.bayer.ipms.model.services.null"
+      SharedScope="1"/>
+   <AppModuleUsage
+      Name="WorkspaceAppModule"
+      FullName="com.bayer.ipms.model.services.WorkspaceAppModule"
+      ConfigurationName="com.bayer.ipms.model.services.null"
+      SharedScope="1"/>
+</JboProject>

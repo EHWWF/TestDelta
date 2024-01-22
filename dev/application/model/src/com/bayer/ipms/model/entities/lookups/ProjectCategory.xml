@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="windows-1257" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ProjectCategory"
+  Version="11.1.1.64.93"
+  InheritPersonalization="true"
+  DBObjectType="table"
+  DBObjectName="PROJECT_CATEGORY"
+  AliasName="ProjectCategory"
+  BindingStyle="OracleName"
+  UseGlueCode="false"
+  RowClass="com.bayer.ipms.model.base.IPMSEntityImpl">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Access"/>
+    <AttrArray Name="_publishEvents"/>
+  </DesignTime>
+  <Attribute
+    Name="Code"
+    IsNotNull="true"
+    Precision="10"
+    ColumnName="CODE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="PROJECT_CATEGORY"
+    PrimaryKey="true"
+    Scale="0"
+    IsUpdateable="while_insert">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="Name"
+    IsNotNull="true"
+    Precision="100"
+    ColumnName="NAME"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="PROJECT_CATEGORY"
+    Scale="0">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="IsActive"
+    IsNotNull="true"
+    ColumnName="IS_ACTIVE"
+    SQLType="NUMERIC"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    TableName="PROJECT_CATEGORY"
+    Precision="1"
+    PrecisionRule="false"
+    Scale="0">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="2"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="Description"
+    Precision="500"
+    Scale="0"
+    ColumnName="DESCRIPTION"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="PROJECT_CATEGORY">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="500"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="IsPromis"
+    IsNotNull="true"
+    Precision="1"
+    Scale="0"
+    ColumnName="IS_PROMIS"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="PROJECT_CATEGORY"
+    DefaultValue="1">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="22"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="MaingroupCode"
+    Precision="20"
+    Scale="0"
+    ColumnName="MAINGROUP_CODE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="PROJECT_CATEGORY">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </Attribute>
+  <Key
+    Name="SysC0043431">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0043431"/>
+      <Attr Name="_checkCondition" Value='"CODE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.lookups.ProjectCategory.Code"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0043432">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0043432"/>
+      <Attr Name="_checkCondition" Value='"NAME" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.lookups.ProjectCategory.Name"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0043433">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0043433"/>
+      <Attr Name="_checkCondition" Value='"IS_ACTIVE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.lookups.ProjectCategory.IsActive"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0043870">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0043870"/>
+      <Attr Name="_checkCondition" Value="is_active in (0,1)"/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.lookups.ProjectCategory.IsActive"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0043871"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0043871"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.lookups.ProjectCategory.Code"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0050518">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0050518"/>
+      <Attr Name="_checkCondition" Value='"IS_PROMIS" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.lookups.ProjectCategory.IsPromis"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0050519">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0050519"/>
+      <Attr Name="_checkCondition" Value="is_promis in (0,1)"/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.lookups.ProjectCategory.IsPromis"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="ProjectCatMaingroupCodeFk">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="MAINGROUP_PK"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="PROJECT_CAT_MAINGROUP_CODE_FK"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.lookups.ProjectCategory.MaingroupCode"/>
+    </AttrArray>
+  </Key>
+</Entity>

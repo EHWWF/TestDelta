@@ -1,0 +1,7 @@
+create or replace view combase_program_vw as
+select
+pr.xcl_code code,
+pr.xcl_name name,
+decode(pr.status,'ACTIVE',1,0) as is_active,
+pr.modify_date
+from bdo_program@combase_db pr;

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ProjectPlanningCode"
+  Version="12.2.1.0.31"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="PROJECT_PLANNING_CODE"
+  AliasName="ProjectPlanningCode"
+  BindingStyle="OracleName"
+  RowClass="com.bayer.ipms.model.base.IPMSEntityImpl">
+  <Attribute
+    Name="Code"
+    IsNotNull="true"
+    Type="java.lang.String"
+    ColumnName="CODE"
+    SQLType="VARCHAR"
+    ColumnType="NVARCHAR2"
+    TableName="PROJECT_PLANNING_CODE"
+    PrimaryKey="true"/>
+  <Attribute
+    Name="Name"
+    IsNotNull="true"
+    Type="java.lang.String"
+    ColumnName="NAME"
+    SQLType="VARCHAR"
+    ColumnType="NVARCHAR2"
+    TableName="PROJECT_PLANNING_CODE"/>
+  <Attribute
+    Name="IsActive"
+    IsNotNull="true"
+    ColumnName="IS_ACTIVE"
+    SQLType="NUMERIC"
+    Type="java.lang.Boolean"
+    ColumnType="BIT"
+    TableName="PROJECT_PLANNING_CODE"/>
+  <Attribute
+    Name="CreateDate"
+    IsNotNull="true"
+    ColumnName="CREATE_DATE"
+    SQLType="DATE"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    TableName="PROJECT_PLANNING_CODE"
+    IsUpdateable="while_insert"
+    HistoryColumn="DateHistory"/>
+  <Attribute
+    Name="UpdateDate"
+    IsNotNull="true"
+    ColumnName="UPDATE_DATE"
+    SQLType="DATE"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    TableName="PROJECT_PLANNING_CODE"
+    HistoryColumn="DateHistory"/>
+  <Key
+    Name="ProjectPcActiveChk">
+    <DesignTime>
+      <Attr Name="_checkCondition" Value="is_active in (0,1)"/>
+      <Attr Name="_isCheck" Value="true"/>
+      <Attr Name="_DBObjectName" Value="PROJECT_PC_ACTIVE_CHK"/>
+    </DesignTime>
+    <AttrArray Name="Attributes"/>
+  </Key>
+  <Key
+    Name="ProjectPcCodeCnn">
+    <DesignTime>
+      <Attr Name="_checkCondition" Value='"CODE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+      <Attr Name="_DBObjectName" Value="PROJECT_PC_CODE_CNN"/>
+    </DesignTime>
+    <AttrArray Name="Attributes"/>
+  </Key>
+  <Key
+    Name="ProjectPcCreateDateCnn">
+    <DesignTime>
+      <Attr Name="_checkCondition" Value='"CREATE_DATE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+      <Attr Name="_DBObjectName" Value="PROJECT_PC_CREATE_DATE_CNN"/>
+    </DesignTime>
+    <AttrArray Name="Attributes"/>
+  </Key>
+  <Key
+    Name="ProjectPcIsActiveCnn">
+    <DesignTime>
+      <Attr Name="_checkCondition" Value='"IS_ACTIVE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+      <Attr Name="_DBObjectName" Value="PROJECT_PC_IS_ACTIVE_CNN"/>
+    </DesignTime>
+    <AttrArray Name="Attributes"/>
+  </Key>
+  <Key
+    Name="ProjectPcNameCnn">
+    <DesignTime>
+      <Attr Name="_checkCondition" Value='"NAME" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+      <Attr Name="_DBObjectName" Value="PROJECT_PC_NAME_CNN"/>
+    </DesignTime>
+    <AttrArray Name="Attributes"/>
+  </Key>
+  <Key
+    Name="ProjectPcPk"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PROJECT_PC_PK"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.lookups.ProjectPlanningCode.Code"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="ProjectPcUpdateDateCnn">
+    <DesignTime>
+      <Attr Name="_checkCondition" Value='"UPDATE_DATE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+      <Attr Name="_DBObjectName" Value="PROJECT_PC_UPDATE_DATE_CNN"/>
+    </DesignTime>
+    <AttrArray Name="Attributes"/>
+  </Key>
+</Entity>

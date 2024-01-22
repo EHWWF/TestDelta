@@ -1,0 +1,355 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Wed Oct 21 10:27:54 EEST 2015
+  Author:  donatas
+  Type: BPEL 2.0 Process
+  Purpose: Asynchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="DeleteBaselines"
+         targetNamespace="http://xmlns.oracle.com/ipms_mw/ipms_soa/DeleteBaselines"
+         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:client="http://xmlns.oracle.com/ipms_mw/ipms_soa/DeleteBaselines"
+         xmlns:ora="http://schemas.oracle.com/xpath/extension"
+         xmlns:ui="http://xmlns.oracle.com/soa/designer"
+         xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:ns2="http://xmlns.bayer.com/ipms"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns1="http://xmlns.bayer.com/ipms/soa"
+         xmlns:ns3="http://xmlns.oracle.com/Primavera/P6/WS/BaselineProject/V2"
+         xmlns:ns4="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions" xmlns:ess="http://xmlns.oracle.com/scheduler"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:ns5="http://xmlns.oracle.com/Primavera/P6/WS/UDFValue/V1" xmlns:ns6="http://xmlns.bayer.com/ipms/cache"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <import namespace="http://xmlns.bayer.com/ipms/cache" location="oramds:/apps/com/bayer/xmlns/ipms/cache/cache.xsd"
+            importType="http://www.w3.org/2001/XMLSchema"/>
+    <import ui:processWSDL="true" namespace="http://xmlns.oracle.com/ipms_mw/ipms_soa/DeleteBaselines" location="../WSDLs/DeleteBaselines.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        PARTNERLINKS                                                      
+        List of services participating in this BPEL process               
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    --> 
+    <partnerLinks>
+        <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+        <partnerLink name="DeleteBaselines" partnerLinkType="client:DeleteBaselines" myRole="DeleteBaselinesProvider" partnerRole="DeleteBaselinesRequester"/>
+        <partnerLink name="BaselineProjectService" partnerLinkType="ns3:BaselineProjectService"
+                     partnerRole="BaselineProjectPortType"/>
+        <partnerLink name="ProjectService" partnerLinkType="ns4:ProjectService" partnerRole="ProjectPortType"/>
+        <partnerLink name="UDFValueService" partnerLinkType="ns5:UDFValueService" partnerRole="UDFValuePortType"/>
+        <partnerLink name="ReadConfiguration.ReadConfigurationService" partnerLinkType="ns1:ReadConfiguration"
+                     partnerRole="ReadConfigurationProvider" myRole="ReadConfigurationRequester"/>
+    </partnerLinks>
+
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        VARIABLES                                                        
+        List of messages and XML documents used within this BPEL process 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <variables>
+        <!-- Reference to the message passed as input during initiation -->
+        <variable name="inputVariable" messageType="client:DeleteBaselinesRequestMessage"/>
+
+        <!-- Reference to the message that will be sent back to the requester during callback -->
+        <variable name="outputVariable" messageType="client:DeleteBaselinesResponseMessage"/>
+        <variable name="ReadBaselineProjects_In" messageType="ns3:ReadBaselineProjects"/>
+        <variable name="ReadBaselineProjects_Out" messageType="ns3:ReadBaselineProjectsResponse"/>
+        <variable name="ReadProjects_In" messageType="ns4:ReadProjects"/>
+        <variable name="ReadProjects_Out" messageType="ns4:ReadProjectsResponse"/>
+        <variable name="DeleteBaselineProjects_In" messageType="ns3:DeleteBaselineProjects"/>
+        <variable name="DeleteBaselineProjects_Out" messageType="ns3:DeleteBaselineProjectsResponse"/>
+        <variable name="ReadAllBaselinesIn" messageType="ns3:ReadBaselineProjects"/>
+        <variable name="ReadAllBaselinesOut" messageType="ns3:ReadBaselineProjectsResponse"/>
+        <variable name="ReadAllLtcIdUDFsOut" messageType="ns5:ReadUDFValuesResponse"/>
+        <variable name="ReadAllLtcIdUDFIn" messageType="ns5:ReadUDFValues"/>
+        <variable name="ReadConfigIn" messageType="ns1:ReadConfigurationRequestMessage"/>
+        <variable name="ReadConfigOut" messageType="ns1:ReadConfigurationResponseMessage"/>
+        <variable name="loopCount" type="xsd:integer"/>
+        <variable name="DeleteBaselinesIn" messageType="ns3:DeleteBaselineProjects"/>
+        <variable name="DeleteBaselinesOut" messageType="ns3:DeleteBaselineProjectsResponse"/>
+    </variables>
+    <faultHandlers>
+        <catchAll>
+                <scope name="Fault">
+                <variables>
+                    <variable name="FaultVariableOut" messageType="client:DeleteBaselinesResponseMessage"/>
+                </variables>
+                <sequence>
+                        <assign name="error_Out">
+                        <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                            <from>$inputVariable.payload/@id</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$FaultVariableOut.payload/@id</to>
+                        </copy>
+                        <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                            <from>$inputVariable.payload/@compositeId</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$FaultVariableOut.payload/@compositeId</to>
+                        </copy>
+                        <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                            <from>$inputVariable.payload/@id</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$FaultVariableOut.payload/ns2:error/@id</to>
+                        </copy>
+                        <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                            <from>$inputVariable.payload/@compositeId</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$FaultVariableOut.payload/ns2:error/@compositeId</to>
+                        </copy>
+                        <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                            <from>ora:getFaultName()</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$FaultVariableOut.payload/ns2:error/ns2:code</to>
+                        </copy>
+                        <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                            <from>ora:getFaultAsString()</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$FaultVariableOut.payload/ns2:error/ns2:description</to>
+                        </copy>
+                    </assign>
+                        <invoke name="callbackClient" partnerLink="DeleteBaselines"
+                                portType="client:DeleteBaselinesCallback" operation="processResponse"
+                                inputVariable="FaultVariableOut"
+                                xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+                                bpelx:invokeAsDetail="no"/>
+                    </sequence>
+                </scope>
+        </catchAll>
+    </faultHandlers>
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+       ORCHESTRATION LOGIC                                               
+       Set of activities coordinating the flow of messages across the    
+       services integrated within this business process                  
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <sequence name="main">
+        <!-- Receive input from requestor. (Note: This maps to operation defined in DeleteBaselines.wsdl) -->
+        <receive name="receiveInput" partnerLink="DeleteBaselines" portType="client:DeleteBaselines" operation="process" variable="inputVariable" createInstance="yes"/>
+        <sequence name="ReadConfig">
+            <scope name="ReadConfigFile">
+                <variables>
+                    <variable name="VariableCache" element="ns6:cache"/>
+                </variables>
+                <faultHandlers>
+                    <catchAll>
+                        <empty name="Empty2"/>
+                    </catchAll>
+                </faultHandlers>
+                <sequence name="ReadFromFile">
+                    <assign name="AssignFromCache">
+                        <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                            <from>ora:readFile("file:///opt/oracle/soa12.2.1/file_adapter/ipms/config.cache", "oramds:/apps/com/bayer/xmlns/ipms/cache/cache.xsd")</from>
+                            <to>$VariableCache/ns6:cache</to>
+                        </copy>
+                        <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                            <from>$VariableCache/ns6:cache/*</from>
+                            <to>$ReadConfigOut.payload</to>
+                        </copy>
+                    </assign>
+                    <empty name="Empty1"/>
+                </sequence>
+            </scope>
+            <sequence name="SKIP-ReadConfig">
+                <bpelx:skipCondition>$ReadConfigOut.payload/ns1:program/ns1:epsId!=''</bpelx:skipCondition>
+                <assign name="AssignReadCOnfig">
+                    <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                        <from>"cfg"</from>
+                        <to>$ReadConfigIn.payload</to>
+                    </copy>
+                </assign>
+                <invoke name="ReadConfigIn" bpelx:invokeAsDetail="no"
+                        partnerLink="ReadConfiguration.ReadConfigurationService" portType="ns1:ReadConfiguration"
+                        operation="process" inputVariable="ReadConfigIn"/>
+                <receive name="ReadConfigOut" partnerLink="ReadConfiguration.ReadConfigurationService"
+                         portType="ns1:ReadConfigurationCallback" operation="callback" variable="ReadConfigOut"/>
+            </sequence>
+        </sequence>
+        <sequence name="ReadProject2GetPrjObjectId">
+            <assign name="ReadProject_In">
+                <copy>
+                    <from>concat("Id='", $inputVariable.payload/ns2:baselines/@timelineId, "'")</from>
+                    <to>$ReadProjects_In.params/ns4:Filter</to>
+                </copy>
+                <copy>
+                    <from>"Id"</from>
+                    <to>$ReadProjects_In.params/ns4:Field</to>
+                </copy>
+            </assign>
+            <invoke name="ReadProject" bpelx:invokeAsDetail="no" partnerLink="ProjectService"
+                    portType="ns4:ProjectPortType" operation="ReadProjects" inputVariable="ReadProjects_In"
+                    outputVariable="ReadProjects_Out"/>
+        </sequence>
+        <sequence name="PrjExists-SKIP-when-no-prj">
+            <bpelx:skipCondition expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">count($ReadProjects_Out.result/ns4:Project/ns4:ObjectId)=0</bpelx:skipCondition>
+            <sequence name="ReadAndDeleteBaselines">
+                <if name="IfAPRProject">
+                    <documentation>
+                        <![CDATA[APR-skip-deletion]]>
+                    </documentation>
+                    <condition expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">xp20:ends-with($inputVariable.payload/ns2:baselines/@timelineId,'-APR')</condition>
+                    <empty name="Empty3"/>
+                    <else>
+                        <sequence>
+                            <assign name="ReadBaselines_In">
+                                <copy bpelx:insertMissingToData="yes" ignoreMissingFromData="yes">
+                                    <from>concat('((BaselineTypeObjectId IS NULL or BaselineTypeObjectId in (',$ReadConfigOut.payload/ns1:baseline/ns1:baselineTypes/ns1:baselineType[ns1:name="Raw-Current Publication"]/@id,',',$ReadConfigOut.payload/ns1:baseline/ns1:baselineTypes/ns1:baselineType[ns1:name="Current-Approved Publication"]/@id,')) and OriginalProjectObjectId=', $ReadProjects_Out.result/ns4:Project/ns4:ObjectId,')')</from>
+                                    <to>$ReadBaselineProjects_In.params/ns3:Filter</to>
+                                </copy>
+                                <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                    <from>'CreateDate DESC'</from>
+                                    <to>$ReadBaselineProjects_In.params/ns3:OrderBy</to>
+                                </copy>
+                                <copy bpelx:insertMissingToData="yes" ignoreMissingFromData="yes">
+                                    <from>"CreateDate"</from>
+                                    <to>$ReadBaselineProjects_In.params/ns3:Field[1]</to>
+                                </copy>
+                                <copy bpelx:insertMissingToData="yes" ignoreMissingFromData="yes">
+                                    <from>"Name"</from>
+                                    <to>$ReadBaselineProjects_In.params/ns3:Field[2]</to>
+                                </copy>
+                                <copy bpelx:insertMissingToData="yes" ignoreMissingFromData="yes">
+                                    <from>'Id'</from>
+                                    <to>$ReadBaselineProjects_In.params/ns3:Field[3]</to>
+                                </copy>
+                            </assign>
+                            <invoke name="ReadBaselines" bpelx:invokeAsDetail="no" partnerLink="BaselineProjectService"
+                                    portType="ns3:BaselineProjectPortType" operation="ReadBaselineProjects"
+                                    inputVariable="ReadBaselineProjects_In" outputVariable="ReadBaselineProjects_Out"/>
+                            <assign name="DeleteBaselines_In">
+                                <bpelx:annotation>
+                                    <bpelx:pattern patternName="bpelx:transformation"></bpelx:pattern>
+                                </bpelx:annotation>
+                                <copy>
+                                    <from>ora:doXSLTransformForDoc("../xsl/DeleteBaselines.xsl", $ReadBaselineProjects_Out.result)</from>
+                                    <to variable="DeleteBaselineProjects_In" part="params"/>
+                                </copy>
+                            </assign>
+                            <assign name="AssignDeleteCount">
+                                <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                    <from>count($DeleteBaselineProjects_In.params/ns3:ObjectId)</from>
+                                    <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$loopCount</to>
+                                </copy>
+                            </assign>
+                            <if name="IfCount">
+                                <documentation>
+                                    <![CDATA[TheListExists]]>
+                                </documentation>
+                                <condition expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$loopCount&gt;0</condition>
+                                <sequence name="LoopForDeleting">
+                                    <while name="WhileCount">
+                                        <condition expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">($loopCount)&gt;0</condition>
+                                        <sequence name="LoopDelete">
+                                            <assign name="AssignDeleteOne">
+                                                <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                                    <from>$DeleteBaselineProjects_In.params/ns3:ObjectId[$loopCount]</from>
+                                                    <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$DeleteBaselinesIn.params/ns3:ObjectId</to>
+                                                </copy>
+                                            </assign>
+                                            <invoke name="DeleteBaselines" partnerLink="BaselineProjectService"
+                                                    portType="ns3:BaselineProjectPortType"
+                                                    operation="DeleteBaselineProjects" inputVariable="DeleteBaselinesIn"
+                                                    outputVariable="DeleteBaselinesOut" bpelx:invokeAsDetail="no"/>
+                                            <if name="IfTrue">
+                                                <documentation>
+                                                    <![CDATA[Deleted]]>
+                                                </documentation>
+                                                <condition expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$DeleteBaselinesOut.result/ns3:Return=true()</condition>
+                                                <empty name="Empty4"/>
+                                                <else>
+                                                    <empty name="Empty5"/>
+                                                </else>
+                                            </if>
+                                            <assign name="AssignLoopMinus">
+                                                <copy>
+                                                    <from>($loopCount)-1</from>
+                                                    <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$loopCount</to>
+                                                </copy>
+                                            </assign>
+                                        </sequence>
+                                    </while>
+                                </sequence>
+                                <else>
+                                    <empty name="Empty7"/>
+                                </else>
+                            </if>
+                        </sequence>
+                    </else>
+                </if>
+            </sequence>
+            <sequence name="ReadAllBaselines">
+                <sequence name="Baselines">
+                    <assign name="AssignReadAllBaselines">
+                        <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                            <from>concat("OriginalProjectObjectId=", $ReadProjects_Out.result/ns4:Project/ns4:ObjectId)</from>
+                            <to>$ReadAllBaselinesIn.params/ns3:Filter</to>
+                        </copy>
+                        <copy bpelx:insertMissingToData="yes" ignoreMissingFromData="yes">
+                            <from>"BaselineTypeObjectId"</from>
+                            <to>$ReadAllBaselinesIn.params/ns3:Field[1]</to>
+                        </copy>
+                        <copy bpelx:insertMissingToData="yes" ignoreMissingFromData="yes">
+                            <from>"CreateDate"</from>
+                            <to>$ReadAllBaselinesIn.params/ns3:Field[2]</to>
+                        </copy>
+                        <copy bpelx:insertMissingToData="yes" ignoreMissingFromData="yes">
+                            <from>"Description"</from>
+                            <to>$ReadAllBaselinesIn.params/ns3:Field[3]</to>
+                        </copy>
+                        <copy bpelx:insertMissingToData="yes" ignoreMissingFromData="yes">
+                            <from>"Name"</from>
+                            <to>$ReadAllBaselinesIn.params/ns3:Field[4]</to>
+                        </copy>
+                    </assign>
+                    <invoke name="ReadAllBaselines" bpelx:invokeAsDetail="no" partnerLink="BaselineProjectService"
+                            portType="ns3:BaselineProjectPortType" operation="ReadBaselineProjects"
+                            inputVariable="ReadAllBaselinesIn" outputVariable="ReadAllBaselinesOut"/>
+                    <empty name="Empty6"/>
+                </sequence>
+                <sequence name="SKIP-UDFs">
+                    <bpelx:skipCondition>count($ReadAllBaselinesOut.result/ns3:BaselineProject)=0</bpelx:skipCondition>
+                    <assign name="AssignReadLtcIdUDFs">
+                        <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                            <from>concat('ForeignObjectId in (',oraext:create-delimited-string($ReadAllBaselinesOut.result/ns3:BaselineProject/ns3:ObjectId,','),') and UDFTypeObjectId=',$ReadConfigOut.payload/ns1:baseline/ns1:ltcIdTypeId)</from>
+                            <to>$ReadAllLtcIdUDFIn.params/ns5:Filter</to>
+                        </copy>
+                        <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                            <from>"Text"</from>
+                            <to>$ReadAllLtcIdUDFIn.params/ns5:Field[1]</to>
+                        </copy>
+                        <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                            <from>"ForeignObjectId"</from>
+                            <to>$ReadAllLtcIdUDFIn.params/ns5:Field[2]</to>
+                        </copy>
+                    </assign>
+                    <invoke name="ReadAllLtcIdUDFs" partnerLink="UDFValueService" portType="ns5:UDFValuePortType"
+                            operation="ReadUDFValues" inputVariable="ReadAllLtcIdUDFIn"
+                            outputVariable="ReadAllLtcIdUDFsOut" bpelx:invokeAsDetail="no"/>
+                    <assign name="TransReadAll">
+                        <bpelx:annotation>
+                            <bpelx:pattern patternName="bpelx:transformation"></bpelx:pattern>
+                        </bpelx:annotation>
+                        <copy>
+                            <from>ora:doXSLTransformForDoc("../xsl/DeleteBaselinesReadAll.xsl", $inputVariable.payload, "ReadAllBaselinesOut.result", $ReadAllBaselinesOut.result, "ReadAllLtcIdUDFsOut.result", $ReadAllLtcIdUDFsOut.result)</from>
+                            <to variable="outputVariable" part="payload"/>
+                        </copy>
+                    </assign>
+                </sequence>
+            </sequence>
+        </sequence>
+        <!-- 
+          Asynchronous callback to the requester. (Note: the callback location and correlation id is transparently handled using WS-addressing.)
+        -->
+        <invoke name="callbackClient" partnerLink="DeleteBaselines" portType="client:DeleteBaselinesCallback" operation="processResponse" inputVariable="outputVariable"/>
+    </sequence>
+</process>

@@ -1,0 +1,1 @@
+alter table project add (ptr_for_d3_code nvarchar2(10) references phase_transition_d3(code));

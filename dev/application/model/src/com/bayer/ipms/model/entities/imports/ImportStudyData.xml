@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ImportStudyData"
+  Version="11.1.1.64.93"
+  InheritPersonalization="true"
+  DBObjectType="table"
+  DBObjectName="IMPORT_STUDY_DATA"
+  AliasName="ImportStudyData"
+  BindingStyle="OracleName"
+  UseGlueCode="false"
+  RowClass="com.bayer.ipms.model.base.IPMSEntityImpl">
+  <DesignTime>
+    <AttrArray Name="_publishEvents"/>
+  </DesignTime>
+  <Attribute
+    Name="ImportId"
+    IsNotNull="true"
+    Precision="20"
+    Scale="0"
+    ColumnName="IMPORT_ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="IMPORT_STUDY_DATA"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="ProjectId"
+    IsNotNull="true"
+    Precision="20"
+    Scale="0"
+    ColumnName="PROJECT_ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="IMPORT_STUDY_DATA"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="StudyId"
+    IsNotNull="true"
+    Precision="20"
+    Scale="0"
+    ColumnName="STUDY_ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="IMPORT_STUDY_DATA"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="WbsId"
+    Precision="20"
+    Scale="0"
+    ColumnName="WBS_ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="IMPORT_STUDY_DATA">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="Name"
+    IsNotNull="true"
+    Precision="100"
+    Scale="0"
+    ColumnName="NAME"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="IMPORT_STUDY_DATA">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="StartDate"
+    ColumnName="START_DATE"
+    SQLType="TIMESTAMP"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    TableName="IMPORT_STUDY_DATA">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="7"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="FinishDate"
+    ColumnName="FINISH_DATE"
+    SQLType="TIMESTAMP"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    TableName="IMPORT_STUDY_DATA">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="7"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="Placeholder"
+    ColumnName="PLACEHOLDER"
+    SQLType="NUMERIC"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    TableName="IMPORT_STUDY_DATA">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="StatusCode"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="STATUS_CODE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="IMPORT_STUDY_DATA">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="StatusDescription"
+    Precision="500"
+    Scale="0"
+    ColumnName="STATUS_DESCRIPTION"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="IMPORT_STUDY_DATA">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="500"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="CreateDate"
+    IsNotNull="true"
+    ColumnName="CREATE_DATE"
+    SQLType="TIMESTAMP"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    TableName="IMPORT_STUDY_DATA">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="7"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="ActionCode"
+    Precision="80"
+    ColumnName="ACTION_CODE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="IMPORT_STUDY_DATA"/>
+  <Attribute
+    Name="OldFinishDate"
+    ColumnName="OLD_FINISH_DATE"
+    SQLType="TIMESTAMP"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    TableName="IMPORT_STUDY_DATA">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="7"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="OldStartDate"
+    ColumnName="OLD_START_DATE"
+    SQLType="TIMESTAMP"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    TableName="IMPORT_STUDY_DATA">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="7"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="IsExisting"
+    ColumnName="IS_EXISTING"
+    SQLType="NUMERIC"
+    Type="java.lang.Boolean"
+    ColumnType="BIT"
+    TableName="IMPORT_STUDY_DATA">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </Attribute>
+  <AccessorAttribute
+    Name="ImportAction"
+    Association="com.bayer.ipms.model.entities.assoc.ImportStudyDataAction"
+    AssociationEnd="com.bayer.ipms.model.entities.assoc.ImportStudyDataAction.ImportAction"
+    AssociationOtherEnd="com.bayer.ipms.model.entities.assoc.ImportStudyDataAction.ImportStudyData"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <AccessorAttribute
+    Name="ImportStatus"
+    Association="com.bayer.ipms.model.entities.assoc.ImportStudyDataStatus"
+    AssociationEnd="com.bayer.ipms.model.entities.assoc.ImportStudyDataStatus.ImportStatus"
+    AssociationOtherEnd="com.bayer.ipms.model.entities.assoc.ImportStudyDataStatus.ImportStudyData"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <Key
+    Name="SysC0054201">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0054201"/>
+      <Attr Name="_checkCondition" Value='"IMPORT_ID" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.imports.ImportStudyData.ImportId"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0054202">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0054202"/>
+      <Attr Name="_checkCondition" Value='"PROJECT_ID" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.imports.ImportStudyData.ProjectId"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0054203">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0054203"/>
+      <Attr Name="_checkCondition" Value='"STUDY_ID" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.imports.ImportStudyData.StudyId"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0054204">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0054204"/>
+      <Attr Name="_checkCondition" Value='"NAME" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.imports.ImportStudyData.Name"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0054205">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0054205"/>
+      <Attr Name="_checkCondition" Value='"STATUS_CODE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.imports.ImportStudyData.StatusCode"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0054206">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0054206"/>
+      <Attr Name="_checkCondition" Value='"CREATE_DATE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.imports.ImportStudyData.CreateDate"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0054207"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0054207"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.imports.ImportStudyData.ProjectId"/>
+      <Item
+        Value="com.bayer.ipms.model.entities.imports.ImportStudyData.ImportId"/>
+      <Item
+        Value="com.bayer.ipms.model.entities.imports.ImportStudyData.StudyId"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0054208">
+    <DesignTime>
+      <Attr Name="_isCascadeDelete" Value="true"/>
+      <Attr Name="_referencedKey" Value="SYS_C0043944"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0054208"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.imports.ImportStudyData.ImportId"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0054209">
+    <DesignTime>
+      <Attr Name="_isCascadeDelete" Value="true"/>
+      <Attr Name="_referencedKey" Value="SYS_C0043880"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0054209"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.imports.ImportStudyData.ProjectId"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0054210">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0043901"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0054210"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.imports.ImportStudyData.StatusCode"/>
+    </AttrArray>
+  </Key>
+</Entity>

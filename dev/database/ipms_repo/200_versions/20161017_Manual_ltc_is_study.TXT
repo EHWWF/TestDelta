@@ -1,0 +1,35 @@
+declare
+	v_where nvarchar2(111):='manual.cost_ltc_fct.ltci_id update';
+	v_rowcount number:=0;
+	v_timeline_id nvarchar2(55);
+begin
+	for rr in (select ltci_id,is_study,count(1) from cost_ltc_fct group by ltci_id,is_study order by ltci_id,is_study) 
+	loop
+		begin
+			select timeline_id into v_timeline_id from cost_ltc_fct where ltci_id=rr.ltci_id and timeline_id is not null and rownum=1;
+			
+			-- Mark nodes which have ancestors with study ID not null
+			merge into ipms_repo.cost_ltc_fct fct
+			using (
+				select
+					tws.timeline_id,
+					tws.parent_wbs_id,
+					tws.wbs_id
+					--,tws.study_id,level
+				from ipms_data.timeline_wbs tws
+				where tws.timeline_id=v_timeline_id
+				start with tws.study_id is not null
+				connect by prior tws.wbs_id=tws.parent_wbs_id 
+			  ) tw on (fct.wbs_id=tw.wbs_id and fct.ltci_id = rr.ltci_id)
+			when matched then update set fct.is_study=1;
+			
+		v_rowcount:=sql%rowcount;		
+		ipms_data.log_pkg.log(v_where, 'v_timeline_id='||v_timeline_id||';ltci_id='||rr.ltci_id||';v_rowcount='||v_rowcount,'Updated.is_study.');
+			
+		exception when others then
+			ipms_data.log_pkg.log(v_where, 'v_timeline_id='||v_timeline_id||';is_study;ltci_id='||rr.ltci_id||';rowcount='||v_rowcount, sqlerrm);
+		end;
+		commit;
+		--exit;
+	end loop;
+end;

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.64.93"
+                id="maintain_generic_timelines_maintain_generic_timelines_recalculateGenericTimelinesPageDef"
+                Package="com.bayer.ipms.view.pageDefs" SkipValidation="true">
+  <parameters/>
+  <executables/>
+  <bindings>
+    <action id="recalculateGenericTimelines" RequiresUpdateModel="true"
+            Action="invokeMethod" MethodName="recalculateGenericTimelines"
+            IsViewObjectMethod="true" DataControl="PrivateAppModuleDataControl"
+            InstanceName="PrivateAppModuleDataControl.dataProvider.Root.ManagementAppModule.ProjectGTView"/>
+  </bindings>
+</pageDefinition>

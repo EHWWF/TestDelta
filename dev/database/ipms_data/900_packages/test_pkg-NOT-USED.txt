@@ -1,0 +1,43 @@
+create or replace package test_pkg as
+
+	procedure setup;
+	procedure teardown;
+	procedure send;
+
+end;
+/
+create or replace
+package body test_pkg as
+
+	/*************************************************************************/
+	procedure setup as
+	begin
+		dbms_scheduler.create_job (
+			job_name => 'test_job',
+			job_type => 'plsql_block',
+			job_action => 'begin test_pkg.send; commit; end;',
+			start_date => sysdate+1/1440,
+			repeat_interval => 'freq=minutely; interval=1;',
+			end_date => null,
+			enabled => true,
+			comments => 'Job defined entirely by the create job procedure.');
+	end;
+
+	/*************************************************************************/
+	procedure teardown as
+	begin
+		dbms_scheduler.stop_job (
+			job_name => 'test_job',
+			force => true,
+			commit_semantics => 'ABSORB_ERRORS');
+	end;
+
+	/*************************************************************************/
+	procedure send as
+		msgid nvarchar2(20);
+	begin
+		msgid := message_pkg.send('test', xmltype('<test '||message_pkg.xmlns_ipms_soa||'/>'), null);
+	end;
+
+end;
+/

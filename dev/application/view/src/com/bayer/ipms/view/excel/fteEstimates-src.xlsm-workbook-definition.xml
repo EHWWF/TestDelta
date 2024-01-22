@@ -1,0 +1,1491 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<workbook id="8cae984a-052e-4b49-b32f-f761a85c89b6" schema-version="1" xmlns="http://xmlns.oracle.com/adf/desktopintegration/workbook">
+  <!--source-document="fteEstimates.xlsm" client-version="4.2.0.13155"-->
+  <remote-servlet-path>/adfdiRemoteServlet</remote-servlet-path>
+  <web-app-root></web-app-root>
+  <application-home-folder></application-home-folder>
+  <web-pages-folder></web-pages-folder>
+  <runtime-ribbon-tab>
+    <title>MyWorkbook</title>
+    <command-list>
+      <command method="Login" />
+      <command method="Logout" />
+      <command method="ViewAboutDialog" />
+      <command method="ToggleStatusViewer" />
+    </command-list>
+  </runtime-ribbon-tab>
+  <parameter-list>
+    <parameter>
+      <id>tagId</id>
+    </parameter>
+    <parameter>
+      <id>projectId</id>
+    </parameter>
+    <parameter>
+      <id>programId</id>
+    </parameter>
+    <parameter>
+      <id>processId</id>
+    </parameter>
+    <parameter>
+      <id>scn</id>
+    </parameter>
+  </parameter-list>
+  <worksheet-list>
+    <worksheet name="FTE Estimate">
+      <event-list>
+        <event type="Startup">
+          <action-set>
+            <action-list>
+              <server-action>
+                <action-id>initLtcExcelForm</action-id>
+              </server-action>
+              <server-action>
+                <action-id>setup</action-id>
+              </server-action>
+              <server-action>
+                <action-id>ExecuteWithParamsLtcEstimate</action-id>
+              </server-action>
+              <component-action>
+                <component-id>TAB389210675</component-id>
+                <action>Download</action>
+              </component-action>
+              <server-action>
+                <action-id>removeFakeRow</action-id>
+              </server-action>
+              <component-action>
+                <component-id>TAB389210675</component-id>
+                <action>Download</action>
+              </component-action>
+              <worksheet-action>
+                <method>DownSync</method>
+              </worksheet-action>
+            </action-list>
+          </action-set>
+        </event>
+      </event-list>
+      <ribbon-command-list>
+        <ribbon-command id="MEN969676561">
+          <select-action-set>
+            <action-list>
+              <server-action>
+                <action-id>ExecuteWithParamsLtcEstimate</action-id>
+              </server-action>
+              <component-action>
+                <component-id>TAB389210675</component-id>
+                <action>Download</action>
+              </component-action>
+              <server-action>
+                <action-id>removeFakeRow</action-id>
+              </server-action>
+              <component-action>
+                <component-id>TAB389210675</component-id>
+                <action>Download</action>
+              </component-action>
+              <worksheet-action>
+                <method>DownSync</method>
+              </worksheet-action>
+            </action-list>
+          </select-action-set>
+          <label>Refresh Data</label>
+          <image>Download</image>
+        </ribbon-command>
+        <ribbon-command id="MEN1754339055">
+          <select-action-set>
+            <action-list>
+              <server-action>
+                <action-id>ExecuteWithParamsLtcEstimate</action-id>
+              </server-action>
+              <component-action>
+                <component-id>TAB389210675</component-id>
+                <action>DeleteFlaggedRows</action>
+              </component-action>
+              <component-action>
+                <component-id>TAB389210675</component-id>
+                <action>Upload</action>
+              </component-action>
+              <server-action>
+                <action-id>commitFte</action-id>
+              </server-action>
+            </action-list>
+          </select-action-set>
+          <label>Upload Data</label>
+          <image>Upload</image>
+        </ribbon-command>
+      </ribbon-command-list>
+      <pagedef-usage-id>com_bayer_ipms_view_ltc_ltcEstimatePageDef</pagedef-usage-id>
+      <parameter-list>
+        <parameter>
+          <value>#{workbook.params.tagId}</value>
+          <pagedef-param-id>tagId</pagedef-param-id>
+        </parameter>
+        <parameter>
+          <value>#{workbook.params.projectId}</value>
+          <pagedef-param-id>projectId</pagedef-param-id>
+        </parameter>
+        <parameter>
+          <value>#{workbook.params.programId}</value>
+          <pagedef-param-id>programId</pagedef-param-id>
+        </parameter>
+        <parameter>
+          <value>#{workbook.params.processId}</value>
+          <pagedef-param-id>processId</pagedef-param-id>
+        </parameter>
+        <parameter>
+          <value>FTE</value>
+          <pagedef-param-id>type</pagedef-param-id>
+        </parameter>
+      </parameter-list>
+      <protection>
+        <mode>Automatic</mode>
+        <password>oprisk123</password>
+      </protection>
+      <component-list>
+        <table-component id="TAB389210675" origin="B10">
+          <tree-id>LtcEstimateView</tree-id>
+          <column-list>
+            <column id="_ADF_FlagColumn">
+              <update-component>
+                <output-text />
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>Delete</header-label>
+              <cell-style>Indicator Cell</cell-style>
+            </column>
+            <column id="ProgramName">
+              <update-component>
+                <tree-node-list>
+                  <list>#{row.bindings.ProgramName.inputValue}</list>
+                  <depends-on-list>#{row.bindings.LtcProjectId.inputValue}</depends-on-list>
+                  <read-only>#{bindings.LtcEstimateView.hints.ProgramName.readOnly}</read-only>
+                </tree-node-list>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader1</header-style>
+              <header-label>#{bindings.LtcEstimateView.hints.ProgramName.label}</header-label>
+              <cell-style>Data Cell</cell-style>
+              <tooltip>#{bindings.LtcEstimateView.hints.ProgramName.tooltip}</tooltip>
+            </column>
+            <column id="ProjectCode">
+              <update-component>
+                <tree-node-list>
+                  <list>#{row.bindings.LtcProjectId.inputValue}</list>
+                  <read-only>#{bindings.LtcEstimateView.hints.LtcProjectId.readOnly}</read-only>
+                </tree-node-list>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>#{bindings.LtcEstimateView.hints.LtcProjectId.label}</header-label>
+              <cell-style>Data Cell</cell-style>
+              <tooltip>#{bindings.LtcEstimateView.hints.LtcProjectId.tooltip}</tooltip>
+            </column>
+            <column id="ProjectName">
+              <update-component>
+                <tree-node-list>
+                  <list>#{row.bindings.ProjectName.inputValue}</list>
+                  <depends-on-list>#{row.bindings.LtcProjectId.inputValue}</depends-on-list>
+                  <read-only>#{bindings.LtcEstimateView.hints.ProjectName.readOnly}</read-only>
+                </tree-node-list>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader1</header-style>
+              <header-label>#{bindings.LtcEstimateView.hints.ProjectName.label}</header-label>
+              <cell-style>Data Cell</cell-style>
+              <tooltip>#{bindings.LtcEstimateView.hints.ProjectName.tooltip}</tooltip>
+            </column>
+            <column id="ProjectPhase">
+              <update-component>
+                <input-text>
+                  <value>=T("=setValidation()")</value>
+                  <read-only>False</read-only>
+                </input-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>#{bindings.LtcEstimateView.hints.ProjectPhaseCode.label}</header-label>
+              <cell-style>Data Cell</cell-style>
+              <tooltip>#{bindings.LtcEstimateView.hints.ProjectPhaseCode.tooltip}</tooltip>
+            </column>
+            <column id="StudyPhaseCode">
+              <update-component>
+                <tree-node-list>
+                  <list>#{row.bindings.StudyPhaseCode.inputValue}</list>
+                  <depends-on-list>#{row.bindings.StudyId.inputValue}</depends-on-list>
+                  <read-only>#{bindings.LtcEstimateView.hints.StudyPhaseCode.readOnly}</read-only>
+                </tree-node-list>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader1</header-style>
+              <header-label>#{bindings.LtcEstimateView.hints.StudyPhaseCode.label}</header-label>
+              <cell-style>Data Cell</cell-style>
+              <tooltip>#{bindings.LtcEstimateView.hints.StudyPhaseCode.tooltip}</tooltip>
+            </column>
+            <column id="StudyId">
+              <update-component>
+                <tree-node-list>
+                  <list>#{row.bindings.StudyId.inputValue}</list>
+                  <depends-on-list>#{row.bindings.LtcProjectId.inputValue}</depends-on-list>
+                  <read-only>#{bindings.LtcEstimateView.hints.StudyId.readOnly}</read-only>
+                </tree-node-list>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>#{bindings.LtcEstimateView.hints.StudyId.label}</header-label>
+              <cell-style>Data Cell</cell-style>
+              <tooltip>#{bindings.LtcEstimateView.hints.StudyId.tooltip}</tooltip>
+            </column>
+            <column id="StudyName">
+              <update-component>
+                <tree-node-list>
+                  <list>#{row.bindings.StudyName.inputValue}</list>
+                  <depends-on-list>#{row.bindings.StudyId.inputValue}</depends-on-list>
+                  <read-only>#{bindings.LtcEstimateView.hints.StudyName.readOnly}</read-only>
+                </tree-node-list>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader1</header-style>
+              <header-label>#{bindings.LtcEstimateView.hints.StudyName.label}</header-label>
+              <cell-style>Data Cell</cell-style>
+              <tooltip>#{bindings.LtcEstimateView.hints.StudyName.tooltip}</tooltip>
+            </column>
+            <column id="StudyFpfv">
+              <update-component>
+                <tree-node-list>
+                  <list>#{row.bindings.StudyFpfv.inputValue}</list>
+                  <depends-on-list>#{row.bindings.StudyId.inputValue}</depends-on-list>
+                  <read-only>#{bindings.LtcEstimateView.hints.StudyFpfv.readOnly}</read-only>
+                </tree-node-list>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader1</header-style>
+              <header-label>#{bindings.LtcEstimateView.hints.StudyFpfv.label}</header-label>
+              <cell-style>ltcDateValueCell</cell-style>
+              <tooltip>#{bindings.LtcEstimateView.hints.StudyFpfv.tooltip}</tooltip>
+            </column>
+            <column id="StudyLplv">
+              <update-component>
+                <tree-node-list>
+                  <list>#{row.bindings.StudyLplv.inputValue}</list>
+                  <depends-on-list>#{row.bindings.StudyId.inputValue}</depends-on-list>
+                  <read-only>#{bindings.LtcEstimateView.hints.StudyLplv.readOnly}</read-only>
+                </tree-node-list>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader1</header-style>
+              <header-label>#{bindings.LtcEstimateView.hints.StudyLplv.label}</header-label>
+              <cell-style>ltcDateValueCell</cell-style>
+              <tooltip>#{bindings.LtcEstimateView.hints.StudyLplv.tooltip}</tooltip>
+            </column>
+            <column id="TopFunctionCode">
+              <update-component>
+                <tree-node-list>
+                  <list>#{row.bindings.TopFunctionName.inputValue}</list>
+                  <depends-on-list>#{row.bindings.FunctionCode.inputValue}</depends-on-list>
+                  <read-only>#{bindings.LtcEstimateView.hints.TopFunctionName.readOnly}</read-only>
+                </tree-node-list>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader1</header-style>
+              <header-label>#{bindings.LtcEstimateView.hints.TopFunctionName.label}</header-label>
+              <cell-style>Data Cell</cell-style>
+              <tooltip>#{bindings.LtcEstimateView.hints.TopFunctionName.tooltip}</tooltip>
+            </column>
+            <column id="FunctionName">
+              <update-component>
+                <tree-node-list>
+                  <list>#{row.bindings.FunctionCode.inputValue}</list>
+                  <read-only>#{bindings.LtcEstimateView.hints.FunctionCode.readOnly}</read-only>
+                </tree-node-list>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>#{bindings.LtcEstimateView.hints.FunctionCode.label}</header-label>
+              <cell-style>Data Cell</cell-style>
+              <tooltip>#{bindings.LtcEstimateView.hints.FunctionCode.tooltip}</tooltip>
+            </column>
+            <column id="Comments">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.Comments.inputValue}</value>
+                  <read-only>#{bindings.LtcEstimateView.hints.Comments.readOnly}</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>#{bindings.LtcEstimateView.hints.Comments.label}</header-label>
+              <cell-style>Data Cell</cell-style>
+              <tooltip>#{bindings.LtcEstimateView.hints.Comments.tooltip}</tooltip>
+            </column>
+            <column id="LtY1Cost">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.LtY1Cost.inputValue}</value>
+                  <read-only>=IF(#{row.bindings.IsExternalFte.inputValue}=0,"False","True")</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>#{bindings.StartYear} FTE</header-label>
+              <cell-style>ltcValueCell</cell-style>
+            </column>
+            <column id="LtY2Cost">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.LtY2Cost.inputValue}</value>
+                  <read-only>=IF(#{row.bindings.IsExternalFte.inputValue}=0,"False","True")</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>=concatenate(#{bindings.StartYear}+1," FTE")</header-label>
+              <cell-style>ltcValueCell</cell-style>
+            </column>
+            <column id="LtY3Cost">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.LtY3Cost.inputValue}</value>
+                  <read-only>=IF(#{row.bindings.IsExternalFte.inputValue}=0,"False","True")</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>=concatenate(#{bindings.StartYear}+2," FTE")</header-label>
+              <cell-style>ltcValueCell</cell-style>
+            </column>
+            <column id="LtY4Cost">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.LtY4Cost.inputValue}</value>
+                  <read-only>=IF(#{row.bindings.IsExternalFte.inputValue}=0,"False","True")</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>=concatenate(#{bindings.StartYear}+3," FTE")</header-label>
+              <cell-style>ltcValueCell</cell-style>
+            </column>
+            <column id="LtY5Cost">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.LtY5Cost.inputValue}</value>
+                  <read-only>=IF(#{row.bindings.IsExternalFte.inputValue}=0,"False","True")</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>=concatenate(#{bindings.StartYear}+4," FTE")</header-label>
+              <cell-style>ltcValueCell</cell-style>
+            </column>
+            <column id="LtY6Cost">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.LtY6Cost.inputValue}</value>
+                  <read-only>=IF(#{row.bindings.IsExternalFte.inputValue}=0,"False","True")</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>=concatenate(#{bindings.StartYear}+5," FTE")</header-label>
+              <cell-style>ltcValueCell</cell-style>
+            </column>
+            <column id="LtY7Cost">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.LtY7Cost.inputValue}</value>
+                  <read-only>=IF(#{row.bindings.IsExternalFte.inputValue}=0,"False","True")</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>=concatenate(#{bindings.StartYear}+6," FTE")</header-label>
+              <cell-style>ltcValueCell</cell-style>
+            </column>
+            <column id="LtY8Cost">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.LtY8Cost.inputValue}</value>
+                  <read-only>=IF(#{row.bindings.IsExternalFte.inputValue}=0,"False","True")</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>=concatenate(#{bindings.StartYear}+7," FTE")</header-label>
+              <cell-style>ltcValueCell</cell-style>
+            </column>
+            <column id="LtY9Cost">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.LtY9Cost.inputValue}</value>
+                  <read-only>=IF(#{row.bindings.IsExternalFte.inputValue}=0,"False","True")</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>=concatenate(#{bindings.StartYear}+8," FTE")</header-label>
+              <cell-style>ltcValueCell</cell-style>
+            </column>
+            <column id="LtY10Cost">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.LtY10Cost.inputValue}</value>
+                  <read-only>=IF(#{row.bindings.IsExternalFte.inputValue}=0,"False","True")</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>=concatenate(#{bindings.StartYear}+9," FTE")</header-label>
+              <cell-style>ltcValueCell</cell-style>
+            </column>
+            <column id="LtY11Cost">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.LtY11Cost.inputValue}</value>
+                  <read-only>=IF(#{row.bindings.IsExternalFte.inputValue}=0,"False","True")</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>=concatenate(#{bindings.StartYear}+10," FTE")</header-label>
+              <cell-style>ltcValueCell</cell-style>
+            </column>
+            <column id="LtY12Cost">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.LtY12Cost.inputValue}</value>
+                  <read-only>=IF(#{row.bindings.IsExternalFte.inputValue}=0,"False","True")</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>=concatenate(#{bindings.StartYear}+11," FTE")</header-label>
+              <cell-style>ltcValueCell</cell-style>
+            </column>
+            <column id="LtY13Cost">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.LtY13Cost.inputValue}</value>
+                  <read-only>=IF(#{row.bindings.IsExternalFte.inputValue}=0,"False","True")</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>=concatenate(#{bindings.StartYear}+12," FTE")</header-label>
+              <cell-style>ltcValueCell</cell-style>
+            </column>
+            <column id="LtY14Cost">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.LtY14Cost.inputValue}</value>
+                  <read-only>=IF(#{row.bindings.IsExternalFte.inputValue}=0,"False","True")</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>=concatenate(#{bindings.StartYear}+13," FTE")</header-label>
+              <cell-style>ltcValueCell</cell-style>
+            </column>
+            <column id="LtY15Cost">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.LtY15Cost.inputValue}</value>
+                  <read-only>=IF(#{row.bindings.IsExternalFte.inputValue}=0,"False","True")</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>=concatenate(#{bindings.StartYear}+14," FTE")</header-label>
+              <cell-style>ltcValueCell</cell-style>
+            </column>
+            <column id="_ADF_ChangedColumn">
+              <update-component>
+                <output-text />
+              </update-component>
+              <visible>True</visible>
+              <header-style>Column Header</header-style>
+              <header-label>#{_ADFDIres['COMPONENTS_TABLE_CHANGED_COL_LABEL']}</header-label>
+              <cell-style>Indicator Cell</cell-style>
+            </column>
+            <column id="_ADF_StatusColumn">
+              <update-component>
+                <output-text>
+                  <double-click-action-set>
+                    <status enabled="false" />
+                    <action-list>
+                      <component-action>
+                        <component-id>TAB389210675</component-id>
+                        <action>DisplayRowErrors</action>
+                      </component-action>
+                    </action-list>
+                  </double-click-action-set>
+                </output-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>Column Header</header-style>
+              <header-label>#{_ADFDIres['COMPONENTS_TABLE_STATUS_COL_LABEL']}</header-label>
+              <cell-style>Status Cell</cell-style>
+            </column>
+            <column id="_ADF_RowKeyColumn">
+              <update-component>
+                <output-text />
+              </update-component>
+              <resize-mode>SpecifiedWidth</resize-mode>
+              <width>11</width>
+              <visible>True</visible>
+              <header-style>ltcHeader-service</header-style>
+              <header-label>#{_ADFDIres['COMPONENTS_TABLE_ROWKEY_COL_LABEL']} - Service</header-label>
+              <cell-style>Key Cell</cell-style>
+            </column>
+            <column id="COL1310205381">
+              <update-component>
+                <tree-node-list>
+                  <list>#{row.bindings.StudyProjectPhaseName.inputValue}</list>
+                  <depends-on-list>#{row.bindings.StudyId.inputValue}</depends-on-list>
+                  <read-only>#{bindings.LtcEstimateView.hints.StudyProjectPhaseName.readOnly}</read-only>
+                </tree-node-list>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader-service</header-style>
+              <header-label>StudyProjectPhaseName - Service</header-label>
+              <cell-style>ltcCell-service</cell-style>
+            </column>
+            <column id="DbProjectPhase">
+              <update-component>
+                <tree-node-list>
+                  <list>#{row.bindings.ProjectPhaseCode.inputValue}</list>
+                  <depends-on-list>#{row.bindings.LtcProjectId.inputValue}</depends-on-list>
+                  <read-only>False</read-only>
+                </tree-node-list>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader-service</header-style>
+              <header-label>#{bindings.LtcEstimateView.hints.ProjectPhaseCode.label} - Service</header-label>
+              <cell-style>ltcCell-service</cell-style>
+              <tooltip>#{bindings.LtcEstimateView.hints.ProjectPhaseCode.tooltip}</tooltip>
+            </column>
+            <column id="ProjectPhaseLimited">
+              <update-component>
+                <tree-node-list>
+                  <list>#{row.bindings.ProjectPhaseCodeLookup.inputValue}</list>
+                  <depends-on-list>#{row.bindings.LtcProjectId.inputValue}</depends-on-list>
+                  <read-only>True</read-only>
+                </tree-node-list>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader-service</header-style>
+              <header-label>ProjectPhaseLimited - Service</header-label>
+              <cell-style>ltcCell-service</cell-style>
+            </column>
+            <column id="COL508494134">
+              <update-component>
+                <output-text>
+                  <value>#{row.bindings.IsManual.inputValue}</value>
+                </output-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader-service</header-style>
+              <header-label>IsManual - Service</header-label>
+              <cell-style>Data Cell</cell-style>
+            </column>
+            <column id="isExternalFte">
+              <update-component>
+                <tree-node-list>
+                  <list>#{row.bindings.IsExternalFte.inputValue}</list>
+                  <depends-on-list>#{row.bindings.LtcProjectId.inputValue}</depends-on-list>
+                  <read-only>False</read-only>
+                </tree-node-list>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader-service</header-style>
+              <header-label>IsExternalFTE-service</header-label>
+              <cell-style>Data Cell</cell-style>
+            </column>
+            <column id="scope">
+              <update-component>
+                <tree-node-list>
+                  <list>#{row.bindings.ScopeCode.inputValue}</list>
+                  <depends-on-list>#{row.bindings.LtcProjectId.inputValue}</depends-on-list>
+                  <read-only>False</read-only>
+                </tree-node-list>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader-service</header-style>
+              <header-label>ScopeCode-Service</header-label>
+              <cell-style>Data Cell</cell-style>
+            </column>
+          </column-list>
+          <display-upload-options>false</display-upload-options>
+          <row-actions>
+            <insert-before-row-action-id>CreateInsertEstimate</insert-before-row-action-id>
+            <delete-row-action-id>DeleteEstimate</delete-row-action-id>
+            <insert-row-enabled>true</insert-row-enabled>
+            <auto-convert-new-rows-enabled>true</auto-convert-new-rows-enabled>
+            <insert-rows-after-upload-enabled>true</insert-rows-after-upload-enabled>
+            <delete-row-enabled>true</delete-row-enabled>
+          </row-actions>
+          <batch-options>
+            <commit-action>Commit</commit-action>
+          </batch-options>
+          <row-limit enabled="false">
+            <max-rows>500</max-rows>
+          </row-limit>
+        </table-component>
+        <output-text-component id="OTX898650851" origin="BZ2">
+          <output-text>
+            <value>#{bindings.StartYear}</value>
+          </output-text>
+          <style>Output Text</style>
+          <tooltip>#{bindings.StartYear.hints.tooltip}</tooltip>
+        </output-text-component>
+      </component-list>
+    </worksheet>
+    <worksheet name="Pivot">
+      <pagedef-usage-id>[no page definition selected]</pagedef-usage-id>
+    </worksheet>
+    <worksheet name="Discrepancies">
+      <event-list>
+        <event type="Startup">
+          <action-set>
+            <action-list>
+              <server-action>
+                <action-id>initLtcExcelForm</action-id>
+              </server-action>
+              <server-action>
+                <action-id>ExecuteWithParamsLtcEstimateDicrepancies</action-id>
+              </server-action>
+              <component-action>
+                <component-id>TAB269022215</component-id>
+                <action>Download</action>
+              </component-action>
+              <worksheet-action>
+                <method>DownSync</method>
+              </worksheet-action>
+            </action-list>
+          </action-set>
+        </event>
+      </event-list>
+      <pagedef-usage-id>com_bayer_ipms_view_ltc_ltcEstimatePageDef</pagedef-usage-id>
+      <parameter-list>
+        <parameter>
+          <value>#{workbook.params.tagId}</value>
+          <pagedef-param-id>tagId</pagedef-param-id>
+        </parameter>
+        <parameter>
+          <pagedef-param-id>processId</pagedef-param-id>
+          <annotation>#{workbook.params.processId}</annotation>
+        </parameter>
+        <parameter>
+          <value>#{workbook.params.projectId}</value>
+          <pagedef-param-id>projectId</pagedef-param-id>
+        </parameter>
+        <parameter>
+          <value>#{workbook.params.programId}</value>
+          <pagedef-param-id>programId</pagedef-param-id>
+        </parameter>
+        <parameter>
+          <value>FTE</value>
+          <pagedef-param-id>type</pagedef-param-id>
+        </parameter>
+      </parameter-list>
+      <protection>
+        <mode>Automatic</mode>
+        <password>oprisk123</password>
+      </protection>
+      <component-list>
+        <table-component id="TAB269022215" origin="C10">
+          <tree-id>LtcEstimateDicrepanciesView</tree-id>
+          <column-list>
+            <column id="ProgramName">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.ProgramName.inputValue}</value>
+                  <read-only>#{bindings.LtcEstimateDicrepanciesView.hints.ProgramName.readOnly}</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader1</header-style>
+              <header-label>#{bindings.LtcEstimateDicrepanciesView.hints.ProgramName.label}</header-label>
+              <cell-style>Data Cell</cell-style>
+              <tooltip>#{bindings.LtcEstimateDicrepanciesView.hints.ProgramName.tooltip}</tooltip>
+            </column>
+            <column id="ProjectCode">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.ProjectCode.inputValue}</value>
+                  <read-only>#{bindings.LtcEstimateDicrepanciesView.hints.ProjectCode.readOnly}</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>#{bindings.LtcEstimateDicrepanciesView.hints.ProjectCode.label}</header-label>
+              <cell-style>Data Cell</cell-style>
+              <tooltip>#{bindings.LtcEstimateDicrepanciesView.hints.ProjectCode.tooltip}</tooltip>
+            </column>
+            <column id="ProjectName">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.ProjectName.inputValue}</value>
+                  <read-only>#{bindings.LtcEstimateDicrepanciesView.hints.ProjectName.readOnly}</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader1</header-style>
+              <header-label>#{bindings.LtcEstimateDicrepanciesView.hints.ProjectName.label}</header-label>
+              <cell-style>Data Cell</cell-style>
+              <tooltip>#{bindings.LtcEstimateDicrepanciesView.hints.ProjectName.tooltip}</tooltip>
+            </column>
+            <column id="ProjectPhaseName">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.ProjectPhaseName.inputValue}</value>
+                  <read-only>#{bindings.LtcEstimateDicrepanciesView.hints.ProjectPhaseName.readOnly}</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>#{bindings.LtcEstimateDicrepanciesView.hints.ProjectPhaseName.label}</header-label>
+              <cell-style>Data Cell</cell-style>
+              <tooltip>#{bindings.LtcEstimateDicrepanciesView.hints.ProjectPhaseName.tooltip}</tooltip>
+            </column>
+            <column id="StudyPhaseCode">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.StudyPhaseCode.inputValue}</value>
+                  <read-only>#{bindings.LtcEstimateDicrepanciesView.hints.StudyPhaseCode.readOnly}</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader1</header-style>
+              <header-label>#{bindings.LtcEstimateDicrepanciesView.hints.StudyPhaseCode.label}</header-label>
+              <cell-style>Data Cell</cell-style>
+              <tooltip>#{bindings.LtcEstimateDicrepanciesView.hints.StudyPhaseCode.tooltip}</tooltip>
+            </column>
+            <column id="StudyId">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.StudyId.inputValue}</value>
+                  <read-only>#{bindings.LtcEstimateDicrepanciesView.hints.StudyId.readOnly}</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>#{bindings.LtcEstimateDicrepanciesView.hints.StudyId.label}</header-label>
+              <cell-style>Data Cell</cell-style>
+              <tooltip>#{bindings.LtcEstimateDicrepanciesView.hints.StudyId.tooltip}</tooltip>
+            </column>
+            <column id="StudyName">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.StudyName.inputValue}</value>
+                  <read-only>#{bindings.LtcEstimateDicrepanciesView.hints.StudyName.readOnly}</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader1</header-style>
+              <header-label>#{bindings.LtcEstimateDicrepanciesView.hints.StudyName.label}</header-label>
+              <cell-style>Data Cell</cell-style>
+              <tooltip>#{bindings.LtcEstimateDicrepanciesView.hints.StudyName.tooltip}</tooltip>
+            </column>
+            <column id="StudyFpfv">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.StudyFpfv.inputValue}</value>
+                  <read-only>#{bindings.LtcEstimateDicrepanciesView.hints.StudyFpfv.readOnly}</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader1</header-style>
+              <header-label>#{bindings.LtcEstimateDicrepanciesView.hints.StudyFpfv.label}</header-label>
+              <cell-style>ltcDateValueCell</cell-style>
+              <tooltip>#{bindings.LtcEstimateDicrepanciesView.hints.StudyFpfv.tooltip}</tooltip>
+            </column>
+            <column id="StudyLplv">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.StudyLplv.inputValue}</value>
+                  <read-only>#{bindings.LtcEstimateDicrepanciesView.hints.StudyLplv.readOnly}</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader1</header-style>
+              <header-label>#{bindings.LtcEstimateDicrepanciesView.hints.StudyLplv.label}</header-label>
+              <cell-style>ltcDateValueCell</cell-style>
+              <tooltip>#{bindings.LtcEstimateDicrepanciesView.hints.StudyLplv.tooltip}</tooltip>
+            </column>
+            <column id="TopFunctionName">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.TopFunctionName.inputValue}</value>
+                  <read-only>#{bindings.LtcEstimateDicrepanciesView.hints.TopFunctionName.readOnly}</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader1</header-style>
+              <header-label>#{bindings.LtcEstimateDicrepanciesView.hints.TopFunctionName.label}</header-label>
+              <cell-style>Data Cell</cell-style>
+              <tooltip>#{bindings.LtcEstimateDicrepanciesView.hints.TopFunctionName.tooltip}</tooltip>
+            </column>
+            <column id="FunctionName">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.FunctionName.inputValue}</value>
+                  <read-only>#{bindings.LtcEstimateDicrepanciesView.hints.FunctionName.readOnly}</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>#{bindings.LtcEstimateDicrepanciesView.hints.FunctionName.label}</header-label>
+              <cell-style>Data Cell</cell-style>
+              <tooltip>#{bindings.LtcEstimateDicrepanciesView.hints.FunctionName.tooltip}</tooltip>
+            </column>
+            <column id="Comments">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.Comments.inputValue}</value>
+                  <read-only>#{bindings.LtcEstimateDicrepanciesView.hints.Comments.readOnly}</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>#{bindings.LtcEstimateDicrepanciesView.hints.Comments.label}</header-label>
+              <cell-style>Data Cell</cell-style>
+              <tooltip>#{bindings.LtcEstimateDicrepanciesView.hints.Comments.tooltip}</tooltip>
+            </column>
+            <column id="LtY1Cost">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.LtY1Cost.inputValue}</value>
+                  <read-only>#{bindings.LtcEstimateDicrepanciesView.hints.LtY1Cost.readOnly}</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>#{bindings.StartYear} FTE</header-label>
+              <cell-style>ltcValueCell</cell-style>
+              <tooltip>#{bindings.LtcEstimateDicrepanciesView.hints.LtY1Cost.tooltip}</tooltip>
+            </column>
+            <column id="LtY2Cost">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.LtY2Cost.inputValue}</value>
+                  <read-only>#{bindings.LtcEstimateDicrepanciesView.hints.LtY2Cost.readOnly}</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>=concatenate(#{bindings.StartYear}+1," FTE")</header-label>
+              <cell-style>ltcValueCell</cell-style>
+              <tooltip>#{bindings.LtcEstimateDicrepanciesView.hints.LtY2Cost.tooltip}</tooltip>
+            </column>
+            <column id="LtY3Cost">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.LtY3Cost.inputValue}</value>
+                  <read-only>#{bindings.LtcEstimateDicrepanciesView.hints.LtY3Cost.readOnly}</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>=concatenate(#{bindings.StartYear}+2," FTE")</header-label>
+              <cell-style>ltcValueCell</cell-style>
+              <tooltip>#{bindings.LtcEstimateDicrepanciesView.hints.LtY3Cost.tooltip}</tooltip>
+            </column>
+            <column id="LtY4Cost">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.LtY4Cost.inputValue}</value>
+                  <read-only>#{bindings.LtcEstimateDicrepanciesView.hints.LtY4Cost.readOnly}</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>=concatenate(#{bindings.StartYear}+3," FTE")</header-label>
+              <cell-style>ltcValueCell</cell-style>
+              <tooltip>#{bindings.LtcEstimateDicrepanciesView.hints.LtY4Cost.tooltip}</tooltip>
+            </column>
+            <column id="LtY5Cost">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.LtY5Cost.inputValue}</value>
+                  <read-only>#{bindings.LtcEstimateDicrepanciesView.hints.LtY5Cost.readOnly}</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>=concatenate(#{bindings.StartYear}+4," FTE")</header-label>
+              <cell-style>ltcValueCell</cell-style>
+              <tooltip>#{bindings.LtcEstimateDicrepanciesView.hints.LtY5Cost.tooltip}</tooltip>
+            </column>
+            <column id="LtY6Cost">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.LtY6Cost.inputValue}</value>
+                  <read-only>#{bindings.LtcEstimateDicrepanciesView.hints.LtY6Cost.readOnly}</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>=concatenate(#{bindings.StartYear}+5," FTE")</header-label>
+              <cell-style>ltcValueCell</cell-style>
+              <tooltip>#{bindings.LtcEstimateDicrepanciesView.hints.LtY6Cost.tooltip}</tooltip>
+            </column>
+            <column id="LtY7Cost">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.LtY7Cost.inputValue}</value>
+                  <read-only>#{bindings.LtcEstimateDicrepanciesView.hints.LtY7Cost.readOnly}</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>=concatenate(#{bindings.StartYear}+6," FTE")</header-label>
+              <cell-style>ltcValueCell</cell-style>
+              <tooltip>#{bindings.LtcEstimateDicrepanciesView.hints.LtY7Cost.tooltip}</tooltip>
+            </column>
+            <column id="LtY8Cost">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.LtY8Cost.inputValue}</value>
+                  <read-only>#{bindings.LtcEstimateDicrepanciesView.hints.LtY8Cost.readOnly}</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>=concatenate(#{bindings.StartYear}+7," FTE")</header-label>
+              <cell-style>ltcValueCell</cell-style>
+              <tooltip>#{bindings.LtcEstimateDicrepanciesView.hints.LtY8Cost.tooltip}</tooltip>
+            </column>
+            <column id="LtY9Cost">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.LtY9Cost.inputValue}</value>
+                  <read-only>#{bindings.LtcEstimateDicrepanciesView.hints.LtY9Cost.readOnly}</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>=concatenate(#{bindings.StartYear}+8," FTE")</header-label>
+              <cell-style>ltcValueCell</cell-style>
+              <tooltip>#{bindings.LtcEstimateDicrepanciesView.hints.LtY9Cost.tooltip}</tooltip>
+            </column>
+            <column id="LtY10Cost">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.LtY10Cost.inputValue}</value>
+                  <read-only>#{bindings.LtcEstimateDicrepanciesView.hints.LtY10Cost.readOnly}</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>=concatenate(#{bindings.StartYear}+9," FTE")</header-label>
+              <cell-style>ltcValueCell</cell-style>
+              <tooltip>#{bindings.LtcEstimateDicrepanciesView.hints.LtY10Cost.tooltip}</tooltip>
+            </column>
+            <column id="LtY11Cost">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.LtY11Cost.inputValue}</value>
+                  <read-only>#{bindings.LtcEstimateDicrepanciesView.hints.LtY11Cost.readOnly}</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>=concatenate(#{bindings.StartYear}+10," FTE")</header-label>
+              <cell-style>ltcValueCell</cell-style>
+              <tooltip>#{bindings.LtcEstimateDicrepanciesView.hints.LtY11Cost.tooltip}</tooltip>
+            </column>
+            <column id="LtY12Cost">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.LtY12Cost.inputValue}</value>
+                  <read-only>#{bindings.LtcEstimateDicrepanciesView.hints.LtY12Cost.readOnly}</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>=concatenate(#{bindings.StartYear}+11," FTE")</header-label>
+              <cell-style>ltcValueCell</cell-style>
+              <tooltip>#{bindings.LtcEstimateDicrepanciesView.hints.LtY12Cost.tooltip}</tooltip>
+            </column>
+            <column id="LtY13Cost">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.LtY13Cost.inputValue}</value>
+                  <read-only>#{bindings.LtcEstimateDicrepanciesView.hints.LtY13Cost.readOnly}</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>=concatenate(#{bindings.StartYear}+12," FTE")</header-label>
+              <cell-style>ltcValueCell</cell-style>
+              <tooltip>#{bindings.LtcEstimateDicrepanciesView.hints.LtY13Cost.tooltip}</tooltip>
+            </column>
+            <column id="LtY14Cost">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.LtY14Cost.inputValue}</value>
+                  <read-only>#{bindings.LtcEstimateDicrepanciesView.hints.LtY14Cost.readOnly}</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>=concatenate(#{bindings.StartYear}+13," FTE")</header-label>
+              <cell-style>ltcValueCell</cell-style>
+              <tooltip>#{bindings.LtcEstimateDicrepanciesView.hints.LtY14Cost.tooltip}</tooltip>
+            </column>
+            <column id="LtY15Cost">
+              <update-component>
+                <model-driven-column>
+                  <value>#{row.bindings.LtY15Cost.inputValue}</value>
+                  <read-only>#{bindings.LtcEstimateDicrepanciesView.hints.LtY15Cost.readOnly}</read-only>
+                </model-driven-column>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>=concatenate(#{bindings.StartYear}+14," FTE")</header-label>
+              <cell-style>ltcValueCell</cell-style>
+              <tooltip>#{bindings.LtcEstimateDicrepanciesView.hints.LtY15Cost.tooltip}</tooltip>
+            </column>
+            <column id="_ADF_RowKeyColumn">
+              <update-component>
+                <output-text />
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader-service</header-style>
+              <header-label>#{_ADFDIres['COMPONENTS_TABLE_ROWKEY_COL_LABEL']} - Service</header-label>
+              <cell-style>Key Cell</cell-style>
+            </column>
+          </column-list>
+          <display-upload-options>false</display-upload-options>
+          <row-actions>
+            <update-row-enabled>false</update-row-enabled>
+          </row-actions>
+          <row-limit>
+            <max-rows>500</max-rows>
+          </row-limit>
+        </table-component>
+      </component-list>
+    </worksheet>
+    <worksheet name="FTE Estimate ReadOnly">
+      <event-list>
+        <event type="Startup">
+          <action-set>
+            <action-list>
+              <server-action>
+                <action-id>initLtcExcelForm</action-id>
+              </server-action>
+              <server-action>
+                <action-id>ExecuteWithParamsLtcEstimateReadonly</action-id>
+              </server-action>
+              <component-action>
+                <component-id>TAB681493274</component-id>
+                <action>Download</action>
+              </component-action>
+              <worksheet-action>
+                <method>DownSync</method>
+              </worksheet-action>
+            </action-list>
+          </action-set>
+        </event>
+      </event-list>
+      <pagedef-usage-id>com_bayer_ipms_view_ltc_ltcEstimatePageDef</pagedef-usage-id>
+      <parameter-list>
+        <parameter>
+          <value>#{workbook.params.tagId}</value>
+          <pagedef-param-id>tagId</pagedef-param-id>
+        </parameter>
+        <parameter>
+          <value>#{workbook.params.processId}</value>
+          <pagedef-param-id>processId</pagedef-param-id>
+        </parameter>
+        <parameter>
+          <value>#{workbook.params.programId}</value>
+          <pagedef-param-id>programId</pagedef-param-id>
+        </parameter>
+        <parameter>
+          <value>#{workbook.params.projectId}</value>
+          <pagedef-param-id>projectId</pagedef-param-id>
+        </parameter>
+        <parameter>
+          <value>FTE</value>
+          <pagedef-param-id>type</pagedef-param-id>
+        </parameter>
+        <parameter>
+          <value>#{workbook.params.scn}</value>
+          <pagedef-param-id>scn</pagedef-param-id>
+        </parameter>
+      </parameter-list>
+      <protection>
+        <mode>Automatic</mode>
+        <password>oprisk123</password>
+      </protection>
+      <component-list>
+        <table-component id="TAB681493274" origin="B10">
+          <tree-id>LtcEstimateReadonlyView</tree-id>
+          <column-list>
+            <column id="ProgramName">
+              <update-component>
+                <output-text>
+                  <value>#{row.bindings.ProgramName.inputValue}</value>
+                </output-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader1</header-style>
+              <header-label>#{bindings.LtcEstimateReadonlyView.hints.ProgramName.label}</header-label>
+              <cell-style>Data Cell</cell-style>
+              <tooltip>#{bindings.LtcEstimateReadonlyView.hints.ProgramName.tooltip}</tooltip>
+            </column>
+            <column id="ProjectCode">
+              <update-component>
+                <output-text>
+                  <value>#{row.bindings.ProjectCode.inputValue}</value>
+                </output-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>#{bindings.LtcEstimateReadonlyView.hints.ProjectCode.label}</header-label>
+              <cell-style>Data Cell</cell-style>
+              <tooltip>#{bindings.LtcEstimateReadonlyView.hints.ProjectCode.tooltip}</tooltip>
+            </column>
+            <column id="ProjectName">
+              <update-component>
+                <output-text>
+                  <value>#{row.bindings.ProjectName.inputValue}</value>
+                </output-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader1</header-style>
+              <header-label>#{bindings.LtcEstimateReadonlyView.hints.ProjectName.label}</header-label>
+              <cell-style>Data Cell</cell-style>
+              <tooltip>#{bindings.LtcEstimateReadonlyView.hints.ProjectName.tooltip}</tooltip>
+            </column>
+            <column id="ProjectPhase">
+              <update-component>
+                <output-text>
+                  <value>#{row.bindings.ProjectPhaseName.inputValue}</value>
+                </output-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>#{bindings.LtcEstimateReadonlyView.hints.ProjectPhaseName.label}</header-label>
+              <cell-style>Data Cell</cell-style>
+              <tooltip>#{bindings.LtcEstimateReadonlyView.hints.ProjectPhaseName.tooltip}</tooltip>
+            </column>
+            <column id="StudyPhaseCode">
+              <update-component>
+                <output-text>
+                  <value>#{row.bindings.StudyPhaseCode.inputValue}</value>
+                </output-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader1</header-style>
+              <header-label>#{bindings.LtcEstimateReadonlyView.hints.StudyPhaseCode.label}</header-label>
+              <cell-style>Data Cell</cell-style>
+              <tooltip>#{bindings.LtcEstimateReadonlyView.hints.StudyPhaseCode.tooltip}</tooltip>
+            </column>
+            <column id="StudyId">
+              <update-component>
+                <output-text>
+                  <value>#{row.bindings.StudyId.inputValue}</value>
+                </output-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>#{bindings.LtcEstimateReadonlyView.hints.StudyId.label}</header-label>
+              <cell-style>Data Cell</cell-style>
+            </column>
+            <column id="StudyName">
+              <update-component>
+                <output-text>
+                  <value>#{row.bindings.StudyName.inputValue}</value>
+                </output-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader1</header-style>
+              <header-label>#{bindings.LtcEstimateReadonlyView.hints.StudyName.label}</header-label>
+              <cell-style>Data Cell</cell-style>
+            </column>
+            <column id="StudyFpfv">
+              <update-component>
+                <output-text>
+                  <value>#{row.bindings.StudyFpfv.inputValue}</value>
+                </output-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader1</header-style>
+              <header-label>#{bindings.LtcEstimateReadonlyView.hints.StudyFpfv.label}</header-label>
+              <cell-style>ltcDateValueCell</cell-style>
+            </column>
+            <column id="StudyLplv">
+              <update-component>
+                <output-text>
+                  <value>#{row.bindings.StudyLplv.inputValue}</value>
+                </output-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader1</header-style>
+              <header-label>#{bindings.LtcEstimateReadonlyView.hints.StudyLplv.label}</header-label>
+              <cell-style>ltcDateValueCell</cell-style>
+            </column>
+            <column id="TopFunctionCode">
+              <update-component>
+                <output-text>
+                  <value>#{row.bindings.TopFunctionName.inputValue}</value>
+                </output-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader1</header-style>
+              <header-label>#{bindings.LtcEstimateReadonlyView.hints.TopFunctionName.label}</header-label>
+              <cell-style>Data Cell</cell-style>
+              <tooltip>#{bindings.LtcEstimateReadonlyView.hints.TopFunctionName.tooltip}</tooltip>
+            </column>
+            <column id="FunctionName">
+              <update-component>
+                <output-text>
+                  <value>#{row.bindings.FunctionName.inputValue}</value>
+                </output-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>#{bindings.LtcEstimateReadonlyView.hints.FunctionName.label}</header-label>
+              <cell-style>Data Cell</cell-style>
+            </column>
+            <column id="Comments">
+              <update-component>
+                <output-text>
+                  <value>#{row.bindings.Comments.inputValue}</value>
+                </output-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>#{bindings.LtcEstimateReadonlyView.hints.Comments.label}</header-label>
+              <cell-style>Data Cell</cell-style>
+            </column>
+            <column id="LtY1Cost">
+              <update-component>
+                <output-text>
+                  <value>#{row.bindings.LtY1Cost.inputValue}</value>
+                </output-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>#{bindings.StartYear} FTE</header-label>
+              <cell-style>ltcValueCell</cell-style>
+            </column>
+            <column id="LtY2Cost">
+              <update-component>
+                <output-text>
+                  <value>#{row.bindings.LtY2Cost.inputValue}</value>
+                </output-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>=concatenate(#{bindings.StartYear}+1," FTE")</header-label>
+              <cell-style>ltcValueCell</cell-style>
+            </column>
+            <column id="LtY3Cost">
+              <update-component>
+                <output-text>
+                  <value>#{row.bindings.LtY3Cost.inputValue}</value>
+                </output-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>=concatenate(#{bindings.StartYear}+2," FTE")</header-label>
+              <cell-style>ltcValueCell</cell-style>
+            </column>
+            <column id="LtY4Cost">
+              <update-component>
+                <output-text>
+                  <value>#{row.bindings.LtY4Cost.inputValue}</value>
+                </output-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>=concatenate(#{bindings.StartYear}+3," FTE")</header-label>
+              <cell-style>ltcValueCell</cell-style>
+            </column>
+            <column id="LtY5Cost">
+              <update-component>
+                <output-text>
+                  <value>#{row.bindings.LtY5Cost.inputValue}</value>
+                </output-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>=concatenate(#{bindings.StartYear}+4," FTE")</header-label>
+              <cell-style>ltcValueCell</cell-style>
+            </column>
+            <column id="LtY6Cost">
+              <update-component>
+                <output-text>
+                  <value>#{row.bindings.LtY6Cost.inputValue}</value>
+                </output-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>=concatenate(#{bindings.StartYear}+5," FTE")</header-label>
+              <cell-style>ltcValueCell</cell-style>
+            </column>
+            <column id="LtY7Cost">
+              <update-component>
+                <output-text>
+                  <value>#{row.bindings.LtY7Cost.inputValue}</value>
+                </output-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>=concatenate(#{bindings.StartYear}+6," FTE")</header-label>
+              <cell-style>ltcValueCell</cell-style>
+            </column>
+            <column id="LtY8Cost">
+              <update-component>
+                <output-text>
+                  <value>#{row.bindings.LtY8Cost.inputValue}</value>
+                </output-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>=concatenate(#{bindings.StartYear}+7," FTE")</header-label>
+              <cell-style>ltcValueCell</cell-style>
+            </column>
+            <column id="LtY9Cost">
+              <update-component>
+                <output-text>
+                  <value>#{row.bindings.LtY9Cost.inputValue}</value>
+                </output-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>=concatenate(#{bindings.StartYear}+8," FTE")</header-label>
+              <cell-style>ltcValueCell</cell-style>
+            </column>
+            <column id="LtY10Cost">
+              <update-component>
+                <output-text>
+                  <value>#{row.bindings.LtY10Cost.inputValue}</value>
+                </output-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>=concatenate(#{bindings.StartYear}+9," FTE")</header-label>
+              <cell-style>ltcValueCell</cell-style>
+            </column>
+            <column id="LtY11Cost">
+              <update-component>
+                <output-text>
+                  <value>#{row.bindings.LtY11Cost.inputValue}</value>
+                </output-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>=concatenate(#{bindings.StartYear}+10," FTE")</header-label>
+              <cell-style>ltcValueCell</cell-style>
+            </column>
+            <column id="LtY12Cost">
+              <update-component>
+                <output-text>
+                  <value>#{row.bindings.LtY12Cost.inputValue}</value>
+                </output-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>=concatenate(#{bindings.StartYear}+11," FTE")</header-label>
+              <cell-style>ltcValueCell</cell-style>
+            </column>
+            <column id="LtY13Cost">
+              <update-component>
+                <output-text>
+                  <value>#{row.bindings.LtY13Cost.inputValue}</value>
+                </output-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>=concatenate(#{bindings.StartYear}+12," FTE")</header-label>
+              <cell-style>ltcValueCell</cell-style>
+            </column>
+            <column id="LtY14Cost">
+              <update-component>
+                <output-text>
+                  <value>#{row.bindings.LtY14Cost.inputValue}</value>
+                </output-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>=concatenate(#{bindings.StartYear}+13," FTE")</header-label>
+              <cell-style>ltcValueCell</cell-style>
+            </column>
+            <column id="LtY15Cost">
+              <update-component>
+                <output-text>
+                  <value>#{row.bindings.LtY15Cost.inputValue}</value>
+                </output-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>ltcHeader2</header-style>
+              <header-label>=concatenate(#{bindings.StartYear}+14," FTE")</header-label>
+              <cell-style>ltcValueCell</cell-style>
+            </column>
+            <column id="_ADF_RowKeyColumn">
+              <update-component>
+                <output-text />
+              </update-component>
+              <resize-mode>SpecifiedWidth</resize-mode>
+              <width>11</width>
+              <visible>False</visible>
+              <header-style>ltcHeader-service</header-style>
+              <header-label>#{_ADFDIres['COMPONENTS_TABLE_ROWKEY_COL_LABEL']} - Service</header-label>
+              <cell-style>Key Cell</cell-style>
+            </column>
+          </column-list>
+          <display-upload-options>false</display-upload-options>
+          <row-actions>
+            <insert-before-row-action-id>CreateInsertEstimate</insert-before-row-action-id>
+            <delete-row-action-id>DeleteEstimate</delete-row-action-id>
+            <insert-row-enabled>true</insert-row-enabled>
+            <auto-convert-new-rows-enabled>true</auto-convert-new-rows-enabled>
+            <insert-rows-after-upload-enabled>true</insert-rows-after-upload-enabled>
+            <delete-row-enabled>true</delete-row-enabled>
+          </row-actions>
+          <batch-options>
+            <commit-action>Commit</commit-action>
+          </batch-options>
+          <row-limit enabled="false">
+            <max-rows>500</max-rows>
+          </row-limit>
+        </table-component>
+        <output-text-component id="OTX1796946767" origin="BZ2">
+          <output-text>
+            <value>#{bindings.StartYear}</value>
+          </output-text>
+          <style>Output Text</style>
+          <tooltip>#{bindings.StartYear.hints.tooltip}</tooltip>
+        </output-text-component>
+      </component-list>
+    </worksheet>
+    <worksheet name="Config">
+      <pagedef-usage-id>com_bayer_ipms_view_ltc_ltcEstimatePageDef</pagedef-usage-id>
+      <component-list>
+        <output-text-component id="OTX1039876980" origin="F8">
+          <output-text>
+            <value>#{bindings.StartYear}</value>
+          </output-text>
+          <style>Output Text</style>
+          <tooltip>#{bindings.StartYear.hints.tooltip}</tooltip>
+        </output-text-component>
+      </component-list>
+    </worksheet>
+  </worksheet-list>
+  <compatibility>
+    <table-components>
+      <model-driven-columns>
+        <date-picker-enabled>true</date-picker-enabled>
+        <input-lov-picker-enabled>true</input-lov-picker-enabled>
+      </model-driven-columns>
+      <row-action-set-model-mgmt-enabled>true</row-action-set-model-mgmt-enabled>
+      <smart-row-failure-reporting-enabled>true</smart-row-failure-reporting-enabled>
+    </table-components>
+    <data-entry-validation-enabled>true</data-entry-validation-enabled>
+  </compatibility>
+  <auto-display-status-viewer-enabled>true</auto-display-status-viewer-enabled>
+</workbook>

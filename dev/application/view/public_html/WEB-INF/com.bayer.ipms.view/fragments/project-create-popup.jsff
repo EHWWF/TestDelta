@@ -1,0 +1,181 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:c="http://java.sun.com/jsp/jstl/core">
+ <c:set var="bundle"
+        value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+ <af:componentDef var="attrs" componentVar="comp">
+  <af:xmlContent>
+   <component xmlns="http://xmlns.oracle.com/adf/faces/rich/component">
+    <attribute>
+     <attribute-name>areaCode</attribute-name>
+    </attribute>
+    <attribute>
+     <attribute-name>bean</attribute-name>
+    </attribute>
+    <attribute>
+     <attribute-name>projectType</attribute-name>
+    </attribute>
+    <attribute>
+     <attribute-name>useCase</attribute-name>
+    </attribute>
+   </component>
+  </af:xmlContent>
+  <af:popup id="popCreateProject" contentDelivery="lazyUncached"
+            popupCanceledListener="#{attrs.bean.onProjectCreatePopupCancel}"
+            popupFetchListener="#{attrs.bean.onProjectCreatePopupFetch}">
+   <af:dialog id="dlgCreate" title="#{bundle.projectCreate}"
+              dialogListener="#{attrs.bean.onProjectCreate}" contentWidth="500">
+    <af:panelBox text="#{bundle.globalSummary}" showDisclosure="false"
+                 type="flow">
+     <af:panelFormLayout styleClass="AFStretchWidth" fieldWidth="100%">
+      <af:inputText value="#{bindings.QualifiedName.inputValue}"
+                    label="#{bundle.program}" id="pname"
+                    readOnly="true" rendered="#{attrs.projectType=='Dev'}"/>
+      <af:inputText value="#{bindings.ProjectCode.inputValue}"
+                    label="#{bindings.ProjectCode.hints.label}" required="true"
+                    columns="#{bindings.ProjectCode.hints.displayWidth}"
+                    rendered="#{attrs.projectType!='SAMD' and (securityContext.userInRole['ProjectCreateDev'] or securityContext.userInRole['ProjectCreateD2Prj'])}"
+                    maximumLength="#{bindings.ProjectCode.hints.precision}"
+                    shortDesc="#{bindings.ProjectCode.hints.tooltip}"                  
+                    id="prjcode">
+       <f:validator binding="#{bindings.ProjectCode.validator}"/>
+      </af:inputText>
+            <af:inputText value="#{bindings.ProjectCode.inputValue}"
+                    label="#{bindings.ProjectCode.hints.label}" required="true"
+                    columns="#{bindings.ProjectCode.hints.displayWidth}"
+                    rendered="#{attrs.projectType=='SAMD' and securityContext.userInRole['ProjectCreateSAMD']}"
+                    maximumLength="#{bindings.ProjectCode.hints.precision}"
+                    shortDesc="#{bindings.ProjectCode.hints.tooltip}"
+                    id="prjcodesd"
+                    requiredMessageDetail="#{attrs.projectType=='SAMD' ? 'Project Id must start with SAMD-' : ''}"
+                    placeholder="#{attrs.projectType=='SAMD' ? 'SAMD-' : ''}"
+                    validator="#{pageFlowScope.programsBean.validateSamdProjectID}">
+      </af:inputText>
+      <af:inputText value="#{bindings.ProjectName.inputValue}"
+                    label="#{bindings.ProjectName.hints.label}"
+                    required="#{bindings.ProjectName.hints.mandatory}"
+                    columns="#{bindings.ProjectName.hints.displayWidth}"
+                    maximumLength="#{bindings.ProjectName.hints.precision}"
+                    shortDesc="#{bindings.ProjectName.hints.tooltip}"
+                    id="prjname">
+       <f:validator binding="#{bindings.ProjectName.validator}"/>
+      </af:inputText>
+      <af:inputText value="#{bindings.ProjectAbbreviation.inputValue}"
+                    label="#{bindings.ProjectAbbreviation.hints.label}"
+                    required="#{bindings.ProjectAbbreviation.hints.mandatory}"
+                    columns="#{bindings.ProjectAbbreviation.hints.displayWidth}"
+                    maximumLength="#{bindings.ProjectAbbreviation.hints.precision}"
+                    shortDesc="#{bindings.ProjectAbbreviation.hints.tooltip}"
+                    id="prjsname">
+       <f:validator binding="#{bindings.ProjectAbbreviation.validator}"/>
+      </af:inputText>
+      <af:selectOneChoice value="#{bindings.PredecessorProjectId.inputValue}"
+                          label="#{bindings.PredecessorProjectId.label}"
+                          required="#{bindings.PredecessorProjectId.hints.mandatory}"
+                          shortDesc="#{bindings.PredecessorProjectId.hints.tooltip}"
+                          rendered="#{securityContext.userInRole['ProjectViewD2Prj'] and (attrs.projectType=='Dev')}"
+                          id="soc12"
+                          valueChangeListener="#{attrs.bean.onPredecessorChange}"
+                          autoSubmit="true">
+       <f:selectItems value="#{bindings.PredecessorProjectId.items}" id="si1"/>
+      </af:selectOneChoice>
+      <af:selectOneChoice value="#{bindings.CategoryCode.inputValue}"
+                          label="#{bindings.CategoryCode.label}" required="true"
+                          shortDesc="#{bindings.CategoryCode.hints.tooltip}"
+                          id="soc4"
+                          rendered="#{attrs.projectType!='SAMD'}"
+                          unselectedLabel="#{bundle.globalNotAvailable}">
+       <f:selectItems value="#{utilsBean.lookup[bindings.ProjectViewIterator.currentRow.projectCategoryView]}"/>
+      </af:selectOneChoice>
+      <af:selectOneChoice value="#{bindings.SubstanceTypeCode.inputValue}"
+                          label="#{bindings.SubstanceTypeCode.label}"
+                          required="true"
+                          rendered="#{attrs.projectType!='SAMD'}"
+                          shortDesc="#{bindings.SubstanceTypeCode.hints.tooltip}"
+                          id="soc8"
+                          unselectedLabel="#{bundle.globalNotAvailable}">
+       <f:selectItems value="#{utilsBean.lookup[bindings.ProjectViewIterator.currentRow.substanceTypeView]}"/>
+      </af:selectOneChoice>
+      <af:selectOneChoice value="#{bindings.IpownerCode.inputValue}"
+                          label="#{bindings.IpownerCode.label}" required="true"
+                          shortDesc="#{bindings.IpownerCode.hints.tooltip}"
+                          rendered="#{attrs.projectType!='SAMD'}"
+                          id="dc_soc2">
+       <f:selectItems value="#{bindings.IpownerCode.items}" id="dc_si2"/>
+      </af:selectOneChoice>
+      <af:selectOneChoice value="#{bindings.PriorityCode.inputValue}"
+                          label="#{bindings.PriorityCode.label}" required="true"
+                          shortDesc="#{bindings.PriorityCode.hints.tooltip}"
+                          id="soc3"
+                          unselectedLabel="#{bundle.globalNotAvailable}"
+                          rendered="#{attrs.projectType=='PROMIS-569'}">
+       <f:selectItems value="#{utilsBean.lookup[bindings.ProjectViewIterator.currentRow.priorityView]}"/>
+      </af:selectOneChoice>
+      <af:selectOneChoice value="#{bindings.SourceCode.inputValue}"
+                          label="#{bindings.SourceCode.label}" required="true"
+                          shortDesc="#{bindings.SourceCode.hints.tooltip}"
+                          id="soc7"
+                          rendered="#{attrs.projectType!='SAMD'}"
+                          unselectedLabel="#{bundle.globalNotAvailable}">
+       <f:selectItems value="#{utilsBean.lookup[bindings.ProjectViewIterator.currentRow.projectSourceView]}"/>
+      </af:selectOneChoice>
+      <af:selectOneChoice value="#{attrs.areaCode.inputValue}"
+                          label="#{attrs.areaCode.label}" required="true"
+                          shortDesc="#{attrs.areaCode.hints.tooltip}"
+                          id="socArea"
+                          rendered="#{attrs.projectType!='SAMD'}">
+       <f:selectItems value="#{attrs.areaCode.items}" id="dc_si1"/>
+      </af:selectOneChoice>
+      
+      <af:selectOneChoice value="#{bindings.StateCode.inputValue}"
+                          label="#{bindings.StateCode.label}" required="true"
+                          shortDesc="#{bindings.StateCode.hints.tooltip}"
+                          id="state"
+                          unselectedLabel="#{bundle.globalNotAvailable}">
+       <f:selectItems value="#{utilsBean.lookup[bindings.ProjectViewIterator.currentRow.projectStateView]}"/>
+      </af:selectOneChoice>
+      <af:selectOneChoice value="#{bindings.PhaseCode.inputValue}"
+                          label="#{bindings.PhaseCode.label}" required="true"
+                          shortDesc="#{bindings.PhaseCode.hints.tooltip}"
+                          rendered="#{attrs.projectType eq 'Dev'}" id="soc5"
+                          unselectedLabel="#{bundle.globalNotAvailable}">
+       <f:selectItems value="#{utilsBean.lookup[bindings.ProjectViewIterator.currentRow.projectPhaseView]}"/>
+      </af:selectOneChoice>
+      <af:selectOneChoice value="#{bindings.ProposedSbeCode.inputValue}"
+                          label="#{bindings.ProposedSbeCode.hints.label}"
+                          required="true"
+                          shortDesc="#{bindings.ProposedSbeCode.hints.tooltip}"
+                          id="soc19"
+                          rendered="#{attrs.projectType!='SAMD'}"
+                          unselectedLabel="#{bundle.globalNotAvailable}">
+       <f:selectItems value="#{utilsBean.lookupSBE[bindings.ProjectViewIterator.currentRow.strategicBusinessEntityView]}"/>
+      </af:selectOneChoice>
+      <af:selectManyChoice id="smcPhP" value="#{bindings.ProjectViewIterator.currentRow.detailsModalityCodes}"
+            contentStyle="white-space: normal;"
+             label="#{bundle.projectModality}"
+            required="#{bindings.DetailsModality.hints.mandatory}"
+            shortDesc="#{bindings.DetailsModality.hints.tooltip}"
+            rendered="#{attrs.projectType=='Dev'}">
+                <f:selectItems value="#{utilsBean.lookup[bindings.ProjectViewIterator.currentRow.projectModalityView]}"
+                                                                                   id="siPhP"/>
+        </af:selectManyChoice>              
+					
+       <af:inputText value="#{bindings.TargetGeneCode.inputValue}"
+                    label="#{bindings.TargetGeneCode.hints.label}"
+                    required="#{bindings.TargetGeneCode.hints.mandatory}"
+                    columns="#{bindings.TargetGeneCode.hints.displayWidth}"
+                    maximumLength="#{bindings.TargetGeneCode.hints.precision}"
+                    shortDesc="#{bindings.TargetGeneCode.hints.tooltip}"
+                    id="tgccr"
+                    rendered="#{attrs.projectType=='Dev'}">
+       <f:validator binding="#{bindings.TargetGeneCode.validator}"/>
+      </af:inputText>    
+	  
+     </af:panelFormLayout>
+    </af:panelBox>
+   </af:dialog>
+  </af:popup>
+ </af:componentDef>
+</jsp:root>

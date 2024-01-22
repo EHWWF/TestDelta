@@ -1,0 +1,575 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="DiscrepancyDetailsView"
+  Version="12.2.1.0.31"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="com.bayer.ipms.model.base.IPMSViewRowImpl"
+  ComponentClass="com.bayer.ipms.model.views.DiscrepancyDetailsViewImpl"
+  PageIterMode="Full"
+  FetchSize="100">
+  <DesignTime>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_codeGenFlag2" Value="Coll|VarAccess"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="com.bayer.ipms.model.views.DiscrepancyDetailsView_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="SearchFpfvFromVar"
+    Kind="where"
+    Type="java.sql.Date">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYHINT
+          Value="Hide"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Variable>
+  <Variable
+    Name="SearchFpfvToVar"
+    Kind="where"
+    Type="java.sql.Date">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYHINT
+          Value="Hide"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Variable>
+  <ViewAccessor
+    Name="ClinicalPlanTypeView"
+    ViewObjectName="com.bayer.ipms.model.views.lookups.ClinicalPlanTypeView"
+    RowLevelBinds="true"/>
+  <ViewAccessor
+    Name="StudyModusView"
+    ViewObjectName="com.bayer.ipms.model.views.lookups.StudyModusView"
+    RowLevelBinds="true"/>
+  <ListBinding
+    Name="LOV_ClinicalPlanType"
+    ListVOName="ClinicalPlanTypeView"
+    ListRangeSize="-1"
+    NullValueFlag="start"
+    NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="ClinicalPlanType"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="ClinPlanType"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="ClinPlanType"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_StudyModusName"
+    ListVOName="StudyModusView"
+    ListRangeSize="-1"
+    NullValueFlag="start"
+    NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="StudyModusName"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="StudyModusName"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="StudyModusName"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <SQLQuery><![CDATA[select                        
+  d.id id,                       
+  d.timeline_id timeline_id,                        
+  d.study_id study_id,                        
+  d.study_element_id study_element_id,                        
+  d.dis_type_code type_code,                        
+  initcap(d.dis_type_code) type_name,   
+  d.dis_code dicrepancy_code,                        
+  d.timeline_code timeline_code,                        
+  d.timeline_name timeline_name,                        
+  d.description description,                        
+  d.solution solution,                                      
+  d.study_modus_name study_modus_name,
+  d.clin_plan_type clinical_plan_type,
+  d.fpfv_date fpfv_date,         
+  d.verbose verbose,   
+  d.reference_id reference_id,   
+  d.is_import_study is_import_study,   
+  d.project_id project_code,             
+  p.id project_id,        
+  d.fpfv_date  search_fpfv_from,           
+  d.fpfv_date  search_fpfv_to
+from discrepancy_timeline2_vw  d                     
+join PROJECT p on p.code = d.project_id       
+where (trunc(fpfv_date) >= :SearchFpfvFromVar or :SearchFpfvFromVar is null) and (trunc(fpfv_date) <=:SearchFpfvToVar or :SearchFpfvToVar is null)
+order by dicrepancy_code, study_id]]></SQLQuery>
+  <ViewAttribute
+    Name="Id"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR"
+    AliasName="ID"
+    Expression="ID"
+    SQLType="VARCHAR"/>
+  <ViewAttribute
+    Name="TimelineId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="7"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    AliasName="TIMELINE_ID"
+    Expression="TIMELINE_ID"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="7"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="StudyId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="STUDY_ID"
+    Expression="STUDY_ID"
+    SQLType="VARCHAR"
+    Precision="20">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="3"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.DiscrepancyDetailsView.StudyId_LABEL"/>
+        <DISPLAYWIDTH
+          Value="20"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="StudyElementId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="3"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    AliasName="STUDY_ELEMENT_ID"
+    Expression="STUDY_ELEMENT_ID"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="3"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.DiscrepancyDetailsView.StudyElementId_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TypeCode"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="5"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="TYPE_CODE"
+    Expression="TYPE_CODE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="5"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TypeName"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="7"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="TYPE_NAME"
+    Expression="TYPE_NAME"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="7"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="DicrepancyCode"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="6"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    AliasName="DICREPANCY_CODE"
+    Expression="DICREPANCY_CODE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="6"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TimelineCode"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="3"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    AliasName="TIMELINE_CODE"
+    Expression="TIMELINE_CODE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="3"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TimelineName"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="TIMELINE_NAME"
+    Expression="TIMELINE_NAME"
+    SQLType="VARCHAR"/>
+  <ViewAttribute
+    Name="Description"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="125"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="DESCRIPTION"
+    Expression="DESCRIPTION"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="125"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Solution"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="43"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="SOLUTION"
+    Expression="SOLUTION"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="43"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="StudyModusName"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="40"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="STUDY_MODUS_NAME"
+    Expression="STUDY_MODUS_NAME"
+    SQLType="VARCHAR"
+    LOVName="LOV_StudyModusName">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="9"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.DiscrepancyDetailsView.StudyModusName_LABEL"/>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ClinicalPlanType"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="4"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="CLINICAL_PLAN_TYPE"
+    Expression="CLINICAL_PLAN_TYPE"
+    SQLType="VARCHAR"
+    LOVName="LOV_ClinicalPlanType">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="4"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.DiscrepancyDetailsView.ClinicalPlanType_LABEL"/>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="FpfvDate"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    AliasName="FPFV_DATE"
+    Expression="FPFV_DATE"
+    SQLType="DATE">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.DiscrepancyDetailsView.FpfvDate_LABEL"/>
+        <FMT_FORMATTER
+          ResId="com.bayer.ipms.model.views.DiscrepancyDetailsView.FpfvDate_FMT_FORMATTER"/>
+        <FMT_FORMAT
+          ResId="com.bayer.ipms.model.views.DiscrepancyDetailsView.FpfvDate_FMT_FORMAT"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Verbose"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="93"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="VERBOSE"
+    Expression="VERBOSE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="93"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.DiscrepancyDetailsView.Verbose_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ReferenceId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="REFERENCE_ID"
+    Expression="REFERENCE_ID"
+    SQLType="VARCHAR"/>
+  <ViewAttribute
+    Name="IsImportStudy"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="3"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="IS_IMPORT_STUDY"
+    Expression="IS_IMPORT_STUDY"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="3"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ProjectCode"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="PROJECT_CODE"
+    Expression="PROJECT_CODE"
+    SQLType="VARCHAR"/>
+  <ViewAttribute
+    Name="ProjectId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="3"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    AliasName="PROJECT_ID"
+    Expression="PROJECT_ID"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="3"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="SearchFpfvFrom"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    AliasName="SEARCH_FPFV_FROM"
+    Expression="SEARCH_FPFV_FROM"
+    SQLType="DATE"/>
+  <ViewAttribute
+    Name="SearchFpfvTo"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    AliasName="SEARCH_FPFV_TO"
+    Expression="SEARCH_FPFV_TO"
+    SQLType="DATE"/>
+  <ViewAttribute
+    Name="SearchFpfvFrom1"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.sql.Date"
+    ColumnType="CHAR"
+    AliasName="VIEW_ATTR"
+    SQLType="DATE"
+    IsSelected="false">
+    <Properties>
+      <SchemaBasedProperties>
+        <FMT_FORMATTER
+          ResId="com.bayer.ipms.model.views.DiscrepancyDetailsView.SearchFpfvFrom_FMT_FORMATTER"/>
+        <FMT_FORMAT
+          ResId="com.bayer.ipms.model.views.DiscrepancyDetailsView.SearchFpfvFrom_FMT_FORMAT"/>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.DiscrepancyDetailsView.SearchFpfvFrom_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="SearchFpfvTo1"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.sql.Date"
+    ColumnType="CHAR"
+    AliasName="VIEW_ATTR"
+    SQLType="DATE"
+    IsSelected="false">
+    <Properties>
+      <SchemaBasedProperties>
+        <FMT_FORMATTER
+          ResId="com.bayer.ipms.model.views.DiscrepancyDetailsView.SearchFpfvTo_FMT_FORMATTER"/>
+        <FMT_FORMAT
+          ResId="com.bayer.ipms.model.views.DiscrepancyDetailsView.SearchFpfvTo_FMT_FORMAT"/>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.DiscrepancyDetailsView.SearchFpfvTo_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewCriteria
+    Name="DiscrepancyDetailsFilter"
+    ViewObjectName="com.bayer.ipms.model.views.DiscrepancyDetailsView"
+    Conjunction="AND">
+    <Properties Name="_Props">
+      <CustomProperties>
+        <Property
+          Name="displayOperators"
+          Value="InAdvancedMode"/>
+        <Property
+          Name="autoExecute"
+          Value="true"/>
+        <Property
+          Name="allowConjunctionOverride"
+          Value="false"/>
+        <Property
+          Name="showInList"
+          Value="false"/>
+        <Property
+          Name="mode"
+          Value="Basic"/>
+      </CustomProperties>
+    </Properties>
+    <ViewCriteriaRow
+      Name="DiscrepancyDetailsViewCriteria_row_0"
+      UpperColumns="1">
+      <ViewCriteriaItem
+        Name="StudyId"
+        ViewAttribute="StudyId"
+        Operator="CONTAINS"
+        Conjunction="AND"
+        Required="Optional"/>
+      <ViewCriteriaItem
+        Name="TimelineCode"
+        ViewAttribute="TimelineCode"
+        Operator="="
+        Conjunction="AND"
+        Value="RAW"
+        Required="Optional">
+        <Properties>
+          <CustomProperties>
+            <Property
+              Name="renderedMode"
+              Value="Never"/>
+          </CustomProperties>
+        </Properties>
+      </ViewCriteriaItem>
+      <ViewCriteriaItem
+        Name="StudyModusName"
+        ViewAttribute="StudyModusName"
+        Operator="="
+        Conjunction="AND"
+        Value="Planned"
+        Required="Optional"/>
+      <ViewCriteriaItem
+        Name="DiscrepancyDetailsFilter_DiscrepancyDetailsViewCriteria_row_0_ClinicalPlanType"
+        ViewAttribute="ClinicalPlanType"
+        Operator="="
+        Conjunction="AND"
+        Required="Optional"/>
+      <ViewCriteriaItem
+        Name="SearchFpfvFrom"
+        ViewAttribute="SearchFpfvFrom1"
+        Operator="="
+        Conjunction="AND"
+        Value=":SearchFpfvFromVar"
+        IsBindVarValue="true"
+        Required="Optional"/>
+      <ViewCriteriaItem
+        Name="SearchFpfvTo"
+        ViewAttribute="SearchFpfvTo1"
+        Operator="="
+        Conjunction="AND"
+        Value=":SearchFpfvToVar"
+        IsBindVarValue="true"
+        Required="Optional"/>
+    </ViewCriteriaRow>
+  </ViewCriteria>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="Id"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.bayer.ipms.model.bundles.modelBundle"/>
+  </ResourceBundle>
+</ViewObject>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.64.93" id="project_type_viewPageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="Root.ProgramAppModule.UserRoleView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="UserRoleViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator Binds="Root.ManagementAppModule.UserView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="UserViewIterator"/>
+    <iterator Binds="Root.ProgramAppModule.ProgramView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="500"
+              id="ProgramViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator Binds="Root.ProgramAppModule.ProjectView" RangeSize="100"
+              DataControl="PrivateAppModuleDataControl" id="ProjectViewIterator"
+              ChangeEventPolicy="ppr"/>
+   <taskFlow id="teammembersview21"
+                  taskFlowId="/WEB-INF/com.bayer.ipms.view/flows/team-members-view2.xml#team-members-view2"
+                  activation="deferred" Refresh="ifNeeded" xmlns="http://xmlns.oracle.com/adf/controller/binding">
+            <parameters>
+                <parameter id="programId" value="#{pageFlowScope.projectTypeViewBean.programIdForTeamMembers}"/>
+                <parameter id="projectType" value="#{pageFlowScope.projectTypeViewBean.projectTypeForTeamMembers}"/>
+            </parameters>
+   </taskFlow> 
+  </executables>
+  <bindings>
+    <tree IterBinding="UserRoleViewIterator" id="UserRoleView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.UserRoleView"
+                      Name="UserRoleView0">
+        <AttrNames>
+          <Item Value="UserId" Binds="UserId"/>
+          <Item Value="RoleCode" Binds="RoleCode"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="ProjectViewIterator" id="ProjectView"
+          ChangeEventPolicy="ppr">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.ProjectView"
+                      Name="ProjectView0">
+        <AttrNames>
+          <Item Value="Id"/>
+          <Item Value="Code"/>
+          <Item Value="Name"/>
+          <Item Value="IsLead"/>
+          <Item Value="IsActive"/>
+          <Item Value="CategoryName"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="ProgramViewIterator" id="Name">
+      <AttrNames>
+        <Item Value="Name"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProgramViewIterator" id="Code">
+      <AttrNames>
+        <Item Value="Code"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="UserRoleViewIterator" id="UserRoleCreateInsert"
+            InstanceName="PrivateAppModuleDataControl.Root.ProgramAppModule.UserRoleView"
+            DataControl="PrivateAppModuleDataControl" RequiresUpdateModel="true"
+            Action="createInsertRow"/>
+    <list StaticList="false" IterBinding="UserRoleViewIterator" id="UserId"
+          Uses="LOV_UserId"/>
+    <list StaticList="false" IterBinding="UserRoleViewIterator" id="RoleCode"
+          Uses="LOV_RoleCode"/>
+    <attributeValues IterBinding="ProgramViewIterator" id="IsSyncing">
+      <AttrNames>
+        <Item Value="IsSyncing"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProgramViewIterator" id="Id">
+      <AttrNames>
+        <Item Value="Id"/>
+      </AttrNames>
+    </attributeValues>
+    
+     
+  </bindings>
+</pageDefinition>

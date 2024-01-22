@@ -1,0 +1,1 @@
+alter table project add (predecessor_project_id nvarchar2(30) references project(id), d3transition_project_id nvarchar2(30) references project(id), succ_project_id nvarchar2(30) references project(id));

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.0.31" id="maintain_probabilitiesPageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="ManagementAppModule.CostsProbabilityExternalView" DataControl="PrivateAppModuleDataControl"
+              RangeSize="25" id="CostsProbabilityExternalViewIterator"/>
+                 <iterator Binds="ManagementAppModule.CostsProbabilitySpecificView" DataControl="PrivateAppModuleDataControl"
+                  RangeSize="25" id="CostsProbabilitySpecificViewIterator"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="CostsProbabilityExternalViewIterator" id="CostsProbabilityExternalView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.CostsProbabilityExternalView"
+                      Name="CostsProbabilityExternalView0">
+        <AttrNames>
+          <Item Value="FunctionCode"/>
+          <Item Value="Lag"/>
+          <Item Value="Probability"/>
+          <Item Value="RuleCode"/>
+          <Item Value="StudyElementId"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="CostsProbabilitySpecificViewIterator" id="CostsProbabilitySpecificView"
+              ChangeEventPolicy="ppr">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.CostsProbabilitySpecificView"
+                            Name="CostsProbabilitySpecificView0">
+                <AttrNames>
+                    <Item Value="SbeCode"/>
+                    <Item Value="SubstanceTypeCode"/>
+                    <Item Value="PhaseCode"/>
+                    <Item Value="Probability"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <action IterBinding="CostsProbabilitySpecificViewIterator" id="CreateInsertSpecific" RequiresUpdateModel="true"
+                Action="createInsertRow"/>
+        <action IterBinding="CostsProbabilitySpecificViewIterator" id="DeleteSpecific" RequiresUpdateModel="false"
+                Action="removeCurrentRow"/>
+    <action IterBinding="CostsProbabilityExternalViewIterator" id="CreateInsert" RequiresUpdateModel="true"
+            Action="createInsertRow"/>
+    <action IterBinding="CostsProbabilityExternalViewIterator" id="Delete" RequiresUpdateModel="false"
+            Action="removeCurrentRow"/>
+    <action id="Commit" RequiresUpdateModel="true" Action="commitTransaction"/>
+  </bindings>
+</pageDefinition>

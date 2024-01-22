@@ -1,0 +1,35 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
+<wsdl:definitions
+     name="DeleteStudy"
+     targetNamespace="http://xmlns.bayer.com/ipms/soa"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+     xmlns:client="http://xmlns.bayer.com/ipms/soa"
+     xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+    >
+    <plnk:partnerLinkType name="DeleteStudy">
+        <plnk:role name="DeleteStudyProvider" portType="client:DeleteStudy"/>
+        <plnk:role name="DeleteStudyRequester" portType="client:DeleteStudyCallback"/>
+    </plnk:partnerLinkType>
+    <wsdl:types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:client="http://xmlns.bayer.com/ipms/soa" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype">
+            <import namespace="http://xmlns.bayer.com/ipms/soa" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/soa/soa.xsd"/>
+        </schema>
+    </wsdl:types>
+    <wsdl:message name="DeleteStudyRequestMessage">
+        <wsdl:part name="payload" element="client:delete"/>
+    </wsdl:message>
+    <wsdl:message name="DeleteStudyResponseMessage">
+        <wsdl:part name="payload" element="client:response"/>
+    </wsdl:message>
+    <wsdl:portType name="DeleteStudy">
+        <wsdl:operation name="process">
+            <wsdl:input message="client:DeleteStudyRequestMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:portType name="DeleteStudyCallback">
+        <wsdl:operation name="processResponse">
+            <wsdl:input message="client:DeleteStudyResponseMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+</wsdl:definitions>

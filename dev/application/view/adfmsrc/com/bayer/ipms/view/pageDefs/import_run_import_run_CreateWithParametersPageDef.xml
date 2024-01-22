@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.64.93"
+                id="import_run_import_run_CreateWithParametersPageDef"
+                Package="com.bayer.ipms.view.flows" SkipValidation="true">
+  <parameters/>
+  <executables>
+    <iterator Binds="Root.ImportAppModule.ImportView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="ImportViewIterator"/>
+  </executables>
+  <bindings>
+    <action IterBinding="ImportViewIterator" id="CreateWithParams"
+            RequiresUpdateModel="true" Action="createWithParams"
+            DataControl="PrivateAppModuleDataControl"
+            InstanceName="PrivateAppModuleDataControl.Root.ImportAppModule.ImportView">
+      <NamedData NDName="ProjectId" NDValue="#{pageFlowScope.projectId}" NDType="java.lang.String"/>
+      <NamedData NDName="TypeMask" NDValue="#{pageFlowScope.importSource eq 'FPS'?'24':'16'}"
+                 NDType="java.lang.String"/>
+      <NamedData NDName="IsManual" NDValue="1" NDType="java.lang.String"/>
+      <NamedData NDName="Source" NDValue="#{pageFlowScope.importSource}" NDType="java.lang.String"/>
+      <NamedData NDName="SandboxId" NDValue="#{pageFlowScope.sandboxId}" NDType="java.lang.String"/>
+    </action>
+  </bindings>
+</pageDefinition>

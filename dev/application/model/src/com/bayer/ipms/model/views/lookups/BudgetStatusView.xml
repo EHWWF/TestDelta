@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="BudgetStatusView"
+  Version="12.2.1.20.47"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="false"
+  RowClass="com.bayer.ipms.model.base.IPMSLookupViewRowImpl"
+  ComponentClass="com.bayer.ipms.model.base.IPMSViewObjectImpl"
+  FetchMode="FETCH_ALL"
+  FetchSize="100"
+  Passivate="None"
+  PageIterMode="Full"
+  UseGlueCode="false"
+  AutoRefresh="true"
+  SelectList="BudgetStatus.CODE, 
+       BudgetStatus.NAME, 
+       BudgetStatus.IS_ACTIVE, 
+       BudgetStatus.DESCRIPTION"
+  FromList="BUDGET_STATUS BudgetStatus"
+  OrderBy="IS_ACTIVE DESC, NAME ASC">
+  <DesignTime>
+    <Attr Name="_rowSuperClassName"
+      Value="com.bayer.ipms.model.base.IPMSLookupViewRowImpl"/>
+  </DesignTime>
+
+  <EntityUsage
+    Name="BudgetStatus"
+    Entity="com.bayer.ipms.model.entities.lookups.BudgetStatus"
+    DeleteParticipant="false"/>
+  <ViewAttribute
+    Name="Code"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Code"
+    EntityUsage="BudgetStatus"
+    AliasName="CODE"/>
+  <ViewAttribute
+    Name="Name"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Name"
+    EntityUsage="BudgetStatus"
+    AliasName="NAME"/>
+  <ViewAttribute
+    Name="IsActive"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="IsActive"
+    EntityUsage="BudgetStatus"
+    AliasName="IS_ACTIVE">
+        <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.lookups.BudgetStatusView.IsActive_LABEL"/>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Description"
+    PrecisionRule="true"
+    EntityAttrName="Description"
+    EntityUsage="BudgetStatus"
+    AliasName="DESCRIPTION">
+     <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH
+          Value="100"/>
+        <DISPLAYHEIGHT
+          Value="5"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="com.bayer.ipms.model.views.lookups.BudgetStatusView_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.bayer.ipms.model.bundles.modelBundle"/>
+  </ResourceBundle>
+</ViewObject>
+

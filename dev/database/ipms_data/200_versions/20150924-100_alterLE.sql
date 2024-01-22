@@ -1,0 +1,1 @@
+alter table latest_estimates_tag add (is_frozen number(1) default 0 not null);

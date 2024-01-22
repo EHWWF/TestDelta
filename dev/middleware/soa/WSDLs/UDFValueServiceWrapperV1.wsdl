@@ -1,0 +1,17 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
+<wsdl:definitions
+     name="UDFValueService"
+     targetNamespace="http://xmlns.oracle.com/Primavera/P6/WS/UDFValue/V1"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+     xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+     xmlns:plnk="http://schemas.xmlsoap.org/ws/2003/05/partner-link/"
+     xmlns:tns="http://xmlns.oracle.com/Primavera/P6/WS/UDFValue/V1"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    >
+    <plnk:partnerLinkType name="UDFValueService">
+        <plnk:role name="UDFValuePortType">
+            <plnk:portType name="tns:UDFValuePortType"/>
+        </plnk:role>
+    </plnk:partnerLinkType>
+    <wsdl:import namespace="http://xmlns.oracle.com/Primavera/P6/WS/UDFValue/V1" location="oramds:/apps/com/oracle/xmlns/Primavera/P6/WS/UDFValue/V1/UDFValueService.wsdl"/>
+</wsdl:definitions>

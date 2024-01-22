@@ -1,0 +1,1 @@
+alter table project add(proposed_sbe_code nvarchar2(10));

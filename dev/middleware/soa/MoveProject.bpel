@@ -1,0 +1,433 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Thu Jul 25 14:58:21 CEST 2013
+  Author:  algis
+  Type: BPEL 2.0 Process
+  Purpose: Synchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="MoveProject" targetNamespace="http://xmlns.bayer.com/ipms/soa"
+         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:client="http://xmlns.bayer.com/ipms/soa"
+         xmlns:ora="http://schemas.oracle.com/xpath/extension" xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap" xmlns:ns1="http://xmlns.bayer.com/ipms"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:ns2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         xmlns:ns3="http://xmlns.oracle.com/Primavera/P6/WS/EPS/V1"
+         xmlns:ns4="http://xmlns.oracle.com/Primavera/P6/WS/OBS/V1" xmlns:ui="http://xmlns.oracle.com/soa/designer">
+  <import namespace="http://xmlns.bayer.com/ipms/soa" location="MoveProject.wsdl"
+          importType="http://schemas.xmlsoap.org/wsdl/" ui:processWSDL="true"/>
+  <partnerLinks>
+    <partnerLink name="MoveProjectService" partnerLinkType="client:MoveProject" myRole="MoveProjectProvider"
+                 partnerRole="MoveProjectRequester"/>
+    <partnerLink name="ProjectService" partnerLinkType="ns2:ProjectService" partnerRole="ProjectPortType"/>
+    <partnerLink name="EPSService" partnerLinkType="ns3:EPSService" partnerRole="EPSPortType"/>
+    <partnerLink name="OBSService" partnerLinkType="ns4:OBSService" partnerRole="OBSPortType"/>
+  </partnerLinks>
+  <variables>
+    <!-- Reference to the message passed as input during initiation -->
+    <variable name="inputVariable" messageType="client:MoveProjectRequestMessage"/>
+    <!-- Reference to the message that will be returned to the requester-->
+    <variable name="outputVariable" messageType="client:MoveProjectResponseMessage"/>
+    <variable name="ReadProjectIn" messageType="ns2:ReadProjects"/>
+    <variable name="ReadProjectOut" messageType="ns2:ReadProjectsResponse"/>
+    <variable name="loopCounter" type="xsd:int"/>
+    <variable name="ReadEPSIn" messageType="ns3:ReadEPS"/>
+    <variable name="ReadEPSOut" messageType="ns3:ReadEPSResponse"/>
+    <variable name="UpdateProjectsIn" messageType="ns2:UpdateProjects"/>
+    <variable name="UpdateProjectsOut" messageType="ns2:UpdateProjectsResponse"/>
+    <variable name="countEPS" type="xsd:int"/>
+    <variable name="compareString2" type="xsd:string"/>
+    <variable name="compareString1" type="xsd:string"/>
+    <variable name="ReadOBSIn" messageType="ns4:ReadOBS"/>
+    <variable name="ReadOBSOut" messageType="ns4:ReadOBSResponse"/>
+    <variable name="countOBS" type="xsd:int"/>
+    <variable name="ProgramEpsId" type="xsd:string"/>
+  </variables>
+  <faultHandlers>
+    <catchAll>
+      <scope name="mainFaultCatchingScope" exitOnStandardFault="no">
+        <variables>
+          <variable name="faultVariable" messageType="client:MoveProjectResponseMessage"/>
+        </variables>
+        <sequence name="FaultCatching">
+          <assign name="assignFaultOutput">
+            <copy>
+              <from>ora:getFaultName()</from>
+              <to>$faultVariable.payload/ns1:error/ns1:code</to>
+            </copy>
+            <copy>
+              <from>ora:getFaultAsString()</from>
+              <to>$faultVariable.payload/ns1:error/ns1:description</to>
+            </copy>
+            <copy>
+              <from>$inputVariable.payload/@id</from>
+              <to>$faultVariable.payload/ns1:error/@id</to>
+            </copy>
+            <copy>
+              <from>$inputVariable.payload/@id</from>
+              <to>$faultVariable.payload/@id</to>
+            </copy>
+          </assign>
+          <invoke name="callbackFaultOutput" bpelx:invokeAsDetail="no" partnerLink="MoveProjectService"
+                  portType="client:MoveProjectCallback" operation="callback" inputVariable="faultVariable"/>
+        </sequence>
+      </scope>
+    </catchAll>
+  </faultHandlers>
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC                                               
+     Set of activities coordinating the flow of messages across the    
+     services integrated within this business process                  
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <sequence name="main">
+    <!-- Receive input from requestor. (Note: This maps to operation defined in MoveProject.wsdl) -->
+    <receive name="receiveInput" partnerLink="MoveProjectService" portType="client:MoveProject" operation="process"
+             variable="inputVariable" createInstance="yes"/>
+    <if name="ProjectArea">
+      <documentation>
+        <![CDATA[RBIN]]>
+      </documentation>
+      <condition>$inputVariable.payload/ns1:project/@programId = 'RBIN'</condition>
+      <assign name="assign_RBINEpsObsFilter">
+        <copy>
+          <from>"RBIN"</from>
+          <to>$ProgramEpsId</to>
+        </copy>
+        <copy>
+          <from>"Id='RBIN'"</from>
+          <to>$ReadEPSIn.params/ns3:Filter</to>
+        </copy>
+        <copy>
+          <from>"Name IN ('RBIN-RAW', 'RBIN-CUR', 'RBIN-APR') "</from>
+          <to>$ReadOBSIn.params/ns4:Filter</to>
+        </copy>
+      </assign>
+      <elseif>
+        <documentation>
+          <![CDATA[D2]]>
+        </documentation>
+        <condition>$inputVariable.payload/ns1:project/ns1:areaCode = 'D2-PRJ'</condition>
+        <assign name="assign_D2EpsObsFilter">
+          <copy>
+            <from>"D2"</from>
+            <to>$ProgramEpsId</to>
+          </copy>
+          <copy>
+            <from>"Id='D2'"</from>
+            <to>$ReadEPSIn.params/ns3:Filter</to>
+          </copy>
+          <copy>
+            <from>"Name IN ('RESERVED-D2-RAW', 'RESERVED-D2-CUR', 'RESERVED-D2-APR') "</from>
+            <to>$ReadOBSIn.params/ns4:Filter</to>
+          </copy>
+        </assign>
+      </elseif>
+      <elseif>
+        <documentation>
+          <![CDATA[SAMD]]>
+        </documentation>
+        <condition>$inputVariable.payload/ns1:project/ns1:areaCode = 'SAMD'</condition>
+        <assign name="assign_SAMDEpsObsFilter">
+          <copy>
+            <from>"SAMD"</from>
+            <to>$ProgramEpsId</to>
+          </copy>
+          <copy>
+            <from>"Id='SAMD'"</from>
+            <to>$ReadEPSIn.params/ns3:Filter</to>
+          </copy>
+          <copy>
+            <from>"Name IN ('RESERVED-SAMD-RAW', 'RESERVED-SAMD-CUR', 'RESERVED-SAMD-APR') "</from>
+            <to>$ReadOBSIn.params/ns4:Filter</to>
+          </copy>
+        </assign>
+      </elseif>
+      <elseif>
+        <documentation>
+          <![CDATA[D3]]>
+        </documentation>
+        <condition>$inputVariable.payload/ns1:project/ns1:areaCode = 'D3-TR'</condition>
+        <assign name="assign_D3EpsObsFilter" xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable">
+          <copy>
+            <from>"D3TR"</from>
+            <to>$ProgramEpsId</to>
+          </copy>
+          <copy>
+            <from>"Id='D3TR'"</from>
+            <to>$ReadEPSIn.params/ns3:Filter</to>
+          </copy>
+          <copy>
+            <from>"Name IN ('RESERVED-D3TR-RAW', 'RESERVED-D3TR-CUR', 'RESERVED-D3TR-APR') "</from>
+            <to>$ReadOBSIn.params/ns4:Filter</to>
+          </copy>
+        </assign>
+      </elseif>
+      <elseif>
+        <documentation>
+          <![CDATA[MNT]]>
+        </documentation>
+        <condition>$inputVariable.payload/ns1:project/ns1:areaCode = 'PRD-MNT'</condition>
+        <assign name="assign_MNTEpsObsFilter" xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable">
+          <copy>
+            <from>ora:format("MNT-{0}", $inputVariable.payload/ns1:project/@programId)</from>
+            <to>$ProgramEpsId</to>
+          </copy>
+          <copy>
+            <from>ora:format("Id=''MNT-{0}''", $inputVariable.payload/ns1:project/@programId)</from>
+            <to>$ReadEPSIn.params/ns3:Filter</to>
+          </copy>
+          <copy>
+            <from>ora:format("Name IN (''MNT-{0}-RAW'', ''MNT-{0}-CUR'', ''MNT-{0}-APR'')", $inputVariable.payload/ns1:project/@programId)</from>
+            <to>$ReadOBSIn.params/ns4:Filter</to>
+          </copy>
+        </assign>
+      </elseif>
+      <else>
+        <documentation>
+          <![CDATA[DEV]]>
+        </documentation>
+        <assign name="assign_DEVEpsObsFilter" xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable">
+          <copy>
+            <from>$inputVariable.payload/ns1:project/@programId</from>
+            <to>$ProgramEpsId</to>
+          </copy>
+          <copy>
+            <from>ora:format("Id=''{0}''", $inputVariable.payload/ns1:project/@programId)</from>
+            <to>$ReadEPSIn.params/ns3:Filter</to>
+          </copy>
+          <copy>
+            <from>ora:format("Name IN (''{0}-RAW'', ''{0}-CUR'', ''{0}-APR'')", $inputVariable.payload/ns1:project/@programId)</from>
+            <to>$ReadOBSIn.params/ns4:Filter</to>
+          </copy>
+        </assign>
+      </else>
+    </if>
+    <flow name="FlowReadData">
+      <sequence name="SequenceReadEPS">
+        <assign name="AssignProgramReadEPS">
+          <copy>
+            <from>"Id"</from>
+            <to>$ReadEPSIn.params/ns3:Field</to>
+          </copy>
+          <extensionAssignOperation>
+            <bpelx:insertAfter>
+              <bpelx:from><bpelx:literal><Field xmlns="http://xmlns.oracle.com/Primavera/P6/WS/EPS/V1">Name</Field></bpelx:literal></bpelx:from>
+              <bpelx:to>$ReadEPSIn.params/ns3:Field</bpelx:to>
+            </bpelx:insertAfter>
+          </extensionAssignOperation>
+          <extensionAssignOperation>
+            <bpelx:insertAfter>
+              <bpelx:from><bpelx:literal><Field xmlns="http://xmlns.oracle.com/Primavera/P6/WS/EPS/V1">OBSObjectId</Field></bpelx:literal></bpelx:from>
+              <bpelx:to>$ReadEPSIn.params/ns3:Field</bpelx:to>
+            </bpelx:insertAfter>
+          </extensionAssignOperation>
+        </assign>
+        <invoke name="ProgramReadEPS" bpelx:invokeAsDetail="no" partnerLink="EPSService" portType="ns3:EPSPortType"
+                operation="ReadEPS" inputVariable="ReadEPSIn" outputVariable="ReadEPSOut"/>
+        <assign name="AssignReadEPS">
+          <copy>
+            <from>concat("ParentObjectId='", $ReadEPSOut.result/ns3:EPS/ns3:ObjectId ,"'")</from>
+            <to>$ReadEPSIn.params/ns3:Filter</to>
+          </copy>
+        </assign>
+        <invoke name="ReadEPS" bpelx:invokeAsDetail="no" partnerLink="EPSService" portType="ns3:EPSPortType"
+                operation="ReadEPS" inputVariable="ReadEPSIn" outputVariable="ReadEPSOut"/>
+        <throw name="ThrowNoEPSFound-Skip" faultName="bpelx:remoteFault">
+          <bpelx:skipCondition>count($ReadEPSOut.result/ns3:EPS)&gt;0</bpelx:skipCondition>
+        </throw>
+      </sequence>
+      <sequence name="SequenceReadProject">
+        <assign name="AssignReadIn">
+          <copy>
+            <from><literal><Field xmlns="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2">Id</Field></literal></from>
+            <to>$ReadProjectIn.params/ns2:Field</to>
+          </copy>
+          <extensionAssignOperation>
+            <bpelx:insertAfter>
+              <bpelx:from><bpelx:literal><Field xmlns="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2">ParentEPSObjectId</Field></bpelx:literal></bpelx:from>
+              <bpelx:to>$ReadProjectIn.params/ns2:Field</bpelx:to>
+            </bpelx:insertAfter>
+          </extensionAssignOperation>
+          <copy>
+            <from>concat("Id LIKE '",  $inputVariable.payload/ns1:project/@id ,"%'")</from>
+            <to>$ReadProjectIn.params/ns2:Filter</to>
+          </copy>
+        </assign>
+        <invoke name="ReadProject" bpelx:invokeAsDetail="no" partnerLink="ProjectService" portType="ns2:ProjectPortType"
+                operation="ReadProjects" inputVariable="ReadProjectIn" outputVariable="ReadProjectOut"/>
+        <assign name="AssignCountLooper">
+          <copy>
+            <from>count($ReadProjectOut.result/ns2:Project)</from>
+            <to>$loopCounter</to>
+          </copy>
+        </assign>
+        <throw name="ThrowNoProjectNodes-Skip" faultName="bpelx:remoteFault">
+          <bpelx:skipCondition>($loopCounter)&gt;0</bpelx:skipCondition>
+        </throw>
+      </sequence>
+      <sequence name="SequenceReadOBS">
+        <assign name="AssignReadOBS">
+          <copy>
+            <from>"Name"</from>
+            <to>$ReadOBSIn.params/ns4:Field</to>
+          </copy>
+        </assign>
+        <invoke name="ReadOBS" bpelx:invokeAsDetail="no" partnerLink="OBSService" portType="ns4:OBSPortType"
+                operation="ReadOBS" inputVariable="ReadOBSIn" outputVariable="ReadOBSOut"/>
+        <throw name="ThrowOBSNotFound-Skip" faultName="bpelx:remoteFault">
+          <bpelx:skipCondition>count($ReadOBSOut.result/ns4:OBS)&gt;0</bpelx:skipCondition>
+        </throw>
+      </sequence>
+    </flow>
+    <while name="WhileExistSourceNode">
+      <condition>$loopCounter&gt;0</condition>
+      <sequence name="SequenceProjectNodes">
+        <assign name="AssignCountEPSNodes">
+          <copy>
+            <from>count($ReadEPSOut.result/ns3:EPS)</from>
+            <to>$countEPS</to>
+          </copy>
+        </assign>
+        <while name="WhileExistsEPSNode">
+          <condition>$countEPS&gt;0</condition>
+          <sequence name="SequenceEPSNodes">
+            <assign name="AssignTmpCompareString12">
+              <copy>
+                <from>$ReadEPSOut.result/ns3:EPS[$countEPS]/ns3:Id</from>
+                <to>$compareString1</to>
+              </copy>
+              <copy>
+                <from>$ReadProjectOut.result/ns2:Project[$loopCounter]/ns2:Id</from>
+                <to>$compareString2</to>
+              </copy>
+            </assign>
+            <if name="IfEPS">
+              <documentation>ProjectType=EPSType<![CDATA[TmpString1MatchTmpString2]]></documentation>
+              <condition>substring($compareString1,string-length($compareString1)-3)=substring($compareString2,string-length($compareString2)-3)</condition>
+              <assign name="AssignUpdProjectsFromEPS">
+                <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                  <from>$ReadProjectOut.result/ns2:Project[$loopCounter]/ns2:ObjectId</from>
+                  <to>$UpdateProjectsIn.params/ns2:Project[$loopCounter]/ns2:ObjectId</to>
+                </copy>
+                <copy bpelx:insertMissingToData="yes" ignoreMissingFromData="yes">
+                  <from>$ReadEPSOut.result/ns3:EPS[$countEPS]/ns3:ObjectId</from>
+                  <to>$UpdateProjectsIn.params/ns2:Project[$loopCounter]/ns2:ParentEPSObjectId</to>
+                </copy>
+                <!--copy bpelx:insertMissingToData="yes"
+                      ignoreMissingFromData="yes">
+                  <from>$ReadEPSOut.result/ns3:EPS[$countEPS]/ns3:OBSObjectId</from>
+                  <to>$UpdateProjectsIn.params/ns2:Project[$loopCounter]/ns2:OBSObjectId</to>
+                </copy-->
+                <copy>
+                  <from>($countEPS)-($countEPS)</from>
+                  <to>$countEPS</to>
+                </copy>
+              </assign>
+              <else>
+                <documentation>
+                  <![CDATA[SkipNode]]>
+                </documentation>
+                <sequence name="Sequence4">
+                  <assign name="MinusCountEPSLooper">
+                    <copy>
+                      <from>($countEPS)-1</from>
+                      <to>$countEPS</to>
+                    </copy>
+                  </assign>
+                </sequence>
+              </else>
+            </if>
+          </sequence>
+        </while>
+        <assign name="AssignCountOBSNodes">
+          <copy>
+            <from>count($ReadOBSOut.result/ns4:OBS)</from>
+            <to>$countOBS</to>
+          </copy>
+        </assign>
+        <while name="WhileExistsOBSNode">
+          <condition>$countOBS&gt;0</condition>
+          <sequence name="SequenceOBSNodes">
+            <assign name="AssignTmpCompareString1">
+              <copy>
+                <from>$ReadOBSOut.result/ns4:OBS[$countOBS]/ns4:Name</from>
+                <to>$compareString1</to>
+              </copy>
+            </assign>
+            <if name="IfOBS">
+              <documentation>
+                <![CDATA[TmpString1MatchTmpString2]]>
+              </documentation>
+              <condition>substring($compareString1,string-length($compareString1)-3)=substring($compareString2,string-length($compareString2)-3)</condition>
+              <assign name="AssignUpdProjectsFromOBS">
+                <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                  <from>$ReadOBSOut.result/ns4:OBS[$countOBS]/ns4:ObjectId</from>
+                  <to>$UpdateProjectsIn.params/ns2:Project[$loopCounter]/ns2:OBSObjectId</to>
+                </copy>
+                <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                  <from>$ReadOBSOut.result/ns4:OBS[$countOBS]/ns4:Name</from>
+                  <to>$UpdateProjectsIn.params/ns2:Project[$loopCounter]/ns2:OBSName</to>
+                </copy>
+                <copy>
+                  <from>($countOBS)-($countOBS)</from>
+                  <to>$countOBS</to>
+                </copy>
+              </assign>
+              <else>
+                <documentation>
+                  <![CDATA[SkipNode]]>
+                </documentation>
+                <assign name="MinusCountOBSLooper">
+                  <copy>
+                    <from>($countOBS)-1</from>
+                    <to>$countOBS</to>
+                  </copy>
+                </assign>
+              </else>
+            </if>
+          </sequence>
+        </while>
+        <assign name="MinusMainLoopCount">
+          <copy>
+            <from>($loopCounter)-1</from>
+            <to>$loopCounter</to>
+          </copy>
+        </assign>
+      </sequence>
+    </while>
+    <invoke name="UpdateProjects" partnerLink="ProjectService" portType="ns2:ProjectPortType" operation="UpdateProjects"
+            inputVariable="UpdateProjectsIn" outputVariable="UpdateProjectsOut" bpelx:invokeAsDetail="no"/>
+    <assign name="AssignOut">
+      <copy>
+        <from>$inputVariable.payload/ns1:project</from>
+        <to>$outputVariable.payload/client:complete/ns1:project</to>
+      </copy>
+      <copy>
+        <from>$inputVariable.payload/@id</from>
+        <to>$outputVariable.payload/client:complete/@id</to>
+      </copy>
+      <copy>
+        <from>$inputVariable.payload/@id</from>
+        <to>$outputVariable.payload/@id</to>
+      </copy>
+    </assign>
+    <invoke name="callbackOutput" bpelx:invokeAsDetail="no" partnerLink="MoveProjectService"
+            portType="client:MoveProjectCallback" operation="callback" inputVariable="outputVariable"/>
+    <!-- Generate reply to synchronous request -->
+  </sequence>
+</process>

@@ -1,0 +1,2 @@
+alter table program_top_category add is_indication number(1,0) default 0 constraint prg_top_is_indication_cnn not null constraint prg_top_is_indication_ca check(is_indication in (0,1));
+comment on column program_top_category.is_indication is 'The flag indicating if the category is indication specific. The field was added based on reqeirement: PROMIS-465';

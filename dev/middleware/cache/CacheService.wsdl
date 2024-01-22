@@ -1,0 +1,21 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
+<wsdl:definitions
+     name="CacheService"
+     targetNamespace="http://xmlns.bayer.com/ipms/cache"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+     xmlns:tns="http://xmlns.bayer.com/ipms/cache"
+    >
+    <wsdl:types>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:import namespace="http://xmlns.bayer.com/ipms/cache" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/cache/cache.xsd"/>
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:message name="CacheRequestMessage">
+        <wsdl:part name="payload" element="tns:cache"/>
+    </wsdl:message>
+    <wsdl:portType name="CachePortType">
+        <wsdl:operation name="create">
+            <wsdl:input message="tns:CacheRequestMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+</wsdl:definitions>

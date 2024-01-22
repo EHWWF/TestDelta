@@ -1,0 +1,245 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Sun Jun 30 15:34:56 CEST 2013
+  Author:  algis
+  Type: BPEL 2.0 Process
+  Purpose: Synchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="DeleteProject"
+               targetNamespace="http://xmlns.bayer.com/ipms/soa"
+               xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+               xmlns:client="http://xmlns.bayer.com/ipms/soa"
+               xmlns:ora="http://schemas.oracle.com/xpath/extension"
+               xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ns1="http://xmlns.oracle.com/ipms/soa"
+         xmlns:ns2="http://xmlns.bayer.com/ipms"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:ns3="http://xmlns.oracle.com/Primavera/P6/WS/EPS/V1"
+         xmlns:ns4="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2"
+         xmlns:ns5="http://xmlns.oracle.com/Primavera/P6/WS/UDFValue/V1"
+         xmlns:ns6="http://xmlns.bayer.com/ipms/cache" xmlns:ui="http://xmlns.oracle.com/soa/designer">
+  <import namespace="http://xmlns.bayer.com/ipms/cache"
+          location="oramds:/apps/com/bayer/xmlns/ipms/cache/cache.xsd"
+          importType="http://www.w3.org/2001/XMLSchema"/>
+  <import namespace="http://xmlns.bayer.com/ipms/soa" location="DeleteProject.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"
+          ui:processWSDL="true"/>
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        PARTNERLINKS                                                      
+        List of services participating in this BPEL process               
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    --> 
+  <partnerLinks>
+    <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+    <partnerLink name="DeleteProjectService" partnerLinkType="client:DeleteProject" myRole="DeleteProjectProvider"
+                 partnerRole="DeleteProjectRequester"/>
+    <partnerLink name="ProjectService" partnerLinkType="ns4:ProjectService"
+                 partnerRole="ProjectPortType"/>
+    <partnerLink name="UDFValueService" partnerLinkType="ns5:UDFValueService"
+                 partnerRole="UDFValuePortType"/>
+    <partnerLink name="ReadConfiguration.ReadConfigurationService"
+                 partnerLinkType="client:ReadConfiguration"
+                 partnerRole="ReadConfigurationProvider"
+                 myRole="ReadConfigurationRequester"/>
+  </partnerLinks>
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      VARIABLES                                                        
+      List of messages and XML documents used within this BPEL process 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <variables>
+    <!-- Reference to the message passed as input during initiation -->
+    <variable name="inputVariable" messageType="client:DeleteProjectRequestMessage"/>
+
+    <!-- Reference to the message that will be returned to the requester-->
+    <variable name="outputVariable" messageType="client:DeleteProjectResponseMessage"/>
+    <variable name="ReadProjectIn" messageType="ns4:ReadProjects"/>
+    <variable name="ReadProjectOut" messageType="ns4:ReadProjectsResponse"/>
+    <variable name="ReadConfigIn"
+              messageType="client:ReadConfigurationRequestMessage"/>
+    <variable name="ReadConfigOut"
+              messageType="client:ReadConfigurationResponseMessage"/>
+    <variable name="DeleteUDFIn" messageType="ns5:DeleteUDFValues"/>
+    <variable name="DeleteUDFOut" messageType="ns5:DeleteUDFValuesResponse"/>
+    <variable name="DeleteProjectIn" messageType="ns4:DeleteProjects"/>
+    <variable name="DeleteProjectOut" messageType="ns4:DeleteProjectsResponse"/>
+  </variables>
+  <faultHandlers>
+    <catchAll>
+      <scope name="mainFaultCatchingScope" exitOnStandardFault="no">
+        <variables>
+          <variable name="faultVariable"
+                    messageType="client:DeleteProjectResponseMessage"/>
+        </variables>
+        <sequence name="Sequence1">
+          <assign name="assignFaultOutput">
+            <copy>
+              <from>ora:getFaultAsString()</from>
+              <to>$faultVariable.payload/ns2:error/ns2:description</to>
+            </copy>
+            <copy>
+              <from>ora:getFaultName()</from>
+              <to>$faultVariable.payload/ns2:error/ns2:code</to>
+            </copy>
+            <copy>
+              <from>$inputVariable.payload/@id</from>
+              <to>$faultVariable.payload/ns2:error/@id</to>
+            </copy>
+            <copy>
+              <from>$inputVariable.payload/@id</from>
+              <to>$faultVariable.payload/@id</to>
+            </copy>
+          </assign>
+          <invoke name="callbackFaultOutput" bpelx:invokeAsDetail="no"
+                  partnerLink="DeleteProjectService"
+                  portType="client:DeleteProjectCallback" operation="callback"
+                  inputVariable="faultVariable"/>
+        </sequence>
+      </scope>
+    </catchAll>
+  </faultHandlers>
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC                                               
+     Set of activities coordinating the flow of messages across the    
+     services integrated within this business process                  
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <sequence name="main">
+
+    <!-- Receive input from requestor. (Note: This maps to operation defined in DeleteProject.wsdl) -->
+    <receive name="receiveInput" partnerLink="DeleteProjectService" portType="client:DeleteProject" operation="process" variable="inputVariable" createInstance="yes"/>
+    <flow name="FlowReadALL">
+      <sequence name="Prj">
+        <assign name="AssignReadIn">
+          <copy>
+            <from><literal><v2:Field xmlns:v2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2">Id</v2:Field></literal></from>
+            <to>$ReadProjectIn.params/ns4:Field</to>
+          </copy>
+          <copy>
+            <from>concat("Id like '",$inputVariable.payload/ns2:project/@id,"-___'")</from>
+            <to>$ReadProjectIn.params/ns4:Filter</to>
+          </copy>
+        </assign>
+        <invoke name="ReadProject" bpelx:invokeAsDetail="no"
+                partnerLink="ProjectService" portType="ns4:ProjectPortType"
+                operation="ReadProjects" inputVariable="ReadProjectIn"
+                outputVariable="ReadProjectOut"/>
+      </sequence>
+      <sequence name="Cfg">
+        <scope name="ReadCfgFromFile">
+          <variables>
+            <variable name="VariableCache" element="ns6:cache"/>
+          </variables>
+          <faultHandlers>
+            <catchAll>
+              <empty name="Empty1"/>
+            </catchAll>
+          </faultHandlers>
+          <sequence name="ReadCfgFromFile">
+            <assign name="AssignFromCache">
+              <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                <from>ora:readFile("file:///opt/oracle/soa12.2.1/file_adapter/ipms/config.cache", "oramds:/apps/com/bayer/xmlns/ipms/cache/cache.xsd")</from>
+                <to>$VariableCache/ns6:cache</to>
+              </copy>
+              <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                <from>$VariableCache/ns6:cache/*</from>
+                <to>$ReadConfigOut.payload</to>
+              </copy>
+            </assign>
+            <empty name="EmptyBeforeSkip"/>
+          </sequence>
+        </scope>
+        <sequence name="FullReadCfg-SKIP">
+          <bpelx:skipCondition>($ReadConfigOut.payload/client:program/client:epsId)!=''</bpelx:skipCondition>
+          <assign name="AssignReadConfigIn">
+            <copy>
+              <from>'empty'</from>
+              <to>$ReadConfigIn.payload</to>
+            </copy>
+          </assign>
+          <invoke name="ReadConfigurationIn" bpelx:invokeAsDetail="no"
+                  partnerLink="ReadConfiguration.ReadConfigurationService"
+                  portType="client:ReadConfiguration" operation="process"
+                  inputVariable="ReadConfigIn"/>
+          <receive name="ReadConfigurationOut" createInstance="no"
+                   partnerLink="ReadConfiguration.ReadConfigurationService"
+                   portType="client:ReadConfigurationCallback"
+                   operation="callback" variable="ReadConfigOut"/>
+        </sequence>
+      </sequence>
+    </flow>
+    <flow name="FlowDeleteUDFandProject">
+      <sequence name="SequenceUDF">
+        <assign name="TransformDeleteUDF">
+          <bpelx:annotation>
+            <bpelx:pattern patternName="bpelx:transformation"/>
+          </bpelx:annotation>
+          <copy>
+            <from>ora:doXSLTransformForDoc("xsl/DeleteProjectDelUdf.xsl", $ReadProjectOut.result, "ReadConfigOut.payload", $ReadConfigOut.payload)</from>
+            <to variable="DeleteUDFIn" part="params"/>
+          </copy>
+        </assign>
+        <invoke name="DeleteUDF" bpelx:invokeAsDetail="no"
+                partnerLink="UDFValueService" portType="ns5:UDFValuePortType"
+                operation="DeleteUDFValues" inputVariable="DeleteUDFIn"
+                outputVariable="DeleteUDFOut"/>
+      </sequence>
+      <sequence name="SequenceProject">
+        <assign name="TransformDeleteIn">
+          <bpelx:annotation>
+            <bpelx:pattern patternName="bpelx:transformation"/>
+          </bpelx:annotation>
+          <copy>
+            <from>ora:doXSLTransformForDoc("xsl/DeleteProjectDel.xsl", $ReadProjectOut.result)</from>
+            <to variable="DeleteProjectIn" part="params"/>
+          </copy>
+        </assign>
+        <invoke name="DeleteProject" bpelx:invokeAsDetail="no"
+                partnerLink="ProjectService" portType="ns4:ProjectPortType"
+                operation="DeleteProjects" inputVariable="DeleteProjectIn"
+                outputVariable="DeleteProjectOut"/>
+      </sequence>
+    </flow>
+    <assign name="AssignOut">
+      <copy>
+        <from>$inputVariable.payload/ns2:project</from>
+        <to>$outputVariable.payload/client:complete/ns2:project</to>
+      </copy>
+      <copy>
+        <from>$inputVariable.payload/@id</from>
+        <to>$outputVariable.payload/client:complete/@id</to>
+      </copy>
+      <copy>
+        <from>$inputVariable.payload/@id</from>
+        <to>$outputVariable.payload/@id</to>
+      </copy>
+    </assign>
+    <invoke name="callbackOutput" bpelx:invokeAsDetail="no"
+            partnerLink="DeleteProjectService"
+            portType="client:DeleteProjectCallback" operation="callback"
+            inputVariable="outputVariable"/>
+    <!-- Generate reply to synchronous request -->
+  </sequence>
+</process>

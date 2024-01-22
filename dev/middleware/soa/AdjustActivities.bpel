@@ -1,0 +1,456 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+  Created: Thu Aug 29 16:29:25 CEST 2013
+  Author:  algis
+  Type: BPEL 2.0 Process
+  Purpose: Synchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="AdjustActivities"
+			targetNamespace="http://xmlns.bayer.com/ipms/soa"
+			xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+			xmlns:client="http://xmlns.bayer.com/ipms/soa"
+			xmlns:ora="http://schemas.oracle.com/xpath/extension"
+			xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:ns1="http://xmlns.bayer.com/ipms"
+         xmlns:ns11="http://xmlns.bayer.com/ipms/soa"
+         xmlns:ns2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:ns3="http://xmlns.oracle.com/Primavera/P6/WS/UDFValue/V1"
+         xmlns:ns4="http://xmlns.oracle.com/Primavera/P6/WS/Activity/V1"
+         xmlns:ns5="http://xmlns.oracle.com/Primavera/P6/WS/WBS/V2"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         xmlns:ns6="http://xmlns.bayer.com/ipms/cache" xmlns:ui="http://xmlns.oracle.com/soa/designer">
+  <import namespace="http://xmlns.bayer.com/ipms/soa" location="AdjustActivities.wsdl"
+          importType="http://schemas.xmlsoap.org/wsdl/" ui:processWSDL="true"/>
+  <import namespace="http://xmlns.bayer.com/ipms/cache"
+          location="oramds:/apps/com/bayer/xmlns/ipms/cache/cache.xsd"
+          importType="http://www.w3.org/2001/XMLSchema"/>
+  <import namespace="http://xmlns.bayer.com/ipms"
+          location="oramds:/apps/com/bayer/xmlns/ipms/types.xsd"
+          importType="http://www.w3.org/2001/XMLSchema"/>
+  <partnerLinks>
+    <partnerLink name="AdjustActivitiesService" partnerLinkType="client:AdjustActivities" myRole="AdjustActivitiesProvider"
+                 partnerRole="AdjustActivitiesRequester"/>
+    <partnerLink name="ProjectService" partnerLinkType="ns2:ProjectService"
+                 partnerRole="ProjectPortType"/>
+    <partnerLink name="UDFValueService" partnerLinkType="ns3:UDFValueService"
+                 partnerRole="UDFValuePortType"/>
+    <partnerLink name="ActivityService" partnerLinkType="ns4:ActivityService"
+                 partnerRole="ActivityPortType"/>
+    <partnerLink name="WBSService" partnerLinkType="ns5:WBSService"
+                 partnerRole="WBSPortType"/>
+    <partnerLink name="ReadConfiguration.ReadConfigurationService"
+                 partnerLinkType="client:ReadConfiguration"
+                 partnerRole="ReadConfigurationProvider"
+                 myRole="ReadConfigurationRequester"/>
+  </partnerLinks>
+
+  <variables>
+    <variable name="inputVariable" messageType="client:AdjustActivitiesRequestMessage"/>
+    <variable name="outputVariable" messageType="client:AdjustActivitiesResponseMessage"/>
+    <variable name="ReadCfgOut" messageType="client:ReadConfigurationResponseMessage"/>
+    <variable name="ReadProjectOut" messageType="ns2:ReadProjectsResponse"/>
+    <variable name="ReadCfgIn"
+                      messageType="client:ReadConfigurationRequestMessage"/>
+  </variables>
+  <faultHandlers>
+    <catchAll>
+      <scope name="mainFaultCatchingScope" exitOnStandardFault="no">
+        <variables>
+          <variable name="faultVariable"
+                    messageType="client:AdjustActivitiesErrorMessage"/>
+        </variables>
+        <sequence name="MainCatchAll">
+          <assign name="assignFaultOutput">
+            <copy>
+              <from>ora:getFaultName()</from>
+              <to>$faultVariable.payload/ns1:code</to>
+            </copy>
+            <copy>
+              <from>ora:getFaultAsString()</from>
+              <to>$faultVariable.payload/ns1:description</to>
+            </copy>
+          </assign>
+          <invoke name="callbackFaultOutput" bpelx:invokeAsDetail="no"
+                  partnerLink="AdjustActivitiesService"
+                  portType="client:AdjustActivitiesCallback"
+                  operation="callback" inputVariable="outputVariable"/>
+        </sequence>
+      </scope>
+    </catchAll>
+  </faultHandlers>
+  <sequence name="main">
+
+    <!-- Receive input from requestor. (Note: This maps to operation defined in AdjustActivities.wsdl) -->
+    <receive name="receiveInput" partnerLink="AdjustActivitiesService" portType="client:AdjustActivities" operation="process" variable="inputVariable" createInstance="yes"/>
+    <flow name="FlowReadAllData">
+      <bpelx:annotation>
+        <bpelx:documentation>
+          <![CDATA[Collect required data.]]>
+        </bpelx:documentation>
+      </bpelx:annotation>
+      <sequence name="SequenceReadCfg">
+        <scope name="ScopeReadConfig" exitOnStandardFault="no">
+          <bpelx:annotation>
+            <bpelx:documentation>
+              <![CDATA[Read P6 configuration by calling BPEL process]]>
+            </bpelx:documentation>
+          </bpelx:annotation>
+          <variables>            
+            <variable name="VariableCache" element="ns6:cache"/>
+          </variables>
+          <faultHandlers>
+            <catchAll>
+              <empty name="Empty1"/>
+            </catchAll>
+          </faultHandlers>
+          <sequence name="ReadCfgFromFile">
+            <assign name="AssignFromCache">
+              <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                <from>ora:readFile("file:///opt/oracle/soa12.2.1/file_adapter/ipms/config.cache", "oramds:/apps/com/bayer/xmlns/ipms/cache/cache.xsd")</from>
+                <to>$VariableCache/ns6:cache</to>
+              </copy>
+              <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                <from>$VariableCache/ns6:cache/*</from>
+                <to>$ReadCfgOut.payload</to>
+              </copy>
+            </assign>
+            <empty name="EmptyBeforeSkip"/>
+          </sequence>
+        </scope>
+        <sequence name="FullReadCfg-SKIP">
+          <bpelx:skipCondition>($ReadCfgOut.payload/client:program/client:epsId)!=''</bpelx:skipCondition>
+          <assign name="AssignReadCfg">
+            <copy>
+              <from>'empty'</from>
+              <to>$ReadCfgIn.payload</to>
+            </copy>
+          </assign>
+          <invoke name="ReadConfigurationIn" bpelx:invokeAsDetail="no"
+                  partnerLink="ReadConfiguration.ReadConfigurationService"
+                  portType="client:ReadConfiguration" operation="process"
+                  inputVariable="ReadCfgIn"/>
+          <receive name="ReadConfigurationOut" createInstance="no"
+                   partnerLink="ReadConfiguration.ReadConfigurationService"
+                   portType="client:ReadConfigurationCallback"
+                   operation="callback" variable="ReadCfgOut"/>
+        </sequence>
+      </sequence>
+      <sequence name="SequenceReadProject">
+        <scope name="ScopeReadProject" exitOnStandardFault="no">
+          <variables>
+            <variable name="ReadProjectIn" messageType="ns2:ReadProjects"/>
+          </variables>
+          <sequence name="SequenceReadProject">
+            <assign name="AssignReadProject">
+              <copy>
+                <from><literal><v2:Field xmlns:v2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2">WBSObjectId</v2:Field></literal></from>
+                <to>$ReadProjectIn.params/ns2:Field</to>
+              </copy>
+              <extensionAssignOperation>
+                <bpelx:insertAfter>
+                  <bpelx:from><bpelx:literal><v2:Field xmlns:v2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2">OBSName</v2:Field></bpelx:literal></bpelx:from>
+                  <bpelx:to>$ReadProjectIn.params/ns2:Field</bpelx:to>
+                </bpelx:insertAfter>
+              </extensionAssignOperation>
+              <extensionAssignOperation>
+                <bpelx:insertAfter>
+                  <bpelx:from><bpelx:literal><v2:Field xmlns:v2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2">OBSObjectId</v2:Field></bpelx:literal></bpelx:from>
+                  <bpelx:to>$ReadProjectIn.params/ns2:Field</bpelx:to>
+                </bpelx:insertAfter>
+              </extensionAssignOperation>
+              <copy>
+                <from>concat("Id='", $inputVariable.payload ,"'")</from>
+                <to>$ReadProjectIn.params/ns2:Filter</to>
+              </copy>
+            </assign>
+            <invoke name="ReadProject"
+                    partnerLink="ProjectService"
+                    portType="ns2:ProjectPortType" operation="ReadProjects"
+                    inputVariable="ReadProjectIn"
+                    outputVariable="ReadProjectOut" bpelx:invokeAsDetail="no"/>
+          </sequence>
+        </scope>
+      </sequence>
+    </flow>
+    <scope name="ScopeDeleteCreateUDF" exitOnStandardFault="no">
+      <variables>
+        <variable name="ReadAllActByWBSIn"
+                  messageType="ns4:ReadAllActivitiesByWBS"/>
+        <variable name="ReadAllActByWBSOut"
+                  messageType="ns4:ReadAllActivitiesByWBSResponse"/>
+        <variable name="DeleteUDFValuesIn" messageType="ns3:DeleteUDFValues"/>
+        <variable name="DeleteUDFValuesSubsetIn" messageType="ns3:DeleteUDFValues"/>
+        <variable name="DeleteUDFValuesOut"
+                  messageType="ns3:DeleteUDFValuesResponse"/>
+        <variable name="CreateUDFValuesIn" messageType="ns3:CreateUDFValues"/>
+        <variable name="CreateUDFValuesSubsetIn" messageType="ns3:CreateUDFValues"/>
+        <variable name="CreateUDFValuesOut"
+                  messageType="ns3:CreateUDFValuesResponse"/>
+        <variable name="PlanVersionId" element="ns1:empty"/>
+        <variable name="ReadUDFValuesIPMSIDIn" messageType="ns3:ReadUDFValues"/>
+        <variable name="ReadUDFValuesIPMSIDOut"
+                  messageType="ns3:ReadUDFValuesResponse"/>
+        <variable name="ReadUDFValuesIn" messageType="ns3:ReadUDFValues"/>
+        <variable name="ReadUDFValuesOut"
+                  messageType="ns3:ReadUDFValuesResponse"/>
+      </variables>
+      <sequence name="SequenceReadAllActByWBS">
+        <sequence name="SequenceCreatePlanVersionId">
+          <assign name="AssignReadUDFValuesIPMSID">
+            <copy>
+              <from><literal><v2:Field xmlns:v2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2">Text</v2:Field></literal></from>
+              <to>$ReadUDFValuesIPMSIDIn.params/ns3:Field</to>
+            </copy>
+            <copy>
+              <from>concat("ForeignObjectId='", $ReadProjectOut.result/ns2:Project/ns2:ObjectId ,"' and UDFTypeObjectId='",$ReadCfgOut.payload/ns11:project/ns11:codeTypeId , "'")</from>
+              <to>$ReadUDFValuesIPMSIDIn.params/ns3:Filter</to>
+            </copy>
+          </assign>
+          <invoke name="ReadUDFValuesIPMSID" partnerLink="UDFValueService"
+                  portType="ns3:UDFValuePortType" operation="ReadUDFValues"
+                  inputVariable="ReadUDFValuesIPMSIDIn"
+                  outputVariable="ReadUDFValuesIPMSIDOut"
+                  bpelx:invokeAsDetail="no"/>
+        </sequence>
+        <sequence name="SequenceSelectAllActivities">
+          <assign name="AssignReadAllActByWBS">
+            <copy>
+              <from><literal><v2:Field xmlns:v2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2">ObjectId</v2:Field></literal></from>
+              <to>$ReadAllActByWBSIn.params/ns4:Field</to>
+            </copy>
+            <copy ignoreMissingFromData="no">
+              <from>$ReadProjectOut.result/ns2:Project/ns2:WBSObjectId</from>
+              <to>$ReadAllActByWBSIn.params/ns4:WBSObjectId</to>
+            </copy>
+            <copy>
+              <from>concat($ReadUDFValuesIPMSIDOut.result/ns3:UDFValue/ns3:Text,substring($inputVariable.payload,string-length($inputVariable.payload)-3))</from>
+              <to>$PlanVersionId</to>
+            </copy>
+          </assign>
+          <invoke name="ReadAllActByWBS" bpelx:invokeAsDetail="no"
+                  partnerLink="ActivityService" portType="ns4:ActivityPortType"
+                  operation="ReadAllActivitiesByWBS"
+                  inputVariable="ReadAllActByWBSIn"
+                  outputVariable="ReadAllActByWBSOut"/>
+        </sequence>
+        <if name="IfRAW">
+          <documentation>
+            <![CDATA[RAW-ENABLE-LATER-NOW-ALWAYS-DO-FULL]]>
+          </documentation>
+          <condition>substring($inputVariable.payload,string-length($inputVariable.payload)-3)="-SKIP"</condition>
+          <sequence name="DeltaOnlyForRAW">
+            <assign name="AssignReadAllUDF">
+              <copy>
+                <from>'ForeignObjectId'</from>
+                <to>$ReadUDFValuesIn.params/ns3:Field</to>
+              </copy>
+              <extensionAssignOperation>
+                <bpelx:insertAfter>
+                  <bpelx:from><bpelx:literal><v2:Field xmlns:v2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2">Text</v2:Field></bpelx:literal></bpelx:from>
+                  <bpelx:to>$ReadUDFValuesIn.params/ns3:Field</bpelx:to>
+                </bpelx:insertAfter>
+              </extensionAssignOperation>
+              <extensionAssignOperation>
+                <bpelx:insertAfter>
+                  <bpelx:from><bpelx:literal><v2:Field xmlns:v2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2">UDFTypeObjectId</v2:Field></bpelx:literal></bpelx:from>
+                  <bpelx:to>$ReadUDFValuesIn.params/ns3:Field</bpelx:to>
+                </bpelx:insertAfter>
+              </extensionAssignOperation>
+              <copy>
+                <from>concat("Text ='", $PlanVersionId ,"' and UDFTypeObjectId='", $ReadCfgOut.payload/client:activity/client:planVersionIdTypeId , "'")</from>
+                <to>$ReadUDFValuesIn.params/ns3:Filter</to>
+              </copy>
+            </assign>
+            <invoke name="ReadUDFValues" bpelx:invokeAsDetail="no"
+                    partnerLink="UDFValueService"
+                    portType="ns3:UDFValuePortType" operation="ReadUDFValues"
+                    inputVariable="ReadUDFValuesIn"
+                    outputVariable="ReadUDFValuesOut"/>
+            <assign name="XSL-DeleteUDF-DELTA">
+              <bpelx:annotation>
+                <bpelx:pattern patternName="bpelx:transformation"/>
+              </bpelx:annotation>
+              <copy>
+                <from>ora:doXSLTransformForDoc("xsl/AdjustAcDeleteDeltaUDF.xsl", $ReadAllActByWBSOut.result, "ReadCfgOut.payload", $ReadCfgOut.payload, "ReadUDFValuesOut.result", $ReadUDFValuesOut.result)</from>
+                <to variable="DeleteUDFValuesIn" part="params"/>
+              </copy>
+            </assign>
+            <assign name="XSL-CreateUDF-DELTA">
+              <bpelx:annotation>
+                <bpelx:pattern patternName="bpelx:transformation"/>
+              </bpelx:annotation>
+              <copy>
+                <from>ora:doXSLTransformForDoc("xsl/AdjustActCreateDeltaUDF.xsl", $ReadAllActByWBSOut.result, "ReadCfgOut.payload", $ReadCfgOut.payload, "ReadUDFValuesOut.result", $ReadUDFValuesOut.result, "PlanVersionId", $PlanVersionId)</from>
+                <to variable="CreateUDFValuesIn" part="params"/>
+              </copy>
+            </assign>
+          </sequence>
+          <else>
+            <sequence name="NotRAW">
+              <assign name="TransformDelUDFValues">
+                <bpelx:annotation>
+                  <bpelx:pattern patternName="bpelx:transformation"/>
+                </bpelx:annotation>
+                <copy>
+                  <from>ora:doXSLTransformForDoc("xsl/AdjustActDeleteUdf.xsl", $ReadAllActByWBSOut.result, "ReadCfgOut.payload", $ReadCfgOut.payload)</from>
+                  <to variable="DeleteUDFValuesIn" part="params"/>
+                </copy>
+              </assign>
+              <assign name="TransformCreateUDFValues">
+                <bpelx:annotation>
+                  <bpelx:pattern patternName="bpelx:transformation"/>
+                </bpelx:annotation>
+                <copy>
+                  <from>ora:doXSLTransformForDoc("xsl/AdjustActCreateUdf.xsl", $ReadAllActByWBSOut.result, "ReadCfgOut.payload", $ReadCfgOut.payload, "PlanVersionId", $PlanVersionId)</from>
+                  <to variable="CreateUDFValuesIn" part="params"/>
+                </copy>
+              </assign>
+            </sequence>
+          </else>
+        </if>
+        <sequence name="SequenceDeleteCreateUDF">
+          <bpelx:skipCondition>count($ReadAllActByWBSOut.result/ns4:Activity)=0</bpelx:skipCondition>
+          <while name="While1000Delete">
+            <condition>count($DeleteUDFValuesIn.params/ns3:ObjectId) &gt; 0</condition>
+            <sequence name="LoopDeleteUDF">
+              <assign name="ClearSubset-SKIP">
+                <bpelx:skipCondition>count($DeleteUDFValuesSubsetIn.params/ns3:ObjectId)&lt;=0</bpelx:skipCondition>
+                <extensionAssignOperation>
+                  <bpelx:remove>
+                    <bpelx:target>$DeleteUDFValuesSubsetIn.params/ns3:ObjectId</bpelx:target>
+                  </bpelx:remove>
+                </extensionAssignOperation>
+              </assign>
+
+         <assign name="AssignSubset"
+                               xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable">
+        <extensionAssignOperation>
+                  <bpelx:append xmlns:bpelx="http://schemas.oracle.com/bpel/extension">
+            <bpelx:from>$DeleteUDFValuesIn.params/ns3:ObjectId[position()&lt;1000]</bpelx:from>
+            <bpelx:to>$DeleteUDFValuesSubsetIn.params</bpelx:to>
+         </bpelx:append>
+                </extensionAssignOperation><extensionAssignOperation>
+                  <bpelx:remove xmlns:bpelx="http://schemas.oracle.com/bpel/extension">
+            <bpelx:target>$DeleteUDFValuesIn.params/ns3:ObjectId[position()&lt;1000]</bpelx:target>
+         </bpelx:remove>
+                </extensionAssignOperation>
+         </assign>
+         
+         <invoke name="DeleteUDFValues" partnerLink="UDFValueService"
+                      portType="ns3:UDFValuePortType"
+                      operation="DeleteUDFValues"
+                      inputVariable="DeleteUDFValuesSubsetIn"
+                      outputVariable="DeleteUDFValuesOut"
+                      bpelx:invokeAsDetail="no"/>
+            </sequence>
+          </while>
+          <while name="While1000Create">
+            <condition>count($CreateUDFValuesIn.params/ns3:UDFValue)&gt;0</condition>
+            <sequence name="LoopCreateUDF">
+              <assign name="ClearSubset-SKIP">
+                <bpelx:skipCondition>count($CreateUDFValuesSubsetIn.params/ns3:UDFValue)&lt;=0</bpelx:skipCondition>
+                <extensionAssignOperation>
+                  <bpelx:remove>
+                    <bpelx:target>$CreateUDFValuesSubsetIn.params/ns3:UDFValue</bpelx:target>
+                  </bpelx:remove>
+                </extensionAssignOperation>
+              </assign>           
+              <assign name="AssignSubset"
+                      xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable">
+                <extensionAssignOperation>
+                  <bpelx:append xmlns:bpelx="http://schemas.oracle.com/bpel/extension">
+                    <bpelx:from>$CreateUDFValuesIn.params/ns3:UDFValue[position()&lt;1000]</bpelx:from>
+                    <bpelx:to>$CreateUDFValuesSubsetIn.params</bpelx:to>
+                  </bpelx:append>
+                </extensionAssignOperation>
+                <extensionAssignOperation>
+                  <bpelx:remove xmlns:bpelx="http://schemas.oracle.com/bpel/extension">
+                    <bpelx:target>$CreateUDFValuesIn.params/ns3:UDFValue[position()&lt;1000]</bpelx:target>
+                  </bpelx:remove>
+                </extensionAssignOperation>
+              </assign>
+              <invoke name="CreateUDFValues" partnerLink="UDFValueService"
+                      portType="ns3:UDFValuePortType"
+                      operation="CreateUDFValues"
+                      inputVariable="CreateUDFValuesSubsetIn"
+                      outputVariable="CreateUDFValuesOut"
+                      bpelx:invokeAsDetail="no"/>
+            </sequence>
+          </while>
+        </sequence>
+      </sequence>
+    </scope>
+    <scope name="ScopeReadUpdateOBS" exitOnStandardFault="no">
+      <variables>
+        <variable name="ReadAllWBSIn" messageType="ns5:ReadAllWBS"/>
+        <variable name="ReadAllWBSOut" messageType="ns5:ReadAllWBSResponse"/>
+      </variables>
+      <sequence name="SequenceReadUpdateWBS">
+        <assign name="AssignReadAllWBS">
+          <copy>
+            <from>$ReadProjectOut.result/ns2:Project/ns2:WBSObjectId</from>
+            <to>$ReadAllWBSIn.params/ns5:ObjectId</to>
+          </copy>
+          <copy>
+            <from><literal><v2:Field xmlns:v2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2">OBSObjectId</v2:Field></literal></from>
+            <to>$ReadAllWBSIn.params/ns5:Field</to>
+          </copy>
+          <copy>
+            <from>concat('OBSObjectId !=',$ReadProjectOut.result/ns2:Project/ns2:OBSObjectId)</from>
+            <to>$ReadAllWBSIn.params/ns5:Filter</to>
+          </copy>
+        </assign>
+        <invoke name="ReadAllWBS" bpelx:invokeAsDetail="no"
+                partnerLink="WBSService" portType="ns5:WBSPortType"
+                operation="ReadAllWBS" inputVariable="ReadAllWBSIn"
+                outputVariable="ReadAllWBSOut"/>
+        <scope name="ScopeUpdateWBS" exitOnStandardFault="no">
+          <variables>
+            <variable name="UpdateWBSIn" messageType="ns5:UpdateWBS"/>
+            <variable name="UpdateWBSOut" messageType="ns5:UpdateWBSResponse"/>
+          </variables>
+          <sequence name="SequenceUpdateWBS">
+            <bpelx:skipCondition>count($ReadAllWBSOut.result/ns5:WBS)=0</bpelx:skipCondition>
+            <assign name="TransformUpdateWBS">
+              <bpelx:annotation>
+                <bpelx:pattern patternName="bpelx:transformation"/>
+              </bpelx:annotation>
+              <copy>
+                <from>ora:doXSLTransformForDoc("xsl/AdjustActUpdateWbs.xsl", $ReadProjectOut.result, "ReadAllWBSOut.result", $ReadAllWBSOut.result)</from>
+                <to variable="UpdateWBSIn" part="params"/>
+              </copy>
+            </assign>
+            <invoke name="UpdateWBS" partnerLink="WBSService"
+                    portType="ns5:WBSPortType" operation="UpdateWBS"
+                    inputVariable="UpdateWBSIn" outputVariable="UpdateWBSOut"
+                    bpelx:invokeAsDetail="no"/>
+          </sequence>
+        </scope>
+      </sequence>
+    </scope>
+    <assign name="AssignOut">
+      <copy>
+        <from>$inputVariable.payload</from>
+        <to>$outputVariable.payload</to>
+      </copy>
+    </assign>
+    <!-- Generate reply to synchronous request -->
+    <invoke name="callbackOutput" bpelx:invokeAsDetail="no"
+            partnerLink="AdjustActivitiesService"
+            portType="client:AdjustActivitiesCallback" operation="callback"
+            inputVariable="outputVariable"/>
+  </sequence>
+</process>

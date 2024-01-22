@@ -1,0 +1,12 @@
+//Groovy Scripts for com.bayer.ipms.model.views.ProjectGoalView
+
+package com.bayer.ipms.model.views
+
+import oracle.jbo.script.annotation.VariableExpression;
+
+@VariableExpression(path="SearchTargetYearVar")
+def SearchTargetYearVar_VariableScript_Variable()
+{
+adf.object.viewObject.currentYear
+}
+

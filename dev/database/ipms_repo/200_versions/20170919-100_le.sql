@@ -1,0 +1,1 @@
+alter table latest_estimate_fct add subtype_code nvarchar2(10);

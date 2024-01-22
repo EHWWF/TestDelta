@@ -1,0 +1,1194 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich" xmlns:c="http://java.sun.com/jsp/jstl/core">
+  <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+  <c:set var="bundle" value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+  <f:view>
+    <af:document id="doc" title="#{bundle.importLog}">
+      <af:messages id="m1"/>
+      <af:form id="frm">
+        <af:pageTemplate viewId="/WEB-INF/com.bayer.ipms.view/templates/ipms-popup-template.jspx" id="tmp">
+          <f:facet name="summary">
+            <af:panelBox text="#{bundle.project}" showDisclosure="false">
+              <af:panelFormLayout styleClass="AFStretchWidth" fieldWidth="100%">
+                <af:inputText label="#{bindings.ProjectCode.label}"
+                              value="#{empty bindings.ProjectCode.inputValue ? bundle.globalNotAvailable : bindings.ProjectCode.inputValue}"
+                              styleClass="#{empty bindings.ProjectCode.inputValue ? 'empty' : ''}" readOnly="true"/>
+                <af:inputText label="#{bindings.ProjectName.hints.label}" value="#{bindings.ProjectName.inputValue}"
+                              readOnly="true"/>
+              </af:panelFormLayout>
+            </af:panelBox>
+          </f:facet>
+          <f:facet name="content">
+            <af:panelTabbed dimensionsFrom="parent">
+              <af:showDetailItem text="#{bundle.importMasterData}" stretchChildren="first">
+                <af:panelCollection id="pc42" styleClass="AFStretchWidth" featuresOff="detach viewMenu statusBar">
+                  <af:table value="#{bindings.ImportMasterDataView.collectionModel}" var="row"
+                            rows="#{bindings.ImportMasterDataView.rangeSize}"
+                            emptyText="#{bindings.ImportMasterDataView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                            fetchSize="#{bindings.ImportMasterDataView.rangeSize}" rowBandingInterval="0"
+                            columnStretching="column:c52" autoHeightRows="0"
+                            filterModel="#{bindings.ImportMasterDataViewQuery.queryDescriptor}"
+                            queryListener="#{bindings.ImportMasterDataViewQuery.processQuery}" filterVisible="false"
+                            varStatus="vs" id="tMaster">
+                    <af:column sortProperty="#{bindings.ImportMasterDataView.hints.CreateDate.name}" filterable="true"
+                               sortable="true" headerText="#{bindings.ImportMasterDataView.hints.CreateDate.label}"
+                               id="c51">
+                      <f:facet name="filter">
+                        <af:inputDate value="#{vs.filterCriteria.CreateDate}" id="id9">
+                          <af:convertDateTime pattern="#{bindings.ImportMasterDataView.hints.CreateDate.format}"/>
+                        </af:inputDate>
+                      </f:facet>
+                      <af:outputText value="#{row.CreateDate}" id="ot48">
+                        <af:convertDateTime pattern="#{bindings.ImportMasterDataView.hints.CreateDate.format}"/>
+                      </af:outputText>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ImportMasterDataView.hints.ReferenceId.name}" filterable="true"
+                               sortable="true" headerText="#{bindings.ImportMasterDataView.hints.ReferenceId.label}"
+                               id="c50">
+                      <af:outputText value="#{row.ReferenceId}" id="ot51"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ImportMasterDataView.hints.DevelopmentPhaseName.name}"
+                               filterable="true" sortable="true"
+                               headerText="#{bindings.ImportMasterDataView.hints.DevelopmentPhaseName.label}" id="c52">
+                      <af:outputText value="#{row.DevelopmentPhaseName}" id="ot49"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ImportMasterDataView.hints.SbeName.name}" filterable="true"
+                               sortable="true" headerText="#{bindings.ImportMasterDataView.hints.SbeName.label}"
+                               id="c521">
+                      <af:outputText value="#{row.SbeName}" id="ot491"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ImportMasterDataView.hints.BayName.name}" filterable="true"
+                               sortable="true" headerText="#{bindings.ImportMasterDataView.hints.BayName.label}"
+                               id="c522">
+                      <af:outputText value="#{row.BayName}" id="ot492"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ImportMasterDataView.hints.StatusName.name}" filterable="true"
+                               sortable="true" headerText="#{bindings.ImportMasterDataView.hints.StatusName.label}"
+                               id="c49">
+                      <af:outputText value="#{row.StatusName}" id="ot50"
+                                     inlineStyle="color:#{row.StatusCode == 'FAIL' ? 'red' : 'blue'};"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ImportMasterDataView.hints.StatusDescription.name}"
+                               filterable="false" sortable="false"
+                               headerText="#{bindings.ImportMasterDataView.hints.StatusDescription.label}" id="c149">
+                      <af:outputText value="#{row.StatusDescription}" id="ot150"/>
+                    </af:column>
+                  </af:table>
+                </af:panelCollection>
+              </af:showDetailItem>
+              <af:showDetailItem text="#{bundle.importStudies}" stretchChildren="first">
+                <af:panelCollection id="pc4" styleClass="AFStretchWidth" featuresOff="detach viewMenu statusBar">
+                  <af:table value="#{bindings.ImportStudyView.collectionModel}" var="row"
+                            rows="#{bindings.ImportStudyView.rangeSize}"
+                            emptyText="#{bindings.ImportStudyView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                            fetchSize="#{bindings.ImportStudyView.rangeSize}" rowBandingInterval="0"
+                            columnStretching="column:c44" autoHeightRows="0"
+                            filterModel="#{bindings.ImportStudyViewQuery.queryDescriptor}"
+                            queryListener="#{bindings.ImportStudyViewQuery.processQuery}" filterVisible="false"
+                            varStatus="vs" id="tStudy">
+                    <af:column sortProperty="#{bindings.ImportStudyView.hints.StudyId.name}" filterable="true"
+                               sortable="true" headerText="#{bindings.ImportStudyView.hints.StudyId.label}" id="c47">
+                      <af:outputText value="#{row.StudyId}" id="ot46"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ImportStudyView.hints.CreateDate.name}" filterable="true"
+                               sortable="true" headerText="#{bindings.ImportStudyView.hints.CreateDate.label}" id="c45">
+                      <f:facet name="filter">
+                        <af:inputDate value="#{vs.filterCriteria.CreateDate}" id="id51">
+                          <af:convertDateTime pattern="#{bindings.ImportStudyView.hints.CreateDate.format}"/>
+                        </af:inputDate>
+                      </f:facet>
+                      <af:outputText value="#{row.CreateDate}" id="ot45">
+                        <af:convertDateTime pattern="#{bindings.ImportStudyView.hints.CreateDate.format}"/>
+                      </af:outputText>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ImportStudyView.hints.Name.name}" filterable="true"
+                               sortable="true" headerText="#{bindings.ImportStudyView.hints.Name.label}" id="c44">
+                      <af:outputText value="#{row.Name}" id="ot43"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ImportStudyView.hints.Phase.name}" filterable="true"
+                               sortable="true" headerText="#{bindings.ImportStudyView.hints.Phase.label}" id="c46">
+                      <af:outputText value="#{row.Phase}" id="ot44"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ImportStudyView.hints.StatusName.name}" filterable="true"
+                               sortable="true" headerText="#{bindings.ImportStudyView.hints.StatusName.label}" id="c48">
+                      <af:outputText value="#{row.StatusName}" id="ot47"
+                                     inlineStyle="color:#{row.StatusCode == 'FAIL' ? 'red' : 'blue'};"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ImportStudyView.hints.StatusDescription.name}"
+                               filterable="false" sortable="false"
+                               headerText="#{bindings.ImportStudyView.hints.StatusDescription.label}" id="c249">
+                      <af:outputText value="#{row.StatusDescription}" id="ot250"/>
+                    </af:column>
+                  </af:table>
+                </af:panelCollection>
+              </af:showDetailItem>
+              <af:showDetailItem text="#{bundle.leadStudies}" stretchChildren="first">
+                <af:panelCollection id="pc423" styleClass="AFStretchWidth" featuresOff="detach viewMenu statusBar">
+                  <af:table value="#{bindings.LeadStudyMapView.collectionModel}" var="row"
+                            rows="#{bindings.LeadStudyMapView.rangeSize}"
+                            emptyText="#{bindings.LeadStudyMapView.viewable ? 'No data to display.' : 'Access Denied.'}"
+                            rowBandingInterval="0" fetchSize="#{bindings.LeadStudyMapView.rangeSize}" id="t3"
+                            columnStretching="column:c1">
+                    <af:column headerText="#{bindings.LeadStudyMapView.hints.DevMlstnCode.label}" id="c7" width="70px">
+                      <af:outputText value="#{row.DevMlstnCode}"
+                                     shortDesc="#{bindings.LeadStudyMapView.hints.DevMlstnCode.tooltip}" id="ot3"/>
+                    </af:column>
+                    <af:column headerText="#{bindings.LeadStudyMapView.hints.StudyPhaseName.label}" id="c2"
+                               width="70px">
+                      <af:outputText value="#{row.StudyPhaseName}"
+                                     shortDesc="#{bindings.LeadStudyMapView.hints.StudyPhaseName.tooltip}" id="ot2"/>
+                    </af:column>
+                    <af:column headerText="#{bindings.LeadStudyMapView.hints.DrvMlstnName.label}" id="c3" width="60px">
+                      <af:outputText value="#{row.DrvMlstnName}"
+                                     shortDesc="#{bindings.LeadStudyMapView.hints.DrvMlstnName.tooltip}" id="ot4"/>
+                    </af:column>
+                    <af:column headerText="#{bindings.LeadStudyMapView.hints.CurrLsName.label}" id="c1">
+                      <af:outputText value="#{row.CurrLsName}"
+                                     shortDesc="#{bindings.LeadStudyMapView.hints.CurrLsName.tooltip}" id="ot1"/>
+                    </af:column>
+                    <af:column headerText="#{bindings.LeadStudyMapView.hints.NewStudyWbsId.label}" id="c11"
+                               width="280px">
+                      <af:selectOneChoice value="#{row.bindings.NewStudyWbsId.inputValue}"
+                                          label="#{row.bindings.NewStudyWbsId.label}" readOnly="true"
+                                          required="#{bindings.LeadStudyMapView.hints.NewStudyWbsId.mandatory}"
+                                          shortDesc="#{bindings.LeadStudyMapView.hints.NewStudyWbsId.tooltip}"
+                                          id="soc1">
+                        <f:selectItems value="#{row.bindings.NewStudyWbsId.items}" id="si1"/>
+                        <f:validator binding="#{row.bindings.NewStudyWbsId.validator}"/>
+                      </af:selectOneChoice>
+                    </af:column>
+                    <af:column headerText="#{bindings.LeadStudyMapView.hints.StatusName.label}" id="c4" width="60px">
+                      <af:outputText value="#{row.StatusName}"
+                                     shortDesc="#{bindings.LeadStudyMapView.hints.StatusName.tooltip}" id="ot5"/>
+                    </af:column>
+                  </af:table>
+                </af:panelCollection>
+              </af:showDetailItem>
+              <af:showDetailItem text="#{bundle.studyPlaceholders}" stretchChildren="first"
+                                 rendered="#{rolesBean.importRunFpsD3Tr}">
+                <af:panelCollection id="pc422" styleClass="AFStretchWidth" featuresOff="detach viewMenu statusBar">
+                  <af:table value="#{bindings.ImportStudyDataView1.collectionModel}" var="row"
+                            rows="#{bindings.ImportStudyDataView1.rangeSize}"
+                            emptyText="#{bindings.ImportStudyDataView1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                            fetchSize="#{bindings.ImportStudyDataView1.rangeSize}" rowBandingInterval="0"
+                            filterModel="#{bindings.ImportStudyDataView1Query.queryDescriptor}"
+                            queryListener="#{bindings.ImportStudyDataView1Query.processQuery}" filterVisible="false"
+                            varStatus="vs" id="t1" columnStretching="c64">
+                    <af:column sortProperty="#{bindings.ImportStudyDataView1.hints.StudyId.name}" filterable="true"
+                               sortable="true" headerText="#{bindings.ImportStudyDataView1.hints.StudyId.label}"
+                               id="c61">
+                      <af:outputText value="#{row.StudyId}" id="ot62"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ImportStudyDataView1.hints.CreateDate.name}" filterable="true"
+                               sortable="true" headerText="#{bindings.ImportStudyDataView1.hints.CreateDate.label}"
+                               id="c66">
+                      <f:facet name="filter">
+                        <af:inputDate value="#{vs.filterCriteria.CreateDate}" id="id11"/>
+                      </f:facet>
+                      <af:outputText value="#{row.CreateDate}" id="ot66">
+                        <af:convertDateTime pattern="#{bindings.ImportStudyDataView1.hints.CreateDate.format}"/>
+                      </af:outputText>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ImportStudyDataView1.hints.Name.name}" filterable="true"
+                               sortable="true" headerText="#{bindings.ImportStudyDataView1.hints.Name.label}" id="c69">
+                      <af:outputText value="#{row.Name}" id="ot65"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ImportStudyDataView1.hints.OldStartDate.name}" filterable="true"
+                               sortable="true" headerText="#{bindings.ImportStudyDataView1.hints.OldStartDate.label}"
+                               id="c60">
+                      <f:facet name="filter">
+                        <af:inputDate value="#{vs.filterCriteria.OldStartDate}" id="id13"/>
+                      </f:facet>
+                      <af:outputText value="#{row.OldStartDate}" id="ot69">
+                        <af:convertDateTime pattern="#{bindings.ImportStudyDataView1.hints.OldStartDate.format}"/>
+                      </af:outputText>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ImportStudyDataView1.hints.OldFinishDate.name}"
+                               filterable="true" sortable="true"
+                               headerText="#{bindings.ImportStudyDataView1.hints.OldFinishDate.label}" id="c67">
+                      <f:facet name="filter">
+                        <af:inputDate value="#{vs.filterCriteria.OldFinishDate}" id="id20"/>
+                      </f:facet>
+                      <af:outputText value="#{row.OldFinishDate}" id="ot61">
+                        <af:convertDateTime pattern="#{bindings.ImportStudyDataView1.hints.OldFinishDate.format}"/>
+                      </af:outputText>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ImportStudyDataView1.hints.StartDate.name}" filterable="true"
+                               sortable="true" headerText="#{bindings.ImportStudyDataView1.hints.StartDate.label}"
+                               id="c70">
+                      <f:facet name="filter">
+                        <af:inputDate value="#{vs.filterCriteria.StartDate}" id="id19"/>
+                      </f:facet>
+                      <af:outputText value="#{row.StartDate}" id="ot67">
+                        <af:convertDateTime pattern="#{bindings.ImportStudyDataView1.hints.StartDate.format}"/>
+                      </af:outputText>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ImportStudyDataView1.hints.FinishDate.name}" filterable="true"
+                               sortable="true" headerText="#{bindings.ImportStudyDataView1.hints.FinishDate.label}"
+                               id="c68">
+                      <f:facet name="filter">
+                        <af:inputDate value="#{vs.filterCriteria.FinishDate}" id="id12"/>
+                      </f:facet>
+                      <af:outputText value="#{row.FinishDate}" id="ot70">
+                        <af:convertDateTime pattern="#{bindings.ImportStudyDataView1.hints.FinishDate.format}"/>
+                      </af:outputText>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ImportStudyDataView1.hints.ActionName.name}" filterable="true"
+                               sortable="true" headerText="#{bindings.ImportStudyDataView1.hints.ActionName.label}"
+                               id="c65">
+                      <af:outputText value="#{row.ActionName}" id="ot68"
+                                     inlineStyle="color:#{row.ActionCode != null and row.ActionCode != 'SKIP' ? 'blue' : 'inherit'};"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ImportStudyDataView1.hints.StatusName.name}" filterable="true"
+                               sortable="true" headerText="#{bindings.ImportStudyDataView1.hints.StatusName.label}"
+                               id="c73">
+                      <af:outputText value="#{row.StatusName}" id="ot72"
+                                     inlineStyle="color:#{row.StatusCode == 'FAIL' ? 'red' : 'blue'};"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ImportStudyDataView1.hints.StatusDescription.name}"
+                               filterable="true" sortable="true"
+                               headerText="#{bindings.ImportStudyDataView1.hints.StatusDescription.label}" id="c64">
+                      <af:outputText value="#{row.StatusDescription}" id="ot71"/>
+                    </af:column>
+                  </af:table>
+                </af:panelCollection>
+              </af:showDetailItem>
+              <af:showDetailItem text="#{bundle.importPlan}" stretchChildren="first">
+                <af:panelTabbed dimensionsFrom="parent">
+                  <af:showDetailItem text="#{bundle.importPlannedTimelines}" stretchChildren="first">
+                    <af:panelCollection id="pc41" styleClass="AFStretchWidth" featuresOff="detach viewMenu statusBar">
+                      <af:table value="#{bindings.ImportTimelinePlanView.collectionModel}" var="row"
+                                rows="#{bindings.ImportTimelinePlanView.rangeSize}"
+                                emptyText="#{bindings.ImportTimelinePlanView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                                fetchSize="#{bindings.ImportTimelinePlanView.rangeSize}" rowBandingInterval="0"
+                                columnStretching="last" autoHeightRows="0"
+                                filterModel="#{bindings.ImportTimelinePlanViewQuery.queryDescriptor}"
+                                queryListener="#{bindings.ImportTimelinePlanViewQuery.processQuery}"
+                                filterVisible="false" varStatus="vs" id="tPlan">
+                        <af:column sortProperty="#{bindings.ImportTimelinePlanView.hints.ReferenceId.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportTimelinePlanView.hints.ReferenceId.label}" id="c36">
+                          <af:outputText value="#{row.ReferenceId}" id="ot39"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportTimelinePlanView.hints.CreateDate.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportTimelinePlanView.hints.CreateDate.label}" id="c35">
+                          <f:facet name="filter">
+                            <af:inputDate value="#{vs.filterCriteria.CreateDate}" id="id5">
+                              <af:convertDateTime pattern="#{bindings.ImportTimelinePlanView.hints.CreateDate.format}"/>
+                            </af:inputDate>
+                          </f:facet>
+                          <af:outputText value="#{row.CreateDate}" id="ot42">
+                            <af:convertDateTime pattern="#{bindings.ImportTimelinePlanView.hints.CreateDate.format}"/>
+                          </af:outputText>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportTimelinePlanView.hints.StudyId.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportTimelinePlanView.hints.StudyId.label}" id="c34">
+                          <af:outputText value="#{row.StudyId}" id="ot33"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportTimelinePlanView.hints.StudyElementId.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportTimelinePlanView.hints.StudyElementId.label}" id="c31">
+                          <af:outputText value="#{row.StudyElementId}" id="ot41"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportTimelinePlanView.hints.OldStartDate.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportTimelinePlanView.hints.OldStartDate.label}" id="c37">
+                          <f:facet name="filter">
+                            <af:inputDate value="#{vs.filterCriteria.OldStartDate}" id="id7">
+                              <af:convertDateTime pattern="#{bindings.ImportTimelinePlanView.hints.OldStartDate.format}"/>
+                            </af:inputDate>
+                          </f:facet>
+                          <af:outputText value="#{row.OldStartDate}" id="ot31">
+                            <af:convertDateTime pattern="#{bindings.ImportTimelinePlanView.hints.OldStartDate.format}"/>
+                          </af:outputText>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportTimelinePlanView.hints.OldFinishDate.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportTimelinePlanView.hints.OldFinishDate.label}" id="c42">
+                          <f:facet name="filter">
+                            <af:inputDate value="#{vs.filterCriteria.OldFinishDate}" id="id8">
+                              <af:convertDateTime pattern="#{bindings.ImportTimelinePlanView.hints.OldFinishDate.format}"/>
+                            </af:inputDate>
+                          </f:facet>
+                          <af:outputText value="#{row.OldFinishDate}" id="ot40">
+                            <af:convertDateTime pattern="#{bindings.ImportTimelinePlanView.hints.OldFinishDate.format}"/>
+                          </af:outputText>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportTimelinePlanView.hints.NewStartDate.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportTimelinePlanView.hints.NewStartDate.label}" id="c33">
+                          <f:facet name="filter">
+                            <af:inputDate value="#{vs.filterCriteria.NewStartDate}" id="id6">
+                              <af:convertDateTime pattern="#{bindings.ImportTimelinePlanView.hints.NewStartDate.format}"/>
+                            </af:inputDate>
+                          </f:facet>
+                          <af:outputText value="#{row.NewStartDate}" id="ot37">
+                            <af:convertDateTime pattern="#{bindings.ImportTimelinePlanView.hints.NewStartDate.format}"/>
+                          </af:outputText>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportTimelinePlanView.hints.NewFinishDate.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportTimelinePlanView.hints.NewFinishDate.label}" id="c38">
+                          <f:facet name="filter">
+                            <af:inputDate value="#{vs.filterCriteria.NewFinishDate}" id="id4">
+                              <af:convertDateTime pattern="#{bindings.ImportTimelinePlanView.hints.NewFinishDate.format}"/>
+                            </af:inputDate>
+                          </f:facet>
+                          <af:outputText value="#{row.NewFinishDate}" id="ot38">
+                            <af:convertDateTime pattern="#{bindings.ImportTimelinePlanView.hints.NewFinishDate.format}"/>
+                          </af:outputText>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportTimelinePlanView.hints.ActionName.name}"
+                                   filterable="true" sortable="true" filterFeatures="caseInsensitive"
+                                   headerText="#{bindings.ImportTimelinePlanView.hints.ActionName.label}" id="c41">
+                          <af:outputText value="#{row.ActionName}" id="ot239"
+                                         inlineStyle="color:#{row.ActionCode != null and row.ActionCode != 'SKIP' ? 'blue' : 'inherit'};"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportTimelinePlanView.hints.StatusName.name}"
+                                   filterable="true" sortable="true" filterFeatures="caseInsensitive"
+                                   headerText="#{bindings.ImportTimelinePlanView.hints.StatusName.label}" id="c40">
+                          <af:outputText value="#{row.StatusName}" id="ot36"
+                                         inlineStyle="color:#{row.StatusCode == 'FAIL' ? 'red' : 'blue'};"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportTimelinePlanView.hints.StatusDescription.name}"
+                                   filterable="false" sortable="false"
+                                   headerText="#{bindings.ImportTimelinePlanView.hints.StatusDescription.label}"
+                                   id="c349">
+                          <af:outputText value="#{row.StatusDescription}" id="ot350"/>
+                        </af:column>
+                      </af:table>
+                    </af:panelCollection>
+                  </af:showDetailItem>
+                  <af:showDetailItem text="#{bundle.importPlannedTimelinesFps}" stretchChildren="first">
+                    <af:panelCollection id="pc412" styleClass="AFStretchWidth" featuresOff="detach viewMenu statusBar">
+                      <af:table value="#{bindings.ImportTimelinePlanFpsView.collectionModel}" var="row"
+                                rows="#{bindings.ImportTimelinePlanFpsView.rangeSize}"
+                                emptyText="#{bindings.ImportTimelinePlanFpsView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                                fetchSize="#{bindings.ImportTimelinePlanFpsView.rangeSize}" rowBandingInterval="0"
+                                columnStretching="last" autoHeightRows="0"
+                                filterModel="#{bindings.ImportTimelinePlanFpsViewQuery.queryDescriptor}"
+                                queryListener="#{bindings.ImportTimelinePlanFpsViewQuery.processQuery}"
+                                filterVisible="false" varStatus="vs" id="tPlan2">
+                        <af:column sortProperty="#{bindings.ImportTimelinePlanFpsView.hints.ReferenceId.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportTimelinePlanFpsView.hints.ReferenceId.label}" id="c362">
+                          <af:outputText value="#{row.ReferenceId}" id="ot392"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportTimelinePlanFpsView.hints.CreateDate.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportTimelinePlanFpsView.hints.CreateDate.label}" id="c352">
+                          <f:facet name="filter">
+                            <af:inputDate value="#{vs.filterCriteria.CreateDate}" id="id52">
+                              <af:convertDateTime pattern="#{bindings.ImportTimelinePlanFpsView.hints.CreateDate.format}"/>
+                            </af:inputDate>
+                          </f:facet>
+                          <af:outputText value="#{row.CreateDate}" id="ot422">
+                            <af:convertDateTime pattern="#{bindings.ImportTimelinePlanFpsView.hints.CreateDate.format}"/>
+                          </af:outputText>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportTimelinePlanFpsView.hints.StudyId.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportTimelinePlanFpsView.hints.StudyId.label}" id="c342">
+                          <af:outputText value="#{row.StudyId}" id="ot332"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportTimelinePlanFpsView.hints.StudyElementId.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportTimelinePlanFpsView.hints.StudyElementId.label}"
+                                   id="c312">
+                          <af:outputText value="#{row.StudyElementId}" id="ot412"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportTimelinePlanFpsView.hints.OldStartDate.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportTimelinePlanFpsView.hints.OldStartDate.label}"
+                                   id="c372">
+                          <f:facet name="filter">
+                            <af:inputDate value="#{vs.filterCriteria.OldStartDate}" id="id72">
+                              <af:convertDateTime pattern="#{bindings.ImportTimelinePlanFpsView.hints.OldStartDate.format}"/>
+                            </af:inputDate>
+                          </f:facet>
+                          <af:outputText value="#{row.OldStartDate}" id="ot312">
+                            <af:convertDateTime pattern="#{bindings.ImportTimelinePlanFpsView.hints.OldStartDate.format}"/>
+                          </af:outputText>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportTimelinePlanFpsView.hints.OldFinishDate.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportTimelinePlanFpsView.hints.OldFinishDate.label}"
+                                   id="c422">
+                          <f:facet name="filter">
+                            <af:inputDate value="#{vs.filterCriteria.OldFinishDate}" id="id82">
+                              <af:convertDateTime pattern="#{bindings.ImportTimelinePlanFpsView.hints.OldFinishDate.format}"/>
+                            </af:inputDate>
+                          </f:facet>
+                          <af:outputText value="#{row.OldFinishDate}" id="ot402">
+                            <af:convertDateTime pattern="#{bindings.ImportTimelinePlanFpsView.hints.OldFinishDate.format}"/>
+                          </af:outputText>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportTimelinePlanFpsView.hints.NewStartDate.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportTimelinePlanFpsView.hints.NewStartDate.label}"
+                                   id="c332">
+                          <f:facet name="filter">
+                            <af:inputDate value="#{vs.filterCriteria.NewStartDate}" id="id62">
+                              <af:convertDateTime pattern="#{bindings.ImportTimelinePlanFpsView.hints.NewStartDate.format}"/>
+                            </af:inputDate>
+                          </f:facet>
+                          <af:outputText value="#{row.NewStartDate}" id="ot372">
+                            <af:convertDateTime pattern="#{bindings.ImportTimelinePlanFpsView.hints.NewStartDate.format}"/>
+                          </af:outputText>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportTimelinePlanFpsView.hints.NewFinishDate.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportTimelinePlanFpsView.hints.NewFinishDate.label}"
+                                   id="c382">
+                          <f:facet name="filter">
+                            <af:inputDate value="#{vs.filterCriteria.NewFinishDate}" id="id42">
+                              <af:convertDateTime pattern="#{bindings.ImportTimelinePlanFpsView.hints.NewFinishDate.format}"/>
+                            </af:inputDate>
+                          </f:facet>
+                          <af:outputText value="#{row.NewFinishDate}" id="ot382">
+                            <af:convertDateTime pattern="#{bindings.ImportTimelinePlanFpsView.hints.NewFinishDate.format}"/>
+                          </af:outputText>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportTimelinePlanFpsView.hints.ActionName.name}"
+                                   filterable="true" sortable="true" filterFeatures="caseInsensitive"
+                                   headerText="#{bindings.ImportTimelinePlanFpsView.hints.ActionName.label}" id="c412">
+                          <af:outputText value="#{row.ActionName}" id="ot2392"
+                                         inlineStyle="color:#{row.ActionCode != null and row.ActionCode != 'SKIP' ? 'blue' : 'inherit'};"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportTimelinePlanFpsView.hints.StatusName.name}"
+                                   filterable="true" sortable="true" filterFeatures="caseInsensitive"
+                                   headerText="#{bindings.ImportTimelinePlanFpsView.hints.StatusName.label}" id="c402">
+                          <af:outputText value="#{row.StatusName}" id="ot362"
+                                         inlineStyle="color:#{row.StatusCode == 'FAIL' ? 'red' : 'blue'};"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportTimelinePlanFpsView.hints.StatusDescription.name}"
+                                   filterable="false" sortable="false"
+                                   headerText="#{bindings.ImportTimelinePlanFpsView.hints.StatusDescription.label}"
+                                   id="c3492">
+                          <af:outputText value="#{row.StatusDescription}" id="ot3502"/>
+                        </af:column>
+                      </af:table>
+                    </af:panelCollection>
+                  </af:showDetailItem>
+                </af:panelTabbed>
+              </af:showDetailItem>
+              <af:showDetailItem text="#{bundle.importActuals}" stretchChildren="first">
+                <af:panelTabbed dimensionsFrom="parent">
+                  <af:showDetailItem text="#{bundle.importActualTimelines}" stretchChildren="first">
+                    <af:panelCollection id="pc14" styleClass="AFStretchWidth" featuresOff="detach viewMenu statusBar">
+                      <af:table value="#{bindings.ImportTimelineActualsView.collectionModel}" var="row"
+                                rows="#{bindings.ImportTimelineActualsView.rangeSize}"
+                                emptyText="#{bindings.ImportTimelineActualsView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                                fetchSize="#{bindings.ImportTimelineActualsView.rangeSize}" rowBandingInterval="0"
+                                columnStretching="last" autoHeightRows="0"
+                                filterModel="#{bindings.ImportTimelineActualsViewQuery.queryDescriptor}"
+                                queryListener="#{bindings.ImportTimelineActualsViewQuery.processQuery}"
+                                filterVisible="false" varStatus="vs" id="tActuals">
+                        <af:column sortProperty="#{bindings.ImportTimelineActualsView.hints.ReferenceId.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportTimelineActualsView.hints.ReferenceId.label}" id="c136">
+                          <af:outputText value="#{row.ReferenceId}" id="ot139"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportTimelineActualsView.hints.CreateDate.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportTimelineActualsView.hints.CreateDate.label}" id="c135">
+                          <f:facet name="filter">
+                            <af:inputDate value="#{vs.filterCriteria.CreateDate}" id="id15">
+                              <af:convertDateTime pattern="#{bindings.ImportTimelineActualsView.hints.CreateDate.format}"/>
+                            </af:inputDate>
+                          </f:facet>
+                          <af:outputText value="#{row.CreateDate}" id="ot142">
+                            <af:convertDateTime pattern="#{bindings.ImportTimelineActualsView.hints.CreateDate.format}"/>
+                          </af:outputText>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportTimelineActualsView.hints.StudyId.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportTimelineActualsView.hints.StudyId.label}" id="c134">
+                          <af:outputText value="#{row.StudyId}" id="ot133"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportTimelineActualsView.hints.StudyElementId.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportTimelineActualsView.hints.StudyElementId.label}"
+                                   id="c131">
+                          <af:outputText value="#{row.StudyElementId}" id="ot141"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportTimelineActualsView.hints.OldStartDate.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportTimelineActualsView.hints.OldStartDate.label}"
+                                   id="c137">
+                          <f:facet name="filter">
+                            <af:inputDate value="#{vs.filterCriteria.OldStartDate}" id="id17">
+                              <af:convertDateTime pattern="#{bindings.ImportTimelineActualsView.hints.OldStartDate.format}"/>
+                            </af:inputDate>
+                          </f:facet>
+                          <af:outputText value="#{row.OldStartDate}" id="ot131">
+                            <af:convertDateTime pattern="#{bindings.ImportTimelineActualsView.hints.OldStartDate.format}"/>
+                          </af:outputText>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportTimelineActualsView.hints.OldFinishDate.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportTimelineActualsView.hints.OldFinishDate.label}"
+                                   id="c142">
+                          <f:facet name="filter">
+                            <af:inputDate value="#{vs.filterCriteria.OldFinishDate}" id="id18">
+                              <af:convertDateTime pattern="#{bindings.ImportTimelineActualsView.hints.OldFinishDate.format}"/>
+                            </af:inputDate>
+                          </f:facet>
+                          <af:outputText value="#{row.OldFinishDate}" id="ot140">
+                            <af:convertDateTime pattern="#{bindings.ImportTimelineActualsView.hints.OldFinishDate.format}"/>
+                          </af:outputText>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportTimelineActualsView.hints.NewStartDate.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportTimelineActualsView.hints.NewStartDate.label}"
+                                   id="c133">
+                          <f:facet name="filter">
+                            <af:inputDate value="#{vs.filterCriteria.NewStartDate}" id="id16">
+                              <af:convertDateTime pattern="#{bindings.ImportTimelineActualsView.hints.NewStartDate.format}"/>
+                            </af:inputDate>
+                          </f:facet>
+                          <af:outputText value="#{row.NewStartDate}" id="ot137">
+                            <af:convertDateTime pattern="#{bindings.ImportTimelineActualsView.hints.NewStartDate.format}"/>
+                          </af:outputText>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportTimelineActualsView.hints.NewFinishDate.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportTimelineActualsView.hints.NewFinishDate.label}"
+                                   id="c138">
+                          <f:facet name="filter">
+                            <af:inputDate value="#{vs.filterCriteria.NewFinishDate}" id="id14">
+                              <af:convertDateTime pattern="#{bindings.ImportTimelineActualsView.hints.NewFinishDate.format}"/>
+                            </af:inputDate>
+                          </f:facet>
+                          <af:outputText value="#{row.NewFinishDate}" id="ot138">
+                            <af:convertDateTime pattern="#{bindings.ImportTimelineActualsView.hints.NewFinishDate.format}"/>
+                          </af:outputText>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportTimelineActualsView.hints.StatusName.name}"
+                                   filterable="true" sortable="true" filterFeatures="caseInsensitive"
+                                   headerText="#{bindings.ImportTimelineActualsView.hints.StatusName.label}" id="c140">
+                          <af:outputText value="#{row.StatusName}" id="ot136"
+                                         inlineStyle="color:#{row.StatusCode == 'FAIL' ? 'red' : 'blue'};"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportTimelineActualsView.hints.StatusDescription.name}"
+                                   filterable="false" sortable="false"
+                                   headerText="#{bindings.ImportTimelineActualsView.hints.StatusDescription.label}"
+                                   id="c449">
+                          <af:outputText value="#{row.StatusDescription}" id="ot450"/>
+                        </af:column>
+                      </af:table>
+                    </af:panelCollection>
+                  </af:showDetailItem>
+                  <af:showDetailItem text="#{bundle.importActualTimelinesFps}" stretchChildren="first">
+                    <af:panelCollection id="pc143" styleClass="AFStretchWidth" featuresOff="detach viewMenu statusBar">
+                      <af:table value="#{bindings.ImportTimelineActualsFpsView.collectionModel}" var="row"
+                                rows="#{bindings.ImportTimelineActualsFpsView.rangeSize}"
+                                emptyText="#{bindings.ImportTimelineActualsFpsView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                                fetchSize="#{bindings.ImportTimelineActualsFpsView.rangeSize}" rowBandingInterval="0"
+                                columnStretching="last" autoHeightRows="0"
+                                filterModel="#{bindings.ImportTimelineActualsFpsViewQuery.queryDescriptor}"
+                                queryListener="#{bindings.ImportTimelineActualsFpsViewQuery.processQuery}"
+                                filterVisible="false" varStatus="vs" id="tActuals3">
+                        <af:column sortProperty="#{bindings.ImportTimelineActualsFpsView.hints.ReferenceId.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportTimelineActualsFpsView.hints.ReferenceId.label}"
+                                   id="c1363">
+                          <af:outputText value="#{row.ReferenceId}" id="ot1393"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportTimelineActualsFpsView.hints.CreateDate.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportTimelineActualsFpsView.hints.CreateDate.label}"
+                                   id="c1353">
+                          <f:facet name="filter">
+                            <af:inputDate value="#{vs.filterCriteria.CreateDate}" id="id153">
+                              <af:convertDateTime pattern="#{bindings.ImportTimelineActualsFpsView.hints.CreateDate.format}"/>
+                            </af:inputDate>
+                          </f:facet>
+                          <af:outputText value="#{row.CreateDate}" id="ot1423">
+                            <af:convertDateTime pattern="#{bindings.ImportTimelineActualsFpsView.hints.CreateDate.format}"/>
+                          </af:outputText>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportTimelineActualsFpsView.hints.StudyId.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportTimelineActualsFpsView.hints.StudyId.label}" id="c1343">
+                          <af:outputText value="#{row.StudyId}" id="ot1333"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportTimelineActualsFpsView.hints.StudyElementId.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportTimelineActualsFpsView.hints.StudyElementId.label}"
+                                   id="c1313">
+                          <af:outputText value="#{row.StudyElementId}" id="ot1413"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportTimelineActualsFpsView.hints.OldStartDate.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportTimelineActualsFpsView.hints.OldStartDate.label}"
+                                   id="c1373">
+                          <f:facet name="filter">
+                            <af:inputDate value="#{vs.filterCriteria.OldStartDate}" id="id173">
+                              <af:convertDateTime pattern="#{bindings.ImportTimelineActualsFpsView.hints.OldStartDate.format}"/>
+                            </af:inputDate>
+                          </f:facet>
+                          <af:outputText value="#{row.OldStartDate}" id="ot1313">
+                            <af:convertDateTime pattern="#{bindings.ImportTimelineActualsFpsView.hints.OldStartDate.format}"/>
+                          </af:outputText>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportTimelineActualsFpsView.hints.OldFinishDate.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportTimelineActualsFpsView.hints.OldFinishDate.label}"
+                                   id="c1423">
+                          <f:facet name="filter">
+                            <af:inputDate value="#{vs.filterCriteria.OldFinishDate}" id="id183">
+                              <af:convertDateTime pattern="#{bindings.ImportTimelineActualsFpsView.hints.OldFinishDate.format}"/>
+                            </af:inputDate>
+                          </f:facet>
+                          <af:outputText value="#{row.OldFinishDate}" id="ot1403">
+                            <af:convertDateTime pattern="#{bindings.ImportTimelineActualsFpsView.hints.OldFinishDate.format}"/>
+                          </af:outputText>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportTimelineActualsFpsView.hints.NewStartDate.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportTimelineActualsFpsView.hints.NewStartDate.label}"
+                                   id="c1333">
+                          <f:facet name="filter">
+                            <af:inputDate value="#{vs.filterCriteria.NewStartDate}" id="id163">
+                              <af:convertDateTime pattern="#{bindings.ImportTimelineActualsFpsView.hints.NewStartDate.format}"/>
+                            </af:inputDate>
+                          </f:facet>
+                          <af:outputText value="#{row.NewStartDate}" id="ot1373">
+                            <af:convertDateTime pattern="#{bindings.ImportTimelineActualsFpsView.hints.NewStartDate.format}"/>
+                          </af:outputText>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportTimelineActualsFpsView.hints.NewFinishDate.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportTimelineActualsFpsView.hints.NewFinishDate.label}"
+                                   id="c1383">
+                          <f:facet name="filter">
+                            <af:inputDate value="#{vs.filterCriteria.NewFinishDate}" id="id143">
+                              <af:convertDateTime pattern="#{bindings.ImportTimelineActualsFpsView.hints.NewFinishDate.format}"/>
+                            </af:inputDate>
+                          </f:facet>
+                          <af:outputText value="#{row.NewFinishDate}" id="ot1383">
+                            <af:convertDateTime pattern="#{bindings.ImportTimelineActualsFpsView.hints.NewFinishDate.format}"/>
+                          </af:outputText>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportTimelineActualsFpsView.hints.StatusName.name}"
+                                   filterable="true" sortable="true" filterFeatures="caseInsensitive"
+                                   headerText="#{bindings.ImportTimelineActualsFpsView.hints.StatusName.label}"
+                                   id="c1403">
+                          <af:outputText value="#{row.StatusName}" id="ot1363"
+                                         inlineStyle="color:#{row.StatusCode == 'FAIL' ? 'red' : 'blue'};"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportTimelineActualsFpsView.hints.StatusDescription.name}"
+                                   filterable="false" sortable="false"
+                                   headerText="#{bindings.ImportTimelineActualsFpsView.hints.StatusDescription.label}"
+                                   id="c4493">
+                          <af:outputText value="#{row.StatusDescription}" id="ot4503"/>
+                        </af:column>
+                      </af:table>
+                    </af:panelCollection>
+                  </af:showDetailItem>
+                </af:panelTabbed>
+              </af:showDetailItem>
+              <af:showDetailItem text="#{bundle.importCosts}" stretchChildren="first">
+                <af:panelTabbed dimensionsFrom="parent">
+                  <af:showDetailItem text="#{bundle.projectCostsFromProFIT}" stretchChildren="first">
+                    <af:panelCollection id="pc1" styleClass="AFStretchWidth" featuresOff="detach viewMenu statusBar">
+                      <af:table value="#{bindings.ImportCostsView.collectionModel}" var="row"
+                                rows="#{bindings.ImportCostsView.rangeSize}"
+                                emptyText="#{bindings.ImportCostsView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                                fetchSize="#{bindings.ImportCostsView.rangeSize}" rowBandingInterval="0"
+                                columnStretching="last" autoHeightRows="0"
+                                filterModel="#{bindings.ImportCostsViewQuery.queryDescriptor}"
+                                queryListener="#{bindings.ImportCostsViewQuery.processQuery}" filterVisible="false"
+                                varStatus="vs" id="tCosts">
+                        <af:column sortProperty="#{bindings.ImportCostsView.hints.ReferenceId.name}" filterable="true"
+                                   sortable="true" headerText="#{bindings.ImportCostsView.hints.ReferenceId.label}"
+                                   id="c1">
+                          <af:outputText value="#{row.ReferenceId}" id="ot11"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportCostsView.hints.CreateDate.name}" filterable="true"
+                                   sortable="true" headerText="#{bindings.ImportCostsView.hints.CreateDate.label}"
+                                   id="c12">
+                          <f:facet name="filter">
+                            <af:inputDate value="#{vs.filterCriteria.CreateDate}" id="id1">
+                              <af:convertDateTime pattern="#{bindings.ImportCostsView.hints.CreateDate.format}"/>
+                            </af:inputDate>
+                          </f:facet>
+                          <af:outputText value="#{row.CreateDate}" id="ot12">
+                            <af:convertDateTime pattern="#{bindings.ImportCostsView.hints.CreateDate.format}"/>
+                          </af:outputText>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportCostsView.hints.SubFunctionCode.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportCostsView.hints.SubFunctionCode.label}" id="c6">
+                          <af:outputText value="#{row.SubFunctionCode}" id="ot2"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportCostsView.hints.StudyId.name}" filterable="true"
+                                   sortable="true" headerText="#{bindings.ImportCostsView.hints.StudyId.label}"
+                                   id="c10">
+                          <af:outputText value="#{row.StudyId}" id="ot6"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportCostsView.hints.ScopeName.name}" filterable="true"
+                                   sortable="true" filterFeatures="caseInsensitive"
+                                   headerText="#{bindings.ImportCostsView.hints.ScopeName.label}" id="c4">
+                          <af:outputText value="#{row.ScopeName}" id="ot5"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportCostsView.hints.MethodName.name}" filterable="true"
+                                   sortable="true" filterFeatures="caseInsensitive"
+                                   headerText="#{bindings.ImportCostsView.hints.MethodName.label}" id="c11">
+                          <af:outputText value="#{row.MethodName}" id="ot10"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportCostsView.hints.TypeName.name}" filterable="true"
+                                   sortable="true" filterFeatures="caseInsensitive"
+                                   headerText="#{bindings.ImportCostsView.hints.TypeName.label}" id="c3">
+                          <af:outputText value="#{row.TypeName}" id="ot8"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportCostsView.hints.SubTypeName.name}" filterable="true"
+                                   sortable="true" filterFeatures="caseInsensitive"
+                                   headerText="#{bindings.ImportCostsView.hints.SubTypeName.label}" id="c9">
+                          <af:outputText value="#{row.SubTypeName}" id="ot9"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportCostsView.hints.Year.name}" filterable="true"
+                                   sortable="true" headerText="#{bindings.ImportCostsView.hints.Year.label}" id="c2"
+                                   align="right">
+                          <af:outputText value="#{row.Year}" id="ot7">
+                            <af:convertNumber groupingUsed="false"
+                                              pattern="#{bindings.ImportCostsView.hints.Year.format}"/>
+                          </af:outputText>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportCostsView.hints.Month.name}" filterable="true"
+                                   sortable="true" headerText="#{bindings.ImportCostsView.hints.Month.label}" id="c5"
+                                   align="right">
+                          <af:outputText value="#{row.Month}" id="ot4">
+                            <af:convertNumber groupingUsed="false"
+                                              pattern="#{bindings.ImportCostsView.hints.Month.format}"/>
+                          </af:outputText>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportCostsView.hints.Cost.name}" filterable="true"
+                                   sortable="true" headerText="#{bindings.ImportCostsView.hints.Cost.label}" id="c7"
+                                   align="right">
+                          <af:outputText value="#{row.Cost}" id="ot3"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportCostsView.hints.ForecastNumber.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportCostsView.hints.ForecastNumber.label}" id="c71"
+                                   align="right">
+                          <af:outputText value="#{row.ForecastNumber}" id="ot34"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportCostsView.hints.ForecastVersion.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportCostsView.hints.ForecastVersion.label}" id="c72"
+                                   align="right">
+                          <af:outputText value="#{row.ForecastVersion}" id="ot35"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportCostsView.hints.StatusName.name}" filterable="true"
+                                   sortable="true" filterFeatures="caseInsensitive"
+                                   headerText="#{bindings.ImportCostsView.hints.StatusName.label}" id="c8">
+                          <af:outputText value="#{row.StatusName}" id="ot1"
+                                         inlineStyle="color:#{row.StatusCode == 'FAIL' ? 'red' : 'blue'};"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportCostsView.hints.StatusDescription.name}"
+                                   filterable="false" sortable="false"
+                                   headerText="#{bindings.ImportCostsView.hints.StatusDescription.label}" id="c549">
+                          <af:outputText value="#{row.StatusDescription}" id="ot550"/>
+                        </af:column>
+                      </af:table>
+                    </af:panelCollection>
+                  </af:showDetailItem>
+                  <af:showDetailItem text="#{bundle.projectCostsFromCSGED}" stretchChildren="first">
+                    <af:panelCollection id="pc12" styleClass="AFStretchWidth" featuresOff="detach viewMenu statusBar">
+                      <af:table value="#{bindings.ImportCostsSophiaView.collectionModel}" var="row"
+                                rows="#{bindings.ImportCostsSophiaView.rangeSize}"
+                                emptyText="#{bindings.ImportCostsSophiaView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                                fetchSize="#{bindings.ImportCostsSophiaView.rangeSize}" rowBandingInterval="0"
+                                columnStretching="last" autoHeightRows="0"
+                                filterModel="#{bindings.ImportCostsSophiaViewQuery.queryDescriptor}"
+                                queryListener="#{bindings.ImportCostsSophiaViewQuery.processQuery}"
+                                filterVisible="false" varStatus="vs" id="tCstSph">
+                        <af:column sortProperty="#{bindings.ImportCostsSophiaView.hints.ReferenceId.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportCostsSophiaView.hints.ReferenceId.label}" id="c30">
+                          <af:outputText value="#{row.ReferenceId}" id="ot30"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportCostsSophiaView.hints.CreateDate.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportCostsSophiaView.hints.CreateDate.label}" id="c32">
+                          <f:facet name="filter">
+                            <af:inputDate value="#{vs.filterCriteria.CreateDate}" id="id10">
+                              <af:convertDateTime pattern="#{bindings.ImportCostsView.hints.CreateDate.format}"/>
+                            </af:inputDate>
+                          </f:facet>
+                          <af:outputText value="#{row.CreateDate}" id="ot32">
+                            <af:convertDateTime pattern="#{bindings.ImportCostsSophiaView.hints.CreateDate.format}"/>
+                          </af:outputText>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportCostsSophiaView.hints.SubfunctionCode.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportCostsSophiaView.hints.SubfunctionCode.label}" id="c39">
+                          <af:outputText value="#{row.SubfunctionCode}" id="ot52"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportCostsSophiaView.hints.StudyId.name}" filterable="true"
+                                   sortable="true" headerText="#{bindings.ImportCostsSophiaView.hints.StudyId.label}"
+                                   id="c43">
+                          <af:outputText value="#{row.StudyId}" id="ot53"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportCostsSophiaView.hints.ScopeName.name}"
+                                   filterable="true" sortable="true" filterFeatures="caseInsensitive"
+                                   headerText="#{bindings.ImportCostsSophiaView.hints.ScopeName.label}" id="c53">
+                          <af:outputText value="#{row.ScopeName}" id="ot54"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportCostsSophiaView.hints.MethodName.name}"
+                                   filterable="true" sortable="true" filterFeatures="caseInsensitive"
+                                   headerText="#{bindings.ImportCostsSophiaView.hints.MethodName.label}" id="c54">
+                          <af:outputText value="#{row.MethodName}" id="ot55"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportCostsSophiaView.hints.TypeName.name}"
+                                   filterable="true" sortable="true" filterFeatures="caseInsensitive"
+                                   headerText="#{bindings.ImportCostsSophiaView.hints.TypeName.label}" id="c55">
+                          <af:outputText value="#{row.TypeName}" id="ot56"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportCostsSophiaView.hints.SubtypeName.name}"
+                                   filterable="true" sortable="true" filterFeatures="caseInsensitive"
+                                   headerText="#{bindings.ImportCostsSophiaView.hints.SubtypeName.label}" id="c56">
+                          <af:outputText value="#{row.SubtypeName}" id="ot57"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportCostsSophiaView.hints.Year.name}" filterable="true"
+                                   sortable="true" headerText="#{bindings.ImportCostsSophiaView.hints.Year.label}"
+                                   id="c57" align="right">
+                          <af:outputText value="#{row.Year}" id="ot58">
+                            <af:convertNumber groupingUsed="false"
+                                              pattern="#{bindings.ImportCostsSophiaView.hints.Year.format}"/>
+                          </af:outputText>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportCostsSophiaView.hints.Month.name}" filterable="true"
+                                   sortable="true" headerText="#{bindings.ImportCostsSophiaView.hints.Month.label}"
+                                   id="c58" align="right">
+                          <af:outputText value="#{row.Month}" id="ot59">
+                            <af:convertNumber groupingUsed="false"
+                                              pattern="#{bindings.ImportCostsSophiaView.hints.Month.format}"/>
+                          </af:outputText>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportCostsSophiaView.hints.Cost.name}" filterable="true"
+                                   sortable="true" headerText="#{bindings.ImportCostsSophiaView.hints.Cost.label}"
+                                   id="c59" align="right">
+                          <af:outputText value="#{row.Cost}" id="ot60"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportCostsSophiaView.hints.StatusName.name}"
+                                   filterable="true" sortable="true" filterFeatures="caseInsensitive"
+                                   headerText="#{bindings.ImportCostsSophiaView.hints.StatusName.label}" id="c62">
+                          <af:outputText value="#{row.StatusName}" id="ot63"
+                                         inlineStyle="color:#{row.StatusCode == 'FAIL' ? 'red' : 'blue'};"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportCostsSophiaView.hints.StatusDescription.name}"
+                                   filterable="false" sortable="false"
+                                   headerText="#{bindings.ImportCostsSophiaView.hints.StatusDescription.label}"
+                                   id="c63">
+                          <af:outputText value="#{row.StatusDescription}" id="ot64"/>
+                        </af:column>
+                      </af:table>
+                    </af:panelCollection>
+                  </af:showDetailItem>
+                </af:panelTabbed>
+              </af:showDetailItem>
+              <af:showDetailItem text="#{bundle.importResources}" stretchChildren="first">
+                <af:panelTabbed dimensionsFrom="parent">
+                  <af:showDetailItem text="#{bundle.projectResourcesFromProFIT}" stretchChildren="first">
+                    <af:panelCollection id="pc2" styleClass="AFStretchWidth" featuresOff="detach viewMenu statusBar">
+                      <af:table value="#{bindings.ImportResourcesView.collectionModel}" var="row"
+                                rows="#{bindings.ImportResourcesView.rangeSize}"
+                                emptyText="#{bindings.ImportResourcesView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                                fetchSize="#{bindings.ImportResourcesView.rangeSize}" rowBandingInterval="0"
+                                columnStretching="last" autoHeightRows="0"
+                                filterModel="#{bindings.ImportResourcesViewQuery.queryDescriptor}"
+                                queryListener="#{bindings.ImportResourcesViewQuery.processQuery}" filterVisible="false"
+                                varStatus="vs" id="tRes">
+                        <af:column sortProperty="#{bindings.ImportResourcesView.hints.ReferenceId.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportResourcesView.hints.ReferenceId.label}" id="c18">
+                          <af:outputText value="#{row.ReferenceId}" id="ot19"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportResourcesView.hints.CreateDate.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportResourcesView.hints.CreateDate.label}" id="c16">
+                          <f:facet name="filter">
+                            <af:inputDate value="#{vs.filterCriteria.CreateDate}" id="id2">
+                              <af:convertDateTime pattern="#{bindings.ImportResourcesView.hints.CreateDate.format}"/>
+                            </af:inputDate>
+                          </f:facet>
+                          <af:outputText value="#{row.CreateDate}" id="ot17">
+                            <af:convertDateTime pattern="#{bindings.ImportResourcesView.hints.CreateDate.format}"/>
+                          </af:outputText>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportResourcesView.hints.SubFunctionCode.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportResourcesView.hints.SubFunctionCode.label}" id="c22">
+                          <af:outputText value="#{row.SubFunctionCode}" id="ot14"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportResourcesView.hints.StudyId.name}" filterable="true"
+                                   sortable="true" headerText="#{bindings.ImportResourcesView.hints.StudyId.label}"
+                                   id="c15">
+                          <af:outputText value="#{row.StudyId}" id="ot21"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportResourcesView.hints.MethodName.name}"
+                                   filterable="true" sortable="true" filterFeatures="caseInsensitive"
+                                   headerText="#{bindings.ImportResourcesView.hints.MethodName.label}" id="c20">
+                          <af:outputText value="#{row.MethodName}" id="ot22"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportResourcesView.hints.TypeName.name}" filterable="true"
+                                   sortable="true" filterFeatures="caseInsensitive"
+                                   headerText="#{bindings.ImportResourcesView.hints.TypeName.label}" id="c17">
+                          <af:outputText value="#{row.TypeName}" id="ot13"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportResourcesView.hints.Year.name}" filterable="true"
+                                   sortable="true" align="right"
+                                   headerText="#{bindings.ImportResourcesView.hints.Year.label}" id="c14">
+                          <af:outputText value="#{row.Year}" id="ot16"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportResourcesView.hints.Month.name}" filterable="true"
+                                   sortable="true" align="right"
+                                   headerText="#{bindings.ImportResourcesView.hints.Month.label}" id="c13">
+                          <af:outputText value="#{row.Month}" id="ot18"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportResourcesView.hints.Demand.name}" filterable="true"
+                                   sortable="true" align="right"
+                                   headerText="#{bindings.ImportResourcesView.hints.Demand.label}" id="c21">
+                          <af:outputText value="#{row.Demand}" id="ot20"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportResourcesView.hints.StatusName.name}"
+                                   filterable="true" sortable="true" filterFeatures="caseInsensitive"
+                                   headerText="#{bindings.ImportResourcesView.hints.StatusName.label}" id="c19">
+                          <af:outputText value="#{row.StatusName}" id="ot15"
+                                         inlineStyle="color:#{row.StatusCode == 'FAIL' ? 'red' : 'blue'};"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportResourcesView.hints.StatusDescription.name}"
+                                   filterable="false" sortable="false"
+                                   headerText="#{bindings.ImportResourcesView.hints.StatusDescription.label}" id="c649">
+                          <af:outputText value="#{row.StatusDescription}" id="ot650"/>
+                        </af:column>
+                      </af:table>
+                    </af:panelCollection>
+                  </af:showDetailItem>
+                  <af:showDetailItem text="#{bundle.projectResourcesFromCSGED}" stretchChildren="first">
+                    <af:panelCollection id="pc22" styleClass="AFStretchWidth" featuresOff="detach viewMenu statusBar">
+                      <af:table value="#{bindings.ImportResourcesSophiaView.collectionModel}" var="row"
+                                rows="#{bindings.ImportResourcesSophiaView.rangeSize}"
+                                emptyText="#{bindings.ImportResourcesSophiaView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                                fetchSize="#{bindings.ImportResourcesSophiaView.rangeSize}" rowBandingInterval="0"
+                                columnStretching="last" autoHeightRows="0"
+                                filterModel="#{bindings.ImportResourcesSophiaViewQuery.queryDescriptor}"
+                                queryListener="#{bindings.ImportResourcesSophiaViewQuery.processQuery}"
+                                filterVisible="false" varStatus="vs" id="tResSo">
+                        <af:column sortProperty="#{bindings.ImportResourcesSophiaView.hints.ReferenceId.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportResourcesSophiaView.hints.ReferenceId.label}" id="c182">
+                          <af:outputText value="#{row.ReferenceId}" id="ot192"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportResourcesSophiaView.hints.CreateDate.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportResourcesSophiaView.hints.CreateDate.label}" id="c162">
+                          <f:facet name="filter">
+                            <af:inputDate value="#{vs.filterCriteria.CreateDate}" id="id22">
+                              <af:convertDateTime pattern="#{bindings.ImportResourcesSophiaView.hints.CreateDate.format}"/>
+                            </af:inputDate>
+                          </f:facet>
+                          <af:outputText value="#{row.CreateDate}" id="ot172">
+                            <af:convertDateTime pattern="#{bindings.ImportResourcesSophiaView.hints.CreateDate.format}"/>
+                          </af:outputText>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportResourcesSophiaView.hints.SubfunctionCode.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportResourcesSophiaView.hints.SubfunctionCode.label}"
+                                   id="c222">
+                          <af:outputText value="#{row.SubfunctionCode}" id="ot1422"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportResourcesSophiaView.hints.StudyId.name}"
+                                   filterable="true" sortable="true"
+                                   headerText="#{bindings.ImportResourcesSophiaView.hints.StudyId.label}" id="c152">
+                          <af:outputText value="#{row.StudyId}" id="ot212"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportResourcesSophiaView.hints.MethodName.name}"
+                                   filterable="true" sortable="true" filterFeatures="caseInsensitive"
+                                   headerText="#{bindings.ImportResourcesSophiaView.hints.MethodName.label}" id="c202">
+                          <af:outputText value="#{row.MethodName}" id="ot222"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportResourcesSophiaView.hints.TypeName.name}"
+                                   filterable="true" sortable="true" filterFeatures="caseInsensitive"
+                                   headerText="#{bindings.ImportResourcesSophiaView.hints.TypeName.label}" id="c172">
+                          <af:outputText value="#{row.TypeName}" id="ot132"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportResourcesSophiaView.hints.Year.name}"
+                                   filterable="true" sortable="true" align="right"
+                                   headerText="#{bindings.ImportResourcesSophiaView.hints.Year.label}" id="c79">
+                          <af:outputText value="#{row.Year}" id="ot162"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportResourcesSophiaView.hints.Month.name}"
+                                   filterable="true" sortable="true" align="right"
+                                   headerText="#{bindings.ImportResourcesSophiaView.hints.Month.label}" id="c132">
+                          <af:outputText value="#{row.Month}" id="ot182"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportResourcesSophiaView.hints.Demand.name}"
+                                   filterable="true" sortable="true" align="right"
+                                   headerText="#{bindings.ImportResourcesSophiaView.hints.Demand.label}" id="c212">
+                          <af:outputText value="#{row.Demand}" id="ot202"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportResourcesSophiaView.hints.StatusName.name}"
+                                   filterable="true" sortable="true" filterFeatures="caseInsensitive"
+                                   headerText="#{bindings.ImportResourcesSophiaView.hints.StatusName.label}" id="c192">
+                          <af:outputText value="#{row.StatusName}" id="ot152"
+                                         inlineStyle="color:#{row.StatusCode == 'FAIL' ? 'red' : 'blue'};"/>
+                        </af:column>
+                        <af:column sortProperty="#{bindings.ImportResourcesSophiaView.hints.StatusDescription.name}"
+                                   filterable="false" sortable="false"
+                                   headerText="#{bindings.ImportResourcesSophiaView.hints.StatusDescription.label}"
+                                   id="c6492">
+                          <af:outputText value="#{row.StatusDescription}" id="ot6502"/>
+                        </af:column>
+                      </af:table>
+                    </af:panelCollection>
+                  </af:showDetailItem>
+                </af:panelTabbed>
+              </af:showDetailItem>
+              <af:showDetailItem text="#{bundle.importHeadcount}" stretchChildren="first" id="sd3">
+                <af:panelCollection id="pc3" styleClass="AFStretchWidth" featuresOff="detach viewMenu statusBar">
+                  <af:table value="#{bindings.ImportHeadcountView.collectionModel}" var="row"
+                            rows="#{bindings.ImportHeadcountView.rangeSize}"
+                            emptyText="#{bindings.ImportHeadcountView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                            fetchSize="#{bindings.ImportHeadcountView.rangeSize}" rowBandingInterval="0"
+                            columnStretching="last" autoHeightRows="0"
+                            filterModel="#{bindings.ImportHeadcountViewQuery.queryDescriptor}"
+                            queryListener="#{bindings.ImportHeadcountViewQuery.processQuery}" filterVisible="false"
+                            varStatus="vs" id="tHcount">
+                    <af:column sortProperty="#{bindings.ImportHeadcountView.hints.ReferenceId.name}" filterable="true"
+                               sortable="true" headerText="#{bindings.ImportHeadcountView.hints.ReferenceId.label}"
+                               id="c28">
+                      <af:outputText value="#{row.ReferenceId}" id="ot28"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ImportHeadcountView.hints.CreateDate.name}" filterable="true"
+                               sortable="true" headerText="#{bindings.ImportHeadcountView.hints.CreateDate.label}"
+                               id="c24">
+                      <f:facet name="filter">
+                        <af:inputDate value="#{vs.filterCriteria.CreateDate}" id="id3">
+                          <af:convertDateTime pattern="#{bindings.ImportHeadcountView.hints.CreateDate.format}"/>
+                        </af:inputDate>
+                      </f:facet>
+                      <af:outputText value="#{row.CreateDate}" id="ot26">
+                        <af:convertDateTime pattern="#{bindings.ImportHeadcountView.hints.CreateDate.format}"/>
+                      </af:outputText>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ImportHeadcountView.hints.SubFunctionCode.name}"
+                               filterable="true" sortable="true"
+                               headerText="#{bindings.ImportHeadcountView.hints.SubFunctionCode.label}" id="c25">
+                      <af:outputText value="#{row.SubFunctionCode}" id="ot29"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ImportHeadcountView.hints.TypeName.name}" filterable="true"
+                               sortable="true" filterFeatures="caseInsensitive"
+                               headerText="#{bindings.ImportHeadcountView.hints.TypeName.label}" id="c27">
+                      <af:outputText value="#{row.TypeName}" id="ot24"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ImportHeadcountView.hints.Year.name}" filterable="true"
+                               sortable="true" align="right"
+                               headerText="#{bindings.ImportHeadcountView.hints.Year.label}" id="c26">
+                      <af:outputText value="#{row.Year}" id="ot25"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ImportHeadcountView.hints.Demand.name}" filterable="true"
+                               sortable="true" align="right"
+                               headerText="#{bindings.ImportHeadcountView.hints.Demand.label}" id="c29">
+                      <af:outputText value="#{row.Demand}" id="ot23"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ImportHeadcountView.hints.StatusName.name}" filterable="true"
+                               sortable="true" filterFeatures="caseInsensitive"
+                               headerText="#{bindings.ImportHeadcountView.hints.StatusName.label}" id="c23">
+                      <af:outputText value="#{row.StatusName}" id="ot27"
+                                     inlineStyle="color:#{row.StatusCode == 'FAIL' ? 'red' : 'blue'};"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ImportHeadcountView.hints.StatusDescription.name}"
+                               filterable="false" sortable="false"
+                               headerText="#{bindings.ImportHeadcountView.hints.StatusDescription.label}" id="c749">
+                      <af:outputText value="#{row.StatusDescription}" id="ot750"/>
+                    </af:column>
+                  </af:table>
+                </af:panelCollection>
+              </af:showDetailItem>
+              <af:showDetailItem text="#{bundle.projectActivityBaselines}" id="sdi1" stretchChildren="first"
+                                 rendered="#{rolesBean.maintainBaselines}">
+                <af:panelCollection id="pc5" styleClass="AFStretchWidth" featuresOff="detach viewMenu statusBar">
+                  <af:table value="#{bindings.BaselineMaintenanceView.collectionModel}" var="row"
+                            rows="#{bindings.BaselineMaintenanceView.rangeSize}"
+                            emptyText="#{bindings.BaselineMaintenanceView.viewable ? 'No data to display.' : 'Access Denied.'}"
+                            rowBandingInterval="0" fetchSize="#{bindings.BaselineMaintenanceView.rangeSize}"
+                            filterModel="#{bindings.BaselineMaintenanceViewQuery.queryDescriptor}"
+                            queryListener="#{bindings.BaselineMaintenanceViewQuery.processQuery}" filterVisible="false"
+                            varStatus="vs" id="t2" columnStretching="column:c76">
+                    <af:column sortProperty="#{bindings.BaselineMaintenanceView.hints.CreateDate.name}"
+                               filterable="true" sortable="true"
+                               headerText="#{bindings.BaselineMaintenanceView.hints.CreateDate.label}" id="c74">
+                      <f:facet name="filter">
+                        <af:inputDate value="#{bindings.BaselineMaintenanceViewQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.CreateDate.value}"
+                                      id="id21">
+                          <af:convertDateTime pattern="#{bindings.BaselineMaintenanceView.hints.CreateDate.format}"/>
+                        </af:inputDate>
+                      </f:facet>
+                      <af:outputText value="#{row.CreateDate}"
+                                     shortDesc="#{bindings.BaselineMaintenanceView.hints.CreateDate.tooltip}" id="ot73">
+                        <af:convertDateTime pattern="#{bindings.BaselineMaintenanceView.hints.CreateDate.format}"/>
+                      </af:outputText>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.BaselineMaintenanceView.hints.TimelineTypeName.name}"
+                               filterable="true" sortable="true"
+                               headerText="#{bindings.BaselineMaintenanceView.hints.TimelineTypeName.label}" id="c75">
+                      <af:outputText value="#{row.TimelineTypeName}"
+                                     shortDesc="#{bindings.BaselineMaintenanceView.hints.TimelineTypeName.tooltip}"
+                                     id="ot74"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.BaselineMaintenanceView.hints.BaselineName.name}"
+                               filterable="true" sortable="true"
+                               headerText="#{bindings.BaselineMaintenanceView.hints.BaselineName.label}" id="c76">
+                      <af:outputText value="#{row.BaselineName}"
+                                     shortDesc="#{bindings.BaselineMaintenanceView.hints.BaselineName.tooltip}"
+                                     id="ot75"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.BaselineMaintenanceView.hints.BaselineCreateDate.name}"
+                               filterable="true" sortable="true"
+                               headerText="#{bindings.BaselineMaintenanceView.hints.BaselineCreateDate.label}" id="c77">
+                      <f:facet name="filter">
+                        <af:inputDate value="#{bindings.BaselineMaintenanceViewQuery.queryDescriptor.filterConjunctionCriterion.criterionMap.BaselineCreateDate.value}"
+                                      id="id23">
+                          <af:convertDateTime pattern="#{bindings.BaselineMaintenanceView.hints.BaselineCreateDate.format}"/>
+                        </af:inputDate>
+                      </f:facet>
+                      <af:outputText value="#{row.BaselineCreateDate}"
+                                     shortDesc="#{bindings.BaselineMaintenanceView.hints.BaselineCreateDate.tooltip}"
+                                     id="ot76">
+                        <af:convertDateTime pattern="#{bindings.BaselineMaintenanceView.hints.BaselineCreateDate.format}"/>
+                      </af:outputText>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.BaselineMaintenanceView.hints.ImportStatusName.name}"
+                               filterable="true" sortable="true"
+                               headerText="#{bindings.BaselineMaintenanceView.hints.ImportStatusName.label}" id="c78">
+                      <af:outputText value="#{row.ImportStatusName}"
+                                     shortDesc="#{bindings.BaselineMaintenanceView.hints.ImportStatusName.tooltip}"
+                                     id="ot77" inlineStyle="color:#{row.StatusCode eq 'FAIL' ? 'red' : 'blue'};"/>
+                    </af:column>
+                  </af:table>
+                </af:panelCollection>
+              </af:showDetailItem>
+            </af:panelTabbed>
+          </f:facet>
+          <f:facet name="controls">
+            <f:subview id="sub1">
+              <af:panelGroupLayout layout="horizontal" halign="right">
+                <f:facet name="separator">
+                  <af:spacer width="5"/>
+                </f:facet>
+                <af:commandButton text="#{bundle.globalOk}" id="cmdOk" action="ok" inlineStyle="font-weight:bold;"/>
+              </af:panelGroupLayout>
+            </f:subview>
+          </f:facet>
+        </af:pageTemplate>
+      </af:form>
+    </af:document>
+  </f:view>
+</jsp:root>

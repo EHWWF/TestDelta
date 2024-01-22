@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.64.93" id="greenredlistPageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="ProgramAppModule.GreenListProjectView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="GreenListProjectViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator Binds="ProgramAppModule.RedListProjectView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="RedListProjectViewIterator" ChangeEventPolicy="ppr"/>
+    <searchRegion id="GreenListProjectViewQuery"
+                  Binds="GreenListProjectViewIterator"
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"/>
+    <searchRegion id="RedListProjectViewQuery"
+                  Binds="RedListProjectViewIterator"
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"/>
+    <iterator Binds="ProgramAppModule.PlanAssumptionRequestView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="PlanAssumptionRequestViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator Binds="ProgramAppModule.LastPlanAssumptionRequestView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="LastPlanAssumptionRequestViewIterator"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="GreenListProjectViewIterator" id="GreenListProjectView"
+          ChangeEventPolicy="ppr">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.GreenListProjectView" Name="GreenListProjectView0">
+        <AttrNames>
+          <Item Value="Code"/>
+          <Item Value="Name"/>
+          <Item Value="GbuName"/>
+          <Item Value="SbeName"/>
+          <Item Value="IsPortfolio"/>
+          <Item Value="MainGroupName"/>
+          <Item Value="IsTerminated"/>
+          <Item Value="IsOnHold"/>
+          <Item Value="ControllingProjectType"/>
+          <Item Value="CommentPreviousFc"/>
+          <Item Value="CurrentComment"/>
+          <Item Value="IsHpr"/>
+          <Item Value="PhaseName"/>
+          <Item Value="SuccessorProjectId"/>
+          <Item Value="Id"/>
+          <Item Value="PccD3Date"/>
+          <Item Value="D4Date"/>
+          <Item Value="M4cDate"/>
+          <Item Value="D5Date"/>
+          <Item Value="PocDate"/>
+          <Item Value="D6Date"/>
+          <Item Value="D7Date"/>
+          <Item Value="D8Date"/>
+          <Item Value="ProbabilityPreclinical"/>
+          <Item Value="ProbabilityPhase1"/>
+          <Item Value="ProbabilityPhase2"/>
+          <Item Value="ProbabilityPhase3"/>
+          <Item Value="ProbabilitySubmission"/>
+          <Item Value="ProbabilityTotal"/>
+          <Item Value="PccD3DateSource"/>
+          <Item Value="D4DateSource"/>
+          <Item Value="M4cDateSource"/>
+          <Item Value="D6DateSource"/>
+          <Item Value="D7DateSource"/>
+          <Item Value="D8DateSource"/>
+          <Item Value="PocDateSource"/>
+          <Item Value="PriorityName"/>
+          <Item Value="SubstanceTypeName"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="RedListProjectViewIterator" id="RedListProjectView"
+          ChangeEventPolicy="ppr">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.RedListProjectView"
+                      Name="RedListProjectView0">
+        <AttrNames>
+          <Item Value="Id"/>
+         
+          <Item Value="Code"/>
+         
+          <Item Value="CurrentComment"/>
+        
+          <Item Value="Name"/>
+       
+          <Item Value="SbeName"/>
+                    <Item Value="SuccessorProjectId"/>
+        
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="PlanAssumptionRequestViewIterator"
+          id="PlanAssumptionRequestView" ChangeEventPolicy="ppr">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.PlanAssumptionRequestView"
+                      Name="PlanAssumptionRequestView0">
+        <AttrNames>
+          <Item Value="QualifiedName"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="LastPlanAssumptionRequestViewIterator"
+                     id="LastPlanAssumptionRequestId" ChangeEventPolicy="ppr">
+      <AttrNames>
+        <Item Value="Id"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LastPlanAssumptionRequestViewIterator"
+                     id="LastPlanAssumptionStatusCode">
+      <AttrNames>
+        <Item Value="StatusCode"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PlanAssumptionRequestViewIterator" id="Name"
+                     ChangeEventPolicy="ppr">
+      <AttrNames>
+        <Item Value="Name"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PlanAssumptionRequestViewIterator"
+                     id="ForecastNo" ChangeEventPolicy="ppr">
+      <AttrNames>
+        <Item Value="ForecastNo"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PlanAssumptionRequestViewIterator"
+                     id="TerminationDate" ChangeEventPolicy="ppr">
+      <AttrNames>
+        <Item Value="TerminationDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PlanAssumptionRequestViewIterator"
+                     id="CreateDate" ChangeEventPolicy="ppr">
+      <AttrNames>
+        <Item Value="CreateDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PlanAssumptionRequestViewIterator"
+                     id="StatusDate" ChangeEventPolicy="ppr">
+      <AttrNames>
+        <Item Value="StatusDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PlanAssumptionRequestViewIterator"
+                     id="StatusCode" ChangeEventPolicy="ppr">
+      <AttrNames>
+        <Item Value="StatusCode"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PlanAssumptionRequestViewIterator"
+                     id="IsSyncing" ChangeEventPolicy="ppr">
+      <AttrNames>
+        <Item Value="IsSyncing"/>
+      </AttrNames>
+    </attributeValues>
+    <eventBinding Listener="javax.faces.event.ActionListener"
+                  id="planAssumptionsEventBinding"/>
+    <methodAction IterBinding="PlanAssumptionRequestViewIterator" id="refresh"
+                  InstanceName="bindings.PlanAssumptionRequestViewIterator.currentRow"
+                  DataControl="PrivateAppModuleDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="refresh" IsViewObjectMethod="false"
+                  IsLocalObjectReference="true"/>
+  </bindings>
+</pageDefinition>

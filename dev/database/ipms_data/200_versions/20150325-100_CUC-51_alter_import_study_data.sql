@@ -1,0 +1,1 @@
+alter table import_study_data add(action_code NVARCHAR2(15));

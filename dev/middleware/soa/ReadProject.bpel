@@ -1,0 +1,394 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer
+
+  Created: Wed Feb 06 15:14:56 EET 2013
+  Author:  gytis
+  Type: BPEL 1.1 Process
+  Purpose: Synchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="ReadProject"
+               targetNamespace="http://xmlns.bayer.com/ipms/soa"
+               xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+               xmlns:client="http://xmlns.bayer.com/ipms/soa"
+               xmlns:ora="http://schemas.oracle.com/xpath/extension"
+               xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:ns1="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2"
+         xmlns:bpel2="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ns2="http://xmlns.bayer.com/ipms"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:ns3="http://xmlns.oracle.com/Primavera/P6/WS/WSExport/V2"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         xmlns:ns4="http://xmlns.oracle.com/Primavera/P6/V18.8.4/API/BusinessObjects"
+         xmlns:ns5="http://xmlns.oracle.com/Primavera/P6/WS/EPS/V1"
+         xmlns:ns6="http://xmlns.bayer.com/ipms/cache">
+
+    <!--
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        PARTNERLINKS
+        List of services participating in this BPEL process
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+  <bpelx:annotation>
+    <bpelx:analysis>
+      <bpelx:property name="wsdlFile">
+        <![CDATA[ReadProject.wsdl]]>
+      </bpelx:property>
+    </bpelx:analysis>
+  </bpelx:annotation>
+  <bpelx:exec import="oracle.soa.common.util.*"/>
+  <partnerLinks>
+    <!--
+      The 'client' role represents the requester of this service. It is
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+    <partnerLink name="ReadProjectService" partnerLinkType="client:ReadProject" myRole="ReadProjectProvider"
+                 partnerRole="ReadProjectRequester"/>
+    <partnerLink name="ProjectService" partnerLinkType="ns1:ProjectService"
+                 partnerRole="ProjectPortType"/>
+    <partnerLink name="ExportService" partnerLinkType="ns3:ExportService"
+                 partnerRole="ExportPortType"/>
+    <partnerLink name="ReadConfiguration.ReadConfigurationService"
+                 partnerLinkType="client:ReadConfiguration"
+                 partnerRole="ReadConfigurationProvider"
+                 myRole="ReadConfigurationRequester"/>
+  </partnerLinks>
+
+  <!--
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      VARIABLES
+      List of messages and XML documents used within this BPEL process
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <variables>
+    <!-- Reference to the message passed as input during initiation -->
+    <variable name="inputVariable" messageType="client:ReadProjectRequestMessage"/>
+
+    <!-- Reference to the message that will be returned to the requester-->
+    <variable name="outputVariable" messageType="client:ReadProjectResponseMessage"/>
+    <variable name="ReadPrjIn" messageType="ns1:ReadProjects"/>
+    <variable name="ReadPrjOut" messageType="ns1:ReadProjectsResponse"/>
+    <variable name="ExportRawIn" messageType="ns3:ExportProject"/>
+    <variable name="ExportRawOut" messageType="ns3:ExportProjectResponse"/>
+    <variable name="ReadRawIn" messageType="ns1:ReadProjects"/>
+    <variable name="ReadRawOut" messageType="ns1:ReadProjectsResponse"/>
+    <variable name="RawDataStr" type="xsd:string"/>
+    <variable name="RawData" element="ns4:APIBusinessObjects"/>
+    <variable name="ReadCfgIn"
+              messageType="client:ReadConfigurationRequestMessage"/>
+    <variable name="ReadCfgOut"
+              messageType="client:ReadConfigurationResponseMessage"/>
+  </variables>
+  <faultHandlers>
+    <catchAll>
+      <scope name="mainFaultCatchingScope" variableAccessSerializable="no">
+        <variables>
+          <variable name="faultVariable"
+                    messageType="client:ReadProjectResponseMessage"/>
+        </variables>
+        <sequence name="rethrowFault">
+          <assign name="assignFaultOutput">
+            <copy>
+              <from expression="ora:getFaultAsString()"/>
+              <to variable="faultVariable" part="payload"
+                  query="/client:response/ns2:error/ns2:description"/>
+            </copy>
+            <copy>
+              <from expression="ora:getFaultName()"/>
+              <to variable="faultVariable" part="payload"
+                  query="/client:response/ns2:error/ns2:code"/>
+            </copy>
+            <copy>
+              <from variable="inputVariable" part="payload"
+                    query="/client:read/@id"/>
+              <to variable="faultVariable" part="payload"
+                  query="/client:response/ns2:error/@id"/>
+            </copy>
+            <copy>
+              <from variable="inputVariable" part="payload"
+                    query="/client:read/@id"/>
+              <to variable="faultVariable" part="payload"
+                  query="/client:response/@id"/>
+            </copy>
+          </assign>
+          <invoke name="callbackFaultOutput" bpelx:invokeAsDetail="no"
+                  inputVariable="faultVariable"
+                  partnerLink="ReadProjectService"
+                  portType="client:ReadProjectCallback" operation="callback"/>
+        </sequence>
+      </scope>
+    </catchAll>
+  </faultHandlers>
+  <!--
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC
+     Set of activities coordinating the flow of messages across the
+     services integrated within this business process
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <sequence name="main">
+
+    <!-- Receive input from requestor. (Note: This maps to operation defined in ReadProject.wsdl) -->
+    <receive name="receiveInput" partnerLink="ReadProjectService" portType="client:ReadProject" operation="process" variable="inputVariable" createInstance="yes"/>
+    <flow name="FlowReadALL">
+      <sequence name="Config">
+        <scope name="ReadConfigFromCache">
+          <variables>
+            <variable name="VariableCache" element="ns6:cache"/>
+          </variables>
+          <faultHandlers>
+            <catchAll>
+              <empty name="Empty1"/>
+            </catchAll>
+          </faultHandlers>
+          <sequence name="ReadConfigFromCache">
+            <assign name="AssignFromCache">
+              <copy bpelx:ignoreMissingFromData="yes"
+                    bpelx:insertMissingToData="yes">
+                <from expression='ora:readFile("file:///opt/oracle/soa12.2.1/file_adapter/ipms/config.cache", "oramds:/apps/com/bayer/xmlns/ipms/cache/cache.xsd")'/>
+                <to variable="VariableCache" query="/ns6:cache"/>
+              </copy>
+              <copy bpelx:ignoreMissingFromData="yes"
+                    bpelx:insertMissingToData="yes">
+                <from variable="VariableCache" query="/ns6:cache/*"/>
+                <to variable="ReadCfgOut" part="payload"/>
+              </copy>
+            </assign>
+            <empty name="EmptyBeforeSkip"/>
+          </sequence>
+        </scope>
+        <sequence name="FULL-ReadConfig-SKIP"
+                  bpelx:skipCondition="bpws:getVariableData('ReadCfgOut','payload','/client:config/client:program/client:epsId')!=''">
+          <assign name="AssignReadCfgIn">
+            <copy>
+              <from expression="'cfg'"/>
+              <to variable="ReadCfgIn" part="payload" query="/ns2:empty"/>
+            </copy>
+          </assign>
+          <invoke name="ReadConfigurationIn" bpelx:invokeAsDetail="no"
+                  inputVariable="ReadCfgIn"
+                  partnerLink="ReadConfiguration.ReadConfigurationService"
+                  portType="client:ReadConfiguration" operation="process"/>
+          <receive name="ReadConfigurationOut" createInstance="no"
+                   variable="ReadCfgOut"
+                   partnerLink="ReadConfiguration.ReadConfigurationService"
+                   portType="client:ReadConfigurationCallback"
+                   operation="callback"/>
+        </sequence>
+      </sequence>
+      <sequence name="Project">
+        <assign name="AssignReadRawIn">
+          <copy>
+            <from expression="'ParentEPSObjectId'"/>
+            <to variable="ReadRawIn" part="params"
+                query="/ns1:ReadProjects/ns1:Field"/>
+          </copy>
+          <copy>
+            <from expression="concat(&quot;Id='&quot;,bpws:getVariableData('inputVariable','payload','/client:read/ns2:project/@id'),&quot;-RAW'&quot;)"/>
+            <to variable="ReadRawIn" part="params"
+                query="/ns1:ReadProjects/ns1:Filter"/>
+          </copy>
+        </assign>
+        <invoke name="ReadRaw" bpelx:invokeAsDetail="no"
+                inputVariable="ReadRawIn" outputVariable="ReadRawOut"
+                partnerLink="ProjectService" portType="ns1:ProjectPortType"
+                operation="ReadProjects"/>
+      </sequence>
+      <sequence name="Timelines">
+        <assign name="AssignReadPrjIn">
+          <copy>
+            <from><v2:Field xmlns:v2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2">Name</v2:Field></from>
+            <to variable="ReadPrjIn" part="params"
+                query="/ns1:ReadProjects/ns1:Field"/>
+          </copy>
+          <bpelx:insertAfter>
+            <bpelx:from><v2:Field xmlns:v2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2">Description</v2:Field></bpelx:from>
+            <bpelx:to variable="ReadPrjIn" part="params"
+                      query="/ns1:ReadProjects/ns1:Field"/>
+          </bpelx:insertAfter>
+          <bpelx:insertAfter>
+            <bpelx:from><v2:Field xmlns:v2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2">Id</v2:Field></bpelx:from>
+            <bpelx:to variable="ReadPrjIn" part="params"
+                      query="/ns1:ReadProjects/ns1:Field"/>
+          </bpelx:insertAfter>
+          <bpelx:insertAfter>
+            <bpelx:from><v2:Field xmlns:v2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2">StartDate</v2:Field></bpelx:from>
+            <bpelx:to variable="ReadPrjIn" part="params"
+                      query="/ns1:ReadProjects/ns1:Field"/>
+          </bpelx:insertAfter>
+          <bpelx:insertAfter>
+            <bpelx:from><v2:Field xmlns:v2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2">FinishDate</v2:Field></bpelx:from>
+            <bpelx:to variable="ReadPrjIn" part="params"
+                      query="/ns1:ReadProjects/ns1:Field"/>
+          </bpelx:insertAfter>
+          <bpelx:insertAfter>
+            <bpelx:from><v2:Field xmlns:v2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2">WBSObjectId</v2:Field></bpelx:from>
+            <bpelx:to variable="ReadPrjIn" part="params"
+                      query="/ns1:ReadProjects/ns1:Field"/>
+          </bpelx:insertAfter>
+          <copy>
+            <from expression="concat(&quot;Id like '&quot;,bpws:getVariableData('inputVariable','payload','/client:read/ns2:project/@id'),&quot;-%'&quot;)"/>
+            <to variable="ReadPrjIn" part="params"
+                query="/ns1:ReadProjects/ns1:Filter"/>
+          </copy>
+        </assign>
+        <invoke name="ReadPrj" bpelx:invokeAsDetail="no"
+                inputVariable="ReadPrjIn" outputVariable="ReadPrjOut"
+                partnerLink="ProjectService" portType="ns1:ProjectPortType"
+                operation="ReadProjects"/>
+      </sequence>
+    </flow>
+    <sequence name="SKIP-WhenObjectIdNull"
+              bpelx:skipCondition="count(bpws:getVariableData('ReadPrjOut','result','/ns1:ReadProjectsResponse/ns1:Project'))=0">
+      <assign name="AssignExportIn">
+        <copy>
+          <from><v2:ExportProject xmlns:v2="http://xmlns.oracle.com/Primavera/P6/WS/WSExport/V2">
+         <v2:Encoding>UTF-8</v2:Encoding>
+         <v2:ProjectObjectId>?</v2:ProjectObjectId>
+         <v2:BusinessObjectOptions>
+            <v2:Activity>
+               <v2:Include>false</v2:Include>
+			<v2:Field>ObjectId</v2:Field>
+            </v2:Activity>
+            <v2:Calendar>
+               <v2:Include>false</v2:Include>
+			<v2:Field>ObjectId</v2:Field>
+            </v2:Calendar>
+            <v2:Document>
+               <v2:Include>false</v2:Include>
+			<v2:Field>ObjectId</v2:Field>
+            </v2:Document>
+            <v2:EPS>
+               <v2:Include>true</v2:Include>
+			<v2:Field>Id</v2:Field>
+            </v2:EPS>
+            <v2:OBS>
+               <v2:Include>false</v2:Include>
+			<v2:Field>ObjectId</v2:Field>
+            </v2:OBS>
+            <v2:Project>
+               <v2:Include>true</v2:Include>
+               <v2:Field>Id</v2:Field>
+               <v2:Field>Name</v2:Field>
+            </v2:Project>
+            <v2:ProjectCode>
+               <v2:Include>true</v2:Include>
+			<v2:Field>ObjectId</v2:Field>
+            </v2:ProjectCode>
+            <v2:ProjectCodeType>
+               <v2:Include>true</v2:Include>
+			<v2:Field>ObjectId</v2:Field>
+            </v2:ProjectCodeType>
+            <v2:Relationship>
+               <v2:Include>false</v2:Include>
+			<v2:Field>ObjectId</v2:Field>
+            </v2:Relationship>
+            <v2:Resource>
+               <v2:Include>false</v2:Include>
+			<v2:Field>ObjectId</v2:Field>
+            </v2:Resource>
+            <v2:ResourceAssignment>
+               <v2:Include>false</v2:Include>
+			<v2:Field>ObjectId</v2:Field>
+            </v2:ResourceAssignment>
+            <v2:Risk>
+               <v2:Include>false</v2:Include>
+			<v2:Field>ObjectId</v2:Field>
+            </v2:Risk>
+            <v2:Role>
+               <v2:Include>false</v2:Include>
+			<v2:Field>ObjectId</v2:Field>
+            </v2:Role>
+            <v2:UDFType>
+               <v2:Include>false</v2:Include>
+			<v2:Field>ObjectId</v2:Field>
+            </v2:UDFType>
+            <v2:UDFValue>
+               <v2:Include>true</v2:Include>
+            </v2:UDFValue>
+            <v2:WBS>
+               <v2:Include>false</v2:Include>
+               <v2:Field>ParentObjectId</v2:Field>
+               <v2:Field>Code</v2:Field>
+               <v2:Field>Name</v2:Field>
+            </v2:WBS>
+         </v2:BusinessObjectOptions>
+      </v2:ExportProject></from>
+          <to variable="ExportRawIn" part="params" query="/ns3:ExportProject"/>
+        </copy>
+        <copy>
+          <from variable="ReadRawOut" part="result"
+                query="/ns1:ReadProjectsResponse/ns1:Project/ns1:ObjectId"/>
+          <to variable="ExportRawIn" part="params"
+              query="/ns3:ExportProject/ns3:ProjectObjectId"/>
+        </copy>
+      </assign>
+      <invoke name="ExportRaw" bpelx:invokeAsDetail="no"
+              inputVariable="ExportRawIn" outputVariable="ExportRawOut"
+              partnerLink="ExportService" portType="ns3:ExportPortType"
+              operation="ExportProject"/>
+      <assign name="AssignRawStr">
+        <copy>
+          <from variable="ExportRawOut" part="result"
+                query="/ns3:ExportProjectResponse/ns3:ProjectData"/>
+          <to variable="RawDataStr"/>
+        </copy>
+      </assign>
+      <bpelx:exec name="DecodeRaw" version="1.5" language="java">
+        <![CDATA[String input = (String)getVariableData("RawDataStr");
+Base64Decoder decoder = new Base64Decoder();
+
+try {
+	String decoded = Base64Decoder.decode(input);
+	setVariableData("RawDataStr", decoded);
+} catch(Exception exc) {
+	exc.printStackTrace();
+}]]>
+      </bpelx:exec>
+      <assign name="ParseRaw">
+        <copy>
+          <from expression="oraext:parseEscapedXML(bpws:getVariableData('RawDataStr'))"/>
+          <to variable="RawData"/>
+        </copy>
+      </assign>
+      <assign name="TransformOutput">
+        <bpelx:annotation>
+          <bpelx:pattern>transformation</bpelx:pattern>
+        </bpelx:annotation>
+        <copy>
+          <from expression="ora:doXSLTransformForDoc('xsl/ReadProjectRead.xsl', $RawData, 'ReadCfgOut.payload', $ReadCfgOut.payload, 'ReadPrjOut.result', $ReadPrjOut.result)"/>
+          <to variable="outputVariable" part="payload"/>
+        </copy>
+      </assign>
+    </sequence>
+    <assign name="AssignMessageId">
+      <copy>
+        <from variable="inputVariable" part="payload" query="/client:read/@id"/>
+        <to variable="outputVariable" part="payload"
+            query="/client:response/client:complete/@id"/>
+      </copy>
+      <copy>
+        <from variable="inputVariable" part="payload" query="/client:read/@id"/>
+        <to variable="outputVariable" part="payload"
+            query="/client:response/@id"/>
+      </copy>
+    </assign>
+    <invoke name="callbackOutput" bpelx:invokeAsDetail="no"
+            inputVariable="outputVariable" partnerLink="ReadProjectService"
+            portType="client:ReadProjectCallback" operation="callback"/>
+    <!-- Generate reply to synchronous request -->
+  </sequence>
+</process>

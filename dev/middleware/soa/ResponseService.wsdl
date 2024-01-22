@@ -1,0 +1,28 @@
+<wsdl:definitions
+     name="ResponseService"
+     targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/AQ/IPMS/soa/ResponseService"
+     xmlns:jca="http://xmlns.oracle.com/pcbpel/wsdl/jca/"
+     xmlns:tns="http://xmlns.oracle.com/pcbpel/adapter/AQ/IPMS/soa/ResponseService"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+     xmlns:msg_out="http://xmlns.bayer.com/ipms/soa"
+     xmlns:plt="http://schemas.xmlsoap.org/ws/2003/05/partner-link/"
+    >
+  <plt:partnerLinkType name="enqueue_plt" >
+    <plt:role name="enqueue_role" >
+      <plt:portType name="tns:enqueue_ptt" />
+    </plt:role>
+  </plt:partnerLinkType>
+    <wsdl:types>
+      <schema xmlns="http://www.w3.org/2001/XMLSchema" >
+        <import namespace="http://xmlns.bayer.com/ipms/soa" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/soa/soa.xsd" />
+      </schema>
+    </wsdl:types>
+    <wsdl:message name="response_msg">
+        <wsdl:part name="response" element="msg_out:response"/>
+    </wsdl:message>
+    <wsdl:portType name="enqueue_ptt">
+        <wsdl:operation name="enqueue">
+            <wsdl:input message="tns:response_msg"/>
+        </wsdl:operation>
+    </wsdl:portType>
+</wsdl:definitions>

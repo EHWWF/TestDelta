@@ -1,0 +1,1 @@
+alter table ltc_estimate add(function_cost_rate number);

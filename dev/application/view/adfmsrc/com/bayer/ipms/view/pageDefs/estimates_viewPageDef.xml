@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.64.93" id="estimates_viewPageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="EstimatesAppModule.LatestEstimatesProcessView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="LatestEstimatesProcessViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator id="LatestEstimatesProjectViewIterator"
+              Binds="EstimatesAppModule.LatestEstimatesProjectView"
+              DataControl="PrivateAppModuleDataControl"
+              ChangeEventPolicy="ppr" RangeSize="100"/>
+    <iterator Binds="EstimatesAppModule.LatestEstimatesTagView" DataControl="PrivateAppModuleDataControl" RangeSize="25"
+              id="LatestEstimatesTagViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator Binds="EstimatesAppModule.PreviousTagLatestEstimatesProcessView" DataControl="PrivateAppModuleDataControl"
+              RangeSize="-1" id="PreviousTagLatestEstimatesProcessViewIterator"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="LatestEstimatesProcessViewIterator" id="Name">
+      <AttrNames>
+        <Item Value="Name"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LatestEstimatesProcessViewIterator"
+                     id="Comments">
+      <AttrNames>
+        <Item Value="Comments"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LatestEstimatesProcessViewIterator"
+                     id="TerminationDate">
+      <AttrNames>
+        <Item Value="TerminationDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LatestEstimatesProcessViewIterator" id="Year">
+      <AttrNames>
+        <Item Value="Year"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LatestEstimatesProcessViewIterator"
+                     id="IsNextYear">
+      <AttrNames>
+        <Item Value="IsNextYear"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="LatestEstimatesProjectViewIterator"
+          id="LatestEstimatesProjectView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.estimates.LatestEstimatesProjectView"
+                      Name="LatestEstimatesProjectView0">
+        <AttrNames>
+          <Item Value="ProjectCode"/>
+          <Item Value="ProjectName"/>
+          <Item Value="ProjectSbeName"/>
+          <Item Value="ProgramName"/>
+          <Item Value="DevelopmentPhaseName"/>
+          <Item Value="ProgramNameQualified"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="LatestEstimatesProcessViewIterator"
+                     id="StatusCode">
+      <AttrNames>
+        <Item Value="StatusCode"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LatestEstimatesProcessViewIterator"
+                     id="StatusDate">
+      <AttrNames>
+        <Item Value="StatusDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LatestEstimatesProcessViewIterator"
+                     id="IsSyncing" ChangeEventPolicy="ppr">
+      <AttrNames>
+        <Item Value="IsSyncing"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LatestEstimatesProcessViewIterator" id="ProcessId">
+      <AttrNames>
+        <Item Value="Id"/>
+      </AttrNames>
+    </attributeValues>
+    <eventBinding Listener="javax.faces.event.ActionListener"
+                  id="estimatesEventBinding">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="estimates" eventType="Action Event"
+               customPayLoad="#{bindings.LatestEstimatesProcessViewIterator.currentRow.id}"/>
+      </events>
+    </eventBinding>
+    <methodAction IterBinding="LatestEstimatesProcessViewIterator" id="refresh"
+                  InstanceName="bindings.LatestEstimatesProcessViewIterator.currentRow"
+                  DataControl="PrivateAppModuleDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="refresh" IsViewObjectMethod="false"
+                  IsLocalObjectReference="true">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="estimates"
+               customPayLoad="#{bindings.LatestEstimatesProcessViewIterator.currentRow.id}"/>
+      </events>
+    </methodAction>
+    <attributeValues IterBinding="LatestEstimatesProcessViewIterator" id="Id">
+      <AttrNames>
+        <Item Value="Id"/>
+      </AttrNames>
+    </attributeValues>
+    
+    <list IterBinding="LatestEstimatesProcessViewIterator" StaticList="false"
+          Uses="LOV_CyDetPrefillCode" id="CyDetPrefillCode"
+          DTSupportsMRU="true" SelectItemValueMode="ListObject"/>
+    
+    <list IterBinding="LatestEstimatesProcessViewIterator" StaticList="false"
+          Uses="LOV_NyDetPrefillCode" id="NyDetPrefillCode"
+          DTSupportsMRU="true"/>
+    <attributeValues IterBinding="LatestEstimatesTagViewIterator" id="LetName">
+      <AttrNames>
+        <Item Value="Name"/>
+      </AttrNames>
+    </attributeValues>
+    <list ListOperMode="navigation" IterBinding="PreviousTagLatestEstimatesProcessViewIterator"
+          ListIter="PreviousTagLatestEstimatesProcessViewIterator" id="PreviousTagProcesses">
+      <AttrNames>
+        <Item Value="Name"/>
+      </AttrNames>
+    </list>
+    <list StaticList="false" IterBinding="LatestEstimatesProcessViewIterator"
+          ListIter="PreviousTagLatestEstimatesProcessViewIterator" id="CyDetPrefillLepId"
+          NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}"
+          NullValueFlag="start">
+      <AttrNames>
+        <Item Value="CyDetPrefillLepId"/>
+      </AttrNames>
+      <ListAttrNames>
+        <Item Value="Id"/>
+      </ListAttrNames>
+      <ListDisplayAttrNames>
+        <Item Value="Name"/>
+      </ListDisplayAttrNames>
+    </list>
+    <list StaticList="false" IterBinding="LatestEstimatesProcessViewIterator"
+          ListIter="PreviousTagLatestEstimatesProcessViewIterator" id="NyDetPrefillLepId"
+          NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}"
+          NullValueFlag="start">
+      <AttrNames>
+        <Item Value="NyDetPrefillLepId"/>
+      </AttrNames>
+      <ListAttrNames>
+        <Item Value="Id"/>
+      </ListAttrNames>
+      <ListDisplayAttrNames>
+        <Item Value="Name"/>
+      </ListDisplayAttrNames>
+    </list>
+    <attributeValues IterBinding="LatestEstimatesTagViewIterator" id="LetId">
+      <AttrNames>
+        <Item Value="Id"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LatestEstimatesTagViewIterator" id="LetIsFrozen">
+      <AttrNames>
+        <Item Value="IsFrozen"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

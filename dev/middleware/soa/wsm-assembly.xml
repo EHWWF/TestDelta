@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<orawsp:wsm-assembly xmlns:orawsp="http://schemas.oracle.com/ws/2006/01/policy">
+  <sca11:policySet xmlns:sca11="http://docs.oasis-open.org/ns/opencsa/sca/200912" name="policySet"
+                   appliesTo="SCA-REFERENCE()"
+                   attachTo="REFERENCE('ActivityCodeAssignmentService') and PORT('ActivityCodeAssignmentPort')"
+                   orawsp:highId="1"
+                   xml:id="SCA-REFERENCE__REFERENCE__ActivityCodeAssignmentService___and_PORT__ActivityCodeAssignmentPort__">
+    <wsp:PolicyReference xmlns:wsp="http://www.w3.org/ns/ws-policy"
+                         DigestAlgorithm="http://www.w3.org/ns/ws-policy/Sha1Exc"
+                         URI="oracle/wss_username_token_client_policy" orawsp:status="enabled" orawsp:id="1"/>
+  </sca11:policySet>
+  <sca11:policySet xmlns:sca11="http://docs.oasis-open.org/ns/opencsa/sca/200912" name="policySet"
+                   appliesTo="SCA-REFERENCE()" attachTo="REFERENCE('ActivityCodeService') and PORT('ActivityCodePort')"
+                   orawsp:highId="1"
+                   xml:id="SCA-REFERENCE__REFERENCE__ActivityCodeService___and_PORT__ActivityCodePort__">
+    <wsp:PolicyReference xmlns:wsp="http://www.w3.org/ns/ws-policy"
+                         DigestAlgorithm="http://www.w3.org/ns/ws-policy/Sha1Exc"
+                         URI="oracle/wss_username_token_client_policy" orawsp:status="enabled" orawsp:id="1"/>
+  </sca11:policySet>
+  <sca11:policySet xmlns:sca11="http://docs.oasis-open.org/ns/opencsa/sca/200912" name="policySet"
+                   appliesTo="SCA-REFERENCE()"
+                   attachTo="REFERENCE('ActivityCodeTypeService') and PORT('ActivityCodeTypePort')" orawsp:highId="1"
+                   xml:id="SCA-REFERENCE__REFERENCE__ActivityCodeTypeService___and_PORT__ActivityCodeTypePort__">
+    <wsp:PolicyReference xmlns:wsp="http://www.w3.org/ns/ws-policy"
+                         DigestAlgorithm="http://www.w3.org/ns/ws-policy/Sha1Exc"
+                         URI="oracle/wss_username_token_client_policy" orawsp:status="enabled" orawsp:id="1"/>
+  </sca11:policySet>
+  <sca11:policySet xmlns:sca11="http://docs.oasis-open.org/ns/opencsa/sca/200912" name="policySet"
+                   appliesTo="SCA-REFERENCE()"
+                   attachTo="REFERENCE('ActivityExpenseService') and PORT('ActivityExpensePort')" orawsp:highId="1"
+                   xml:id="SCA-REFERENCE__REFERENCE__ActivityExpenseService___and_PORT__ActivityExpensePort__">
+    <wsp:PolicyReference xmlns:wsp="http://www.w3.org/ns/ws-policy"
+                         DigestAlgorithm="http://www.w3.org/ns/ws-policy/Sha1Exc"
+                         URI="oracle/wss_username_token_client_policy" orawsp:status="enabled" orawsp:id="1"/>
+  </sca11:policySet>
+  <sca11:policySet xmlns:sca11="http://docs.oasis-open.org/ns/opencsa/sca/200912" name="policySet"
+                   appliesTo="SCA-REFERENCE()" attachTo="REFERENCE('ActivityService') and PORT('ActivityPort')"
+                   orawsp:highId="1" xml:id="SCA-REFERENCE__REFERENCE__ActivityService___and_PORT__ActivityPort__">
+    <wsp:PolicyReference xmlns:wsp="http://www.w3.org/ns/ws-policy"
+                         DigestAlgorithm="http://www.w3.org/ns/ws-policy/Sha1Exc"
+                         URI="oracle/wss_username_token_client_policy" orawsp:status="enabled" orawsp:id="1"/>
+  </sca11:policySet>
+  <sca11:policySet xmlns:sca11="http://docs.oasis-open.org/ns/opencsa/sca/200912" name="policySet"
+                   appliesTo="SCA-REFERENCE()"
+                   attachTo="REFERENCE('BaselineProjectService') and PORT('BaselineProjectPort')" orawsp:highId="1"
+                   xml:id="SCA-REFERENCE__REFERENCE__BaselineProjectService___and_PORT__BaselineProjectPort__">
+    <wsp:PolicyReference xmlns:wsp="http://www.w3.org/ns/ws-policy"
+                         DigestAlgorithm="http://www.w3.org/ns/ws-policy/Sha1Exc"
+                         URI="oracle/wss_username_token_client_policy" orawsp:status="enabled" orawsp:id="1">
+    </wsp:PolicyReference>
+  </sca11:policySet>
+  <sca11:policySet xmlns:sca11="http://docs.oasis-open.org/ns/opencsa/sca/200912" name="policySet"
+                   appliesTo="SCA-REFERENCE()" attachTo="REFERENCE('BaselineTypeService') and PORT('BaselineTypePort')"
+                   orawsp:highId="1"
+                   xml:id="SCA-REFERENCE__REFERENCE__BaselineTypeService___and_PORT__BaselineTypePort__">
+    <wsp:PolicyReference xmlns:wsp="http://www.w3.org/ns/ws-policy"
+                         DigestAlgorithm="http://www.w3.org/ns/ws-policy/Sha1Exc"
+                         URI="oracle/wss_username_token_client_policy" orawsp:status="enabled" orawsp:id="1"/>
+  </sca11:policySet>
+  <sca11:policySet xmlns:sca11="http://docs.oasis-open.org/ns/opencsa/sca/200912" name="policySet"
+                   appliesTo="SCA-REFERENCE()" attachTo="REFERENCE('CostAccountService') and PORT('CostAccountPort')"
+                   orawsp:highId="1"
+                   xml:id="SCA-REFERENCE__REFERENCE__CostAccountService___and_PORT__CostAccountPort__">
+    <wsp:PolicyReference xmlns:wsp="http://www.w3.org/ns/ws-policy"
+                         DigestAlgorithm="http://www.w3.org/ns/ws-policy/Sha1Exc"
+                         URI="oracle/wss_username_token_client_policy" orawsp:status="enabled" orawsp:id="1"/>
+  </sca11:policySet>
+  <sca11:policySet xmlns:sca11="http://docs.oasis-open.org/ns/opencsa/sca/200912" name="policySet"
+                   appliesTo="SCA-REFERENCE()" attachTo="REFERENCE('EPSService') and PORT('EPSPort')" orawsp:highId="1"
+                   xml:id="SCA-REFERENCE__REFERENCE__EPSService___and_PORT__EPSPort__">
+    <wsp:PolicyReference xmlns:wsp="http://www.w3.org/ns/ws-policy"
+                         DigestAlgorithm="http://www.w3.org/ns/ws-policy/Sha1Exc"
+                         URI="oracle/wss_username_token_client_policy" orawsp:status="enabled" orawsp:id="1"/>
+  </sca11:policySet>
+  <sca11:policySet xmlns:sca11="http://docs.oasis-open.org/ns/opencsa/sca/200912" name="policySet"
+                   appliesTo="SCA-REFERENCE()"
+                   attachTo="REFERENCE('ExpenseCategoryService') and PORT('ExpenseCategoryPort')" orawsp:highId="1"
+                   xml:id="SCA-REFERENCE__REFERENCE__ExpenseCategoryService___and_PORT__ExpenseCategoryPort__">
+    <wsp:PolicyReference xmlns:wsp="http://www.w3.org/ns/ws-policy"
+                         DigestAlgorithm="http://www.w3.org/ns/ws-policy/Sha1Exc"
+                         URI="oracle/wss_username_token_client_policy" orawsp:status="enabled" orawsp:id="1"/>
+  </sca11:policySet>
+  <sca11:policySet xmlns:sca11="http://docs.oasis-open.org/ns/opencsa/sca/200912" name="policySet"
+                   appliesTo="SCA-REFERENCE()" attachTo="REFERENCE('ExportService') and PORT('ExportPort')"
+                   orawsp:highId="1" xml:id="SCA-REFERENCE__REFERENCE__ExportService___and_PORT__ExportPort__">
+    <wsp:PolicyReference xmlns:wsp="http://www.w3.org/ns/ws-policy"
+                         DigestAlgorithm="http://www.w3.org/ns/ws-policy/Sha1Exc"
+                         URI="oracle/wss_username_token_client_policy" orawsp:status="enabled" orawsp:id="1"/>
+  </sca11:policySet>
+  <sca11:policySet xmlns:sca11="http://docs.oasis-open.org/ns/opencsa/sca/200912" name="policySet"
+                   appliesTo="SCA-REFERENCE()"
+                   attachTo="REFERENCE('GlobalProfileService') and PORT('GlobalProfilePort')" orawsp:highId="1"
+                   xml:id="SCA-REFERENCE__REFERENCE__GlobalProfileService___and_PORT__GlobalProfilePort__">
+    <wsp:PolicyReference xmlns:wsp="http://www.w3.org/ns/ws-policy"
+                         DigestAlgorithm="http://www.w3.org/ns/ws-policy/Sha1Exc"
+                         URI="oracle/wss_username_token_client_policy" orawsp:status="enabled" orawsp:id="1"/>
+  </sca11:policySet>
+  <sca11:policySet xmlns:sca11="http://docs.oasis-open.org/ns/opencsa/sca/200912" name="policySet"
+                   appliesTo="SCA-REFERENCE()" attachTo="REFERENCE('ImportService') and PORT('ImportPort')"
+                   orawsp:highId="6" xml:id="SCA-REFERENCE__REFERENCE__ImportService___and_PORT__ImportPort__">
+    <wsp:PolicyReference xmlns:wsp="http://www.w3.org/ns/ws-policy"
+                         DigestAlgorithm="http://www.w3.org/ns/ws-policy/Sha1Exc"
+                         URI="oracle/wss_username_token_client_policy" orawsp:status="enabled" orawsp:id="6"/>
+  </sca11:policySet>
+  <sca11:policySet xmlns:sca11="http://docs.oasis-open.org/ns/opencsa/sca/200912" name="policySet"
+                   appliesTo="SCA-REFERENCE()" attachTo="REFERENCE('JobService') and PORT('JobPort')" orawsp:highId="1"
+                   xml:id="SCA-REFERENCE__REFERENCE__JobService___and_PORT__JobPort__">
+    <wsp:PolicyReference xmlns:wsp="http://www.w3.org/ns/ws-policy"
+                         DigestAlgorithm="http://www.w3.org/ns/ws-policy/Sha1Exc"
+                         URI="oracle/wss_username_token_client_policy" orawsp:status="enabled" orawsp:id="1"/>
+  </sca11:policySet>
+  <sca11:policySet xmlns:sca11="http://docs.oasis-open.org/ns/opencsa/sca/200912" name="policySet"
+                   appliesTo="SCA-REFERENCE()" attachTo="REFERENCE('OBSService') and PORT('OBSPort')" orawsp:highId="1"
+                   xml:id="SCA-REFERENCE__REFERENCE__OBSService___and_PORT__OBSPort__">
+    <wsp:PolicyReference xmlns:wsp="http://www.w3.org/ns/ws-policy"
+                         DigestAlgorithm="http://www.w3.org/ns/ws-policy/Sha1Exc"
+                         URI="oracle/wss_username_token_client_policy" orawsp:status="enabled" orawsp:id="1"/>
+  </sca11:policySet>
+  <sca11:policySet xmlns:sca11="http://docs.oasis-open.org/ns/opencsa/sca/200912" name="policySet"
+                   appliesTo="SCA-REFERENCE()"
+                   attachTo="REFERENCE('ProjectProfileService') and PORT('ProjectProfilePort')" orawsp:highId="1"
+                   xml:id="SCA-REFERENCE__REFERENCE__ProjectProfileService___and_PORT__ProjectProfilePort__">
+    <wsp:PolicyReference xmlns:wsp="http://www.w3.org/ns/ws-policy"
+                         DigestAlgorithm="http://www.w3.org/ns/ws-policy/Sha1Exc"
+                         URI="oracle/wss_username_token_client_policy" orawsp:status="enabled" orawsp:id="1"/>
+  </sca11:policySet>
+  <sca11:policySet xmlns:sca11="http://docs.oasis-open.org/ns/opencsa/sca/200912" name="policySet"
+                   appliesTo="SCA-REFERENCE()" attachTo="REFERENCE('ProjectService') and PORT('ProjectPort')"
+                   orawsp:highId="1" xml:id="SCA-REFERENCE__REFERENCE__ProjectService___and_PORT__ProjectPort__">
+    <wsp:PolicyReference xmlns:wsp="http://www.w3.org/ns/ws-policy"
+                         DigestAlgorithm="http://www.w3.org/ns/ws-policy/Sha1Exc"
+                         URI="oracle/wss_username_token_client_policy" orawsp:status="enabled" orawsp:id="1"/>
+  </sca11:policySet>
+  <sca11:policySet xmlns:sca11="http://docs.oasis-open.org/ns/opencsa/sca/200912" name="policySet"
+                   appliesTo="SCA-REFERENCE()" attachTo="REFERENCE('RelatioinshipService') and PORT('RelationshipPort')"
+                   orawsp:highId="1"
+                   xml:id="SCA-REFERENCE__REFERENCE__RelatioinshipService___and_PORT__RelationshipPort__">
+    <wsp:PolicyReference xmlns:wsp="http://www.w3.org/ns/ws-policy"
+                         DigestAlgorithm="http://www.w3.org/ns/ws-policy/Sha1Exc"
+                         URI="oracle/wss_username_token_client_policy" orawsp:status="enabled" orawsp:id="1"/>
+  </sca11:policySet>
+  <sca11:policySet xmlns:sca11="http://docs.oasis-open.org/ns/opencsa/sca/200912" name="policySet"
+                   appliesTo="SCA-REFERENCE()" attachTo="REFERENCE('RoleService') and PORT('RolePort')"
+                   orawsp:highId="1" xml:id="SCA-REFERENCE__REFERENCE__RoleService___and_PORT__RolePort__">
+    <wsp:PolicyReference xmlns:wsp="http://www.w3.org/ns/ws-policy"
+                         DigestAlgorithm="http://www.w3.org/ns/ws-policy/Sha1Exc"
+                         URI="oracle/wss_username_token_client_policy" orawsp:status="enabled" orawsp:id="1"/>
+  </sca11:policySet>
+  <sca11:policySet xmlns:sca11="http://docs.oasis-open.org/ns/opencsa/sca/200912" name="policySet"
+                   appliesTo="SCA-REFERENCE()" attachTo="REFERENCE('UDFTypeService') and PORT('UDFTypePort')"
+                   orawsp:highId="1" xml:id="SCA-REFERENCE__REFERENCE__UDFTypeService___and_PORT__UDFTypePort__">
+    <wsp:PolicyReference xmlns:wsp="http://www.w3.org/ns/ws-policy"
+                         DigestAlgorithm="http://www.w3.org/ns/ws-policy/Sha1Exc"
+                         URI="oracle/wss_username_token_client_policy" orawsp:status="enabled" orawsp:id="1"/>
+  </sca11:policySet>
+  <sca11:policySet xmlns:sca11="http://docs.oasis-open.org/ns/opencsa/sca/200912" name="policySet"
+                   appliesTo="SCA-REFERENCE()" attachTo="REFERENCE('UDFValueService') and PORT('UDFValuePort')"
+                   orawsp:highId="1" xml:id="SCA-REFERENCE__REFERENCE__UDFValueService___and_PORT__UDFValuePort__">
+    <wsp:PolicyReference xmlns:wsp="http://www.w3.org/ns/ws-policy"
+                         DigestAlgorithm="http://www.w3.org/ns/ws-policy/Sha1Exc"
+                         URI="oracle/wss_username_token_client_policy" orawsp:status="enabled" orawsp:id="1"/>
+  </sca11:policySet>
+  <sca11:policySet xmlns:sca11="http://docs.oasis-open.org/ns/opencsa/sca/200912" name="policySet"
+                   appliesTo="SCA-REFERENCE()" attachTo="REFERENCE('UserOBSService') and PORT('UserOBSPort')"
+                   orawsp:highId="1" xml:id="SCA-REFERENCE__REFERENCE__UserOBSService___and_PORT__UserOBSPort__">
+    <wsp:PolicyReference xmlns:wsp="http://www.w3.org/ns/ws-policy"
+                         DigestAlgorithm="http://www.w3.org/ns/ws-policy/Sha1Exc"
+                         URI="oracle/wss_username_token_client_policy" orawsp:status="enabled" orawsp:id="1"/>
+  </sca11:policySet>
+  <sca11:policySet xmlns:sca11="http://docs.oasis-open.org/ns/opencsa/sca/200912" name="policySet"
+                   appliesTo="SCA-REFERENCE()" attachTo="REFERENCE('UserService') and PORT('UserPort')"
+                   orawsp:highId="1" xml:id="SCA-REFERENCE__REFERENCE__UserService___and_PORT__UserPort__">
+    <wsp:PolicyReference xmlns:wsp="http://www.w3.org/ns/ws-policy"
+                         DigestAlgorithm="http://www.w3.org/ns/ws-policy/Sha1Exc"
+                         URI="oracle/wss_username_token_client_policy" orawsp:status="enabled" orawsp:id="1"/>
+  </sca11:policySet>
+  <sca11:policySet xmlns:sca11="http://docs.oasis-open.org/ns/opencsa/sca/200912" name="policySet"
+                   appliesTo="SCA-REFERENCE()" attachTo="REFERENCE('WBSCategoryService') and PORT('WBSCategoryPort')"
+                   orawsp:highId="1"
+                   xml:id="SCA-REFERENCE__REFERENCE__WBSCategoryService___and_PORT__WBSCategoryPort__">
+    <wsp:PolicyReference xmlns:wsp="http://www.w3.org/ns/ws-policy"
+                         DigestAlgorithm="http://www.w3.org/ns/ws-policy/Sha1Exc"
+                         URI="oracle/wss_username_token_client_policy" orawsp:status="enabled" orawsp:id="1"/>
+  </sca11:policySet>
+  <sca11:policySet xmlns:sca11="http://docs.oasis-open.org/ns/opencsa/sca/200912" name="policySet"
+                   appliesTo="SCA-REFERENCE()" attachTo="REFERENCE('WBSService') and PORT('WBSPort')" orawsp:highId="1"
+                   xml:id="SCA-REFERENCE__REFERENCE__WBSService___and_PORT__WBSPort__">
+    <wsp:PolicyReference xmlns:wsp="http://www.w3.org/ns/ws-policy"
+                         DigestAlgorithm="http://www.w3.org/ns/ws-policy/Sha1Exc"
+                         URI="oracle/wss_username_token_client_policy" orawsp:status="enabled" orawsp:id="1"/>
+  </sca11:policySet>
+</orawsp:wsm-assembly>

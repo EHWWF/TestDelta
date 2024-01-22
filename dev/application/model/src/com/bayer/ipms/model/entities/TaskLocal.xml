@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="TaskLocal"
+  Version="12.2.1.0.31"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="TASK"
+  AliasName="TaskLocal"
+  BindingStyle="OracleName"
+  RowClass="com.bayer.ipms.model.base.IPMSEntityImpl">
+  <Attribute
+    Name="Id"
+    IsNotNull="true"
+    ColumnName="ID"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="INTEGER"
+    TableName="TASK"
+    PrimaryKey="true"/>
+  <Attribute
+    Name="TaskNumber"
+    IsNotNull="true"
+    ColumnName="TASK_NUMBER"
+    SQLType="STRUCT"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    TableName="TASK"/>
+  <Attribute
+    Name="Title"
+    ColumnName="TITLE"
+    SQLType="STRUCT"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    TableName="TASK"/>
+  <Attribute
+    Name="Priority"
+    ColumnName="PRIORITY"
+    SQLType="STRUCT"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    TableName="TASK"/>
+  <Attribute
+    Name="State"
+    IsNotNull="true"
+    ColumnName="STATE"
+    SQLType="STRUCT"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    TableName="TASK"/>
+  <Attribute
+    Name="Outcome"
+    ColumnName="OUTCOME"
+    SQLType="STRUCT"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    TableName="TASK"/>
+  <Attribute
+    Name="DefinitionName"
+    IsNotNull="true"
+    ColumnName="DEFINITION_NAME"
+    SQLType="STRUCT"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    TableName="TASK"/>
+  <Attribute
+    Name="TaskCreatedDate"
+    IsNotNull="true"
+    ColumnName="TASK_CREATED_DATE"
+    SQLType="DATE"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    TableName="TASK"/>
+  <Attribute
+    Name="ExpirationDate"
+    ColumnName="EXPIRATION_DATE"
+    SQLType="DATE"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    TableName="TASK"/>
+  <Attribute
+    Name="CreateDate"
+    IsNotNull="true"
+    ColumnName="CREATE_DATE"
+    SQLType="DATE"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    TableName="TASK"/>
+  <Attribute
+    Name="UpdateDate"
+    ColumnName="UPDATE_DATE"
+    SQLType="DATE"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    TableName="TASK"/>
+  <Attribute
+    Name="ProcessID"
+    ColumnName="PROCESS_ID"
+    SQLType="STRUCT"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    TableName="TASK"/>
+  <Attribute
+    Name="ProgramID"
+    ColumnName="PROGRAM_ID"
+    SQLType="STRUCT"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    TableName="TASK"/>
+  <Attribute
+    Name="ProjectID"
+    ColumnName="PROJECT_ID"
+    SQLType="STRUCT"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    TableName="TASK"/>
+  <Attribute
+    Name="AssumptionRequestID"
+    ColumnName="ASSUMPTION_REQUEST_ID"
+    SQLType="STRUCT"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="TASK"/>
+  <Attribute
+    Name="Comments"
+    ColumnName="COMMENTS"
+    SQLType="STRUCT"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="TASK"/>
+  <Key
+    Name="TskPk"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="TSK_PK"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.TaskLocal.Id"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="TskProgramIdFk">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0052740"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="TSK_PROGRAM_ID_FK"/>
+    </DesignTime>
+    <AttrArray Name="Attributes"/>
+  </Key>
+  <Key
+    Name="TskProjectIdFk">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0052741"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="TSK_PROJECT_ID_FK"/>
+    </DesignTime>
+    <AttrArray Name="Attributes"/>
+  </Key>
+</Entity>

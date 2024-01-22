@@ -1,0 +1,32 @@
+<wsdl:definitions
+     name="WBSReadService"
+     targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/ipms-mw/ipms.p6x/WBSReadService"
+     xmlns:tns="http://xmlns.oracle.com/pcbpel/adapter/db/ipms-mw/ipms.p6x/WBSReadService"
+     xmlns:jca="http://xmlns.oracle.com/pcbpel/wsdl/jca/"
+     xmlns:plt="http://schemas.xmlsoap.org/ws/2003/05/partner-link/"
+     xmlns:db="http://xmlns.oracle.com/pcbpel/adapter/db/WBSReadService"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    >
+  <plt:partnerLinkType name="WBSReadService_plt" >
+    <plt:role name="WBSReadService_role" >
+      <plt:portType name="tns:WBSReadService_ptt" />
+    </plt:role>
+  </plt:partnerLinkType>
+    <wsdl:types>
+      <schema xmlns="http://www.w3.org/2001/XMLSchema" >
+        <import namespace="http://xmlns.oracle.com/pcbpel/adapter/db/WBSReadService" schemaLocation="../Schemas/WBSReadService.xsd" />
+      </schema>
+    </wsdl:types>
+    <wsdl:message name="WBSReadServiceInput_msg">
+        <wsdl:part name="WBSReadServiceInput_msg" element="db:WBSReadServiceInput"/>
+    </wsdl:message>
+    <wsdl:message name="WBSReadServiceOutputCollection_msg">
+        <wsdl:part name="WBSReadServiceOutputCollection" element="db:WBSReadServiceOutputCollection"/>
+    </wsdl:message>
+    <wsdl:portType name="WBSReadService_ptt">
+        <wsdl:operation name="WBSReadService">
+            <wsdl:input message="tns:WBSReadServiceInput_msg"/>
+            <wsdl:output message="tns:WBSReadServiceOutputCollection_msg"/>
+        </wsdl:operation>
+    </wsdl:portType>
+</wsdl:definitions>

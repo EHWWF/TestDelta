@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ProgramTopSubcategory"
+  Version="12.2.1.0.31"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="PROGRAM_TOP_SUBCATEGORY"
+  AliasName="ProgramTopSubcategory"
+  BindingStyle="OracleName"
+  RowClass="com.bayer.ipms.model.base.IPMSEntityImpl">
+  <Attribute
+    Name="Code"
+    IsNotNull="true"
+    Precision="20"
+    ColumnName="CODE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="PROGRAM_TOP_SUBCATEGORY"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="Name"
+    IsNotNull="true"
+    Precision="200"
+    ColumnName="NAME"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="PROGRAM_TOP_SUBCATEGORY">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="Description"
+    Precision="500"
+    ColumnName="DESCRIPTION"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="PROGRAM_TOP_SUBCATEGORY">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="500"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="CategoryCode"
+    Precision="20"
+    ColumnName="CATEGORY_CODE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="PROGRAM_TOP_SUBCATEGORY"
+    IsNotNull="true">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="IsActive"
+    ColumnName="IS_ACTIVE"
+    SQLType="NUMERIC"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    TableName="PROGRAM_TOP_SUBCATEGORY"
+    RetrievedOnInsert="true"/>
+  <Attribute
+    Name="ModifyDate"
+    ColumnName="MODIFY_DATE"
+    SQLType="DATE"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    TableName="PROGRAM_TOP_SUBCATEGORY"/>
+  <AccessorAttribute
+    Name="ProgramTopCategory1"
+    Association="com.bayer.ipms.model.entities.assoc.ProgramTopCategorySubcategory"
+    AssociationEnd="com.bayer.ipms.model.entities.assoc.ProgramTopCategorySubcategory.ProgramTopCategory1"
+    AssociationOtherEnd="com.bayer.ipms.model.entities.assoc.ProgramTopCategorySubcategory.ProgramTopSubcategory1"
+    Type="com.bayer.ipms.model.base.IPMSEntityImpl"
+    IsUpdateable="true"/>
+  <AccessorAttribute
+    Name="ProgramTopValue"
+    Association="com.bayer.ipms.model.entities.ProgramTopValScatFkAssoc"
+    AssociationEnd="com.bayer.ipms.model.entities.ProgramTopValScatFkAssoc.ProgramTopValue"
+    AssociationOtherEnd="com.bayer.ipms.model.entities.ProgramTopValScatFkAssoc.ProgramTopSubcategory"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <AccessorAttribute
+    Name="ProgramTopValue1"
+    Association="com.bayer.ipms.model.entities.assoc.TopSubcategoryValue"
+    AssociationEnd="com.bayer.ipms.model.entities.assoc.TopSubcategoryValue.ProgramTopValue1"
+    AssociationOtherEnd="com.bayer.ipms.model.entities.assoc.TopSubcategoryValue.ProgramTopSubcategory1"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <Key
+    Name="ProgramTopScatPk"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PROGRAM_TOP_SCAT_PK"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.ProgramTopSubcategory.Code"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="ProgramTopSubcategoryCategoryCodeCheck">
+    <DesignTime>
+      <Attr Name="_isNotNull" Value="true"/>
+      <Attr Name="_checkCondition" Value='"CATEGORY_CODE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+      <Attr Name="_DBObjectName" Value="PROGRAM_TOP_SUBCATEGORY_CATEGO"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.ProgramTopSubcategory.CategoryCode"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="ProgramTopScatCatFk">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PROGRAM_TOP_CAT_PK"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="PROGRAM_TOP_SCAT_CAT_FK"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.ProgramTopSubcategory.CategoryCode"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="fk_ProgramTopSubcategory">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PROGRAM_TOP_CAT_PK"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_PROGRAM_TOP_SUBCATEGORY"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.ProgramTopSubcategory.CategoryCode"/>
+    </AttrArray>
+  </Key>
+</Entity>

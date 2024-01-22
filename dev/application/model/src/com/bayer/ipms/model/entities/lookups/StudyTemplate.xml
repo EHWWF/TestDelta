@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="StudyTemplate"
+  Version="12.1.3.10.8"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="STUDY_TEMPLATE"
+  AliasName="StudyTemplate"
+  BindingStyle="OracleName"
+  RowClass="com.bayer.ipms.model.base.IPMSEntityImpl">
+  <Attribute
+    Name="Id"
+    IsNotNull="true"
+    ColumnName="ID"
+    SQLType="STRUCT"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="STUDY_TEMPLATE"
+    PrimaryKey="true"/>
+  <Attribute
+    Name="Name"
+    IsNotNull="true"
+    ColumnName="NAME"
+    SQLType="STRUCT"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="STUDY_TEMPLATE"/>
+  <Key
+    Name="SysC0059584"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0059584"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.lookups.StudyTemplate.Id"/>
+    </AttrArray>
+  </Key>
+</Entity>

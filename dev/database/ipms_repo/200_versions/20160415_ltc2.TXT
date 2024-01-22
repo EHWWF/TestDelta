@@ -1,0 +1,14 @@
+create table cost_ltc_fct_backup as select * from cost_ltc_fct;--backUp
+drop materialized view cost_ltc_fct;
+
+create table cost_ltc_fct as 
+select 
+	period_id, project_id, sandbox_id, timeline_id, nvl(ltci_id,max_ltci_id) ltci_id, wbs_id, study_id, phase, function_code, 
+	act_ext_oec_det, act_ext_cro_det, act_ext_ecg_det, act_int_det, fct_ext_oec_det, fct_ext_cro_det, 
+	fct_ext_ecg_det, fct_int_det, ltc_ext_oec_det, ltc_ext_cro_det, ltc_ext_ecg_det, ltc_int,
+	total_ext_oec_det, total_ext_cro_det, total_ext_ecg_det, total_int,fte_avg
+from cost_ltc_fct_vw;
+
+create unique index cost_ltc_fct_unidx on cost_ltc_fct (period_id,project_id,sandbox_id,timeline_id,ltci_id,wbs_id,study_id,phase,function_code);
+
+grant select on cost_ltc_fct to mycsd;

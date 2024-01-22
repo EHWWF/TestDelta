@@ -1,0 +1,22 @@
+//Groovy Scripts for com.bayer.ipms.model.views.ltc.LtcEstimateView
+
+package com.bayer.ipms.model.views.ltc
+
+import oracle.jbo.script.annotation.TransientValueExpression;
+
+
+
+
+@TransientValueExpression(attributeName="TypeCode")
+def TypeCode_ExpressionScript_Expression()
+{
+if(TypeCode==null) TypeBindVal
+}
+
+
+@TransientValueExpression(attributeName="ScopeCode")
+def ScopeCode_ExpressionScript_Expression()
+{
+if(TypeBindVal=="FTE"){"-"}else{ScopeCode}
+}
+

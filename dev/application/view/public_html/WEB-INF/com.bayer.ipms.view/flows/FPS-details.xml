@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="windows-1257" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="FPS-details.jspx">
+    <template-reference>
+      <document id="__2">/WEB-INF/com.bayer.ipms.view/templates/ipms-taskflow-template-page.xml</document>
+      <id id="__1">ipms-taskflow-template-page</id>
+    </template-reference>
+    <default-activity id="__17">ExecuteWithParams</default-activity>
+    <no-save-point/>
+    <input-parameter-definition id="__10">
+      <name id="__3">projectId</name>
+      <value>#{pageFlowScope.projectId}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__11">
+      <name>messageDetails</name>
+      <value>#{pageFlowScope.messageDetails}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <managed-bean id="__31">
+      <managed-bean-name id="__28">notificationsBean</managed-bean-name>
+      <managed-bean-class id="__30">com.bayer.ipms.view.beans.NotificationsBean</managed-bean-class>
+      <managed-bean-scope id="__29">pageFlow</managed-bean-scope>
+    </managed-bean>
+    <view id="FPS-detailsView">
+      <page>/WEB-INF/com.bayer.ipms.view/fragments/FPS-details.jspx</page>
+      <input-page-parameter id="__12">
+        <from-value>#{pageFlowScope.messageDetails}</from-value>
+        <to-value>#{pageFlowScope.messageDetails}</to-value>
+      </input-page-parameter>
+    </view>
+    <task-flow-return id="taskFlowReturn1">
+      <outcome id="__4">
+        <name>taskFlowReturn1</name>
+      </outcome>
+    </task-flow-return>
+    <method-call id="ExecuteWithParams">
+      <method>#{bindings.ExecuteWithParams.execute}</method>
+      <outcome id="__16">
+        <fixed-outcome>ExecuteWithParams</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="ExecuteWithParams1">
+      <method>#{bindings.ExecuteWithParams.execute}</method>
+      <outcome id="__15">
+        <fixed-outcome>ExecuteWithParams</fixed-outcome>
+      </outcome>
+    </method-call>
+    <control-flow-rule id="__5">
+      <from-activity-id id="__6">FPS-detailsView</from-activity-id>
+      <control-flow-case id="__7">
+        <from-outcome id="__9">ok</from-outcome>
+        <to-activity-id id="__8">taskFlowReturn1</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__18">
+      <from-activity-id id="__19">ExecuteWithParams</from-activity-id>
+      <control-flow-case id="__21">
+        <from-outcome id="__22">ExecuteWithParams</from-outcome>
+        <to-activity-id id="__20">ExecuteWithParams1</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__23">
+      <from-activity-id id="__24">ExecuteWithParams1</from-activity-id>
+      <control-flow-case id="__27">
+        <from-outcome id="__26">ExecuteWithParams</from-outcome>
+        <to-activity-id id="__25">FPS-detailsView</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+  </task-flow-definition>
+</adfc-config>

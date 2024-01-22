@@ -1,0 +1,140 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Thu Jan 14 11:57:13 CET 2016
+  Author:  algis
+  Type: BPEL 2.0 Process
+  Purpose: Asynchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="ReadEmployee"
+         targetNamespace="http://xmlns.bayer.com/ipms/soa"
+         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:client="http://xmlns.bayer.com/ipms/soa"
+         xmlns:ora="http://schemas.oracle.com/xpath/extension"
+         xmlns:ui="http://xmlns.oracle.com/soa/designer"
+         xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ns1="http://xmlns.oracle.com/pcbpel/adapter/ldap/ipms-mw/ipms.soa/LdapEmployee"
+         xmlns:ns3="http://xmlns.bayer.com/ipms" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:ns2="http://platform.integration.oracle/blocks/adapter/fw/metadata/LdapEmployee"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions" xmlns:ess="http://xmlns.oracle.com/scheduler"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap">
+
+    <import ui:processWSDL="true" namespace="http://xmlns.bayer.com/ipms/soa" location="../WSDLs/ReadEmployee.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        PARTNERLINKS                                                      
+        List of services participating in this BPEL process               
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    --> 
+    <partnerLinks>
+        <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+        <partnerLink name="ReadEmployeeService" partnerLinkType="client:ReadEmployee" myRole="ReadEmployeeProvider" partnerRole="ReadEmployeeRequester"/>
+        <partnerLink name="LdapEmployee" partnerLinkType="ns1:search_plt" partnerRole="search_role"/>
+    </partnerLinks>
+
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        VARIABLES                                                        
+        List of messages and XML documents used within this BPEL process 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <variables>
+        <!-- Reference to the message passed as input during initiation -->
+        <variable name="inputVariable" messageType="client:ReadEmployeeRequestMessage"/>
+
+        <!-- Reference to the message that will be sent back to the requester during callback -->
+        <variable name="outputVariable" messageType="client:ReadEmployeeResponseMessage"/>
+        <variable name="employeeIn" messageType="ns1:search_request_msg"/>
+        <variable name="employeeOut" messageType="ns1:search_response_msg"/>
+        <variable name="InvokeFaultOut" messageType="client:ReadEmployeeResponseMessage"/>
+    </variables>
+    <faultHandlers>
+        <catchAll>
+            <sequence name="Fault">
+                <assign name="AssignFault">
+                    <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                        <from>$inputVariable.payload/@id</from>
+                        <to>$InvokeFaultOut.payload/@id</to>
+                    </copy>
+                    <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                        <from>$inputVariable.payload/@id</from>
+                        <to>$InvokeFaultOut.payload/ns3:error/@id</to>
+                    </copy>
+                    <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                        <from>ora:getFaultName()</from>
+                        <to>$InvokeFaultOut.payload/ns3:error/ns3:code</to>
+                    </copy>
+                    <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                        <from>ora:getFaultAsString()</from>
+                        <to>$InvokeFaultOut.payload/ns3:error/ns3:description</to>
+                    </copy>
+                </assign>
+                <invoke name="InvokeFault" partnerLink="ReadEmployeeService" portType="client:ReadEmployeeCallback"
+                        operation="processResponse" inputVariable="InvokeFaultOut" bpelx:invokeAsDetail="no"/>
+            </sequence>
+        </catchAll>
+    </faultHandlers>
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+       ORCHESTRATION LOGIC                                               
+       Set of activities coordinating the flow of messages across the    
+       services integrated within this business process                  
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <sequence name="main">
+        <!-- Receive input from requestor. (Note: This maps to operation defined in ReadEmployee.wsdl) -->
+        <receive name="receiveInput" partnerLink="ReadEmployeeService" portType="client:ReadEmployee" operation="process" variable="inputVariable" createInstance="yes"/>
+        <assign name="AssignEmployeeIn">
+            <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                <from>$inputVariable.payload/ns3:ldap/ns3:baseDN</from>
+                <to>$employeeIn.body/baseDN</to>
+            </copy>
+            <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                <from>$inputVariable.payload/ns3:ldap/ns3:searchFilter</from>
+                <to>$employeeIn.body/searchFilter</to>
+            </copy>
+        </assign>
+        <invoke name="employee" bpelx:invokeAsDetail="no" partnerLink="LdapEmployee" portType="ns1:search_ptt"
+                operation="search" inputVariable="employeeIn" outputVariable="employeeOut"/>
+        <assign name="ReadEmployeeMap">
+            <bpelx:skipCondition>$employeeOut.body/entriesReturned='0'</bpelx:skipCondition>
+            <bpelx:annotation>
+                <bpelx:pattern patternName="bpelx:transformation"></bpelx:pattern>
+            </bpelx:annotation>
+            <copy>
+                <from>ora:doXSLTransformForDoc("../xsl/ReadEmployeeMap.xsl", $employeeOut.body)</from>
+                <to variable="outputVariable" part="payload"/>
+            </copy>
+        </assign>
+        <assign name="AssignMsgId">
+            <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                <from>$inputVariable.payload/@id</from>
+                <to>$outputVariable.payload/@id</to>
+            </copy>
+            <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                <from>$inputVariable.payload/@id</from>
+                <to>$outputVariable.payload/client:complete/@id</to>
+            </copy>
+        </assign>
+        <!-- 
+          Asynchronous callback to the requester. (Note: the callback location and correlation id is transparently handled using WS-addressing.)
+        -->
+        <invoke name="callbackClient" partnerLink="ReadEmployeeService" portType="client:ReadEmployeeCallback" operation="processResponse" inputVariable="outputVariable"/>
+    </sequence>
+</process>

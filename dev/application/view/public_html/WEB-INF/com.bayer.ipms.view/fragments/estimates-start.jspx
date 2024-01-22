@@ -1,0 +1,420 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:h="http://java.sun.com/jsf/html" xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <f:view>
+        <f:loadBundle basename="com.bayer.ipms.view.bundles.viewBundle" var="bundle"/>
+        <af:document id="doc"
+                     title="#{bindings.StatusCode.inputValue eq 'RUN' ? bundle.estimatesUpdate : bundle.estimatesInitiate}"
+                     initialFocusId="templ:name">
+            <af:messages id="m1"/>
+            <af:form id="f1">
+                <af:pageTemplate viewId="/WEB-INF/com.bayer.ipms.view/templates/ipms-popup-template.jspx" id="templ">
+                    <f:facet name="content">
+                        <af:panelStretchLayout id="psl2" topHeight="auto">
+                            <f:facet name="center">
+                                <af:panelTabbed id="prgTabPanel" dimensionsFrom="parent"
+                                                styleClass="AFStretchWidth AFStretchHeight">
+                                    <af:showDetailItem text="#{bundle.globalSummary}/#{bundle.estimatesPrefillDet}"
+                                                       immediate="true" stretchChildren="first" id="sdi1">
+                                        <af:panelBox showDisclosure="false" type="flow" id="pb1"
+                                                     text="#{bundle.globalSummary}">
+                                            <af:panelFormLayout id="pfl1" maxColumns="2" rows="2"
+                                                                styleClass="AFStretchWidth" fieldWidth="100%">
+                                                <af:inputText value="#{bindings.LetName.inputValue}"
+                                                              label="#{bundle.estimatesTagName}"
+                                                              required="#{bindings.LetName.hints.mandatory}"
+                                                              columns="#{bindings.LetName.hints.displayWidth}"
+                                                              maximumLength="#{bindings.LetName.hints.precision}"
+                                                              readOnly="true"
+                                                              shortDesc="#{bindings.LetName.hints.tooltip}" id="it1">
+                                                    <f:validator binding="#{bindings.LetName.validator}"/>
+                                                </af:inputText>
+                                                <af:inputText value="#{bindings.Name.inputValue}"
+                                                              label="#{bindings.Name.hints.label}"
+                                                              required="#{bindings.Name.hints.mandatory}"
+                                                              maximumLength="#{bindings.Name.hints.precision}"
+                                                              autoSubmit="true" id="name"
+                                                              columns="#{bindings.Name.displayWidth}">
+                                                    <f:validator binding="#{bindings.Name.validator}"/>
+                                                </af:inputText>
+                                                <af:inputText value="#{bindings.Comments.inputValue}"
+                                                              required="#{bindings.Comments.hints.mandatory}"
+                                                              columns="#{bindings.Comments.hints.displayWidth}"
+                                                              maximumLength="#{bindings.Comments.hints.precision}"
+                                                              id="comments"
+                                                              rows="#{bindings.Comments.hints.displayHeight}"
+                                                              autoSubmit="true"
+                                                              label="#{bindings.Comments.hints.label}">
+                                                    <f:validator binding="#{bindings.Comments.validator}"/>
+                                                </af:inputText>
+                                                <af:selectOneRadio value="#{bindings.IsNextYear.inputValue}"
+                                                                   label="#{bindings.IsNextYear.label}"
+                                                                   required="#{bindings.IsNextYear.hints.mandatory}"
+                                                                   autoSubmit="true" id="next"
+                                                                   inlineStyle="padding-right:5px;">
+                                                    <af:selectItem label="#{bindings.Year.inputValue}"
+                                                                   value="#{false}"/>
+                                                    <af:selectItem label="#{bindings.Year.inputValue}-#{bindings.Year.inputValue+1}"
+                                                                   value="#{true}"/>
+                                                </af:selectOneRadio>
+                                                <af:inputDate value="#{bindings.TerminationDate.inputValue}"
+                                                              label="#{bindings.TerminationDate.hints.label}"
+                                                              required="#{bindings.TerminationDate.hints.mandatory}"
+                                                              autoSubmit="true" id="termdate"
+                                                              columns="#{bindings.TerminationDate.displayWidth}">
+                                                    <f:validator binding="#{bindings.TerminationDate.validator}"/>
+                                                    <af:convertDateTime pattern="#{bindings.TerminationDate.format}"/>
+                                                </af:inputDate>
+                                            </af:panelFormLayout>
+                                        </af:panelBox>
+                                        <af:panelBox showDisclosure="false" disclosed="false" type="flow"
+                                                     rendered="#{empty bindings.StatusCode.inputValue or bindings.StatusCode.inputValue eq 'NEW'}"
+                                                     id="pb2" text="#{bundle.estimatesPrefillDetCY}">
+                                            <af:panelFormLayout id="pfl11" maxColumns="2" rows="1"
+                                                                styleClass="AFStretchWidth" fieldWidth="100%"
+                                                                partialTriggers="cyd">
+                                                <af:selectOneChoice value="#{bindings.CyDetPrefillCode.inputValue}"
+                                                                    label="#{bindings.CyDetPrefillCode.label}"
+                                                                    required="#{bindings.CyDetPrefillCode.hints.mandatory}"
+                                                                    valueChangeListener="#{utilsBean.onValueChange}"
+                                                                    immediate="true" autoSubmit="true" id="cyd">
+                                                    <f:selectItems value="#{bindings.CyDetPrefillCode.items}" id="si1"/>
+                                                </af:selectOneChoice>
+                                                <af:selectOneChoice value="#{bindings.CyDetPrefillLepId.inputValue}"
+                                                                    label="#{bindings.CyDetPrefillLepId.label}"
+                                                                    required="#{bindings.CyDetPrefillCode.attributeValue eq 'LE'}"
+                                                                    shortDesc="#{bindings.CyDetPrefillLepId.hints.tooltip}"
+                                                                    rendered="#{bindings.CyDetPrefillCode.attributeValue eq 'LE'}"
+                                                                    unselectedLabel="#{bundle.globalNotAvailable}"
+                                                                    autoSubmit="true" id="soc2">
+                                                    <f:selectItems value="#{bindings.CyDetPrefillLepId.items}"
+                                                                   id="si63"/>
+                                                </af:selectOneChoice>
+                                            </af:panelFormLayout>
+                                        </af:panelBox>
+                                        <af:panelBox showDisclosure="false" disclosed="false" type="flow"
+                                                     rendered="#{empty bindings.StatusCode.inputValue or bindings.StatusCode.inputValue eq 'NEW'}"
+                                                     id="pb22" text="#{bundle.estimatesPrefillDetNY}"
+                                                     visible="#{bindings.IsNextYear.inputValue==true}">
+                                            <af:panelFormLayout id="pfl112" maxColumns="2" rows="1"
+                                                                styleClass="AFStretchWidth" fieldWidth="100%"
+                                                                partialTriggers="nyd">
+                                                <af:selectOneChoice value="#{bindings.NyDetPrefillCode.inputValue}"
+                                                                    label="#{bindings.NyDetPrefillCode.label}"
+                                                                    required="#{bindings.NyDetPrefillCode.hints.mandatory}"
+                                                                    autoSubmit="true"
+                                                                    valueChangeListener="#{utilsBean.onValueChange}"
+                                                                    immediate="true"
+                                                                    rendered="#{bindings.IsNextYear.inputValue==true}"
+                                                                    id="nyd">
+                                                    <f:selectItems value="#{bindings.NyDetPrefillCode.items}" id="si5"/>
+                                                </af:selectOneChoice>
+                                                <af:selectOneChoice value="#{bindings.NyDetPrefillLepId.inputValue}"
+                                                                    label="#{bindings.NyDetPrefillLepId.label}"
+                                                                    required="#{bindings.NyDetPrefillCode.attributeValue eq 'LE'}"
+                                                                    shortDesc="#{bindings.NyDetPrefillLepId.hints.tooltip}"
+                                                                    rendered="#{bindings.NyDetPrefillCode.attributeValue eq 'LE' and bindings.IsNextYear.inputValue==true}"
+                                                                    unselectedLabel="#{bundle.globalNotAvailable}"
+                                                                    autoSubmit="true" id="soc6">
+                                                    <f:selectItems value="#{bindings.NyDetPrefillLepId.items}"
+                                                                   id="si67"/>
+                                                </af:selectOneChoice>
+                                            </af:panelFormLayout>
+                                        </af:panelBox>
+                                    </af:showDetailItem>
+                                    <af:showDetailItem text="#{bundle.estimatesProjects}" immediate="true"
+                                                       stretchChildren="first" id="sdi3">
+                                        <af:panelBox styleClass="AFStretchWidth AFStretchHeight" showDisclosure="false"
+                                                     type="stretch" id="pb3">
+                                            <af:panelStretchLayout topHeight="auto" bottomHeight="0">
+                                                <f:facet name="top"></f:facet>
+                                                <f:facet name="center">
+                                                    <af:panelSplitter id="ps1" disabled="false"
+                                                                      styleClass="AFStretchWidth AFStretchHeight"
+                                                                      splitterPosition="310">
+                                                        <f:facet name="first">
+                                                            <af:panelAccordion id="pa1">
+                                                                <af:showDetailItem text="#{bundle.projectDevelopment}"
+                                                                                   stretchChildren="first" id="diDev"
+                                                                                   disclosureListener="#{pageFlowScope.estimatesProcessBean.onProjectTabDisclose}">
+                                                                    <af:panelStretchLayout id="psl" topHeight="auto">
+                                                                        <f:facet name="top">
+                                                                            <af:query id="qryId1" disclosed="true"
+                                                                                      headerText="#{bundle.globalFilter}"
+                                                                                      searchButtonText="#{bundle.globalFilter}"
+                                                                                      value="#{bindings.LatestEstimatesDevQuery.queryDescriptor}"
+                                                                                      model="#{bindings.LatestEstimatesDevQuery.queryModel}"
+                                                                                      queryListener="#{pageFlowScope.estimatesProcessBean.customQueryListener}"
+                                                                                      queryOperationListener="#{bindings.LatestEstimatesDevQuery.processQueryOperation}"
+                                                                                      resultComponentId="::Dev"
+                                                                                      modeChangeVisible="false"
+                                                                                      saveQueryMode="hidden"
+                                                                                      immediate="true"/>
+                                                                        </f:facet>
+                                                                        <f:facet name="center">
+                                                                            <af:tree value="#{bindings.DevProgramView.treeModel}"
+                                                                                     var="node" rowSelection="multiple"
+                                                                                     id="Dev"
+                                                                                     contentDelivery="immediate"
+                                                                                     summary="Programs and Projects"
+                                                                                     fetchSize="#{bindings.DevProgramViewIterator.rangeSize}">
+                                                                                <f:facet name="nodeStamp">
+                                                                                    <af:outputText value="#{node.QualifiedName}"
+                                                                                                   id="ot1"/>
+                                                                                </f:facet>
+                                                                                <af:dragSource actions="MOVE"
+                                                                                               discriminant="rowmove"
+                                                                                               defaultAction="MOVE"/>
+                                                                            </af:tree>
+                                                                        </f:facet>
+                                                                    </af:panelStretchLayout>
+                                                                </af:showDetailItem>
+                                                                <af:showDetailItem text="#{bundle.projectMaintenance}"
+                                                                                   stretchChildren="first" id="diPrdMnt"
+                                                                                   disclosureListener="#{pageFlowScope.estimatesProcessBean.onProjectTabDisclose}">
+                                                                    <af:panelStretchLayout id="ps2" topHeight="auto">
+                                                                        <f:facet name="top">
+                                                                            <af:query id="qryId2"
+                                                                                      headerText="#{bundle.globalFilter}"
+                                                                                      searchButtonText="#{bundle.globalFilter}"
+                                                                                      disclosed="false"
+                                                                                      resultComponentId="::PrdMnt"
+                                                                                      value="#{bindings.LatestEstimatesPrdMntQuery.queryDescriptor}"
+                                                                                      model="#{bindings.LatestEstimatesPrdMntQuery.queryModel}"
+                                                                                      queryListener="#{bindings.LatestEstimatesPrdMntQuery.processQuery}"
+                                                                                      queryOperationListener="#{bindings.LatestEstimatesPrdMntQuery.processQueryOperation}"
+                                                                                      modeChangeVisible="false"
+                                                                                      saveQueryMode="hidden"
+                                                                                      immediate="true"
+                                                                                      inlineStyle="width:260px;"/>
+                                                                        </f:facet>
+                                                                        <f:facet name="center">
+                                                                            <af:panelGroupLayout layout="scroll"
+                                                                                                 xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                                                                                                 id="pgl1">
+                                                                                <af:tree value="#{bindings.PrdMntProgramView.treeModel}"
+                                                                                         var="node"
+                                                                                         contentDelivery="immediate"
+                                                                                         rowSelection="multiple"
+                                                                                         id="PrdMnt"
+                                                                                         fetchSize="#{bindings.PrdMntProgramViewIterator.rangeSize}">
+                                                                                    <f:facet name="nodeStamp">
+                                                                                        <af:outputText value="#{node.QualifiedName}"
+                                                                                                       id="ot2"/>
+                                                                                    </f:facet>
+                                                                                    <af:dragSource actions="MOVE"
+                                                                                                   discriminant="rowmove"
+                                                                                                   defaultAction="MOVE"/>
+                                                                                </af:tree>
+                                                                            </af:panelGroupLayout>
+                                                                        </f:facet>
+                                                                    </af:panelStretchLayout>
+                                                                </af:showDetailItem>
+                                                                <af:showDetailItem text="#{bundle.projectD3}"
+                                                                                   stretchChildren="first" id="diD3Tr">
+                                                                    <af:panelStretchLayout id="ps3" topHeight="auto">
+                                                                        <f:facet name="top">
+                                                                            <af:query id="qryId3"
+                                                                                      headerText="#{bundle.globalFilter}"
+                                                                                      searchButtonText="#{bundle.globalFilter}"
+                                                                                      disclosed="false"
+                                                                                      resultComponentId="::D3Tr"
+                                                                                      value="#{bindings.LatestEstimatesD3TrQuery.queryDescriptor}"
+                                                                                      model="#{bindings.LatestEstimatesD3TrQuery.queryModel}"
+                                                                                      queryListener="#{bindings.LatestEstimatesD3TrQuery.processQuery}"
+                                                                                      queryOperationListener="#{bindings.LatestEstimatesD3TrQuery.processQueryOperation}"
+                                                                                      modeChangeVisible="false"
+                                                                                      saveQueryMode="hidden"
+                                                                                      immediate="true"
+                                                                                      inlineStyle="width:260px;"/>
+                                                                        </f:facet>
+                                                                        <f:facet name="center">
+                                                                            <af:panelGroupLayout layout="scroll"
+                                                                                                 xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                                                                                                 id="pg3">
+                                                                                <af:tree value="#{bindings.D3TrProjectView.treeModel}"
+                                                                                         var="node"
+                                                                                         contentDelivery="immediate"
+                                                                                         fetchSize="#{bindings.D3TrProjectViewIterator.rangeSize}"
+                                                                                         rowSelection="multiple"
+                                                                                         id="D3Tr">
+                                                                                    <f:facet name="nodeStamp">
+                                                                                        <af:outputText value="#{node.QualifiedName}"
+                                                                                                       id="ot3"/>
+                                                                                    </f:facet>
+                                                                                    <af:dragSource actions="MOVE"
+                                                                                                   discriminant="rowmove"
+                                                                                                   defaultAction="MOVE"/>
+                                                                                </af:tree>
+                                                                            </af:panelGroupLayout>
+                                                                        </f:facet>
+                                                                    </af:panelStretchLayout>
+                                                                </af:showDetailItem>
+                                                            </af:panelAccordion>
+                                                        </f:facet>
+                                                        <f:facet name="second">
+                                                            <af:panelStretchLayout id="psl1" topHeight="40px"
+                                                                                   endWidth="50px"
+                                                                                   dimensionsFrom="auto">
+                                                                <f:facet name="center">
+                                                                    <af:panelCollection id="pc1"
+                                                                                        styleClass="AFStretchWidth AFStretchHeight"
+                                                                                        featuresOff="detach statusBar viewMenu">
+                                                                        <f:facet name="toolbar">
+                                                                            <af:toolbar id="prjTools">
+                                                                                <af:commandToolbarButton shortDesc="#{bundle.globalRemove}"
+                                                                                                         text="#{bundle.globalRemove}"
+                                                                                                         icon="/images/remove.png"
+                                                                                                         immediate="true"
+                                                                                                         disabled="#{not pageFlowScope.estimatesProcessBean.containsProjects}"
+                                                                                                         actionListener="#{pageFlowScope.estimatesProcessBean.onDelete}"
+                                                                                                         id="cmdRemove"/>
+                                                                            </af:toolbar>
+                                                                        </f:facet>
+                                                                        <af:table value="#{bindings.LatestEstimatesProjectView.collectionModel}"
+                                                                                  var="row"
+                                                                                  rows="#{bindings.LatestEstimatesProjectView.rangeSize}"
+                                                                                  emptyText="#{bindings.LatestEstimatesProjectView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                                                                                  fetchSize="#{bindings.LatestEstimatesProjectView.rangeSize}"
+                                                                                  rowBandingInterval="0"
+                                                                                  filterModel="#{bindings.LatestEstimatesProjectViewQuery.queryDescriptor}"
+                                                                                  queryListener="#{bindings.LatestEstimatesProjectViewQuery.processQuery}"
+                                                                                  filterVisible="false" varStatus="vs"
+                                                                                  styleClass="AFStretchWidth"
+                                                                                  contentDelivery="immediate"
+                                                                                  columnStretching="last"
+                                                                                  rowSelection="multiple"
+                                                                                  id="prjSelected" autoHeightRows="0"
+                                                                                  partialTriggers="::cmdRemove :::sub1">
+                                                                            <af:collectionDropTarget dropListener="#{pageFlowScope.estimatesProcessBean.onDrop}"
+                                                                                                     actions="MOVE"
+                                                                                                     modelName="rowmove"/>
+                                                                            <af:column sortProperty="#{bindings.LatestEstimatesProjectView.hints.ProgramNameQualified.name}"
+                                                                                       filterable="true" sortable="true"
+                                                                                       headerText="#{bindings.LatestEstimatesProjectView.hints.ProgramNameQualified.label}"
+                                                                                       id="c5">
+                                                                                <af:outputText value="#{row.bindings.ProgramNameQualified.inputValue}"
+                                                                                               id="ot4"/>
+                                                                            </af:column>
+                                                                            <af:column sortProperty="#{bindings.LatestEstimatesProjectView.hints.ProjectName.name}"
+                                                                                       filterable="true" sortable="true"
+                                                                                       headerText="#{bindings.LatestEstimatesProjectView.hints.ProjectName.label}"
+                                                                                       id="c8">
+                                                                                <af:inputText value="#{row.bindings.ProjectName.inputValue}"
+                                                                                              label="#{bindings.LatestEstimatesProjectView.hints.ProjectName.label}"
+                                                                                              required="#{bindings.LatestEstimatesProjectView.hints.ProjectName.mandatory}"
+                                                                                              columns="#{bindings.LatestEstimatesProjectView.hints.ProjectName.displayWidth}"
+                                                                                              maximumLength="#{bindings.LatestEstimatesProjectView.hints.ProjectName.precision}"
+                                                                                              shortDesc="#{bindings.LatestEstimatesProjectView.hints.ProjectName.tooltip}"
+                                                                                              id="it5">
+                                                                                    <f:validator binding="#{row.bindings.ProjectName.validator}"/>
+                                                                                </af:inputText>
+                                                                            </af:column>
+                                                                            <af:column sortProperty="#{bindings.LatestEstimatesProjectView.hints.ProjectCode.name}"
+                                                                                       filterable="true" sortable="true"
+                                                                                       headerText="#{bindings.LatestEstimatesProjectView.hints.ProjectCode.label}"
+                                                                                       id="c2">
+                                                                                <af:inputText value="#{row.bindings.ProjectCode.inputValue}"
+                                                                                              label="#{bindings.LatestEstimatesProjectView.hints.ProjectCode.label}"
+                                                                                              required="#{bindings.LatestEstimatesProjectView.hints.ProjectCode.mandatory}"
+                                                                                              columns="#{bindings.LatestEstimatesProjectView.hints.ProjectCode.displayWidth}"
+                                                                                              maximumLength="#{bindings.LatestEstimatesProjectView.hints.ProjectCode.precision}"
+                                                                                              shortDesc="#{bindings.LatestEstimatesProjectView.hints.ProjectCode.tooltip}"
+                                                                                              id="it8">
+                                                                                    <f:validator binding="#{row.bindings.ProjectCode.validator}"/>
+                                                                                </af:inputText>
+                                                                            </af:column>
+                                                                            <af:column sortProperty="#{bindings.LatestEstimatesProjectView.hints.ProjectAreaName.name}"
+                                                                                       filterable="true" sortable="true"
+                                                                                       headerText="#{bindings.LatestEstimatesProjectView.hints.ProjectAreaName.label}"
+                                                                                       id="c3">
+                                                                                <af:inputText value="#{row.bindings.ProjectAreaName.inputValue}"
+                                                                                              label="#{bindings.LatestEstimatesProjectView.hints.ProjectAreaName.label}"
+                                                                                              required="#{bindings.LatestEstimatesProjectView.hints.ProjectAreaName.mandatory}"
+                                                                                              columns="#{bindings.LatestEstimatesProjectView.hints.ProjectAreaName.displayWidth}"
+                                                                                              maximumLength="#{bindings.LatestEstimatesProjectView.hints.ProjectAreaName.precision}"
+                                                                                              shortDesc="#{bindings.LatestEstimatesProjectView.hints.ProjectAreaName.tooltip}"
+                                                                                              id="it4">
+                                                                                    <f:validator binding="#{row.bindings.ProjectAreaName.validator}"/>
+                                                                                </af:inputText>
+                                                                            </af:column>
+                                                                            <af:column sortProperty="#{bindings.LatestEstimatesProjectView.hints.ProjectSbeName.name}"
+                                                                                       filterable="true" sortable="true"
+                                                                                       headerText="#{bindings.LatestEstimatesProjectView.hints.ProjectSbeName.label}"
+                                                                                       id="c4">
+                                                                               <!-- <af:inputText value="#{row.bindings.ProjectSbeName.inputValue}"
+                                                                                              label="#{bindings.LatestEstimatesProjectView.hints.ProjectSbeName.label}"
+                                                                                              required="#{bindings.LatestEstimatesProjectView.hints.ProjectSbeName.mandatory}"
+                                                                                              columns="#{bindings.LatestEstimatesProjectView.hints.ProjectSbeName.displayWidth}"
+                                                                                              maximumLength="#{bindings.LatestEstimatesProjectView.hints.ProjectSbeName.precision}"
+                                                                                              shortDesc="#{bindings.LatestEstimatesProjectView.hints.ProjectSbeName.tooltip}"
+                                                                                              id="it2">
+                                                                                    <f:validator binding="#{row.bindings.ProjectSbeName.validator}"/>
+                                                                                </af:inputText>-->
+                                                                                <af:selectOneChoice value="#{row.bindings.ProjectSbeName.inputValue}"
+                                                                                                    label="#{row.bindings.ProjectSbeName.label}"
+                                                                                                    required="#{bindings.LatestEstimatesProjectView.hints.ProjectSbeName.mandatory}"
+                                                                                                    shortDesc="#{bindings.LatestEstimatesProjectView.hints.ProjectSbeName.tooltip}"
+                                                                                                    id="soc1">
+                                                                                    <f:selectItems value="#{row.bindings.ProjectSbeName.items}"
+                                                                                                   id="si2"/>
+                                                                                    <f:validator binding="#{row.bindings.ProjectSbeName.validator}"/>
+                                                                                </af:selectOneChoice>
+                                                                            </af:column>
+                                                                            <af:column sortProperty="#{bindings.LatestEstimatesProjectView.hints.ProjectStateName.name}"
+                                                                                       filterable="true" sortable="true"
+                                                                                       headerText="#{bindings.LatestEstimatesProjectView.hints.ProjectStateName.label}"
+                                                                                       id="c9">
+                                                                                <af:inputText value="#{row.bindings.ProjectStateName.inputValue}"
+                                                                                              label="#{bindings.LatestEstimatesProjectView.hints.ProjectStateName.label}"
+                                                                                              required="#{bindings.LatestEstimatesProjectView.hints.ProjectStateName.mandatory}"
+                                                                                              columns="#{bindings.LatestEstimatesProjectView.hints.ProjectStateName.displayWidth}"
+                                                                                              maximumLength="#{bindings.LatestEstimatesProjectView.hints.ProjectStateName.precision}"
+                                                                                              shortDesc="#{bindings.LatestEstimatesProjectView.hints.ProjectStateName.tooltip}"
+                                                                                              id="it3">
+                                                                                    <f:validator binding="#{row.bindings.ProjectStateName.validator}"/>
+                                                                                </af:inputText>
+                                                                            </af:column>
+                                                                        </af:table>
+                                                                    </af:panelCollection>
+                                                                </f:facet>
+                                                                <f:facet name="top">
+                                                                    <af:group id="g1">
+                                                                        <af:spacer width="10" height="10" id="s1"/>
+                                                                        <af:selectOneChoice value="blank"
+                                                                                            label="#{bundle.estimatesSourceProcessForProjectPrefill}"
+                                                                                            id="soc62" autoSubmit="true"
+                                                                                            valueChangeListener="#{pageFlowScope.estimatesProcessBean.onPrefillProcessChange}">
+                                                                            <af:selectItem label="" value="blank"
+                                                                                           id="si223"/>
+                                                                            <f:selectItems value="#{bindings.PreviousTagProcesses.items}"
+                                                                                           id="si62"/>
+                                                                        </af:selectOneChoice>
+                                                                    </af:group>
+                                                                </f:facet>
+                                                            </af:panelStretchLayout>
+                                                        </f:facet>
+                                                    </af:panelSplitter>
+                                                </f:facet>
+                                            </af:panelStretchLayout>
+                                        </af:panelBox>
+                                    </af:showDetailItem>
+                                </af:panelTabbed>
+                            </f:facet>
+                        </af:panelStretchLayout>
+                    </f:facet>
+                    <f:facet name="controls">
+                        <f:subview id="sub1">
+                            <af:declarativeComponent viewId="global-ok-cancel.jsff" id="goc">
+                                <f:attribute name="showCancel" value="true"/>
+                                <f:attribute name="disabledOk"
+                                             value="#{not pageFlowScope.estimatesProcessBean.containsProjects}"/>
+                            </af:declarativeComponent>
+                        </f:subview>
+                    </f:facet>
+                </af:pageTemplate>
+            </af:form>
+        </af:document>
+    </f:view>
+</jsp:root>

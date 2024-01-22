@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="windows-1257" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="maintain-lookups">
+    <template-reference>
+      <document id="__1">/WEB-INF/com.bayer.ipms.view/templates/ipms-taskflow-template-page.xml</document>
+      <id id="__2">ipms-taskflow-template-page</id>
+    </template-reference>
+    <default-activity id="__4">edit</default-activity>
+    <transaction id="__100">
+      <new-transaction/>
+    </transaction>
+    <data-control-scope id="__200">
+      <isolated/>
+    </data-control-scope>
+    <managed-bean id="__19">
+      <managed-bean-name id="__18">lookupsBean</managed-bean-name>
+      <managed-bean-class id="__17">com.bayer.ipms.view.beans.LookupsBean</managed-bean-class>
+      <managed-bean-scope id="__20">pageFlow</managed-bean-scope>
+    </managed-bean>
+    <exception-handler id="__3">handleException</exception-handler>
+    <view id="edit">
+      <page>/WEB-INF/com.bayer.ipms.view/fragments/maintain-lookups.jspx</page>
+    </view>
+    <method-call id="setBaCode">
+      <method>#{utilsBean.setBaCode2}</method>
+      <parameter>
+            <class>java.lang.String</class>
+            <value>MaintainLookups</value>
+      </parameter>
+      <outcome>
+            <fixed-outcome>set</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="clearBaCode">
+      <method>#{utilsBean.clearBaCode}</method>
+      <outcome>
+            <fixed-outcome>clear</fixed-outcome>
+      </outcome>
+    </method-call>	    
+    <task-flow-return id="ok">
+      <outcome id="__5">
+        <name>ok</name>
+        <commit/>
+      </outcome>
+    </task-flow-return>
+    <task-flow-return id="cancel">
+      <outcome id="__6">
+        <name>cancel</name>
+        <rollback/>
+      </outcome>
+    </task-flow-return>
+    <method-call id="send">
+      <method>#{bindings.send.execute}</method>
+      <outcome id="__21">
+        <fixed-outcome>send</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="Commit">
+      <method>#{pageFlowScope.lookupsBean.onCommit}</method>
+      <outcome id="__27">
+        <fixed-outcome>Commit</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="Rollback">
+      <method>#{bindings.Rollback.execute}</method>
+      <outcome>
+        <fixed-outcome>Rollback</fixed-outcome>
+      </outcome>
+    </method-call>
+    <control-flow-rule id="__7">
+      <from-activity-id id="__8">*</from-activity-id>
+      <control-flow-case id="__9">
+        <from-outcome id="__11">cancel</from-outcome>
+        <to-activity-id id="__10">Rollback</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__12">
+      <from-activity-id id="__13">edit</from-activity-id>
+      <control-flow-case id="__14">
+        <from-outcome id="__16">ok</from-outcome>
+        <to-activity-id id="__15">setBaCode</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__22">
+      <from-activity-id id="__23">send</from-activity-id>
+      <control-flow-case id="__25">
+        <from-outcome id="__26">send</from-outcome>
+        <to-activity-id id="__24">ok</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__28">
+      <from-activity-id id="__29">Commit</from-activity-id>
+      <control-flow-case id="__32">
+        <from-outcome id="__31">Commit</from-outcome>
+        <to-activity-id id="__30">clearBaCode</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__33">
+      <from-activity-id>setBaCode</from-activity-id>
+      <control-flow-case id="__34">
+        <from-outcome>set</from-outcome>
+        <to-activity-id>Commit</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__35">
+      <from-activity-id>clearBaCode</from-activity-id>
+      <control-flow-case id="__36">
+        <from-outcome>clear</from-outcome>
+        <to-activity-id>send</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__37">
+      <from-activity-id>Rollback</from-activity-id>
+      <control-flow-case id="__38">
+        <from-outcome>Rollback</from-outcome>
+        <to-activity-id>cancel</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+  </task-flow-definition>
+</adfc-config>

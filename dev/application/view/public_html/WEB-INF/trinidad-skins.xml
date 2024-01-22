@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<skins xmlns="http://myfaces.apache.org/trinidad/skin">
+  <skin>
+    <id>ipms.desktop</id>
+    <family>ipms</family>
+    <extends>fusionFx-simple-v1.2.desktop</extends>
+    <render-kit-id>org.apache.myfaces.trinidad.desktop</render-kit-id>
+    <style-sheet-name>skins/ipms.css</style-sheet-name>
+    <bundle-name>com.bayer.ipms.view.bundles.viewBundle</bundle-name>
+  </skin>
+</skins>

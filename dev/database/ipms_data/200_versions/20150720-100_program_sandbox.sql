@@ -1,0 +1,1 @@
+alter table program_sandbox add (is_syncing number(1,0) default 0 not null enable);

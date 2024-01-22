@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.64.93" id="FPS_detailsPageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+   <iterator id="QplanMasterdataViewIterator"
+              Binds="Root.ProgramAppModule.AllQplanMasterdataView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="25"
+              ChangeEventPolicy="ppr" CacheResults="false"/>
+    <iterator id="QplanMilestonesViewIterator"
+              Binds="Root.ProgramAppModule.AllQplanMilestonesView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="25"/>
+  </executables>
+  <bindings>
+     <tree IterBinding="QplanMasterdataViewIterator"
+          id="QplanMasterdataView" ChangeEventPolicy="ppr">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.QplanMasterdataView"
+                      Name="QplanMasterdataView0">
+        <AttrNames>
+          <Item Value="ElementName"/>
+          <Item Value="ElementIsBlocking"/>
+          <Item Value="ElementShowValue"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="QplanMilestonesViewIterator"
+          id="ProjectMilestonesView" ChangeEventPolicy="ppr">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.QplanMilestonesView"
+                      Name="ProjectMilestonesView0">
+        <AttrNames>
+          <Item Value="MilestoneCode"/>
+          <Item Value="ActualDate"/>
+          <Item Value="PlanDate"/>
+          <Item Value="GenericDate"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="QplanMilestonesViewIterator" id="ProjectId">
+      <AttrNames>
+        <Item Value="ProjectId"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="isMilestonesInSequence" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="isMilestonesInSequence"
+                  IsViewObjectMethod="true"
+                  DataControl="PrivateAppModuleDataControl"
+                  InstanceName="PrivateAppModuleDataControl.dataProvider.Root.ProgramAppModule.AllQplanMilestonesView"
+                  ReturnName="data.PrivateAppModuleDataControl.methodResults.isMilestonesInSequence_PrivateAppModuleDataControl_dataProvider_Root_ProgramAppModule_AllQplanMilestonesView_isMilestonesInSequence_result"
+                  IterBinding="QplanMilestonesViewIterator">
+      <NamedData NDName="projectId" NDValue="#{bindings.ProjectId.inputValue}"
+                 NDType="java.lang.String"/>
+    </methodAction>
+  </bindings>
+</pageDefinition>

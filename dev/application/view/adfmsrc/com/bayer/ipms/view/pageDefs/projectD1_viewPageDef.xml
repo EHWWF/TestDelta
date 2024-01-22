@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.1.3.10.8" id="projectD1_viewPageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+    <parameters/>
+    <executables>
+        <variableIterator id="variables"/>
+        <iterator Binds="ProgramAppModule.ProjectView" DataControl="PrivateAppModuleDataControl" RangeSize="100"
+                  id="ProjectD1ViewIterator"/>
+        <searchRegion Criteria="ProjectD1Filter" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                      Binds="ProjectD1ViewIterator" id="ProjectD1FilterQuery"/>
+        <iterator Binds="ProgramAppModule.ImportD1View" DataControl="PrivateAppModuleDataControl" RangeSize="100"
+                  id="ImportD1ViewIterator"/>
+        <searchRegion Binds="ImportD1ViewIterator" Criteria=""
+                      Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="ImportD1ViewQuery"/>
+    </executables>
+    <bindings>
+        <tree IterBinding="ProjectD1ViewIterator" id="ProjectD1View" ChangeEventPolicy="ppr">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.ProjectView" Name="ProjectD1View0">
+                <AttrNames>
+                    <Item Value="Code"/>
+                    <Item Value="Name"/>
+                    <Item Value="Trg"/>
+                    <Item Value="Er"/>
+                    <Item Value="TargetGeneCode"/>
+                    <Item Value="GeneralProjectFrame"/>
+                    <Item Value="CreateDate"/>
+                    <Item Value="UpdateDate"/>
+                    <Item Value="D1DecisionDate"/>
+                    <Item Value="StartHtsDate"/>
+                    <Item Value="LsaDate"/>
+                    <Item Value="TerminationDate"/>
+                    <Item Value="TerminationCode"/>
+                    <Item Value="IsActive"/>
+                    <Item Value="SourceCode"/>
+                    <Item Value="CategoryCode"/>
+                    <Item Value="PtrForD2Code"/>
+                    <Item Value="D2PlannedDate"/>
+                    <Item Value="D2AchievedDate"/>
+                    <Item Value="SubstanceTypeCode"/>
+                    <Item Value="IsCollaboration"/>
+                    <Item Value="DetailsPartner"/>
+                    <Item Value="TcCode"/>
+                    <Item Value="ToCode"/>
+                    <Item Value="DetailsComment"/>
+                    <Item Value="DetailsModality"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <tree IterBinding="ImportD1ViewIterator" id="ImportD1View">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.imports.ImportD1View" Name="ImportD1View0">
+                <AttrNames>
+                    <Item Value="ProjectId"/>
+                    <Item Value="ProjectName"/>
+                    <Item Value="Trg"/>
+                    <Item Value="Er"/>
+                    <Item Value="TargetGeneCode"/>
+                    <Item Value="GeneralProjectFrame"/>
+                    <Item Value="StatusCode"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+    </bindings>
+</pageDefinition>

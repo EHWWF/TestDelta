@@ -1,0 +1,12 @@
+begin
+	dbms_scheduler.create_job (
+	job_name => 'REFRESH_REPO_JOB',
+	job_type => 'plsql_block',
+	job_action => 'begin job_pkg.refresh_mviews; commit; end;',
+	start_date => TO_TIMESTAMP_TZ('2016-04-19 16:30:00 Europe/Berlin','YYYY-MM-DD HH24.MI.SS TZR'),
+	repeat_interval => 'freq=hourly; interval=4;',
+	end_date => null,
+	enabled => true,
+	comments => 'Moves data from IPMS_DAta to IPMS_REPO also does baseline reading and timeline summarization. Job defined entirely by the create job procedure.');
+end;
+/

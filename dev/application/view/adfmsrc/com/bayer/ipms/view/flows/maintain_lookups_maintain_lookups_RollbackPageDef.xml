@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.0.31"
+                id="maintain_lookups_maintain_lookups_RollbackPageDef" Package="com.bayer.ipms.view.flows"
+                SkipValidation="true">
+  <parameters/>
+  <executables/>
+  <bindings>
+    <action id="Rollback" RequiresUpdateModel="false" Action="rollbackTransaction"
+            DataControl="PrivateAppModuleDataControl"/>
+  </bindings>
+</pageDefinition>

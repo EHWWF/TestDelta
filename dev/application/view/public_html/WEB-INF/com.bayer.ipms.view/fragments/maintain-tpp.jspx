@@ -1,0 +1,183 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich" xmlns:h="http://java.sun.com/jsf/html">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <f:view>
+        <f:loadBundle basename="com.bayer.ipms.view.bundles.viewBundle" var="bundle"/>
+        <af:document title="#{bundle.maintainTppCategories}" id="d1">
+            <af:messages id="m1"/>
+            <af:form id="f1">
+                <af:pageTemplate viewId="/WEB-INF/com.bayer.ipms.view/templates/ipms-popup-template.jspx" id="pt1">
+                    <f:facet name="summary"/>
+                    <f:facet name="content">
+                        <af:panelGroupLayout id="pgl1" layout="scroll">
+                            <af:panelBox text="#{bundle.tppCategories}" type="flow" showDisclosure="false">
+                                <af:panelCollection id="pc1" styleClass="AFStretchWidth"
+                                                    featuresOff="detach viewMenu statusBar">
+                                    <f:facet name="toolbar">
+                                        <af:toolbar id="tb1">
+                                            <af:button shortDesc="#{bundle.globalAdd}"
+                                                                     text="#{bundle.globalAdd}" icon="/images/new.png"
+                                                                     actionListener="#{administrationBean.onCreateTppCat}"
+                                                                     id="btnAddCat"/>
+                                            <af:button shortDesc="#{bundle.globalRemove}"
+                                                                     text="#{bundle.globalRemove}"
+                                                                     icon="/images/remove.png" immediate="true"
+                                                                     disabled="#{bindings.CategoryModifyDate.inputValue ne null}"
+                                                                     actionListener="#{administrationBean.onDeleteTppCat}" id="btnRemCat"
+                                                                     partialTriggers="tabCat btnAddCat">
+                                                <f:attribute name="table" value="t1"/>
+                                                <f:attribute name="iterator"
+                                                             value="#{bindings.TppCategoryViewIterator}"/>
+                                            </af:button>
+                                        </af:toolbar>
+                                    </f:facet>
+                                    <af:table value="#{bindings.TppCategoryView.collectionModel}" var="row"
+                                              rows="#{bindings.TppCategoryView.rangeSize}"
+                                              emptyText="#{bindings.TppCategoryView.viewable ? 'No data to display.' : 'Access Denied.'}"
+                                              rowBandingInterval="0"
+                                              selectedRowKeys="#{bindings.TppCategoryView.collectionModel.selectedRow}"
+                                              selectionListener="#{bindings.TppCategoryView.collectionModel.makeCurrent}"
+                                              rowSelection="single" fetchSize="#{bindings.TppCategoryView.rangeSize}"
+                                              id="tabCat" autoHeightRows="5"
+                                              columnStretching="last">
+                                        <af:column headerText="#{bindings.TppCategoryView.hints.Code.label}" id="c1">
+                                            <af:inputText value="#{row.bindings.Code.inputValue}"
+                                                          label="#{bindings.TppCategoryView.hints.Code.label}"
+                                                          columns="#{bindings.TppCategoryView.hints.Code.displayWidth}"
+                                                          maximumLength="#{bindings.TppCategoryView.hints.Code.precision}"
+                                                          shortDesc="#{bindings.TppCategoryView.hints.Code.tooltip}"
+                                                          required="#{bindings.TppCategoryView.hints.Code.mandatory}"
+                                                          readOnly="#{row.bindings.ModifyDate.inputValue ne null}"
+                                                          id="it1" autoSubmit="true">
+                                                <f:validator binding="#{row.bindings.Code.validator}"/>
+                                            </af:inputText>
+                                        </af:column>
+                                        <af:column headerText="#{bindings.TppCategoryView.hints.Name.label}" id="c2">
+                                            <af:inputText value="#{row.bindings.Name.inputValue}"
+                                                          label="#{bindings.TppCategoryView.hints.Name.label}"
+                                                          columns="#{bindings.TppCategoryView.hints.Name.displayWidth}"
+                                                          maximumLength="#{bindings.TppCategoryView.hints.Name.precision}"
+                                                          shortDesc="#{bindings.TppCategoryView.hints.Name.tooltip}"
+                                                          autoSubmit="true"
+                                                          required="#{bindings.TppCategoryView.hints.Name.mandatory}"
+                                                          id="it2">
+                                                <f:validator binding="#{row.bindings.Name.validator}"/>
+                                            </af:inputText>
+                                        </af:column>
+                                        <af:column headerText="#{bindings.TppCategoryView.hints.IsActive.label}" id="c3"
+                                                   align="center" width="60">
+                                            <af:selectBooleanCheckbox value="#{row.bindings.IsActive.inputValue}"
+                                                                      label="#{bindings.TppCategoryView.hints.IsActive.label}"
+                                                                      shortDesc="#{bindings.TppCategoryView.hints.IsActive.tooltip}"
+                                                                      required="false" id="sbc1" autoSubmit="true"
+                                                                      valueChangeListener="#{administrationBean.onTppCatActiveValueChange}"/>
+                                        </af:column>
+                                        <af:column headerText="#{bindings.TppCategoryView.hints.Description.label}"
+                                                   id="c4">
+                                            <af:inputText value="#{row.bindings.Description.inputValue}"
+                                                          label="#{bindings.TppCategoryView.hints.Description.label}"
+                                                          columns="#{bindings.TppCategoryView.hints.Description.displayWidth}"
+                                                          maximumLength="#{bindings.TppCategoryView.hints.Description.precision}"
+                                                          shortDesc="#{bindings.TppCategoryView.hints.Description.tooltip}"
+                                                          required="false" id="it4">
+                                                <f:validator binding="#{row.bindings.Description.validator}"/>
+                                            </af:inputText>
+                                        </af:column>
+                                    </af:table>
+                                </af:panelCollection>
+                            </af:panelBox>
+                            <af:panelBox text="#{bundle.tppSubcategories}" type="flow" showDisclosure="false" >
+                                <af:panelCollection id="pc2" styleClass="AFStretchWidth" 
+                                                    featuresOff="detach viewMenu statusBar">
+                                    <f:facet name="toolbar">
+                                        <af:toolbar id="tb2">
+                                            <af:button shortDesc="#{bundle.globalAdd}"
+                                                                     text="#{bundle.globalAdd}" icon="/images/new.png"
+                                                                     immediate="true"
+                                                                     actionListener="#{bindings.CreateInsertSub.execute}"
+                                                                     disabled="#{not bindings.TppCategoryViewIterator.currentRow.isActive}"
+                                                                     id="btnAddSubc" partialTriggers="::pc1:tabCat"/>
+                                            <af:button shortDesc="#{bundle.globalRemove}"
+                                                                     text="#{bundle.globalRemove}"
+                                                                     disabled="#{bindings.TppSubcategoryViewIterator.currentRow eq null or bindings.SubcategoryModifyDate.inputValue ne null}"
+                                                                     icon="/images/remove.png" immediate="true"
+                                                                     actionListener="#{administrationBean.onDeleteTppSubc}" id="btnRemSubc"
+                                                                     partialTriggers="btnAddSubc tabSubc">
+                                                <f:attribute name="table" value="t2"/>
+                                                <f:attribute name="iterator"
+                                                             value="#{bindings.TppSubcategoryViewIterator}"/>
+                                            </af:button>
+                                        </af:toolbar>
+                                    </f:facet>
+                                    <af:table value="#{bindings.TppSubcategoryView.collectionModel}" var="row"
+                                              rows="#{bindings.TppSubcategoryView.rangeSize}"
+                                              emptyText="#{bindings.TppSubcategoryView.viewable ? 'No data to display.' : 'Access Denied.'}"
+                                              rowBandingInterval="0"
+                                              selectedRowKeys="#{bindings.TppSubcategoryView.collectionModel.selectedRow}"
+                                              selectionListener="#{bindings.TppSubcategoryView.collectionModel.makeCurrent}"
+                                              rowSelection="single" fetchSize="#{bindings.TppSubcategoryView.rangeSize}"
+                                              id="tabSubc" autoHeightRows="5" partialTriggers=":::pc1:tabCat ::btnAddSubc"
+                                              columnStretching="last">
+                                        <af:column headerText="#{bindings.TppSubcategoryView.hints.Code.label}" id="c5">
+                                            <af:inputText value="#{row.bindings.Code.inputValue}"
+                                                          label="#{bindings.TppSubcategoryView.hints.Code.label}"
+                                                          required="#{bindings.TppSubcategoryView.hints.Code.mandatory}"
+                                                          columns="#{bindings.TppSubcategoryView.hints.Code.displayWidth}"
+                                                          readOnly="#{row.bindings.ModifyDate.inputValue ne null}"
+                                                          autoSubmit="true"
+                                                          maximumLength="#{bindings.TppSubcategoryView.hints.Code.precision}"
+                                                          shortDesc="#{bindings.TppSubcategoryView.hints.Code.tooltip}"
+                                                          id="it5">
+                                                <f:validator binding="#{row.bindings.Code.validator}"/>
+                                            </af:inputText>
+                                        </af:column>
+                                        <af:column headerText="#{bindings.TppSubcategoryView.hints.Name.label}" id="c6">
+                                            <af:inputText value="#{row.bindings.Name.inputValue}"
+                                                          label="#{bindings.TppSubcategoryView.hints.Name.label}"
+                                                          required="#{bindings.TppSubcategoryView.hints.Name.mandatory}"
+                                                          columns="#{bindings.TppSubcategoryView.hints.Name.displayWidth}"
+                                                          maximumLength="#{bindings.TppSubcategoryView.hints.Name.precision}"
+                                                          shortDesc="#{bindings.TppSubcategoryView.hints.Name.tooltip}"
+                                                          id="it6">
+                                                <f:validator binding="#{row.bindings.Name.validator}"/>
+                                            </af:inputText>
+                                        </af:column>
+                                        <af:column headerText="#{bindings.TppSubcategoryView.hints.IsActive.label}"
+                                                   id="c7" width="60" align="center">
+                                            <af:selectBooleanCheckbox value="#{row.bindings.IsActive.inputValue}"
+                                                                      label="#{bindings.TppSubcategoryView.hints.IsActive.label}"
+                                                                      required="#{bindings.TppSubcategoryView.hints.IsActive.mandatory}"
+                                                                      shortDesc="#{bindings.TppSubcategoryView.hints.IsActive.tooltip}"
+                                                                      disabled="#{not bindings.TppCategoryViewIterator.currentRow.isActive}"
+                                                                      id="sbc2"/>
+                                        </af:column>
+                                        <af:column headerText="#{bindings.TppSubcategoryView.hints.Description.label}"
+                                                   id="c8">
+                                            <af:inputText value="#{row.bindings.Description.inputValue}"
+                                                          label="#{bindings.TppSubcategoryView.hints.Description.label}"
+                                                          required="#{bindings.TppSubcategoryView.hints.Description.mandatory}"
+                                                          columns="#{bindings.TppSubcategoryView.hints.Description.displayWidth}"
+                                                          maximumLength="#{bindings.TppSubcategoryView.hints.Description.precision}"
+                                                          shortDesc="#{bindings.TppSubcategoryView.hints.Description.tooltip}"
+                                                          id="it8">
+                                                <f:validator binding="#{row.bindings.Description.validator}"/>
+                                            </af:inputText>
+                                        </af:column>
+                                    </af:table>
+                                </af:panelCollection>
+                            </af:panelBox>
+                        </af:panelGroupLayout>
+                    </f:facet>
+                    <f:facet name="controls">
+                        <f:subview id="sub1">
+                            <af:declarativeComponent viewId="global-ok-cancel.jsff" id="goc">
+                                <f:attribute name="showCancel" value="true"/>
+                            </af:declarativeComponent>
+                        </f:subview>
+                    </f:facet>
+                </af:pageTemplate>
+            </af:form>
+        </af:document>
+    </f:view>
+</jsp:root>

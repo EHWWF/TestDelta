@@ -1,0 +1,1618 @@
+<?xml version="1.0" encoding="windows-1257" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="LatestEstimateView"
+  Version="12.2.1.0.31"
+  InheritPersonalization="true"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="com.bayer.ipms.model.base.IPMSViewRowImpl"
+  ComponentClass="com.bayer.ipms.model.views.estimates.LatestEstimateViewImpl"
+  FetchMode="FETCH_AS_NEEDED"
+  PageIterMode="Full"
+  ViewLinkAccessorRetained="true"
+  ComponentInterface="com.bayer.ipms.model.views.estimates.common.LatestEstimateView"
+  ClientProxyName="com.bayer.ipms.model.views.estimates.client.LatestEstimateViewClient">
+  <DesignTime>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+  </DesignTime>
+  <Variable
+    Name="programId"
+    Kind="where"
+    Type="java.lang.String"/>
+  <Variable
+    Name="processId"
+    Kind="where"
+    Type="java.lang.String"/>
+  <Variable
+    Name="UserNameVar"
+    Kind="where"
+    Type="java.lang.String"/>
+  <Variable
+    Name="tagId"
+    Kind="where"
+    Type="java.lang.String"/>
+  <SQLQuery><![CDATA[select id,                               
+    sbe,                         
+    ord,                               
+    function_code,                               
+    function_name,                               
+    development_phase_code,                               
+    development_phase_name,                               
+    subtype_code,                               
+    subtype_name,                               
+    estimate_det_curr_year,                               
+    estimate_det_next_year,                               
+    estimate_prob_curr_year,                               
+    estimate_prob_next_year,                               
+    process_id,                               
+    process_name,                               
+    process_comments,                               
+    project_id,                               
+    project_development_phase_code,                               
+    project_development_phase_name,                               
+    project_name,                               
+    project_code,                               
+    case when study_status_code = 'OTHER-OEI' then project_sbe_code ||N' External FTE Total' else project_sbe_code end project_sbe_code,                                
+    project_sbe_name,                               
+    project_fund_y1,                               
+    project_fund_y2,                               
+    project_gbu_code,                               
+    program_id,                               
+    program_name,                               
+    program_code,                               
+    study_id,                               
+    study_name,                               
+    study_phase,                               
+    study_fpfv,                               
+    study_lplv,                               
+    study_status_code,                               
+    study_status_name,                               
+    study_is_probing,                               
+    study_is_obligation,                               
+    study_is_gpdc_approved,                               
+    curr_actuals_deterministic,                               
+    curr_budget_deterministic,                               
+    curr_forecast_deterministic,                               
+    curr_runrate_deterministic,                               
+    curr_budget_probabilistic,                               
+    curr_forecast_probabilistic,                               
+    curr_cforecast_probabilistic,                               
+    next_budget_deterministic,                               
+    next_forecast_deterministic,                               
+    next_budget_probabilistic,                               
+    next_forecast_probabilistic,                               
+    next_cforecast_probabilistic,                               
+    case when nvl(subtype_code, '-') != 'OEI' then grouping_type else null end grouping_type,                               
+    comments_curr_year,                               
+    comments_next_year,                               
+    case when curr_fps_commited = 0 then null else curr_fps_commited end curr_fps_commited,                               
+    case when curr_fps_uncommited = 0 then null else curr_fps_uncommited end curr_fps_uncommited,                               
+    case when curr_fps_inc_unspec_total = 0 then null else curr_fps_inc_unspec_total end curr_fps_inc_unspec_total,                               
+    case when next_fps_commited = 0 then null else next_fps_commited end next_fps_commited,                               
+    case when next_fps_uncommited = 0 then null else next_fps_uncommited end next_fps_uncommited,                               
+    case when next_fps_inc_unspec_total = 0 then null else next_fps_inc_unspec_total end next_fps_inc_unspec_total, 
+    is_prefilled_old, 
+    estimate_det_old_curr_year, 
+    estimate_det_old_next_year 
+from (                               
+    select                               
+        decode(study_status_code,'OTHER-OEI',cost_subtype_name,project_sbe_code) sbe,                               
+        development_phase_name_ord,                               
+        development_phase_name_ord||decode(study_status_code,'OTHER-OEI',cost_subtype_name||' Total|99','')||decode(grouping_type,'devphase','|10','') ord,                                             
+        nvl2(grouping_type,ora_hash(project_sbe_code||'|'||development_phase_code||'|'||program_id||'|'||project_id||'|'||subtype_code||'|'||study_status_code)||'-'||grouping_type,id) as id,                               
+        function_code,                               
+        function_name,                               
+        development_phase_code,                               
+        development_phase_name,                               
+        subtype_code,                               
+        subtype_name,                               
+        case when nvl(subtype_code, '-') != 'OEI'  or grouping_type is null then estimate_det_curr_year else nvl(sum(estimate_det_curr_year) over (partition by project_sbe_code, development_phase_code, study_status_code), 0) end estimate_det_curr_year,                               
+        case when nvl(subtype_code, '-') != 'OEI'  or grouping_type is null then estimate_det_next_year else nvl(sum(estimate_det_next_year) over (partition by project_sbe_code, development_phase_code, study_status_code), 0) end estimate_det_next_year,                               
+        case when nvl(subtype_code, '-') != 'OEI'  or grouping_type is null then estimate_prob_curr_year else nvl(sum(estimate_prob_curr_year) over (partition by project_sbe_code, development_phase_code, study_status_code), 0) end estimate_prob_curr_year,                               
+        case when nvl(subtype_code, '-') != 'OEI'  or grouping_type is null then estimate_prob_next_year else nvl(sum(estimate_prob_next_year) over (partition by project_sbe_code, development_phase_code, study_status_code), 0) end estimate_prob_next_year,                               
+        process_id,                               
+        process_name,                               
+        process_comments,                               
+        decode(subtype_code,'OEI',null,project_id) project_id,                               
+        project_development_phase_code,                               
+        project_development_phase_name,                               
+        project_name,                               
+        project_code,                               
+        project_sbe_code,                               
+        project_sbe_name,                               
+        project_fund_y1,                               
+        project_fund_y2,                               
+        project_gbu_code,                               
+        decode(subtype_code,'OEI',null,program_id) program_id,                               
+        program_name,                               
+        program_code,                               
+        study_id,                               
+        study_name,                               
+        study_phase,                               
+        study_fpfv,                               
+        study_lplv,                               
+        study_status_code,                               
+        study_status_name,                               
+        study_is_probing,                               
+        study_is_obligation,                               
+        study_is_gpdc_approved,                               
+        case when study_status_code = 'OTHER-OEI' then nvl(sum(curr_actuals_deterministic ) over (partition by project_sbe_code, study_status_code), 0) + std_costs_act_deterministic                                 
+             when nvl(subtype_code, '-') != 'OEI' or grouping_type is null then curr_actuals_deterministic else nvl(sum(curr_actuals_deterministic) over (partition by project_sbe_code, development_phase_code, study_status_code), 0) end curr_actuals_deterministic,                                
+        case when study_status_code = 'OTHER-OEI' then nvl(sum(curr_budget_deterministic ) over (partition by project_sbe_code,study_status_code), 0)  + std_costs_budget_deterministic                            
+             when nvl(subtype_code, '-') != 'OEI' or grouping_type is null then curr_budget_deterministic else nvl(sum(curr_budget_deterministic) over (partition by project_sbe_code, development_phase_code, study_status_code), 0) end curr_budget_deterministic,                               
+        case when study_status_code = 'OTHER-OEI' then nvl(sum(curr_forecast_deterministic ) over (partition by project_sbe_code, study_status_code), 0)  + std_costs_forecast_determ                                  
+             when nvl(subtype_code, '-') != 'OEI' or grouping_type is null then curr_forecast_deterministic else nvl(sum(curr_forecast_deterministic) over (partition by project_sbe_code, development_phase_code, study_status_code), 0) end curr_forecast_deterministic,                               
+        case when study_status_code = 'OTHER-OEI' then nvl(sum(curr_runrate_deterministic ) over (partition by project_sbe_code, study_status_code), 0) + std_costs_runrate_determ                                 
+             when nvl(subtype_code, '-') != 'OEI' or grouping_type is null then curr_runrate_deterministic else nvl(sum(curr_runrate_deterministic) over (partition by project_sbe_code, development_phase_code, study_status_code), 0) end curr_runrate_deterministic,                               
+        case when study_status_code = 'OTHER-OEI' then nvl(sum(curr_budget_probabilistic ) over (partition by project_sbe_code,study_status_code), 0)  + std_costs_budget_probabilistic                               
+             when nvl(subtype_code, '-') != 'OEI' or grouping_type is null then curr_budget_probabilistic else nvl(sum(curr_budget_probabilistic) over (partition by project_sbe_code, development_phase_code, study_status_code), 0) end curr_budget_probabilistic,                               
+        case when study_status_code = 'OTHER-OEI' then nvl(sum(curr_forecast_probabilistic) over (partition by project_sbe_code, study_status_code), 0)  + std_costs_forecast_prob                              
+             when nvl(subtype_code, '-') != 'OEI' or grouping_type is null then curr_forecast_probabilistic else nvl(sum(curr_forecast_probabilistic) over (partition by project_sbe_code, development_phase_code, study_status_code), 0) end curr_forecast_probabilistic,                               
+        case when study_status_code = 'OTHER-OEI' then nvl(sum(curr_cforecast_probabilistic ) over (partition by project_sbe_code, study_status_code), 0) + std_costs_cforecast_prob                               
+             when nvl(subtype_code, '-') != 'OEI' or grouping_type is null then curr_cforecast_probabilistic else nvl(sum(curr_cforecast_probabilistic) over (partition by project_sbe_code, development_phase_code, study_status_code), 0) end curr_cforecast_probabilistic,                               
+        case when study_status_code = 'OTHER-OEI' then nvl(sum(next_budget_deterministic) over (partition by project_sbe_code,  study_status_code), 0)  + std_next_costs_budget_determ                                
+             when nvl(subtype_code, '-') != 'OEI' or grouping_type is null then next_budget_deterministic else nvl(sum(next_budget_deterministic) over (partition by project_sbe_code, development_phase_code, study_status_code), 0) end next_budget_deterministic,                               
+        case when study_status_code = 'OTHER-OEI' then nvl(sum(next_forecast_deterministic) over (partition by project_sbe_code, study_status_code), 0)  + std_next_costs_forecast_determ                               
+             when nvl(subtype_code, '-') != 'OEI' or grouping_type is null then next_forecast_deterministic else nvl(sum(next_forecast_deterministic) over (partition by project_sbe_code, development_phase_code, study_status_code), 0) end next_forecast_deterministic,                               
+        case when study_status_code = 'OTHER-OEI' then nvl(sum(next_budget_probabilistic ) over (partition by project_sbe_code, study_status_code), 0) + std_next_costs_budget_prob                              
+             when nvl(subtype_code, '-') != 'OEI' or grouping_type is null then next_budget_probabilistic else nvl(sum(next_budget_probabilistic) over (partition by project_sbe_code, development_phase_code, study_status_code), 0) end next_budget_probabilistic,                               
+        case when study_status_code = 'OTHER-OEI' then nvl(sum(next_forecast_probabilistic ) over (partition by project_sbe_code, study_status_code), 0) + std_next_costs_forecast_prob                                  
+             when nvl(subtype_code, '-') != 'OEI' or grouping_type is null then next_forecast_probabilistic else nvl(sum(next_forecast_probabilistic) over (partition by project_sbe_code, development_phase_code, study_status_code), 0) end next_forecast_probabilistic,                               
+        case when study_status_code = 'OTHER-OEI' then nvl(sum(next_cforecast_probabilistic ) over (partition by project_sbe_code, study_status_code), 0) + std_next_costs_cforecast_prob                                
+             when nvl(subtype_code, '-') != 'OEI' or grouping_type is null then next_cforecast_probabilistic else nvl(sum(next_cforecast_probabilistic) over (partition by project_sbe_code, development_phase_code, study_status_code), 0) end next_cforecast_probabilistic,                               
+        case when study_status_code = 'OTHER-OEI' then nvl(sum(curr_fps_commited) over (partition by project_sbe_code, study_status_code), 0)                                
+             when nvl(subtype_code, '-') != 'OEI' or grouping_type is null then curr_fps_commited else nvl(sum(curr_fps_commited) over (partition by project_sbe_code, development_phase_code, study_status_code), 0) end curr_fps_commited,                               
+        case when study_status_code = 'OTHER-OEI' then nvl(sum(curr_fps_uncommited) over (partition by project_sbe_code, study_status_code), 0)                                
+             when nvl(subtype_code, '-') != 'OEI' or grouping_type is null then curr_fps_uncommited else nvl(sum(curr_fps_uncommited) over (partition by project_sbe_code, development_phase_code, study_status_code), 0) end curr_fps_uncommited,                               
+        case when study_status_code = 'OTHER-OEI' then nvl(sum(curr_fps_inc_unspec_total) over (partition by project_sbe_code, study_status_code), 0)                                
+             when nvl(subtype_code, '-') != 'OEI' or grouping_type is null then curr_fps_inc_unspec_total else nvl(sum(curr_fps_inc_unspec_total) over (partition by project_sbe_code, development_phase_code, study_status_code), 0) end curr_fps_inc_unspec_total,                               
+        case when study_status_code = 'OTHER-OEI' then nvl(sum(next_fps_commited) over (partition by project_sbe_code, study_status_code), 0)                                
+             when nvl(subtype_code, '-') != 'OEI' or grouping_type is null then next_fps_commited else nvl(sum(next_fps_commited) over (partition by project_sbe_code, development_phase_code, study_status_code), 0) end next_fps_commited,                                
+        case when study_status_code = 'OTHER-OEI' then nvl(sum(next_fps_uncommited) over (partition by project_sbe_code, study_status_code), 0)                                
+             when nvl(subtype_code, '-') != 'OEI' or grouping_type is null then next_fps_uncommited else nvl(sum(next_fps_uncommited) over (partition by project_sbe_code, development_phase_code, study_status_code), 0) end next_fps_uncommited,                               
+        case when study_status_code = 'OTHER-OEI' then nvl(sum(next_fps_inc_unspec_total) over (partition by project_sbe_code, study_status_code), 0)                                
+             when nvl(subtype_code, '-') != 'OEI' or grouping_type is null then next_fps_inc_unspec_total else nvl(sum(next_fps_inc_unspec_total) over (partition by project_sbe_code, development_phase_code, study_status_code), 0) end next_fps_inc_unspec_total,                                
+        decode(grouping_type,'sbe',1,'devphase',2,'program',3,'project',4,'status',5,null) grouping_type,                               
+        comments_curr_year,                               
+        comments_next_year, 
+        is_prefilled_old, 
+        case when nvl(subtype_code, '-') != 'OEI'  or grouping_type is null then estimate_det_old_curr_year else nvl(sum(estimate_det_old_curr_year) over (partition by project_sbe_code, development_phase_code, study_status_code), 0) end estimate_det_old_curr_year,                               
+        case when nvl(subtype_code, '-') != 'OEI'  or grouping_type is null then estimate_det_old_next_year else nvl(sum(estimate_det_old_next_year) over (partition by project_sbe_code, development_phase_code, study_status_code), 0) end estimate_det_old_next_year       
+    from (                               
+                               
+        with src as (                               
+            select                               
+                to_char(le.id) as id,                               
+                prj.sbe_code as project_sbe_code,                               
+                prj.pidt_bu_code as project_gbu_code,                               
+                le.development_phase_code,                               
+                decode(prj.area_code,'D3-TR',null,prj.program_id) as program_id,                               
+                le.process_id,                               
+                le.project_id,                               
+                le.study_status_code||nvl2(le.subtype_code,'-'||le.subtype_code,null) as study_status_code,                               
+                le.subtype_code,                               
+                null as grouping_type                               
+            from latest_estimate le                             
+                join project prj on prj.id=le.project_id                               
+            where le.process_id in (select id from latest_estimates_process where let_id=:tagId) and le.process_id = nvl(to_nchar(:processId),le.process_id) and le.program_id = nvl(to_nchar(:programId),le.program_id)                      
+                  and (:programId is null or nvl(le.subtype_code, '-') != 'OEI')  /* when initiated from Action Items, Insourced Costs are NOT provided */                               
+                  and (:UserNameVar IS NULL OR :UserNameVar = ''                         
+                       OR EXISTS(SELECT 1 FROM user_role WHERE program_id = le.program_id AND UPPER(user_id) = UPPER(:UserNameVar)))      
+        ),                           
+        process_plan_period as (                           
+           select min(lp.year) as curr_year,  min(lp.year) + max(lp.IS_NEXT_YEAR) as next_year                            
+             from latest_estimates_process lp                           
+           where lp.let_id=:tagId and lp.id = nvl(to_nchar(:processId),lp.id)),  
+		le_study as (          
+			select le.study_id          
+			from latest_estimates_project lp       
+			join latest_estimates_process lpr on lpr.id = lp.process_id                            
+			join latest_estimates_tag lt on lt.id = lpr.let_id                           
+			join latest_estimate le on (le.process_id=lpr.id and le.project_id = lp.project_id)  
+			where lt.id = :tagId          
+			and le.process_id = nvl(to_nchar(:processId),le.process_id)  
+			and le.program_id = nvl(to_nchar(:programId),le.program_id)  
+            and le.study_id is not null  
+			group by le.study_id          
+		),          
+		costs_vw_copy as (          
+			select          
+				project_id,study_id,function_code,subtype_code,year,month,          
+				max(forecast_number) as forecast_number,          
+				max(forecast_version) as forecast_version,          
+				max(forecast_month) as forecast_month,          
+				max(forecast_year) as forecast_year,          
+				sum(          
+					case when month<forecast_month and year=forecast_year then nvl(ext_det_act,0)          
+						when month>=forecast_month and year=forecast_year or year>forecast_year then nvl(ext_prob_fct,0)          
+					end          
+					) as ext_prob_fct,          
+				sum(          
+					case when month<forecast_month and year=forecast_year then nvl(ext_det_act,0)          
+						when month>=forecast_month and year=forecast_year or year>forecast_year  then nvl(ext_det_fct,0)          
+					end          
+					) as ext_det_fct,          
+				sum(ext_prob_cfct) as ext_prob_cfct,          
+				sum(nvl(int_prob_fct,int_prob_act)) as int_prob_fct,          
+				sum(nvl(int_det_fct,int_det_act)) as int_det_fct,          
+				sum(ext_prob_bgt) as ext_prob_bgt,          
+				sum(ext_det_bgt) as ext_det_bgt,          
+				sum(int_prob_bgt) as int_prob_bgt,          
+				sum(int_det_bgt) as int_det_bgt,          
+				sum(ext_prob_act) as ext_prob_act,          
+				sum(ext_det_act) as ext_det_act,          
+				sum(int_prob_act) as int_prob_act,          
+				sum(int_det_act) as int_det_act,          
+				sum(nvl(ext_prob_act,ext_prob_rr)) as ext_prob_rr,          
+				sum(nvl(ext_det_act,ext_det_rr)) as ext_det_rr,          
+				sum(nvl(int_prob_act,int_prob_rr)) as int_prob_rr,          
+				sum(nvl(int_det_act,int_det_rr)) as int_det_rr          
+			from (          
+				select          
+					project_id,study_id,nvl(sf.function_code,cst.function_code) function_code,subtype_code,          
+					extract(year from finish_date) as year,          
+					extract(month from finish_date) as month,          
+					max(fy) as forecast_year,          
+					max(fm) as forecast_month,          
+					max(decode(type_code,'FCT',forecast_number,null)) as forecast_number,          
+					max(decode(type_code,'FCT',forecast_version,null)) as forecast_version,          
+					sum(decode(type,'FCT-PROB-EXT',cost,null)) as ext_prob_fct,          
+					sum(decode(type,'FCT-DET-EXT',cost,null)) as ext_det_fct,          
+					sum(decode(type,'FCT-PROB-INT',cost,null)) as int_prob_fct,          
+					sum(decode(type,'FCT-DET-INT',cost,null)) as int_det_fct,          
+					sum(decode(type,'CALF-PROB-EXT',cost,null)) as ext_prob_cfct,          
+					sum(decode(type,'BGT-PROB-EXT',cost,null)) as ext_prob_bgt,          
+					sum(decode(type,'BGT-DET-EXT',cost,null)) as ext_det_bgt,          
+					sum(decode(type,'BGT-PROB-INT',cost,null)) as int_prob_bgt,          
+					sum(decode(type,'BGT-DET-INT',cost,null)) as int_det_bgt,          
+					sum(decode(type,'ACT-PROB-EXT',cost,null)) as ext_prob_act,          
+					sum(decode(type,'ACT-DET-EXT',cost,null)) as ext_det_act,          
+					sum(decode(type,'ACT-PROB-INT',cost,null)) as int_prob_act,          
+					sum(decode(type,'ACT-DET-INT',cost,null)) as int_det_act,          
+					sum(decode(type,'RR-PROB-EXT',cost,null)) as ext_prob_rr,          
+					sum(decode(type,'RR-DET-EXT',cost,null)) as ext_det_rr,          
+					sum(decode(type,'RR-PROB-INT',cost,null)) as int_prob_rr,          
+					sum(decode(type,'RR-DET-INT',cost,null)) as int_det_rr          
+				from (          
+					select cst.*,type_code||'-'||method_code||'-'||scope_code as type          
+					from costs cst          
+					join le_study ls on (cst.study_id=ls.study_id)  
+					where type_code in ('BGT','ACT','RR','CALF') or type_code='FCT' and is_last_forecast=1          
+				) cst          
+				cross join (select to_number(cfg_year.value) fy, to_number(cfg_month.value) fm from configuration cfg_year          
+							cross join configuration cfg_month          
+							where cfg_year.code = 'LAST-FCT-YEAR' and cfg_month.code='LAST-FCT-MONTH')          
+				left join subfunction sf on sf.code=cst.subfunction_code          
+				where cost<>0 and (sf.function_code is not null or cst.function_code is not null)          
+				group by project_id,study_id,nvl(sf.function_code,cst.function_code),subtype_code,code,extract(year from finish_date),extract(month from finish_date)          
+			) group by project_id,study_id,function_code,subtype_code,year,rollup(month)          
+		),          
+		study_costs as (                           
+          select                            
+                 sbe_code,                           
+                 sum(det_act) as std_costs_act_deterministic,                                 
+                 sum(decode(year, process_plan_period.curr_year, det_bgt, 0)) as std_costs_budget_deterministic,                           
+                 sum(decode(year, process_plan_period.next_year, det_bgt, 0)) as std_next_costs_budget_determ,                           
+                 sum(decode(year, process_plan_period.curr_year, det_fct, 0)) as std_costs_forecast_determ,                           
+                 sum(decode(year, process_plan_period.next_year, det_fct, 0)) as std_next_costs_forecast_determ,                                         
+                 sum(det_rr) as std_costs_runrate_determ,                           
+                 sum(decode(year, process_plan_period.curr_year, prob_bgt, 0)) as std_costs_budget_probabilistic,                           
+                 sum(decode(year, process_plan_period.next_year, prob_bgt, 0)) as std_next_costs_budget_prob,                           
+                 sum(decode(year, process_plan_period.curr_year, prob_fct, 0)) as std_costs_forecast_prob,                           
+                 sum(decode(year, process_plan_period.next_year, prob_fct, 0)) as std_next_costs_forecast_prob,                                         
+                 sum(decode(year, process_plan_period.curr_year, prob_cfct, 0)) as std_costs_cforecast_prob,                            
+                 sum(decode(year, process_plan_period.next_year, prob_cfct, 0)) as std_next_costs_cforecast_prob          
+            from (                            
+                  select                           
+                        prj.sbe_code,                           
+                        c.year,                            
+                        nvl(sum(c.ext_prob_fct),0) as prob_fct,                                    
+                        nvl(sum(c.ext_det_fct),0) as det_fct,                                     
+                        nvl(sum(c.ext_prob_cfct),0) as prob_cfct,                                   
+                        nvl(sum(c.ext_prob_bgt),0) as prob_bgt,                                    
+                        nvl(sum(c.ext_det_bgt),0) as det_bgt,                                     
+                        nvl(sum(c.ext_prob_act),0) as prob_act,                                    
+                        nvl(sum(c.ext_det_act),0) as det_act,                                     
+                        nvl(sum(c.ext_prob_rr),0) as prob_rr,                                     
+                        nvl(sum(c.ext_det_rr),0) as det_rr                           
+                  from costs_vw_copy c                            
+                      join project prj on prj.id=c.project_id                             
+                      cross join process_plan_period                           
+                  where c.subtype_code='OEI'                            
+                     and c.year between process_plan_period.curr_year and process_plan_period.next_year                            
+                     and c.month is null           
+					group by prj.sbe_code, c.year                            
+             ) cross join process_plan_period group by sbe_code)                                    
+        select                               
+            /*totals*/                               
+            le.id,                                
+            le.project_sbe_code as project_sbe_code,                                  
+            case when le.grouping_type = 'sbe' then null else le.project_gbu_code end project_gbu_code,                   
+            le.development_phase_code,                                
+            le.program_id,                                 
+            le.process_id,                                
+            le.project_id,                                
+            le.study_status_code,                                
+            le.subtype_code,                                
+            le.grouping_type,                              
+            /*le*/                               
+            case when le.subtype_code='OEI' then null else ledph.name||decode(le.grouping_type,'devphase',' Total','') end as development_phase_name,                               
+            ledph.name as development_phase_name_ord,                                 
+            lesbe.code||decode(le.grouping_type,'sbe',' Total',decode(le.subtype_code,'OEI',' OEI Total','')) as project_sbe_name,           
+            decode(le.grouping_type,'status',decode(le.subtype_code,'OEI',null,'OEC',lecst.name||' Total',lestd.name||' Total'),decode(le.subtype_code,'OEI',lecst.name,'OEC',lecst.name,lestd.name)) as study_status_name,                               
+            case when le.grouping_type='status' and le.subtype_code ='OEC' then lecst.name||' Total' when le.subtype_code ='OEC' then lecst.name end as subtype_name,                               
+            lecst.name as cost_subtype_name,                             
+            ledet.function_code,                               
+            case when	le.grouping_type is not null then null                               
+            when ledet.is_placeholder=1 then N'LE Placeholder'                               
+            when ledet.study_is_placeholder=1 then N'Study Placeholder'                               
+            else ledetfct.name                               
+            end function_name,                               
+            ledet.estimate_det_curr_year,                               
+            ledet.estimate_det_next_year,                               
+            ledet.estimate_prob_curr_year,                               
+            ledet.estimate_prob_next_year,                               
+            ledet.comments_curr_year,                               
+            ledet.comments_next_year,                               
+            /*process*/                               
+            leproc.name as process_name,                               
+            leproc.comments as process_comments,                               
+            /*project*/                               
+            prj.development_phase_code as project_development_phase_code,                               
+            prjdp.name as project_development_phase_name,                               
+            prj.name||decode(le.grouping_type,'project',' Total','') as project_name,                               
+            prj.code||decode(le.grouping_type,'project',' Total','') as project_code,                               
+            decode(le.grouping_type,'project',fund_y1.amount,null) project_fund_y1,                               
+            decode(le.grouping_type,'project',fund_y2.amount,null) project_fund_y2,                               
+            /*program*/                               
+            decode(prj.area_code,'D3-TR',prj.name,prg.name||decode(le.grouping_type,'program',' Total','')) as program_name,                               
+            prg.code||decode(le.grouping_type,'program',' Total','') as program_code,                               
+            /*study*/                               
+            nvl2(le.grouping_type,null,ledet.study_id) as study_id,                               
+			nvl2(le.grouping_type,null,decode(ledet.is_placeholder,1,'LE Placeholder',ledet.study_name)) as study_name,                               
+			nvl2(le.grouping_type,null,decode(ledet.is_placeholder,1,'LE Placeholder',ledet.study_phase)) as study_phase,                               
+			ledet.study_fpfv,                               
+			ledet.study_lplv,                               
+            case when le.grouping_type is null and le.subtype_code is null then decode(ledet.study_is_probing,1,'Yes','No') else null end as study_is_probing,                               
+            case when le.grouping_type is null and le.subtype_code is null then decode(ledet.study_is_obligation,1,'Yes','No') else null end as study_is_obligation,                               
+            case when le.grouping_type is null and le.subtype_code is null then decode(ledet.study_is_gpdc_approved,1,'Yes','No') else null end as study_is_gpdc_approved,                               
+            /*costs*/                               
+			nvl(ledet.curr_act_det,0) as curr_actuals_deterministic,                           
+            sc.std_costs_act_deterministic,                           
+			nvl(ledet.curr_bgt_det,0) as curr_budget_deterministic,                            
+            sc.std_costs_budget_deterministic,                           
+			nvl(ledet.curr_fct_det,0) as curr_forecast_deterministic,                             
+            sc.std_costs_forecast_determ,                           
+			nvl(ledet.curr_rr_det,0) as curr_runrate_deterministic,                            
+            sc.std_costs_runrate_determ,                           
+			nvl(ledet.curr_bgt_prob,0) as curr_budget_probabilistic,                           
+            sc.std_costs_budget_probabilistic,                           
+			nvl(ledet.curr_fct_prob,0) as curr_forecast_probabilistic,                           
+            sc.std_costs_forecast_prob,                           
+			nvl(ledet.curr_cfct_prob,0) as curr_cforecast_probabilistic,                            
+            sc.std_costs_cforecast_prob,                            
+			nvl(ledet.next_bgt_det,0) as next_budget_deterministic,                           
+            sc.std_next_costs_budget_determ,                                       
+			nvl(ledet.next_fct_det,0) as next_forecast_deterministic,                           
+            sc.std_next_costs_forecast_determ,                                       
+			nvl(ledet.next_bgt_prob,0) as next_budget_probabilistic,                           
+            sc.std_next_costs_budget_prob,                                       
+			nvl(ledet.next_fct_prob,0) as next_forecast_probabilistic,                            
+            sc.std_next_costs_forecast_prob,                                       
+			nvl(ledet.next_cfct_prob,0) as next_cforecast_probabilistic,                             
+            sc.std_next_costs_cforecast_prob,                                        
+			nvl(ledet.curr_fps_est_c,0) as curr_fps_commited,                               
+			nvl(ledet.curr_fps_est_u,0) as curr_fps_uncommited,                               
+			nvl(ledet.curr_fps_est_t,0) as curr_fps_inc_unspec_total,                               
+			nvl(ledet.next_fps_est_c,0) as next_fps_commited,                               
+			nvl(ledet.next_fps_est_u,0) as next_fps_uncommited,                               
+			nvl(ledet.next_fps_est_t,0) as next_fps_inc_unspec_total, 
+            ledet.is_prefilled_old, 
+            ledet.estimate_det_old_curr_year, 
+            ledet.estimate_det_old_next_year 
+        from (                               
+                 /*details*/                               
+                 select * from src                               
+                 /*totals*/                               
+                 union all                               
+                 select distinct null, project_sbe_code, project_gbu_code, null, null, null,  null, null, null, 'sbe'                               
+                 from src                               
+                 union all                               
+                 select distinct null, project_sbe_code, project_gbu_code, development_phase_code,  null, null,  null, null, null, 'devphase'                               
+                 from src                               
+                 union all                               
+                 select distinct null,project_sbe_code, project_gbu_code, development_phase_code, program_id, null,  null, null, null, 'program'                               
+                 from src                               
+                 union all                               
+                 select distinct null,project_sbe_code, project_gbu_code, development_phase_code, program_id, null,  project_id, null, null, 'project'                               
+                 from src                               
+                 union all                               
+                 select distinct null,project_sbe_code, project_gbu_code, development_phase_code, program_id, null, project_id, study_status_code, null, 'status'                               
+                 from src where subtype_code is null and study_status_code not like 'OTHER-%'                               
+                 union all                               
+                 select distinct null,project_sbe_code, project_gbu_code, development_phase_code, program_id, null, project_id, study_status_code, subtype_code, 'status'                               
+                 from src where subtype_code is not null and study_status_code = 'OTHER-OEC'                               
+                 union all                               
+                 select distinct null,project_sbe_code, null, null, null, null, null, study_status_code, subtype_code, 'status'                               
+                 from src where subtype_code is not null and study_status_code = 'OTHER-OEI'                               
+             ) le                               
+            left join latest_estimates_process leproc on leproc.id=le.process_id                               
+            left join project prj on prj.id=le.project_id                               
+            left join funding fund_y1 on fund_y1.project_id=le.project_id and fund_y1.year=leproc.year                               
+            left join funding fund_y2 on fund_y2.project_id=le.project_id and fund_y2.year=leproc.year+1                               
+            left join program prg on prg.id=le.program_id                               
+            left outer join development_phase prjdp on prjdp.code=prj.development_phase_code                               
+            left outer join costs_subtype lecst on lecst.code=le.subtype_code                               
+            left outer join development_phase ledph on ledph.code=le.development_phase_code                               
+            left outer join strategic_business_entity lesbe on lesbe.code=le.project_sbe_code                               
+            left outer join study_status lestd on lestd.code=le.study_status_code                               
+            left outer join latest_estimate ledet on ledet.id=le.id                               
+            left outer join function ledetfct on ledetfct.code=ledet.function_code                            
+            left join study_costs sc on sc.sbe_code = le.project_sbe_code                            
+    )                               
+)                               
+where nvl(subtype_code, '-') != 'OEI' or grouping_type is not null                              
+order by project_sbe_name nulls first, development_phase_name_ord||decode(study_status_code,'OTHER-OEI',ord||'|99','')||decode(grouping_type,'devphase','|10','sbe','1|'||project_sbe_code,null) nulls first, program_id, project_code, decode(study_status_code, 'RUN', 1, 'COMM', 2, 'PLAN', 3, 'OTHER-OEC', 4,'OTHER-OEI', 5,6),  grouping_type nulls first, decode(study_id,'LE Placeholder',1,2), study_phase, study_id, function_code]]></SQLQuery>
+  <EntityUsage
+    Name="LatestEstimate"
+    Entity="com.bayer.ipms.model.entities.estimates.LatestEstimate"/>
+  <ViewAttribute
+    Name="Id"
+    IsUpdateable="false"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Id"
+    EntityUsage="LatestEstimate"
+    AliasName="ID"/>
+  <ViewAttribute
+    Name="Sbe"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="SBE"
+    Expression="SBE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Ord"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="130"
+    Scale="0"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="ORD"
+    Expression="ORD"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="130"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="FunctionCode"
+    IsUpdateable="while_insert"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="FunctionCode"
+    EntityUsage="LatestEstimate"
+    AliasName="FUNCTION_CODE">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.FunctionCode_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="FunctionName"
+    IsUpdateable="false"
+    IsPersistent="false"
+    IsNotNull="true"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="FUNCTION_NAME"
+    Expression="FUNCTION_NAME"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.FunctionName_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="DevelopmentPhaseCode"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="DEVELOPMENT_PHASE_CODE"
+    Expression="DEVELOPMENT_PHASE_CODE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="DevelopmentPhaseName"
+    IsUpdateable="false"
+    IsPersistent="false"
+    IsNotNull="true"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="DEVELOPMENT_PHASE_NAME"
+    Expression="DEVELOPMENT_PHASE_NAME"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.DevelopmentPhaseName_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="SubtypeCode"
+    IsUpdateable="while_insert"
+    PrecisionRule="true"
+    EntityAttrName="SubtypeCode"
+    EntityUsage="LatestEstimate"
+    AliasName="SUBTYPE_CODE"/>
+  <ViewAttribute
+    Name="SubtypeName"
+    IsUpdateable="false"
+    IsPersistent="false"
+    IsNotNull="true"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="SUBTYPE_NAME"
+    Expression="SUBTYPE_NAME"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EstimateDetCurrYear"
+    PrecisionRule="true"
+    EntityAttrName="EstimateDetCurrYear"
+    EntityUsage="LatestEstimate"
+    AliasName="ESTIMATE_DET_CURR_YEAR">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.EstimateDetCurrYear_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EstimateDetNextYear"
+    PrecisionRule="true"
+    EntityAttrName="EstimateDetNextYear"
+    EntityUsage="LatestEstimate"
+    AliasName="ESTIMATE_DET_NEXT_YEAR">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.EstimateDetNextYear_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EstimateProbCurrYear"
+    PrecisionRule="true"
+    EntityAttrName="EstimateProbCurrYear"
+    EntityUsage="LatestEstimate"
+    AliasName="ESTIMATE_PROB_CURR_YEAR">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.EstimateProbCurrYear_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EstimateProbNextYear"
+    PrecisionRule="true"
+    EntityAttrName="EstimateProbNextYear"
+    EntityUsage="LatestEstimate"
+    AliasName="ESTIMATE_PROB_NEXT_YEAR">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.EstimateProbNextYear_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ProcessId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    IsNotNull="true"
+    PrecisionRule="true"
+    Precision="20"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="PROCESS_ID"
+    Expression="PROCESS_ID"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ProcessName"
+    IsUpdateable="false"
+    IsPersistent="false"
+    IsNotNull="true"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="PROCESS_NAME"
+    Expression="PROCESS_NAME"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.ProcessName_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ProcessComments"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="500"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="PROCESS_COMMENTS"
+    Expression="PROCESS_COMMENTS"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="500"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.ProcessComments_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ProjectId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    IsNotNull="true"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="PROJECT_ID"
+    Expression="PROJECT_ID"
+    SQLType="VARCHAR">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.ProjectId_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ProjectDevelopmentPhaseCode"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="PROJECT_DEVELOPMENT_PHASE_CODE"
+    Expression="PROJECT_DEVELOPMENT_PHASE_CODE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ProjectDevelopmentPhaseName"
+    IsUpdateable="false"
+    IsPersistent="false"
+    IsNotNull="true"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="PROJECT_DEVELOPMENT_PHASE_NAME"
+    Expression="PROJECT_DEVELOPMENT_PHASE_NAME"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ProjectName"
+    IsUpdateable="false"
+    IsPersistent="false"
+    IsNotNull="true"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="PROJECT_NAME"
+    Expression="PROJECT_NAME"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.ProjectName_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ProjectCode"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="20"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="PROJECT_CODE"
+    Expression="PROJECT_CODE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.ProjectCode_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ProjectSbeCode"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="PROJECT_SBE_CODE"
+    Expression="PROJECT_SBE_CODE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.ProjectSbeCode_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+ 
+  <ViewAttribute
+    Name="ProjectSbeName"
+    IsUpdateable="false"
+    IsPersistent="false"
+    IsNotNull="true"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="PROJECT_SBE_NAME"
+    Expression="PROJECT_SBE_NAME"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.ProjectSbeName_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ProjectFundY1"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="20"
+    Scale="10"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="PROJECT_FUND_Y1"
+    Expression="PROJECT_FUND_Y1"
+    SQLType="FLOAT">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="22"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.ProjectFundY1_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ProjectFundY2"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="20"
+    Scale="10"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="PROJECT_FUND_Y2"
+    Expression="PROJECT_FUND_Y2"
+    SQLType="FLOAT">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="22"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.ProjectFundY2_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+   <ViewAttribute
+    Name="ProjectGbuCode"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+     ColumnType="NVARCHAR2"
+     AliasName="PROJECT_GBU_CODE"
+    SQLType="VARCHAR"
+     Expression="PROJECT_GBU_CODE"
+     Precision="10">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.ProjectGbuCode_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ProgramId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    IsNotNull="true"
+    PrecisionRule="true"
+    Precision="20"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="PROGRAM_ID"
+    Expression="PROGRAM_ID"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ProgramName"
+    IsUpdateable="false"
+    IsPersistent="false"
+    IsNotNull="true"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="PROGRAM_NAME"
+    Expression="PROGRAM_NAME"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.ProgramName_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ProgramCode"
+    IsUpdateable="false"
+    IsPersistent="false"
+    IsNotNull="true"
+    PrecisionRule="true"
+    Precision="10"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="PROGRAM_CODE"
+    Expression="PROGRAM_CODE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="StudyId"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    AliasName="STUDY_ID"
+    IsPersistent="false"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    Expression="STUDY_ID"
+      SQLType="VARCHAR"
+    Precision="30">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.StudyId_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="StudyName"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="4000"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="STUDY_NAME"
+    Expression="STUDY_NAME"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="4000"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.StudyName_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="StudyPhase"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="4000"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="STUDY_PHASE"
+    Expression="STUDY_PHASE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="4000"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.StudyPhase_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="StudyFpfv"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    AliasName="STUDY_FPFV"
+    Expression="STUDY_FPFV"
+    SQLType="DATE">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="7"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <FMT_FORMATTER
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.StudyFpfv_FMT_FORMATTER"/>
+        <FMT_FORMAT
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.StudyFpfv_FMT_FORMAT"/>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.StudyFpfv_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="StudyLplv"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    AliasName="STUDY_LPLV"
+    Expression="STUDY_LPLV"
+    SQLType="DATE">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="7"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <FMT_FORMATTER
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.StudyLplv_FMT_FORMATTER"/>
+        <FMT_FORMAT
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.StudyLplv_FMT_FORMAT"/>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.StudyLplv_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="StudyStatusCode"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="5"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="STUDY_STATUS_CODE"
+    Expression="STUDY_STATUS_CODE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="5"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="StudyStatusName"
+    IsUpdateable="false"
+    IsPersistent="false"
+    IsNotNull="true"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="STUDY_STATUS_NAME"
+    Expression="STUDY_STATUS_NAME"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.StudyStatusName_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="StudyIsProbing"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NUMBER"
+    AliasName="STUDY_IS_PROBING"
+    Expression="STUDY_IS_PROBING"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.StudyIsProbing_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="StudyIsObligation"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NUMBER"
+    AliasName="STUDY_IS_OBLIGATION"
+    Expression="STUDY_IS_OBLIGATION"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.StudyIsObligation_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="StudyIsGpdcApproved"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NUMBER"
+    AliasName="STUDY_IS_GPDC_APPROVED"
+    Expression="STUDY_IS_GPDC_APPROVED"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.StudyIsGpdcApproved_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CurrActualsDeterministic"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="CURR_ACTUALS_DETERMINISTIC"
+    Expression="CURR_ACTUALS_DETERMINISTIC"
+    SQLType="FLOAT">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.CurrActualsDeterministic_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CurrBudgetDeterministic"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="CURR_BUDGET_DETERMINISTIC"
+    Expression="CURR_BUDGET_DETERMINISTIC"
+    SQLType="FLOAT">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.CurrBudgetDeterministic_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CurrForecastDeterministic"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="CURR_FORECAST_DETERMINISTIC"
+    Expression="CURR_FORECAST_DETERMINISTIC"
+    SQLType="FLOAT">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.CurrForecastDeterministic_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CurrRunrateDeterministic"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="CURR_RUNRATE_DETERMINISTIC"
+    Expression="CURR_RUNRATE_DETERMINISTIC"
+    SQLType="FLOAT">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.CurrRunrateDeterministic_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CurrBudgetProbabilistic"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="CURR_BUDGET_PROBABILISTIC"
+    Expression="CURR_BUDGET_PROBABILISTIC"
+    SQLType="FLOAT">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.CurrBudgetProbabilistic_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CurrForecastProbabilistic"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="CURR_FORECAST_PROBABILISTIC"
+    Expression="CURR_FORECAST_PROBABILISTIC"
+    SQLType="FLOAT">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.CurrForecastProbabilistic_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CurrCforecastProbabilistic"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="CURR_CFORECAST_PROBABILISTIC"
+    Expression="CURR_CFORECAST_PROBABILISTIC"
+    SQLType="FLOAT">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.CurrCforecastProbabilistic_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="NextBudgetDeterministic"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="NEXT_BUDGET_DETERMINISTIC"
+    Expression="NEXT_BUDGET_DETERMINISTIC"
+    SQLType="FLOAT">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.NextBudgetDeterministic_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="NextForecastDeterministic"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="NEXT_FORECAST_DETERMINISTIC"
+    Expression="NEXT_FORECAST_DETERMINISTIC"
+    SQLType="FLOAT">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.NextForecastDeterministic_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="NextBudgetProbabilistic"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="NEXT_BUDGET_PROBABILISTIC"
+    Expression="NEXT_BUDGET_PROBABILISTIC"
+    SQLType="FLOAT">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.NextBudgetProbabilistic_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="NextForecastProbabilistic"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="NEXT_FORECAST_PROBABILISTIC"
+    Expression="NEXT_FORECAST_PROBABILISTIC"
+    SQLType="FLOAT">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.NextForecastProbabilistic_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="NextCforecastProbabilistic"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="NEXT_CFORECAST_PROBABILISTIC"
+    Expression="NEXT_CFORECAST_PROBABILISTIC"
+    SQLType="FLOAT">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="GroupingType"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="9"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="GROUPING_TYPE"
+    Expression="GROUPING_TYPE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="9"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CommentsCurrYear"
+    PrecisionRule="true"
+    EntityAttrName="CommentsCurrYear"
+    EntityUsage="LatestEstimate"
+    AliasName="COMMENTS_CURR_YEAR">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.CommentsCurrYear_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CommentsNextYear"
+    PrecisionRule="true"
+    EntityAttrName="CommentsNextYear"
+    EntityUsage="LatestEstimate"
+    AliasName="COMMENTS_NEXT_YEAR">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.CommentsNextYear_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CurrFpsCommited"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="CURR_FPS_COMMITED"
+    Expression="CURR_FPS_COMMITED"
+    SQLType="FLOAT">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.CurrFpsCommited_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CurrFpsUncommited"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="CURR_FPS_UNCOMMITED"
+    Expression="CURR_FPS_UNCOMMITED"
+    SQLType="FLOAT">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.CurrFpsUncommited_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CurrFpsIncUnspecTotal"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="CURR_FPS_INC_UNSPEC_TOTAL"
+    Expression="CURR_FPS_INC_UNSPEC_TOTAL"
+    SQLType="FLOAT">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.CurrFpsIncUnspecTotal_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="NextFpsCommited"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="NEXT_FPS_COMMITED"
+    Expression="NEXT_FPS_COMMITED"
+    SQLType="FLOAT">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.NextFpsCommited_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="NextFpsUncommited"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="NEXT_FPS_UNCOMMITED"
+    Expression="NEXT_FPS_UNCOMMITED"
+    SQLType="FLOAT">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.NextFpsUncommited_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="NextFpsIncUnspecTotal"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="NEXT_FPS_INC_UNSPEC_TOTAL"
+    Expression="NEXT_FPS_INC_UNSPEC_TOTAL"
+    SQLType="FLOAT">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.NextFpsIncUnspecTotal_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IsPrefilledOld"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Scale="0"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    AliasName="IS_PREFILLED_OLD"
+    Expression="IS_PREFILLED_OLD"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="EstimateDetOldCurrYear"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="ESTIMATE_DET_OLD_CURR_YEAR"
+    Expression="ESTIMATE_DET_OLD_CURR_YEAR"
+    SQLType="NUMERIC">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.EstimateDetOldCurrYear_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EstimateDetOldNextYear"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="ESTIMATE_DET_OLD_NEXT_YEAR"
+    Expression="ESTIMATE_DET_OLD_NEXT_YEAR"
+    SQLType="NUMERIC">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.estimates.LatestEstimateView.EstimateDetOldNextYear_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="Id"/>
+  </AttrArray>
+  <ClientInterface
+    Name="__clientInterface">
+    <Method
+      Name="setup"
+      MethodName="setup">
+      <Return
+        Name="_return_type_"
+        Type="void"/>
+      <Parameter
+        Name="tagId"
+        Type="java.lang.String"/>
+      <Parameter
+        Name="processId"
+        Type="java.lang.String"/>
+      <Parameter
+        Name="programId"
+        Type="java.lang.String"/>
+    </Method>
+  </ClientInterface>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.bayer.ipms.model.bundles.modelBundle"/>
+  </ResourceBundle>
+</ViewObject>

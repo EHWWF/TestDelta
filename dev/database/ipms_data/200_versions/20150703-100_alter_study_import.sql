@@ -1,0 +1,17 @@
+alter table import_study add (int_ext_flag nvarchar2(8));
+alter table import_study add (study_modus_no number);
+alter table import_study add (study_modus_name nvarchar2(40));
+alter table import_study add (clin_plan_type nvarchar2(24));
+alter table import_study add (study_unit_count number);
+alter table study add (int_ext_flag nvarchar2(8));
+alter table study add (study_modus_no number);
+alter table study add (study_modus_name nvarchar2(40));
+alter table study add (clin_plan_type nvarchar2(24));
+alter table study add (study_unit_count number);
+comment on column study.int_ext_flag is 'Outsourcing Flag.';
+comment on column study.study_unit_count is 'Number of Sites.';
+alter table ltc_plan add (int_ext_flag nvarchar2(8));
+alter table ltc_plan add (study_modus_no number);
+alter table ltc_plan add (study_modus_name nvarchar2(40));
+alter table ltc_plan add (clin_plan_type nvarchar2(24));
+alter table ltc_plan add (study_unit_count number);

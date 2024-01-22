@@ -1,0 +1,6 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<actions targetNamespace="http://xmlns.bayer.com/ipms/soa" xmlns="http://xmlns.oracle.com/bpel/sensor" xmlns:tns="http://xmlns.bayer.com/ipms/soa" xmlns:pc="http://xmlns.oracle.com/bpel/sensor">
+   <action name="SaveToDB" publishName="" publishType="BpelReportsSchema" enabled="true">
+      <sensorName>Publish Timeline: step 6 of 6. Finishing summarizing plan.</sensorName>
+   </action>
+</actions>

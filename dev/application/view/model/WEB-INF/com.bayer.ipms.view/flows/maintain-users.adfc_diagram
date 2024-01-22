@@ -1,0 +1,45 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<SDM>
+   <OverallProperties
+      id="OverallProperties1"/>
+   <MethodCall
+      id="MethodCall2">
+      <property
+         name="activityId">send</property>
+      <property
+         name="start">true</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>send&lt;/b> (Default Activity)&lt;/p>&lt;p>Activity Type:  Method Call&lt;/p></property>
+      <property
+         name="exceptionHandler">false</property>
+      <property
+         name="y">316.5</property>
+      <property
+         name="x">329.5</property>
+   </MethodCall>
+   <TaskFlowReturn
+      id="TaskFlowReturn3">
+      <property
+         name="activityId">ok</property>
+      <property
+         name="finish">true</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>ok&lt;/b>&lt;/p>&lt;p>Activity Type:  Task Flow Return&lt;/p>&lt;p>Outcome:  ok&lt;/p></property>
+      <property
+         name="exceptionHandler">false</property>
+      <property
+         name="y">313.79297</property>
+      <property
+         name="x">625.0</property>
+   </TaskFlowReturn>
+   <ControlFlowCase
+      islink="true"
+      id="ControlFlowCase4"
+      from="MethodCall2"
+      to="TaskFlowReturn3">
+      <property
+         name="fromOutcome">send</property>
+      <property
+         name="sdm:polyPoints">R50,370.5,316.1494,584.0,313.44238,L50</property>
+   </ControlFlowCase>
+</SDM>

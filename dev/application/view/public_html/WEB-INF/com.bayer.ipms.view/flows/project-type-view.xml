@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="windows-1257" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="project-type-view">
+    <template-reference>
+      <document id="__1">/WEB-INF/com.bayer.ipms.view/templates/ipms-taskflow-template-fragment.xml</document>
+      <id id="__2">ipms-taskflow-template-fragment</id>
+    </template-reference>
+    <default-activity id="__3">view</default-activity>
+    <input-parameter-definition id="__7">
+      <name id="__8">projectType</name>
+      <value>#{pageFlowScope.projectType}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <managed-bean id="__10">
+      <managed-bean-name id="__9">projectTypeViewBean</managed-bean-name>
+      <managed-bean-class id="__11">com.bayer.ipms.view.beans.ProjectTypeViewBean</managed-bean-class>
+      <managed-bean-scope id="__12">pageFlow</managed-bean-scope>
+    </managed-bean>
+    <view id="view">
+      <page>/WEB-INF/com.bayer.ipms.view/fragments/project-type-view.jsff</page>
+      <input-page-parameter>
+        <from-value>#{pageFlowScope.projectType}</from-value>
+        <to-value>#{pageFlowScope.projectType}</to-value>
+      </input-page-parameter>
+    </view>
+    <task-flow-call id="team-members-view">
+      <task-flow-reference>
+        <document id="__110">/WEB-INF/com.bayer.ipms.view/flows/team-members-view.xml</document>
+        <id id="__109">team-members-view</id>
+      </task-flow-reference>
+      <input-parameter id="__18">
+        <name id="__4">programId</name>
+        <value id="__5">#{requestScope.programId}</value>
+      </input-parameter>
+      <input-parameter id="__17">
+        <name>projectType</name>
+        <value>D2Prj</value>
+      </input-parameter>
+      <run-as-dialog id="__108">
+        <display-type id="__107">
+          <inline-popup/>
+        </display-type>
+      </run-as-dialog>
+    </task-flow-call>
+    <control-flow-rule id="__6">
+      <from-activity-id id="__13">view</from-activity-id>
+      <control-flow-case id="__15">
+        <from-outcome id="__16">team-members-view</from-outcome>
+        <to-activity-id id="__14">team-members-view</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

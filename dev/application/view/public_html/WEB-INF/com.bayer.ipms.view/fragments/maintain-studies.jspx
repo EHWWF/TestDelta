@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:h="http://java.sun.com/jsf/html"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+  <f:view>
+    <f:loadBundle basename="com.bayer.ipms.view.bundles.viewBundle"
+                  var="bundle"/>
+    <af:document id="d1" title="#{bundle.maintainStudies}">
+      <af:messages id="m1"/>
+      <af:form id="f1">
+        <af:pageTemplate viewId="/WEB-INF/com.bayer.ipms.view/templates/ipms-popup-template.jspx"
+                         id="pt1">
+          <f:facet name="summary"/>
+          <f:facet name="content">
+            <af:group>
+              <af:table value="#{bindings.StudyStatusView.collectionModel}"
+                        var="row" rows="#{bindings.StudyStatusView.rangeSize}"
+                        emptyText="#{bindings.StudyStatusView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                        fetchSize="#{bindings.StudyStatusView.rangeSize}"
+                        rowBandingInterval="0" styleClass="AFStretchWidth"
+                        contentDelivery="immediate" columnStretching="last"
+                        rowSelection="none" id="t1" autoHeightRows="0">
+                <af:column sortable="false" headerText="#{bundle.studyStatus}"
+                           id="c2">
+                  <af:outputText value="#{row.Name}" id="ot1"/>
+                </af:column>
+                <af:column sortable="false"
+                           headerText="#{bundle.studyStatusRule}" id="c1"
+                           noWrap="false">
+                  <h:outputFormat value="#{bundle.studyRuleRunning}"
+                                  rendered="#{row.Code eq 'RUN'}" id="of1"
+                                  escape="false"></h:outputFormat>
+                  <h:outputFormat value="#{bundle.studyRuleCommitted}"
+                                  rendered="#{row.Code eq 'COMM'}" id="of2"
+                                  escape="false">
+                    <f:param value="#{bindings.Value.inputValue}"
+                             id="paramCommitted"/>
+                  </h:outputFormat>
+                  <h:outputFormat value="#{bundle.studyRulePlanned}"
+                                  rendered="#{row.Code eq 'PLAN'}" id="of3"
+                                  escape="false">
+                    <f:param value="#{bindings.Value.inputValue}"
+                             id="paramPlanned"/>
+                  </h:outputFormat>
+                </af:column>
+              </af:table>
+              <af:panelFormLayout id="pfl1" inlineStyle="margin-top:10.0px;">
+                <af:inputText label="#{bundle.studyNumberOfMonths}"
+                              value="#{bindings.Value.inputValue}"
+                              required="true" columns="5" maximumLength="10"
+                              rendered="true" id="it1">
+                  <f:validateLongRange minimum="1" maximum="999999999"/>
+                  <af:convertNumber groupingUsed="false" pattern="#0"/>
+                </af:inputText>
+              </af:panelFormLayout>
+            </af:group>
+          </f:facet>
+          <f:facet name="controls">
+            <f:subview id="sub1">
+              <af:declarativeComponent viewId="global-ok-cancel.jsff" id="goc">
+                <f:attribute name="showCancel" value="true"/>
+              </af:declarativeComponent>
+            </f:subview>
+          </f:facet>
+        </af:pageTemplate>
+      </af:form>
+    </af:document>
+  </f:view>
+</jsp:root>

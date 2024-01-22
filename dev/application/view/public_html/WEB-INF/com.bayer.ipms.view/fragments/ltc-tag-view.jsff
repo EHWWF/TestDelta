@@ -1,0 +1,237 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <c:set var="bundle" value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+    <af:pageTemplate viewId="/WEB-INF/com.bayer.ipms.view/templates/ipms-content-template.jspx" id="pt1">
+        <af:resource type="javascript" source="/js/promis-utils.js"/>
+        <af:resource type="javascript">
+          function onWindowOpen(event) {
+              downloadFileWithTimestamp(event.getSource().getProperty('url2'), event.getSource().getProperty('fileName'));
+          }
+        </af:resource>
+        <f:facet name="toolbar">
+            <af:panelGroupLayout id="tools" layout="horizontal">
+                <af:menuBar id="mb1">
+                    <af:menu text="#{bundle.globalView}" id="m1"
+                             rendered="#{securityContext.userInRole['EstimatesTagPortfolioReviewLTC']}">
+                        <!-- TODO: finetune button id="cmdReviewLtcData" - use resource bundle for naming, add rendering condition, switch to readonly excel form when available, etc.-->
+                        <af:commandMenuItem text="#{bundle.ltcReviewLTCData}" immediate="true" id="cmdReviewLtcData"
+                                            icon="/images/meeting.png"
+                                            disabled="#{bindings.LtcProcessView.estimatedRowCount eq 0}"
+                                            rendered="#{securityContext.userInRole['EstimatesTagPortfolioReviewLTC']}">
+                            <af:clientAttribute name="url2"
+                                                value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.requestContextPath}/excel/ltcEstimates-readonly.xlsm?tagId=#{( bindings.TagId.inputValue == bindings.ConfigurationViewIterator.viewObject.values['LTC-TAG-ID']?bindings.TagId.inputValue+='&amp;scn='+=bindings.ConfigurationViewIterator.viewObject.values['LTC-TAG-SCN']:bindings.TagId.inputValue)}&amp;PD=#{bindings.ProcessDescription.inputValue}"/>
+                            <af:clientAttribute name="fileName" value="ltcEstimates-readonly.xlsm"/>
+                            <af:clientListener method="onWindowOpen" type="action"/>
+                        </af:commandMenuItem>
+                        <af:commandMenuItem text="#{bundle.ltcReviewFTEData}" immediate="true" id="cmdReviewFteData"
+                                            icon="/images/meeting.png"
+                                            disabled="#{ bindings.LtcProcessView.estimatedRowCount eq 0}"
+                                            rendered="#{securityContext.userInRole['EstimatesTagPortfolioReviewLTC']}">
+                            <af:clientAttribute name="url2"
+                                                value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.requestContextPath}/excel/fteEstimates-readonly.xlsm?tagId=#{( bindings.TagId.inputValue == bindings.ConfigurationViewIterator.viewObject.values['LTC-TAG-ID']?bindings.TagId.inputValue+='&amp;scn='+=bindings.ConfigurationViewIterator.viewObject.values['LTC-TAG-SCN']:bindings.TagId.inputValue)}"/>
+                            <af:clientAttribute name="fileName" value="fteEstimates-readonly.xlsm"/>
+                            <af:clientListener method="onWindowOpen" type="action"/>
+                        </af:commandMenuItem>
+                    </af:menu>
+                    <af:menu text="#{bundle.globalTools}" id="m2"
+                             rendered="#{securityContext.userInRole['EstimatesTagFreezeLTC, EstimatesTagCalculateProbLTC, EstimatesTagPrefillLTC']}">
+                        <af:commandMenuItem text="#{bundle.ltcPrefillFromProfit}"
+                                            rendered="#{securityContext.userInRole['EstimatesTagPrefillLTC']}"
+                                            disabled="#{bindings.TagIsFrozen.inputValue or bindings.LtcProcessView.estimatedRowCount eq 0}"
+                                            icon="/images/prefill.png" id="cmi1">
+                            <af:showPopupBehavior popupId="popPrefillProfitConfirm" triggerType="action"/>
+                        </af:commandMenuItem>
+                        <af:commandMenuItem text="#{bundle.ltcCalculateProbabilistic}"
+                                            rendered="#{securityContext.userInRole['EstimatesTagCalculateProbLTC']}"
+                                            disabled="#{bindings.TagIsFrozen.inputValue or not ltcTagViewBean.freezeAllowed}"
+                                            icon="/images/report.png" id="cmi2">
+                            <af:showPopupBehavior popupId="popCalcProbConfirm" triggerType="action"/>
+                        </af:commandMenuItem>
+                        <af:commandMenuItem text="#{bundle.ltcReportLTC_FTE}"
+                                            rendered="#{securityContext.userInRole['EstimatesTagReportLTC']}"
+                                            immediate="true"
+                                            disabled="#{ bindings.TagIsFrozen.inputValue or not ltcTagViewBean.freezeAllowed }"
+                                            icon="/images/report.png" id="cmdReport">
+                            <af:showPopupBehavior popupId="popReport" triggerType="action"/>
+                        </af:commandMenuItem>
+                        <af:separator id="s1"/>
+                        <af:commandMenuItem text="#{bundle.ltcFreezeTag}" id="cmd22"
+                                            rendered="#{securityContext.userInRole['EstimatesTagFreezeLTC']}"
+                                            disabled="#{bindings.TagIsFrozen.inputValue or not ltcTagViewBean.freezeAllowed}"
+                                            icon="/images/freeze.png">
+                            <af:showPopupBehavior popupId="popFreezeConfirm" triggerType="action"/>
+                        </af:commandMenuItem>
+                        <af:commandMenuItem text="#{bundle.ltcUnFreezeTag}" id="cmd23"
+                                            rendered="#{securityContext.userInRole['EstimatesTagFreezeLTC']}"
+                                            disabled="#{not bindings.TagIsFrozen.inputValue}"
+                                            icon="/images/unfreeze.png">
+                            <af:showPopupBehavior popupId="popUnfreezeConfirm" triggerType="action"/>
+                        </af:commandMenuItem>
+                    </af:menu>
+                </af:menuBar>
+            </af:panelGroupLayout>
+        </f:facet>
+        <f:facet name="content">
+            <af:panelStretchLayout id="content" styleClass="AFStretchWidth" topHeight="auto" dimensionsFrom="parent"
+                                   bottomHeight="0px" inlineStyle="height:100%;">
+                <f:facet name="top">
+                    <af:panelGroupLayout id="pgl3">
+                        <af:panelBox text="#{bundle.globalSummary}" rendered="#{ not empty bindings.TagId.inputValue}"
+                                     showDisclosure="false" type="flow" id="summary">
+                            <af:panelGridLayout id="pgl1">
+                                <af:gridRow marginTop="5px" height="auto" marginBottom="5px" id="gr1">
+                                    <af:gridCell marginStart="5px" width="50%" id="gc1">
+                                        <af:inputText value="#{bindings.TagName.inputValue}"
+                                                      label="#{bindings.TagName.hints.label}"
+                                                      required="#{bindings.TagName.hints.mandatory}"
+                                                      columns="#{bindings.TagName.hints.displayWidth}"
+                                                      maximumLength="#{bindings.TagName.hints.precision}"
+                                                      shortDesc="#{bindings.TagName.hints.tooltip}" id="it1"
+                                                      readOnly="true">
+                                            <f:validator binding="#{bindings.TagName.validator}"/>
+                                        </af:inputText>
+                                    </af:gridCell>
+                                    <af:gridCell marginStart="5px" width="50%" marginEnd="5px" id="gc4">
+                                        <af:inputText value="#{bindings.StartYear.inputValue}"
+                                                      label="#{bindings.StartYear.hints.label}" readOnly="true"
+                                                      id="it4"/>
+                                        <af:inputText value="#{bindings.NumberOfProfitYears.inputValue}"
+                                                      label="#{bindings.NumberOfProfitYears.hints.label}" readOnly="true"
+                                                      id="it6">
+                                        </af:inputText>                                                      
+                                    </af:gridCell>
+                                </af:gridRow>
+                                <af:gridRow marginTop="5px" height="auto" marginBottom="5px" id="gr2">
+                                    <af:gridCell marginStart="5px" width="50%" marginEnd="5px" id="gc2">
+                                        <af:inputText value="#{bindings.ReportDate.inputValue}"
+                                                      label="#{bindings.ReportDate.hints.label}" readOnly="true"
+                                                      id="it2"/>
+                                    </af:gridCell>
+                                    <af:gridCell marginStart="5px" width="50%" marginEnd="5px" id="gc3">
+                                        <af:inputText value="#{bindings.TagIsFrozen.inputValue? bundle.globalYes : bundle.globalNo}"
+                                                      label="#{bindings.TagIsFrozen.hints.label}" readOnly="true"
+                                                      id="it3"/>
+                                    </af:gridCell>
+                                </af:gridRow>
+                                <af:gridRow marginTop="5px" height="auto" marginBottom="5px" id="gr3">
+                                    <af:gridCell marginStart="5px" width="50%" marginEnd="5px" id="gc5">
+                                        <af:inputText value="#{bindings.PrefilFromProfitDate.inputValue}"
+                                                      label="#{bindings.PrefilFromProfitDate.hints.label}"
+                                                      readOnly="true" id="it5"/>
+                                    </af:gridCell>
+                                    <af:gridCell marginStart="5px" width="50%" marginEnd="5px" id="gc6">
+                                        <af:inputText value="#{bindings.CalculateProbDate.inputValue}"
+                                                      label="#{bindings.CalculateProbDate.hints.label}" readOnly="true"
+                                                      id="it7"/>
+                                    </af:gridCell>
+                                </af:gridRow>
+                            </af:panelGridLayout>
+                        </af:panelBox>
+                    </af:panelGroupLayout>
+                </f:facet>
+                <f:facet name="center">
+                    <af:panelBox text="#{bundle.ltcProcess}" showDisclosure="false"
+                                 rendered="#{ not empty bindings.TagId.inputValue}" type="stretch" id="processes"
+                                 styleClass="AFStretchWidth">
+                        <af:panelCollection id="pcol1" styleClass="AFStretchWidth"
+                                            featuresOff="detach viewMenu statusBar">
+                            <f:facet name="toolbar">
+                                <af:toolbar id="tlbPrc">
+                                    <af:group id="dc_g1">
+                                        <af:button text="#{bundle.ltcStart}" id="b1" action="ltc-planning-start"
+                                                   useWindow="true" windowHeight="600" windowWidth="950"
+                                                   rendered="#{securityContext.userInRole['EstimatesProcessStartLTC']}"
+                                                   immediate="true" icon="/images/start.png"
+                                                   disabled="#{bindings.TagIsFrozen.inputValue}"
+                                                   returnListener="#{ltcTagViewBean.onLtcStartReturn}"/>
+                                    </af:group>
+                                </af:toolbar>
+                            </f:facet>
+                            <af:table value="#{bindings.LtcProcessView.collectionModel}" var="row"
+                                      rows="#{bindings.LtcProcessView.rangeSize}"
+                                      emptyText="#{bindings.LtcProcessView.viewable ? 'No data to display.' : 'Access Denied.'}"
+                                      rowBandingInterval="0"
+                                      selectedRowKeys="#{bindings.LtcProcessView.collectionModel.selectedRow}"
+                                      rowSelection="none" fetchSize="#{bindings.LtcProcessView.rangeSize}" id="prcTab"
+                                      columnStretching="column:c1">
+                                <af:column headerText="#{bindings.LtcProcessView.hints.QualifiedName.label}" id="c1">
+                                    <af:outputText value="#{row.QualifiedName}"
+                                                   shortDesc="#{bindings.LtcProcessView.hints.QualifiedName.tooltip}"
+                                                   id="ot1"/>
+                                </af:column>
+                            </af:table>
+                        </af:panelCollection>
+                    </af:panelBox>
+                </f:facet>
+            </af:panelStretchLayout>
+        </f:facet>
+        <f:facet name="popup">
+            <af:group id="popups">
+                <af:popup id="popFreezeConfirm" contentDelivery="lazyUncached">
+                    <af:dialog id="d1" dialogListener="#{ltcTagViewBean.onTagFreezeConfirm}"
+                               title="#{bundle.ltcFreezeTag}">
+                        <af:panelBox text="#{bundle.globalSummary}" id="pb1" showDisclosure="false">
+                            <af:panelLabelAndMessage label="#{bindings.TagName.hints.label}" id="plam1">
+                                <af:outputText value="#{bindings.TagName.inputValue}"
+                                               shortDesc="#{bindings.TagName.hints.tooltip}" id="ot2"/>
+                            </af:panelLabelAndMessage>
+                        </af:panelBox>
+                        <af:message message="#{bundle.ltcFreezeTagConfirmation}" messageType="confirmation" id="m3"/>
+                    </af:dialog>
+                </af:popup>
+                <af:popup id="popUnfreezeConfirm" contentDelivery="lazyUncached">
+                    <af:dialog id="d12" type="okCancel" dialogListener="#{ltcTagViewBean.onTagUnfreezeConfirm}"
+                               title="#{bundle.ltcUnFreezeTag}">
+                        <af:panelBox text="#{bundle.globalSummary}" id="pb2" showDisclosure="false">
+                            <af:panelLabelAndMessage label="#{bindings.TagName.hints.label}" id="plam12">
+                                <af:outputText value="#{bindings.TagName.inputValue}"
+                                               shortDesc="#{bindings.TagName.hints.tooltip}" id="ot22"/>
+                            </af:panelLabelAndMessage>
+                        </af:panelBox>
+                        <af:message message="#{bundle.ltcUnfreezeTagConfirmation}" messageType="confirmation" id="m32"/>
+                    </af:dialog>
+                </af:popup>
+                <af:popup id="popPrefillProfitConfirm" contentDelivery="lazyUncached">
+                    <af:dialog dialogListener="#{ltcTagViewBean.onPrefillProfit}" title="#{bundle.ltcPrefillFromProfit}"
+                               id="d3">
+                        <af:panelBox text="#{bundle.globalSummary}" showDisclosure="false" id="pb7">
+                            <af:panelLabelAndMessage label="#{bindings.TagName.hints.label}" id="plam3">
+                                <af:outputText value="#{bindings.TagName.inputValue}"
+                                               shortDesc="#{bindings.TagName.hints.tooltip}" id="ot4"/>
+                            </af:panelLabelAndMessage>
+                        </af:panelBox>
+                        <af:message message="#{af:format2(bundle.ltcPrefillProFitConfirmation, bindings.ConfigurationViewIterator.viewObject.values['LAST-FCT-NUM'], bindings.ConfigurationViewIterator.viewObject.values['LAST-FCT-VER'])}"
+                                    messageType="confirmation" id="m6"/>
+                    </af:dialog>
+                </af:popup>
+                <af:popup id="popCalcProbConfirm" contentDelivery="lazyUncached">
+                    <af:dialog dialogListener="#{ltcTagViewBean.onCalcProb}" title="#{bundle.ltcReportLTC_FTE}" id="d2">
+                        <af:panelBox text="#{bundle.globalSummary}" showDisclosure="false" id="pb5">
+                            <af:panelLabelAndMessage label="#{bindings.TagName.hints.label}" id="plam2">
+                                <af:outputText value="#{bindings.TagName.inputValue}"
+                                               shortDesc="#{bindings.TagName.hints.tooltip}" id="ot3"/>
+                            </af:panelLabelAndMessage>
+                        </af:panelBox>
+                        <af:message message="#{bundle.ltcCalcProbConfirmation}" messageType="confirmation" id="m5"/>
+                    </af:dialog>
+                </af:popup>
+                <af:popup id="popReport" contentDelivery="lazyUncached"
+                          rendered="#{securityContext.userInRole['EstimatesProcessReport']}">
+                    <af:dialog id="dlgReport" title="#{bundle.ltcReportLTC_FTE}"
+                               dialogListener="#{ltcTagViewBean.onReport}" contentWidth="500">
+                        <af:panelBox text="#{bundle.globalSummary}" showDisclosure="false" type="flow" id="pb6">
+                            <af:panelFormLayout styleClass="AFStretchWidth" fieldWidth="100%" maxColumns="2" rows="2"
+                                                id="pfl3">
+                                <af:inputText label="#{bindings.TagName.hints.label}" value="#{bindings.TagName}"
+                                              readOnly="true" id="it8"/>
+                            </af:panelFormLayout>
+                        </af:panelBox>
+                        <af:message message="#{bundle.ltcTagReportConfirmation}" messageType="confirmation" id="m4"/>
+                    </af:dialog>
+                </af:popup>
+            </af:group>
+        </f:facet>
+        <f:attribute name="title" value="#{bundle.globalLTCPlanning}"/>
+    </af:pageTemplate>
+</jsp:root>

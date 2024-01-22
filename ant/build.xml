@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="IPMS" basedir=".." default="readme"
+	xmlns:oprisk="antlib:com.oprisk" xmlns:contrib="antlib:net.sf.antcontrib" xmlns:ora="antlib:net.sf.incanto">
+
+	<path id="classpath">
+		<fileset dir="ant/lib">
+			<include name="**/*.jar"/>
+			<!--include name="svnkit-1.10.0lib/*.jar"/-->
+		</fileset>
+	</path>
+	
+	<taskdef name="http" classname="org.missinglink.ant.task.http.HttpClientTask">
+		<classpath refid="classpath"/>
+	</taskdef>
+
+	<taskdef name="xpath" classname="net.uworks.andariel.XPath">
+		<classpath refid="classpath"/>
+	</taskdef>
+
+	<typedef resource="org/tigris/subversion/svnant/svnantlib.xml"/>
+	<svnSetting svnkit="true" javahl="false" id="svn.settings"/>
+
+	<property file="ant/ant.properties"/>
+
+	<!-- configuration -->
+	<target name="cfg">
+		<tstamp>
+			<format property="timestamp" pattern="yyyy-MM-dd_HH-mm-ss"/>
+		</tstamp>
+
+		<!--svn refid="svn.settings">
+			<wcversion path="dev" prefix="svn" />
+		</svn>
+		<mkdir dir="ant/log${svn.revision.max}"/-->
+		<mkdir dir="ant/log"/>
+		<record name="log/build_${timestamp}.log" action="start" />
+
+		<taskdef name="ojdeploy"
+				classname="oracle.jdeveloper.deploy.ant.OJDeployAntTask"
+				uri="oraclelib:OJDeployAntTask"
+				classpath="${oracle.jdeveloper}/jdev/lib/ant-jdeveloper.jar"/>
+	</target>
+
+	<!-- revision -->
+	<target name="rev">
+		<tstamp>
+			<format property="dtstamp" pattern="yyyy-MM-dd_hh-mm-ss-ms"/>
+		</tstamp>
+
+		<svn refid="svn.settings">
+			<wcversion path="dev" prefix="svn" />
+		</svn>
+
+		<property name="ipms.revision" value="${dtstamp}_r${svn.revision.max}"/>
+		<property name="ipms.revision" value="${dtstamp}"/>
+
+		<echo>SVN ProMIS revision: ${svn.revision.max}</echo>
+		<!--echo>Timestamp: ${dtstamp}</echo-->
+		<echo>ProMIS revision: ${ipms.revision}</echo>
+		<echo>Available commands in their preferred order of execution:
+				- make - build all components
+				- make.app - build only ADF
+				- make.mw - build all SOA components (MiddleWare)
+				- make.mds - build only MDS (metadata)
+		</echo>
+		<echo>Below still existing but obsolete methods:
+				- checkout - checkout all the source code from SVN
+				- collect - collect build components
+				- import - import build components into svn
+				- clean - clean all
+				- all - Do All: clean, checkout and make all
+		</echo>
+	</target>
+
+	<!-- checkout -->
+	<target name="checkout" depends="cfg">
+		<delete dir="dev" failonerror="false" />
+
+		<svn refid="svn.settings">
+			<checkout recurse="true" url="${svn.url}/dev" revision="${svn.revision}" destPath="dev" />
+		</svn>
+	</target>
+
+	<!-- make -->
+	<target name="make" depends="cfg,rev,make.mds,make.mw,make.app">
+	</target>
+
+	<!-- make -->
+	<target name="make.app" depends="cfg,rev">
+		<delete dir="dev/application/deploy" failonerror="false"/>
+
+		<copy file="ant/ipms-plan.xml" todir="dev/application/deploy" overwrite="true" />
+
+		<replaceregexp file="dev/application/view/public_html/WEB-INF/com.bayer.ipms.view/templates/ipms-page-template.jspx"
+				match='outputText id="revision" value="[^"]*"'
+				replace='outputText id="revision" value="${ipms.revision}"'
+				byline="true" />
+
+		<antcall target="role.mapping" inheritall="true"/>
+
+		<!--<replaceregexp file="dev/application/view/ipms.adf.view.jpr"
+				match='n="j2eeWebContextRoot" v="[^"]*"'
+				replace='n="j2eeWebContextRoot" v="${ipms.context}"'
+				byline="true" />-->
+
+		<replaceregexp file="dev/application/view/ipms.adf.view.jpr"
+				match='n="contextRoot" v="[^"]*"'
+				replace='n="contextRoot" v="${ipms.context}"'
+				byline="true" />
+
+		<!-- 
+		<value n="javaOptions" v="-Djbo.debugoutput=adflogger -Djbo.adflogger.level=INFO -Dredsamurai.audit=OFF"/>
+		Auditing Tool by RedSamurai should be enabled at server
+		-->
+		<replaceregexp file="dev/application/view/ipms.adf.view.jpr"
+				match='-Dredsamurai.audit=OFF"'
+				replace='-Dredsamurai.audit=${Dredsamurai.audit}"'
+				byline="true" />
+				
+		<antcall target="make.workspace" inheritall="true">
+			<param name="file" value="dev/application/ipms-app.jws"/>
+		</antcall>
+	</target>
+
+	<!-- make -->
+	<target name="make.mw" depends="cfg,rev">
+		<delete dir="dev/middleware/deploy" failonerror="false"/>
+
+		<property name="dev.dir" location="${basedir}/dev"/>
+
+		<copy file="ant/adf-config.xml" todir="dev/middleware/.adf/META-INF" overwrite="true">
+			<filterset>
+				<filter token="dev" value="${dev.dir}"/>
+			</filterset>
+		</copy>
+
+		<replace dir="dev/middleware" includes="**/*.jpr"
+				token="oracle.tip.tools.ide.fabric.deploy.sar.SarProfile"
+				value="oracle.jdeveloper.deploy.jar.ArchiveProfile"/>
+
+		<replace dir="dev/middleware/qplan" includes="**/*.wsdl"
+				token="http://soa.ipms:7011/soa-infra/services/default/mockup.qplan/QPlanMockService"
+				value="${qplan.service.url}"/>
+
+		<antcall target="make.workspace" inheritall="true">
+			<param name="file" value="dev/middleware/ipms-mw.jws"/>
+		</antcall>
+
+		<replace dir="dev/middleware" includes="**/*.jpr"
+				token="oracle.jdeveloper.deploy.jar.ArchiveProfile"
+				value="oracle.tip.tools.ide.fabric.deploy.sar.SarProfile"/>
+
+		<replace dir="dev/middleware/qplan" includes="**/*.wsdl"
+				token="${qplan.service.url}"
+				value="http://soa.ipms:7011/soa-infra/services/default/mockup.qplan/QPlanMockService"/>
+
+	</target>
+
+	<!-- make -->
+	<target name="make.mds" depends="cfg,rev">
+		<delete dir="dev/metadata/deploy" failonerror="false"/>
+
+		<antcall target="make.workspace" inheritall="true">
+			<param name="file" value="dev/metadata/ipms-mds.jws"/>
+		</antcall>
+	</target>
+
+	<!-- collect -->
+	<target name="collect" depends="cfg,rev">
+		<mkdir dir="bin/${ipms.revision}"/>
+
+		<copy todir="bin/${ipms.revision}/dev" overwrite="true" force="true">
+			<fileset dir="dev">
+				<include name="database/**"/>
+				<include name="reporting/**"/>
+				<include name="primavera/**"/>
+				<include name="metadata/deploy/*.zip"/>
+				<include name="metadata/deploy/*.zip"/>
+				<include name="metadata/deploy/*.zip"/>
+				<include name="metadata/deploy/*.zip"/>
+				<include name="metadata/deploy/*.zip"/>
+				<include name="middleware/deploy/*.zip"/>
+				<include name="application/deploy/*.ear"/>
+				<include name="application/deploy/*.xml"/>
+			</fileset>
+		</copy>
+
+		<copy todir="bin/${ipms.revision}/ant" overwrite="true" force="true">
+			<fileset dir="ant">
+				<exclude name="build.*"/>
+				<exclude name="*.log"/>
+				<exclude name="adf-config.xml"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<!-- import -->
+	<target name="import" depends="cfg,rev">
+		<svn refid="svn.settings">
+			<import path="bin/${ipms.revision}"
+					url="${svn.url}/bin/${ipms.revision}"
+					message="${ipms.revision}" />
+		</svn>
+	</target>
+
+	<!-- clean -->
+	<target name="clean" depends="cfg">
+		<delete includeEmptyDirs="true" dir="dev" failonerror="false"/>
+		<delete includeEmptyDirs="true" dir="bin" failonerror="false"/>
+	</target>
+
+	<!-- make.workspace(file) -->
+	<target name="make.workspace" depends="cfg">
+		<dirname property="oracle.workspace.dir" file="${file}"/>
+		<basename property="oracle.workspace.file" file="${file}"/>
+
+		<ora:ojdeploy xmlns:ora="oraclelib:OJDeployAntTask"
+				executable="${oracle.jdeveloper.ojdeploy.path}"
+				ora:buildscript="${oracle.workspace.dir}/ojdeploy/ojdeploy-build.xml"
+				ora:statuslog="${oracle.workspace.dir}/ojdeploy/ojdeploy-statuslog.xml">
+
+			<ora:deploy>
+				<ora:parameter name="workspace" value="${oracle.workspace.dir}/${oracle.workspace.file}"/>
+				<ora:parameter name="profile" value="*"/>
+				<ora:parameter name="nocompile" value="false"/>
+				<ora:parameter name="outputfile" value="${oracle.workspace.dir}/deploy/${profile.name}"/>
+			</ora:deploy>
+		</ora:ojdeploy>
+	</target>
+
+	<!-- role.mapping -->
+	<target name="role.mapping" depends="cfg,rev">
+		<replaceregexp file="dev/application/src/META-INF/jazn-data.xml"
+				match='\&lt;name\&gt;bhc.a.ipms_test_gpt\&lt;/name\&gt;'
+				replace='\&lt;name\&gt;${group.GPT}\&lt;/name>'
+				byline="true" />
+
+		<!--replaceregexp file="dev/application/src/META-INF/jazn-data.xml"
+				match='\&lt;name\&gt;bhc.a.ipms_test_gpt-planner\&lt;/name\&gt;'
+				replace='\&lt;name\&gt;${group.GPT_Planner}\&lt;/name>'
+				byline="true" /-->
+
+		<replaceregexp file="dev/application/src/META-INF/jazn-data.xml"
+				match='\&lt;name\&gt;bhc.a.ipms_test_gpdc\&lt;/name\&gt;'
+				replace='\&lt;name\&gt;${group.GPDC}\&lt;/name>'
+				byline="true" />
+
+		<replaceregexp file="dev/application/src/META-INF/jazn-data.xml"
+				match='\&lt;name\&gt;bhc.a.ipms_test_function\&lt;/name\&gt;'
+				replace='\&lt;name\&gt;${group.Function}\&lt;/name>'
+				byline="true" />
+
+		<replaceregexp file="dev/application/src/META-INF/jazn-data.xml"
+				match='\&lt;name\&gt;bhc.a.ipms_test_controller\&lt;/name\&gt;'
+				replace='\&lt;name\&gt;${group.Controlling}\&lt;/name>'
+				byline="true" />
+
+		<replaceregexp file="dev/application/src/META-INF/jazn-data.xml"
+				match='\&lt;name\&gt;bhc.a.ipms_test_pmo\&lt;/name\&gt;'
+				replace='\&lt;name\&gt;${group.PMO}\&lt;/name>'
+				byline="true" />
+
+		<!--replaceregexp file="dev/application/src/META-INF/jazn-data.xml"
+				match='\&lt;name\&gt;GPM-GPH-group\&lt;/name\&gt;'
+				replace='\&lt;name\&gt;${group.GPM_GPH}\&lt;/name>'
+				byline="true" /-->
+
+		<replaceregexp file="dev/application/src/META-INF/jazn-data.xml"
+				match='\&lt;name\&gt;bhc.a.ipms_test_gddoperations\&lt;/name\&gt;'
+				replace='\&lt;name\&gt;${group.GDD_Operations}\&lt;/name>'
+				byline="true" />
+				
+		<!--replaceregexp file="dev/application/src/META-INF/jazn-data.xml"
+				match='\&lt;name\&gt;bhc.a.ipms_test_early-research\&lt;/name\&gt;'
+				replace='\&lt;name\&gt;${group.Early_Research}\&lt;/name>'
+				byline="true" />
+				
+		<replaceregexp file="dev/application/src/META-INF/jazn-data.xml"
+				match='\&lt;name\&gt;bhc.a.ipms_test_d2-readonly\&lt;/name\&gt;'
+				replace='\&lt;name\&gt;${group.D2_ReadOnly}\&lt;/name>'
+				byline="true" />
+
+		<replaceregexp file="dev/application/src/META-INF/jazn-data.xml"
+				match='\&lt;name\&gt;bhc.a.ipms_test_le-steward\&lt;/name\&gt;'
+				replace='\&lt;name\&gt;${group.LE-Steward}\&lt;/name>'
+				byline="true" /-->
+
+		<replaceregexp file="dev/application/src/META-INF/jazn-data.xml"
+				match='\&lt;name\&gt;bhc.a.ipms_test_gdd-prc\&lt;/name\&gt;'
+				replace='\&lt;name\&gt;${group.GDD-PRC}\&lt;/name>'
+				byline="true" />
+
+		<replaceregexp file="dev/application/src/META-INF/jazn-data.xml"
+				match='\&lt;name\&gt;bbs.u.bhc.a.ipms_test_portfolio_readonly\&lt;/name\&gt;'
+				replace='\&lt;name\&gt;${group.PortfolioReadOnly}\&lt;/name>'
+				byline="true" />
+
+		<replaceregexp file="dev/application/src/META-INF/jazn-data.xml"
+				match='\&lt;name\&gt;bbs.u.bhc.a.ipms_test_d1_pcc\&lt;/name\&gt;'
+				replace='\&lt;name\&gt;${group.D1PCC}\&lt;/name>'
+				byline="true" />
+				
+		<replaceregexp file="dev/application/src/META-INF/jazn-data.xml"
+				match='\&lt;name\&gt;ef.a.promis_samd_test\&lt;/name\&gt;'
+				replace='\&lt;name\&gt;${group.SAMD}\&lt;/name>'
+				byline="true" />		
+				
+		<!-- Notify EMAIL Start, first two REPLACE commands commented out because they do the same as in the step 3 -->
+
+		<!--replaceregexp file="dev/application/src/META-INF/jazn-data.xml"
+				match='\&lt;name\&gt;bhc.a.ipms_test_notify_gddoperations\&lt;/name\&gt;'
+				replace='\&lt;name\&gt;${group.PublishedToFPSEmail}\&lt;/name>'
+				byline="true" />
+				
+		<replaceregexp file="dev/application/src/META-INF/jazn-data.xml"
+				match='\&lt;name\&gt;bhc.a.ipms_test_notify_gddoperations\&lt;/name\&gt;'
+				replace='\&lt;name\&gt;${group.ProjectCreatedEmail}\&lt;/name>'
+				byline="true" /-->
+				
+		<replaceregexp file="dev/application/src/META-INF/jazn-data.xml"
+				match='\&lt;name\&gt;bhc.a.ipms_test_notify_gddoperations\&lt;/name\&gt;'
+				replace='\&lt;name\&gt;${group.LoggedChangesEmail_1}\&lt;/name>'
+				byline="true" />
+				
+		<replaceregexp file="dev/application/src/META-INF/jazn-data.xml"
+				match='\&lt;name\&gt;bhc.a.ipms_test_notify_pmo\&lt;/name\&gt;'
+				replace='\&lt;name\&gt;${group.LoggedChangesEmail_2}\&lt;/name>'
+				byline="true" />
+				
+		<replaceregexp file="dev/application/src/META-INF/jazn-data.xml"
+				match='\&lt;name\&gt;bhc.a.ipms_test_notify_controlling\&lt;/name\&gt;'
+				replace='\&lt;name\&gt;${group.ReleasedCompletedPIDTEmail}\&lt;/name>'
+				byline="true" />
+				
+		<replaceregexp file="dev/application/src/META-INF/jazn-data.xml"
+				match='\&lt;name\&gt;bhc.a.ipms_test_notify_support\&lt;/name\&gt;'
+				replace='\&lt;name\&gt;${group.FailedImportEmail}\&lt;/name>'
+				byline="true" />
+
+		<!-- Notify EMAIL End-->
+	</target>
+
+	<!-- zipadf -->
+	<target name="zipadf">
+		<copy file="dev/application/deploy/ipms-plan.xml" todir="deploy/dev/application/deploy" overwrite="true" />
+		<copy file="dev/application/deploy/ipms-app.ear" todir="deploy/dev/application/deploy" overwrite="true" />
+		<copy todir="deploy/dev/database"><fileset dir="dev/database"/></copy>
+		<!--delete dir="dev" failonerror="false"/>
+		<move todir="dev"><fileset dir="devzip"/></move-->
+		<zip destfile="${basedir}/dev${svn.revision.max}.zip"><fileset dir="deploy"/></zip>
+		<delete dir="dev" failonerror="false"/>
+		<delete dir="deploy" failonerror="false"/>
+	</target>
+	
+	<!-- all -->
+	<target name="all" depends="clean,checkout,make">
+	</target>
+	
+	<!-- adf -->
+	<target name="adf" depends="clean,checkout,make.app,zipadf">
+	</target>
+
+</project>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ProjectModalityView"
+  Version="12.2.1.22.48"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="false"
+  RowClass="com.bayer.ipms.model.views.lookups.ProjectModalityViewRowImpl"
+  ComponentClass="com.bayer.ipms.model.base.IPMSViewObjectImpl"
+  PageIterMode="Full"
+  AccessMode="DEFAULT"
+  SelectList="ProjectModality.CODE, 
+       ProjectModality.NAME, 
+       ProjectModality.IS_ACTIVE, 
+       ProjectModality.CREATE_DATE, 
+       ProjectModality.UPDATE_DATE"
+  FromList="PROJECT_MODALITY ProjectModality"
+  OrderBy="ProjectModality.IS_ACTIVE desc,ProjectModality.NAME">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Access"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="com.bayer.ipms.model.views.lookups.ProjectModalityView_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <EntityUsage
+    Name="ProjectModality"
+    Entity="com.bayer.ipms.model.entities.lookups.ProjectModality"/>
+  <ViewAttribute
+    Name="Code"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Code"
+    EntityUsage="ProjectModality"
+    AliasName="CODE"/>
+  <ViewAttribute
+    Name="Name"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Name"
+    EntityUsage="ProjectModality"
+    AliasName="NAME"/>
+  <ViewAttribute
+    Name="IsActiveDB"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="IsActive"
+    EntityUsage="ProjectModality"
+    AliasName="IS_ACTIVE"/>
+  <ViewAttribute
+    Name="CreateDate"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="CreateDate"
+    EntityUsage="ProjectModality"
+    AliasName="CREATE_DATE"/>
+  <ViewAttribute
+    Name="UpdateDate"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="UpdateDate"
+    EntityUsage="ProjectModality"
+    AliasName="UPDATE_DATE"/>
+  <ViewAttribute
+    Name="IsActive"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="BIT"
+    AliasName="VIEW_ATTR"
+    SQLType="BIT"/>
+  <ViewAttribute
+    Name="Description"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.bayer.ipms.model.bundles.modelBundle"/>
+  </ResourceBundle>
+</ViewObject>

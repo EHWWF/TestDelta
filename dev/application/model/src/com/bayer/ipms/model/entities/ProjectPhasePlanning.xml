@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ProjectPhasePlanning"
+  Version="12.2.1.0.31"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="PROJECT_PHASE_PLANNING"
+  AliasName="ProjectPhasePlanning"
+  BindingStyle="OracleName"
+  RowClass="com.bayer.ipms.model.base.IPMSEntityImpl">
+  <Attribute
+    Name="Id"
+    ColumnName="ID"
+    SQLType="NUMERIC"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="PROJECT_PHASE_PLANNING"
+    PrimaryKey="true"
+    Precision="20"
+    RetrievedOnInsert="true"
+    IsUpdateable="false"
+    Scale="0"/>
+  <Attribute
+    Name="ProjectId"
+    IsNotNull="true"
+    ColumnName="PROJECT_ID"
+    SQLType="STRUCT"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="PROJECT_PHASE_PLANNING"
+    Precision="20"
+    Scale="0"/>
+  <Attribute
+    Name="PhasePlanningCode"
+    Precision="10"
+    ColumnName="PHASE_PLANNING_CODE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="PROJECT_PHASE_PLANNING"
+    Scale="0">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </Attribute>
+  <Key
+    Name="PrjPhasePlanPk"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PRJ_PHASE_PLAN_PK"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.ProjectPhasePlanning.Id"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="PrjPhasePlanCodeFk">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="PHASE_PLANNING_TYPE_PK"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="PRJ_PHASE_PLAN_CODE_FK"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.ProjectPhasePlanning.PhasePlanningCode"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="PrjPhasePlanProjectIdFk">
+    <DesignTime>
+      <Attr Name="_isCascadeDelete" Value="true"/>
+      <Attr Name="_referencedKey" Value="SYS_C008277"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="PRJ_PHASE_PLAN_PROJECT_ID_FK"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.ProjectPhasePlanning.ProjectId"/>
+    </AttrArray>
+  </Key>
+</Entity>

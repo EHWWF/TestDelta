@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.64.93" id="import_studyPageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="Root.ImportAppModule.ImportView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="10"
+              id="ImportViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator Binds="Root.ImportAppModule.ProjectView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="10"
+              id="ProjectViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator Binds="Root.ImportAppModule.ImportStudyDataView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="25"
+              id="ImportStudyDataViewIterator" ChangeEventPolicy="ppr"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="ImportViewIterator" id="ImportStatusName">
+      <AttrNames>
+        <Item Value="StatusName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ImportViewIterator" id="ImportIsSyncing">
+      <AttrNames>
+        <Item Value="IsSyncing"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProjectViewIterator" id="ProjectCode">
+      <AttrNames>
+        <Item Value="Code"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProjectViewIterator" id="ProjectName">
+      <AttrNames>
+        <Item Value="Name"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProjectViewIterator" id="ProjectIsLead">
+      <AttrNames>
+        <Item Value="IsLead"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ImportViewIterator" id="ImportStatusCode">
+      <AttrNames>
+        <Item Value="StatusCode"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="ImportStudyDataViewIterator" id="ImportStudyDataView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.imports.ImportStudyDataView"
+                      Name="ImportStudyDataView0">
+        <AttrNames>
+          <Item Value="Name"/>
+          <Item Value="StudyId"/>
+          <Item Value="StartDate"/>
+          <Item Value="FinishDate"/>
+          <Item Value="ActionCode"/>
+          <Item Value="StatusName"/>
+          <Item Value="OldFinishDate"/>
+          <Item Value="OldStartDate"/>
+          <Item Value="StatusCode"/>
+          <Item Value="IsExisting"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+  </bindings>
+</pageDefinition>

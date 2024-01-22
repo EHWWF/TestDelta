@@ -1,0 +1,1 @@
+drop view project_relation_vw;

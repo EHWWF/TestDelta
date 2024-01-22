@@ -1,0 +1,47 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
+<wsdl:definitions
+     name="UpdateTimeline"
+     targetNamespace="http://xmlns.bayer.com/ipms/soa"
+     xmlns:ns2="http://xmlns.bayer.com/ipms/cache"
+     xmlns:ns1="http://xmlns.bayer.com/ipms/soa"
+     xmlns:plnk="http://schemas.xmlsoap.org/ws/2003/05/partner-link/"
+     xmlns:client="http://xmlns.bayer.com/ipms/soa"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    >
+    <plnk:partnerLinkType name="UpdateTimeline">
+        <plnk:role name="UpdateTimelineProvider">
+            <plnk:portType name="client:UpdateTimeline"/>
+        </plnk:role>
+        <plnk:role name="UpdateTimelineRequester">
+            <plnk:portType name="client:UpdateTimelineCallback"/>
+        </plnk:role>
+    </plnk:partnerLinkType>
+    <wsdl:types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://xmlns.bayer.com/ipms/cache"
+             xmlns:ns1="http://xmlns.bayer.com/ipms/soa" xmlns:plnk="http://schemas.xmlsoap.org/ws/2003/05/partner-link/"
+             xmlns:client="http://xmlns.bayer.com/ipms/soa" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            <import namespace="http://xmlns.bayer.com/ipms/soa" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/soa/soa.xsd"/>
+        </schema>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://xmlns.bayer.com/ipms/cache"
+             xmlns:ns1="http://xmlns.bayer.com/ipms/soa" xmlns:plnk="http://schemas.xmlsoap.org/ws/2003/05/partner-link/"
+             xmlns:client="http://xmlns.bayer.com/ipms/soa" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            <xsd:import namespace="http://xmlns.bayer.com/ipms/cache" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/cache/cache.xsd"/>
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:message name="UpdateTimelineResponseMessage">
+        <wsdl:part name="payload" element="ns1:response"/>
+    </wsdl:message>
+    <wsdl:message name="UpdateTimelineRequestMessage">
+        <wsdl:part name="payload" element="ns1:update"/>
+    </wsdl:message>
+    <wsdl:portType name="UpdateTimelineCallback">
+        <wsdl:operation name="callback">
+            <wsdl:input message="ns1:UpdateTimelineResponseMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:portType name="UpdateTimeline">
+        <wsdl:operation name="process">
+            <wsdl:input message="ns1:UpdateTimelineRequestMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+</wsdl:definitions>

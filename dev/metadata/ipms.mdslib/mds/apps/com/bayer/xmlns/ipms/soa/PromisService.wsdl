@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<wsdl:definitions
+     name="ServiceMediator"
+     targetNamespace="http://xmlns.bayer.com/ipms/soa"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+     xmlns:inp1="http://xmlns.bayer.com/ipms/soa"
+     xmlns:tns="http://xmlns.bayer.com/ipms/soa"
+     xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    >
+    <wsdl:documentation>
+        <abstractWSDL>http://soa.ipms:7011/soa-infra/services/default/ipms.soa!9.6/ServiceMediator.wsdl</abstractWSDL>
+    </wsdl:documentation>
+<wsp:Policy xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" wsu:Id="wsaddr_policy" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy">
+   <wsaw:UsingAddressing xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl"/>
+</wsp:Policy>    <wsdl:types>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:import namespace="http://xmlns.bayer.com/ipms/soa" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/soa/soa.xsd"/>
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:message name="callbackMessage">
+        <wsdl:part name="callback" element="inp1:response"/>
+    </wsdl:message>
+    <wsdl:message name="requestMessage">
+        <wsdl:part name="request" element="inp1:request"/>
+    </wsdl:message>
+    <wsdl:portType name="callback_ptt">
+        <wsdl:operation name="callback">
+            <wsdl:input message="inp1:callbackMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:portType name="execute_ptt">
+        <wsdl:operation name="execute">
+            <wsdl:input message="inp1:requestMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="execute_pttBinding" type="inp1:execute_ptt">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+      <wsp:PolicyReference xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" URI="#wsaddr_policy" wsdl:required="false"/>
+        <wsdl:operation name="execute">
+            <soap:operation style="document" soapAction="execute"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="callback_pttBinding" type="inp1:callback_ptt">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="callback">
+            <soap:operation style="document" soapAction="callback"/>
+            <wsdl:input>
+                <soap:body use="literal" namespace="http://xmlns.bayer.com/ipms/soa"/>
+            </wsdl:input>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="ServiceMediator_ep">
+        <wsdl:port name="execute_pt" binding="inp1:execute_pttBinding">
+            <soap:address location="http://soa.ipms:7011/soa-infra/services/default/ipms.soa/PromisService"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

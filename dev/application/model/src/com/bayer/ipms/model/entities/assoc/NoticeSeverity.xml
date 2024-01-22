@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="windows-1257" ?>
+<!DOCTYPE Association SYSTEM "jbo_03_01.dtd">
+<!---->
+<Association
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="NoticeSeverity"
+  Version="11.1.1.61.92"
+  InheritPersonalization="true">
+  <DesignTime>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <AssociationEnd
+    Name="NoticeSeverity"
+    Cardinality="1"
+    Source="true"
+    Owner="com.bayer.ipms.model.entities.lookups.NoticeSeverity"
+    LockLevel="NONE"
+    ExposedAccessor="false">
+    <DesignTime>
+      <Attr Name="_aggregation" Value="0"/>
+      <Attr Name="_finderName" Value="NoticeSeverity"/>
+      <Attr Name="_foreignKey"
+        Value="com.bayer.ipms.model.entities.lookups.NoticeSeverity.SysC0012519"/>
+      <Attr Name="_isUpdateable" Value="true"/>
+      <Attr Name="_minCardinality" Value="1"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.lookups.NoticeSeverity.Code"/>
+    </AttrArray>
+  </AssociationEnd>
+  <AssociationEnd
+    Name="Notice"
+    Cardinality="-1"
+    Owner="com.bayer.ipms.model.entities.Notice"
+    ExposedAccessor="false">
+    <DesignTime>
+      <Attr Name="_aggregation" Value="0"/>
+      <Attr Name="_finderName" Value="Notice"/>
+      <Attr Name="_foreignKey"
+        Value="com.bayer.ipms.model.entities.Notice.SysC0012527"/>
+      <Attr Name="_isUpdateable" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.Notice.SeverityCode"/>
+    </AttrArray>
+  </AssociationEnd>
+</Association>

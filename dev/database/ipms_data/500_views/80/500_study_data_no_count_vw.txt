@@ -1,0 +1,77 @@
+create or replace view study_data_no_count_vw as
+select
+	xt.project_id,
+	xt.timeline_id,
+	xt.timeline_type_code,
+	xt.wbs_id,
+	xt.study_id,
+	xt.study_id as id,
+	xt.code,
+	xt.name,
+	xt.start_date,
+	xt.finish_date,
+	xt.study_phase as phase,
+	xt.placeholder,
+	case
+		when trunc(nvl(fp.milestone_date, xt.start_date)) <= trunc(last_day(sysdate))
+		then 'RUN'
+		when trunc(nvl(fp.milestone_date, xt.start_date)) <= trunc(last_day(add_months(sysdate,cs.value)))
+		then 'COMM'
+		when trunc(nvl(fp.milestone_date, xt.start_date)) > trunc(last_day(add_months(sysdate,cs.value))) or xt.placeholder=0 and fp.milestone_date is null
+		then 'PLAN'
+		else 'OTHER'
+	end as status_code,
+	-1 as wbs_count,
+	fp.milestone_date as fpfv,
+	lp.milestone_date as lplv,
+	dmc_actual.milestone_date as dmc_actual,
+	dmc_plan.milestone_date as dmc_plan,
+	nvl(st.is_obligation,0) as is_obligation,
+	nvl(st.is_probing,0) as is_probing,
+	nvl(st.is_gpdc_approved,0) as is_gpdc_approved,
+	st.plan_patients,
+	st.actual_patients
+from
+	timeline_wbs_vw xt
+	join configuration cs on cs.code='STD-MM'
+	left join study st on st.project_id=xt.project_id and st.id=xt.study_id
+	left join (
+		select
+			ms.timeline_id,
+			ms.wbs_id,
+			ms.milestone_date,
+			row_number() over(partition by ms.timeline_id,ms.wbs_id order by ms.milestone_date desc) as rn
+		from milestone_vw ms
+		join configuration cf on cf.code='FPFV' and lower(cf.value)=lower(ms.milestone_id)
+	) fp on fp.timeline_id=xt.timeline_id and fp.wbs_id=xt.wbs_id and fp.rn=1
+	left join (
+		select
+			ms.timeline_id,
+			ms.wbs_id,
+			ms.milestone_date,
+			row_number() over(partition by ms.timeline_id,ms.wbs_id order by ms.milestone_date desc) as rn
+		from milestone_vw ms
+		join configuration cf on cf.code='LPLV' and lower(cf.value)=lower(ms.milestone_id)
+	) lp on lp.timeline_id=xt.timeline_id and lp.wbs_id=xt.wbs_id and lp.rn=1
+	left join (
+		select
+			ms.timeline_id,
+			ms.wbs_id,
+			ms.actual_date as milestone_date,
+			row_number() over(partition by ms.timeline_id,ms.wbs_id order by ms.actual_date desc) as rn
+		from milestone_vw ms
+		join configuration cf on cf.code='DMC' and lower(cf.value)=lower(ms.milestone_id)
+		where ms.actual_date is not null
+	) dmc_actual on dmc_actual.timeline_id=xt.timeline_id and dmc_actual.wbs_id=xt.wbs_id and dmc_actual.rn=1
+	left join (
+		select
+			ms.timeline_id,
+			ms.wbs_id,
+			ms.plan_date as milestone_date,
+			row_number() over(partition by ms.timeline_id,ms.wbs_id order by ms.plan_date desc) as rn
+		from milestone_vw ms
+		join configuration cf on cf.code='DMC' and lower(cf.value)=lower(ms.milestone_id)
+		where ms.actual_date is null
+	) dmc_plan on dmc_plan.timeline_id=xt.timeline_id and dmc_plan.wbs_id=xt.wbs_id and dmc_plan.rn=1
+where xt.study_id is not null;
+/

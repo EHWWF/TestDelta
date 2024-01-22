@@ -1,0 +1,196 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+   
+        <c:set var="bundle" value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+         <af:poll id="poll1" interval="10"
+            pollListener="#{pageFlowScope.projectViewBean.expandTopProjectTree}">
+            <af:clientListener method="resetPollInterval" type="poll"/>
+        </af:poll>
+     
+            <af:subform id="prjtopcurrent">
+            <af:resource type="css">
+                .depth0 {
+                    background-color: #E8E8F0;
+                }
+
+                .depth1 {
+                    background-color: #F0F0F4;
+                }
+
+                .depth2 {
+                    background-color: #F8F8F8;
+                }
+
+                .usp {
+                    color: #D00000
+                }
+            </af:resource>
+            <af:panelBox showDisclosure="false" type="stretch" styleClass="AFStretchWidth" binding="#{pageFlowScope.projectViewBean.rootComponent}">
+                   <f:facet name="toolbar">
+                            <af:toolbar>
+                                <af:commandToolbarButton rendered="#{rolesBean.TOPEditDev and bindings.TopCurrentCreateDate.inputValue ne null}"
+                                                         icon="/images/edit.png" immediate="true"
+                                                         text="#{bundle.globalEdit}" id="ctb_cr"
+                                                         action="edit-top">
+                                </af:commandToolbarButton>
+                            </af:toolbar>
+                        </f:facet>
+                        
+                <af:panelStretchLayout id="dc_psl1" topHeight="85px">
+                    <f:facet name="center">
+                        <af:panelSplitter id="dc_ps1" orientation="vertical" splitterPosition="85">
+                            <f:facet name="first">
+                                <af:panelFormLayout id="pfl1" rows="2" fieldWidth="100%"
+                                                    rendered="#{not empty bindings.TopCurrentVersion.inputValue}">
+                                    <af:inputText value="#{bindings.TopCurrentName.inputValue}Florinxx" readOnly="true"
+                                                  label="#{bindings.TopCurrentName.hints.label}" id="dc_it1"
+                                                  maximumLength="#{bindings.TopCurrentName.hints.precision}"
+                                                  rows="#{bindings.TopCurrentName.hints.displayHeight}"
+                                                  columns="#{bindings.TopCurrentName.hints.displayWidth}"
+                                                  dimensionsFrom="parent"
+                                                  shortDesc="#{bindings.TopCurrentName.hints.tooltip}">
+                                        <f:validator binding="#{bindings.TopCurrentName.validator}"/>
+                                    </af:inputText>
+                                    <af:inputDate value="#{bindings.TopCurrentApprovalDate.inputValue}" readOnly="true"
+                                                  label="#{bindings.TopCurrentApprovalDate.hints.label}" id="dc_id1"
+                                                  columns="#{bindings.TopCurrentApprovalDate.hints.displayWidth}"
+                                                  shortDesc="#{bindings.TopCurrentApprovalDate.hints.tooltip}">
+                                        <f:validator binding="#{bindings.TopCurrentApprovalDate.validator}"/>
+                                        <af:convertDateTime pattern="#{bindings.TopCurrentApprovalDate.format}"/>
+                                    </af:inputDate>
+                                    <af:inputText value="#{bindings.TopCurrentDescription.inputValue}" readOnly="true"
+                                                  label="#{bindings.TopCurrentDescription.hints.label}" id="dc_it2"
+                                                  rows="#{bindings.TopCurrentDescription.hints.displayHeight}"
+                                                  columns="#{bindings.TopCurrentDescription.hints.displayWidth}"
+                                                  maximumLength="#{bindings.TopCurrentDescription.hints.precision}"
+                                                  shortDesc="#{bindings.TopCurrentDescription.hints.tooltip}">
+                                        <f:validator binding="#{bindings.TopCurrentDescription.validator}"/>
+                                    </af:inputText>
+                                </af:panelFormLayout>
+                            </f:facet>
+                            <f:facet name="second">
+                                <af:panelGroupLayout layout="scroll" id="content">
+                                    <af:panelBox text="#{bundle.programTopNonIndicationData}" showDisclosure="false" type="stretch" id="dc_pb1" 
+                                                 styleClass="AFStretchWidth"
+                                                 rendered="#{bindings.TopCurrentCreateDate.inputValue ne null}">
+                                        <af:panelCollection id="dc_pc1"
+                                                            featuresOff="detach statusBar showAsTopToolbarItem">
+                                            <af:treeTable value="#{bindings.ProgramTopNonIndVersionCategoryView.treeModel}" initiallyExpanded="true"
+                                                          rendered="#{bindings.TopCurrentCreateDate.inputValue ne null}"
+                                                          var="node" columnStretching="multiple"
+                                                          fetchSize="#{bindings.ProgramTopNonIndVersionCategoryView.rangeSize}"
+                                                          rowSelection="none" id="prjTopNonIndtab"
+                                                          contentDelivery="immediate"
+                                                          binding="#{pageFlowScope.projectViewBean.prjTopNonIndtabTree}">
+                                                <f:facet name="nodeStamp">
+                                                    <af:column id="dc_c9" width="250" minimumWidth="150"
+                                                               styleClass="depth#{bindings.ProgramTopNonIndVersionCategoryView.treeModel.depth mod 3}">
+                                                        <af:outputText value="#{node.Name} #{node.IsActive or bindings.ProgramTopNonIndVersionCategoryView.treeModel.depth > 1?'':bundle.programTopInactive}"
+                                                                       id="dc_ot12"
+                                                                       inlineStyle="color:#{node.IsActive?'inherit':'#808080'};"/>
+                                                    </af:column>
+                                                </f:facet>
+                                                <f:facet name="pathStamp">
+                                                    <af:outputText value="#{node}" id="dc_ot11"/>
+                                                </f:facet>
+                                                <af:column id="dc_c10" headerText="#{bundle.programTopValue}"
+                                                           styleClass="depth#{bindings.ProgramTopNonIndVersionCategoryView.treeModel.depth mod 3}"
+                                                           width="18%" noWrap="false">
+                                                    <af:outputText value="#{node.Indication1}" id="dc_ot10"
+                                                                   styleClass="#{node.Indication1 ? 'usp' : ''}"
+                                                                   shortDesc="#{bindings.ProgramTopNonIndVersionCategoryView.hints.ProgramTopVersionSubCategoryView.ProgramTopValuesView.Indication1.tooltip}"/>
+                                                </af:column>
+                                            </af:treeTable>
+                                        </af:panelCollection>
+                                    </af:panelBox>
+                                    <af:panelBox text="#{bundle.programTopIndicationData}" showDisclosure="false" type="stretch" id="dc_pb2"
+                                                 styleClass="AFStretchWidth AFStretchHeight"
+                                                 rendered="#{bindings.TopCurrentCreateDate.inputValue ne null}">
+                                        <af:panelCollection id="pc1"
+                                                            featuresOff="detach statusBar showAsTopToolbarItem">
+                                            <af:treeTable value="#{bindings.ProgramTopVersionCategoryView.treeModel}"
+                                                          rendered="#{bindings.TopCurrentCreateDate.inputValue ne null}"
+                                                          id="prjtoptab" var="node" contentDelivery="immediate" initiallyExpanded="true"
+                                                          columnStretching="multiple" rowSelection="none"
+                                                          fetchSize="#{bindings.ProgramTopVersionCategoryView.rangeSize}"
+                                                          binding="#{pageFlowScope.projectViewBean.prjtoptab}">
+                                                <f:facet name="nodeStamp">
+                                                    <af:column id="c111" width="250" minimumWidth="150"
+                                                               styleClass="depth#{bindings.ProgramTopVersionCategoryView.treeModel.depth mod 3}">
+                                                        <af:outputText value="#{node.Name} #{node.IsActive or bindings.ProgramTopVersionCategoryView.treeModel.depth > 1?'':bundle.programTopInactive}"
+                                                                       id="ot111"
+                                                                       inlineStyle="color:#{node.IsActive?'inherit':'#808080'};"/>
+                                                    </af:column>
+                                                </f:facet>
+                                                <f:facet name="pathStamp">
+                                                    <af:outputText value="#{node}" id="dc_ot2"/>
+                                                </f:facet>
+                                                <af:column id="dc_c1" headerText="#{bundle.programTopIndication1}"
+                                                           styleClass="depth#{bindings.ProgramTopVersionCategoryView.treeModel.depth mod 3}"
+                                                           width="18%" noWrap="false">
+                                                    <af:outputText value="#{node.Indication1}" id="dc_ot1"
+                                                                   styleClass="#{node.Indication1 ? 'usp' : ''}"
+                                                                   shortDesc="#{bindings.ProgramTopVersionCategoryView.hints.ProgramTopVersionSubCategoryView.ProgramTopValuesView.Indication1.tooltip}"/>
+                                                </af:column>
+                                                <af:column id="dc_c2" headerText="#{bundle.programTopIndication2}"
+                                                           styleClass="depth#{bindings.ProgramTopVersionCategoryView.treeModel.depth mod 3}"
+                                                           width="18%" noWrap="false">
+                                                    <af:outputText value="#{node.Indication2}" id="dc_ot3"
+                                                                   styleClass="#{node.Indication2 ? 'usp' : ''}"
+                                                                   shortDesc="#{bindings.ProgramTopVersionCategoryView.hints.ProgramTopVersionSubCategoryView.ProgramTopValuesView.Indication2.tooltip}"/>
+                                                </af:column>
+                                                <af:column id="dc_c3" headerText="#{bundle.programTopIndication3}"
+                                                           styleClass="depth#{bindings.ProgramTopVersionCategoryView.treeModel.depth mod 3}"
+                                                           width="18%" noWrap="false">
+                                                    <af:outputText value="#{node.Indication3}" id="dc_ot4"
+                                                                   styleClass="#{node.Indication3 ? 'usp' : ''}"
+                                                                   shortDesc="#{bindings.ProgramTopVersionCategoryView.hints.ProgramTopVersionSubCategoryView.ProgramTopValuesView.Indication3.tooltip}"/>
+                                                </af:column>
+                                                <af:column id="dc_c4" headerText="#{bundle.programTopIndication4}"
+                                                           styleClass="depth#{bindings.ProgramTopVersionCategoryView.treeModel.depth mod 3}"
+                                                           width="18%" noWrap="false">
+                                                    <af:outputText value="#{node.Indication4}" id="dc_ot5"
+                                                                   styleClass="#{node.Indication4 ? 'usp' : ''}"
+                                                                   shortDesc="#{bindings.ProgramTopVersionCategoryView.hints.ProgramTopVersionSubCategoryView.ProgramTopValuesView.Indication4.tooltip}"/>
+                                                </af:column>
+                                                <af:column id="dc_c5" headerText="#{bundle.programTopIndication5}"
+                                                           styleClass="depth#{bindings.ProgramTopVersionCategoryView.treeModel.depth mod 3}"
+                                                           width="18%" noWrap="false">
+                                                    <af:outputText value="#{node.Indication5}" id="dc_ot6"
+                                                                   styleClass="#{node.Indication5 ? 'usp' : ''}"
+                                                                   shortDesc="#{bindings.ProgramTopVersionCategoryView.hints.ProgramTopVersionSubCategoryView.ProgramTopValuesView.Indication5.tooltip}"/>
+                                                </af:column>
+                                                <af:column id="dc_c6" headerText="#{bundle.programTopIndication6}"
+                                                           styleClass="depth#{bindings.ProgramTopVersionCategoryView.treeModel.depth mod 3}"
+                                                           width="18%" noWrap="false">
+                                                    <af:outputText value="#{node.Indication6}" id="dc_ot7"
+                                                                   styleClass="#{node.Indication6 ? 'usp' : ''}"
+                                                                   shortDesc="#{bindings.ProgramTopVersionCategoryView.hints.ProgramTopVersionSubCategoryView.ProgramTopValuesView.Indication6.tooltip}"/>
+                                                </af:column>
+                                                <af:column id="dc_c7" headerText="#{bundle.programTopIndication7}"
+                                                           styleClass="depth#{bindings.ProgramTopVersionCategoryView.treeModel.depth mod 3}"
+                                                           width="18%" noWrap="false">
+                                                    <af:outputText value="#{node.Indication7}" id="dc_ot8"
+                                                                   styleClass="#{node.Indication7 ? 'usp' : ''}"
+                                                                   shortDesc="#{bindings.ProgramTopVersionCategoryView.hints.ProgramTopVersionSubCategoryView.ProgramTopValuesView.Indication7.tooltip}"/>
+                                                </af:column>
+                                                <af:column id="dc_c8" headerText="#{bundle.programTopIndication8}"
+                                                           styleClass="depth#{bindings.ProgramTopVersionCategoryView.treeModel.depth mod 3}"
+                                                           width="18%" noWrap="false">
+                                                    <af:outputText value="#{node.Indication8}" id="dc_ot9"
+                                                                   styleClass="#{node.Indication8 ? 'usp' : ''}"
+                                                                   shortDesc="#{bindings.ProgramTopVersionCategoryView.hints.ProgramTopVersionSubCategoryView.ProgramTopValuesView.Indication8.tooltip}"/>
+                                                </af:column>
+                                            </af:treeTable>
+                                        </af:panelCollection>
+                                    </af:panelBox>
+                                </af:panelGroupLayout>
+                            </f:facet>
+                        </af:panelSplitter>
+                    </f:facet>
+                </af:panelStretchLayout>
+            </af:panelBox>
+        </af:subform>
+  
+</jsp:root>

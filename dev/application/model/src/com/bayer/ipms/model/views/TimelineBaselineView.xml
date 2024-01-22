@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="TimelineBaselineView"
+  Version="12.2.1.0.31"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="com.bayer.ipms.model.views.TimelineBaselineViewRowImpl"
+  ComponentClass="com.bayer.ipms.model.views.TimelineBaselineViewImpl"
+  PageIterMode="Full"
+  RowInterface="com.bayer.ipms.model.views.common.TimelineBaselineViewRow">
+  <DesignTime>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|VarAccess"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="com.bayer.ipms.model.views.TimelineBaselineView_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <SQLQuery><![CDATA[select row_number() over(partition by timeline.id order by timeline.project_id, decode(type_code,'RAW',1,'CUR',2,'APR',3,0), timelinebaseline.id) as timeline_level,      
+	timeline.id as timeline_id,      
+	timeline.id ||'-'||timelinebaseline.id  as tree_id,      
+	TimelineBaseline.id as Timeline_Baseline_Id,                                  
+	TimelineBaseline.CREATE_DATE_P6 AS Baseline_Version,                                  
+	Timeline.REFERENCE_ID,                                  
+	BaselineType.Name as Baseline_Type,                                         
+	TimelineBaseline.DESCRIPTION as Baseline_Description,                                  
+	Timeline.NAME,                                   
+	Timeline.PROJECT_ID,                                   
+	Timeline.TYPE_CODE,                                   
+	Timeline.CREATE_DATE,                                   
+	Timeline.UPDATE_DATE,                                   
+	timeline.sync_date,                                   
+	Timeline.IS_SYNCING,      
+	Timeline.COMMENTS,      
+        TimelineBaseline.ltci_id as baseline_ltci_id,   
+	ltcinstance.excel_report,      
+	TimelineBaseline.ltc_process_id,    
+        ltcprocess.ltc_tag_id, 
+        ltcprocess.process_description 
+FROM  TIMELINE Timeline                                   
+join  TIMELINE_TYPE TimelineType on Timeline.TYPE_CODE = TimelineType.CODE                                  
+join  TIMELINE_BASELINE TimelineBaseline on TimelineBaseline.TIMELINE_ID = Timeline.ID                                  
+left join  BASELINE_TYPE BaselineType on BaselineType.ID = TimelineBaseline.baseline_type_id           
+left join ltc_instance ltcinstance on ltcinstance.id = timelinebaseline.ltci_id       
+left join ltc_process ltcprocess on ltcprocess.id = timelinebaseline.ltc_process_id 
+order by TimelineBaseline.CREATE_DATE_P6 DESC]]></SQLQuery>
+  <ViewAttribute
+    Name="TimelineLevel"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="TIMELINE_LEVEL"
+    Expression="TIMELINE_LEVEL"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TimelineId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    IsNotNull="true"
+    PrecisionRule="true"
+    Precision="20"
+    Scale="0"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="TIMELINE_ID"
+    Expression="TIMELINE_ID"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TreeId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="60"
+    Scale="0"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="TREE_ID"
+    Expression="TREE_ID"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="60"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TimelineBaselineId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="20"
+    Scale="0"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="TIMELINE_BASELINE_ID"
+    Expression="TIMELINE_BASELINE_ID"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="BaselineVersion"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.sql.Timestamp"
+    ColumnType="DATE"
+    AliasName="BASELINE_VERSION"
+    Expression="BASELINE_VERSION"
+    SQLType="TIMESTAMP">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="7"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.TimelineBaselineView.BaselineVersion_LABEL"/>
+        <FMT_FORMAT
+          ResId="com.bayer.ipms.model.views.TimelineBaselineView.BaselineVersion_FMT_FORMAT"/>
+        <FMT_FORMATTER
+          ResId="com.bayer.ipms.model.views.TimelineBaselineView.BaselineVersion_FMT_FORMATTER"/>
+        <CONTROLTYPE
+          Value="date"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ReferenceId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="20"
+    Scale="0"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="REFERENCE_ID"
+    Expression="REFERENCE_ID"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.TimelineBaselineView.ReferenceId_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="BaselineType"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Scale="0"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="BASELINE_TYPE"
+    Expression="BASELINE_TYPE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.TimelineBaselineView.BaselineType_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="BaselineDescription"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="500"
+    Scale="0"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="BASELINE_DESCRIPTION"
+    Expression="BASELINE_DESCRIPTION"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="500"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.TimelineBaselineView.BaselineDescription_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Name"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="100"
+    Scale="0"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="NAME"
+    Expression="NAME"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ProjectId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="20"
+    Scale="0"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="PROJECT_ID"
+    Expression="PROJECT_ID"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TypeCode"
+    IsUpdateable="false"
+    IsPersistent="false"
+    IsNotNull="true"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="TYPE_CODE"
+    Expression="TYPE_CODE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CreateDate"
+    IsUpdateable="false"
+    IsPersistent="false"
+    IsNotNull="true"
+    PrecisionRule="true"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    AliasName="CREATE_DATE"
+    Expression="CREATE_DATE"
+    SQLType="DATE">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="7"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="UpdateDate"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    AliasName="UPDATE_DATE"
+    Expression="UPDATE_DATE"
+    SQLType="DATE">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="7"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="SyncDate"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    AliasName="SYNC_DATE"
+    Expression="SYNC_DATE"
+    SQLType="DATE">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="7"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IsSyncing"
+    IsUpdateable="false"
+    IsPersistent="false"
+    IsNotNull="true"
+    PrecisionRule="true"
+    Precision="1"
+    Scale="0"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    AliasName="IS_SYNCING"
+    Expression="IS_SYNCING"
+    SQLType="INTEGER">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="2"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.TimelineBaselineView.IsSyncing_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Comments"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="500"
+    Scale="0"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="COMMENTS"
+    Expression="COMMENTS"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="500"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="BaselineLtciId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NUMBER"
+    AliasName="BASELINE_LTCI_ID"
+    Expression="BASELINE_LTCI_ID"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ExcelReport"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.sql.Clob"
+    ColumnType="NCLOB"
+    AliasName="EXCEL_REPORT"
+    Expression="EXCEL_REPORT"
+    SQLType="CLOB">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="4000"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="BaselineLtcProcessId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NUMBER"
+    AliasName="LTC_PROCESS_ID"
+    Expression="LTC_PROCESS_ID"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="BaselineLtcTagId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NUMBER"
+    AliasName="LTC_TAG_ID"
+    Expression="LTC_TAG_ID"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="ProcessDescription"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="PROCESS_DESCRIPTION"
+    Expression="PROCESS_DESCRIPTION"
+    SQLType="VARCHAR"
+    Passivate="true"/>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="TreeId"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.bayer.ipms.model.bundles.modelBundle"/>
+  </ResourceBundle>
+</ViewObject>

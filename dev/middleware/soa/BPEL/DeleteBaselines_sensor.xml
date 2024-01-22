@@ -1,0 +1,43 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<sensors targetNamespace="http://xmlns.oracle.com/ipms_mw/ipms_soa/DeleteBaselines" xmlns="http://xmlns.oracle.com/bpel/sensor" xmlns:tns="http://xmlns.oracle.com/ipms_mw/ipms_soa/DeleteBaselines" xmlns:pc="http://xmlns.oracle.com/bpel/sensor" xmlns:ns1="http://xmlns.bayer.com/ipms/soa">
+   <sensor sensorName="Delete Baseline: Starting deletion process." classname="oracle.tip.pc.services.reports.dca.agents.BpelActivitySensorAgent" kind="activity" target="receiveInput">
+      <activityConfig evalTime="completion">
+         <variable outputDataType="identifierType" outputNamespace="http://xmlns.bayer.com/ipms" target="$inputVariable/payload/ns1:delete/@id"/>
+      </activityConfig>
+   </sensor>
+   <sensor sensorName="Delete Baseline: Finishing deletion process." classname="oracle.tip.pc.services.reports.dca.agents.BpelActivitySensorAgent" kind="activity" target="callbackClient">
+      <activityConfig evalTime="completion">
+         <variable outputDataType="identifierType" outputNamespace="http://xmlns.bayer.com/ipms" target="$inputVariable/payload/ns1:delete/@id"/>
+      </activityConfig>
+   </sensor>
+   <sensor sensorName="Delete Baseline: Baselines can not be deleted for APR." classname="oracle.tip.pc.services.reports.dca.agents.BpelActivitySensorAgent" kind="activity" target="Empty3">
+      <activityConfig evalTime="completion">
+         <variable outputDataType="identifierType" outputNamespace="http://xmlns.bayer.com/ipms" target="$inputVariable/payload/ns1:delete/@id"/>
+      </activityConfig>
+   </sensor>
+   <sensor sensorName="Delete Baseline: Preparing the list of baselines for deletion." classname="oracle.tip.pc.services.reports.dca.agents.BpelActivitySensorAgent" kind="activity" target="AssignDeleteCount">
+      <activityConfig evalTime="completion">
+         <variable outputDataType="identifierType" outputNamespace="http://xmlns.bayer.com/ipms" target="$inputVariable/payload/ns1:delete/@id"/>
+      </activityConfig>
+   </sensor>
+   <sensor sensorName="Delete Baseline: One baseline was successfully deleted." classname="oracle.tip.pc.services.reports.dca.agents.BpelActivitySensorAgent" kind="activity" target="Empty4">
+      <activityConfig evalTime="completion">
+         <variable outputDataType="identifierType" outputNamespace="http://xmlns.bayer.com/ipms" target="$inputVariable/payload/ns1:delete/@id"/>
+      </activityConfig>
+   </sensor>
+   <sensor sensorName="Delete Baseline: One baseline was NOT deleted (error occurred)." classname="oracle.tip.pc.services.reports.dca.agents.BpelActivitySensorAgent" kind="activity" target="Empty5">
+      <activityConfig evalTime="completion">
+         <variable outputDataType="identifierType" outputNamespace="http://xmlns.bayer.com/ipms" target="$inputVariable/payload/ns1:delete/@id"/>
+      </activityConfig>
+   </sensor>
+   <sensor sensorName="Delete Baseline: Reading all baselines after deletion." classname="oracle.tip.pc.services.reports.dca.agents.BpelActivitySensorAgent" kind="activity" target="Empty6">
+      <activityConfig evalTime="completion">
+         <variable outputDataType="identifierType" outputNamespace="http://xmlns.bayer.com/ipms" target="$inputVariable/payload/ns1:delete/@id"/>
+      </activityConfig>
+   </sensor>
+   <sensor sensorName="Delete Baseline: The list for baseline deletion is empty. Nothing to delete." classname="oracle.tip.pc.services.reports.dca.agents.BpelActivitySensorAgent" kind="activity" target="Empty7">
+      <activityConfig evalTime="completion">
+         <variable outputDataType="identifierType" outputNamespace="http://xmlns.bayer.com/ipms" target="$inputVariable/payload/ns1:delete/@id"/>
+      </activityConfig>
+   </sensor>
+</sensors>

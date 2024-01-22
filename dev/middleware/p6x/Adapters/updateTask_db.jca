@@ -1,0 +1,11 @@
+<adapter-config name="updateTask" adapter="db" wsdlLocation="../updateTask.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+  
+  <connection-factory UIConnectionName="admuserP6" location="eis/DB/P6Pool"/>
+  <endpoint-interaction portType="updateTask_ptt" operation="updateTask">
+    <interaction-spec className="oracle.tip.adapter.db.DBPureSQLInteractionSpec">
+      <property name="SqlString" value="begin update task set create_user=nvl(#p_create_user,create_user) where task_id=#p_task_id; end;"/>
+      <property name="GetActiveUnitOfWork" value="false"/>
+    </interaction-spec>
+  </endpoint-interaction>
+
+</adapter-config>

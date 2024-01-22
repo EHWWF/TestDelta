@@ -1,0 +1,1 @@
+alter table configuration add (details xmltype);

@@ -1,0 +1,1 @@
+ALTER TABLE latest_estimate RENAME COLUMN pot_date TO poc_date;

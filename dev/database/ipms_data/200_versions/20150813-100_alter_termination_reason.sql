@@ -1,0 +1,2 @@
+alter table termination_reason add (ref_reason_code nvarchar2(10) references termination_reason(code));
+comment on column termination_reason.ref_reason_code is 'Self reference code to support two level hierarchy.';

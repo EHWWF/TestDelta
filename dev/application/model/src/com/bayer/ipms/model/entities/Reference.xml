@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="windows-1257" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="Reference"
+  Version="11.1.1.64.93"
+  InheritPersonalization="true"
+  DBObjectType="table"
+  DBObjectName="REFERENCE"
+  AliasName="Reference"
+  BindingStyle="OracleName"
+  UseGlueCode="false"
+  RowClass="com.bayer.ipms.model.base.IPMSEntityImpl">
+  <DesignTime>
+    <AttrArray Name="_publishEvents"/>
+  </DesignTime>
+  <Attribute
+    Name="Title"
+    IsUnique="true"
+    IsNotNull="true"
+    Precision="100"
+    Scale="0"
+    ColumnName="TITLE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="REFERENCE">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="Link"
+    IsUnique="true"
+    IsNotNull="true"
+    Precision="255"
+    Scale="0"
+    ColumnName="LINK"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="REFERENCE">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="255"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="Type"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="TYPE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="REFERENCE">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="RowID"
+    IsUpdateable="false"
+    ColumnName="ROWID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="ROWID"
+    PrimaryKey="true"/>
+  <Key
+    Name="SysC0052640">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0052640"/>
+      <Attr Name="_checkCondition" Value='"TITLE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.Reference.Title"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0052641">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0052641"/>
+      <Attr Name="_checkCondition" Value='"LINK" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.Reference.Link"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0052642">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0052642"/>
+      <Attr Name="_checkCondition" Value='"TYPE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.Reference.Type"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0052643">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0052643"/>
+      <Attr Name="_checkCondition" Value="type in ('HTTP','MAIL')"/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.Reference.Type"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0052644">
+    <DesignTime>
+      <Attr Name="_isUnique" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0052644"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.Reference.Title"/>
+      <Item Value="com.bayer.ipms.model.entities.Reference.Link"/>
+    </AttrArray>
+  </Key>
+</Entity>

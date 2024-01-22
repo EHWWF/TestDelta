@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<properties>
+  <entry key="test01_CreateProject.xml"/>
+  <entry key="test02_CreateExistingProject.xml"/>
+  <entry key="test03_UpdateExistingProject.xml"/>
+  <entry key="test05_ReadTimeline.xml"/>
+  <entry key="test06_ReadPlaceholderStudies.xml"/>
+  <entry key="test07_ReadTimeline.xml"/>
+  <entry key="test04_UpdateNonExistingProject.xml"/>
+</properties>

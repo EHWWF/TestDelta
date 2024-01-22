@@ -1,0 +1,115 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:h="http://java.sun.com/jsf/html"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+  <f:view>
+    <f:loadBundle basename="com.bayer.ipms.view.bundles.viewBundle"
+                  var="bundle"/>
+    <af:document id="d1" title="#{bundle.projectDataOverview}">
+      <af:messages id="m1"/>
+      <af:form id="f1">
+        <af:pageTemplate viewId="/WEB-INF/com.bayer.ipms.view/templates/ipms-popup-template.jspx">
+          <f:facet name="summary"/>
+          <f:facet name="content">
+            <af:group>
+				
+				
+				  <af:panelBox text="#{bundle.globalCommentsErrors}" id="pb1"
+                             showDisclosure="false">
+                  <f:facet name="toolbar"/>
+                  <af:panelFormLayout styleClass="AFStretchWidth"
+                                      fieldWidth="100%">
+                    <af:outputFormatted value="#{utilsBean.brFormattedString[pageFlowScope.messageDetails]}"
+                                        id="of1"/>
+                </af:panelFormLayout>
+				</af:panelBox>
+				
+              <af:panelBox text="#{bundle.projectMasterData}"
+                           showDisclosure="false">
+                <f:facet name="toolbar"/>
+                <af:table value="#{bindings.QplanMasterdataView.collectionModel}"
+                          var="row"
+                          rows="#{bindings.QplanMasterdataView.rangeSize}"
+                          fetchSize="#{bindings.QplanMasterdataView.rangeSize}"
+                          rowBandingInterval="0"
+                          selectedRowKeys="#{bindings.QplanMasterdataView.collectionModel.selectedRow}"
+                          selectionListener="#{bindings.QplanMasterdataView.collectionModel.makeCurrent}"
+                          filterVisible="false" varStatus="vs"
+                          autoHeightRows="0" styleClass="AFStretchWidth"
+                          columnStretching="last" contentDelivery="immediate">
+                  <af:column headerText="#{bindings.QplanMasterdataView.hints.ElementName.label}"
+                             rowHeader="unstyled">
+                    <af:outputText value="#{utilsBean.elementLabel[row.ElementName]}"
+                                   id="ot1"/>
+                  </af:column>
+                  <af:column headerText="#{bindings.QplanMasterdataView.hints.ElementShowValue.label}"
+                             rowHeader="unstyled">
+                    <af:inputText value="#{row.ElementIsBlocking eq '1' ? bundle.globalMissing : row.ElementShowValue}"
+                                  styleClass="#{row.ElementIsBlocking eq '1' ? 'warning' : ''}"
+                                  readOnly="true" simple="true"/>
+                  </af:column>
+                </af:table>
+              </af:panelBox>
+              <af:panelBox text="#{bundle.projectMilestones}"
+                           showDisclosure="false">
+                <f:facet name="toolbar"/>
+                <af:table value="#{bindings.ProjectMilestonesView.collectionModel}"
+                          var="row"
+                          rows="#{bindings.ProjectMilestonesView.rangeSize}"
+                          fetchSize="#{bindings.ProjectMilestonesView.rangeSize}"
+                          rowBandingInterval="0"
+                          selectedRowKeys="#{bindings.ProjectMilestonesView.collectionModel.selectedRow}"
+                          selectionListener="#{bindings.ProjectMilestonesView.collectionModel.makeCurrent}"
+                          filterVisible="false" varStatus="vs"
+                          autoHeightRows="0" styleClass="AFStretchWidth"
+                          columnStretching="last" contentDelivery="immediate"
+                          inlineStyle="margin-bottom: 10px;">
+                  <af:column headerText="#{bindings.ProjectMilestonesView.hints.MilestoneCode.label}"
+                             rowHeader="unstyled">
+                    <af:outputText value="#{row.MilestoneCode}"/>
+                  </af:column>
+                  <af:column headerText="#{bindings.ProjectMilestonesView.hints.ActualDate.label}"
+                             rowHeader="unstyled">
+                    <af:inputDate simple="true" readOnly="true"
+                                  value="#{row.ActualDate}">
+                      <f:convertDateTime pattern="#{bindings.ProjectMilestonesView.hints.ActualDate.format}"/>
+                    </af:inputDate>
+                  </af:column>
+                  <af:column headerText="#{bindings.ProjectMilestonesView.hints.PlanDate.label}"
+                             rowHeader="unstyled">
+                    <af:inputDate simple="true" readOnly="true"
+                                  value="#{row.PlanDate}">
+                      <f:convertDateTime pattern="#{bindings.ProjectMilestonesView.hints.PlanDate.format}"/>
+                    </af:inputDate>
+                  </af:column>
+                  <af:column headerText="#{bindings.ProjectMilestonesView.hints.GenericDate.label}"
+                             rowHeader="unstyled">
+                    <af:inputDate simple="true" readOnly="true"
+                                  value="#{row.GenericDate}">
+                      <f:convertDateTime pattern="#{bindings.ProjectMilestonesView.hints.GenericDate.format}"/>
+                    </af:inputDate>
+                  </af:column>
+                </af:table>
+                <af:panelBox showDisclosure="false"
+                             text="#{bundle.projectMilestones}">
+                  <af:inputText value="#{pageFlowScope.notificationsBean.milestoneInSequence ? bundle.globalYes : bundle.globalNo}"
+                                label="#{bundle.projectMilestonesInSequence}"
+                                readOnly="true"/>
+                </af:panelBox>
+              </af:panelBox>
+            </af:group>
+          </f:facet>
+          <f:facet name="controls">
+            <f:subview id="sub1">
+              <af:declarativeComponent viewId="global-ok-cancel.jsff" id="goc">
+                <f:attribute name="showCancel" value="false"/>
+              </af:declarativeComponent>
+            </f:subview>
+          </f:facet>
+        </af:pageTemplate>
+      </af:form>
+    </af:document>
+  </f:view>
+</jsp:root>

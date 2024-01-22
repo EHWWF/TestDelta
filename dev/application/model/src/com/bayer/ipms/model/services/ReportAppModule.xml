@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="windows-1257" ?>
+<!DOCTYPE AppModule SYSTEM "jbo_03_01.dtd">
+<!---->
+<AppModule
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ReportAppModule"
+  Version="12.1.3.10.8"
+  InheritPersonalization="true"
+  ComponentClass="com.bayer.ipms.model.services.ReportAppModuleImpl"
+  ClearCacheOnRollback="true"
+  ComponentInterface="com.bayer.ipms.model.services.common.ReportAppModule">
+  <DesignTime>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="com.bayer.ipms.model.services.ReportAppModule_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <ViewUsage
+    Name="ProjectView"
+    ViewObjectName="com.bayer.ipms.model.views.ProjectView"/>
+  <ViewUsage
+    Name="TimelineView"
+    ViewObjectName="com.bayer.ipms.model.views.TimelineView"/>
+  <ViewUsage
+    Name="LogView"
+    ViewObjectName="com.bayer.ipms.model.views.LogView"/>
+  <ViewUsage
+    Name="TraceView"
+    ViewObjectName="com.bayer.ipms.model.views.TraceView"/>
+  <ViewUsage
+    Name="NoticeView"
+    ViewObjectName="com.bayer.ipms.model.views.NoticeView"/>
+  <ViewUsage
+    Name="FPSLogView"
+    ViewObjectName="com.bayer.ipms.model.views.ProjectAuditView">
+    <ViewCriteriaUsage
+      Name="FPS"
+      FullName="com.bayer.ipms.model.views.ProjectAuditView.FPS"/>
+  </ViewUsage>
+  <ViewUsage
+    Name="GlobalBALogView"
+    ViewObjectName="com.bayer.ipms.model.views.GlobalBALogView"/>
+  <ViewLinkUsage
+    Name="ProjectTimelines"
+    ViewLinkObjectName="com.bayer.ipms.model.views.links.ProjectTimelines"
+    SrcViewUsageName="com.bayer.ipms.model.services.ReportAppModule.ProjectView"
+    DstViewUsageName="com.bayer.ipms.model.services.ReportAppModule.TimelineView"
+    Reversed="false"/>
+  <ClientInterface
+    Name="__clientInterface">
+    <Method
+      Name="getName"
+      MethodName="getName">
+      <Return
+        Name="_return_type_"
+        Type="java.lang.String"/>
+    </Method>
+  </ClientInterface>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.bayer.ipms.model.bundles.modelBundle"/>
+  </ResourceBundle>
+</AppModule>

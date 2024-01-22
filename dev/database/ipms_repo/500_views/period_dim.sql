@@ -1,0 +1,1 @@
+create or replace view period_dim as select * from month_dim;

@@ -1,0 +1,2385 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer
+
+  Created: Mon Jan 21 12:04:24 EET 2013
+  Author:  gytis
+  Type: BPEL 1.1 Process
+  Purpose: Synchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="UpdateTimeline"
+               targetNamespace="http://xmlns.bayer.com/ipms/soa"
+               xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+               xmlns:client="http://xmlns.bayer.com/ipms/soa"
+               xmlns:ora="http://schemas.oracle.com/xpath/extension"
+               xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:bpel2="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ns1="http://xmlns.bayer.com/ipms"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:ns2="http://xmlns.oracle.com/Primavera/P6/WS/Activity/V1"
+         xmlns:ns3="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:ns4="http://xmlns.oracle.com/Primavera/P6/WS/WBS/V2"
+         xmlns:ns5="http://xmlns.oracle.com/Primavera/P6/WS/UDFValue/V1"
+         xmlns:ns6="http://xmlns.bayer.com/ipms/cache"
+         xmlns:ns7="http://xmlns.oracle.com/Primavera/P6/WS/ActivityCodeAssignment/V1"
+         xmlns:ns8="http://xmlns.oracle.com/Primavera/P6/WS/ActivityCode/V1"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         xmlns:ns9="http://xmlns.oracle.com/Primavera/P6/WS/ActivityExpense/V1"
+         xmlns:ns10="http://xmlns.oracle.com/Primavera/P6/WS/CostAccount/V1"
+         xmlns:ns11="http://xmlns.oracle.com/Primavera/P6/WS/ExpenseCategory/V1"
+         xmlns:ess="http://xmlns.oracle.com/scheduler"
+         xmlns:ns12="http://xmlns.oracle.com/Primavera/P6/WS/WBSCategory/V1"
+         xmlns:ns13="http://xmlns.bayer.com/ipms/p6">
+
+    <!--
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        PARTNERLINKS
+        List of services participating in this BPEL process
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+  <bpelx:annotation>
+    <bpelx:analysis>
+      <bpelx:property name="wsdlFile">
+        <![CDATA[UpdateTimeline.wsdl]]>
+      </bpelx:property>
+    </bpelx:analysis>
+  </bpelx:annotation>
+  <partnerLinks>
+    <!--
+      The 'client' role represents the requester of this service. It is
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+    <partnerLink name="updateTimelineService" partnerLinkType="client:UpdateTimeline" myRole="UpdateTimelineProvider"
+                 partnerRole="UpdateTimelineRequester"/>
+    <partnerLink name="ActivityService" partnerLinkType="ns2:ActivityService"
+                 partnerRole="ActivityPortType"/>
+    <partnerLink name="WBSService" partnerLinkType="ns4:WBSService"
+                 partnerRole="WBSPortType"/>
+    <partnerLink name="UDFValueService" partnerLinkType="ns5:UDFValueService"
+                 partnerRole="UDFValuePortType"/>
+    <partnerLink name="ReadConfiguration.ReadConfigurationService"
+                 partnerLinkType="client:ReadConfiguration"
+                 partnerRole="ReadConfigurationProvider"
+                 myRole="ReadConfigurationRequester"/>
+    <partnerLink name="ActivityCodeAssignmentService"
+                 partnerLinkType="ns7:ActivityCodeAssignmentService"
+                 partnerRole="ActivityCodeAssignmentPortType"/>
+    <partnerLink name="ActivityCodeService"
+                 partnerLinkType="ns8:ActivityCodeService"
+                 partnerRole="ActivityCodePortType"/>
+    <partnerLink name="ActivityExpenseService"
+                 partnerLinkType="ns9:ActivityExpenseService"
+                 partnerRole="ActivityExpensePortType"/>
+    <partnerLink name="ExpenseCategoryService"
+                 partnerLinkType="ns11:ExpenseCategoryService"
+                 partnerRole="ExpenseCategoryPortType"/>
+    <partnerLink name="CostAccountService"
+                 partnerLinkType="ns10:CostAccountService"
+                 partnerRole="CostAccountPortType"/>
+    <partnerLink name="ProjectService" partnerLinkType="ns3:ProjectService" partnerRole="ProjectPortType"/>
+    <partnerLink name="WBSCategoryService" partnerLinkType="ns12:WBSCategoryService" partnerRole="WBSCategoryPortType"/>
+    <partnerLink name="ReadTimeline.ReadTimelineService" partnerLinkType="client:ReadTimeline"
+                 partnerRole="ReadTimelineProvider" myRole="ReadTimelineRequester"/>
+    <partnerLink name="ProjectXService" partnerLinkType="ns13:ProjectXService" partnerRole="ProjectPortType"/>
+  </partnerLinks>
+
+  <!--
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      VARIABLES
+      List of messages and XML documents used within this BPEL process
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <variables>
+    <!-- Reference to the message passed as input during initiation -->
+    <variable name="inputVariable" messageType="client:UpdateTimelineRequestMessage"/>
+
+    <!-- Reference to the message that will be returned to the requester-->
+    <variable name="outputVariable" messageType="client:UpdateTimelineResponseMessage"/>
+    <variable name="ReadPrjIn" messageType="ns3:ReadProjects"/>
+    <variable name="ReadPrjOut" messageType="ns3:ReadProjectsResponse"/>
+    <variable name="UpdateActIn" messageType="ns2:UpdateActivities"/>
+    <variable name="UpdateActOut" messageType="ns2:UpdateActivitiesResponse"/>
+    <variable name="ReadConfigurationIn"
+              messageType="client:ReadConfigurationRequestMessage"/>
+    <variable name="ReadConfigurationOut"
+              messageType="client:ReadConfigurationResponseMessage"/>
+    <variable name="countPlaceholders" type="xsd:int"/>
+    <variable name="DeleteActIn" messageType="ns2:DeleteActivities"/>
+    <variable name="DeleteActOut" messageType="ns2:DeleteActivitiesResponse"/>
+  </variables>
+  <faultHandlers>
+    <catchAll>
+      <scope name="mainFaultCatchingScope" variableAccessSerializable="no">
+        <variables>
+          <variable name="faultVariable"
+                    messageType="client:UpdateTimelineResponseMessage"/>
+        </variables>
+        <sequence name="Sequence1">
+          <assign name="assignFaultOutput">
+            <copy>
+              <from expression="ora:getFaultAsString()"/>
+              <to variable="faultVariable" part="payload"
+                  query="/client:response/ns1:error/ns1:description"/>
+            </copy>
+            <copy>
+              <from expression="ora:getFaultName()"/>
+              <to variable="faultVariable" part="payload"
+                  query="/client:response/ns1:error/ns1:code"/>
+            </copy>
+            <copy>
+              <from variable="inputVariable" part="payload"
+                    query="/client:update/@id"/>
+              <to variable="faultVariable" part="payload"
+                  query="/client:response/ns1:error/@id"/>
+            </copy>
+            <copy>
+              <from variable="inputVariable" part="payload"
+                    query="/client:update/@id"/>
+              <to variable="faultVariable" part="payload"
+                  query="/client:response/@id"/>
+            </copy>
+          </assign>
+          <invoke name="callbackFaultOutput" bpelx:invokeAsDetail="no"
+                  inputVariable="faultVariable"
+                  partnerLink="updateTimelineService"
+                  portType="client:UpdateTimelineCallback"
+                  operation="callback"/>
+        </sequence>
+      </scope>
+    </catchAll>
+  </faultHandlers>
+  <!--
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC
+     Set of activities coordinating the flow of messages across the
+     services integrated within this business process
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <sequence name="main">
+
+    <!-- Receive input from requestor. (Note: This maps to operation defined in UpdateTimeline.wsdl) -->
+    <receive name="receiveInput" partnerLink="updateTimelineService" portType="client:UpdateTimeline" operation="process" variable="inputVariable" createInstance="yes"/>
+    <sequence name="ReadConfig">
+      <scope name="ReadConfigFromCache">
+        <variables>
+          <variable name="VariableCache" element="ns6:cache"/>
+        </variables>
+        <faultHandlers>
+          <catchAll>
+            <empty name="Empty1"/>
+          </catchAll>
+        </faultHandlers>
+        <sequence name="ReadConfigFromCache">
+          <assign name="AssignFromCache">
+            <copy bpelx:ignoreMissingFromData="yes"
+                  bpelx:insertMissingToData="yes">
+              <from expression='ora:readFile("file:///opt/oracle/soa12.2.1/file_adapter/ipms/config.cache", "oramds:/apps/com/bayer/xmlns/ipms/cache/cache.xsd")'/>
+              <to variable="VariableCache" query="/ns6:cache"/>
+            </copy>
+            <copy bpelx:ignoreMissingFromData="yes"
+                  bpelx:insertMissingToData="yes">
+              <from variable="VariableCache" query="/ns6:cache/*"/>
+              <to variable="ReadConfigurationOut" part="payload"/>
+            </copy>
+          </assign>
+          <empty name="EmptyBeforeSkip"/>
+        </sequence>
+      </scope>
+      <scope name="FULL-ReadConfig">
+        <sequence name="FULL-ReadConfig-SKIP"
+                  bpelx:skipCondition="bpws:getVariableData('ReadConfigurationOut','payload','/client:config/client:program/client:epsId')!=''">
+          <assign name="AssignReadConfiguration">
+            <copy>
+              <from expression="'empty'"/>
+              <to variable="ReadConfigurationIn" part="payload" query="/ns1:empty"/>
+            </copy>
+          </assign>
+          <invoke name="ReadConfigurationIn" bpelx:invokeAsDetail="no" inputVariable="ReadConfigurationIn"
+                  partnerLink="ReadConfiguration.ReadConfigurationService" portType="client:ReadConfiguration"
+                  operation="process"/>
+          <receive name="ReadConfigurationOut" createInstance="no" variable="ReadConfigurationOut"
+                   partnerLink="ReadConfiguration.ReadConfigurationService" portType="client:ReadConfigurationCallback"
+                   operation="callback"/>
+        </sequence>
+      </scope>
+    </sequence>
+    <scope name="CreateWBSnewHashTag">
+      <variables>
+        <variable name="newWbs" element="ns1:wbs"/>
+        <variable name="CopyWBSFromTemplate_In" messageType="ns4:CopyWBSFromTemplate"/>
+        <variable name="CopyWBSFromTemplate_Out" messageType="ns4:CopyWBSFromTemplateResponse"/>
+        <variable name="CreateTempWBS_In" messageType="ns4:CreateWBS"/>
+        <variable name="CreateTempWBS_Out" messageType="ns4:CreateWBSResponse"/>
+        <variable name="CreateUDFValues_In" messageType="ns5:CreateUDFValues"/>
+        <variable name="CreateUDFValues_Out" messageType="ns5:CreateUDFValuesResponse"/>
+        <variable name="ReadContainerWBS_In" messageType="ns4:ReadWBS"/>
+        <variable name="ReadContainerWBS_Out" messageType="ns4:ReadWBSResponse"/>
+        <variable name="UpdateWBS_In" messageType="ns4:UpdateWBS"/>
+        <variable name="UpdateWBS_Out" messageType="ns4:UpdateWBSResponse"/>
+        <variable name="DeleteWBS_In" messageType="ns4:DeleteWBS"/>
+        <variable name="DeleteWBS_Out" messageType="ns4:DeleteWBSResponse"/>
+        <variable name="CreateWBS_In" messageType="ns4:CreateWBS"/>
+        <variable name="CreateWBS_Out" messageType="ns4:CreateWBSResponse"/>
+        <variable name="ReadAllWBS_In" messageType="ns4:ReadAllWBS"/>
+        <variable name="ReadAllWBS_Out" messageType="ns4:ReadAllWBSResponse"/>
+        <variable name="TempWBSObjectId" type="xsd:int"/>
+        <variable name="UpdateAllWBS_In" messageType="ns4:UpdateWBS"/>
+        <variable name="CheckIfExistsWBSIn" messageType="ns4:ReadWBS"/>
+        <variable name="CheckIfExistsWBSOut" messageType="ns4:ReadWBSResponse"/>
+        <variable name="ifExists" type="xsd:integer"/>
+      </variables>
+      <sequence name="CreateWBS-SKIP"
+                bpelx:skipCondition="empty(bpws:getVariableData('inputVariable','payload','/client:update/ns1:timeline/ns1:wbsNodes/ns1:wbs[@id=&quot;#new#&quot;]'))">
+        <sequence name="CreateReadTempWBS">
+          <assign name="CreateTempWBS_In" xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/">
+            <copy>
+              <from expression="concat('temp-', bpws:getVariableData('inputVariable','payload','/client:update/@id'))"/>
+              <to variable="CreateTempWBS_In" part="params" query="/ns4:CreateWBS/ns4:WBS/ns4:Code"/>
+            </copy>
+            <copy>
+              <from variable="CreateTempWBS_In" part="params" query="/ns4:CreateWBS/ns4:WBS/ns4:Code"/>
+              <to variable="CreateTempWBS_In" part="params" query="/ns4:CreateWBS/ns4:WBS/ns4:Name"/>
+            </copy>
+            <copy>
+              <from variable="inputVariable" part="payload" query="/client:update/ns1:timeline/@referenceId"/>
+              <to variable="CreateTempWBS_In" part="params" query="/ns4:CreateWBS/ns4:WBS/ns4:ParentObjectId"/>
+            </copy>
+          </assign>
+          <invoke name="CreateTempWBS" inputVariable="CreateTempWBS_In" outputVariable="CreateTempWBS_Out"
+                  partnerLink="WBSService" portType="ns4:WBSPortType" operation="CreateWBS">
+            <bpelx:annotation>
+              <bpelx:documentation>
+                <![CDATA[P6 API does not allow copying WBS from template into root. New temporary WBS is created as a workaround.]]>
+              </bpelx:documentation>
+            </bpelx:annotation>
+          </invoke>
+          <assign name="ReadTempWBS_In" xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/">
+            <copy>
+              <from variable="CreateTempWBS_Out" part="result" query="/ns4:CreateWBSResponse/ns4:ObjectId"/>
+              <to variable="TempWBSObjectId"/>
+            </copy>
+            <copy>
+              <from expression="'OBSObjectId'"/>
+              <to variable="ReadContainerWBS_In" part="params" query="/ns4:ReadWBS/ns4:Field"/>
+            </copy>
+            <copy>
+              <from expression="ora:format(&quot; ObjectId=''{0}'' &quot;, bpws:getVariableData('TempWBSObjectId'))"/>
+              <to variable="ReadContainerWBS_In" part="params" query="/ns4:ReadWBS/ns4:Filter"/>
+            </copy>
+          </assign>
+          <invoke name="ReadTempWBS" inputVariable="ReadContainerWBS_In" outputVariable="ReadContainerWBS_Out"
+                  partnerLink="WBSService" portType="ns4:WBSPortType" operation="ReadWBS"
+                  xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/"/>
+        </sequence>
+        <while name="EachNewWBSTemplateUDF"
+                   condition="exists(bpws:getVariableData('inputVariable','payload','/client:update/ns1:timeline/ns1:wbsNodes/ns1:wbs[@id=&quot;#new#&quot;]'))">
+          <sequence name="CreateNewWBS">
+          
+            <assign name="NextNewWBSNodeCode" xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/">
+              <copy>
+                <from variable="inputVariable" part="payload"
+                      query="/client:update/ns1:timeline/ns1:wbsNodes/ns1:wbs[@id='#new#'][1]"/>
+                <to variable="newWbs" query="/ns1:wbs"/>
+              </copy>
+              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                <from expression="0"/>
+                <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="ifExists"/>
+              </copy>
+            </assign>
+                
+            <switch name="SwitchIfStudyNull">
+              <case condition="empty(bpws:getVariableData('newWbs','/ns1:wbs/@studyId'))">
+                <bpelx:annotation>
+                  <bpelx:general>
+                    <bpelx:property name="userLabel">
+                      <![CDATA[EmptyStudyId]]>
+                    </bpelx:property>
+                  </bpelx:general>
+                </bpelx:annotation>
+                <assign name="NextNewWBSNodeStudyNull" xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/">
+                  <copy bpelx:insertMissingToData="yes" bpelx:ignoreMissingFromData="yes">
+                    <from expression="concat(bpws:getVariableData('inputVariable','payload','/client:update/@id'), '-', bpws:getVariableData('newWbs','/ns1:wbs/ns1:categoryObjectId'))"
+                          bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                    <to variable="newWbs" query="/ns1:wbs/ns1:code"/>
+                  </copy>
+                </assign>
+              </case>
+              <otherwise>
+                <assign name="NextNewWBSNode" xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/">
+                  <copy bpelx:insertMissingToData="yes" bpelx:ignoreMissingFromData="yes">
+                    <from expression="concat(bpws:getVariableData('inputVariable','payload','/client:update/@id'), '-', bpws:getVariableData('newWbs','/ns1:wbs/@studyId'))"
+                          bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                    <to variable="newWbs" query="/ns1:wbs/ns1:code"/>
+                  </copy>
+                </assign>
+              </otherwise>
+            </switch>
+            <switch name="SingleWBSorTemplate">
+              <case condition="bpws:getVariableData('newWbs','/ns1:wbs/@templateId')">
+                <bpelx:annotation>
+                  <bpelx:general>
+                    <bpelx:property name="userLabel">
+                      <![CDATA[Use template]]>
+                    </bpelx:property>
+                  </bpelx:general>
+                </bpelx:annotation>
+                <sequence name="CopyTemplateWBS">
+                  <assign name="CopyWBS_In" xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/">
+                    <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                      <from variable="TempWBSObjectId"/>
+                      <to variable="CopyWBSFromTemplate_In" part="params"
+                          query="/ns4:CopyWBSFromTemplate/ns4:ObjectId"/>
+                    </copy>
+                    <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                      <from variable="newWbs" query="/ns1:wbs/@templateId"/>
+                      <to variable="CopyWBSFromTemplate_In" part="params"
+                          query="/ns4:CopyWBSFromTemplate/ns4:TemplateWbsObjectId"/>
+                    </copy>
+                    <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                      <from variable="TempWBSObjectId"/>
+                      <to variable="ReadAllWBS_In" part="params" query="/ns4:ReadAllWBS/ns4:ObjectId"/>
+                    </copy>
+                    <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                      <from expression="'ParentObjectId'"/>
+                      <to variable="ReadAllWBS_In" part="params" query="/ns4:ReadAllWBS/ns4:Field[1]"/>
+                    </copy>
+                    <copy bpelx:insertMissingToData="yes" bpelx:ignoreMissingFromData="yes">
+                      <from expression="'OBSObjectId'"/>
+                      <to variable="ReadAllWBS_In" part="params" query="/ns4:ReadAllWBS/ns4:Field[2]"/>
+                    </copy>
+                  </assign>
+                  <invoke name="CopyWBSFromTemplate" inputVariable="CopyWBSFromTemplate_In"
+                          outputVariable="CopyWBSFromTemplate_Out" partnerLink="WBSService" portType="ns4:WBSPortType"
+                          operation="CopyWBSFromTemplate"/>
+                  <invoke name="ReadAllWBS" inputVariable="ReadAllWBS_In" outputVariable="ReadAllWBS_Out"
+                          partnerLink="WBSService" portType="ns4:WBSPortType" operation="ReadAllWBS"/>
+                  <assign name="UpdateAllWBS_In">
+                    <bpelx:annotation>
+                      <bpelx:pattern>transformation</bpelx:pattern>
+                    </bpelx:annotation>
+                    <copy>
+                      <from expression="ora:doXSLTransformForDoc('Transformations/UpdateTimelineAdjustWBS.xsl', $ReadAllWBS_Out.result, 'ReadContainerWBS_Out.result', $ReadContainerWBS_Out.result)"/>
+                      <to variable="UpdateAllWBS_In" part="params"/>
+                    </copy>
+                  </assign>
+                  <invoke name="UpdateAllWBS" inputVariable="UpdateAllWBS_In" outputVariable="UpdateWBS_Out"
+                          partnerLink="WBSService" portType="ns4:WBSPortType" operation="UpdateWBS"/>
+                  <assign name="AssignNewId"
+                                                                                                              xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/">
+                    <copy>
+                      <from variable="ReadAllWBS_Out" part="result"
+                            query="/ns4:ReadAllWBSResponse/ns4:WBS[ns4:ParentObjectId=bpws:getVariableData('TempWBSObjectId')]/ns4:ObjectId"/>
+                      <to variable="newWbs" query="/ns1:wbs/@id"/>
+                    </copy>
+                    <copy>
+                      <from variable="newWbs" query="/ns1:wbs"/>
+                      <to variable="inputVariable" part="payload"
+                          query="/client:update/ns1:timeline/ns1:wbsNodes/ns1:wbs[@id='#new#'][1]"/>
+                    </copy>
+                  </assign></sequence>
+              </case>
+              <otherwise><sequence name="CreateSimpleWBS">
+                  <sequence name="CheckIfExistsWBS">
+                    <assign name="AssignIfExists">
+                      <copy>
+                        <from expression="concat('ParentObjectId=', bpws:getVariableData('newWbs','/ns1:wbs/@parentId') , &quot; and Name='&quot;, bpws:getVariableData('newWbs','/ns1:wbs/ns1:name'),&quot;'&quot; )"
+                              bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                        <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                            variable="CheckIfExistsWBSIn" part="params" query="/ns4:ReadWBS/ns4:Filter"/>
+                      </copy>
+                      <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                        <from expression="'Name'"/>
+                        <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                            variable="CheckIfExistsWBSIn" part="params" query="/ns4:ReadWBS/ns4:Field"/>
+                      </copy>
+                    </assign>
+                    <invoke name="CheckIfExistsWBS" partnerLink="WBSService" inputVariable="CheckIfExistsWBSIn"
+                            outputVariable="CheckIfExistsWBSOut" portType="ns4:WBSPortType" operation="ReadWBS"/>
+                  </sequence>
+                  <switch name="IfExistsWBSResult">
+                    <case condition="empty(bpws:getVariableData('CheckIfExistsWBSOut','result','/ns4:ReadWBSResponse/ns4:WBS/ns4:ObjectId'))">
+                      <bpelx:annotation>
+                        <bpelx:general>
+                          <bpelx:property name="userLabel">
+                            <![CDATA[IfExistsResult]]>
+                          </bpelx:property>
+                        </bpelx:general>
+                      </bpelx:annotation>
+                      <sequence name="CreateWBS">
+                        <assign name="CreateWBS_In" xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/">
+                          <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                            <from variable="newWbs" query="/ns1:wbs/ns1:code"/>
+                            <to variable="CreateWBS_In" part="params" query="/ns4:CreateWBS/ns4:WBS/ns4:Code"/>
+                          </copy>
+                          <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                            <from variable="newWbs" query="/ns1:wbs/ns1:name"/>
+                            <to variable="CreateWBS_In" part="params" query="/ns4:CreateWBS/ns4:WBS/ns4:Name"/>
+                          </copy>
+                          <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                            <from bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="newWbs"
+                                  query="/ns1:wbs/ns1:categoryObjectId"/>
+                            <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="CreateWBS_In"
+                                part="params" query="/ns4:CreateWBS/ns4:WBS/ns4:WBSCategoryObjectId"/>
+                          </copy>
+                          <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                            <from variable="CreateTempWBS_Out" part="result"
+                                  query="/ns4:CreateWBSResponse/ns4:ObjectId"/>
+                            <to variable="CreateWBS_In" part="params"
+                                query="/ns4:CreateWBS/ns4:WBS/ns4:ParentObjectId"/>
+                          </copy>
+                        </assign>
+                        <invoke name="CreateWBS" inputVariable="CreateWBS_In" outputVariable="CreateWBS_Out"
+                                partnerLink="WBSService" portType="ns4:WBSPortType" operation="CreateWBS"/>
+                      </sequence>
+                    </case>
+                    <otherwise>
+                      <assign name="AssignExisting">
+                        <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                          <from bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                variable="CheckIfExistsWBSOut" part="result"
+                                query="/ns4:ReadWBSResponse/ns4:WBS/ns4:ObjectId"/>
+                          <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="CreateWBS_Out"
+                              part="result" query="/ns4:CreateWBSResponse/ns4:ObjectId"/>
+                        </copy>
+                        <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                          <from expression="1"/>
+                          <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="ifExists"/>
+                        </copy>
+                      </assign>
+                    </otherwise>
+                  </switch>
+                  <assign name="AssignNewId"
+                                                                                                             xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/">
+                    <copy>
+                      <from variable="CreateWBS_Out" part="result" query="/ns4:CreateWBSResponse/ns4:ObjectId"/>
+                      <to variable="newWbs" query="/ns1:wbs/@id"/>
+                    </copy>
+                    <copy>
+                      <from variable="newWbs" query="/ns1:wbs"/>
+                      <to variable="inputVariable" part="payload"
+                          query="/client:update/ns1:timeline/ns1:wbsNodes/ns1:wbs[@id='#new#'][1]"/>
+                    </copy>
+                  </assign></sequence></otherwise>
+            </switch>
+            <sequence name="UDFmoveWBS-SKIP" bpelx:skipCondition="bpws:getVariableData('ifExists')=1">
+              <sequence name="CreateUDF">
+                <assign name="CreateUDFValues_In">
+                  <bpelx:remove>
+                    <bpelx:target variable="CreateUDFValues_In" part="params"
+                                  query="/ns5:CreateUDFValues/ns5:UDFValue"/>
+                  </bpelx:remove>
+                  <copy bpelx:insertMissingToData="yes" bpelx:ignoreMissingFromData="yes">
+                    <from variable="newWbs" query="/ns1:wbs/@id"/>
+                    <to variable="CreateUDFValues_In" part="params"
+                        query="/ns5:CreateUDFValues/ns5:UDFValue[1]/ns5:ForeignObjectId"/>
+                  </copy>
+                  <copy bpelx:insertMissingToData="yes" bpelx:ignoreMissingFromData="yes">
+                    <from variable="ReadConfigurationOut" part="payload"
+                          query="/client:config/client:wbs/client:studyIdTypeId"/>
+                    <to variable="CreateUDFValues_In" part="params"
+                        query="/ns5:CreateUDFValues/ns5:UDFValue[1]/ns5:UDFTypeObjectId"/>
+                  </copy>
+                  <copy bpelx:insertMissingToData="yes" bpelx:ignoreMissingFromData="yes">
+                    <from variable="newWbs" query="/ns1:wbs/@studyId"/>
+                    <to variable="CreateUDFValues_In" part="params"
+                        query="/ns5:CreateUDFValues/ns5:UDFValue[1]/ns5:Text"/>
+                  </copy>
+                </assign>
+                <assign name="CreateUDFValues_In2" xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+                        bpelx:skipCondition="not(bpws:getVariableData('newWbs','/ns1:wbs/@placeholder')='true')">
+                  <copy bpelx:insertMissingToData="yes" bpelx:ignoreMissingFromData="yes"
+                        xmlns:bpelx="http://schemas.oracle.com/bpel/extension">
+                    <from variable="newWbs" query="/ns1:wbs/@id"/>
+                    <to variable="CreateUDFValues_In" part="params"
+                        query="/ns5:CreateUDFValues/ns5:UDFValue[2]/ns5:ForeignObjectId"/>
+                  </copy>
+                  <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes"
+                        xmlns:bpelx="http://schemas.oracle.com/bpel/extension">
+                    <from variable="ReadConfigurationOut" part="payload"
+                          query="/client:config/client:wbs/client:placeholderTypeId"/>
+                    <to variable="CreateUDFValues_In" part="params"
+                        query="/ns5:CreateUDFValues/ns5:UDFValue[2]/ns5:UDFTypeObjectId"/>
+                  </copy>
+                  <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes"
+                        xmlns:bpelx="http://schemas.oracle.com/bpel/extension">
+                    <from variable="newWbs" query="/ns1:wbs/@placeholder"/>
+                    <to variable="CreateUDFValues_In" part="params"
+                        query="/ns5:CreateUDFValues/ns5:UDFValue[2]/ns5:Text"/>
+                  </copy>
+                </assign>
+                <invoke name="CreateUDFValues" inputVariable="CreateUDFValues_In" outputVariable="CreateUDFValues_Out"
+                        partnerLink="UDFValueService" portType="ns5:UDFValuePortType" operation="CreateUDFValues"/>
+              </sequence>
+              <switch name="EmptyOrNotApplicable">
+                <case condition="count(bpws:getVariableData('newWbs','/ns1:wbs/ns1:studyPhase'))=0 or bpws:getVariableData('newWbs','/ns1:wbs/ns1:studyPhase')='not applicable' or bpws:getVariableData('newWbs','/ns1:wbs/ns1:studyPhase')='Phase IV'">
+                  <bpelx:annotation>
+                    <bpelx:general>
+                      <bpelx:property name="userLabel">
+                        <![CDATA[PhaseIsEmptyOrNotApplicable]]>
+                      </bpelx:property>
+                    </bpelx:general>
+                  </bpelx:annotation>
+                  <sequence name="StudiesNOTassigned2Phase">
+                    <scope name="SKIP-when-Diff-Parent-and-rootId"
+                           bpelx:skipCondition="bpws:getVariableData('inputVariable','payload','/client:update/ns1:timeline/@referenceId') != bpws:getVariableData('newWbs','/ns1:wbs/@parentId')">
+                      <variables>
+                        <variable name="IfExistsEmptyWBSIn" messageType="ns4:ReadWBS"/>
+                        <variable name="IfExistsEmptyWBSOut" messageType="ns4:ReadWBSResponse"/>
+                        <variable name="StudiesNotAssignedToPhase" type="xsd:string"/>
+                        <variable name="CreateWBSNoPhaseIn" messageType="ns4:CreateWBS"/>
+                        <variable name="CreateWBSNoPhaseOut" messageType="ns4:CreateWBSResponse"/>
+                      </variables>
+                      <sequence name="GetWBSidFOrEmptyPhase">
+                        <assign name="AssignIfExistsWBSEmptyPhase">
+                          <copy>
+                            <from expression="'Studies not assigned to a Phase'"
+                                  bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                            <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                variable="StudiesNotAssignedToPhase"/>
+                          </copy>
+                          <copy>
+                            <from expression="concat('ParentObjectId=', bpws:getVariableData('inputVariable','payload','/client:update/ns1:timeline/@referenceId') , &quot; and Name='&quot;, bpws:getVariableData('StudiesNotAssignedToPhase'),&quot;'&quot; )"
+                                  bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                            <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                variable="IfExistsEmptyWBSIn" part="params" query="/ns4:ReadWBS/ns4:Filter"/>
+                          </copy>
+                          <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                            <from expression="'Name'"/>
+                            <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                variable="IfExistsEmptyWBSIn" part="params" query="/ns4:ReadWBS/ns4:Field"/>
+                          </copy>
+                        </assign>
+                        <invoke name="IfExistsEmptyWBS" partnerLink="WBSService" inputVariable="IfExistsEmptyWBSIn"
+                                outputVariable="IfExistsEmptyWBSOut" portType="ns4:WBSPortType" operation="ReadWBS"/>
+                        <switch name="IfMissingThenCreate">
+                          <case condition="empty(bpws:getVariableData('IfExistsEmptyWBSOut','result','/ns4:ReadWBSResponse/ns4:WBS/ns4:ObjectId'))">
+                            <bpelx:annotation>
+                              <bpelx:general>
+                                <bpelx:property name="userLabel">
+                                  <![CDATA[IfMissingThenCreate]]>
+                                </bpelx:property>
+                              </bpelx:general>
+                            </bpelx:annotation>
+                            <sequence name="CreateNewWBS">
+                              <assign name="CreateWBSNOPhase"
+                                      xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/">
+                                <copy>
+                                  <from bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                        variable="inputVariable" part="payload" query="/client:update/@id"/>
+                                  <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                      variable="CreateWBSNoPhaseIn" part="params"
+                                      query="/ns4:CreateWBS/ns4:WBS/ns4:Code"/>
+                                </copy>
+                                <copy>
+                                  <from bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                        variable="StudiesNotAssignedToPhase"/>
+                                  <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                      variable="CreateWBSNoPhaseIn" part="params"
+                                      query="/ns4:CreateWBS/ns4:WBS/ns4:Name"/>
+                                </copy>
+                                <copy>
+                                  <from bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                        variable="inputVariable" part="payload"
+                                        query="/client:update/ns1:timeline/@referenceId"/>
+                                  <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                      variable="CreateWBSNoPhaseIn" part="params"
+                                      query="/ns4:CreateWBS/ns4:WBS/ns4:ParentObjectId"/>
+                                </copy>
+                              </assign>
+                              <invoke name="CreateWBSNoPhase" partnerLink="WBSService"
+                                      inputVariable="CreateWBSNoPhaseIn" outputVariable="CreateWBSNoPhaseOut"
+                                      portType="ns4:WBSPortType" operation="CreateWBS"/>
+                              <assign name="AssignNewWBSNoPhase">
+                                <copy>
+                                  <from bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                        variable="CreateWBSNoPhaseOut" part="result"
+                                        query="/ns4:CreateWBSResponse/ns4:ObjectId"/>
+                                  <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="newWbs"
+                                      query="/ns1:wbs/@parentId"/>
+                                </copy>
+                              </assign>
+                            </sequence>
+                          </case>
+                          <otherwise>
+                            <assign name="AssignExistingWBSParentId">
+                              <copy>
+                                <from bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                      variable="IfExistsEmptyWBSOut" part="result"
+                                      query="/ns4:ReadWBSResponse/ns4:WBS/ns4:ObjectId"/>
+                                <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="newWbs"
+                                    query="/ns1:wbs/@parentId"/>
+                              </copy>
+                            </assign>
+                          </otherwise>
+                        </switch>
+                      </sequence>
+                    </scope>
+                  </sequence>
+                </case>
+                <otherwise>
+                  <empty name="PhaseStudyProvided"/>
+                </otherwise>
+              </switch>
+              <assign name="UpdateMoveWBS_In">
+                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                  <from variable="newWbs" query="/ns1:wbs/@id"/>
+                  <to variable="UpdateWBS_In" part="params" query="/ns4:UpdateWBS/ns4:WBS/ns4:ObjectId"/>
+                </copy>
+                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                  <from variable="newWbs" query="/ns1:wbs/ns1:name"/>
+                  <to variable="UpdateWBS_In" part="params" query="/ns4:UpdateWBS/ns4:WBS/ns4:Name"/>
+                </copy>
+                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                  <from variable="newWbs" query="/ns1:wbs/ns1:code"/>
+                  <to variable="UpdateWBS_In" part="params" query="/ns4:UpdateWBS/ns4:WBS/ns4:Code"/>
+                </copy>
+                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                  <from variable="newWbs" query="/ns1:wbs/@parentId"/>
+                  <to variable="UpdateWBS_In" part="params" query="/ns4:UpdateWBS/ns4:WBS/ns4:ParentObjectId"/>
+                </copy>
+              </assign>
+              <invoke name="UpdateMoveWBS" inputVariable="UpdateWBS_In" outputVariable="UpdateWBS_Out"
+                      partnerLink="WBSService" portType="ns4:WBSPortType" operation="UpdateWBS"/>
+            </sequence>
+          </sequence></while>
+        <sequence name="DeleteTempWBS">
+          <assign name="DeleteTempWBS_In">
+            <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+              <from variable="CreateTempWBS_Out" part="result" query="/ns4:CreateWBSResponse/ns4:ObjectId"/>
+              <to variable="DeleteWBS_In" part="params" query="/ns4:DeleteWBS/ns4:ObjectId"/>
+            </copy>
+          </assign>
+          <invoke name="DeleteTempWBS" inputVariable="DeleteWBS_In" outputVariable="DeleteWBS_Out"
+                  partnerLink="WBSService" portType="ns4:WBSPortType" operation="DeleteWBS"/>
+        </sequence>
+      </sequence></scope>
+    <scope name="ActivityBasedPlanning">
+      <bpelx:annotation>
+        <bpelx:general/>
+      </bpelx:annotation>
+      <variables>
+        <variable name="WBSCatIn" messageType="ns12:ReadWBSCategories"/>
+        <variable name="WBSCatOut" messageType="ns12:ReadWBSCategoriesResponse"/>
+        <variable name="countInteger" type="xsd:integer"/>
+        <variable name="tmpInteger" type="xsd:integer"/>
+        <variable name="countWBSCat" type="xsd:integer"/>
+        <variable name="WBSCatName" type="xsd:string"/>
+        <variable name="GetNullWBSIn" messageType="ns4:ReadWBS"/>
+        <variable name="GetNullWBSOut" messageType="ns4:ReadWBSResponse"/>
+        <variable name="CreateTopNullWBSIn" messageType="ns4:CreateWBS"/>
+        <variable name="CreateTopNullWBSOut" messageType="ns4:CreateWBSResponse"/>
+        <variable name="tmpWBSId" type="xsd:integer"/>
+        <variable name="ReadCatWBSIdIn" messageType="ns4:ReadWBS"/>
+        <variable name="ReadCatWBSIdOut" messageType="ns4:ReadWBSResponse"/>
+        <variable name="ReadAllThatCatIn" messageType="ns4:ReadWBS"/>
+        <variable name="ReadAllThatCatOut" messageType="ns4:ReadWBSResponse"/>
+        <variable name="loopWBScount" type="xsd:integer"/>
+        <variable name="ReadWBSPathIn" messageType="ns4:ReadWBSPath"/>
+        <variable name="ReadWBSPathOut" messageType="ns4:ReadWBSPathResponse"/>
+        <variable name="lowestWBSPathCount" type="xsd:integer"/>
+        <variable name="CreateWBS4CatIn" messageType="ns4:CreateWBS"/>
+        <variable name="CreateWBS4CatOut" messageType="ns4:CreateWBSResponse"/>
+        <variable name="finalWBSId" type="xsd:integer"/>
+        <variable name="tmpActivityId" type="xsd:integer"/>
+        <variable name="CreateActCodeAssigIn" messageType="ns7:CreateActivityCodeAssignments"/>
+        <variable name="CreateActCodeAssigOut" messageType="ns7:CreateActivityCodeAssignmentsResponse"/>
+        <variable name="ReadActCodeIn" messageType="ns8:ReadActivityCodes"/>
+        <variable name="ReadActCodeOut" messageType="ns8:ReadActivityCodesResponse"/>
+        <variable name="CreateUDFStudyElIn" messageType="ns5:CreateUDFValues"/>
+        <variable name="CreateUDFStudyElOut" messageType="ns5:CreateUDFValuesResponse"/>
+        <variable name="GetCreateUserFromActIn" messageType="ns2:ReadActivities"/>
+        <variable name="GetCreateUserFromActOut" messageType="ns2:ReadActivitiesResponse"/>
+        <variable name="UpdateTaskActIn" messageType="ns13:UpdateTaskRequestMessage"/>
+        <variable name="UpdateTaskActOut" messageType="ns13:ResponseMessage"/>
+      </variables>
+      <sequence name="ActivityBasedPlanning-SKIP"
+                bpelx:skipCondition="count(bpws:getVariableData('inputVariable','payload','/client:update/ns1:timeline/ns1:activities/ns1:activity/ns1:wbsCategoryName'))=0">
+        <sequence name="GetWBSCatLookUp">
+          <assign name="AssignWBSCat">
+            <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+              <from expression="'Name'"/>
+              <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="WBSCatIn" part="params"
+                  query="/ns12:ReadWBSCategories/ns12:Field[1]"/>
+            </copy>
+            <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+              <from expression="'SequenceNumber'"/>
+              <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="WBSCatIn" part="params"
+                  query="/ns12:ReadWBSCategories/ns12:Field[2]"/>
+            </copy>
+          </assign>
+          <invoke name="ReadWBSCat" partnerLink="WBSCategoryService" inputVariable="WBSCatIn" outputVariable="WBSCatOut"
+                  portType="ns12:WBSCategoryPortType" operation="ReadWBSCategories"/>
+          <assign name="ExtendWBSCat">
+            <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+              <from expression="count(bpws:getVariableData('WBSCatOut','result','/ns12:ReadWBSCategoriesResponse/ns12:WBSCategory/ns12:ObjectId'))+1"
+                    bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+              <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="countInteger"/>
+            </copy>
+            <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+              <from expression="'0'" bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+              <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="WBSCatOut" part="result"
+                  query="/ns12:ReadWBSCategoriesResponse/ns12:WBSCategory[bpws:getVariableData('countInteger')]/ns12:ObjectId"/>
+            </copy>
+            <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+              <from expression="'NULL'" bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+              <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="WBSCatOut" part="result"
+                  query="/ns12:ReadWBSCategoriesResponse/ns12:WBSCategory[bpws:getVariableData('countInteger')]/ns12:Name"/>
+            </copy>
+            <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+              <from expression="'0'" bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+              <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="WBSCatOut" part="result"
+                  query="/ns12:ReadWBSCategoriesResponse/ns12:WBSCategory[bpws:getVariableData('countInteger')]/ns12:SequenceNumber"/>
+            </copy>
+            <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+              <from expression="count(bpws:getVariableData('inputVariable','payload','/client:update/ns1:timeline/ns1:activities/ns1:activity'))"
+                    bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+              <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="countInteger"/>
+            </copy>
+          </assign>
+        </sequence>
+        <sequence name="FindCreateWBSIdforWBSCat">
+          <while name="LoopActivities" condition="bpws:getVariableData('countInteger')>0">
+            <sequence name="LoopAllActivities">
+              <assign name="AssignTmpActId">
+                <copy>
+                  <from expression="bpws:getVariableData('inputVariable','payload',&quot;/client:update/ns1:timeline/ns1:activities/ns1:activity[bpws:getVariableData('countInteger')]/@id&quot;)"
+                        bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                  <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="tmpActivityId"/>
+                </copy>
+              </assign>
+              <switch name="IfEmptyCatElement">
+                <case condition="empty(bpws:getVariableData('inputVariable','payload',&quot;/client:update/ns1:timeline/ns1:activities/ns1:activity[bpws:getVariableData('countInteger')]/ns1:wbsCategoryName&quot;))">
+                  <bpelx:annotation>
+                    <bpelx:general>
+                      <bpelx:property name="userLabel">
+                        <![CDATA[IfEmptyCategory]]>
+                      </bpelx:property>
+                    </bpelx:general>
+                  </bpelx:annotation>
+                  <assign name="MissingCatName">
+                    <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                      <from expression="''"/>
+                      <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="WBSCatName"/>
+                    </copy>
+                  </assign>
+                </case>
+                <otherwise>
+                  <sequence name="IfEmptyWBSId">
+                    <switch name="EmptyWBSId">
+                      <case condition="bpws:getVariableData('inputVariable','payload',&quot;/client:update/ns1:timeline/ns1:activities/ns1:activity[bpws:getVariableData('countInteger')]/@wbsId&quot;)>0">
+                        <bpelx:annotation>
+                          <bpelx:general>
+                            <bpelx:property name="userLabel">
+                              <![CDATA[EmptyWBSId]]>
+                            </bpelx:property>
+                          </bpelx:general>
+                        </bpelx:annotation>
+                        <assign name="WBSIdProvided">
+                          <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                            <from expression="''"/>
+                            <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="WBSCatName"/>
+                          </copy>
+                        </assign>
+                      </case>
+                      <otherwise>
+                        <switch name="CatName">
+                          <case condition="string-length(bpws:getVariableData('inputVariable','payload',&quot;/client:update/ns1:timeline/ns1:activities/ns1:activity[bpws:getVariableData('countInteger')]/ns1:wbsCategoryName&quot;))>0">
+                            <bpelx:annotation>
+                              <bpelx:general>
+                                <bpelx:property name="userLabel">
+                                  <![CDATA[IfCATLengthMoreThan0]]>
+                                </bpelx:property>
+                              </bpelx:general>
+                            </bpelx:annotation>
+                            <assign name="NameWBSCat">
+                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                <from expression="bpws:getVariableData('inputVariable','payload',&quot;/client:update/ns1:timeline/ns1:activities/ns1:activity[bpws:getVariableData('countInteger')]/ns1:wbsCategoryName&quot;)"
+                                      bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                                <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                    variable="WBSCatName"/>
+                              </copy>
+                            </assign>
+                          </case>
+                          <otherwise>
+                            <assign name="NullCATName">
+                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                <from expression="'NULL'"/>
+                                <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                    variable="WBSCatName"/>
+                              </copy>
+                            </assign>
+                          </otherwise>
+                        </switch>
+                      </otherwise>
+                    </switch>
+                  </sequence>
+                </otherwise>
+              </switch>
+              <sequence name="CatNameExists-SKIP" bpelx:skipCondition="bpws:getVariableData('WBSCatName')=''">
+                <assign name="CountWBSCatLookUp">
+                  <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                    <from expression="count(bpws:getVariableData('WBSCatOut','result','/ns12:ReadWBSCategoriesResponse/ns12:WBSCategory/ns12:ObjectId'))"/>
+                    <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="countWBSCat"/>
+                  </copy>
+                  <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                    <from expression="bpws:getVariableData('WBSCatOut','result',&quot;/ns12:ReadWBSCategoriesResponse/ns12:WBSCategory[ns12:Name=bpws:getVariableData('WBSCatName')]/ns12:SequenceNumber&quot;)"/>
+                    <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="finalWBSId"/>
+                  </copy>
+                </assign>
+                <switch name="IfCatExists">
+                  <case condition="bpws:getVariableData('finalWBSId')>1111">
+                    <bpelx:annotation>
+                      <bpelx:general>
+                        <bpelx:property name="userLabel">
+                          <![CDATA[CategoryWBSIdExists]]>
+                        </bpelx:property>
+                      </bpelx:general>
+                    </bpelx:annotation>
+                    <empty name="AlreadyExists-EMPTY"/>
+                  </case>
+                  <otherwise>
+                    <sequence name="LoopAllCatLookUp">
+                      <assign name="AssignFinalZero">
+                        <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                          <from expression="'0'"/>
+                          <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="finalWBSId"/>
+                        </copy>
+                      </assign>
+                      <while name="LoopCAT" condition="bpws:getVariableData('countWBSCat')>0">
+                        <sequence name="LoopAllCategories">
+                          <sequence name="SetCatTrueWhenTheSameAs4Activity-SKIP"
+                                    bpelx:skipCondition="bpws:getVariableData('WBSCatOut','result',&quot;/ns12:ReadWBSCategoriesResponse/ns12:WBSCategory[bpws:getVariableData('countWBSCat')]/ns12:Name&quot;) != bpws:getVariableData('WBSCatName')">
+                            <switch name="CatNullOrNotNull">
+                              <case condition="bpws:getVariableData('WBSCatName')='NULL'">
+                                <bpelx:annotation>
+                                  <bpelx:general>
+                                    <bpelx:property name="userLabel">
+                                      <![CDATA[IfNULL]]>
+                                    </bpelx:property>
+                                  </bpelx:general>
+                                </bpelx:annotation>
+                                <sequence name="GetCreateNullWBS">
+                                  <sequence name="GetTopNullWBS">
+                                    <assign name="GetNullWBS">
+                                      <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                        <from expression="'Name'"
+                                              bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                                        <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                            variable="GetNullWBSIn" part="params" query="/ns4:ReadWBS/ns4:Field[1]"/>
+                                      </copy>
+                                      <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                        <from expression="'WBSCategoryObjectId'"/>
+                                        <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                            variable="GetNullWBSIn" part="params" query="/ns4:ReadWBS/ns4:Field[2]"/>
+                                      </copy>
+                                      <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                        <from expression="concat(&quot;ProjectId='&quot;, bpws:getVariableData('inputVariable','payload','/client:update/ns1:timeline/@id') , &quot;' and Name = 'Project Activities without Phase' and ParentObjectId=&quot;, bpws:getVariableData('inputVariable','payload','/client:update/ns1:timeline/@referenceId') )"
+                                              bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                                        <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                            variable="GetNullWBSIn" part="params" query="/ns4:ReadWBS/ns4:Filter"/>
+                                      </copy>
+                                      <copy>
+                                        <from expression="'0'"
+                                              bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                                        <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                            variable="tmpWBSId"/>
+                                      </copy>
+                                    </assign>
+                                    <invoke name="GetNullWBS" partnerLink="WBSService" inputVariable="GetNullWBSIn"
+                                            outputVariable="GetNullWBSOut" portType="ns4:WBSPortType"
+                                            operation="ReadWBS"/>
+                                  </sequence>
+                                  <switch name="MissingNullWBS">
+                                    <case condition="empty(bpws:getVariableData('GetNullWBSOut','result','/ns4:ReadWBSResponse/ns4:WBS/ns4:ObjectId'))">
+                                      <bpelx:annotation>
+                                        <bpelx:general>
+                                          <bpelx:property name="userLabel">
+                                            <![CDATA[MissingWBS]]>
+                                          </bpelx:property>
+                                        </bpelx:general>
+                                      </bpelx:annotation>
+                                      <sequence name="CreateIfMissing">
+                                        <assign name="CreateTopNullWBS"
+                                                xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/">
+                                          <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                            <from expression="bpws:getVariableData('inputVariable','payload','/client:update/@id')"/>
+                                            <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                                variable="CreateTopNullWBSIn" part="params"
+                                                query="/ns4:CreateWBS/ns4:WBS/ns4:Code"/>
+                                          </copy>
+                                          <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                            <from expression="'Project Activities without Phase'"/>
+                                            <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                                variable="CreateTopNullWBSIn" part="params"
+                                                query="/ns4:CreateWBS/ns4:WBS/ns4:Name"/>
+                                          </copy>
+                                          <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                            <from expression="bpws:getVariableData('inputVariable','payload','/client:update/ns1:timeline/@referenceId')"/>
+                                            <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                                variable="CreateTopNullWBSIn" part="params"
+                                                query="/ns4:CreateWBS/ns4:WBS/ns4:ParentObjectId"/>
+                                          </copy>
+                                        </assign>
+                                        <invoke name="CreateTopNullWBS" partnerLink="WBSService"
+                                                inputVariable="CreateTopNullWBSIn" outputVariable="CreateTopNullWBSOut"
+                                                portType="ns4:WBSPortType" operation="CreateWBS"/>
+                                        <assign name="AssignNewWBSId">
+                                          <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                            <from expression="bpws:getVariableData('CreateTopNullWBSOut','result','/ns4:CreateWBSResponse/ns4:ObjectId')"/>
+                                            <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                                variable="finalWBSId"/>
+                                          </copy>
+                                        </assign>
+                                      </sequence>
+                                    </case>
+                                    <otherwise>
+                                      <assign name="AssignExistingWBSId">
+                                        <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                          <from expression="bpws:getVariableData('GetNullWBSOut','result','/ns4:ReadWBSResponse/ns4:WBS/ns4:ObjectId')"/>
+                                          <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                              variable="finalWBSId"/>
+                                        </copy>
+                                      </assign>
+                                    </otherwise>
+                                  </switch>
+                                </sequence>
+                              </case>
+                              <otherwise>
+                                <sequence name="GetCreateCatWBS">
+                                  <sequence name="GetExactWBSId">
+                                    <assign name="AssignCatWBS">
+                                      <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                        <from expression="'Name'"
+                                              bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                                        <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                            variable="ReadCatWBSIdIn" part="params" query="/ns4:ReadWBS/ns4:Field[1]"/>
+                                      </copy>
+                                      <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                        <from expression="'WBSCategoryObjectId'"/>
+                                        <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                            variable="ReadCatWBSIdIn" part="params" query="/ns4:ReadWBS/ns4:Field[2]"/>
+                                      </copy>
+                                      <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                        <from expression="concat(&quot;ProjectId='&quot;, bpws:getVariableData('inputVariable','payload','/client:update/ns1:timeline/@id') , &quot;' and Name like 'Project Activities from Functional Planning%' and WBSCategoryObjectId=&quot;, bpws:getVariableData('WBSCatOut','result',&quot;/ns12:ReadWBSCategoriesResponse/ns12:WBSCategory[bpws:getVariableData('countWBSCat')]/ns12:ObjectId&quot;))"
+                                              bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                                        <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                            variable="ReadCatWBSIdIn" part="params" query="/ns4:ReadWBS/ns4:Filter"/>
+                                      </copy>
+                                      <copy>
+                                        <from expression="'0'"
+                                              bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                                        <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                            variable="tmpWBSId"/>
+                                      </copy>
+                                    </assign>
+                                    <invoke name="ReadExactWbsCatNodeId" partnerLink="WBSService"
+                                            inputVariable="ReadCatWBSIdIn" outputVariable="ReadCatWBSIdOut"
+                                            portType="ns4:WBSPortType" operation="ReadWBS"/>
+                                  </sequence>
+                                  <switch name="Switch5">
+                                    <case condition="empty(bpws:getVariableData('ReadCatWBSIdOut','result','/ns4:ReadWBSResponse/ns4:WBS/ns4:ObjectId'))">
+                                      <bpelx:annotation>
+                                        <bpelx:general>
+                                          <bpelx:property name="userLabel">
+                                            <![CDATA[MissingCatWBS]]>
+                                          </bpelx:property>
+                                        </bpelx:general>
+                                      </bpelx:annotation>
+                                      <sequence name="Sequence6">
+                                        <sequence name="FindParentWBSId">
+                                          <sequence name="ReadAllWBSwithThatCat">
+                                            <assign name="ReadAllWBSwithThatCat">
+                                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                                <from expression="'Name'"
+                                                      bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                                                <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                                    variable="ReadAllThatCatIn" part="params"
+                                                    query="/ns4:ReadWBS/ns4:Field[1]"/>
+                                              </copy>
+                                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                                <from expression="'ParentObjectId'"
+                                                      bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                                                <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                                    variable="ReadAllThatCatIn" part="params"
+                                                    query="/ns4:ReadWBS/ns4:Field[2]"/>
+                                              </copy>
+                                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                                <from expression="'ParentObjectId desc, ObjectId desc'"
+                                                      bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                                                <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                                    variable="ReadAllThatCatIn" part="params"
+                                                    query="/ns4:ReadWBS/ns4:OrderBy"/>
+                                              </copy>
+                                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                                <from expression="concat(&quot;ProjectId='&quot;, bpws:getVariableData('inputVariable','payload','/client:update/ns1:timeline/@id') , &quot;' and WBSCategoryObjectId=&quot;, bpws:getVariableData('WBSCatOut','result',&quot;/ns12:ReadWBSCategoriesResponse/ns12:WBSCategory[bpws:getVariableData('countWBSCat')]/ns12:ObjectId&quot;))"
+                                                      bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                                                <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                                    variable="ReadAllThatCatIn" part="params"
+                                                    query="/ns4:ReadWBS/ns4:Filter"/>
+                                              </copy>
+                                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                                <from expression="'999'"/>
+                                                <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                                    variable="lowestWBSPathCount"/>
+                                              </copy>
+                                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                                <from expression="'0'"/>
+                                                <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                                    variable="tmpWBSId"/>
+                                              </copy>
+                                            </assign>
+                                            <invoke name="ThusReadAll4ThatCat" partnerLink="WBSService"
+                                                    inputVariable="ReadAllThatCatIn" outputVariable="ReadAllThatCatOut"
+                                                    portType="ns4:WBSPortType" operation="ReadWBS"/>
+                                            <assign name="AssignLoopCount">
+                                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                                <from expression="count(bpws:getVariableData('ReadAllThatCatOut','result','/ns4:ReadWBSResponse/ns4:WBS/ns4:ObjectId'))"/>
+                                                <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                                    variable="loopWBScount"/>
+                                              </copy>
+                                            </assign>
+                                          </sequence>
+                                          <while name="WhileLoopCount"
+                                                 condition="bpws:getVariableData('loopWBScount')>0">
+                                            <sequence name="LoopAllWBS4thatCat">
+                                              <assign name="AssignReadWBSPath">
+                                                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                                  <from bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                                        variable="ReadAllThatCatOut" part="result"
+                                                        query="/ns4:ReadWBSResponse/ns4:WBS[bpws:getVariableData('loopWBScount')]/ns4:ObjectId"/>
+                                                  <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                                      variable="ReadWBSPathIn" part="params"
+                                                      query="/ns4:ReadWBSPath/ns4:ObjectId"/>
+                                                </copy>
+                                                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                                  <from expression="'ParentObjectId'"/>
+                                                  <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                                      variable="ReadWBSPathIn" part="params"
+                                                      query="/ns4:ReadWBSPath/ns4:Field"/>
+                                                </copy>
+                                              </assign>
+                                              <invoke name="ReadWBSPathCount" partnerLink="WBSService"
+                                                      inputVariable="ReadWBSPathIn" outputVariable="ReadWBSPathOut"
+                                                      portType="ns4:WBSPortType" operation="ReadWBSPath"/>
+                                              <switch name="Switch6">
+                                                <case condition="bpws:getVariableData('lowestWBSPathCount') > count(bpws:getVariableData('ReadWBSPathOut','result','/ns4:ReadWBSPathResponse/ns4:WBS/ns4:ObjectId'))">
+                                                  <bpelx:annotation>
+                                                    <bpelx:general>
+                                                      <bpelx:property name="userLabel">
+                                                        <![CDATA[WeHaveBetterWBS]]>
+                                                      </bpelx:property>
+                                                    </bpelx:general>
+                                                  </bpelx:annotation>
+                                                  <assign name="UpdateParentTmpWBSId">
+                                                    <copy bpelx:ignoreMissingFromData="yes"
+                                                          bpelx:insertMissingToData="yes">
+                                                      <from expression="bpws:getVariableData('ReadAllThatCatOut','result',&quot;/ns4:ReadWBSResponse/ns4:WBS[bpws:getVariableData('loopWBScount')]/ns4:ObjectId&quot;)"/>
+                                                      <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                                          variable="tmpWBSId"/>
+                                                    </copy>
+                                                    <copy bpelx:ignoreMissingFromData="yes"
+                                                          bpelx:insertMissingToData="yes">
+                                                      <from expression="count(bpws:getVariableData('ReadWBSPathOut','result','/ns4:ReadWBSPathResponse/ns4:WBS/ns4:ObjectId'))"/>
+                                                      <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                                          variable="lowestWBSPathCount"/>
+                                                    </copy>
+                                                  </assign>
+                                                </case>
+                                                <otherwise>
+                                                  <empty name="EmptyDoNotUpdateLookUp"/>
+                                                </otherwise>
+                                              </switch>
+                                              <assign name="MinusOneLoop">
+                                                <copy>
+                                                  <from expression="bpws:getVariableData('loopWBScount')-1"/>
+                                                  <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                                      variable="loopWBScount"/>
+                                                </copy>
+                                              </assign>
+                                            </sequence>
+                                          </while>
+                                          <sequence name="AssignRootWBSIfMissing">
+                                            <assign name="AssignRootWBSIfMissing"
+                                                    bpelx:skipCondition="bpws:getVariableData('tmpWBSId') > 0">
+                                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                                <from expression="bpws:getVariableData('inputVariable','payload','/client:update/ns1:timeline/@referenceId')"/>
+                                                <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                                    variable="tmpWBSId"/>
+                                              </copy>
+                                            </assign>
+                                          </sequence>
+                                          <sequence name="CreateWBS4Cat">
+                                            <sequence name="CreateWBS4Cat-SKIP"
+                                                      bpelx:skipCondition="bpws:getVariableData('tmpWBSId')='0'">
+                                              <assign name="CreateWBS4Cat"
+                                                      xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/">
+                                                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                                  <from expression="concat(bpws:getVariableData('inputVariable','payload','/client:update/@id'),'-',bpws:getVariableData('WBSCatOut','result',&quot;/ns12:ReadWBSCategoriesResponse/ns12:WBSCategory[bpws:getVariableData('countWBSCat')]/ns12:ObjectId&quot;))"
+                                                        bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                                                  <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                                      variable="CreateWBS4CatIn" part="params"
+                                                      query="/ns4:CreateWBS/ns4:WBS/ns4:Code"/>
+                                                </copy>
+                                                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                                  <from expression="concat('Project Activities from Functional Planning ', bpws:getVariableData('WBSCatOut','result',&quot;/ns12:ReadWBSCategoriesResponse/ns12:WBSCategory[bpws:getVariableData('countWBSCat')]/ns12:Name&quot;))"
+                                                        bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                                                  <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                                      variable="CreateWBS4CatIn" part="params"
+                                                      query="/ns4:CreateWBS/ns4:WBS/ns4:Name"/>
+                                                </copy>
+                                                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                                  <from expression="bpws:getVariableData('WBSCatOut','result',&quot;/ns12:ReadWBSCategoriesResponse/ns12:WBSCategory[bpws:getVariableData('countWBSCat')]/ns12:ObjectId&quot;)"
+                                                        bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                                                  <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                                      variable="CreateWBS4CatIn" part="params"
+                                                      query="/ns4:CreateWBS/ns4:WBS/ns4:WBSCategoryObjectId"/>
+                                                </copy>
+                                                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                                  <from expression="bpws:getVariableData('tmpWBSId')"
+                                                        bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                                                  <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                                      variable="CreateWBS4CatIn" part="params"
+                                                      query="/ns4:CreateWBS/ns4:WBS/ns4:ParentObjectId"/>
+                                                </copy>
+                                              </assign>
+                                              <invoke name="CreateWBS4Cat" partnerLink="WBSService"
+                                                      inputVariable="CreateWBS4CatIn" outputVariable="CreateWBS4CatOut"
+                                                      portType="ns4:WBSPortType" operation="CreateWBS"/>
+                                              <assign name="TakeNewCatWBSId">
+                                                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                                  <from expression="bpws:getVariableData('CreateWBS4CatOut','result','/ns4:CreateWBSResponse/ns4:ObjectId')"/>
+                                                  <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                                      variable="finalWBSId"/>
+                                                </copy>
+                                              </assign>
+                                            </sequence>
+                                          </sequence>
+                                        </sequence>
+                                      </sequence>
+                                    </case>
+                                    <otherwise>
+                                      <assign name="TakeExistingCatWBSId">
+                                        <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                          <from expression="bpws:getVariableData('ReadCatWBSIdOut','result','/ns4:ReadWBSResponse/ns4:WBS/ns4:ObjectId')"/>
+                                          <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                              variable="finalWBSId"/>
+                                        </copy>
+                                      </assign>
+                                    </otherwise>
+                                  </switch>
+                                </sequence>
+                              </otherwise>
+                            </switch>
+                            <assign name="SetWBSId4CatAndExit">
+                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                <from expression="bpws:getVariableData('finalWBSId')"
+                                      bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                                <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="WBSCatOut"
+                                    part="result"
+                                    query="/ns12:ReadWBSCategoriesResponse/ns12:WBSCategory[bpws:getVariableData('countWBSCat')]/ns12:SequenceNumber"/>
+                              </copy>
+                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                <from expression="bpws:getVariableData('countWBSCat')-100"/>
+                                <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                    variable="countWBSCat"/>
+                              </copy>
+                            </assign>
+                          </sequence>
+                          <assign name="MinusCatOne">
+                            <copy>
+                              <from expression="bpws:getVariableData('countWBSCat')-1"
+                                    bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                              <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                  variable="countWBSCat"/>
+                            </copy>
+                          </assign>
+                        </sequence>
+                      </while>
+                    </sequence>
+                  </otherwise>
+                </switch>
+                <sequence name="UpdateInputPayload">
+                  <switch name="IfNewAct">
+                    <case condition="bpws:getVariableData('inputVariable','payload',&quot;/client:update/ns1:timeline/ns1:activities/ns1:activity[bpws:getVariableData('countInteger')]/@id&quot;)='#new#'">
+                      <bpelx:annotation>
+                        <bpelx:general>
+                          <bpelx:property name="userLabel">
+                            <![CDATA[IfNewActivity]]>
+                          </bpelx:property>
+                        </bpelx:general>
+                      </bpelx:annotation>
+                      <sequence name="CreateNewAct">
+                        <scope name="CreateNewAct">
+                          <variables>
+                            <variable name="CreateCadActIn" messageType="ns2:CreateActivities"/>
+                            <variable name="CreateCadActOut" messageType="ns2:CreateActivitiesResponse"/>
+                          </variables>
+                          <sequence name="CreateNewAct">
+                          
+                            <assign name="AssignCreateCatAct">
+                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                <from variable="finalWBSId"/>
+                                <to variable="CreateCadActIn" part="params"
+                                    query="/ns2:CreateActivities/ns2:Activity[1]/ns2:WBSObjectId"/>
+                              </copy>
+                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                <from expression="bpws:getVariableData('inputVariable','payload',&quot;/client:update/ns1:timeline/ns1:activities/ns1:activity[bpws:getVariableData('countInteger')]/ns1:name&quot;)"
+                                      bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                                <to variable="CreateCadActIn" part="params"
+                                    query="/ns2:CreateActivities/ns2:Activity[1]/ns2:Name"/>
+                              </copy>
+                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                <from expression="bpws:getVariableData('inputVariable','payload',&quot;/client:update/ns1:timeline/ns1:activities/ns1:activity[bpws:getVariableData('countInteger')]/ns1:type&quot;)"
+                                      bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                                <to variable="CreateCadActIn" part="params"
+                                    query="/ns2:CreateActivities/ns2:Activity[1]/ns2:Type"/>
+                              </copy>
+                            </assign>
+                            
+                            <switch name="PlanStart">
+                              <case condition="empty(bpws:getVariableData('inputVariable','payload',&quot;/client:update/ns1:timeline/ns1:activities/ns1:activity[bpws:getVariableData('countInteger')]/ns1:planStart&quot;))">
+                                <bpelx:annotation>
+                                  <bpelx:general>
+                                    <bpelx:property name="userLabel">
+                                      <![CDATA[IfPS]]>
+                                    </bpelx:property>
+                                  </bpelx:general>
+                                </bpelx:annotation>
+                                <assign name="RemovePS">
+                                  <bpelx:remove>
+                                    <bpelx:target bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                                  variable="CreateCadActIn" part="params"
+                                                  query="/ns2:CreateActivities/ns2:Activity/ns2:PlannedStartDate"/>
+                                  </bpelx:remove>
+                                </assign>
+                              </case>
+                              <otherwise>
+                                <assign name="AssignCreateCatActPS">
+                                  <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                    <from expression="bpws:getVariableData('inputVariable','payload',&quot;/client:update/ns1:timeline/ns1:activities/ns1:activity[bpws:getVariableData('countInteger')]/ns1:planStart&quot;)"
+                                          bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                                    <to variable="CreateCadActIn" part="params"
+                                        query="/ns2:CreateActivities/ns2:Activity[1]/ns2:PlannedStartDate"/>
+                                  </copy>
+                                </assign>
+                              </otherwise>
+                            </switch>
+                            
+                            <switch name="PlanFinish">
+                              <case condition="empty(bpws:getVariableData('inputVariable','payload',&quot;/client:update/ns1:timeline/ns1:activities/ns1:activity[bpws:getVariableData('countInteger')]/ns1:planFinish&quot;))">
+                                <bpelx:annotation>
+                                  <bpelx:general>
+                                    <bpelx:property name="userLabel">
+                                      <![CDATA[IfPF]]>
+                                    </bpelx:property>
+                                  </bpelx:general>
+                                </bpelx:annotation>
+                                <assign name="RemovePF">
+                                  <bpelx:remove>
+                                    <bpelx:target bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                                  variable="CreateCadActIn" part="params"
+                                                  query="/ns2:CreateActivities/ns2:Activity/ns2:PlannedFinishDate"/>
+                                  </bpelx:remove>
+                                </assign>
+                              </case>
+                              <otherwise>
+                                <assign name="AssignCreateCatActPF">
+                                  <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                    <from expression="bpws:getVariableData('inputVariable','payload',&quot;/client:update/ns1:timeline/ns1:activities/ns1:activity[bpws:getVariableData('countInteger')]/ns1:planFinish&quot;)"
+                                          bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                                    <to variable="CreateCadActIn" part="params"
+                                        query="/ns2:CreateActivities/ns2:Activity[1]/ns2:PlannedFinishDate"/>
+                                  </copy>
+                                </assign>
+                              </otherwise>
+                            </switch>
+                            
+                            <switch name="ActualStart">
+                              <case condition="empty(bpws:getVariableData('inputVariable','payload',&quot;/client:update/ns1:timeline/ns1:activities/ns1:activity[bpws:getVariableData('countInteger')]/ns1:actualStart&quot;))">
+                                <bpelx:annotation>
+                                  <bpelx:general>
+                                    <bpelx:property name="userLabel">
+                                      <![CDATA[IfActualS]]>
+                                    </bpelx:property>
+                                  </bpelx:general>
+                                </bpelx:annotation>
+                                <assign name="RemoveActualS">
+                                  <bpelx:remove>
+                                    <bpelx:target bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                                  variable="CreateCadActIn" part="params"
+                                                  query="/ns2:CreateActivities/ns2:Activity/ns2:ActualStartDate"/>
+                                  </bpelx:remove>
+                                </assign>
+                              </case>
+                              <otherwise>
+                                <assign name="AssignCreateCatActAS">
+                                  <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                    <from expression="bpws:getVariableData('inputVariable','payload',&quot;/client:update/ns1:timeline/ns1:activities/ns1:activity[bpws:getVariableData('countInteger')]/ns1:actualStart&quot;)"
+                                          bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                                    <to variable="CreateCadActIn" part="params"
+                                        query="/ns2:CreateActivities/ns2:Activity[1]/ns2:ActualStartDate"/>
+                                  </copy>
+                                </assign>
+                              </otherwise>
+                            </switch>
+                            
+                            <switch name="ActualFinish">
+                              <case condition="empty(bpws:getVariableData('inputVariable','payload',&quot;/client:update/ns1:timeline/ns1:activities/ns1:activity[bpws:getVariableData('countInteger')]/ns1:actualFinish&quot;))">
+                                <bpelx:annotation>
+                                  <bpelx:general>
+                                    <bpelx:property name="userLabel">
+                                      <![CDATA[IfActualFinish]]>
+                                    </bpelx:property>
+                                  </bpelx:general>
+                                </bpelx:annotation>
+                                <assign name="RemoveActualFinish">
+                                  <bpelx:remove>
+                                    <bpelx:target bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                                  variable="CreateCadActIn" part="params"
+                                                  query="/ns2:CreateActivities/ns2:Activity/ns2:ActualFinishDate"/>
+                                  </bpelx:remove>
+                                </assign>
+                              </case>
+                              <otherwise>
+                                <assign name="AssignCreateCatActAF">
+                                  <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                    <from expression="bpws:getVariableData('inputVariable','payload',&quot;/client:update/ns1:timeline/ns1:activities/ns1:activity[bpws:getVariableData('countInteger')]/ns1:actualFinish&quot;)"
+                                          bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                                    <to variable="CreateCadActIn" part="params"
+                                        query="/ns2:CreateActivities/ns2:Activity[1]/ns2:ActualFinishDate"/>
+                                  </copy>
+                                </assign>
+                              </otherwise>
+                            </switch>
+
+                            
+                            <invoke name="AddNewActivityWithCategory" partnerLink="ActivityService"
+                                    inputVariable="CreateCadActIn" outputVariable="CreateCadActOut"
+                                    portType="ns2:ActivityPortType" operation="CreateActivities"/>
+                            <assign name="AssignCreateActCode">
+                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                <from expression="'CodeTypeObjectId'"/>
+                                <to variable="ReadActCodeIn" part="params" query="/ns8:ReadActivityCodes/ns8:Field"/>
+                              </copy>
+                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                <from expression="concat(&quot;CodeTypeObjectId='&quot;,bpws:getVariableData('ReadConfigurationOut','payload','/client:config/client:activity/client:integrationTypeId'),&quot;' and CodeValue='Auto'&quot;)"
+                                      bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                                <to variable="ReadActCodeIn" part="params" query="/ns8:ReadActivityCodes/ns8:Filter"/>
+                              </copy>
+                            </assign>
+                            <invoke name="ReadActCode" partnerLink="ActivityCodeService" inputVariable="ReadActCodeIn"
+                                    outputVariable="ReadActCodeOut" portType="ns8:ActivityCodePortType"
+                                    operation="ReadActivityCodes"/>
+                            <assign name="AssignActCatValue">
+                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                <from variable="CreateCadActOut" part="result"
+                                      query="/ns2:CreateActivitiesResponse/ns2:ObjectId[1]"/>
+                                <to variable="CreateActCodeAssigIn" part="params"
+                                    query="/ns7:CreateActivityCodeAssignments/ns7:ActivityCodeAssignment[1]/ns7:ActivityObjectId"/>
+                              </copy>
+                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                <from variable="ReadActCodeOut" part="result"
+                                      query="/ns8:ReadActivityCodesResponse/ns8:ActivityCode/ns8:ObjectId"/>
+                                <to variable="CreateActCodeAssigIn" part="params"
+                                    query="/ns7:CreateActivityCodeAssignments/ns7:ActivityCodeAssignment[1]/ns7:ActivityCodeObjectId"/>
+                              </copy>
+                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                <from variable="ReadConfigurationOut" part="payload"
+                                      query="/client:config/client:activity/client:integrationTypeId"/>
+                                <to variable="CreateActCodeAssigIn" part="params"
+                                    query="/ns7:CreateActivityCodeAssignments/ns7:ActivityCodeAssignment[1]/ns7:ActivityCodeTypeObjectId"/>
+                              </copy>
+                            </assign>
+                            <invoke name="CreateActCodeAssig" partnerLink="ActivityCodeAssignmentService"
+                                    inputVariable="CreateActCodeAssigIn" outputVariable="CreateActCodeAssigOut"
+                                    portType="ns7:ActivityCodeAssignmentPortType"
+                                    operation="CreateActivityCodeAssignments"/>
+                            <assign name="AssignStudyElemIdUDF">
+                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                <from variable="CreateCadActOut" part="result"
+                                      query="/ns2:CreateActivitiesResponse/ns2:ObjectId[1]"/>
+                                <to variable="CreateUDFStudyElIn" part="params"
+                                    query="/ns5:CreateUDFValues/ns5:UDFValue[1]/ns5:ForeignObjectId"/>
+                              </copy>
+                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                <from variable="ReadConfigurationOut" part="payload"
+                                      query="/client:config/client:activity/client:studyElementIdTypeId"/>
+                                <to variable="CreateUDFStudyElIn" part="params"
+                                    query="/ns5:CreateUDFValues/ns5:UDFValue[1]/ns5:UDFTypeObjectId"/>
+                              </copy>
+                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                <from expression="bpws:getVariableData('inputVariable','payload',&quot;/client:update/ns1:timeline/ns1:activities/ns1:activity[bpws:getVariableData('countInteger')]/@studyElementId&quot;)"
+                                      bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                                <to variable="CreateUDFStudyElIn" part="params"
+                                    query="/ns5:CreateUDFValues/ns5:UDFValue[1]/ns5:Text"/>
+                              </copy>
+                            </assign>
+                            <assign name="AssignStudyIdUDF-SKIP"
+                                    bpelx:skipCondition="empty(bpws:getVariableData('inputVariable','payload',&quot;/client:update/ns1:timeline/ns1:activities/ns1:activity[bpws:getVariableData('countInteger')]/@studyId&quot;))">
+                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                <from variable="CreateCadActOut" part="result"
+                                      query="/ns2:CreateActivitiesResponse/ns2:ObjectId[1]"/>
+                                <to variable="CreateUDFStudyElIn" part="params"
+                                    query="/ns5:CreateUDFValues/ns5:UDFValue[2]/ns5:ForeignObjectId"/>
+                              </copy>
+                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                <from variable="ReadConfigurationOut" part="payload"
+                                      query="/client:config/client:activity/client:studyIdTypeId"/>
+                                <to variable="CreateUDFStudyElIn" part="params"
+                                    query="/ns5:CreateUDFValues/ns5:UDFValue[2]/ns5:UDFTypeObjectId"/>
+                              </copy>
+                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                <from expression="bpws:getVariableData('inputVariable','payload',&quot;/client:update/ns1:timeline/ns1:activities/ns1:activity[bpws:getVariableData('countInteger')]/@studyId&quot;)"
+                                      bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                                <to variable="CreateUDFStudyElIn" part="params"
+                                    query="/ns5:CreateUDFValues/ns5:UDFValue[2]/ns5:Text"/>
+                              </copy>
+                            </assign>
+                            <invoke name="CreateUDFStudyEl" partnerLink="UDFValueService"
+                                    inputVariable="CreateUDFStudyElIn" outputVariable="CreateUDFStudyElOut"
+                                    portType="ns5:UDFValuePortType" operation="CreateUDFValues"/>
+                            <assign name="AssignCleanUDF">
+                              <bpelx:remove>
+                                <bpelx:target bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                              variable="CreateUDFStudyElIn" part="params"
+                                              query="/ns5:CreateUDFValues/ns5:UDFValue"/>
+                              </bpelx:remove>
+                            </assign>
+                            <assign name="UpdateInputNewPayload">
+                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                <from expression="bpws:getVariableData('CreateCadActOut','result','/ns2:CreateActivitiesResponse/ns2:ObjectId')"
+                                      bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                                <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                    variable="inputVariable" part="payload"
+                                    query="/client:update/ns1:timeline/ns1:activities/ns1:activity[bpws:getVariableData('countInteger')]/@id"/>
+                              </copy>
+                            </assign>
+                          </sequence>
+                        </scope>
+                      </sequence>
+                    </case>
+                    <otherwise>
+                      <switch name="ActiExists">
+                        <case condition="bpws:getVariableData('inputVariable','payload','/client:update/@p6CreateUser')=bpws:getVariableData('inputVariable','payload',&quot;/client:update/ns1:timeline/ns1:activities/ns1:activity[bpws:getVariableData('countInteger')]/ns1:createUser&quot;)">
+                          <bpelx:annotation>
+                            <bpelx:general>
+                              <bpelx:property name="userLabel">
+                                <![CDATA[IfUpdateNeededForCreateUser]]>
+                              </bpelx:property>
+                            </bpelx:general>
+                          </bpelx:annotation>
+                          <empty name="ExistingAct-EMPTY"/>
+                        </case>
+                        <otherwise>
+                          <sequence name="AssignReadOneAct">
+                            <bpelx:annotation>
+                              <bpelx:documentation>
+                                <![CDATA[Perform Activity overtake action, meaning, change CreateUserId because it means that User from ProMIS is changing WebCategory and no other actions should change that.]]>
+                              </bpelx:documentation>
+                            </bpelx:annotation>
+                            <sequence name="CheckUserAndUpdate-SKIP"
+                                      bpelx:skipCondition="count(bpws:getVariableData('inputVariable','payload',&quot;/client:update/ns1:timeline/ns1:activities/ns1:activity[bpws:getVariableData('countInteger')]/ns1:createUser&quot;))=0">
+                              <assign name="AssignReadOneAct">
+                                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                  <from expression="'CreateUser'"/>
+                                  <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                      variable="GetCreateUserFromActIn" part="params"
+                                      query="/ns2:ReadActivities/ns2:Field"/>
+                                </copy>
+                                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                  <from expression="concat('ObjectId=',bpws:getVariableData('inputVariable','payload',&quot;/client:update/ns1:timeline/ns1:activities/ns1:activity[bpws:getVariableData('countInteger')]/@id&quot;))"
+                                        bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                                  <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                      variable="GetCreateUserFromActIn" part="params"
+                                      query="/ns2:ReadActivities/ns2:Filter"/>
+                                </copy>
+                              </assign>
+                              <invoke name="GetCreateUserFromAct" partnerLink="ActivityService"
+                                      inputVariable="GetCreateUserFromActIn" outputVariable="GetCreateUserFromActOut"
+                                      portType="ns2:ActivityPortType" operation="ReadActivities"/>
+                              <switch name="UpdateTaskAct">
+                                <case condition="bpws:getVariableData('GetCreateUserFromActOut','result','/ns2:ReadActivitiesResponse/ns2:Activity/ns2:CreateUser')=bpws:getVariableData('inputVariable','payload',&quot;/client:update/ns1:timeline/ns1:activities/ns1:activity[bpws:getVariableData('countInteger')]/ns1:createUser&quot;)">
+                                  <bpelx:annotation>
+                                    <bpelx:general>
+                                      <bpelx:property name="userLabel">
+                                        <![CDATA[AlreadyUpdated]]>
+                                      </bpelx:property>
+                                    </bpelx:general>
+                                  </bpelx:annotation>
+                                  <empty name="CreateUserAlreadyUpdated"/>
+                                </case>
+                                <otherwise>
+                                  <sequence name="UpdateTaskAct">
+                                    <assign name="AssigUpdateTaskAct">
+                                      <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                        <from bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                              variable="inputVariable" part="payload"
+                                              query="/client:update/ns1:timeline/ns1:activities/ns1:activity[bpws:getVariableData('countInteger')]/ns1:createUser"/>
+                                        <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                            variable="UpdateTaskActIn" part="payload"
+                                            query="/ns13:updateTask/ns13:createUser"/>
+                                      </copy>
+                                      <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                        <from bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                              variable="inputVariable" part="payload"
+                                              query="/client:update/ns1:timeline/ns1:activities/ns1:activity[bpws:getVariableData('countInteger')]/@id"/>
+                                        <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                            variable="UpdateTaskActIn" part="payload"
+                                            query="/ns13:updateTask/ns13:taskId"/>
+                                      </copy>
+                                    </assign>
+                                    <invoke name="UpdateTaskAct-SKIP" partnerLink="ProjectXService"
+                                            inputVariable="UpdateTaskActIn" outputVariable="UpdateTaskActOut"
+                                            portType="ns13:ProjectPortType" operation="updateTask"
+                                            bpelx:skipCondition="empty(bpws:getVariableData('UpdateTaskActIn','payload','/ns13:updateTask/ns13:createUser'))"/>
+                                  </sequence>
+                                </otherwise>
+                              </switch>
+                            </sequence>
+                          </sequence>
+                        </otherwise>
+                      </switch>
+                    </otherwise>
+                  </switch>
+                  <assign name="UpdateInputPayload">
+                    <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                      <from expression="bpws:getVariableData('finalWBSId')"
+                            bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                      <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="inputVariable"
+                          part="payload"
+                          query="/client:update/ns1:timeline/ns1:activities/ns1:activity[bpws:getVariableData('countInteger')]/@wbsId"/>
+                    </copy>
+                    <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                      <from expression="'0'"/>
+                      <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="finalWBSId"/>
+                    </copy>
+                  </assign>
+                </sequence>
+              </sequence>
+              <assign name="MinusActOne">
+                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                  <from expression="bpws:getVariableData('countInteger')-1"
+                        bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                  <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="countInteger"/>
+                </copy>
+              </assign>
+            </sequence>
+          </while>
+        </sequence>
+      </sequence>
+    </scope>
+    <flow name="UpdateActivitiesAndWBS">
+      <sequence name="UpdateActivities">
+        <scope name="Activities-SKIP"
+               bpelx:skipCondition="count(bpws:getVariableData('inputVariable','payload','/client:update/ns1:timeline/ns1:activities/ns1:activity'))=0">
+          <variables>
+            <variable name="DeleteActUDFIn" messageType="ns5:DeleteUDFValues"/>
+            <variable name="DeleteActUDFOut" messageType="ns5:DeleteUDFValuesResponse"/>
+            <variable name="CreateActUDFIn" messageType="ns5:CreateUDFValues"/>
+            <variable name="CreateActUDFOut" messageType="ns5:CreateUDFValuesResponse"/>
+          </variables>
+          <sequence name="Activities">
+            <assign name="TransformAct">
+              <bpelx:annotation>
+                <bpelx:pattern>transformation</bpelx:pattern>
+              </bpelx:annotation>
+              <copy>
+                <from expression="ora:doXSLTransformForDoc('xsl/UpdateTimelineUpdateAct.xsl', $inputVariable.payload)"/>
+                <to variable="UpdateActIn" part="params"/>
+              </copy>
+            </assign>
+            <sequence name="UpdateActivities-SKIP"
+                      bpelx:skipCondition="count(bpws:getVariableData('UpdateActIn','params','/ns2:UpdateActivities/ns2:Activity/ns2:ObjectId'))=0">
+              <invoke name="UpdateAct" bpelx:invokeAsDetail="no" inputVariable="UpdateActIn"
+                      outputVariable="UpdateActOut" partnerLink="ActivityService" portType="ns2:ActivityPortType"
+                      operation="UpdateActivities"/>
+              <sequence name="UpdateUDF-ALWAYS-SKIP" bpelx:skipCondition="1=1">
+                <bpelx:annotation>
+                  <bpelx:documentation>
+                    <![CDATA[Always skip because it should never update studyId UDF. BUT if needed then change SKIP condition.]]>
+                  </bpelx:documentation>
+                </bpelx:annotation>
+                <assign name="DeltePrjActXSLT">
+                  <bpelx:annotation>
+                    <bpelx:pattern>transformation</bpelx:pattern>
+                  </bpelx:annotation>
+                  <copy>
+                    <from expression="ora:doXSLTransformForDoc('xsl/UpdateTimelineDelPrjActUDF.xsl', $inputVariable.payload, 'ReadConfigurationOut.payload', $ReadConfigurationOut.payload)"/>
+                    <to variable="DeleteActUDFIn" part="params"/>
+                  </copy>
+                </assign>
+                <sequence name="DeletePrjActUDF">
+                  <invoke name="DeleteActUDF-SKIP" partnerLink="UDFValueService" inputVariable="DeleteActUDFIn"
+                          outputVariable="DeleteActUDFOut" portType="ns5:UDFValuePortType" operation="DeleteUDFValues"
+                          bpelx:skipCondition="count(bpws:getVariableData('DeleteActUDFIn','params','/ns5:DeleteUDFValues/ns5:ObjectId/ns5:ForeignObjectId'))=0"/>
+                </sequence>
+                <assign name="CreateActUDFXSLT">
+                  <bpelx:annotation>
+                    <bpelx:pattern>transformation</bpelx:pattern>
+                  </bpelx:annotation>
+                  <copy>
+                    <from expression="ora:doXSLTransformForDoc('xsl/UpdateTimelineCreateActUDF.xsl', $inputVariable.payload, 'ReadConfigurationOut.payload', $ReadConfigurationOut.payload)"/>
+                    <to variable="CreateActUDFIn" part="params"/>
+                  </copy>
+                </assign>
+                <sequence name="CreatePrjActUDF">
+                  <invoke name="CreateActUDF-SKIP" partnerLink="UDFValueService" inputVariable="CreateActUDFIn"
+                          outputVariable="CreateActUDFOut" portType="ns5:UDFValuePortType" operation="CreateUDFValues"
+                          bpelx:skipCondition="count(bpws:getVariableData('CreateActUDFIn','params','/ns5:CreateUDFValues/ns5:UDFValue/ns5:ForeignObjectId'))=0"/>
+                </sequence>
+              </sequence>
+            </sequence>
+            <scope name="DeleteActivities">
+              <variables>
+                <variable name="delLoop" type="xsd:integer"/>
+                <variable name="ReadOneActIn" messageType="ns2:ReadActivities"/>
+                <variable name="ReadOneActOut" messageType="ns2:ReadActivitiesResponse"/>
+                <variable name="DeleteOneActIn" messageType="ns2:DeleteActivities"/>
+              </variables>
+              <sequence name="DelAct-SKIP"
+                        bpelx:skipCondition="count(bpws:getVariableData('inputVariable','payload','/client:update/ns1:timeline/ns1:activities/ns1:activity/@mustBeDeleted'))=0">
+                <assign name="AssignLoopCount">
+                  <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                    <from expression="count(bpws:getVariableData('inputVariable','payload','/client:update/ns1:timeline/ns1:activities/ns1:activity'))"
+                          bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                    <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="delLoop"/>
+                  </copy>
+                </assign>
+                <while name="WhileLoopCount-SKIP" condition="bpws:getVariableData('delLoop')>0"
+                       bpelx:skipCondition="empty(bpws:getVariableData('inputVariable','payload','/client:update/@p6CreateUser'))">
+                  <sequence name="DeleteOne">
+                    <switch name="Switch7">
+                      <case condition="bpws:getVariableData('inputVariable','payload',&quot;/client:update/ns1:timeline/ns1:activities/ns1:activity[bpws:getVariableData('delLoop')]/@mustBeDeleted&quot;)='true'">
+                        <bpelx:annotation>
+                          <bpelx:general>
+                            <bpelx:property name="userLabel">
+                              <![CDATA[mustBeDeletedTrue]]>
+                            </bpelx:property>
+                          </bpelx:general>
+                        </bpelx:annotation>
+                        <sequence name="DeleteOne">
+                          <assign name="AssignReadOneAct">
+                            <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                              <from expression="'CreateUser'"/>
+                              <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                  variable="ReadOneActIn" part="params" query="/ns2:ReadActivities/ns2:Field"/>
+                            </copy>
+                            <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                              <from expression="concat('ObjectId=',bpws:getVariableData('inputVariable','payload',&quot;/client:update/ns1:timeline/ns1:activities/ns1:activity[bpws:getVariableData('delLoop')]/@id&quot;))"
+                                    bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                              <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                  variable="ReadOneActIn" part="params" query="/ns2:ReadActivities/ns2:Filter"/>
+                            </copy>
+                          </assign>
+                          <invoke name="ReadOneAct" partnerLink="ActivityService" inputVariable="ReadOneActIn"
+                                  outputVariable="ReadOneActOut" portType="ns2:ActivityPortType"
+                                  operation="ReadActivities"/>
+                          <switch name="DelteOneAct">
+                            <case condition="bpws:getVariableData('ReadOneActOut','result','/ns2:ReadActivitiesResponse/ns2:Activity/ns2:CreateUser')=bpws:getVariableData('inputVariable','payload','/client:update/@p6CreateUser')">
+                              <bpelx:annotation>
+                                <bpelx:general>
+                                  <bpelx:property name="userLabel">
+                                    <![CDATA[IfCreateUser]]>
+                                  </bpelx:property>
+                                </bpelx:general>
+                              </bpelx:annotation>
+                              <sequence name="DelteOneAct">
+                                <assign name="AssignDelteOneAct">
+                                  <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                    <from expression="bpws:getVariableData('inputVariable','payload',&quot;/client:update/ns1:timeline/ns1:activities/ns1:activity[bpws:getVariableData('delLoop')]/@id&quot;)"
+                                          bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                                    <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"
+                                        variable="DeleteOneActIn" part="params"
+                                        query="/ns2:DeleteActivities/ns2:ObjectId"/>
+                                  </copy>
+                                </assign>
+                                <invoke name="DeleteAct" partnerLink="ActivityService" inputVariable="DeleteOneActIn"
+                                        outputVariable="DeleteActOut" portType="ns2:ActivityPortType"
+                                        operation="DeleteActivities"/>
+                              </sequence>
+                            </case>
+                            <otherwise>
+                              <empty name="ManuallyCreatedOrMissing"/>
+                            </otherwise>
+                          </switch>
+                        </sequence>
+                      </case>
+                      <otherwise>
+                        <empty name="SKIP"/>
+                      </otherwise>
+                    </switch>
+                    <assign name="MinusLoopCount">
+                      <copy>
+                        <from expression="bpws:getVariableData('delLoop')-1"/>
+                        <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="delLoop"/>
+                      </copy>
+                    </assign>
+                  </sequence>
+                </while>
+              </sequence>
+            </scope>
+          </sequence>
+        </scope>
+      </sequence>
+      <sequence name="UpdateWBSandUDF">
+        <scope name="WBS-SKIP"
+               bpelx:skipCondition="count(bpws:getVariableData('inputVariable','payload','/client:update/ns1:timeline/ns1:wbsNodes/ns1:wbs'))=0">
+          <flow name="WBSandUDFupdate">
+            <sequence name="WBS">
+              <scope name="ScopeWBSUpdate" variableAccessSerializable="no">
+                <variables>
+                  <variable name="UpdateWBSIn" messageType="ns4:UpdateWBS"/>
+                  <variable name="UpdateWBSOut" messageType="ns4:UpdateWBSResponse"/>
+                </variables>
+                <sequence name="WBSUpdate">
+                  <assign name="TransformUpdateWBS">
+                    <bpelx:annotation>
+                      <bpelx:pattern>transformation</bpelx:pattern>
+                    </bpelx:annotation>
+                    <copy>
+                      <from expression="ora:doXSLTransformForDoc('xsl/UpdateTimelineUpdateWbs.xsl', $inputVariable.payload)"/>
+                      <to variable="UpdateWBSIn" part="params"/>
+                    </copy>
+                  </assign>
+                  <invoke name="UpdateWBS" bpelx:invokeAsDetail="no" inputVariable="UpdateWBSIn"
+                          outputVariable="UpdateWBSOut" partnerLink="WBSService" portType="ns4:WBSPortType"
+                          operation="UpdateWBS"/>
+                </sequence>
+              </scope>
+            </sequence>
+            <sequence name="UDF">
+              <scope name="ScopeUDFUpdate" variableAccessSerializable="no">
+                <variables>
+                  <variable name="DeleteUDFValuesIn" messageType="ns5:DeleteUDFValues"/>
+                  <variable name="DeleteUDFValuesOut" messageType="ns5:DeleteUDFValuesResponse"/>
+                  <variable name="CreateUDFValuesIn" messageType="ns5:CreateUDFValues"/>
+                  <variable name="CreateUDFValuesOut" messageType="ns5:CreateUDFValuesResponse"/>
+                </variables>
+                <sequence name="UpdateUDF">
+                  <sequence name="DeleteUDF">
+                    <assign name="TransformDeleteUDFValues">
+                      <bpelx:annotation>
+                        <bpelx:pattern>transformation</bpelx:pattern>
+                      </bpelx:annotation>
+                      <copy>
+                        <from expression="ora:doXSLTransformForDoc('xsl/UpdateTimelineDeleteUdf.xsl', $inputVariable.payload, 'ReadConfigurationOut.payload', $ReadConfigurationOut.payload)"/>
+                        <to variable="DeleteUDFValuesIn" part="params"/>
+                      </copy>
+                    </assign>
+                    <invoke name="DeleteUDFValues" bpelx:invokeAsDetail="no" inputVariable="DeleteUDFValuesIn"
+                            outputVariable="DeleteUDFValuesOut" partnerLink="UDFValueService"
+                            portType="ns5:UDFValuePortType" operation="DeleteUDFValues"/>
+                  </sequence>
+                  <sequence name="CreateUDF">
+                    <assign name="TransformCreateUDFValues">
+                      <bpelx:annotation>
+                        <bpelx:pattern>transformation</bpelx:pattern>
+                      </bpelx:annotation>
+                      <copy>
+                        <from expression="ora:doXSLTransformForDoc('xsl/UpdateTimelineCreateUdf.xsl', $inputVariable.payload, 'ReadConfigurationOut.payload', $ReadConfigurationOut.payload)"/>
+                        <to variable="CreateUDFValuesIn" part="params"/>
+                      </copy>
+                    </assign>
+                    <invoke name="CreateUDFValues" bpelx:invokeAsDetail="no" inputVariable="CreateUDFValuesIn"
+                            outputVariable="CreateUDFValuesOut" partnerLink="UDFValueService"
+                            portType="ns5:UDFValuePortType" operation="CreateUDFValues"/>
+                  </sequence>
+                </sequence>
+              </scope>
+            </sequence>
+          </flow>
+        </scope>
+      </sequence>
+    </flow>
+    <assign name="countPlaceholders">
+      <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+        <from expression="count(bpws:getVariableData('inputVariable','payload','/client:update/ns1:timeline/ns1:wbsNewPlaceholders/ns1:wbs'))"/>
+        <to variable="countPlaceholders"/>
+      </copy>
+    </assign>
+    <scope name="InjectPlaceHolder-SKIP" variableAccessSerializable="no"
+           bpelx:skipCondition="bpws:getVariableData('countPlaceholders')=0">
+      <variables>
+        <variable name="CreateWBSIn" messageType="ns4:CreateWBS"/>
+        <variable name="CreateWBSOut" messageType="ns4:CreateWBSResponse"/>
+        <variable name="CreateUDFPIn" messageType="ns5:CreateUDFValues"/>
+        <variable name="CreateUDFPOut"
+                  messageType="ns5:CreateUDFValuesResponse"/>
+        <variable name="CreateActIn" messageType="ns2:CreateActivities"/>
+        <variable name="CreateActOut"
+                  messageType="ns2:CreateActivitiesResponse"/>
+        <variable name="ActCodeIn"
+                  messageType="ns7:CreateActivityCodeAssignments"/>
+        <variable name="ActCodeOut"
+                  messageType="ns7:CreateActivityCodeAssignmentsResponse"/>
+        <variable name="ActCodeServiceIn" messageType="ns8:ReadActivityCodes"/>
+        <variable name="ActCodeServiceOut"
+                  messageType="ns8:ReadActivityCodesResponse"/>
+      </variables>
+      <sequence name="InjectWBS">
+        <while name="WhilePlaceholders"
+               condition="bpws:getVariableData('countPlaceholders')>0">
+          <sequence name="LoopPlaceholders">
+            <sequence name="CreateWBSUDF">
+              <assign name="AssignWBS">
+                <copy>
+                  <from variable="inputVariable" part="payload" query="/client:update/ns1:timeline/@referenceId"/>
+                  <to variable="CreateWBSIn" part="params" query="/ns4:CreateWBS/ns4:WBS/ns4:ParentObjectId"/>
+                </copy>
+                <copy>
+                  <from variable="inputVariable" part="payload"
+                        query="/client:update/ns1:timeline/ns1:wbsNewPlaceholders/ns1:wbs[bpws:getVariableData('countPlaceholders')]/ns1:name"/>
+                  <to variable="CreateWBSIn" part="params" query="/ns4:CreateWBS/ns4:WBS/ns4:Name"/>
+                </copy>
+                <copy>
+                  <from expression="concat(bpws:getVariableData('inputVariable','payload','/client:update/ns1:timeline/ns1:wbsNewPlaceholders/ns1:wbs[bpws:getVariableData(&quot;countPlaceholders&quot;)]/ns1:code'),'-',bpws:getVariableData('inputVariable','payload','/client:update/ns1:timeline/ns1:wbsNewPlaceholders/ns1:wbs[bpws:getVariableData(&quot;countPlaceholders&quot;)]/@studyId'))"/>
+                  <to variable="CreateWBSIn" part="params" query="/ns4:CreateWBS/ns4:WBS/ns4:Code"/>
+                </copy>
+              </assign>
+              <invoke name="CreateWBSPlaceholder" bpelx:invokeAsDetail="no" inputVariable="CreateWBSIn"
+                      outputVariable="CreateWBSOut" partnerLink="WBSService" portType="ns4:WBSPortType"
+                      operation="CreateWBS"/>
+              <assign name="Assign2UDF">
+                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                  <from variable="CreateWBSOut" part="result" query="/ns4:CreateWBSResponse/ns4:ObjectId"/>
+                  <to variable="CreateUDFPIn" part="params"
+                      query="/ns5:CreateUDFValues/ns5:UDFValue[1]/ns5:ForeignObjectId"/>
+                </copy>
+                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                  <from variable="ReadConfigurationOut" part="payload"
+                        query="/client:config/client:wbs/client:studyIdTypeId"/>
+                  <to variable="CreateUDFPIn" part="params"
+                      query="/ns5:CreateUDFValues/ns5:UDFValue[1]/ns5:UDFTypeObjectId"/>
+                </copy>
+                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                  <from variable="inputVariable" part="payload"
+                        query="/client:update/ns1:timeline/ns1:wbsNewPlaceholders/ns1:wbs[bpws:getVariableData('countPlaceholders')]/@studyId"/>
+                  <to variable="CreateUDFPIn" part="params" query="/ns5:CreateUDFValues/ns5:UDFValue[1]/ns5:Text"/>
+                </copy>
+                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                  <from variable="CreateWBSOut" part="result" query="/ns4:CreateWBSResponse/ns4:ObjectId"/>
+                  <to variable="CreateUDFPIn" part="params"
+                      query="/ns5:CreateUDFValues/ns5:UDFValue[2]/ns5:ForeignObjectId"/>
+                </copy>
+                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                  <from variable="ReadConfigurationOut" part="payload"
+                        query="/client:config/client:wbs/client:placeholderTypeId"/>
+                  <to variable="CreateUDFPIn" part="params"
+                      query="/ns5:CreateUDFValues/ns5:UDFValue[2]/ns5:UDFTypeObjectId"/>
+                </copy>
+                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                  <from variable="inputVariable" part="payload"
+                        query="/client:update/ns1:timeline/ns1:wbsNewPlaceholders/ns1:wbs[bpws:getVariableData('countPlaceholders')]/@studyId"/>
+                  <to variable="CreateUDFPIn" part="params" query="/ns5:CreateUDFValues/ns5:UDFValue[2]/ns5:Text"/>
+                </copy>
+              </assign>
+              <invoke name="CreateUDFPlaceholder" bpelx:invokeAsDetail="no" inputVariable="CreateUDFPIn"
+                      outputVariable="CreateUDFPOut" partnerLink="UDFValueService" portType="ns5:UDFValuePortType"
+                      operation="CreateUDFValues"/>
+            </sequence>
+            <sequence name="SKIP-whenNoDates"
+                      bpelx:skipCondition="count(bpws:getVariableData('inputVariable','payload','/client:update/ns1:timeline/ns1:wbsNewPlaceholders/ns1:wbs[bpws:getVariableData(&quot;countPlaceholders&quot;)]/ns1:startDate'))=0 or count(bpws:getVariableData('inputVariable','payload','/client:update/ns1:timeline/ns1:wbsNewPlaceholders/ns1:wbs[bpws:getVariableData(&quot;countPlaceholders&quot;)]/ns1:finishDate'))=0">
+              <assign name="AssignCreate2Act">
+                <copy bpelx:ignoreMissingFromData="yes"
+                      bpelx:insertMissingToData="yes">
+                  <from variable="CreateWBSOut" part="result"
+                        query="/ns4:CreateWBSResponse/ns4:ObjectId"/>
+                  <to variable="CreateActIn" part="params"
+                      query="/ns2:CreateActivities/ns2:Activity[1]/ns2:WBSObjectId"/>
+                </copy>
+                <copy bpelx:ignoreMissingFromData="yes"
+                      bpelx:insertMissingToData="yes">
+                  <from expression="'Start'"/>
+                  <to variable="CreateActIn" part="params"
+                      query="/ns2:CreateActivities/ns2:Activity[1]/ns2:Name"/>
+                </copy>
+                <copy bpelx:ignoreMissingFromData="yes"
+                      bpelx:insertMissingToData="yes">
+                  <from expression="'Start Milestone'"/>
+                  <to variable="CreateActIn" part="params"
+                      query="/ns2:CreateActivities/ns2:Activity[1]/ns2:Type"/>
+                </copy>
+                <copy bpelx:ignoreMissingFromData="yes"
+                      bpelx:insertMissingToData="yes">
+                  <from variable="inputVariable" part="payload"
+                        query="/client:update/ns1:timeline/ns1:wbsNewPlaceholders/ns1:wbs[bpws:getVariableData('countPlaceholders')]/ns1:startDate"/>
+                  <to variable="CreateActIn" part="params"
+                      query="/ns2:CreateActivities/ns2:Activity[1]/ns2:PlannedStartDate"/>
+                </copy>
+                <copy bpelx:ignoreMissingFromData="yes"
+                      bpelx:insertMissingToData="yes">
+                  <from expression="'Start On'"/>
+                  <to variable="CreateActIn" part="params"
+                      query="/ns2:CreateActivities/ns2:Activity[1]/ns2:PrimaryConstraintType"/>
+                </copy>
+                <copy bpelx:ignoreMissingFromData="yes"
+                      bpelx:insertMissingToData="yes">
+                  <from variable="CreateWBSOut" part="result"
+                        query="/ns4:CreateWBSResponse/ns4:ObjectId"/>
+                  <to variable="CreateActIn" part="params"
+                      query="/ns2:CreateActivities/ns2:Activity[2]/ns2:WBSObjectId"/>
+                </copy>
+                <copy bpelx:ignoreMissingFromData="yes"
+                      bpelx:insertMissingToData="yes">
+                  <from expression="'Finish'"/>
+                  <to variable="CreateActIn" part="params"
+                      query="/ns2:CreateActivities/ns2:Activity[2]/ns2:Name"/>
+                </copy>
+                <copy bpelx:ignoreMissingFromData="yes"
+                      bpelx:insertMissingToData="yes">
+                  <from expression="'Finish milestone'"/>
+                  <to variable="CreateActIn" part="params"
+                      query="/ns2:CreateActivities/ns2:Activity[2]/ns2:Type"/>
+                </copy>
+                <copy bpelx:ignoreMissingFromData="yes"
+                      bpelx:insertMissingToData="yes">
+                  <from variable="inputVariable" part="payload"
+                        query="/client:update/ns1:timeline/ns1:wbsNewPlaceholders/ns1:wbs[bpws:getVariableData('countPlaceholders')]/ns1:finishDate"/>
+                  <to variable="CreateActIn" part="params"
+                      query="/ns2:CreateActivities/ns2:Activity[2]/ns2:PlannedStartDate"/>
+                </copy>
+                <copy bpelx:ignoreMissingFromData="yes"
+                      bpelx:insertMissingToData="yes">
+                  <from expression="'Finish On'"/>
+                  <to variable="CreateActIn" part="params"
+                      query="/ns2:CreateActivities/ns2:Activity[2]/ns2:PrimaryConstraintType"/>
+                </copy>
+              </assign>
+              <invoke name="CreateActivities" bpelx:invokeAsDetail="no"
+                      inputVariable="CreateActIn" outputVariable="CreateActOut"
+                      partnerLink="ActivityService"
+                      portType="ns2:ActivityPortType"
+                      operation="CreateActivities"/>
+              <assign name="AssignCodeService">
+                <copy>
+                  <from expression="'CodeTypeObjectId'"/>
+                  <to variable="ActCodeServiceIn" part="params" query="/ns8:ReadActivityCodes/ns8:Field"/>
+                </copy>
+                <copy>
+                  <from expression="concat(&quot;CodeTypeObjectId='&quot;,bpws:getVariableData('ReadConfigurationOut','payload','/client:config/client:activity/client:integrationTypeId'),&quot;' and CodeValue='Auto'&quot;)"
+                        bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                  <to variable="ActCodeServiceIn" part="params" query="/ns8:ReadActivityCodes/ns8:Filter"/>
+                </copy>
+              </assign>
+              <invoke name="ActCodeService" bpelx:invokeAsDetail="no"
+                      inputVariable="ActCodeServiceIn"
+                      outputVariable="ActCodeServiceOut"
+                      partnerLink="ActivityCodeService"
+                      portType="ns8:ActivityCodePortType"
+                      operation="ReadActivityCodes"/>
+              <assign name="AssignActValue">
+                <copy bpelx:ignoreMissingFromData="yes"
+                      bpelx:insertMissingToData="yes">
+                  <from variable="CreateActOut" part="result"
+                        query="/ns2:CreateActivitiesResponse/ns2:ObjectId[1]"/>
+                  <to variable="ActCodeIn" part="params"
+                      query="/ns7:CreateActivityCodeAssignments/ns7:ActivityCodeAssignment[1]/ns7:ActivityObjectId"/>
+                </copy>
+                <copy bpelx:ignoreMissingFromData="yes"
+                      bpelx:insertMissingToData="yes">
+                  <from variable="ActCodeServiceOut" part="result"
+                        query="/ns8:ReadActivityCodesResponse/ns8:ActivityCode/ns8:ObjectId"/>
+                  <to variable="ActCodeIn" part="params"
+                      query="/ns7:CreateActivityCodeAssignments/ns7:ActivityCodeAssignment[1]/ns7:ActivityCodeObjectId"/>
+                </copy>
+                <copy bpelx:ignoreMissingFromData="yes"
+                      bpelx:insertMissingToData="yes">
+                  <from variable="ReadConfigurationOut" part="payload"
+                        query="/client:config/client:activity/client:integrationTypeId"/>
+                  <to variable="ActCodeIn" part="params"
+                      query="/ns7:CreateActivityCodeAssignments/ns7:ActivityCodeAssignment[1]/ns7:ActivityCodeTypeObjectId"/>
+                </copy>
+                <copy bpelx:ignoreMissingFromData="yes"
+                      bpelx:insertMissingToData="yes">
+                  <from variable="CreateActOut" part="result"
+                        query="/ns2:CreateActivitiesResponse/ns2:ObjectId[2]"/>
+                  <to variable="ActCodeIn" part="params"
+                      query="/ns7:CreateActivityCodeAssignments/ns7:ActivityCodeAssignment[2]/ns7:ActivityObjectId"/>
+                </copy>
+                <copy bpelx:ignoreMissingFromData="yes"
+                      bpelx:insertMissingToData="yes">
+                  <from variable="ActCodeServiceOut" part="result"
+                        query="/ns8:ReadActivityCodesResponse/ns8:ActivityCode/ns8:ObjectId"/>
+                  <to variable="ActCodeIn" part="params"
+                      query="/ns7:CreateActivityCodeAssignments/ns7:ActivityCodeAssignment[2]/ns7:ActivityCodeObjectId"/>
+                </copy>
+                <copy bpelx:ignoreMissingFromData="yes"
+                      bpelx:insertMissingToData="yes">
+                  <from variable="ReadConfigurationOut" part="payload"
+                        query="/client:config/client:activity/client:integrationTypeId"/>
+                  <to variable="ActCodeIn" part="params"
+                      query="/ns7:CreateActivityCodeAssignments/ns7:ActivityCodeAssignment[2]/ns7:ActivityCodeTypeObjectId"/>
+                </copy>
+              </assign>
+              <invoke name="ActCode" inputVariable="ActCodeIn"
+                      outputVariable="ActCodeOut"
+                      partnerLink="ActivityCodeAssignmentService"
+                      portType="ns7:ActivityCodeAssignmentPortType"
+                      operation="CreateActivityCodeAssignments"
+                      bpelx:invokeAsDetail="no"/>
+            </sequence>
+                <assign name="AssignLoop">
+                <copy>
+                <from expression="bpws:getVariableData('countPlaceholders')-1"/>
+                <to variable="countPlaceholders"/>
+                </copy>
+                </assign>
+          </sequence>
+        </while>
+      </sequence>
+    </scope>
+    <scope name="Expenses" variableAccessSerializable="no"
+           bpelx:skipCondition="empty(bpws:getVariableData('inputVariable','payload','/client:update/ns1:timeline/ns1:expenses'))">
+      <bpelx:annotation>
+        <bpelx:general>
+          <bpelx:property name="userLabel">
+            <![CDATA[Expenses-SKIP]]>
+          </bpelx:property>
+        </bpelx:general>
+      </bpelx:annotation>
+      <variables>
+        <variable name="ReadActivities_In" messageType="ns2:ReadActivities"/>
+        <variable name="ReadActivities_Out"
+                  messageType="ns2:ReadActivitiesResponse"/>
+        <variable name="ReadActivityExpenses_In"
+                  messageType="ns9:ReadActivityExpenses"/>
+        <variable name="ReadActivityExpenses_Out"
+                  messageType="ns9:ReadActivityExpensesResponse"/>
+        <variable name="CreateActivityExpenses_In"
+                  messageType="ns9:CreateActivityExpenses"/>
+        <variable name="CreateActivityExpenses_Out"
+                  messageType="ns9:CreateActivityExpensesResponse"/>
+        <variable name="ReadCostAccounts_In"
+                  messageType="ns10:ReadCostAccounts"/>
+        <variable name="ReadCostAccounts_Out"
+                  messageType="ns10:ReadCostAccountsResponse"/>
+        <variable name="ReadExpenseCategories_In"
+                  messageType="ns11:ReadExpenseCategories"/>
+        <variable name="ReadExpenseCategories_Out"
+                  messageType="ns11:ReadExpenseCategoriesResponse"/>
+        <variable name="DeleteActivityExpenses_In"
+                  messageType="ns9:DeleteActivityExpenses"/>
+        <variable name="DeleteActivityExpenses_Out"
+                  messageType="ns9:DeleteActivityExpensesResponse"/>
+        <variable name="CreateActivities_In"
+                  messageType="ns2:CreateActivities"/>
+        <variable name="CreateActivities_Out"
+                  messageType="ns2:CreateActivitiesResponse"/>
+        <variable name="CreateUDFValues_In" messageType="ns5:CreateUDFValues"/>
+        <variable name="CreateUDFValues_Out" messageType="ns5:CreateUDFValuesResponse"/>
+        <variable name="DeleteLtcIdUDFIn" messageType="ns5:DeleteUDFValues"/>
+        <variable name="DeleteLtcIdUDFOut" messageType="ns5:DeleteUDFValuesResponse"/>
+        <variable name="ReadProjectObjectIdIn" messageType="ns3:ReadProjects"/>
+        <variable name="ReadProjectObjectIdOut" messageType="ns3:ReadProjectsResponse"/>
+        <variable name="CreateLtcIdUDFIn" messageType="ns5:CreateUDFValues"/>
+        <variable name="CreateLtcIdUDFOut" messageType="ns5:CreateUDFValuesResponse"/>
+      </variables>
+      <sequence name="ActivityExpenses">
+        <assign name="Read_In">
+          <copy>
+            <from><ReadCostAccounts xmlns="http://xmlns.oracle.com/Primavera/P6/WS/CostAccount/V1">
+	<Field>Id</Field>
+	<Field>Name</Field>
+</ReadCostAccounts></from>
+            <to variable="ReadCostAccounts_In" part="params"
+                query="/ns10:ReadCostAccounts"/>
+          </copy>
+          <copy>
+            <from expression="'Name'"/>
+            <to variable="ReadExpenseCategories_In" part="params"
+                query="/ns11:ReadExpenseCategories/ns11:Field"/>
+          </copy>
+          <copy>
+            <from><ReadActivities xmlns="http://xmlns.oracle.com/Primavera/P6/WS/Activity/V1">
+	<Field>Id</Field>
+	<Field>Name</Field>
+	<Field>WBSObjectId</Field>
+	<Field>WBSCode</Field>
+	<Filter>ProjectId=''{0}'' and Type=''WBS Summary''</Filter>
+</ReadActivities></from>
+            <to variable="ReadActivities_In" part="params"
+                query="/ns2:ReadActivities"/>
+          </copy>
+          <copy>
+            <from expression="ora:format(&quot; ProjectId=''{0}'' and Type=''WBS Summary'' and Name=''LTC Plan'' &quot;, bpws:getVariableData('inputVariable','payload','/client:update/ns1:timeline/@id'))"/>
+            <to variable="ReadActivities_In" part="params"
+                query="/ns2:ReadActivities/ns2:Filter"/>
+          </copy>
+          <copy>
+            <from><ReadActivityExpenses xmlns="http://xmlns.oracle.com/Primavera/P6/WS/ActivityExpense/V1">
+<Field>WBSObjectId</Field>
+<Field>ActivityObjectId</Field>
+<Filter/>
+</ReadActivityExpenses></from>
+            <to variable="ReadActivityExpenses_In" part="params"
+                query="/ns9:ReadActivityExpenses"/>
+          </copy>
+          <copy>
+            <from expression="ora:format(&quot;ProjectId=''{0}'' and ActivityName=''LTC Plan''&quot;, bpws:getVariableData('inputVariable','payload','/client:update/ns1:timeline/@id'))"/>
+            <to variable="ReadActivityExpenses_In" part="params"
+                query="/ns9:ReadActivityExpenses/ns9:Filter"/>
+          </copy>
+        </assign>
+        <flow name="Read">
+          <sequence name="Sequence4">
+            <invoke name="ReadActivities" partnerLink="ActivityService"
+                    portType="ns2:ActivityPortType" operation="ReadActivities"
+                    bpelx:invokeAsDetail="no" inputVariable="ReadActivities_In"
+                    outputVariable="ReadActivities_Out"/>
+          </sequence>
+          <sequence name="Sequence3">
+            <invoke name="ReadExpenses" bpelx:invokeAsDetail="no"
+                    inputVariable="ReadActivityExpenses_In"
+                    outputVariable="ReadActivityExpenses_Out"
+                    partnerLink="ActivityExpenseService"
+                    portType="ns9:ActivityExpensePortType"
+                    operation="ReadActivityExpenses"/>
+          </sequence>
+          <sequence name="Sequence">
+            <invoke name="ReadCostAccounts" bpelx:invokeAsDetail="no"
+                    inputVariable="ReadCostAccounts_In"
+                    outputVariable="ReadCostAccounts_Out"
+                    partnerLink="CostAccountService"
+                    portType="ns10:CostAccountPortType"
+                    operation="ReadCostAccounts"/>
+          </sequence>
+          <sequence name="Sequence2">
+            <invoke name="ReadExpenseCategories" bpelx:invokeAsDetail="no"
+                    inputVariable="ReadExpenseCategories_In"
+                    outputVariable="ReadExpenseCategories_Out"
+                    partnerLink="ExpenseCategoryService"
+                    portType="ns11:ExpenseCategoryPortType"
+                    operation="ReadExpenseCategories"/>
+          </sequence>
+        </flow>
+        <sequence name="MissingActivities">
+          <assign name="MissingActivities">
+            <bpelx:annotation>
+              <bpelx:pattern>transformation</bpelx:pattern>
+            </bpelx:annotation>
+            <copy>
+              <from expression="ora:doXSLTransformForDoc('xsl/UpdateTimelineCreateExpAct.xsl', $inputVariable.payload, 'ReadActivities_Out.result', $ReadActivities_Out.result)"/>
+              <to variable="CreateActivities_In" part="params"/>
+            </copy>
+          </assign>
+          <invoke name="CreateMissingActivities"
+                  inputVariable="CreateActivities_In"
+                  partnerLink="ActivityService" portType="ns2:ActivityPortType"
+                  operation="CreateActivities"
+                  outputVariable="CreateActivities_Out"
+                  bpelx:invokeAsDetail="no"
+                  bpelx:skipCondition="empty(bpws:getVariableData('CreateActivities_In','params','/ns2:CreateActivities/ns2:Activity'))"/><invoke name="ReadActivities"
+                                                                                                                                                  partnerLink="ActivityService"
+                                                                                                                                                  portType="ns2:ActivityPortType"
+                                                                                                                                                  operation="ReadActivities"
+                                                                                                                                                  inputVariable="ReadActivities_In"
+                                                                                                                                                  outputVariable="ReadActivities_Out"
+                                                                                                                                                  xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+                                                                                                                                                  xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+                                                                                                                                                  bpelx:invokeAsDetail="no"
+                                                                                                                                                  bpelx:skipCondition="empty(bpws:getVariableData('CreateActivities_In','params','/ns2:CreateActivities/ns2:Activity'))"/></sequence>
+        <assign name="DeleteExpenses_In">
+          <bpelx:annotation>
+            <bpelx:pattern>transformation</bpelx:pattern>
+          </bpelx:annotation>
+          <copy>
+            <from expression="ora:doXSLTransformForDoc('xsl/UpdateTimelineDeleteExpenses.xsl', $inputVariable.payload, 'ReadActivities_Out.result', $ReadActivities_Out.result, 'ReadActivityExpenses_Out.result', $ReadActivityExpenses_Out.result)"/>
+            <to variable="DeleteActivityExpenses_In" part="params"/>
+          </copy>
+        </assign>
+        <assign name="CreateExpenses_In">
+          <bpelx:annotation>
+            <bpelx:pattern>transformation</bpelx:pattern>
+          </bpelx:annotation>
+          <copy>
+            <from expression="ora:doXSLTransformForDoc('xsl/UpdateTimelineCreateExpenses.xsl', $inputVariable.payload, 'ReadActivities_Out.result', $ReadActivities_Out.result, 'ReadCostAccounts_Out.result', $ReadCostAccounts_Out.result, 'ReadExpenseCategories_Out.result', $ReadExpenseCategories_Out.result)"/>
+            <to variable="CreateActivityExpenses_In" part="params"/>
+          </copy>
+        </assign>
+        <bpelx:assert name="ValidateExpenses"
+                      expression="empty(bpws:getVariableData('CreateActivityExpenses_In','params','/ns9:CreateActivityExpenses/ns9:ActivityExpense[ns9:*=&quot;&quot;]'))"
+                      message="Relevant P6 Cost Account (function) or Expense Category (cost type) is missing"/>
+        <invoke name="DeleteExpenses" inputVariable="DeleteActivityExpenses_In"
+                outputVariable="DeleteActivityExpenses_Out"
+                partnerLink="ActivityExpenseService"
+                portType="ns9:ActivityExpensePortType"
+                operation="DeleteActivityExpenses" bpelx:invokeAsDetail="no"
+                bpelx:skipCondition="empty(bpws:getVariableData('DeleteActivityExpenses_In','params','/ns9:DeleteActivityExpenses/ns9:ObjectId'))"/>
+        <invoke name="CreateExpenses" inputVariable="CreateActivityExpenses_In"
+                outputVariable="CreateActivityExpenses_Out"
+                partnerLink="ActivityExpenseService"
+                portType="ns9:ActivityExpensePortType"
+                operation="CreateActivityExpenses" bpelx:invokeAsDetail="no"
+                bpelx:skipCondition="empty(bpws:getVariableData('CreateActivityExpenses_In','params','/ns9:CreateActivityExpenses/ns9:ActivityExpense'))"/>
+        <assign name="CreateUDFValues_In">
+          <bpelx:annotation>
+            <bpelx:pattern>transformation</bpelx:pattern>
+          </bpelx:annotation>
+          <copy>
+            <from expression="ora:doXSLTransformForDoc('xsl/UpdateTimelineCreateExpUdf.xsl', $inputVariable.payload, 'ReadConfigurationOut.payload', $ReadConfigurationOut.payload, 'CreateActivityExpenses_In.params', $CreateActivityExpenses_In.params, 'CreateActivityExpenses_Out.result', $CreateActivityExpenses_Out.result)"/>
+            <to variable="CreateUDFValues_In" part="params"/>
+          </copy>
+        </assign>
+        <invoke name="CreateUDFValues" inputVariable="CreateUDFValues_In" partnerLink="UDFValueService"
+                portType="ns5:UDFValuePortType" operation="CreateUDFValues" outputVariable="CreateUDFValues_Out"
+                bpelx:skipCondition="empty(bpws:getVariableData('CreateUDFValues_In','params','/ns5:CreateUDFValues/ns5:UDFValue'))"/>
+        <sequence name="SKIP-CreateLtcIdUDF"
+                  bpelx:skipCondition="empty(bpws:getVariableData('inputVariable','payload','/client:update/ns1:timeline/ns1:ltcId'))">
+          <assign name="AssignReadProject">
+            <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+              <from expression="concat(&quot;Id='&quot;, bpws:getVariableData('inputVariable','payload','/client:update/ns1:timeline/@id'),&quot;'&quot;)"/>
+              <to variable="ReadProjectObjectIdIn" part="params" query="/ns3:ReadProjects/ns3:Filter"/>
+            </copy>
+            <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+              <from expression='"Id"'/>
+              <to variable="ReadProjectObjectIdIn" part="params" query="/ns3:ReadProjects/ns3:Field"/>
+            </copy>
+          </assign>
+          <invoke name="ReadProjectObjectId" inputVariable="ReadProjectObjectIdIn"
+                  outputVariable="ReadProjectObjectIdOut" partnerLink="ProjectService" portType="ns3:ProjectPortType"
+                  operation="ReadProjects"/>
+          <assign name="AssignDeleteUDF">
+            <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+              <from variable="ReadProjectObjectIdOut" part="result"
+                    query="/ns3:ReadProjectsResponse/ns3:Project/ns3:ObjectId"/>
+              <to variable="DeleteLtcIdUDFIn" part="params"
+                  query="/ns5:DeleteUDFValues/ns5:ObjectId/ns5:ForeignObjectId"/>
+            </copy>
+            <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+              <from variable="ReadConfigurationOut" part="payload"
+                    query="/client:config/client:baseline/client:ltcIdTypeId"/>
+              <to variable="DeleteLtcIdUDFIn" part="params"
+                  query="/ns5:DeleteUDFValues/ns5:ObjectId/ns5:UDFTypeObjectId"/>
+            </copy>
+          </assign>
+          <invoke name="DeleteLtcIdUDF" inputVariable="DeleteLtcIdUDFIn" outputVariable="DeleteLtcIdUDFOut"
+                  partnerLink="UDFValueService" portType="ns5:UDFValuePortType" operation="DeleteUDFValues"/>
+          <assign name="AssignCreateLtcIdUDF">
+            <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+              <from variable="inputVariable" part="payload" query="/client:update/ns1:timeline/ns1:ltcId"/>
+              <to variable="CreateLtcIdUDFIn" part="params" query="/ns5:CreateUDFValues/ns5:UDFValue/ns5:Text"/>
+            </copy>
+            <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+              <from variable="ReadConfigurationOut" part="payload"
+                    query="/client:config/client:baseline/client:ltcIdTypeId"/>
+              <to variable="CreateLtcIdUDFIn" part="params"
+                  query="/ns5:CreateUDFValues/ns5:UDFValue/ns5:UDFTypeObjectId"/>
+            </copy>
+            <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+              <from variable="ReadProjectObjectIdOut" part="result"
+                    query="/ns3:ReadProjectsResponse/ns3:Project/ns3:ObjectId"/>
+              <to variable="CreateLtcIdUDFIn" part="params"
+                  query="/ns5:CreateUDFValues/ns5:UDFValue/ns5:ForeignObjectId"/>
+            </copy>
+          </assign>
+          <invoke name="CreateLtcIdUDF" inputVariable="CreateLtcIdUDFIn" outputVariable="CreateLtcIdUDFOut"
+                  partnerLink="UDFValueService" portType="ns5:UDFValuePortType" operation="CreateUDFValues"/>
+        </sequence>
+      </sequence>
+    </scope>
+    <switch name="IfReadTimeline">
+      <case condition="bpws:getVariableData('inputVariable','payload','/client:update/@componentName')='ReadTimeline'">
+        <bpelx:annotation>
+          <bpelx:general>
+            <bpelx:property name="userLabel">
+              <![CDATA[IfReadTimeline]]>
+            </bpelx:property>
+          </bpelx:general>
+        </bpelx:annotation>
+        <sequence name="ReadTimeline">
+          <scope name="ReadTimeline">
+            <variables>
+              <variable name="ReadTimelineIn" messageType="client:ReadTimelineRequestMessage"/>
+              <variable name="ReadTimelineBackOut" messageType="client:ReadTimelineResponseMessage"/>
+            </variables>
+            <sequence name="ReadTimeline">
+              <assign name="AssignReadTimeline">
+                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                  <from bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="inputVariable"
+                        part="payload" query="/client:update/@id"/>
+                  <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="ReadTimelineIn"
+                      part="payload" query="/client:read/@id"/>
+                </copy>
+                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                  <from bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="inputVariable"
+                        part="payload" query="/client:update/ns1:timeline/@programId"/>
+                  <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="ReadTimelineIn"
+                      part="payload" query="/client:read/ns1:timeline/@programId"/>
+                </copy>
+                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                  <from bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="inputVariable"
+                        part="payload" query="/client:update/ns1:timeline/@projectId"/>
+                  <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="ReadTimelineIn"
+                      part="payload" query="/client:read/ns1:timeline/@projectId"/>
+                </copy>
+                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                  <from bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="inputVariable"
+                        part="payload" query="/client:update/ns1:timeline/@referenceId"/>
+                  <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="ReadTimelineIn"
+                      part="payload" query="/client:read/ns1:timeline/@referenceId"/>
+                </copy>
+                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                  <from bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="inputVariable"
+                        part="payload" query="/client:update/ns1:timeline/@id"/>
+                  <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="ReadTimelineIn"
+                      part="payload" query="/client:read/ns1:timeline/@id"/>
+                </copy>
+                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                  <from bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="inputVariable"
+                        part="payload" query="/client:update/ns1:timeline/ns1:typeCode"/>
+                  <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="ReadTimelineIn"
+                      part="payload" query="/client:read/ns1:timeline/ns1:typeCode"/>
+                </copy>
+              </assign>
+              <invoke name="ReadTimeline" partnerLink="ReadTimeline.ReadTimelineService" portType="client:ReadTimeline"
+                      operation="process" inputVariable="ReadTimelineIn"/>
+              <receive name="ReadTimelineBack" createInstance="no" partnerLink="ReadTimeline.ReadTimelineService"
+                       variable="ReadTimelineBackOut" portType="client:ReadTimelineCallback" operation="callback"/>
+              <assign name="AssignOutReadTimeline">
+                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                  <from bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="ReadTimelineBackOut"
+                        part="payload" query="/client:response"/>
+                  <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="outputVariable"
+                      part="payload" query="/client:response"/>
+                </copy>
+              </assign>
+            </sequence>
+          </scope>
+        </sequence>
+      </case>
+      <otherwise>
+        <assign name="AssignOutput">
+          <copy>
+            <from variable="inputVariable" part="payload" query="/client:update/ns1:timeline"/>
+            <to variable="outputVariable" part="payload" query="/client:response/client:complete/ns1:timeline"/>
+          </copy>
+          <copy>
+            <from variable="inputVariable" part="payload" query="/client:update/@id"/>
+            <to variable="outputVariable" part="payload" query="/client:response/client:complete/@id"/>
+          </copy>
+          <copy>
+            <from variable="inputVariable" part="payload" query="/client:update/@id"/>
+            <to variable="outputVariable" part="payload" query="/client:response/@id"/>
+          </copy>
+        </assign>
+      </otherwise>
+    </switch>
+    <invoke name="callbackOutput" bpelx:invokeAsDetail="no"
+            inputVariable="outputVariable" partnerLink="updateTimelineService"
+            portType="client:UpdateTimelineCallback" operation="callback"/>
+    <!-- Generate reply to synchronous request -->
+  </sequence>
+</process>

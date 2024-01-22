@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="estimates-view">
+    <template-reference>
+      <document id="__2">/WEB-INF/com.bayer.ipms.view/templates/ipms-taskflow-template-fragment.xml</document>
+      <id id="__1">ipms-taskflow-template-fragment</id>
+    </template-reference>
+    <default-activity id="__4">estimates-view1</default-activity>
+    <transaction id="__19">
+      <requires-transaction/>
+    </transaction>
+    <data-control-scope id="__18">
+      <shared/>
+    </data-control-scope>
+    <managed-bean id="__12">
+      <managed-bean-name id="__15">estimatesViewBean</managed-bean-name>
+      <managed-bean-class id="__13">com.bayer.ipms.view.beans.EstimatesViewBean</managed-bean-class>
+      <managed-bean-scope id="__14">pageFlow</managed-bean-scope>
+    </managed-bean>
+    <exception-handler id="__3">handleException</exception-handler>
+    <view id="estimates-view1">
+      <page>/WEB-INF/com.bayer.ipms.view/fragments/estimates-view.jsff</page>
+    </view>
+    <task-flow-call id="estimates-start">
+      <task-flow-reference>
+        <document>/WEB-INF/com.bayer.ipms.view/flows/estimates-start.xml</document>
+        <id>estimates-start</id>
+      </task-flow-reference>
+      <input-parameter id="__17">
+        <name>processId</name>
+        <value>#{requestScope.processId}</value>
+      </input-parameter>
+      <run-as-dialog>
+        <display-type id="__11">
+          <inline-popup/>
+        </display-type>
+      </run-as-dialog>
+    </task-flow-call>
+    <control-flow-rule id="__5">
+      <from-activity-id id="__6">estimates-view1</from-activity-id>
+      <control-flow-case id="__9">
+        <from-outcome id="__10">estimates-update</from-outcome>
+        <to-activity-id id="__8">estimates-start</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+    <visibility id="__7"/>
+  </task-flow-definition>
+</adfc-config>

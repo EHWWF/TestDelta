@@ -1,0 +1,8 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<sensors targetNamespace="http://xmlns.bayer.com/ipms/soa" xmlns="http://xmlns.oracle.com/bpel/sensor" xmlns:tns="http://xmlns.bayer.com/ipms/soa" xmlns:pc="http://xmlns.oracle.com/bpel/sensor" xmlns:client="http://xmlns.bayer.com/ipms/soa">
+   <sensor sensorName="Publish Timeline: step 6 of 6. Finishing summarizing plan." classname="oracle.tip.pc.services.reports.dca.agents.BpelActivitySensorAgent" kind="activity" target="Monitoring">
+      <activityConfig evalTime="activation">
+         <variable outputDataType="identifierType" outputNamespace="http://xmlns.bayer.com/ipms" target="$inputVariable/payload/client:summarize/@id"/>
+      </activityConfig>
+   </sensor>
+</sensors>

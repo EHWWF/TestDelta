@@ -1,0 +1,12 @@
+//Groovy Scripts for com.bayer.ipms.model.views.TeamMemberView
+
+package com.bayer.ipms.model.views
+
+import oracle.jbo.script.annotation.TransientValueExpression;
+
+@TransientValueExpression(attributeName="EmployeeNameSort")
+def EmployeeNameSort_ExpressionScript_Expression()
+{
+if (EmployeeName) EmployeeName.toUpperCase()
+}
+

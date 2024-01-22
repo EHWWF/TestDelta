@@ -1,0 +1,96 @@
+
+
+--begin job_pkg.setup_update_sys_guid; commit; end;
+
+
+declare
+		v_where nvarchar2(99):='job_pkg.update_sys_guid';
+		v_project_id nvarchar2(20);
+		v_program_id nvarchar2(20);
+		v_count number;
+	begin
+		for rr in (
+						select * 
+						from sys_guid 
+						where project_id is null
+						and ba_code in --only these ba_codes we will find in prepared view
+							(
+							'estimatesprovide',
+							'goalscreate',
+							'goalsdelete',
+							'goalsedit',
+							'importstudy',
+							'importtimelinefps',
+							'importtimelineplansophia',
+							'ltcprovide',
+							'planningassumptionsprovide',
+							'projectcreate',
+							'projectdelete',
+							'projectedit',
+							'projecteditid',
+							'projectimportd1',
+							'projectlead',
+							'projectmove',
+							'projectrelease',
+							'projecttypify',
+							'timelinepublish',
+							'tppedit'
+							)
+						 --and create_date > sysdate-1/24
+						)
+		loop
+			begin
+				select project_id, count(1) into v_project_id, v_count --must be unique even if repeats many times
+				from global_ba_log_guid_vw
+				where gu_id=rr.id
+				group by project_id;
+				
+				if v_project_id is not null then
+					update sys_guid set project_id=v_project_id, program_id=null
+					where id=rr.id
+					and project_id is null;
+          commit;
+				end if;
+			exception when others then
+				null;
+			end;
+		end loop;
+
+		for pp in (
+						select * 
+						from sys_guid 
+						where program_id is null
+						and project_id is null
+						and ba_code in --only these ba_codes we will find in prepared view
+							(
+							'programcreate',
+							'programdelete',
+							'programedit',
+							'programroles',
+							'sandboxplancreate'
+							)
+						--and create_date > sysdate-1/24
+						)
+		loop
+			begin
+				select program_id, count(1) into v_program_id, v_count --must be unique even if repeats many times
+				from global_ba_log_guid_vw
+				where gu_id=pp.id
+				group by program_id;
+				
+				if v_program_id is not null then
+					update sys_guid set program_id=v_program_id
+					where id=pp.id
+					and program_id is null 
+					and project_id is null;
+                    commit;
+				end if;
+			exception when others then
+				null;
+			end;
+		end loop;
+
+	exception when others then
+		log_pkg.log(v_where, 'OTHERS.',sqlerrm);
+		notice_pkg.catch(v_where, 'OTHERS.');
+	end;

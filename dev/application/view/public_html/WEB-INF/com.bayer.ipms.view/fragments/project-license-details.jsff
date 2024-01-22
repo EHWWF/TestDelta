@@ -1,0 +1,142 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <c:set var="bundle" value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+    <af:componentDef>
+        <af:popup contentDelivery="lazyUncached" popupFetchListener="#{pageFlowScope.projectViewBean.licenseDetailsPopupList}"
+                  id="LicenseDetailsP1" popupCanceledListener="#{pageFlowScope.projectViewBean.onPopupCancelDetails}">
+            <af:dialog title="#{bundle.projectLicenseDetailsAdd}" contentWidth="400" contentHeight="170" resize="on"
+                       stretchChildren="first" dialogListener="#{pageFlowScope.projectViewBean.onLicenseDetailsEdit}"
+                       type="okCancel" id="licenseDetailsDialog" affirmativeTextAndAccessKey="#{bundle.globalSaveClose}">
+                <af:panelStretchLayout topHeight="auto" styleClass="AFStretchWidth AFStretchHeight" id="dc_psl1">
+                    <f:facet name="top"/>
+                    <f:facet name="center">
+                        <af:panelBox id="dc_pb1">
+                            <f:facet name="toolbar"/>
+                            <af:panelFormLayout id="dc_pfl1">
+                                <af:selectOneChoice value="#{bindings.LicensorCode.inputValue}"
+                                                    label="#{bindings.LicensorCode.label}"
+                                                    required="#{bindings.LicensorCode.hints.mandatory}"
+                                                    shortDesc="#{bindings.LicensorCode.hints.tooltip}" id="dc_soc1">
+                                    <f:selectItems value="#{utilsBean.lookup[bindings.LicenseDetailsViewIterator.currentRow.partnerView]}" id="dc_si1"/>
+                                    <f:validator binding="#{bindings.LicensorCode.validator}"/>
+                                </af:selectOneChoice>
+                                <af:selectOneChoice value="#{bindings.LicenseeCode.inputValue}"
+                                                    label="#{bindings.LicenseeCode.label}"
+                                                    required="#{bindings.LicenseeCode.hints.mandatory}"
+                                                    shortDesc="#{bindings.LicenseeCode.hints.tooltip}" id="dc_soc2">
+                                    <f:selectItems value="#{utilsBean.lookup[bindings.LicenseDetailsViewIterator.currentRow.partnerView]}" id="dc_si2"/>
+                                    <f:validator binding="#{bindings.LicenseeCode.validator}"/>
+                                </af:selectOneChoice>
+                                <af:selectOneChoice value="#{bindings.LicenseTypeCode.inputValue}"
+                                                    label="#{bindings.LicenseTypeCode.label}"
+                                                    required="#{bindings.LicenseTypeCode.hints.mandatory}"
+                                                    shortDesc="#{bindings.LicenseTypeCode.hints.tooltip}" id="dc_soc3">
+                                    <f:selectItems value="#{utilsBean.lookup[bindings.LicenseDetailsViewIterator.currentRow.licenseDetailTypeView]}" id="dc_si3"/>
+                                    <f:validator binding="#{bindings.LicenseTypeCode.validator}"/>
+                                </af:selectOneChoice>
+                                <af:inputDate value="#{bindings.LicenseAgreementDate.inputValue}"
+                                              label="#{bindings.LicenseAgreementDate.hints.label}"
+                                              required="#{bindings.LicenseAgreementDate.hints.mandatory}"
+                                              columns="#{bindings.LicenseAgreementDate.hints.displayWidth}"
+                                              shortDesc="#{bindings.LicenseAgreementDate.hints.tooltip}" id="dc_id1">
+                                    <f:validator binding="#{bindings.LicenseAgreementDate.validator}"/>
+                                    <af:convertDateTime pattern="#{bindings.LicenseAgreementDate.format}"/>
+                                </af:inputDate>
+                                <af:inputText value="#{bindings.LicenseComment.inputValue}"
+                                              label="#{bindings.LicenseComment.hints.label}"
+                                              required="#{bindings.LicenseComment.hints.mandatory}"
+                                              maximumLength="#{bindings.LicenseComment.hints.precision}"
+                                              shortDesc="#{bundle.LicenseComment}" id="dc_it1" rows="3">
+                                    <f:validator binding="#{bindings.LicenseComment.validator}"/>
+                                </af:inputText>
+                            </af:panelFormLayout>
+                        </af:panelBox>
+                    </f:facet>
+                </af:panelStretchLayout>
+            </af:dialog>
+        </af:popup>
+        <af:panelGroupLayout id="dc_pgl2" layout="horizontal" styleClass="AFStretchWidth">
+            <af:outputText value="License Details" id="dc_ot3"/>
+            <af:spacer width="10" height="10" id="dc_s1"/>
+            <af:panelGroupLayout id="dc_pgl1" shortDesc="#{bundle.projectLicenseLb}" styleClass="AFStretchWidth">
+                <af:panelGroupLayout id="dc_pgl3" layout="horizontal" halign="right" styleClass="AFStretchWidth"
+                                     rendered="#{pageFlowScope.projectViewBean.editable eq 'parametersEditArea'}">
+                    <af:toolbar id="dc_t1ld">
+                        <af:button icon="/images/new.png" text="#{bundle.globalAdd}" id="b1_addLicenseDetails"
+                                   rendered="#{pageFlowScope.projectViewBean.editable eq 'parametersEditArea'}">
+                            <af:showPopupBehavior popupId="LicenseDetailsP1" triggerType="action"/>
+                        </af:button>
+                        <af:button icon="/images/edit.png" text="#{bundle.globalEdit}" id="b2_editLicenseDetails"
+                                   immediate="true"
+                                   rendered="#{pageFlowScope.projectViewBean.editable eq 'parametersEditArea'}">
+                            <af:showPopupBehavior popupId="LicenseDetailsP1" triggerType="action"/>
+                        </af:button>
+                        <af:button shortDesc="#{bundle.globalRemove}" text="#{bundle.globalRemove}"
+                                   icon="/images/remove.png" id="b3_removeLicenseDetails"
+                                   actionListener="#{pageFlowScope.projectViewBean.deleteLicenseDetails}"
+                                   rendered="#{pageFlowScope.projectViewBean.editable eq 'parametersEditArea'}"/>
+                    </af:toolbar>
+                </af:panelGroupLayout>
+                <af:spacer width="10" height="10" id="dc_s1ld"/>
+                <af:table value="#{bindings.LicenseDetailsView.collectionModel}" var="row"
+                          rows="#{bindings.LicenseDetailsView.rangeSize}"
+                          emptyText="#{bindings.LicenseDetailsView.viewable ? 'No data to display.' : 'Access Denied.'}"
+                          rowBandingInterval="0"
+                          selectedRowKeys="#{bindings.LicenseDetailsView.collectionModel.selectedRow}"
+                          selectionListener="#{bindings.LicenseDetailsView.collectionModel.makeCurrent}"
+                          fetchSize="#{bindings.LicenseDetailsView.rangeSize}" columnStretching="column:dc_c2"
+                          styleClass="AFStretchWidth" filterVisible="false" autoHeightRows="0" varStatus="vs"
+                          id="tblLicenseDetails" editingMode="editAll" rowSelection="single" >
+                    <af:column headerText="#{bindings.LicenseDetailsView.hints.LicensorCode.label}" id="dc_c1ld"
+                               width="80" noWrap="false">
+                        <af:selectOneChoice value="#{row.bindings.LicensorCode.inputValue}"
+                                            label="#{row.bindings.LicensorCode.label}"
+                                            required="#{bindings.LicenseDetailsView.hints.LicensorCode.mandatory}"
+                                            shortDesc="#{bindings.LicenseDetailsView.hints.LicensorCode.tooltip}"
+                                            readOnly="true" id="dc_soc6">
+                            <f:selectItems value="#{utilsBean.lookup[bindings.LicenseDetailsViewIterator.currentRow.partnerView]}" id="dc_si4"/>
+                            <f:validator binding="#{row.bindings.LicensorCode.validator}"/>
+                        </af:selectOneChoice>
+                    </af:column>
+                    <af:column headerText="#{bindings.LicenseDetailsView.hints.LicenseeCode.label}" id="dc_c5"
+                               width="80" noWrap="false">
+                        <af:selectOneChoice value="#{row.bindings.LicenseeCode.inputValue}"
+                                            label="#{row.bindings.LicenseeCode.label}"
+                                            required="#{bindings.LicenseDetailsView.hints.LicenseeCode.mandatory}"
+                                            shortDesc="#{bindings.LicenseDetailsView.hints.LicenseeCode.tooltip}"
+                                            readOnly="true" id="dc_soc4">
+                            <f:selectItems value="#{utilsBean.lookup[bindings.LicenseDetailsViewIterator.currentRow.partnerView]}" id="dc_si6"/>
+                            <f:validator binding="#{row.bindings.LicenseeCode.validator}"/>
+                        </af:selectOneChoice>
+                    </af:column>
+                    <af:column headerText="#{bindings.LicenseDetailsView.hints.LicenseTypeCode.label}" id="dc_c4"
+                               width="70" noWrap="false">
+                        <af:selectOneChoice value="#{row.bindings.LicenseTypeCode.inputValue}"
+                                            label="#{row.bindings.LicenseTypeCode.label}"
+                                            required="#{bindings.LicenseDetailsView.hints.LicenseTypeCode.mandatory}"
+                                            shortDesc="#{bindings.LicenseDetailsView.hints.LicenseTypeCode.tooltip}"
+                                            readOnly="true" id="dc_soc5">
+                            <f:selectItems value="#{utilsBean.lookup[bindings.LicenseDetailsViewIterator.currentRow.licenseDetailTypeView]}" id="dc_si5"/>
+                            <f:validator binding="#{row.bindings.LicenseTypeCode.validator}"/>
+                        </af:selectOneChoice>
+                    </af:column>
+                    <af:column headerText="#{bindings.LicenseDetailsView.hints.LicenseAgreementDate.label}" id="dc_c3"
+                               width="70" noWrap="false">
+                        <af:outputText value="#{row.LicenseAgreementDate}"
+                                       shortDesc="#{bindings.LicenseDetailsView.hints.LicenseAgreementDate.tooltip}"
+                                       id="dc_ot1">
+                            <af:convertDateTime pattern="#{bindings.LicenseDetailsView.hints.LicenseAgreementDate.format}"/>
+                        </af:outputText>
+                    </af:column>
+                    <af:column headerText="#{bindings.LicenseDetailsView.hints.LicenseComment.label}" id="dc_c2"
+                               width="40" noWrap="false">
+                        <af:outputText value="#{row.LicenseComment}"
+                                       shortDesc="#{bindings.LicenseDetailsView.hints.LicenseComment.tooltip}"
+                                       id="dc_ot2"/>
+                    </af:column>
+                </af:table>
+            </af:panelGroupLayout>
+        </af:panelGroupLayout>
+    </af:componentDef>
+</jsp:root>

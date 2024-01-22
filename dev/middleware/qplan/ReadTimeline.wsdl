@@ -1,0 +1,42 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
+<wsdl:definitions
+     name="ReadTimeline"
+     targetNamespace="http://xmlns.bayer.com/ipms/qplan"
+     xmlns:plnk="http://schemas.xmlsoap.org/ws/2003/05/partner-link/"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	 xmlns:ipms-soa="http://xmlns.bayer.com/ipms/soa"
+	 xmlns:ipms-qplan="http://xmlns.bayer.com/ipms/qplan"
+	 xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	 
+    >
+    <plnk:partnerLinkType name="ReadTimeline">
+        <plnk:role name="ReadTimelineProvider">
+            <plnk:portType name="ipms-qplan:ReadTimeline"/>
+        </plnk:role>
+        <plnk:role name="ReadTimelineRequester">
+            <plnk:portType name="ipms-qplan:ReadTimelineCallback"/>
+        </plnk:role>
+    </plnk:partnerLinkType>
+    <wsdl:types>
+        <xsd:schema>
+            <xsd:import namespace="http://xmlns.bayer.com/ipms/qplan" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/qplan/qplan.xsd"/>
+            <xsd:import namespace="http://xmlns.bayer.com/ipms/soa" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/soa/soa.xsd"/>
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:message name="ReadTimelineRequestMessage">
+        <wsdl:part name="payload" element="ipms-qplan:callQPlan"/>
+    </wsdl:message>
+    <wsdl:message name="ReadTimelineResponseMessage">
+        <wsdl:part name="payload" element="ipms-soa:response"/>
+    </wsdl:message>
+    <wsdl:portType name="ReadTimeline">
+        <wsdl:operation name="process">
+            <wsdl:input message="ipms-qplan:ReadTimelineRequestMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:portType name="ReadTimelineCallback">
+        <wsdl:operation name="processResponse">
+            <wsdl:input message="ipms-qplan:ReadTimelineResponseMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+</wsdl:definitions>

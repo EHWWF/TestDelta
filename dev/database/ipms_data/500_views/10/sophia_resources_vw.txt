@@ -1,0 +1,40 @@
+create or replace view sophia_resources_vw as
+select
+	to_char(res.project_id) as project_id,
+	to_char(decode(res.study_id,'0',null,res.study_id)) as study_id,
+	to_char(res.function_id) as function_id,
+	to_char(subfunction_id) as subfunction_id,
+	'ACT'||rownum as scd2_key,
+	1 as current_flag,
+	sysdate-365 as valid_from,
+	sysdate+365 as valid_to,
+	'DET' as prob_det_code,
+	res.year,
+	res.month,
+	'ACT' as type_code,
+	res.time_amount as demand
+from resources_actual@sophia_db res
+union all
+select
+	to_char(res.project_id) as project_id,
+	to_char(decode(res.study_id,'0',null,res.study_id)) as study_id,
+	to_char(res.function_id) as function_id,
+	to_char(subfunction_id) as subfunction_id,
+	'PLAN'||rownum as scd2_key,
+	1 as current_flag,
+	sysdate-365 as valid_from,
+	sysdate+365 as valid_to,
+	decode(res.prob_det_code,'PROP','PROB',res.prob_det_code) as prob_det_code,
+	res.year,
+	res.month,
+	'PLAN' as type_code,
+	res.time_amount as demand
+from resources_plan@sophia_db res;
+
+drop table sophia_resources_tmp;
+
+create global temporary table sophia_resources_tmp
+on commit delete rows
+as (select * from sophia_resources_vw where 1=0);
+
+create index sophia_resources_tmp_idx1 on sophia_resources_tmp(project_id);

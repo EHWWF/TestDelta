@@ -1,0 +1,1720 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.22.48" id="project_top_currentPageDef1"
+                Package="com.bayer.ipms.view.fragments">
+  <parameters/>
+ <executables>
+        <variableIterator id="variables"/>
+        <iterator Binds="ProgramAppModule.ProjectView" RangeSize="100" DataControl="PrivateAppModuleDataControl"
+                  id="ProjectViewIterator" ChangeEventPolicy="ppr"/>
+        <iterator Binds="ProgramAppModule.ProgramView" RangeSize="100" DataControl="PrivateAppModuleDataControl"
+                  id="ProgramViewIterator" ChangeEventPolicy="ppr"/>
+        <iterator Binds="ProgramAppModule.CostsView" RangeSize="100" DataControl="PrivateAppModuleDataControl"
+                  id="CostsViewIterator" ChangeEventPolicy="ppr"/>
+        <searchRegion Binds="CostsViewIterator" Criteria=""
+                      Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="CostsViewQuery"/>
+        <iterator Binds="ProgramAppModule.ResourcesView" DataControl="PrivateAppModuleDataControl" RangeSize="100"
+                  id="ResourcesViewIterator" ChangeEventPolicy="ppr"/>
+        <searchRegion id="ResourcesViewQuery" Binds="ResourcesViewIterator"
+                      Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"/>
+        <iterator Binds="ProgramAppModule.MilestoneDecisionView" DataControl="PrivateAppModuleDataControl"
+                  RangeSize="100" id="MilestoneDecisionViewIterator" ChangeEventPolicy="ppr"/>
+        <iterator Binds="ProgramAppModule.MilestoneDevelopmentView" DataControl="PrivateAppModuleDataControl"
+                  RangeSize="100" id="MilestoneDevelopmentViewIterator" ChangeEventPolicy="ppr"/>
+        <iterator Binds="ProgramAppModule.MilestoneRegionalView" DataControl="PrivateAppModuleDataControl"
+                  RangeSize="100" id="MilestoneRegionalViewIterator" ChangeEventPolicy="ppr"/>
+        <iterator Binds="ProgramAppModule.CostsProbabilityInternalView" DataControl="PrivateAppModuleDataControl"
+                  RangeSize="100" id="CostsProbabilityInternalViewIterator" ChangeEventPolicy="ppr"/>
+        <iterator id="TimelineViewIterator" Binds="ProgramAppModule.TimelineView"
+                  DataControl="PrivateAppModuleDataControl" RangeSize="100" ChangeEventPolicy="ppr"/>
+        <iterator Binds="ProgramAppModule.SensorView" DataControl="PrivateAppModuleDataControl" RangeSize="100"
+                  id="TimelineSensorViewIterator" ChangeEventPolicy="ppr" CacheResults="false"/>
+        <iterator Binds="ProgramAppModule.LicenseView" DataControl="PrivateAppModuleDataControl" RangeSize="100"
+                  id="LicenseViewIterator" ChangeEventPolicy="none"/>
+        <iterator id="ProjectMemberViewIterator" Binds="ProgramAppModule.ProjectMemberView"
+                  DataControl="PrivateAppModuleDataControl" RangeSize="100" ChangeEventPolicy="ppr"
+                  CacheResults="false"/>
+        <iterator id="NewsViewIterator" Binds="ProgramAppModule.NewsView" DataControl="PrivateAppModuleDataControl"
+                  RangeSize="100" ChangeEventPolicy="ppr"/>
+        <iterator id="FundingViewIterator" Binds="ProgramAppModule.FundingView"
+                  DataControl="PrivateAppModuleDataControl" RangeSize="100" ChangeEventPolicy="ppr"/>
+        <iterator Binds="ProgramAppModule.IngredientView" DataControl="PrivateAppModuleDataControl" RangeSize="100"
+                  id="IngredientViewIterator" ChangeEventPolicy="ppr"/>
+        <iterator id="StudyViewIterator" Binds="ProgramAppModule.StudyView"
+                  DataControl="PrivateAppModuleDataControl" RangeSize="1000" ChangeEventPolicy="ppr"/>
+        <iterator id="ConfigurationViewIterator" Binds="ConfigurationView" DataControl="SharedAppModuleDataControl"
+                  RangeSize="100" ChangeEventPolicy="ppr"/>
+        <iterator id="SubstanceViewIterator" Binds="SubstanceView" DataControl="SharedAppModuleDataControl"
+                  RangeSize="100" RowCountThreshold="0" ChangeEventPolicy="ppr"/>
+        <iterator Binds="ProgramAppModule.D2ProjectsView" DataControl="PrivateAppModuleDataControl" RangeSize="100"
+                  id="D2ProjectsViewIterator"/>
+        <iterator Binds="ProgramAppModule.D3TransitionView" DataControl="PrivateAppModuleDataControl" RangeSize="100"
+                  id="D3TransitionViewIterator"/>
+        <iterator Binds="ProgramAppModule.ProjectChangeView" DataControl="PrivateAppModuleDataControl" RangeSize="25"
+                  id="ProjectChangeViewIterator" ChangeEventPolicy="ppr"/>
+        <iterator Binds="ProgramAppModule.ProjectChangeMilestoneDecisionView" DataControl="PrivateAppModuleDataControl"
+                  RangeSize="25" id="ProjectChangeMilestoneDecisionViewIterator" ChangeEventPolicy="ppr"/>
+        <iterator Binds="ProgramAppModule.ProjectChangeMilestoneDevelopmentView"
+                  DataControl="PrivateAppModuleDataControl" RangeSize="25"
+                  id="ProjectChangeMilestoneDevelopmentViewIterator" ChangeEventPolicy="ppr"/>
+        <iterator id="QplanMasterdataViewIterator" Binds="ProgramAppModule.QplanMasterdataView"
+                  DataControl="PrivateAppModuleDataControl" RangeSize="25" ChangeEventPolicy="ppr"
+                  CacheResults="false"/>
+        <iterator id="ReservedProgramsViewIterator" Binds="ProgramAppModule.ReservedProgramsView"
+                  DataControl="PrivateAppModuleDataControl" RangeSize="100"/>
+        <iterator Binds="ProgramAppModule.CostsSophiaView" DataControl="PrivateAppModuleDataControl" RangeSize="100"
+                  id="CostsSophiaViewIterator" ChangeEventPolicy="ppr"/>
+        <searchRegion id="CostsSophiaViewQuery" Binds="CostsSophiaViewIterator"
+                      Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"/>
+        <iterator Binds="ProgramAppModule.ResourcesSophiaView" DataControl="PrivateAppModuleDataControl" RangeSize="100"
+                  id="ResourcesSophiaViewIterator" ChangeEventPolicy="ppr"/>
+        <searchRegion id="ResourcesSophiaViewQuery" Binds="ResourcesSophiaViewIterator"
+                      Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"/>
+        <iterator Binds="TargetProductProfileCurrentView" DataControl="PrivateAppModule2DataControl"
+                  RangeSize="25" id="TargetProductProfileCurrentViewIterator" ChangeEventPolicy="ppr"/>
+        <iterator Binds="TppProfileCategoryView" DataControl="PrivateAppModule2DataControl"
+                  RangeSize="100" id="TppProfileCategoryViewIterator" ChangeEventPolicy="none"/>
+        <iterator id="ProjectGoalViewIterator" Binds="ProgramAppModule.ProjectGoalView"
+                  DataControl="PrivateAppModuleDataControl" RangeSize="25"/>
+        <iterator Binds="ProgramAppModule.GoalPhase" DataControl="PrivateAppModuleDataControl" RangeSize="10"
+                  id="GoalPhaseIterator" ChangeEventPolicy="ppr"/>
+        <iterator Binds="TargetProductProfileVersionsView" DataControl="PrivateAppModule2DataControl"
+                  RangeSize="25" id="TargetProductProfileVersionsViewIterator" ChangeEventPolicy="ppr">
+            <sortCriteria>
+                <sort attribute="CreateDate" ascending="false"/>
+            </sortCriteria>
+        </iterator>
+        <iterator Binds="TppProfileCategoryVersionsView" DataControl="PrivateAppModule2DataControl"
+                  RangeSize="100" id="TppProfileCategoryVersionsViewIterator" Refresh="default"
+                  ChangeEventPolicy="ppr"/>
+        <searchRegion Criteria="ProjectGoalCriteria" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                      Binds="ProjectGoalViewIterator" id="ProjectGoalFilterQuery"/>
+        <iterator Binds="ProgramAppModule.CostsProfitPivotView" DataControl="PrivateAppModuleDataControl" RangeSize="-1"
+                  id="CostsProfitPivotViewIterator" RowCountThreshold="-1"/>
+        <iterator Binds="ProgramAppModule.CostsSophiaPivotView" DataControl="PrivateAppModuleDataControl" RangeSize="-1"
+                  id="CostsSophiaPivotViewIterator" ChangeEventPolicy="ppr" RowCountThreshold="-1"/>
+        <iterator Binds="ProgramAppModule.ResourcesSophiaPivotView" DataControl="PrivateAppModuleDataControl"
+                  RangeSize="-1" id="ResourcesSophiaPivotViewIterator"/>
+        <iterator Binds="ProgramAppModule.ResourcesFromProfitPivotView" DataControl="PrivateAppModuleDataControl"
+                  RangeSize="-1" id="ResourcesFromProfitPivotViewIterator" ChangeEventPolicy="ppr"/>
+        <iterator Binds="ProgramAppModule.ProjectView2" DataControl="PrivateAppModuleDataControl" RangeSize="25"
+                  id="ProjectView2Iterator" ChangeEventPolicy="ppr"/>
+        <iterator Binds="ProgramAppModule.CostProfitPivotExportView" DataControl="PrivateAppModuleDataControl"
+                  RangeSize="-1" id="CostProfitPivotExportViewIterator" ChangeEventPolicy="ppr"/>
+        <iterator Binds="ProgramAppModule.CostSophiaPivotExportView" DataControl="PrivateAppModuleDataControl"
+                  RangeSize="25" id="CostSophiaPivotExportViewIterator" ChangeEventPolicy="ppr"/>
+        <iterator Binds="ProgramAppModule.ResourcesSophiaPivotExportView" DataControl="PrivateAppModuleDataControl"
+                  RangeSize="25" id="ResourcesSophiaPivotExportViewIterator" ChangeEventPolicy="ppr"/>
+        <iterator Binds="ProgramAppModule.ResourcesProfitPivotExportView" DataControl="PrivateAppModuleDataControl"
+                  RangeSize="25" id="ResourcesProfitPivotExportViewIterator" ChangeEventPolicy="ppr"/>
+        <iterator Binds="ProgramAppModule.TimelineBaselineView" DataControl="PrivateAppModuleDataControl" RangeSize="25"
+                  id="TimelineBaselineViewIterator" ChangeEventPolicy="ppr"/>
+        <searchRegion Criteria="Filter" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                      Binds="StudyViewIterator" id="FilterQuery"/>
+        <iterator Binds="BaseLineTypeView" RangeSize="-1" DataControl="SharedAppModuleDataControl"
+                  id="BaseLineTypeViewIterator"/>
+        <iterator Binds="ProgramAppModule.DiscrepancyDetailsView" DataControl="PrivateAppModuleDataControl"
+                  RangeSize="25" id="DiscrepancyDetailsViewIterator" ChangeEventPolicy="ppr"/>
+        <searchRegion Criteria="DiscrepancyDetailsFilter"
+                      Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                      Binds="DiscrepancyDetailsViewIterator" id="DiscrepancyDetailsFilterQuery"/>
+        <iterator Binds="ProgramAppModule.ProjectLevelActivitiesView" DataControl="PrivateAppModuleDataControl"
+                  RangeSize="25" id="ProjectLevelActivitiesViewIterator" ChangeEventPolicy="ppr"/>
+        <searchRegion Criteria="Filter" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                      Binds="ProjectLevelActivitiesViewIterator" id="FilterQuery1"/>
+        <iterator Binds="ProjectDeviceTypeView" RangeSize="100" DataControl="SharedAppModuleDataControl"
+                  id="ProjectDeviceTypeViewIterator" ChangeEventPolicy="ppr"/>
+        <iterator Binds="ProgramAppModule.ProjectDeviceView" DataControl="PrivateAppModuleDataControl" RangeSize="25"
+                  id="ProjectDeviceViewIterator" ChangeEventPolicy="ppr"/>
+        <iterator id="AllDevProjectViewIterator" Binds="ProgramAppModule.AllDevProjectView"
+                  DataControl="PrivateAppModuleDataControl" RangeSize="1000"/>
+        <iterator id="ProjectPhasePlanningViewIterator" Binds="ProgramAppModule.ProjectPhasePlanningView"
+                  DataControl="PrivateAppModuleDataControl" RangeSize="25"/>
+        <iterator id="PhasePlanningTypeViewIterator" Binds="PhasePlanningTypeView"
+                  DataControl="SharedAppModuleDataControl" RangeSize="25"/>
+        <iterator Binds="ProgramAppModule.ProgramTopCurrentView" DataControl="PrivateAppModuleDataControl"
+                  RangeSize="25" id="ProgramTopCurrentViewIterator" ChangeEventPolicy="ppr"/>
+        <iterator Binds="ProgramAppModule.ProgramTopNonIndVersionCategoryView" DataControl="PrivateAppModuleDataControl"
+                  RangeSize="100" id="ProgramTopNonIndVersionCategoryViewIterator" ChangeEventPolicy="ppr"/>
+        <iterator Binds="ProgramAppModule.ProgramTopVersionCategoryView" DataControl="PrivateAppModuleDataControl"
+                  RangeSize="100" id="ProgramTopVersionCategoryViewIterator"/>
+        <iterator Binds="RegulatoryTypeView" RangeSize="100" DataControl="SharedAppModuleDataControl"
+                  id="RegulatoryTypeViewIterator" ChangeEventPolicy="ppr"/>
+       
+       
+    </executables>
+    <bindings>
+    <list IterBinding="ProjectView2Iterator" StaticList="false" Uses="LOV_PtrForD3Code" id="PtrForD3Code"
+          DTSupportsMRU="true" SelectItemValueMode="ListObject"/>
+          
+        <tree IterBinding="TimelineViewIterator" id="TimelineView" ChangeEventPolicy="ppr">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.TimelineView" Name="TimelineView0">
+                <AttrNames>
+                    <Item Value="Id"/>
+                    <Item Value="Name"/>
+                    <Item Value="TypeCode"/>
+                    <Item Value="UpdateDate"/>
+                    <Item Value="Comments"/>
+                    <Item Value="TypeName"/>
+                    <Item Value="ReferenceId"/>
+                    <Item Value="IsSyncing"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <attributeValues IterBinding="ProjectViewIterator" id="Code">
+            <AttrNames>
+                <Item Value="Code"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="Name">
+            <AttrNames>
+                <Item Value="Name"/>
+            </AttrNames>
+        </attributeValues>
+         <attributeValues IterBinding="ProjectViewIterator" id="PreviousNames">
+            <AttrNames>
+                <Item Value="PreviousNames"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="Id">
+            <AttrNames>
+                <Item Value="Id"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="IsSyncing">
+            <AttrNames>
+                <Item Value="IsSyncing"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="IsProjectSyncing">
+            <AttrNames>
+                <Item Value="IsSyncing"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="TimelineViewIterator" id="TimelineTypeCode">
+            <AttrNames>
+                <Item Value="TypeCode"/>
+            </AttrNames>
+        </attributeValues>
+        
+        <tree IterBinding="StudyViewIterator" id="StudyView" ChangeEventPolicy="ppr">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.StudyView" Name="StudyView1">
+                <AttrNames>
+                    <Item Value="Id"/>
+                    <Item Value="Name"/>
+                    <Item Value="Code"/>
+                    <Item Value="StatusName"/>
+                    <Item Value="Phase"/>
+                    <Item Value="StartDate"/>
+                    <Item Value="FinishDate"/>
+                    <Item Value="Fpfv"/>
+                    <Item Value="Fpfvb"/>
+                    <Item Value="Lplv"/>
+                    <Item Value="Lplva"/>
+                    <Item Value="DmcActual"/>
+                    <Item Value="DmcPlan"/>
+                    <Item Value="WbsCount"/>
+                    <Item Value="IsGpdcApproved"/>
+                    <Item Value="IsObligation"/>
+                    <Item Value="IsProbing"/>
+                    <Item Value="Placeholder"/>
+                    <Item Value="ActualPatients"/>
+                    <Item Value="PlanPatients"/>
+                    <Item Value="IntExtFlag"/>
+                    <Item Value="TherapeuticGroupDesc"/>
+                    <Item Value="IsTimelineAutoImport"/>
+                    <Item Value="ActEnteredScreen"/>
+                    <Item Value="PlanEnteredScreen"/>
+                    <Item Value="StudyCountryCountPlan"/>
+                    <Item Value="StudyCountryCount"/>
+                    <Item Value="StudyUnitCountPlan"/>
+                    <Item Value="StudyUnitCount"/>
+                    <Item Value="IsLead"/>
+                    <Item Value="StudyModusName"/>
+                    <Item Value="Prcompl"/>
+                    <Item Value="Cdblock"/>
+                    <Item Value="Csrapp"/>
+                    <Item Value="BudgetClass"/>
+                    <Item Value="IsInCurPlan"/>
+                    <Item Value="IsInRawPlan"/>
+                    <Item Value="IsActEnteredScreenDiscrep"/>
+                    <Item Value="IsActualPatientsDiscrep"/>
+                    <Item Value="IsBudgetClassDiscrep"/>
+                    <Item Value="IsCdblockDiscrep"/>
+                    <Item Value="IsCountryCountPlanDiscrep"/>
+                    <Item Value="IsCsrappDiscrep"/>
+                    <Item Value="IsDmcActualDiscrep"/>
+                    <Item Value="IsDmcPlanDiscrep"/>
+                    <Item Value="IsFinishDateDiscrep"/>
+                    <Item Value="IsFpfvDiscrep"/>
+                    <Item Value="IsFpfvbDiscrep"/>                    
+                    <Item Value="IsGpdcApprovedDiscrep"/>
+                    <Item Value="IsIntExtFlagDiscrep"/>
+                    <Item Value="IsLeadDiscrep"/>
+                    <Item Value="IsLplvDiscrep"/>
+                    <Item Value="IsLplvaDiscrep"/>                    
+                    <Item Value="IsNameDiscrep"/>
+                    <Item Value="IsObligationDiscrep"/>
+                    <Item Value="IsPhaseDiscrep"/>
+                    <Item Value="IsPlaceholderDiscrep"/>
+                    <Item Value="IsPlanEnteredScreenDiscrep"/>
+                    <Item Value="IsPlanPatientsDiscrep"/>
+                    <Item Value="IsPrcomplDiscrep"/>
+                    <Item Value="IsProbingDiscrep"/>
+                    <Item Value="IsStartDateDiscrep"/>
+                    <Item Value="IsStatusDiscrep"/>
+                    <Item Value="IsStudyCountryCountDiscrep"/>
+                    <Item Value="IsStudyModusNameDiscrep"/>
+                    <Item Value="IsStudyUnitCountDiscrep"/>
+                    <Item Value="IsTherGroupDescDiscrep"/>
+                    <Item Value="IsTimelineAutoImportDiscrep"/>
+                    <Item Value="IsUnitCountPlanDiscrep"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <tree IterBinding="CostsViewIterator" id="CostsView" ChangeEventPolicy="ppr">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.CostsView" Name="CostsView0">
+                <AttrNames>
+                    <Item Value="FunctionName"/>
+                    <Item Value="StudyId"/>
+                    <Item Value="ScopeName"/>
+                    <Item Value="MethodName"/>
+                    <Item Value="TypeName"/>
+                    <Item Value="StatusName"/>
+                    <Item Value="StartDate"/>
+                    <Item Value="FinishDate"/>
+                    <Item Value="Cost"/>
+                    <Item Value="ScopeCode"/>
+                    <Item Value="SubFunctionName"/>
+                    <Item Value="ForecastNumber"/>
+                    <Item Value="ForecastVersion"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <attributeValues IterBinding="TimelineViewIterator" id="TimelineIsSyncing">
+            <AttrNames>
+                <Item Value="IsSyncing"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="TerminationReasonName">
+            <AttrNames>
+                <Item Value="TerminationReasonName"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="PhaseName">
+            <AttrNames>
+                <Item Value="PhaseName"/>
+            </AttrNames>
+        </attributeValues>
+        <methodAction IterBinding="ProjectViewIterator" id="refresh"
+                      InstanceName="bindings.ProjectViewIterator.currentRow" DataControl="PrivateAppModuleDataControl"
+                      RequiresUpdateModel="true" Action="invokeMethod" MethodName="refresh" IsViewObjectMethod="false"
+                      IsLocalObjectReference="true">
+            <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+                <event name="project" customPayLoad="#{bindings.ProjectViewIterator.currentRow.id}"
+                       eventType="Action Event"/>
+            </events>
+        </methodAction>
+        <methodAction IterBinding="ProjectViewIterator" id="identify"
+                      InstanceName="bindings.ProjectViewIterator.currentRow" DataControl="PrivateAppModuleDataControl"
+                      RequiresUpdateModel="true" Action="invokeMethod" MethodName="identify" IsViewObjectMethod="false"
+                      IsLocalObjectReference="true"/>
+        <methodAction IterBinding="ProjectViewIterator" id="lead" InstanceName="bindings.ProjectViewIterator.currentRow"
+                      DataControl="PrivateAppModuleDataControl" RequiresUpdateModel="true" Action="invokeMethod"
+                      MethodName="lead" IsViewObjectMethod="false" IsLocalObjectReference="true"/>
+        <tree IterBinding="ResourcesViewIterator" id="ResourcesView" ChangeEventPolicy="ppr">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.ResourcesView" Name="ResourcesView0">
+                <AttrNames>
+                    <Item Value="Id"/>
+                    <Item Value="ProjectId"/>
+                    <Item Value="StudyId"/>
+                    <Item Value="TypeCode"/>
+                    <Item Value="Demand"/>
+                    <Item Value="StartDate"/>
+                    <Item Value="FinishDate"/>
+                    <Item Value="CreateDate"/>
+                    <Item Value="UpdateDate"/>
+                    <Item Value="Function"/>
+                    <Item Value="Type"/>
+                    <Item Value="Method"/>
+                    <Item Value="SubFunctionName"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <eventBinding id="projectEventBinding" Listener="javax.faces.event.ActionListener">
+            <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+                <event name="project" eventType="Action Event"/>
+            </events>
+        </eventBinding>
+        <methodAction IterBinding="ProjectViewIterator" id="calculateCosts"
+                      InstanceName="bindings.ProjectViewIterator.currentRow" DataControl="PrivateAppModuleDataControl"
+                      RequiresUpdateModel="true" Action="invokeMethod" MethodName="calculateCosts"
+                      IsViewObjectMethod="false" IsLocalObjectReference="true"/>
+        <attributeValues IterBinding="ProgramViewIterator" id="ProgramQualifiedName">
+            <AttrNames>
+                <Item Value="QualifiedName"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="Abbreviation">
+            <AttrNames>
+                <Item Value="Abbreviation"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="StateName">
+            <AttrNames>
+                <Item Value="StateName"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="TerminationDate">
+            <AttrNames>
+                <Item Value="TerminationDate"/>
+            </AttrNames>
+        </attributeValues>
+        <tree IterBinding="MilestoneDecisionViewIterator" id="MilestoneDecisionView" ChangeEventPolicy="ppr">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.MilestoneView" Name="MilestoneDecisionView0">
+                <AttrNames>
+                    <Item Value="MilestoneCode"/>
+                    <Item Value="MilestoneName"/>
+                    <Item Value="PlanDate"/>
+                    <Item Value="ActualDate"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <tree IterBinding="MilestoneDevelopmentViewIterator" id="MilestoneDevelopmentView" ChangeEventPolicy="ppr">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.MilestoneView" Name="MilestoneDevelopmentView0">
+                <AttrNames>
+                    <Item Value="MilestoneCode"/>
+                    <Item Value="MilestoneName"/>
+                    <Item Value="PlanDate"/>
+                    <Item Value="ActualDate"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <tree IterBinding="MilestoneRegionalViewIterator" id="MilestoneRegionalView" ChangeEventPolicy="ppr">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.MilestoneView" Name="MilestoneRegionalView0">
+                <AttrNames>
+                    <Item Value="RegionName"/>
+                    <Item Value="MilestoneName"/>
+                    <Item Value="PlanDate"/>
+                    <Item Value="ActualDate"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <attributeValues IterBinding="ProjectViewIterator" id="TerminationReasonText">
+            <AttrNames>
+                <Item Value="TerminationReasonText"/>
+            </AttrNames>
+        </attributeValues>
+        <methodAction IterBinding="ProjectViewIterator" id="move" InstanceName="bindings.ProjectViewIterator.currentRow"
+                      DataControl="PrivateAppModuleDataControl" RequiresUpdateModel="true" Action="invokeMethod"
+                      MethodName="move" IsViewObjectMethod="false" IsLocalObjectReference="true"/>
+        <attributeValues IterBinding="ProjectViewIterator" id="IsInactive">
+            <AttrNames>
+                <Item Value="IsInactive"/>
+            </AttrNames>
+        </attributeValues>
+        <list IterBinding="ProjectViewIterator" StaticList="false" Uses="LOV_NewProgramId" id="NewProgramId"
+              DTSupportsMRU="true"/>
+        <tree IterBinding="CostsProbabilityInternalViewIterator" id="CostsProbabilityInternalView"
+              ChangeEventPolicy="ppr">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.CostsProbabilityInternalView"
+                            Name="CostsProbabilityInternalView0">
+                <AttrNames>
+                    <Item Value="PhaseName"/>
+                    <Item Value="Probability"/>
+                    <Item Value="PhaseCode"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <attributeValues IterBinding="TimelineViewIterator" id="TimelineTypeName">
+            <AttrNames>
+                <Item Value="TypeName"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="TimelineViewIterator" id="TimelinePublish">
+            <AttrNames>
+                <Item Value="Publish"/>
+            </AttrNames>
+        </attributeValues>
+        <tree IterBinding="TimelineSensorViewIterator" id="TimelineSensorView" ChangeEventPolicy="ppr">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.SensorView" Name="TimelineSensorView0">
+                <AttrNames>
+                    <Item Value="SensorName"/>
+                    <Item Value="CreateDate"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <attributeValues IterBinding="ProjectViewIterator" id="Probability">
+            <AttrNames>
+                <Item Value="Probability"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="ReviewDate">
+            <AttrNames>
+                <Item Value="ReviewDate"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProgramViewIterator" id="ProgramId">
+            <AttrNames>
+                <Item Value="Id"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="DetailsProgress">
+            <AttrNames>
+                <Item Value="DetailsProgress"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="ProgressDate">
+            <AttrNames>
+                <Item Value="ProgressDate"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="StrategicBusinessEntity">
+            <AttrNames>
+                <Item Value="SbeQualifiedName"/>
+            </AttrNames>
+        </attributeValues>
+        <action id="Commit" RequiresUpdateModel="true" Action="commitTransaction"/>
+        <action id="Rollback" RequiresUpdateModel="false" Action="rollbackTransaction"/>
+        <tree IterBinding="FundingViewIterator" id="FundingView" ChangeEventPolicy="ppr">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.FundingView" Name="FundingView0">
+                <AttrNames>
+                    <Item Value="Year"/>
+                    <Item Value="Amount"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <attributeValues IterBinding="ProjectViewIterator" id="Enpv">
+            <AttrNames>
+                <Item Value="Enpv"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="Npv">
+            <AttrNames>
+                <Item Value="Npv"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="PeakSales">
+            <AttrNames>
+                <Item Value="PeakSales"/>
+            </AttrNames>
+        </attributeValues>
+        <tree IterBinding="LicenseViewIterator" id="LicenseView" ChangeEventPolicy="none">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.LicenseView" Name="LicenseView0">
+                <AttrNames>
+                    <Item Value="RegionCode"/>
+                    <Item Value="TypeCode"/>
+                    <Item Value="RegionName"/>
+                    <Item Value="TypeName"/>
+                    <Item Value="ExpiryDate"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <tree IterBinding="NewsViewIterator" id="NewsView" ChangeEventPolicy="ppr">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.NewsView" Name="NewsView0">
+                <AttrNames>
+                    <Item Value="EventDate"/>
+                    <Item Value="CategoryCode"/>
+                    <Item Value="CategoryName"/>
+                    <Item Value="Text"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <tree IterBinding="ProjectMemberViewIterator" id="ProjectMemberView" ChangeEventPolicy="ppr">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.ProjectMemberView" Name="ProjectMemberView0">
+                <AttrNames>
+                    <Item Value="EmployeeName"/>
+                    <Item Value="TeamRoleName"/>
+                    <Item Value="UserRoleCode"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <attributeValues IterBinding="ProjectViewIterator" id="PipDate">
+            <AttrNames>
+                <Item Value="PipDate"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="PdcoDate">
+            <AttrNames>
+                <Item Value="PdcoDate"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="PipActivities">
+            <AttrNames>
+                <Item Value="PipActivities"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="PreferredBayNo">
+            <AttrNames>
+                <Item Value="BayName"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="DetailsPatent">
+            <AttrNames>
+                <Item Value="DetailsPatent"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="DetailsPartner">
+            <AttrNames>
+                <Item Value="DetailsPartner"/>
+            </AttrNames>
+        </attributeValues>
+        <action IterBinding="NewsViewIterator" id="NewsCreateInsert"
+                InstanceName="PrivateAppModuleDataControl.ProgramAppModule.NewsView"
+                DataControl="PrivateAppModuleDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+        <action IterBinding="NewsViewIterator" id="NewsDelete"
+                InstanceName="PrivateAppModuleDataControl.ProgramAppModule.NewsView"
+                DataControl="PrivateAppModuleDataControl" RequiresUpdateModel="false" Action="removeCurrentRow"/>
+        <attributeValues IterBinding="ProjectViewIterator" id="BayName">
+            <AttrNames>
+                <Item Value="BayName"/>
+            </AttrNames>
+        </attributeValues>
+        <action IterBinding="FundingViewIterator" id="FundingCreateInsert"
+                InstanceName="PrivateAppModuleDataControl.ProgramAppModule.FundingView"
+                DataControl="PrivateAppModuleDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+        <action IterBinding="FundingViewIterator" id="FundingDelete"
+                InstanceName="PrivateAppModuleDataControl.ProgramAppModule.FundingView"
+                DataControl="PrivateAppModuleDataControl" RequiresUpdateModel="false" Action="removeCurrentRow"/>
+        <attributeValues IterBinding="ProjectViewIterator" id="DetailsCriteria">
+            <AttrNames>
+                <Item Value="DetailsCriteria"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="DetailsMesh">
+            <AttrNames>
+                <Item Value="DetailsMesh"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="DetailsIndication">
+            <AttrNames>
+                <Item Value="DetailsIndication"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="DetailsProduct">
+            <AttrNames>
+                <Item Value="DetailsProduct"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="DetailsAsia">
+            <AttrNames>
+                <Item Value="DetailsAsia"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="DetailsGoal">
+            <AttrNames>
+                <Item Value="DetailsGoal"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="DetailsAction">
+            <AttrNames>
+                <Item Value="DetailsAction"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="DetailsCompetition">
+            <AttrNames>
+                <Item Value="DetailsCompetition"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="DetailsSales">
+            <AttrNames>
+                <Item Value="DetailsSales"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="DetailsPmo">
+            <AttrNames>
+                <Item Value="DetailsPmo"/>
+            </AttrNames>
+        </attributeValues>
+        <action IterBinding="LicenseViewIterator" id="LicenseCreateInsert"
+                InstanceName="PrivateAppModuleDataControl.ProgramAppModule.LicenseView"
+                DataControl="PrivateAppModuleDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+        <action IterBinding="LicenseViewIterator" id="LicenseDelete"
+                InstanceName="PrivateAppModuleDataControl.ProgramAppModule.LicenseView"
+                DataControl="PrivateAppModuleDataControl" RequiresUpdateModel="false" Action="removeCurrentRow"/>
+        <attributeValues IterBinding="ProjectViewIterator" id="CombinationName">
+            <AttrNames>
+                <Item Value="CombinationName"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="GbuCode">
+            <AttrNames>
+                <Item Value="GbuCode"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="StateCode">
+            <AttrNames>
+                <Item Value="StateCode"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="PriorityCode">
+            <AttrNames>
+                <Item Value="PriorityCode"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="CategoryCode">
+            <AttrNames>
+                <Item Value="CategoryCode"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="PhaseCode">
+            <AttrNames>
+                <Item Value="PhaseCode"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="ProposedSbeCode">
+            <AttrNames>
+                <Item Value="ProposedSbeCode"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="AreaCode">
+            <AttrNames>
+                <Item Value="AreaCode"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="SourceCode">
+            <AttrNames>
+                <Item Value="SourceCode"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="SubstanceTypeCode">
+            <AttrNames>
+                <Item Value="SubstanceTypeCode"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="TerminationCode">
+            <AttrNames>
+                <Item Value="TerminationCode"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="DevelopmentPhaseName">
+            <AttrNames>
+                <Item Value="DevelopmentPhaseName"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="SubstanceCodes">
+            <AttrNames>
+                <Item Value="SubstanceCodes"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="RelatedProjects">
+            <AttrNames>
+                <Item Value="RelatedProjects"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="PhasePlanning">
+            <AttrNames>
+                <Item Value="PhasePlanning"/>
+            </AttrNames>
+        </attributeValues>
+        <tree IterBinding="IngredientViewIterator" id="IngredientView" ChangeEventPolicy="ppr">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.IngredientView" Name="IngredientView0">
+                <AttrNames>
+                    <Item Value="SubstanceName"/>
+                    <Item Value="MolecularEntityName"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <attributeValues IterBinding="FundingViewIterator" id="Test">
+            <AttrNames>
+                <Item Value="Year"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProgramViewIterator" id="ProgramIsRecycleBin">
+            <AttrNames>
+                <Item Value="IsRecycleBin"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="TimelineViewIterator" id="TimelineId">
+            <AttrNames>
+                <Item Value="Id"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="IsActive">
+            <AttrNames>
+                <Item Value="IsActive"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="IsLead">
+            <AttrNames>
+                <Item Value="IsLead"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="IsTerminated">
+            <AttrNames>
+                <Item Value="IsTerminated"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="IsHpr">
+            <AttrNames>
+                <Item Value="IsHpr"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="IsCollaboration">
+            <AttrNames>
+                <Item Value="IsCollaboration"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="IsPip">
+            <AttrNames>
+                <Item Value="IsPip"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="IsPortfolio">
+            <AttrNames>
+                <Item Value="IsPortfolio"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="IsRegional">
+            <AttrNames>
+                <Item Value="IsRegional"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="IsOrphanDrug">
+            <AttrNames>
+                <Item Value="IsOrphanDrug"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="IsWaiver">
+            <AttrNames>
+                <Item Value="IsWaiver"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="IsPdcoPositive">
+            <AttrNames>
+                <Item Value="IsPdcoPositive"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="IsDirectPhase3">
+            <AttrNames>
+                <Item Value="IsDirectPhase3"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="IsCombinedPhase2">
+            <AttrNames>
+                <Item Value="IsCombinedPhase2"/>
+            </AttrNames>
+        </attributeValues>
+        <list IterBinding="D2ProjectsViewIterator" ListOperMode="navigation" ListIter="D2ProjectsViewIterator"
+              id="D2ProjectsView" DTSupportsMRU="true">
+            <AttrNames>
+                <Item Value="QualifiedName"/>
+            </AttrNames>
+        </list>
+        <list IterBinding="D3TransitionViewIterator" ListOperMode="navigation" ListIter="D3TransitionViewIterator"
+              id="D3TransitionView" DTSupportsMRU="true">
+            <AttrNames>
+                <Item Value="QualifiedName"/>
+            </AttrNames>
+        </list>
+        <tree IterBinding="ProjectChangeViewIterator" id="ProjectChangeView" ChangeEventPolicy="ppr">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.ProjectChangeView" Name="ProjectChangeView0">
+                <AttrNames>
+                    <Item Value="ProjectId"/>
+                    <Item Value="PrjUpdateUserId"/>
+                    <Item Value="CreateUserId"/>
+                    <Item Value="CreateDate"/>
+                    <Item Value="StateCode"/>
+                    <Item Value="PriorityCode"/>
+                    <Item Value="ChangeComment"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <tree IterBinding="ProjectChangeMilestoneDecisionViewIterator" id="ProjectChangeMilestoneDecisionView">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.ProjectChangeMilestoneView"
+                            Name="ProjectChangeMilestoneDecisionView0">
+                <AttrNames>
+                    <Item Value="MsCode"/>                
+                    <Item Value="Name"/>
+                    <Item Value="Plan"/>
+                    <Item Value="Achieved"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <tree IterBinding="ProjectChangeMilestoneDevelopmentViewIterator" id="ProjectChangeMilestoneDevelopmentView">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.ProjectChangeMilestoneView"
+                            Name="ProjectChangeMilestoneDevelopmentView0">
+                <AttrNames>
+                    <Item Value="MsCode"/>
+                    <Item Value="Name"/>
+                    <Item Value="Plan"/>
+                    <Item Value="Achieved"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <attributeValues IterBinding="ProjectChangeViewIterator" id="CreateDate">
+            <AttrNames>
+                <Item Value="CreateDate"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectChangeViewIterator" id="StateCode1">
+            <AttrNames>
+                <Item Value="StateCode"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectChangeViewIterator" id="PriorityCode1">
+            <AttrNames>
+                <Item Value="PriorityCode"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectChangeViewIterator" id="StateName1">
+            <AttrNames>
+                <Item Value="StateName"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectChangeViewIterator" id="PriorityName">
+            <AttrNames>
+                <Item Value="PriorityName"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectChangeViewIterator" id="ChangeComment">
+            <AttrNames>
+                <Item Value="ChangeComment"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectChangeViewIterator" id="PrjUpdateUserId">
+            <AttrNames>
+                <Item Value="PrjUpdateUserId"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="PidtReleaseDate">
+            <AttrNames>
+                <Item Value="PidtReleaseDate"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="AreaName">
+            <AttrNames>
+                <Item Value="AreaName"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="IsPidt">
+            <AttrNames>
+                <Item Value="IsPidt"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="PlanningCode">
+            <AttrNames>
+                <Item Value="PlanningCode"/>
+            </AttrNames>
+        </attributeValues>
+        <list IterBinding="ProjectViewIterator" StaticList="false" Uses="LOV_IpownerCode" id="IpownerCode"
+              DTSupportsMRU="true"/>
+        <attributeValues IterBinding="ProjectViewIterator" id="CategoryName">
+            <AttrNames>
+                <Item Value="CategoryName"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectChangeViewIterator" id="PhaseName1">
+            <AttrNames>
+                <Item Value="PhaseName"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="PlanningEnabled">
+            <AttrNames>
+                <Item Value="PlanningEnabled"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="QplanReleaseDate">
+            <AttrNames>
+                <Item Value="QplanReleaseDate"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="TaCode">
+            <AttrNames>
+                <Item Value="TaCode"/>
+            </AttrNames>
+        </attributeValues>
+        <list IterBinding="ProjectViewIterator" StaticList="false" Uses="LOV_PredecessorProjectId"
+              id="PredecessorProjectId" DTSupportsMRU="true"/>
+        <list IterBinding="ProjectViewIterator" StaticList="false" Uses="LOV_D3transitionProjectId"
+              id="D3transitionProjectId" DTSupportsMRU="true"/>
+        <tree IterBinding="CostsSophiaViewIterator" id="CostsSophiaView">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.CostsSophiaView" Name="CostsSophiaView0">
+                <AttrNames>
+                    <Item Value="Id"/>
+                    <Item Value="ProjectId"/>
+                    <Item Value="StudyId"/>
+                    <Item Value="ScopeCode"/>
+                    <Item Value="MethodCode"/>
+                    <Item Value="TypeCode"/>
+                    <Item Value="Cost"/>
+                    <Item Value="StartDate"/>
+                    <Item Value="FinishDate"/>
+                    <Item Value="CreateDate"/>
+                    <Item Value="UpdateDate"/>
+                    <Item Value="TypeName"/>
+                    <Item Value="Code1"/>
+                    <Item Value="ScopeName"/>
+                    <Item Value="Code2"/>
+                    <Item Value="CalculationMethod"/>
+                    <Item Value="Code3"/>
+                    <Item Value="SubtypeCode"/>
+                    <Item Value="SubTypeName"/>
+                    <Item Value="Code6"/>
+                    <Item Value="SubfunctionCode"/>
+                    <Item Value="SubFunctionName"/>
+                    <Item Value="Code"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <tree IterBinding="ResourcesSophiaViewIterator" id="ResourcesSophiaView">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.ResourcesSophiaView" Name="ResourcesSophiaView0">
+                <AttrNames>
+                    <Item Value="Id"/>
+                    <Item Value="ProjectId"/>
+                    <Item Value="StudyId"/>
+                    <Item Value="FunctionCode"/>
+                    <Item Value="FunctionName"/>
+                    <Item Value="MethodCode"/>
+                    <Item Value="MethodName"/>
+                    <Item Value="TypeCode"/>
+                    <Item Value="TypeName"/>
+                    <Item Value="SubfunctionCode"/>
+                    <Item Value="SubfunctionName"/>
+                    <Item Value="Demand"/>
+                    <Item Value="StartDate"/>
+                    <Item Value="FinishDate"/>
+                    <Item Value="CreateDate"/>
+                    <Item Value="UpdateDate"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <attributeValues IterBinding="ProjectViewIterator" id="PidtBuCode">
+            <AttrNames>
+                <Item Value="PidtBuCode"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="PidtBuName">
+            <AttrNames>
+                <Item Value="PidtBuName"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="ProjectQualifiedName">
+            <AttrNames>
+                <Item Value="QualifiedName"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="TargetProductProfileCurrentViewIterator" id="TppCurrentName">
+            <AttrNames>
+                <Item Value="Name"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="TargetProductProfileCurrentViewIterator" id="TppCurrentApprovalDate">
+            <AttrNames>
+                <Item Value="ApprovalDate"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="TargetProductProfileCurrentViewIterator" id="TppCurrentIndication">
+            <AttrNames>
+                <Item Value="Indication"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="TargetProductProfileCurrentViewIterator" id="TppCurrentReferences">
+            <AttrNames>
+                <Item Value="References"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="TargetProductProfileCurrentViewIterator" id="TppCurrentVersion">
+            <AttrNames>
+                <Item Value="Version"/>
+            </AttrNames>
+        </attributeValues>
+        <action IterBinding="TargetProductProfileCurrentViewIterator" id="TppCurrentCreateInsert"
+                InstanceName="PrivateAppModule2DataControl.TargetProductProfileCurrentView"
+                DataControl="PrivateAppModuleDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+        <tree IterBinding="TppProfileCategoryViewIterator" id="TppProfileCategoryView" ChangeEventPolicy="ppr">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.TppProfileCategoryView" Name="TppProfileCategoryView0">
+                <AttrNames>
+                    <Item Value="Code"/>
+                    <Item Value="Name"/>
+                    <Item Value="IsActive"/>
+                    <Item Value="TppId"/>
+                </AttrNames>
+                <Accessors>
+                    <Item Value="TppProfileSubcategoryView"/>
+                </Accessors>
+            </nodeDefinition>
+            <nodeDefinition DefName="com.bayer.ipms.model.views.TppProfileSubcategoryView"
+                            Name="TppProfileCategoryView1">
+                <AttrNames>
+                    <Item Value="Code"/>
+                    <Item Value="Name"/>
+                    <Item Value="CategoryCode"/>
+                    <Item Value="IsActive"/>
+                    <Item Value="TppId"/>
+                </AttrNames>
+                <Accessors>
+                    <Item Value="TppValuesView"/>
+                </Accessors>
+            </nodeDefinition>
+            <nodeDefinition DefName="com.bayer.ipms.model.views.TppValuesView" Name="TppProfileCategoryView2">
+                <AttrNames>
+                    <Item Value="Id"/>
+                    <Item Value="KeyDriver"/>
+                    <Item Value="KeyEdvProposition"/>
+                    <Item Value="StandardOfCare"/>
+                    <Item Value="SubcategoryCode"/>
+                    <Item Value="TargetedIn"/>
+                    <Item Value="TargetedProfile"/>
+                    <Item Value="TppId"/>
+                    <Item Value="UniqueSellingPoint"/>
+                    <Item Value="Upside"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <tree IterBinding="ProjectGoalViewIterator" id="ProjectGoalView">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.ProjectGoalView" Name="ProjectGoalView0">
+                <AttrNames>
+                    <Item Value="ProjectId"/>
+                    <Item Value="Goal"/>
+                    <Item Value="Type"/>
+                    <Item Value="Phase"/>
+                    <Item Value="StudyId"/>
+                    <Item Value="PlanReference"/>
+                    <Item Value="PlanReferenceDate"/>
+                    <Item Value="Status"/>
+                    <Item Value="TargetDate"/>
+                    <Item Value="AchievedDate"/>
+                    <Item Value="RevisedDate"/>
+                    <Item Value="Comments"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <attributeValues IterBinding="GoalPhaseIterator" id="GoalTrackYear">
+            <AttrNames>
+                <Item Value="GoalTrackYear"/>
+            </AttrNames>
+        </attributeValues>
+        <tree IterBinding="TargetProductProfileVersionsViewIterator" id="TargetProductProfileVersionsView"
+              ChangeEventPolicy="ppr">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.TargetProductProfileView"
+                            Name="TargetProductProfileVersionsView0">
+                <AttrNames>
+                    <Item Value="Name"/>
+                    <Item Value="Version"/>
+                    <Item Value="ApprovalDate"/>
+                    <Item Value="Description"/>
+                    <Item Value="CreateDate"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <attributeValues IterBinding="TargetProductProfileVersionsViewIterator" id="TppVersionName">
+            <AttrNames>
+                <Item Value="Name"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="TargetProductProfileVersionsViewIterator" id="TppVersionApprovalDate">
+            <AttrNames>
+                <Item Value="ApprovalDate"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="TargetProductProfileVersionsViewIterator" id="TppVersionIndication">
+            <AttrNames>
+                <Item Value="Indication"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="TargetProductProfileVersionsViewIterator" id="TppVersionReferences">
+            <AttrNames>
+                <Item Value="References"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="TargetProductProfileVersionsViewIterator" id="TppVersionVersion">
+            <AttrNames>
+                <Item Value="Version"/>
+            </AttrNames>
+        </attributeValues>
+        <tree IterBinding="TppProfileCategoryVersionsViewIterator" id="TppProfileCategoryVersionsView">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.TppProfileCategoryView"
+                            Name="TppProfileCategoryVersionsView0">
+                <AttrNames>
+                    <Item Value="Code"/>
+                    <Item Value="Name"/>
+                    <Item Value="IsActive"/>
+                </AttrNames>
+                <Accessors>
+                    <Item Value="TppProfileSubcategoryView"/>
+                </Accessors>
+            </nodeDefinition>
+            <nodeDefinition DefName="com.bayer.ipms.model.views.TppProfileSubcategoryView"
+                            Name="TppProfileCategoryVersionsView1">
+                <AttrNames>
+                    <Item Value="Code"/>
+                    <Item Value="Name"/>
+                    <Item Value="IsActive"/>
+                </AttrNames>
+                <Accessors>
+                    <Item Value="TppValuesView"/>
+                </Accessors>
+            </nodeDefinition>
+            <nodeDefinition DefName="com.bayer.ipms.model.views.TppValuesView" Name="TppProfileCategoryVersionsView2">
+                <AttrNames>
+                    <Item Value="KeyEdvProposition"/>
+                    <Item Value="StandardOfCare"/>
+                    <Item Value="TargetedProfile"/>
+                    <Item Value="Upside"/>
+                    <Item Value="TargetedIn"/>
+                    <Item Value="KeyDriver"/>
+                    <Item Value="UniqueSellingPoint"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <attributeValues IterBinding="TargetProductProfileVersionsViewIterator" id="TppVersionDescription">
+            <AttrNames>
+                <Item Value="Description"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="TargetProductProfileCurrentViewIterator" id="TppCurrentCreateDate">
+            <AttrNames>
+                <Item Value="CreateDate"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="LoReviewMeetingDate">
+            <AttrNames>
+                <Item Value="LoReviewMeetingDate"/>
+            </AttrNames>
+        </attributeValues>
+        <list IterBinding="ProjectViewIterator" id="LoReviewResultCode" DTSupportsMRU="true"
+              SelectItemValueMode="ListObject" StaticList="true"
+              NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}"
+              NullValueFlag="start">
+            <AttrNames>
+                <Item Value="LoReviewResultCode"/>
+            </AttrNames>
+            <ValueList>
+                <Item Value=" "/>
+                <Item Value="Red"/>
+                <Item Value="Yellow"/>
+                <Item Value="Green"/>
+            </ValueList>
+        </list>
+        <attributeValues IterBinding="ProjectViewIterator" id="D2Compound">
+            <AttrNames>
+                <Item Value="D2Compound"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="Trg">
+            <AttrNames>
+                <Item Value="Trg"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="TargetGeneCode">
+            <AttrNames>
+                <Item Value="TargetGeneCode"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="Er">
+            <AttrNames>
+                <Item Value="Er"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="GeneralProjectFrame">
+            <AttrNames>
+                <Item Value="GeneralProjectFrame"/>
+            </AttrNames>
+        </attributeValues>
+        <pivotTable IterBinding="CostsProfitPivotViewIterator" id="CostsProfitPivotView"
+                    xmlns="http://xmlns.oracle.com/adfm/dvt" ChangeEventPolicy="ppr">
+            <pivotTableDataMap convert="false">
+                <sorts>
+                    <categorySort item="Year" direction="ASCENDING"/>
+                </sorts>
+                <columns>
+                    <data>
+                        <item value="Cost"/>
+                    </data>
+                    <item value="Year"/>
+                </columns>
+                <rows>
+                    <item value="ProjectName" itemLabel="Project Name"/>
+                    <item value="StudyName"/>
+                    <item value="FunctionName" itemLabel="Function Name"/>
+                </rows>
+                <pages>
+                    <item value="TypeCode" itemLabel="Type"/>
+                    <item value="ScopeCode" itemLabel="Scope"/>
+                    <item value="MethodCode" itemLabel="Method"/>
+                </pages>
+            </pivotTableDataMap>
+        </pivotTable>
+        <pivotTable IterBinding="CostsSophiaPivotViewIterator" id="CostsSophiaPivotView"
+                    xmlns="http://xmlns.oracle.com/adfm/dvt" ChangeEventPolicy="ppr">
+            <pivotTableDataMap convert="false">
+                <columns>
+                    <data>
+                        <item value="Cost"/>
+                    </data>
+                    <item value="Year"/>
+                </columns>
+                <rows>
+                    <item value="ProjectName" itemLabel="Project Name"/>
+                    <item value="StudyName" itemLabel="Study Name"/>
+                    <item value="ProjectActivityId" itemLabel="Activity Name"/>
+                    <item value="FunctionName" itemLabel="Function Name"/>
+                </rows>
+                <aggregatedItems>
+                    <item aggregateLocation="AFTER" aggregateType="SUM" value="FunctionName"
+                          aggregateLabel="All Functions"/>
+                </aggregatedItems>
+                <pages>
+                    <item value="TypeCode" itemLabel="Type" sortAttribute="TypeCodeOrd"/>
+                    <item value="ScopeCode" itemLabel="Scope"/>
+                    <item value="MethodCode" itemLabel="Method"/>
+                </pages>
+				<sorts>
+				    <categorySort item="TypeCode" direction="ASCENDING"/>
+				</sorts>
+            </pivotTableDataMap>
+        </pivotTable>
+        <pivotTable IterBinding="ResourcesSophiaPivotViewIterator" id="ResourcesSophiaPivotView"
+                    xmlns="http://xmlns.oracle.com/adfm/dvt" ChangeEventPolicy="ppr">
+            <pivotTableDataMap convert="false">
+                <columns>
+                    <data>
+                        <item value="Demand"/>
+                    </data>
+                    <item value="Year"/>
+                </columns>
+                <rows>
+                    <item value="ProjectName" itemLabel="Project Name"/>
+                    <item value="StudyName" itemLabel="Study Name"/>
+                    <item value="ProjectActivityId" itemLabel="Activity Name"/>
+                    <item value="FunctionName" itemLabel="Function Name"/>
+                </rows>
+                <pages>
+                    <item value="TypeCode" itemLabel="Type"/>
+                    <item value="MethodCode" itemLabel="Method"/>
+                </pages>
+            </pivotTableDataMap>
+        </pivotTable>
+        <pivotTable IterBinding="ResourcesFromProfitPivotViewIterator" id="ResourcesFromProfitPivotView"
+                    xmlns="http://xmlns.oracle.com/adfm/dvt" ChangeEventPolicy="ppr">
+            <pivotTableDataMap convert="false">
+                <columns>
+                    <data>
+                        <item value="Demand"/>
+                    </data>
+                    <item value="Year"/>
+                </columns>
+                <rows>
+                    <item value="ProjectName" itemLabel="Project Name"/>
+                    <item value="StudyName" itemLabel="Study Name"/>
+                    <item value="ProjectActivityId" itemLabel="Activity Name"/>
+                    <item value="FunctionName" itemLabel="Function Name"/>
+                </rows>
+                <pages>
+                    <item value="TypeCode" itemLabel="Type"/>
+                    <item value="MethodCode" itemLabel="Method"/>
+                </pages>
+                <aggregatedItems>
+                    <item aggregateLocation="AFTER" aggregateType="SUM" value="FunctionName"
+                          aggregateLabel="All Functions"/>
+                </aggregatedItems>
+            </pivotTableDataMap>
+        </pivotTable>
+        <tree IterBinding="ProjectViewIterator" id="ProjectView">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.ProjectView" Name="ProjectView0">
+                <AttrNames>
+                    <Item Value="Code"/>
+                    <Item Value="Name"/>
+                    <Item Value="Trg"/>
+                    <Item Value="TargetGeneCode"/>
+                    <Item Value="Er"/>
+                    <Item Value="GeneralProjectFrame"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <attributeValues IterBinding="ProjectView2Iterator" id="SuccProjectQualifiedName">
+            <AttrNames>
+                <Item Value="SuccProjectQualifiedName"/>
+            </AttrNames>
+        </attributeValues>
+        <methodAction id="maintainBaselines" RequiresUpdateModel="true" Action="invokeMethod"
+                      MethodName="maintainBaselines" IsViewObjectMethod="true" DataControl="PrivateAppModuleDataControl"
+                      InstanceName="data.PrivateAppModuleDataControl.dataProvider.ProgramAppModule.ProjectView"
+                      ReturnName="data.PrivateAppModuleDataControl.methodResults.maintainBaselines_PrivateAppModuleDataControl_dataProvider_ProgramAppModule_ProjectView_maintainBaselines_result">
+            <NamedData NDName="timelineId" NDValue="#{pageFlowScope.projectViewBean.baselineTimelineId}"
+                       NDType="java.lang.String"/>
+        </methodAction>
+        <tree IterBinding="CostProfitPivotExportViewIterator" id="CostProfitPivotExportView">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.CostProfitPivotExportView"
+                            Name="CostProfitPivotExportView0">
+                <AttrNames>
+                    <Item Value="ProjectName"/>
+                    <Item Value="StudyName"/>
+                    <Item Value="FunctionName"/>
+                    <Item Value="SubfunctionName"/>
+                    <Item Value="ScopeCode"/>
+                    <Item Value="MethodCode"/>
+                    <Item Value="TypeCode"/>
+                    <Item Value="Year"/>
+                    <Item Value="Month"/>
+                    <Item Value="Cost"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <tree IterBinding="CostSophiaPivotExportViewIterator" id="CostSophiaPivotExportView">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.CostSophiaPivotExportView"
+                            Name="CostSophiaPivotExportView0">
+                <AttrNames>
+                    <Item Value="ProjectName"/>
+                    <Item Value="StudyName"/>
+                    <Item Value="ProjectActivityId"/>
+                    <Item Value="FunctionName"/>
+                    <Item Value="SubfunctionName"/>
+                    <Item Value="ScopeCode"/>
+                    <Item Value="MethodCode"/>
+                    <Item Value="TypeCode"/>
+                    <Item Value="Year"/>
+                    <Item Value="Month"/>
+                    <Item Value="Cost"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <tree IterBinding="ResourcesSophiaPivotExportViewIterator" id="ResourcesSophiaPivotExportView">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.ResourcesSophiaPivotExportView"
+                            Name="ResourcesSophiaPivotExportView0">
+                <AttrNames>
+                    <Item Value="ProjectName"/>
+                    <Item Value="StudyName"/>
+                    <Item Value="FunctionName"/>
+                    <Item Value="SubfunctionName"/>
+                    <Item Value="MethodCode"/>
+                    <Item Value="TypeCode"/>
+                    <Item Value="ProjectActivityId"/>
+                    <Item Value="Year"/>
+                    <Item Value="Month"/>
+                    <Item Value="Demand"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <tree IterBinding="ResourcesProfitPivotExportViewIterator" id="ResourcesProfitPivotExportView">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.ResourcesProfitPivotExportView"
+                            Name="ResourcesProfitPivotExportView0">
+                <AttrNames>
+                    <Item Value="ProjectName"/>
+                    <Item Value="StudyName"/>
+                    <Item Value="FunctionName"/>
+                    <Item Value="SubfunctionName"/>
+                    <Item Value="MethodCode"/>
+                    <Item Value="TypeCode"/>
+                    <Item Value="ProjectActivityId"/>
+                    <Item Value="Month"/>
+                    <Item Value="Year"/>
+                    <Item Value="Demand"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <attributeValues IterBinding="ProjectViewIterator" id="PhaseEstimatedCode">
+            <AttrNames>
+                <Item Value="PhaseEstimatedCode"/>
+            </AttrNames>
+        </attributeValues>
+        <tree IterBinding="TimelineViewIterator" id="TimelineBaselineMainView">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.TimelineView" Name="TimelineView10">
+                <AttrNames>
+                    <Item Value="TypeName"/>
+                    <Item Value="ReferenceId"/>
+                    <Item Value="IsSyncing"/>
+                    <Item Value="Comments"/>
+                    <Item Value="BaselineTypeName"/>
+                    <Item Value="BaselineTypeId2"/>
+                    <Item Value="LtciId"/>
+                    <Item Value="ExcelReport"/>
+                    <Item Value="MaxLtcProcessId"/>
+                    <Item Value="LtcTagId"/>
+                </AttrNames>
+                <Accessors>
+                    <Item Value="TimelineBaselineView"/>
+                </Accessors>
+            </nodeDefinition>
+            <nodeDefinition DefName="com.bayer.ipms.model.views.TimelineBaselineView" Name="TimelineView11">
+                <AttrNames>
+                    <Item Value="BaselineVersion"/>
+                    <Item Value="ReferenceId"/>
+                    <Item Value="IsSyncing"/>
+                    <Item Value="BaselineDescription"/>
+                    <Item Value="BaselineType"/>
+                    <Item Value="BaselineLtciId"/>
+                    <Item Value="BaselineLtcProcessId"/>
+                    <Item Value="BaselineLtcTagId"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <attributeValues IterBinding="TimelineBaselineViewIterator" id="TimelineLevel">
+            <AttrNames>
+                <Item Value="TimelineLevel"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectView2Iterator" id="PredProjectQualifiedName">
+            <AttrNames>
+                <Item Value="PredProjectQualifiedName"/>
+            </AttrNames>
+        </attributeValues>
+        <action IterBinding="TargetProductProfileVersionsViewIterator" id="DeleteTppVersion" RequiresUpdateModel="false"
+                Action="removeCurrentRow"/>
+        <attributeValues IterBinding="ProjectView2Iterator" id="LastImportDate">
+            <AttrNames>
+                <Item Value="LastImportDate"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectView2Iterator" id="MedicalDeviceSpec">
+            <AttrNames>
+                <Item Value="MedicalDeviceSpec"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectView2Iterator" id="PtrComment">
+            <AttrNames>
+                <Item Value="PtrComment"/>
+            </AttrNames>
+        </attributeValues>
+        <tree IterBinding="TargetProductProfileVersionsViewIterator1" id="TargetProductProfileVersionsView1">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.TargetProductProfileView"
+                            Name="TargetProductProfileVersionsView10">
+                <AttrNames>
+                    <Item Value="ApprovalDate"/>
+                    <Item Value="Description"/>
+                    <Item Value="Id"/>
+                    <Item Value="Name"/>
+                    <Item Value="ProjectId"/>
+                    <Item Value="Version"/>
+                    <Item Value="Indication"/>
+                    <Item Value="References"/>
+                    <Item Value="CreateDate"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <attributeValues IterBinding="ProjectViewIterator" id="TcCode">
+            <AttrNames>
+                <Item Value="TcCode"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="ToCode">
+            <AttrNames>
+                <Item Value="ToCode"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="TimelineViewIterator" id="LtcTagId">
+            <AttrNames>
+                <Item Value="LtcTagId"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="TimelineViewIterator" id="LtcProcessId">
+            <AttrNames>
+                <Item Value="MaxLtcProcessId"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="TimelineBaselineViewIterator" id="BaselineLtcProcessId">
+            <AttrNames>
+                <Item Value="BaselineLtcProcessId"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="TimelineBaselineViewIterator" id="BaselineLtcTagId">
+            <AttrNames>
+                <Item Value="BaselineLtcTagId"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="TimelineViewIterator" id="LtciId">
+            <AttrNames>
+                <Item Value="LtciId"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="TimelineBaselineViewIterator" id="BaselineLtciId">
+            <AttrNames>
+                <Item Value="BaselineLtciId"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="TimelineViewIterator" id="BaselineTypeId">
+            <AttrNames>
+                <Item Value="BaselineTypeId"/>
+            </AttrNames>
+        </attributeValues>
+        <tree IterBinding="DiscrepancyDetailsViewIterator" id="DiscrepancyDetailsView">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.DiscrepancyDetailsView" Name="DiscrepancyDetailsView0">
+                <AttrNames>
+                    <Item Value="StudyId"/>
+                    <Item Value="StudyModusName"/>
+                    <Item Value="ClinicalPlanType"/>
+                    <Item Value="FpfvDate"/>
+                    <Item Value="Solution"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <attributeValues IterBinding="ProjectViewIterator" id="IsRunningImport">
+            <AttrNames>
+                <Item Value="IsRunningImport"/>
+            </AttrNames>
+        </attributeValues>
+        <tree IterBinding="ProjectLevelActivitiesViewIterator" id="ProjectLevelActivitiesView">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.ProjectLevelActivitiesView"
+                            Name="ProjectLevelActivitiesView0">
+                <AttrNames>
+                    <Item Value="ProjectActivityId"/>
+                    <Item Value="ProjectActivityName"/>
+                    <Item Value="PlanStartDate"/>
+                    <Item Value="PlanFinishDate"/>
+                    <Item Value="ActStartDate"/>
+                    <Item Value="ActFinishDate"/>
+                    <Item Value="StudyId"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <attributeValues IterBinding="ProjectViewIterator" id="IsDeviceProject">
+            <AttrNames>
+                <Item Value="IsDeviceProject"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="ProjectDeviceTypeCode">
+            <AttrNames>
+                <Item Value="ProjectDeviceTypeCode"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="BpiNo">
+            <AttrNames>
+                <Item Value="BpiNo"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="DetailsModality">
+            <AttrNames>
+                <Item Value="DetailsModality"/>
+            </AttrNames>
+        </attributeValues>
+        <tree IterBinding="ProjectDeviceViewIterator" id="ProjectDeviceView" ChangeEventPolicy="ppr">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.ProjectDeviceView" Name="ProjectDeviceView0">
+                <AttrNames>
+                    <Item Value="RelatedProjectId"/>
+                    <Item Value="PrjName"/>
+                    <Item Value="PrjCode"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <attributeValues IterBinding="ProjectViewIterator" id="RegulatoryCode">
+            <AttrNames>
+                <Item Value="RegulatoryCode"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProjectViewIterator" id="RegulatoryOther">
+            <AttrNames>
+                <Item Value="RegulatoryOther"/>
+            </AttrNames>
+        </attributeValues>
+        <tree IterBinding="AllDevProjectViewIterator" id="AllDevProjectView">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.ProjectView" Name="AllDevProjectView0">
+                <AttrNames>
+                    <Item Value="Id"/>
+                    <Item Value="Name"/>
+                    <Item Value="Code"/>
+                    <Item Value="IsActive"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <attributeValues IterBinding="ProgramTopCurrentViewIterator" id="TopCurrentVersion">
+          <AttrNames>
+            <Item Value="Version"/>
+          </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProgramTopCurrentViewIterator" id="TopCurrentName">
+          <AttrNames>
+            <Item Value="Name"/>
+          </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProgramTopCurrentViewIterator" id="TopCurrentApprovalDate">
+          <AttrNames>
+            <Item Value="ApprovalDate"/>
+          </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProgramTopCurrentViewIterator" id="TopCurrentDescription">
+          <AttrNames>
+            <Item Value="Description"/>
+          </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProgramTopCurrentViewIterator" id="TopCurrentCreateDate">
+          <AttrNames>
+            <Item Value="CreateDate"/>
+          </AttrNames>
+        </attributeValues>
+        <tree IterBinding="ProgramTopVersionCategoryViewIterator" id="ProgramTopVersionCategoryView">
+          <nodeDefinition DefName="com.bayer.ipms.model.views.ProgramTopVersionCategoryView"
+                          Name="ProgramTopVersionCategoryView0">
+            <AttrNames>
+              <Item Value="CategoryCode"/>
+              <Item Value="Name"/>
+              <Item Value="IsActive"/>
+              <Item Value="VersionName"/>
+              <Item Value="VersionId"/>
+            </AttrNames>
+            <Accessors>
+              <Item Value="ProgramTopVersionSubCategoryView"/>
+            </Accessors>
+          </nodeDefinition>
+          <nodeDefinition DefName="com.bayer.ipms.model.views.ProgramTopVersionSubCategoryView"
+                          Name="ProgramTopVersionCategoryView1">
+            <AttrNames>
+              <Item Value="SubcategoryCode"/>
+              <Item Value="Name"/>
+              <Item Value="IsActive"/>
+            </AttrNames>
+            <Accessors>
+              <Item Value="ProgramTopValuesView"/>
+            </Accessors>
+          </nodeDefinition>
+          <nodeDefinition DefName="com.bayer.ipms.model.views.ProgramTopValuesView" Name="ProgramTopVersionCategoryView2">
+            <AttrNames>
+              <Item Value="Indication1"/>
+              <Item Value="Indication2"/>
+              <Item Value="Indication3"/>
+              <Item Value="Indication4"/>
+              <Item Value="Indication5"/>
+              <Item Value="Indication6"/>
+              <Item Value="Indication7"/>
+              <Item Value="Indication8"/>
+            </AttrNames>
+          </nodeDefinition>
+        </tree>
+        <tree IterBinding="ProgramTopNonIndVersionCategoryViewIterator" id="ProgramTopNonIndVersionCategoryView">
+          <nodeDefinition DefName="com.bayer.ipms.model.views.ProgramTopVersionCategoryView"
+                          Name="ProgramTopNonIndVersionCategoryView0">
+            <AttrNames>
+              <Item Value="VersionId"/>
+              <Item Value="Name"/>
+              <Item Value="IsActive"/>
+            </AttrNames>
+            <Accessors>
+              <Item Value="ProgramTopVersionSubCategoryView"/>
+            </Accessors>
+          </nodeDefinition>
+          <nodeDefinition DefName="com.bayer.ipms.model.views.ProgramTopVersionSubCategoryView"
+                          Name="ProgramTopNonIndVersionCategoryView1">
+            <AttrNames>
+              <Item Value="VersionId"/>
+              <Item Value="Name"/>
+              <Item Value="IsActive"/>
+            </AttrNames>
+            <Accessors>
+              <Item Value="ProgramTopValuesView"/>
+            </Accessors>
+          </nodeDefinition>
+          <nodeDefinition DefName="com.bayer.ipms.model.views.ProgramTopValuesView"
+                          Name="ProgramTopNonIndVersionCategoryView2">
+            <AttrNames>
+              <Item Value="Id"/>
+              <Item Value="Indication1"/>
+            </AttrNames>
+          </nodeDefinition>
+        </tree>
+       <methodAction DataControl="PrivateAppModuleDataControl" id="programMenuChangedEventConsumer"
+                      InstanceName="${pageFlowScope.projectViewBean}" MethodName="programMenuChangedEventConsumer">
+            <NamedData NDName="payload" NDType="java.lang.String" NDValue="paramVal"/>
+        </methodAction>
+        
+  </bindings>
+   <eventMap xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="programMenuChangedEvent">
+            <producer region="*">
+                <consumer region="" handler="programMenuChangedEventConsumer" handleCondition="">
+                    <parameters>
+                        <parameter name="paramVal" value="${data.payLoad}"/>
+                    </parameters>
+                </consumer>
+            </producer>
+        </event>
+    </eventMap>
+</pageDefinition>

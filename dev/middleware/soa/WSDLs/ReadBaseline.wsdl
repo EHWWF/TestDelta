@@ -1,0 +1,42 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
+<wsdl:definitions
+     name="ReadBaseline"
+     targetNamespace="http://xmlns.bayer.com/ipms/soa"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+     xmlns:client="http://xmlns.bayer.com/ipms/soa"
+     xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+     xmlns:ns1="http://xmlns.bayer.com/ipms/cache"
+    >
+    <plnk:partnerLinkType name="ReadBaseline">
+        <plnk:role name="ReadBaselineProvider" portType="client:ReadBaseline"/>
+        <plnk:role name="ReadBaselineRequester" portType="client:ReadBaselineCallback"/>
+    </plnk:partnerLinkType>
+    <wsdl:types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:client="http://xmlns.bayer.com/ipms/soa" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+             xmlns:ns1="http://xmlns.bayer.com/ipms/cache">
+            <import namespace="http://xmlns.bayer.com/ipms/soa" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/soa/soa.xsd"/>
+        </schema>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:client="http://xmlns.bayer.com/ipms/soa" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+             xmlns:ns1="http://xmlns.bayer.com/ipms/cache">
+            <xsd:import namespace="http://xmlns.bayer.com/ipms/cache" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/cache/cache.xsd"/>
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:message name="ReadBaselineRequestMessage">
+        <wsdl:part name="payload" element="client:read"/>
+    </wsdl:message>
+    <wsdl:message name="ReadBaselineResponseMessage">
+        <wsdl:part name="payload" element="client:response"/>
+    </wsdl:message>
+    <wsdl:portType name="ReadBaseline">
+        <wsdl:operation name="process">
+            <wsdl:input message="client:ReadBaselineRequestMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:portType name="ReadBaselineCallback">
+        <wsdl:operation name="processResponse">
+            <wsdl:input message="client:ReadBaselineResponseMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+</wsdl:definitions>

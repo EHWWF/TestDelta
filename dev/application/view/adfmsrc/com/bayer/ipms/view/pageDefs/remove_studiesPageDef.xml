@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.1.3.2.1" id="remove_studiesPageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="ProgramAppModule.StudyRemoveView" DataControl="PrivateAppModuleDataControl" RangeSize="25"
+              id="StudyRemoveViewIterator"/>
+    <iterator id="ProjectViewIterator" Binds="ProgramAppModule.ProjectView" DataControl="PrivateAppModuleDataControl"
+              RangeSize="25"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="StudyRemoveViewIterator" id="StudyRemoveView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.StudyView" Name="StudyRemoveView0">
+        <AttrNames>
+          <Item Value="IsDelete"/>
+          <Item Value="Id"/>
+          <Item Value="Name"/>
+          <Item Value="Phase"/>
+          <Item Value="StudyModusName"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+  </bindings>
+</pageDefinition>

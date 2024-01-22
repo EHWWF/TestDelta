@@ -1,0 +1,375 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <af:componentDef>
+        <c:set var="bundle" value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+        <af:subform id="prjgoal">
+            <af:resource type="javascript">
+              function onGoalsTabClick(evt) {
+                  var source = evt.getSource();
+                  var delButton = AdfPage.PAGE.findComponentByAbsoluteId('tmpl:region:1:page:prgGoal:prjgoal:prggoalremoveid');
+                  if (delButton != null) {
+                      AdfCustomEvent.queue(source, "onGoalsTabClick", 
+                      {
+                      },
+                      true);
+                  }
+              }
+ 
+              AdfActionEvent.prototype.isValidationNeeded = function () {
+                  return !this.getSource().getProperty("superImmediate");
+              }
+
+              function catchActionEvent(evt) {
+                  AdfCustomEvent.queue(evt.getSource(), 'customButtonAction', null, true);
+                  evt.cancel();
+              }
+            </af:resource>
+            <af:panelStretchLayout id="content" styleClass="AFStretchWidth" topHeight="auto" bottomHeight="0px">
+                <f:facet name="top">
+                    <af:group id="popup">
+                        <af:popup id="popDeletePrjGoal" contentDelivery="lazyUncached"
+                                  rendered="#{rolesBean.goalsEditDev }">
+                            <af:dialog id="dlgDeletePrjGoal" title="#{bundle.projectGoalDelete}"
+                                       dialogListener="#{pageFlowScope.programViewBean.onGoalDelete}"
+                                       contentWidth="500">
+                                <af:message message="#{bundle.projectGoalDeleteWarning}" messageType="warning"
+                                            id="dc_m2"/>
+                            </af:dialog>
+                        </af:popup>
+                        <af:panelBox showDisclosure="false" type="flow" id="summary" helpTopicId="HELP_PROGRAM_GOALS">
+                            <af:panelFormLayout id="pfrm1" maxColumns="2" rows="3" fieldWidth="100%">
+                                <af:panelLabelAndMessage label="#{bindings.GoalTrackYear.hints.label}" id="dc_plam1">
+                                    <af:outputFormatted value="#{bindings.GoalTrackYear.inputValue}" id="dc_of1"/>
+                                </af:panelLabelAndMessage>
+                            </af:panelFormLayout>
+                        </af:panelBox>
+                    </af:group>
+                </f:facet>
+                <f:facet name="center">
+                    <af:panelBox text="#{bundle.projectGoal}" showDisclosure="false" type="stretch" id="goaltracking"
+                                 styleClass="AFStretchWidth" binding="#{pageFlowScope.programViewBean.programGoalTable}">
+                        <af:panelStretchLayout topHeight="auto" bottomHeight="0" styleClass="AFStretchWidth"
+                                               id="pcolGoa">
+                            <f:facet name="top">
+                                <af:query id="qryPGoal1" headerText="#{bundle.globalFilter}" disclosed="true"
+                                          value="#{bindings.ProgramGoalsQuery.queryDescriptor}"
+                                          model="#{bindings.ProgramGoalsQuery.queryModel}"
+                                          queryListener="#{bindings.ProgramGoalsQuery.processQuery}"
+                                          queryOperationListener="#{bindings.ProgramGoalsQuery.processQueryOperation}"
+                                          modeChangeVisible="false" saveQueryMode="hidden"
+                                          searchButtonText="#{bundle.globalFilter}" labelAlignment="start"
+                                          resultComponentId="::pcolPGoal1"/>
+                            </f:facet>
+                            <f:facet name="center">
+                                <af:panelBox id="pcolPGoal1" showDisclosure="false" 
+                                             styleClass="AFStretchWidth AFStretchHeight" type="stretch">
+                                    <f:facet name="toolbar">
+                                        <af:toolbar id="tlbPrgGoal" rendered="#{rolesBean.goalsCreateDev}">
+                                            <af:group id="goaladdid">
+                                                <af:commandToolbarButton id="goalxcreateid" text="#{bundle.globalAdd}"
+                                                                         icon="/images/new.png" useWindow="true"
+                                                                         disabled="#{bindings.IsSyncing.inputValue}"
+                                                                         windowWidth="500"
+                                                                         windowHeight="400"
+                                                                         partialTriggers="goalxcreateid"
+                                                                         returnListener="#{pageFlowScope.programViewBean.onMaintainGoalsReturn}"
+                                                                         action="#{pageFlowScope.programViewBean.gotoAddGoals}">
+                                                </af:commandToolbarButton>
+                                              
+                                                <af:commandToolbarButton id="goalxcreateid2" text="#{bundle.globalAdd}Old"
+                                                                         icon="/images/new.png" visible="false" 
+                                                                         disabled="#{bindings.IsSyncing.inputValue}"
+                                                                         immediate="true"
+                                                                         rendered="#{empty pageFlowScope.programViewBean.editable}"
+                                                                         actionListener="#{pageFlowScope.programViewBean.onGoalCreateFetch}">
+                                                    <f:attribute name="target" value="prjgoal"/>
+                                                </af:commandToolbarButton>
+                                                <af:button id="prggoalremoveid" icon="/images/remove.png"
+                                                           disabled="#{bindings.IsSyncing.inputValue or bindings.ProgramGoals2.currentRow eq null}"
+                                                           rendered="#{empty pageFlowScope.programViewBean.editable and rolesBean.goalsDeleteDev}"
+                                                           immediate="true" text="#{bundle.globalRemove}"
+                                                           clientComponent="true">
+                                                    <af:showPopupBehavior popupId="popDeletePrjGoal"
+                                                                          triggerType="action"/>
+                                                </af:button>
+                                                <af:button rendered="#{empty pageFlowScope.programViewBean.editable and rolesBean.goalsEditDev}"
+                                                           icon="/images/edit.png" immediate="true"
+                                                           text="#{bundle.globalEdit}Old" id="prggoalsedit2" visible="false"
+                                                           disabled="#{bindings.IsSyncing.inputValue or bindings.ProgramGoals2.estimatedRowCount == 0}">
+                                                    <f:attribute name="target" value="prjgoal"/>
+                                                </af:button>
+                                                <af:button rendered="#{empty pageFlowScope.programViewBean.editable and rolesBean.goalsEditDev}"
+                                                           icon="/images/edit.png"  useWindow="true"
+                                                           actionListener="#{pageFlowScope.programViewBean.onEdit}"
+                                                           text="#{bundle.globalEdit}" id="prggoalsedit"
+                                                           windowWidth="500"
+                                                           windowHeight="400"
+                                                           returnListener="#{pageFlowScope.programViewBean.onMaintainGoalsReturn}"
+                                                           action="#{pageFlowScope.programViewBean.gotoEditGoals}"
+                                                           disabled="#{bindings.IsSyncing.inputValue or bindings.ProgramGoals2.estimatedRowCount == 0}">
+                                                </af:button>
+                                                <af:button rendered="#{pageFlowScope.programViewBean.editable eq 'prjgoal'}"
+                                                           icon="/images/commit.png"
+                                                           actionListener="#{pageFlowScope.programViewBean.onGoalCreate}"
+                                                           text="#{bundle.globalOk}" id="prggoalsok"/>
+                                                <af:button rendered="#{pageFlowScope.programViewBean.editable eq 'prjgoal'}"
+                                                           icon="/images/rollback.png"
+                                                           actionListener="#{pageFlowScope.programViewBean.onGoalCreateCancel}"
+                                                           immediate="true" text="#{bundle.globalCancel}"
+                                                           id="prggoalscancel">
+                                                    <af:clientAttribute name="superImmediate" value="#{true}"/>
+                                                    <af:clientListener method="catchActionEvent" type="action"/>
+                                                    <af:serverListener type="customButtonAction"
+                                                                       method="#{pageFlowScope.programViewBean.customButtonActionListener}"/>
+                                                </af:button>
+                                            </af:group>
+                                        </af:toolbar>
+                                    </f:facet>
+                                    <af:table value="#{bindings.ProgramGoals2.collectionModel}" var="row"
+                                              rows="#{bindings.ProgramGoals2.rangeSize}" contentDelivery="immediate"
+                                              emptyText="#{bindings.ProgramGoals2.viewable  ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                                              rowBandingInterval="0" summary=" " 
+                                              fetchSize="#{bindings.ProgramGoals2.rangeSize}" id="tblGoal"
+                                              partialTriggers="::goalxcreateid ::prggoalremoveid"
+                                              rowSelection="single"
+                                              selectedRowKeys="#{bindings.ProgramGoals2.collectionModel.selectedRow}"
+                                              selectionListener="#{bindings.ProgramGoals2.collectionModel.makeCurrent}"
+                                              columnStretching="last">
+                                        <af:column sortProperty="#{bindings.ProgramGoals2.hints.ProjectId.name}"
+                                                   sortable="true"
+                                                   headerText="#{bindings.ProgramGoals2.hints.ProjectId.label}"
+                                                   id="dc_c1" width="150px" rowHeader="true"
+                                                   inlineStyle="text-align:left;">
+                                            <af:selectOneChoice value="#{row.bindings.ProjectId.inputValue}"
+                                                                label="#{row.bindings.ProjectId.label}"
+                                                                required="true"
+                                                                shortDesc="#{bindings.ProgramGoals2.hints.ProjectId.tooltip}"
+                                                                valueChangeListener="#{utilsBean.onValChange}"
+                                                                immediate="true"
+                                                                readOnly="#{ (row.bindings.Id.inputValue ne null and pageFlowScope.programViewBean.insertable eq 'prjgoal') or (pageFlowScope.programViewBean.editable  ne 'prjgoal') or (pageFlowScope.programViewBean.editable eq  'prjgoal' and rolesBean.programRoles[bindings.ProgramViewIterator.currentRow]['GoalsCreateAssignedDev'] and row.Type != 'T' and row.TargetYear lt bindings.GoalTrackYear.inputValue)}"
+                                                                id="dc_soc1">
+                                                <f:selectItems value="#{row.bindings.ProjectId.items}" id="dc_si1"/>
+                                                <f:validator binding="#{row.bindings.ProjectId.validator}"/>
+                                            </af:selectOneChoice>
+                                        </af:column>
+                                        <af:column sortProperty="#{bindings.ProgramGoals2.hints.Goal1.name}"
+                                                   sortable="true"
+                                                   headerText="#{bindings.ProgramGoals2.hints.Goal1.label}" id="dc_c2"
+                                                   width="300px" rowHeader="true" align="left">
+                                            <af:inputText value="#{row.bindings.Goal1.inputValue}"
+                                                          label="#{bindings.ProgramGoals2.hints.Goal1.label}"
+                                                          required="true"
+                                                          columns="#{bindings.ProgramGoals2.hints.Goal1.displayWidth}"
+                                                          maximumLength="#{bindings.ProgramGoals2.hints.Goal1.precision}"
+                                                          readOnly="#{ (row.bindings.Id.inputValue ne null and pageFlowScope.programViewBean.insertable eq 'prjgoal') or (pageFlowScope.programViewBean.editable  ne 'prjgoal') or (pageFlowScope.programViewBean.editable eq  'prjgoal' and rolesBean.programRoles[bindings.ProgramViewIterator.currentRow]['GoalsCreateAssignedDev'] and row.Type != 'T' and row.TargetYear lt bindings.GoalTrackYear.inputValue)}"
+                                                          shortDesc="#{bindings.ProgramGoals2.hints.Goal1.tooltip}"
+                                                          valueChangeListener="#{utilsBean.onValChange}" id="dc_it1"
+                                                          immediate="true">
+                                                <f:validator binding="#{row.bindings.Goal1.validator}"/>
+                                            </af:inputText>
+                                        </af:column>
+                                        <af:column sortProperty="#{bindings.ProgramGoals2.hints.Type.name}"
+                                                   sortable="true"
+                                                   headerText="#{bindings.ProgramGoals2.hints.Type.label}" id="dc_c3">
+                                            <af:selectOneChoice value="#{row.bindings.Type.inputValue}"
+                                                                label="#{row.bindings.Type.label}"
+                                                                required="#{bindings.ProgramGoals2.hints.Type.mandatory}"
+                                                                shortDesc="#{bindings.ProgramGoals2.hints.Type.tooltip}"
+                                                                rendered="#{(empty row.bindings.Id.inputValue and pageFlowScope.programViewBean.insertable eq 'prjgoal')}"
+                                                                id="dc_goaltype"
+                                                                valueChangeListener="#{utilsBean.onValChange}"
+                                                                autoSubmit="true" immediate="true">
+                                                <f:selectItems value="#{row.bindings.Type.items}" id="dc_si3"/>
+                                                <f:validator binding="#{row.bindings.Type.validator}"/>
+                                                <!--f:validator validatorId="ProgramGoalsValidator"/>
+                                                <f:attribute name="goalSetupYear"
+                                                             value="#{bindings.GoalTrackYear.inputValue}"/>
+                                                <f:attribute name="targetDate"
+                                                             value="#{row.bindings.TargetDate.inputValue}"/>
+                                                <f:attribute name="goalType" value="#{row.bindings.Type.inputValue}"/>
+                                                <f:attribute name="isGpm"
+                                                             value="#{securityContext.userInRole['GoalsEditAssignedDev']}"/>
+                                                <f:attribute name="achievedDate"
+                                                             value="#{row.bindings.AchievedDate.inputValue}"/>
+                                                <f:attribute name="revisedDate"
+                                                             value="#{row.bindings.RevisedDate.inputValue}"/>
+                                                <f:attribute name="isEdit"
+                                                             value="#{row.bindings.Id.inputValue ne null}"/-->
+                                            </af:selectOneChoice>
+                                            <af:selectOneChoice value="#{row.bindings.Type.inputValue}"
+                                                                label="#{row.bindings.Type.label}"
+                                                                required="#{bindings.ProgramGoals2.hints.Type.mandatory}"
+                                                                shortDesc="#{bindings.ProgramGoals2.hints.Type.tooltip}"
+                                                                rendered="#{row.bindings.Id.inputValue ne null}"
+                                                                readOnly="true" autoSubmit="true" id="dc_soc3ro">
+                                                <f:selectItems value="#{row.bindings.Type.items}" id="dc_si3ro"/>
+                                            </af:selectOneChoice>
+                                            <af:outputText value="#{row.Type}" visible="false"
+                                                           shortDesc="#{bindings.ProgramGoals2.hints.Type.tooltip}"
+                                                           id="dc_ot1"/>
+                                        </af:column>
+                                        <af:column sortProperty="#{bindings.ProgramGoals2.hints.StudyId.name}"
+                                                   sortable="true"
+                                                   headerText="#{bindings.ProgramGoals2.hints.StudyId.label}"
+                                                   id="dc_c5">
+                                            <af:inputText value="#{row.bindings.StudyId.inputValue}"
+                                                          label="#{bindings.ProgramGoals2.hints.StudyId.label}"
+                                                          required="#{bindings.ProgramGoals2.hints.StudyId.mandatory}"
+                                                          columns="#{bindings.ProgramGoals2.hints.StudyId.displayWidth}"
+                                                          maximumLength="#{bindings.ProgramGoals2.hints.StudyId.precision}"
+                                                          readOnly="#{ (row.bindings.Id.inputValue ne null and pageFlowScope.programViewBean.insertable eq 'prjgoal') or (pageFlowScope.programViewBean.editable  ne 'prjgoal') or (pageFlowScope.programViewBean.editable eq  'prjgoal' and rolesBean.programRoles[bindings.ProgramViewIterator.currentRow]['GoalsCreateAssignedDev'] and row.Type != 'T' and row.TargetYear lt bindings.GoalTrackYear.inputValue)}"
+                                                          shortDesc="#{bindings.ProgramGoals2.hints.StudyId.tooltip}"
+                                                          id="dc_it3">
+                                                <f:validator binding="#{row.bindings.StudyId.validator}"/>
+                                            </af:inputText>
+                                        </af:column>
+                                        <af:column sortProperty="#{bindings.ProgramGoals2.hints.PlanReference.name}"
+                                                   sortable="true"
+                                                   headerText="#{bindings.ProgramGoals2.hints.PlanReference.label}"
+                                                   id="dc_c7">
+                                            <af:inputText value="#{row.bindings.PlanReference.inputValue}"
+                                                          label="#{bindings.ProgramGoals2.hints.PlanReference.label}"
+                                                          required="#{bindings.ProgramGoals2.hints.PlanReference.mandatory}"
+                                                          columns="#{bindings.ProgramGoals2.hints.PlanReference.displayWidth}"
+                                                          maximumLength="#{bindings.ProgramGoals2.hints.PlanReference.precision}"
+                                                          shortDesc="#{bindings.ProgramGoals2.hints.PlanReference.tooltip}"
+                                                          readOnly="#{ (row.bindings.Id.inputValue ne null and pageFlowScope.programViewBean.insertable eq 'prjgoal') or (pageFlowScope.programViewBean.editable  ne 'prjgoal') or (pageFlowScope.programViewBean.editable eq  'prjgoal' and rolesBean.programRoles[bindings.ProgramViewIterator.currentRow]['GoalsCreateAssignedDev'] and row.Type != 'T' and row.TargetYear lt bindings.GoalTrackYear.inputValue)}"
+                                                          id="dc_it4">
+                                                <f:validator binding="#{row.bindings.PlanReference.validator}"/>
+                                            </af:inputText>
+                                        </af:column>
+                                        <af:column sortProperty="#{bindings.ProgramGoals2.hints.PlanReferenceDate.name}"
+                                                   sortable="true"
+                                                   headerText="#{bindings.ProgramGoals2.hints.PlanReferenceDate.label}"
+                                                   id="dc_c8">
+                                            <af:outputText value="#{row.PlanReferenceDate}"
+                                                           shortDesc="#{bindings.ProgramGoals2.hints.PlanReferenceDate.tooltip}"
+                                                           id="dc_ot2"/>
+                                        </af:column>
+                                        <af:column sortProperty="#{bindings.ProgramGoals2.hints.Status.name}"
+                                                   sortable="true"
+                                                   headerText="#{bindings.ProgramGoals2.hints.Status.label}" id="dc_c4">
+                                            <af:selectOneChoice value="#{row.bindings.Status.inputValue}"
+                                                                label="#{row.bindings.Status.label}"
+                                                                required="#{bindings.ProgramGoals2.hints.Status.mandatory}"
+                                                                shortDesc="#{bindings.ProgramGoals2.hints.Status.tooltip}"
+                                                                readOnly="#{(row.bindings.Id.inputValue ne null and pageFlowScope.programViewBean.insertable eq 'prjgoal') or (pageFlowScope.programViewBean.editable  ne 'prjgoal') }"
+                                                                id="dc_soc2">
+                                                <f:selectItems value="#{row.bindings.Status.items}" id="dc_si2"/>
+                                                <f:validator binding="#{row.bindings.Status.validator}"/>
+                                            </af:selectOneChoice>
+                                        </af:column>
+                                        <af:column sortProperty="#{bindings.ProgramGoals2.hints.TargetDate.name}"
+                                                   sortable="true"
+                                                   headerText="#{bindings.ProgramGoals2.hints.TargetDate.label}"
+                                                   id="dc_c10">
+                                            <af:inputDate value="#{row.bindings.TargetDate.inputValue}"
+                                                          label="#{bindings.ProgramGoals2.hints.TargetDate.label}"
+                                                          required="true"
+                                                          columns="#{bindings.ProgramGoals2.hints.TargetDate.displayWidth}"
+                                                          shortDesc="#{bindings.ProgramGoals2.hints.TargetDate.tooltip}"
+                                                          id="dc_targetdate"
+                                                          valueChangeListener="#{utilsBean.onValChange}"
+                                                          autoSubmit="true" immediate="true"
+                                                          readOnly="#{ (row.bindings.Id.inputValue ne null and pageFlowScope.programViewBean.insertable eq 'prjgoal') or (pageFlowScope.programViewBean.editable  ne 'prjgoal') or (pageFlowScope.programViewBean.editable eq  'prjgoal' and rolesBean.programRoles[bindings.ProgramViewIterator.currentRow]['GoalsCreateAssignedDev'] and row.Type != 'T' and row.TargetYear lt bindings.GoalTrackYear.inputValue)}">
+                                                <f:validator validatorId="ProgramGoalsValidator"/>
+                                                <f:attribute name="goalSetupYear"
+                                                             value="#{bindings.GoalTrackYear.inputValue}"/>
+                                                <f:attribute name="goalType" value="#{row.bindings.Type.inputValue}"/>
+                                                <f:attribute name="isGpm"
+                                                             value="#{rolesBean.programRoles[bindings.ProgramViewIterator.currentRow]['GoalsEditAssignedDev']}"/>
+                                                <f:attribute name="achievedDate"
+                                                             value="#{row.bindings.AchievedDate.inputValue}"/>
+                                                <f:attribute name="revisedDate"
+                                                             value="#{row.bindings.RevisedDate.inputValue}"/>
+                                                <f:attribute name="isEdit"
+                                                             value="#{row.bindings.Id.inputValue ne null}"/>
+                                                <af:convertDateTime pattern="#{bindings.ProgramGoals2.hints.TargetDate.format}"/>
+                                            </af:inputDate>
+                                        </af:column>
+                                        <af:column headerText="#{bindings.ProgramGoals2.hints.TargetYear.label}"
+                                                   id="dc_c12" visible="false">
+                                            <af:outputText value="#{row.TargetYear}"
+                                                           shortDesc="#{bindings.ProgramGoals2.hints.TargetYear.tooltip}"
+                                                           id="dc_ot3"/>
+                                        </af:column>
+                                        <af:column sortProperty="#{bindings.ProgramGoals2.hints.AchievedDate.name}"
+                                                   sortable="true"
+                                                   headerText="#{bindings.ProgramGoals2.hints.AchievedDate.label}"
+                                                   id="dc_c6">
+                                            <af:inputDate value="#{row.bindings.AchievedDate.inputValue}"
+                                                          label="#{bindings.ProgramGoals2.hints.AchievedDate.label}"
+                                                          required="#{bindings.ProgramGoals2.hints.AchievedDate.mandatory}"
+                                                          columns="#{bindings.ProgramGoals2.hints.AchievedDate.displayWidth}"
+                                                          shortDesc="#{bindings.ProgramGoals2.hints.AchievedDate.tooltip}"
+                                                          readOnly="#{(row.bindings.Id.inputValue ne null and pageFlowScope.programViewBean.insertable eq 'prjgoal') or (pageFlowScope.programViewBean.editable  ne 'prjgoal')}"
+                                                          id="dc_achievedDate"
+                                                          valueChangeListener="#{utilsBean.onValChange}"
+                                                          autoSubmit="true">
+                                                <f:validator validatorId="ProgramGoalsValidator"/>
+                                                <f:attribute name="goalSetupYear"
+                                                             value="#{bindings.GoalTrackYear.inputValue}"/>
+                                                <f:attribute name="goalType" value="#{row.bindings.Type.inputValue}"/>
+                                                <f:attribute name="isGpm"
+                                                             value="#{rolesBean.programRoles[bindings.ProgramViewIterator.currentRow]['GoalsEditAssignedDev']}"/>
+                                                <f:attribute name="revisedDate"
+                                                             value="#{row.bindings.RevisedDate.inputValue}"/>
+                                                <f:attribute name="targetDate"
+                                                             value="#{row.bindings.TargetDate.inputValue}"/>
+                                                <f:attribute name="isEdit"
+                                                             value="#{row.bindings.Id.inputValue ne null}"/>
+                                                <af:convertDateTime pattern="#{bindings.ProgramGoals2.hints.AchievedDate.format}"/>
+                                            </af:inputDate>
+                                        </af:column>
+                                        <af:column sortProperty="#{bindings.ProgramGoals2.hints.RevisedDate.name}"
+                                                   sortable="true"
+                                                   headerText="#{bindings.ProgramGoals2.hints.RevisedDate.label}"
+                                                   id="dc_c9">
+                                            <af:inputDate value="#{row.bindings.RevisedDate.inputValue}"
+                                                          label="#{bindings.ProgramGoals2.hints.RevisedDate.label}"
+                                                          required="#{bindings.ProgramGoals2.hints.RevisedDate.mandatory}"
+                                                          columns="#{bindings.ProgramGoals2.hints.RevisedDate.displayWidth}"
+                                                          readOnly="#{(row.bindings.Id.inputValue ne null and pageFlowScope.programViewBean.insertable eq 'prjgoal') or (pageFlowScope.programViewBean.editable  ne 'prjgoal')}"
+                                                          shortDesc="#{bindings.ProgramGoals2.hints.RevisedDate.tooltip}"
+                                                          id="dc_revisedDate"
+                                                          valueChangeListener="#{utilsBean.onValChange}"
+                                                          autoSubmit="true">
+                                                <f:validator validatorId="ProgramGoalsValidator"/>
+                                                <f:attribute name="goalSetupYear"
+                                                             value="#{bindings.GoalTrackYear.inputValue}"/>
+                                                <f:attribute name="goalType" value="#{row.bindings.Type.inputValue}"/>
+                                                <f:attribute name="isGpm"
+                                                             value="#{rolesBean.programRoles[bindings.ProgramViewIterator.currentRow]['GoalsEditAssignedDev']}"/>
+                                                <f:attribute name="achievedDate"
+                                                             value="#{row.bindings.AchievedDate.inputValue}"/>
+                                                <f:attribute name="targetDate"
+                                                             value="#{row.bindings.TargetDate.inputValue}"/>
+                                                <f:attribute name="isEdit"
+                                                             value="#{row.bindings.Id.inputValue ne null}"/>
+                                                <af:convertDateTime pattern="#{bindings.ProgramGoals2.hints.RevisedDate.format}"/>
+                                            </af:inputDate>
+                                        </af:column>
+                                        <af:column headerText="#{bindings.ProgramGoals2.hints.Comments.label}"
+                                                   width="100px" id="dc_c11">
+                                            <af:inputText value="#{row.bindings.Comments.inputValue}"
+                                                          label="#{bindings.ProgramGoals2.hints.Comments.label}"
+                                                          required="#{bindings.ProgramGoals2.hints.Comments.mandatory}"
+                                                          columns="#{bindings.ProgramGoals2.hints.Comments.displayWidth}"
+                                                          maximumLength="#{bindings.ProgramGoals2.hints.Comments.precision}"
+                                                          readOnly="#{row.bindings.Id.inputValue ne null and pageFlowScope.programViewBean.insertable eq 'prjgoal' or pageFlowScope.programViewBean.editable  ne 'prjgoal'}"
+                                                          shortDesc="#{bindings.ProgramGoals2.hints.Comments.tooltip}"
+                                                          id="dc_it2">
+                                                <f:validator binding="#{row.bindings.Comments.validator}"/>
+                                            </af:inputText>
+                                        </af:column>
+                                    </af:table>
+                                </af:panelBox>
+                            </f:facet>
+                        </af:panelStretchLayout>
+                    </af:panelBox>
+                </f:facet>
+            </af:panelStretchLayout>
+        </af:subform>
+    </af:componentDef>
+</jsp:root>        

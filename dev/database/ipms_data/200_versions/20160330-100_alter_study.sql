@@ -1,0 +1,1 @@
+alter table study modify(IS_TIMELINE_AUTO_IMPORT number(1,0) default 1);

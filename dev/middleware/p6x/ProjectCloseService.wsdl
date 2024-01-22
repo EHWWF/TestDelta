@@ -1,0 +1,27 @@
+<?binding.jca ProjectCloseService_db.jca?>
+<wsdl:definitions name="ProjectCloseService" targetNamespace="http://xmlns.bayer.com/ipms/p6" xmlns:tns="http://xmlns.bayer.com/ipms/p6" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:plt="http://schemas.xmlsoap.org/ws/2003/05/partner-link/">
+    <plt:partnerLinkType name="ProjectCloseService_plt">
+        <plt:role name="ProjectCloseService_role">
+            <plt:portType name="tns:ProjectCloseService_ptt"/>
+        </plt:role>
+    </plt:partnerLinkType>
+    <wsdl:types>
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+            <xs:element name="ProjectCloseServiceInput" type="ProjectCloseServiceInput"/>
+            <xs:complexType name="ProjectCloseServiceInput">
+                <xs:sequence>
+                    <xs:element name="pk_id" type="xs:decimal" nillable="false"/>
+                    <xs:element name="proj_id" type="xs:decimal" nillable="false"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="ProjectCloseServiceInput_msg">
+        <wsdl:part name="ProjectCloseServiceInput_msg" element="ProjectCloseServiceInput"/>
+    </wsdl:message>
+    <wsdl:portType name="ProjectCloseService_ptt">
+        <wsdl:operation name="ProjectCloseService">
+            <wsdl:input message="tns:ProjectCloseServiceInput_msg"/>
+        </wsdl:operation>
+    </wsdl:portType>
+</wsdl:definitions>

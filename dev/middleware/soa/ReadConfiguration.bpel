@@ -1,0 +1,835 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer
+
+  Created: Fri Jan 25 12:30:11 EET 2013
+  Author:  gytis
+  Type: BPEL 1.1 Process
+  Purpose: Synchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="ReadConfiguration"
+               targetNamespace="http://xmlns.bayer.com/ipms/soa"
+               xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+               xmlns:client="http://xmlns.bayer.com/ipms/soa"
+               xmlns:ora="http://schemas.oracle.com/xpath/extension"
+               xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:ns1="http://xmlns.oracle.com/Primavera/P6/WS/ProjectCodeType/V1"
+         xmlns:ns2="http://xmlns.oracle.com/Primavera/P6/WS/UDFType/V1"
+         xmlns:bpel2="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:ns31="http://xmlns.bayer.com/ipms"
+         xmlns:ns3="http://xmlns.bayer.com/ipms/soa"
+         xmlns:ns4="http://xmlns.oracle.com/Primavera/P6/WS/ActivityCodeType/V1"
+         xmlns:ns5="http://xmlns.oracle.com/Primavera/P6/WS/ActivityCode/V1"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         xmlns:ns6="http://xmlns.oracle.com/Primavera/P6/WS/EPS/V1"
+         xmlns:ns7="http://xmlns.oracle.com/Primavera/P6/WS/OBS/V1"
+         xmlns:ns8="http://xmlns.oracle.com/Primavera/P6/WS/GlobalProfile/V1"
+         xmlns:ns9="http://xmlns.oracle.com/Primavera/P6/WS/ProjectProfile/V1"
+         xmlns:ns10="http://xmlns.oracle.com/Primavera/P6/WS/Role/V1"
+         xmlns:ns11="http://xmlns.bayer.com/ipms/cache/ConfigurationFile"
+         xmlns:ns12="http://xmlns.bayer.com/ipms/cache" xmlns:ess="http://xmlns.oracle.com/scheduler"
+         xmlns:ns13="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2"
+         xmlns:ns14="http://xmlns.oracle.com/Primavera/P6/WS/BaselineType/V1">
+
+    <!--
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        PARTNERLINKS
+        List of services participating in this BPEL process
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+  <bpelx:annotation>
+    <bpelx:analysis>
+      <bpelx:property name="wsdlFile">
+        <![CDATA[ReadConfiguration.wsdl]]>
+      </bpelx:property>
+    </bpelx:analysis>
+  </bpelx:annotation>
+  <partnerLinks>
+    <!--
+      The 'client' role represents the requester of this service. It is
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+    <partnerLink name="ReadConfigurationService" partnerLinkType="client:ReadConfiguration" myRole="ReadConfigurationProvider"
+                 partnerRole="ReadConfigurationRequester"/>
+    <partnerLink name="UDFTypeService" partnerLinkType="ns2:UDFTypeService"
+                 partnerRole="UDFTypePortType"/>
+    <partnerLink name="ActivityCodeTypeService"
+                 partnerLinkType="ns4:ActivityCodeTypeService"
+                 partnerRole="ActivityCodeTypePortType"/>
+    <partnerLink name="EPSService" partnerLinkType="ns6:EPSService"
+                 partnerRole="EPSPortType"/>
+    <partnerLink name="OBSService" partnerLinkType="ns7:OBSService"
+                 partnerRole="OBSPortType"/>
+    <partnerLink name="GlobalProfileService"
+                 partnerLinkType="ns8:GlobalProfileService"
+                 partnerRole="GlobalProfilePortType"/>
+    <partnerLink name="ProjectProfileService"
+                 partnerLinkType="ns9:ProjectProfileService"
+                 partnerRole="ProjectProfilePortType"/>
+    <partnerLink name="RoleService" partnerLinkType="ns10:RoleService"
+                 partnerRole="RolePortType"/>
+    <partnerLink name="CacheService" partnerLinkType="ns12:CacheService"
+                 partnerRole="CachePortType"/>
+    <partnerLink name="ProjectService" partnerLinkType="ns13:ProjectService" partnerRole="ProjectPortType"/>
+    <partnerLink name="BaselineTypeService" partnerLinkType="ns14:BaselineTypeService"
+                 partnerRole="BaselineTypePortType"/>
+  </partnerLinks>
+  <!--
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      VARIABLES
+      List of messages and XML documents used within this BPEL process
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <variables>
+    <!-- Reference to the message passed as input during initiation -->
+    <variable name="inputVariable_empty" messageType="client:ReadConfigurationRequestMessage"/>
+    <variable name="inputVariable_read" messageType="client:ReadConfigurationReadRequest"/>
+
+    <!-- Reference to the message that will be returned to the requester-->
+    <variable name="outputVariable" messageType="client:ReadConfigurationResponseMessage"/>
+    <variable name="outputVariable_read" messageType="client:ReadConfigurationFullResponse"/>
+	
+	
+    <variable name="ReadUDFTypesIn" messageType="ns2:ReadUDFTypes"/>
+    <variable name="ReadUDFTypesOut" messageType="ns2:ReadUDFTypesResponse"/>
+    <variable name="ReadActivityCodeTypesIn"
+              messageType="ns4:ReadActivityCodeTypes"/>
+    <variable name="ReadActivityCodeTypesOut"
+              messageType="ns4:ReadActivityCodeTypesResponse"/>
+    <variable name="ReadBHCIn" messageType="ns6:ReadEPS"/>
+    <variable name="ReadBHCOut" messageType="ns6:ReadEPSResponse"/>
+    <variable name="ReadOBSin" messageType="ns7:ReadOBS"/>
+    <variable name="ReadOBSout" messageType="ns7:ReadOBSResponse"/>
+    <variable name="ReadProfilesIn" messageType="ns8:ReadGlobalProfiles"/>
+    <variable name="ReadProfilesOut"
+              messageType="ns8:ReadGlobalProfilesResponse"/>
+    <variable name="ReadPrjProfilein" messageType="ns9:ReadProjectProfiles"/>
+    <variable name="ReadPrjProfileOut"
+              messageType="ns9:ReadProjectProfilesResponse"/>
+    <variable name="ReadRolesIn" messageType="ns10:ReadRoles"/>
+    <variable name="ReadRolesOut" messageType="ns10:ReadRolesResponse"/>
+    <variable name="CreateCacheIn" messageType="ns12:CacheRequestMessage"/>
+    <variable name="rowNumber" type="xsd:integer"/>
+    <variable name="ReadMntEpsIdIn" messageType="ns6:ReadEPS"/>
+    <variable name="ReadMntEpsIdOut" messageType="ns6:ReadEPSResponse"/>
+    <variable name="operation" type="xsd:string"/>
+    <variable name="ReadPrjTpl_In" messageType="ns13:ReadProjects"/>
+    <variable name="ReadPrjTpl_Out" messageType="ns13:ReadProjectsResponse"/>
+    <variable name="ReadPrjTplEPS_Inp" messageType="ns6:ReadEPS"/>
+    <variable name="ReadPrjTplEPS" messageType="ns6:ReadEPSResponse"/>
+    <variable name="BaselineTypeServiceIn" messageType="ns14:ReadBaselineTypes"/>
+    <variable name="BaselineTypeServiceOut" messageType="ns14:ReadBaselineTypesResponse"/>
+  </variables>
+  <faultHandlers>
+    <catchAll>
+      <scope name="mainFaultCatchingScope" variableAccessSerializable="no">
+        <variables>
+          <variable name="faultVariable"
+                    messageType="client:ReadConfigurationErrorMessage"/>
+        </variables>
+        <sequence name="Sequence1"><switch name="Switch1"
+                                                                          xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/">
+      <case condition="bpws:getVariableData('operation') = 'process empty request'">
+         <bpelx:annotation xmlns:bpelx="http://schemas.oracle.com/bpel/extension">
+            <bpelx:general>
+               <bpelx:property name="userLabel">
+                  
+               <![CDATA[when empty request]]></bpelx:property>
+            </bpelx:general>
+         </bpelx:annotation>
+         
+      <sequence>
+                <assign name="assignFaultOutput">
+                  <copy>
+                    <from expression="ora:getFaultAsString()"/>
+                    <to variable="faultVariable" part="payload"
+                        query="/ns31:error/ns31:description"/>
+                  </copy>
+                  <copy>
+                    <from expression="ora:getFaultName()"/>
+                    <to variable="faultVariable" part="payload"
+                        query="/ns31:error/ns31:code"/>
+                  </copy>
+                </assign>
+                <invoke name="callback_whatever"
+                        inputVariable="outputVariable"
+                        partnerLink="ReadConfigurationService"
+                        portType="client:ReadConfigurationCallback"
+                        operation="callback" bpelx:invokeAsDetail="no"/>
+              </sequence></case>
+      <otherwise>
+         <sequence name="Sequence2">
+            <assign name="assign_response"
+                             xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/">
+      
+      
+   <bpelx:remove>
+                    <bpelx:target variable="outputVariable_read" part="payload"
+                                  query="/client:response/client:complete"/>
+                  </bpelx:remove><copy>
+                    <from expression="ora:getFaultName()"/>
+                    <to variable="outputVariable_read" part="payload"
+                        query="/client:response/ns31:error/ns31:code"/>
+                  </copy><copy>
+                    <from expression="ora:getFaultAsString()"/>
+                    <to variable="outputVariable_read" part="payload"
+                        query="/client:response/ns31:error/ns31:description"/>
+                  </copy></assign>
+            <invoke name="callback" inputVariable="outputVariable_read"
+                    partnerLink="ReadConfigurationService"
+                    portType="client:ReadConfigurationCallback"
+                    operation="callbackRead"
+                    xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+                    xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+                    bpelx:invokeAsDetail="no"/>
+         </sequence>
+      </otherwise>
+   </switch></sequence>
+      </scope>
+    </catchAll>
+  </faultHandlers>
+  <!--
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC
+     Set of activities coordinating the flow of messages across the
+     services integrated within this business process
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <sequence name="main">
+
+    <!-- Receive input from requestor. (Note: This maps to operation defined in ReadConfiguration.wsdl) -->
+    <pick name="pickRequest" createInstance="yes">
+      <onMessage partnerLink="ReadConfigurationService"
+                 portType="client:ReadConfiguration" operation="processRead"
+                 variable="inputVariable_read">
+        <assign name="AssignOp">
+          <copy>
+            <from expression="'process read request'"/>
+            <to variable="operation"/>
+          </copy>
+        </assign>
+      </onMessage>
+      <onMessage partnerLink="ReadConfigurationService"
+                 portType="client:ReadConfiguration" operation="process"
+                 variable="inputVariable_empty">
+        <assign name="AssignOp">
+          <copy>
+            <from expression="'process empty request'"/>
+            <to variable="operation"/>
+          </copy>
+        </assign>
+      </onMessage>
+    </pick>
+    <scope name="ScopeCache" variableAccessSerializable="no">
+      <variables>
+        <variable name="VariableCache" element="ns12:cache"/>
+      </variables>
+      <faultHandlers>
+        <catchAll>
+          <empty name="EmptyJustSkipErrors"/>
+        </catchAll>
+      </faultHandlers>
+      <sequence name="SequenceTakeFromCache">
+        <assign name="AssignFromCache">
+          <bpelx:annotation>
+            <bpelx:documentation>
+              <![CDATA[Note: need to be done with double assigmen, because readFile is not able to take concrete NODE, even if the node is passed via 3th parameter.]]>
+            </bpelx:documentation>
+          </bpelx:annotation>
+          <copy>
+            <from expression="'0'"/>
+            <to variable="rowNumber"/>
+          </copy>
+          <copy bpelx:ignoreMissingFromData="yes"
+                bpelx:insertMissingToData="yes">
+            <from expression='ora:readFile("file:///opt/oracle/soa12.2.1/file_adapter/ipms/config.cache", "oramds:/apps/com/bayer/xmlns/ipms/cache/cache.xsd")'/>
+            <to variable="VariableCache" query="/ns12:cache"/>
+          </copy>
+          <copy bpelx:ignoreMissingFromData="yes"
+                bpelx:insertMissingToData="yes">
+            <from variable="VariableCache" query="/ns12:cache/*"/>
+            <to variable="outputVariable" part="payload"/>
+          </copy>
+        </assign>
+        <empty name="EmptyBeforeSkipping"/>
+      </sequence>
+    </scope>
+    <sequence name="SequenceP6OrSkip"
+              bpelx:skipCondition="bpws:getVariableData('outputVariable','payload','/client:config/client:program/client:epsId')!=''">
+      <flow name="MainFlow">
+        <sequence name="BaselineType">
+          <assign name="AssignBaselineType">
+            <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+              <from expression='"Name"'/>
+              <to variable="BaselineTypeServiceIn" part="params" query="/ns14:ReadBaselineTypes/ns14:Field[1]"/>
+            </copy>
+            <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+              <from expression='"SequenceNumber"'/>
+              <to variable="BaselineTypeServiceIn" part="params" query="/ns14:ReadBaselineTypes/ns14:Field[2]"/>
+            </copy>
+          </assign>
+          <invoke name="BaselineTypeService" inputVariable="BaselineTypeServiceIn"
+                  outputVariable="BaselineTypeServiceOut" partnerLink="BaselineTypeService"
+                  portType="ns14:BaselineTypePortType" operation="ReadBaselineTypes"/>
+          <scope name="BaselineTypes">
+            <variables>
+              <variable name="loopCount" type="xsd:integer"/>
+            </variables>
+            <sequence name="SKIP-AssignBaselineTypes" bpelx:skipCondition="bpws:getVariableData('loopCount')=0">
+              <assign name="AssignLoopCount">
+                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                  <from expression="count(bpws:getVariableData('BaselineTypeServiceOut','result','/ns14:ReadBaselineTypesResponse/ns14:BaselineType'))"/>
+                  <to variable="loopCount"/>
+                </copy>
+              </assign>
+              <while name="WhileLoopPlus" condition="bpws:getVariableData('loopCount')>0">
+                <assign name="AssignOutputBaselineType">
+                  <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                    <from variable="BaselineTypeServiceOut" part="result"
+                          query="/ns14:ReadBaselineTypesResponse/ns14:BaselineType[bpws:getVariableData('loopCount')]/ns14:ObjectId"/>
+                    <to variable="outputVariable" part="payload"
+                        query="/client:config/client:baseline/client:baselineTypes/client:baselineType[bpws:getVariableData('loopCount')]/@id"/>
+                  </copy>
+                  <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                    <from variable="BaselineTypeServiceOut" part="result"
+                          query="/ns14:ReadBaselineTypesResponse/ns14:BaselineType[bpws:getVariableData('loopCount')]/ns14:SequenceNumber"/>
+                    <to variable="outputVariable" part="payload"
+                        query="/client:config/client:baseline/client:baselineTypes/client:baselineType[bpws:getVariableData('loopCount')]/client:sequenceNumber"/>
+                  </copy>
+                  <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                    <from variable="BaselineTypeServiceOut" part="result"
+                          query="/ns14:ReadBaselineTypesResponse/ns14:BaselineType[bpws:getVariableData('loopCount')]/ns14:Name"/>
+                    <to variable="outputVariable" part="payload"
+                        query="/client:config/client:baseline/client:baselineTypes/client:baselineType[bpws:getVariableData('loopCount')]/client:name"/>
+                  </copy>
+                  <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                    <from expression="(bpws:getVariableData('loopCount'))-1"/>
+                    <to variable="loopCount"/>
+                  </copy>
+                </assign>
+              </while>
+            </sequence>
+          </scope>
+        </sequence>
+        <sequence name="ProjectTemplates">
+          <assign name="ReadPrjTplEPS_In">
+            <copy>
+              <from expression="&quot;Id='TMPL-STUD'&quot;"/>
+              <to variable="ReadPrjTplEPS_Inp" part="params" query="/ns6:ReadEPS/ns6:Filter"/>
+            </copy>
+            <copy>
+              <from expression="'Name'"/>
+              <to variable="ReadPrjTplEPS_Inp" part="params" query="/ns6:ReadEPS/ns6:Field"/>
+            </copy>
+          </assign>
+          <invoke name="ReadPrjTplEPS" inputVariable="ReadPrjTplEPS_Inp" outputVariable="ReadPrjTplEPS"
+                  partnerLink="EPSService" portType="ns6:EPSPortType" operation="ReadEPS"/>
+          <assign name="ReadPrjTpl_In">
+            <copy>
+              <from expression="'Name'"/>
+              <to variable="ReadPrjTpl_In" part="params" query="/ns13:ReadProjects/ns13:Field"/>
+            </copy>
+            <copy bpelx:insertMissingToData="yes">
+              <from expression="'WBSObjectId'"/>
+              <to variable="ReadPrjTpl_In" part="params" query="/ns13:ReadProjects/ns13:Field[2]"/>
+            </copy>
+            <copy>
+              <from expression="concat(' ParentEPSObjectId=', bpws:getVariableData('ReadPrjTplEPS','result','/ns6:ReadEPSResponse/ns6:EPS/ns6:ObjectId'))"/>
+              <to variable="ReadPrjTpl_In" part="params" query="/ns13:ReadProjects/ns13:Filter"/>
+            </copy>
+          </assign>
+          <invoke name="ReadTplProjects" inputVariable="ReadPrjTpl_In"
+                  outputVariable="ReadPrjTpl_Out" partnerLink="ProjectService"
+                  portType="ns13:ProjectPortType" operation="ReadProjects"/><scope name="StudyTemplateList" variableAccessSerializable="no"
+                          xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/">
+      <variables>
+         <variable name="loopCount" type="xsd:integer"/>
+      </variables>
+      <sequence name="CreateProfileList">
+         <assign name="AssignLoopCount">
+            
+         <copy>
+               <from expression="1"/>
+               <to variable="loopCount"/>
+            </copy></assign>
+         <while name="WhileCounter"
+                condition="bpws:getVariableData('loopCount') &lt;= count(bpws:getVariableData('ReadPrjTpl_Out','result','/ns13:ReadProjectsResponse/ns13:Project'))">
+            <assign name="AssignRow">
+               
+               
+               
+               
+               
+            <copy bpelx:insertMissingToData="yes" bpelx:ignoreMissingFromData="yes">
+                    <from variable="ReadPrjTpl_Out" part="result"
+                          query="/ns13:ReadProjectsResponse/ns13:Project[bpws:getVariableData('loopCount')]/ns13:WBSObjectId"/>
+                    <to variable="outputVariable" part="payload"
+                        query="/client:config/client:project/client:studyTemplates/client:template[bpws:getVariableData('loopCount')]/@id"/>
+                  </copy><copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                    <from variable="ReadPrjTpl_Out" part="result"
+                          query="/ns13:ReadProjectsResponse/ns13:Project[bpws:getVariableData('loopCount')]/ns13:Name"/>
+                    <to variable="outputVariable" part="payload"
+                        query="/client:config/client:project/client:studyTemplates/client:template[bpws:getVariableData('loopCount')]/client:name"/>
+                  </copy><copy>
+                  <from expression="bpws:getVariableData('loopCount')+1"/>
+                  <to variable="loopCount"/>
+               </copy></assign>
+         </while>
+      </sequence>
+   </scope></sequence>
+        <sequence name="Role">
+          <assign name="AssignReadRoles">
+            <copy>
+              <from expression='"Id"'/>
+              <to variable="ReadRolesIn" part="params"
+                  query="/ns10:ReadRoles/ns10:Field"/>
+            </copy>
+            <copy>
+              <from expression="&quot;Id in ('ACTIVE','INACTIVE')&quot;"/>
+              <to variable="ReadRolesIn" part="params"
+                  query="/ns10:ReadRoles/ns10:Filter"/>
+            </copy>
+          </assign>
+          <invoke name="ReadRoles" bpelx:invokeAsDetail="no"
+                  inputVariable="ReadRolesIn" outputVariable="ReadRolesOut"
+                  partnerLink="RoleService" portType="ns10:RolePortType"
+                  operation="ReadRoles"/>
+        </sequence>
+        <sequence name="PrjProfile">
+          <assign name="AssignReadPrjProfile">
+            <copy>
+              <from expression="'Name'"/>
+              <to variable="ReadPrjProfilein" part="params"
+                  query="/ns9:ReadProjectProfiles/ns9:Field"/>
+            </copy>
+          </assign>
+          <invoke name="ReadPrjProfile" bpelx:invokeAsDetail="no"
+                  inputVariable="ReadPrjProfilein"
+                  outputVariable="ReadPrjProfileOut"
+                  partnerLink="ProjectProfileService"
+                  portType="ns9:ProjectProfilePortType"
+                  operation="ReadProjectProfiles"/>
+          <scope name="CreateProjectProfileList" variableAccessSerializable="no">
+            <variables>
+              <variable name="loopCount" type="xsd:integer"/>
+            </variables>
+            <sequence name="CreateProfileList">
+              <assign name="AssignLoopCount">
+                <copy>
+                  <from expression="count(bpws:getVariableData('ReadPrjProfileOut','result','/ns9:ReadProjectProfilesResponse/ns9:ProjectProfile'))"/>
+                  <to variable="loopCount"/>
+                </copy>
+              </assign>
+              <while name="WhileCounter"
+                     condition="bpws:getVariableData('loopCount')>0">
+                <assign name="AssignRow">
+                  <copy>
+                    <from expression="bpws:getVariableData('rowNumber')+1"/>
+                    <to variable="rowNumber"/>
+                  </copy>
+                  <copy bpelx:ignoreMissingFromData="yes"
+                        bpelx:insertMissingToData="yes">
+                    <from variable="ReadPrjProfileOut" part="result"
+                          query="/ns9:ReadProjectProfilesResponse/ns9:ProjectProfile[bpws:getVariableData('loopCount')]/ns9:ObjectId"/>
+                    <to variable="outputVariable" part="payload"
+                        query="/client:config/client:role/client:profiles/client:profile[bpws:getVariableData('rowNumber')]/@id"/>
+                  </copy>
+                  <copy bpelx:ignoreMissingFromData="yes"
+                        bpelx:insertMissingToData="yes">
+                    <from variable="ReadPrjProfileOut" part="result"
+                          query="/ns9:ReadProjectProfilesResponse/ns9:ProjectProfile[bpws:getVariableData('loopCount')]/ns9:Name"/>
+                    <to variable="outputVariable" part="payload"
+                        query="/client:config/client:role/client:profiles/client:profile[bpws:getVariableData('rowNumber')]/client:name"/>
+                  </copy>
+                  <copy bpelx:ignoreMissingFromData="yes"
+                        bpelx:insertMissingToData="yes">
+                    <from expression="'Project'"/>
+                    <to variable="outputVariable" part="payload"
+                        query="/client:config/client:role/client:profiles/client:profile[bpws:getVariableData('rowNumber')]/client:scope"/>
+                  </copy>
+                  <copy>
+                    <from expression="bpws:getVariableData('loopCount')-1"/>
+                    <to variable="loopCount"/>
+                  </copy>
+                </assign>
+              </while>
+            </sequence>
+          </scope>
+        </sequence>
+        
+        <sequence name="profiles">
+          <assign name="AssignReadProfiles">
+            <copy>
+              <from expression="'Name'"/>
+              <to variable="ReadProfilesIn" part="params"
+                  query="/ns8:ReadGlobalProfiles/ns8:Field"/>
+            </copy>
+          </assign>
+          <invoke name="ReadProfiles" bpelx:invokeAsDetail="no"
+                  inputVariable="ReadProfilesIn"
+                  outputVariable="ReadProfilesOut"
+                  partnerLink="GlobalProfileService"
+                  portType="ns8:GlobalProfilePortType"
+                  operation="ReadGlobalProfiles"/>
+        </sequence>
+        
+        <sequence name="DevMntOBS">
+          <assign name="AssignReadOBSIn">
+            <copy>
+              <from expression="'Name'"/>
+              <to variable="ReadOBSin" part="params"
+                  query="/ns7:ReadOBS/ns7:Field"/>
+            </copy>
+            <copy>
+              <from expression="&quot;Name in ('DEV-RAW','DEV-CUR','DEV-APR','DEV-SND','PRDMNT-RAW','PRDMNT-CUR','PRDMNT-APR')&quot;"/>
+              <to variable="ReadOBSin" part="params"
+                  query="/ns7:ReadOBS/ns7:Filter"/>
+            </copy>
+          </assign>
+          <invoke name="ReadOBS" bpelx:invokeAsDetail="no"
+                  inputVariable="ReadOBSin" outputVariable="ReadOBSout"
+                  partnerLink="OBSService" portType="ns7:OBSPortType"
+                  operation="ReadOBS"/>
+        </sequence>
+        
+        <sequence name="MntProgramEps">
+          <assign name="AssignReadMntEPSId">
+            <copy>
+              <from><v1:ReadEPS xmlns:v1="http://xmlns.oracle.com/Primavera/P6/WS/EPS/V1">
+    <v1:Field>Id</v1:Field>
+    <v1:Filter>Id='PRDMNT'</v1:Filter>
+</v1:ReadEPS></from>
+              <to variable="ReadMntEpsIdIn" part="params" query="/ns6:ReadEPS"/>
+            </copy>
+          </assign>
+          <invoke name="ReadMntEpsId"
+                  inputVariable="ReadMntEpsIdIn"
+                  outputVariable="ReadMntEpsIdOut"
+                  partnerLink="EPSService" portType="ns6:EPSPortType"
+                  operation="ReadEPS" bpelx:invokeAsDetail="no"/>
+        </sequence>
+
+        <sequence name="DevProgramEps">
+          <assign name="AssignReadDevEPSId">
+            <copy>
+              <from><v1:ReadEPS xmlns:v1="http://xmlns.oracle.com/Primavera/P6/WS/EPS/V1">
+    <v1:Field>Id</v1:Field>
+    <v1:Filter>Id='DEV'</v1:Filter>
+</v1:ReadEPS></from>
+              <to variable="ReadBHCIn" part="params" query="/ns6:ReadEPS"/>
+            </copy>
+          </assign>
+          <invoke name="ReadDevEpsId"
+                  inputVariable="ReadBHCIn" outputVariable="ReadBHCOut"
+                  partnerLink="EPSService" portType="ns6:EPSPortType"
+                  operation="ReadEPS" bpelx:invokeAsDetail="no"/>
+        </sequence>
+        
+        <sequence name="UDF">
+          <assign name="AssignReadUDFTypesIn">
+            <copy>
+              <from><v1:Field xmlns:v1="http://xmlns.oracle.com/Primavera/P6/WS/UDFType/V1">Title</v1:Field></from>
+              <to variable="ReadUDFTypesIn" part="params"
+                  query="/ns2:ReadUDFTypes/ns2:Field"/>
+            </copy>
+            <bpelx:insertAfter>
+              <bpelx:from><v1:Field xmlns:v1="http://xmlns.oracle.com/Primavera/P6/WS/UDFType/V1">SubjectArea</v1:Field></bpelx:from>
+              <bpelx:to variable="ReadUDFTypesIn" part="params"
+                        query="/ns2:ReadUDFTypes/ns2:Field"/>
+            </bpelx:insertAfter>
+          </assign>
+          <invoke name="ReadUDFTypes" bpelx:invokeAsDetail="no"
+                  inputVariable="ReadUDFTypesIn"
+                  outputVariable="ReadUDFTypesOut" partnerLink="UDFTypeService"
+                  portType="ns2:UDFTypePortType" operation="ReadUDFTypes"/>
+        </sequence>
+        
+        <sequence name="Activity">
+          <assign name="AssignReadActivityCodeTypesIn">
+            <copy>
+              <from><v1:Field xmlns:v1="http://xmlns.oracle.com/Primavera/P6/WS/ActivityCodeType/V1">Name</v1:Field></from>
+              <to variable="ReadActivityCodeTypesIn" part="params"
+                  query="/ns4:ReadActivityCodeTypes/ns4:Field"/>
+            </copy>
+          </assign>
+          <invoke name="ReadActivityCodeTypes" inputVariable="ReadActivityCodeTypesIn"
+                  outputVariable="ReadActivityCodeTypesOut" partnerLink="ActivityCodeTypeService"
+                  portType="ns4:ActivityCodeTypePortType" operation="ReadActivityCodeTypes" bpelx:invokeAsDetail="no"/>
+        </sequence>        
+      </flow>
+      <throw name="missingResponse-withSkipCon"
+             faultName="bpws:selectionFailure"
+             bpelx:skipCondition="bpws:getVariableData('ReadBHCOut','result','/ns6:ReadEPSResponse/ns6:EPS/ns6:ObjectId') != ''"/>
+      <scope name="CreateGlobalProfileList" variableAccessSerializable="no">
+        <variables>
+          <variable name="loopCount2" type="xsd:integer"/>
+        </variables>
+        <sequence name="CreateGlobalProfileList">
+          <assign name="AssignLoopCount">
+            <copy>
+              <from expression="count(bpws:getVariableData('ReadProfilesOut','result','/ns8:ReadGlobalProfilesResponse/ns8:GlobalProfile'))"/>
+              <to variable="loopCount2"/>
+            </copy>
+          </assign>
+          <while name="WhileLoopCount"
+                 condition="bpws:getVariableData('loopCount2')>0">
+            <assign name="AssignRow">
+              <copy>
+                <from expression="bpws:getVariableData('rowNumber')+1"/>
+                <to variable="rowNumber"/>
+              </copy>
+              <copy bpelx:ignoreMissingFromData="yes"
+                    bpelx:insertMissingToData="yes">
+                <from variable="ReadProfilesOut" part="result"
+                      query="/ns8:ReadGlobalProfilesResponse/ns8:GlobalProfile[bpws:getVariableData('loopCount2')]/ns8:ObjectId"/>
+                <to variable="outputVariable" part="payload"
+                    query="/client:config/client:role/client:profiles/client:profile[bpws:getVariableData('rowNumber')]/@id"/>
+              </copy>
+              <copy bpelx:ignoreMissingFromData="yes"
+                    bpelx:insertMissingToData="yes">
+                <from variable="ReadProfilesOut" part="result"
+                      query="/ns8:ReadGlobalProfilesResponse/ns8:GlobalProfile[bpws:getVariableData('loopCount2')]/ns8:Name"/>
+                <to variable="outputVariable" part="payload"
+                    query="/client:config/client:role/client:profiles/client:profile[bpws:getVariableData('rowNumber')]/client:name"/>
+              </copy>
+              <copy bpelx:ignoreMissingFromData="yes"
+                    bpelx:insertMissingToData="yes">
+                <from expression="'Global'"/>
+                <to variable="outputVariable" part="payload"
+                    query="/client:config/client:role/client:profiles/client:profile[bpws:getVariableData('rowNumber')]/client:scope"/>
+              </copy>
+              <copy>
+                <from expression="bpws:getVariableData('loopCount2')-1"/>
+                <to variable="loopCount2"/>
+              </copy>
+            </assign>
+          </while>
+        </sequence>
+      </scope>
+      <assign name="AssignOutput">
+
+    <!--
+      New Study Import Types
+    -->
+        <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+          <from variable="ReadBHCOut" part="result" query="/ns6:ReadEPSResponse/ns6:EPS/ns6:ObjectId"/>
+          <to variable="outputVariable" part="payload" query="/ns3:config/ns3:program/ns3:epsId"/>
+        </copy>
+        <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+          <from variable="ReadMntEpsIdOut" part="result" query="/ns6:ReadEPSResponse/ns6:EPS/ns6:ObjectId"/>
+          <to variable="outputVariable" part="payload" query="/ns3:config/ns3:program/ns3:epsMntId"/>
+        </copy>
+        <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+          <from expression="bpws:getVariableData('ReadUDFTypesOut','result','/ns2:ReadUDFTypesResponse/ns2:UDFType[ns2:Title=&quot;IPMS ID&quot; and ns2:SubjectArea=&quot;Project&quot;]/ns2:ObjectId')"/>
+          <to variable="outputVariable" part="payload" query="/ns3:config/ns3:project/ns3:codeTypeId"/>
+        </copy>
+        <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+          <from expression="bpws:getVariableData('ReadUDFTypesOut','result','/ns2:ReadUDFTypesResponse/ns2:UDFType[ns2:Title=&quot;Study ID&quot;]/ns2:ObjectId')"
+                bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+          <to variable="outputVariable" part="payload" query="/ns3:config/ns3:wbs/ns3:studyIdTypeId"/>
+        </copy>
+        <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+          <from expression="bpws:getVariableData('ReadUDFTypesOut','result','/ns2:ReadUDFTypesResponse/ns2:UDFType[ns2:Title=&quot;Activity Study ID&quot;]/ns2:ObjectId')"
+                bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+          <to variable="outputVariable" part="payload" query="/ns3:config/ns3:activity/ns3:studyIdTypeId"/>
+        </copy>
+        <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+          <from expression="bpws:getVariableData('ReadUDFTypesOut','result','/ns2:ReadUDFTypesResponse/ns2:UDFType[ns2:Title=&quot;LTC ID&quot;]/ns2:ObjectId')"/>
+          <to variable="outputVariable" part="payload" query="/ns3:config/ns3:baseline/ns3:ltcIdTypeId"/>
+        </copy>
+        <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+          <from expression="bpws:getVariableData('ReadUDFTypesOut','result','/ns2:ReadUDFTypesResponse/ns2:UDFType[ns2:Title=&quot;Study Phase&quot;]/ns2:ObjectId')"/>
+          <to variable="outputVariable" part="payload" query="/ns3:config/ns3:wbs/ns3:studyPhaseTypeId"/>
+        </copy>
+        <copy bpelx:insertMissingToData="yes">
+          <from expression="bpws:getVariableData('ReadUDFTypesOut','result','/ns2:ReadUDFTypesResponse/ns2:UDFType[ns2:Title=&quot;Lead Study&quot;]/ns2:ObjectId')"/>
+          <to variable="outputVariable" part="payload" query="/client:config/client:wbs/client:leadStudyTypeId"/>
+        </copy>
+        <copy>
+          <from expression="bpws:getVariableData('ReadUDFTypesOut','result','/ns2:ReadUDFTypesResponse/ns2:UDFType[ns2:Title=&quot;FTE&quot;]/ns2:ObjectId')"/>
+          <to variable="outputVariable" part="payload" query="/client:config/client:wbs/client:FTEAvgTypeId"/>
+        </copy>
+        <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+          <from expression="bpws:getVariableData('ReadUDFTypesOut','result','/ns2:ReadUDFTypesResponse/ns2:UDFType[ns2:Title=&quot;Study Element ID&quot;]/ns2:ObjectId')"/>
+          <to variable="outputVariable" part="payload" query="/ns3:config/ns3:activity/ns3:studyElementIdTypeId"/>
+        </copy>
+        <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+          <from expression="bpws:getVariableData('ReadActivityCodeTypesOut','result','/ns4:ReadActivityCodeTypesResponse/ns4:ActivityCodeType[ns4:Name=&quot;Milestone Type&quot;]/ns4:ObjectId')"/>
+          <to variable="outputVariable" part="payload" query="/ns3:config/ns3:activity/ns3:milestoneTypeId"/>
+        </copy>
+        <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+          <from expression="bpws:getVariableData('ReadActivityCodeTypesOut','result','/ns4:ReadActivityCodeTypesResponse/ns4:ActivityCodeType[ns4:Name=&quot;Integration Type&quot;]/ns4:ObjectId')"/>
+          <to variable="outputVariable" part="payload" query="/ns3:config/ns3:activity/ns3:integrationTypeId"/>
+        </copy>
+        <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+          <from expression="bpws:getVariableData('ReadActivityCodeTypesOut','result','/ns4:ReadActivityCodeTypesResponse/ns4:ActivityCodeType[ns4:Name=&quot;Phase&quot;]/ns4:ObjectId')"/>
+          <to variable="outputVariable" part="payload" query="/ns3:config/ns3:activity/ns3:phaseTypeId"/>
+        </copy>
+        <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+          <from expression="bpws:getVariableData('ReadUDFTypesOut','result','/ns2:ReadUDFTypesResponse/ns2:UDFType[ns2:Title=&quot;Plan Version ID&quot;]/ns2:ObjectId')"/>
+          <to variable="outputVariable" part="payload" query="/ns3:config/ns3:activity/ns3:planVersionIdTypeId"/>
+        </copy>
+        <copy>
+          <from expression="bpws:getVariableData('ReadUDFTypesOut','result','/ns2:ReadUDFTypesResponse/ns2:UDFType[ns2:Title=&quot;Comment&quot; and ns2:SubjectArea=&quot;Activity Expense&quot;]/ns2:ObjectId')"/>
+          <to variable="outputVariable" part="payload" query="/ns3:config/ns3:activity/ns3:expenseCommentTypeId"/>
+        </copy>
+        <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+          <from expression="bpws:getVariableData('ReadUDFTypesOut','result','/ns2:ReadUDFTypesResponse/ns2:UDFType[ns2:Title=&quot;Study Placeholder&quot;]/ns2:ObjectId')"/>
+          <to variable="outputVariable" part="payload" query="/client:config/client:wbs/client:placeholderTypeId"/>
+        </copy>
+        <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+          <from expression="bpws:getVariableData('ReadOBSout','result','/ns7:ReadOBSResponse/ns7:OBS[ns7:Name=&quot;DEV-RAW&quot;]/ns7:ObjectId')"/>
+          <to variable="outputVariable" part="payload" query="/ns3:config/ns3:program/ns3:obs/ns3:rawId"/>
+        </copy>
+        <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+          <from expression="bpws:getVariableData('ReadOBSout','result','/ns7:ReadOBSResponse/ns7:OBS[ns7:Name=&quot;DEV-CUR&quot;]/ns7:ObjectId')"/>
+          <to variable="outputVariable" part="payload" query="/ns3:config/ns3:program/ns3:obs/ns3:currentId"/>
+        </copy>
+        <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+          <from expression="bpws:getVariableData('ReadOBSout','result','/ns7:ReadOBSResponse/ns7:OBS[ns7:Name=&quot;DEV-APR&quot;]/ns7:ObjectId')"/>
+          <to variable="outputVariable" part="payload" query="/ns3:config/ns3:program/ns3:obs/ns3:approvedId"/>
+        </copy>
+        <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+          <from expression="bpws:getVariableData('ReadOBSout','result','/ns7:ReadOBSResponse/ns7:OBS[ns7:Name=&quot;DEV-SND&quot;]/ns7:ObjectId')"/>
+          <to variable="outputVariable" part="payload" query="/ns3:config/ns3:program/ns3:obs/ns3:sandboxId"/>
+        </copy>
+        <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+          <from expression="bpws:getVariableData('ReadOBSout','result','/ns7:ReadOBSResponse/ns7:OBS[ns7:Name=&quot;PRDMNT-RAW&quot;]/ns7:ObjectId')"/>
+          <to variable="outputVariable" part="payload" query="/ns3:config/ns3:program/ns3:obsMnt/ns3:rawId"/>
+        </copy>
+        <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+          <from expression="bpws:getVariableData('ReadOBSout','result','/ns7:ReadOBSResponse/ns7:OBS[ns7:Name=&quot;PRDMNT-CUR&quot;]/ns7:ObjectId')"/>
+          <to variable="outputVariable" part="payload" query="/ns3:config/ns3:program/ns3:obsMnt/ns3:currentId"/>
+        </copy>
+        <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+          <from expression="bpws:getVariableData('ReadOBSout','result','/ns7:ReadOBSResponse/ns7:OBS[ns7:Name=&quot;PRDMNT-APR&quot;]/ns7:ObjectId')"/>
+          <to variable="outputVariable" part="payload" query="/ns3:config/ns3:program/ns3:obsMnt/ns3:approvedId"/>
+        </copy>
+        <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+          <from variable="ReadRolesOut" part="result"
+                query="/ns10:ReadRolesResponse/ns10:Role[ns10:Id='ACTIVE']/ns10:ObjectId"/>
+          <to variable="outputVariable" part="payload" query="/ns3:config/ns3:role/ns3:groups/ns3:activeId"/>
+        </copy>
+        <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+          <from variable="ReadRolesOut" part="result"
+                query="/ns10:ReadRolesResponse/ns10:Role[ns10:Id='INACTIVE']/ns10:ObjectId"/>
+          <to variable="outputVariable" part="payload" query="/ns3:config/ns3:role/ns3:groups/ns3:inactiveId"/>
+        </copy>
+        <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+          <from expression="bpws:getVariableData('ReadUDFTypesOut','result','/ns2:ReadUDFTypesResponse/ns2:UDFType[ns2:Title=&quot;Number of Patients Plan&quot;]/ns2:ObjectId')"/>
+          <to variable="outputVariable" part="payload" query="/ns3:config/ns3:wbs/ns3:planPatientsTypeId"/>
+        </copy>
+        <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+          <from expression="bpws:getVariableData('ReadUDFTypesOut','result','/ns2:ReadUDFTypesResponse/ns2:UDFType[ns2:Title=&quot;Number of Patients Actual&quot;]/ns2:ObjectId')"/>
+          <to variable="outputVariable" part="payload" query="/ns3:config/ns3:wbs/ns3:actualPatientsTypeId"/>
+        </copy>
+        <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+          <from expression="bpws:getVariableData('ReadUDFTypesOut','result','/ns2:ReadUDFTypesResponse/ns2:UDFType[ns2:Title=&quot;Screened Patients Plan&quot;]/ns2:ObjectId')"/>
+          <to variable="outputVariable" part="payload" query="/ns3:config/ns3:wbs/ns3:planEnteredScreenTypeId"/>
+        </copy>
+        <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+          <from expression="bpws:getVariableData('ReadUDFTypesOut','result','/ns2:ReadUDFTypesResponse/ns2:UDFType[ns2:Title=&quot;Screened Patients Actual&quot;]/ns2:ObjectId')"/>
+          <to variable="outputVariable" part="payload" query="/ns3:config/ns3:wbs/ns3:actEnteredScreenTypeId"/>
+        </copy>
+        <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+          <from expression="bpws:getVariableData('ReadUDFTypesOut','result','/ns2:ReadUDFTypesResponse/ns2:UDFType[ns2:Title=&quot;Number of Countries Plan&quot;]/ns2:ObjectId')"/>
+          <to variable="outputVariable" part="payload" query="/ns3:config/ns3:wbs/ns3:studyCountryCountPlanTypeId"/>
+        </copy>
+        <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+          <from expression="bpws:getVariableData('ReadUDFTypesOut','result','/ns2:ReadUDFTypesResponse/ns2:UDFType[ns2:Title=&quot;Number of Countries Actual&quot;]/ns2:ObjectId')"/>
+          <to variable="outputVariable" part="payload" query="/ns3:config/ns3:wbs/ns3:studyCountryCountTypeId"/>
+        </copy>
+        <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+          <from expression="bpws:getVariableData('ReadUDFTypesOut','result','/ns2:ReadUDFTypesResponse/ns2:UDFType[ns2:Title=&quot;Number of Sites Actual&quot;]/ns2:ObjectId')"/>
+          <to variable="outputVariable" part="payload" query="/ns3:config/ns3:wbs/ns3:studyUnitCountTypeId"/>
+        </copy>
+        <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+          <from expression="bpws:getVariableData('ReadUDFTypesOut','result','/ns2:ReadUDFTypesResponse/ns2:UDFType[ns2:Title=&quot;Number of Sites Plan&quot;]/ns2:ObjectId')"/>
+          <to variable="outputVariable" part="payload" query="/ns3:config/ns3:wbs/ns3:studyUnitCountPlanTypeId"/>
+        </copy>
+        <bpelx:append>
+          <bpelx:from variable="outputVariable" part="payload" query="/client:config"/>
+          <bpelx:to variable="CreateCacheIn" part="payload" query="/ns12:cache"/>
+        </bpelx:append>
+      </assign>
+      <scope name="ScopeCreateCacheFile" variableAccessSerializable="no">
+        <faultHandlers>
+          <catchAll>
+            <empty name="Empty-ContinueWorkingWithoutCache"/>
+          </catchAll>
+        </faultHandlers>
+        <sequence name="SequenceCreateCache">
+          <invoke name="CreateCache" bpelx:invokeAsDetail="no"
+                  inputVariable="CreateCacheIn" partnerLink="CacheService"
+                  portType="ns12:CachePortType" operation="create"/>
+        </sequence>
+      </scope>
+    </sequence>
+    <switch name="WhatResponse">
+      <case condition="bpws:getVariableData('operation') = 'process empty request'">
+        <bpelx:annotation>
+          <bpelx:general>
+            <bpelx:property name="userLabel">
+              <![CDATA[when empty request]]>
+            </bpelx:property>
+          </bpelx:general>
+        </bpelx:annotation>
+        <invoke name="callbackOutput" bpelx:invokeAsDetail="no"
+                inputVariable="outputVariable"
+                partnerLink="ReadConfigurationService"
+                portType="client:ReadConfigurationCallback"
+                operation="callback"/>
+      </case>
+      <otherwise>
+        <sequence name="Sequence2">
+          <assign name="assign_response">
+            <copy>
+              <from variable="outputVariable" part="payload"
+                    query="/client:config"/>
+              <to variable="outputVariable_read" part="payload"
+                  query="/client:response/client:complete/client:config"/>
+            </copy>
+            <copy>
+              <from variable="inputVariable_read" part="payload"
+                    query="/client:read/@id"/>
+              <to variable="outputVariable_read" part="payload"
+                  query="/client:response/@id"/>
+            </copy>
+            <copy>
+              <from variable="inputVariable_read" part="payload"
+                    query="/client:read/@id"/>
+              <to variable="outputVariable_read" part="payload"
+                  query="/client:response/client:complete/@id"/>
+            </copy>
+            <bpelx:remove>
+              <bpelx:target variable="outputVariable_read" part="payload"
+                            query="/client:response/ns31:error"/>
+            </bpelx:remove>
+          </assign>
+          <invoke name="callbackOutput" inputVariable="outputVariable_read"
+                  partnerLink="ReadConfigurationService"
+                  portType="client:ReadConfigurationCallback"
+                  operation="callbackRead"
+                  xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+                  xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+                  bpelx:invokeAsDetail="no"/>
+        </sequence>
+      </otherwise>
+    </switch>
+    <!-- Generate reply to synchronous request -->
+  </sequence>
+</process>

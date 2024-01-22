@@ -1,0 +1,1 @@
+alter table timeline add (last_summarized_date date);

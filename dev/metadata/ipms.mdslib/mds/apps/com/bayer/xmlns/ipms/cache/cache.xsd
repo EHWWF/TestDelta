@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xsd:schema
+		xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+		xmlns="http://xmlns.bayer.com/ipms"
+		targetNamespace="http://xmlns.bayer.com/ipms/cache"
+		elementFormDefault="qualified">
+
+	<xsd:element name="cache">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:any minOccurs="1" maxOccurs="1"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+</xsd:schema>

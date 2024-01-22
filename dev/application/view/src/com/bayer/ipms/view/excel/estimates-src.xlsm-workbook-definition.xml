@@ -1,0 +1,1399 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<workbook id="b4ceca1a-32e3-404b-8fbd-f9bdbe0649e0" schema-version="1" xmlns="http://xmlns.oracle.com/adf/desktopintegration/workbook">
+  <!--source-document="estimates.xlsm" client-version="4.2.0.13155"-->
+  <branding-list>
+    <branding>
+      <name>Application Name</name>
+      <value>MyApplication</value>
+    </branding>
+    <branding>
+      <name>Application Version</name>
+      <value>1.0</value>
+    </branding>
+    <branding>
+      <name>Workbook Name</name>
+      <value>MyWorkbook</value>
+    </branding>
+    <branding>
+      <name>Workbook Version</name>
+      <value>1.0</value>
+    </branding>
+    <branding>
+      <name>Copyright</name>
+      <value>copyright notice</value>
+    </branding>
+  </branding-list>
+  <remote-servlet-path>/adfdiRemoteServlet</remote-servlet-path>
+  <web-app-root>http://127.0.0.1:7101/ipms</web-app-root>
+  <login>
+    <window-size height="500" width="500" />
+  </login>
+  <application-home-folder></application-home-folder>
+  <web-pages-folder></web-pages-folder>
+  <runtime-ribbon-tab>
+    <title>MyWorkbook</title>
+    <command-list>
+      <command method="Login">
+        <label>#{_ADFDIres['TOOLBAR_MENU_CMD_LOGIN']}</label>
+      </command>
+      <command method="Logout">
+        <label>#{_ADFDIres['TOOLBAR_MENU_CMD_LOGOUT']}</label>
+      </command>
+      <command method="ViewAboutDialog">
+        <label>#{_ADFDIres['TOOLBAR_MENU_CMD_ABOUT']}</label>
+      </command>
+    </command-list>
+  </runtime-ribbon-tab>
+  <parameter-list>
+    <parameter>
+      <id>processId</id>
+    </parameter>
+    <parameter>
+      <id>programId</id>
+    </parameter>
+    <parameter>
+      <id>tagId</id>
+    </parameter>
+  </parameter-list>
+  <worksheet-list>
+    <worksheet name="LE data">
+      <event-list>
+        <event type="Startup">
+          <action-set>
+            <alert>
+              <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+              <success-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_SUCCESS_PROMPT']}</success-message>
+              <failure-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_FAILURE_PROMPT']}</failure-message>
+              <ok-button-label>#{_ADFDIres['DIALOGS_OK_BUTTON_LABEL']}</ok-button-label>
+            </alert>
+            <status>
+              <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+              <message>#{_ADFDIres['STATUS_MESSAGE_PROMPT']}</message>
+            </status>
+            <action-list>
+              <server-action>
+                <action-id>initLeExcelForm</action-id>
+              </server-action>
+              <server-action>
+                <action-id>setup</action-id>
+              </server-action>
+              <server-action>
+                <action-id>ExecuteWithParamsLE</action-id>
+              </server-action>
+              <component-action>
+                <component-id>TAB340665983</component-id>
+                <action>Download</action>
+              </component-action>
+              <worksheet-action>
+                <method>DownSync</method>
+              </worksheet-action>
+            </action-list>
+          </action-set>
+        </event>
+      </event-list>
+      <ribbon-command-list>
+        <ribbon-command id="MEN739815551">
+          <select-action-set>
+            <action-list>
+              <server-action>
+                <action-id>ExecuteWithParamsLE</action-id>
+              </server-action>
+              <component-action>
+                <component-id>TAB340665983</component-id>
+                <action>Upload</action>
+              </component-action>
+              <server-action>
+                <action-id>commitLe</action-id>
+              </server-action>
+            </action-list>
+          </select-action-set>
+          <label>Upload Data</label>
+          <image>Generic</image>
+        </ribbon-command>
+      </ribbon-command-list>
+      <server-context send-parameters="true" />
+      <pagedef-usage-id>com_bayer_ipms_view_task_estimatesPageDef</pagedef-usage-id>
+      <parameter-list>
+        <parameter>
+          <value>#{workbook.params.programId}</value>
+          <pagedef-param-id>programId</pagedef-param-id>
+        </parameter>
+        <parameter>
+          <value>#{workbook.params.processId}</value>
+          <pagedef-param-id>processId</pagedef-param-id>
+        </parameter>
+        <parameter>
+          <value>#{workbook.params.tagId}</value>
+          <pagedef-param-id>tagId</pagedef-param-id>
+        </parameter>
+      </parameter-list>
+      <protection>
+        <mode>Automatic</mode>
+        <password>oprisk123</password>
+      </protection>
+      <component-list>
+        <table-component id="TAB340665983" origin="B4">
+          <tree-id>EstimateView</tree-id>
+          <column-list>
+            <column id="ProjectSbeCode">
+              <update-component>
+                <input-text>
+                  <double-click-action-set>
+                    <alert>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <success-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_SUCCESS_PROMPT']}</success-message>
+                      <failure-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_FAILURE_PROMPT']}</failure-message>
+                      <ok-button-label>#{_ADFDIres['DIALOGS_OK_BUTTON_LABEL']}</ok-button-label>
+                    </alert>
+                    <status>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <message>#{_ADFDIres['STATUS_MESSAGE_PROMPT']}</message>
+                    </status>
+                  </double-click-action-set>
+                  <value>#{row.bindings.ProjectSbeCode.inputValue}</value>
+                  <read-only>True</read-only>
+                </input-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_TableHeader</header-style>
+              <header-label>#{bindings.EstimateView.hints.ProjectSbeCode.label}</header-label>
+              <cell-style>=IF(OR("#{row.bindings.SubtypeCode.inputValue}"="OEI", IF("#{row.bindings.GroupingType.inputValue}"="",9,#{row.bindings.GroupingType.inputValue})&lt;2),"IPMS_TableCell_Text_Total","IPMS_TableCell_Text_ReadOnly" )</cell-style>
+              <annotation>ProjectSbeCode</annotation>
+            </column>
+            <column id="DevelopmentPhaseName">
+              <update-component>
+                <input-text>
+                  <double-click-action-set>
+                    <alert>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <success-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_SUCCESS_PROMPT']}</success-message>
+                      <failure-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_FAILURE_PROMPT']}</failure-message>
+                      <ok-button-label>#{_ADFDIres['DIALOGS_OK_BUTTON_LABEL']}</ok-button-label>
+                    </alert>
+                    <status>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <message>#{_ADFDIres['STATUS_MESSAGE_PROMPT']}</message>
+                    </status>
+                  </double-click-action-set>
+                  <value>#{row.bindings.DevelopmentPhaseName.inputValue}</value>
+                  <read-only>True</read-only>
+                </input-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_TableHeader</header-style>
+              <header-label>#{bindings.EstimateView.hints.DevelopmentPhaseName.label}</header-label>
+              <cell-style>=IF(OR("#{row.bindings.SubtypeCode.inputValue}"="OEI", IF("#{row.bindings.GroupingType.inputValue}"="",9,#{row.bindings.GroupingType.inputValue})&lt;3),"IPMS_TableCell_Text_Total","IPMS_TableCell_Text_ReadOnly" )</cell-style>
+              <annotation>DevelopmentPhaseName</annotation>
+            </column>
+            <column id="ProgramName">
+              <update-component>
+                <input-text>
+                  <double-click-action-set>
+                    <alert>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <success-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_SUCCESS_PROMPT']}</success-message>
+                      <failure-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_FAILURE_PROMPT']}</failure-message>
+                      <ok-button-label>#{_ADFDIres['DIALOGS_OK_BUTTON_LABEL']}</ok-button-label>
+                    </alert>
+                    <status>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <message>#{_ADFDIres['STATUS_MESSAGE_PROMPT']}</message>
+                    </status>
+                  </double-click-action-set>
+                  <value>#{row.bindings.ProgramName.inputValue}</value>
+                  <read-only>True</read-only>
+                </input-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_TableHeader</header-style>
+              <header-label>#{bindings.EstimateView.hints.ProgramName.label}</header-label>
+              <cell-style>=IF(OR("#{row.bindings.SubtypeCode.inputValue}"="OEI", IF("#{row.bindings.GroupingType.inputValue}"="",9,#{row.bindings.GroupingType.inputValue})&lt;4),"IPMS_TableCell_Text_Total","IPMS_TableCell_Text_ReadOnly")</cell-style>
+              <annotation>ProgramName</annotation>
+            </column>
+            <column id="COL1054718524">
+              <update-component>
+                <input-text>
+                  <double-click-action-set>
+                    <alert>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <success-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_SUCCESS_PROMPT']}</success-message>
+                      <failure-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_FAILURE_PROMPT']}</failure-message>
+                      <ok-button-label>#{_ADFDIres['DIALOGS_OK_BUTTON_LABEL']}</ok-button-label>
+                    </alert>
+                    <status>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <message>#{_ADFDIres['STATUS_MESSAGE_PROMPT']}</message>
+                    </status>
+                  </double-click-action-set>
+                  <value>#{row.bindings.ProjectCode.inputValue}</value>
+                  <read-only>True</read-only>
+                </input-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_TableHeader</header-style>
+              <header-label>#{bindings.EstimateView.hints.ProjectCode.label}</header-label>
+              <cell-style>=IF(OR(AND("#{row.bindings.GroupingType.inputValue}"="","#{row.bindings.SubtypeCode.inputValue}"&lt;&gt;"OEI"),"#{row.bindings.GroupingType.inputValue}"="5"),"IPMS_TableCell_Number_ReadOnly2", "IPMS_TableCell_Text_Total" )</cell-style>
+              <annotation>ProjectCode</annotation>
+            </column>
+            <column id="ProjectName">
+              <update-component>
+                <input-text>
+                  <double-click-action-set>
+                    <alert>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <success-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_SUCCESS_PROMPT']}</success-message>
+                      <failure-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_FAILURE_PROMPT']}</failure-message>
+                      <ok-button-label>#{_ADFDIres['DIALOGS_OK_BUTTON_LABEL']}</ok-button-label>
+                    </alert>
+                    <status>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <message>#{_ADFDIres['STATUS_MESSAGE_PROMPT']}</message>
+                    </status>
+                  </double-click-action-set>
+                  <value>#{row.bindings.ProjectName.inputValue}</value>
+                  <read-only>True</read-only>
+                </input-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_TableHeader</header-style>
+              <header-label>#{bindings.EstimateView.hints.ProjectName.label}</header-label>
+              <cell-style>=IF(OR(AND("#{row.bindings.GroupingType.inputValue}"="","#{row.bindings.SubtypeCode.inputValue}"&lt;&gt;"OEI"),"#{row.bindings.GroupingType.inputValue}"="5"),"IPMS_TableCell_Text_ReadOnly", "IPMS_TableCell_Text_Total" )</cell-style>
+              <annotation>ProjectName</annotation>
+            </column>
+            <column id="StudyStatusName">
+              <update-component>
+                <input-text>
+                  <double-click-action-set>
+                    <alert>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <success-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_SUCCESS_PROMPT']}</success-message>
+                      <failure-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_FAILURE_PROMPT']}</failure-message>
+                      <ok-button-label>#{_ADFDIres['DIALOGS_OK_BUTTON_LABEL']}</ok-button-label>
+                    </alert>
+                    <status>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <message>#{_ADFDIres['STATUS_MESSAGE_PROMPT']}</message>
+                    </status>
+                  </double-click-action-set>
+                  <value>#{row.bindings.StudyStatusName.inputValue}</value>
+                  <read-only>True</read-only>
+                </input-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_TableHeader</header-style>
+              <header-label>#{bindings.EstimateView.hints.StudyStatusName.label}</header-label>
+              <cell-style>=IF(AND("#{row.bindings.GroupingType.inputValue}"="","#{row.bindings.SubtypeCode.inputValue}"&lt;&gt;"OEI"),"IPMS_TableCell_Text_ReadOnly", "IPMS_TableCell_Text_Total") </cell-style>
+              <annotation>StudyStatusName</annotation>
+            </column>
+            <column id="StudyPhase">
+              <update-component>
+                <input-text>
+                  <double-click-action-set>
+                    <alert>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <success-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_SUCCESS_PROMPT']}</success-message>
+                      <failure-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_FAILURE_PROMPT']}</failure-message>
+                      <ok-button-label>#{_ADFDIres['DIALOGS_OK_BUTTON_LABEL']}</ok-button-label>
+                    </alert>
+                    <status>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <message>#{_ADFDIres['STATUS_MESSAGE_PROMPT']}</message>
+                    </status>
+                  </double-click-action-set>
+                  <value>#{row.bindings.StudyPhase.inputValue}</value>
+                  <read-only>True</read-only>
+                </input-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_TableHeader</header-style>
+              <header-label>#{bindings.EstimateView.hints.StudyPhase.label}</header-label>
+              <cell-style>=IF(AND("#{row.bindings.GroupingType.inputValue}"="","#{row.bindings.SubtypeCode.inputValue}"&lt;&gt;"OEI"),"IPMS_TableCell_Text_ReadOnly", "IPMS_TableCell_Text_Total") </cell-style>
+              <annotation>StudyPhase</annotation>
+            </column>
+            <column id="StudyId">
+              <update-component>
+                <input-text>
+                  <double-click-action-set>
+                    <alert>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <success-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_SUCCESS_PROMPT']}</success-message>
+                      <failure-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_FAILURE_PROMPT']}</failure-message>
+                      <ok-button-label>#{_ADFDIres['DIALOGS_OK_BUTTON_LABEL']}</ok-button-label>
+                    </alert>
+                    <status>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <message>#{_ADFDIres['STATUS_MESSAGE_PROMPT']}</message>
+                    </status>
+                  </double-click-action-set>
+                  <value>#{row.bindings.StudyId.inputValue}</value>
+                  <read-only>True</read-only>
+                </input-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_TableHeader</header-style>
+              <header-label>#{bindings.EstimateView.hints.StudyId.label}</header-label>
+              <cell-style>=IF(AND("#{row.bindings.GroupingType.inputValue}"="","#{row.bindings.SubtypeCode.inputValue}"&lt;&gt;"OEI"),"IPMS_TableCell_Number_ReadOnly2", "IPMS_TableCell_Text_Total") </cell-style>
+              <annotation>StudyId</annotation>
+            </column>
+            <column id="StudyName">
+              <update-component>
+                <input-text>
+                  <double-click-action-set>
+                    <alert>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <success-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_SUCCESS_PROMPT']}</success-message>
+                      <failure-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_FAILURE_PROMPT']}</failure-message>
+                      <ok-button-label>#{_ADFDIres['DIALOGS_OK_BUTTON_LABEL']}</ok-button-label>
+                    </alert>
+                    <status>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <message>#{_ADFDIres['STATUS_MESSAGE_PROMPT']}</message>
+                    </status>
+                  </double-click-action-set>
+                  <value>#{row.bindings.StudyName.inputValue}</value>
+                  <read-only>True</read-only>
+                </input-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_TableHeader</header-style>
+              <header-label>#{bindings.EstimateView.hints.StudyName.label}</header-label>
+              <cell-style>=IF(AND("#{row.bindings.GroupingType.inputValue}"="","#{row.bindings.SubtypeCode.inputValue}"&lt;&gt;"OEI"),"IPMS_TableCell_Text_ReadOnly", "IPMS_TableCell_Text_Total") </cell-style>
+              <annotation>StudyName</annotation>
+            </column>
+            <column id="StudyFpfv">
+              <update-component>
+                <input-text>
+                  <double-click-action-set>
+                    <alert>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <success-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_SUCCESS_PROMPT']}</success-message>
+                      <failure-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_FAILURE_PROMPT']}</failure-message>
+                      <ok-button-label>#{_ADFDIres['DIALOGS_OK_BUTTON_LABEL']}</ok-button-label>
+                    </alert>
+                    <status>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <message>#{_ADFDIres['STATUS_MESSAGE_PROMPT']}</message>
+                    </status>
+                  </double-click-action-set>
+                  <value>#{row.bindings.StudyFpfv.inputValue}</value>
+                  <read-only>True</read-only>
+                </input-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_TableHeader</header-style>
+              <header-label>#{bindings.EstimateView.hints.StudyFpfv.label}</header-label>
+              <cell-style>=IF(AND("#{row.bindings.GroupingType.inputValue}"="","#{row.bindings.SubtypeCode.inputValue}"&lt;&gt;"OEI"),"IPMS_TableCell_Date_ReadOnly", "IPMS_TableCell_Date_Total") </cell-style>
+              <annotation>StudyFpfv</annotation>
+            </column>
+            <column id="StudyLplv">
+              <update-component>
+                <input-text>
+                  <double-click-action-set>
+                    <alert>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <success-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_SUCCESS_PROMPT']}</success-message>
+                      <failure-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_FAILURE_PROMPT']}</failure-message>
+                      <ok-button-label>#{_ADFDIres['DIALOGS_OK_BUTTON_LABEL']}</ok-button-label>
+                    </alert>
+                    <status>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <message>#{_ADFDIres['STATUS_MESSAGE_PROMPT']}</message>
+                    </status>
+                  </double-click-action-set>
+                  <value>#{row.bindings.StudyLplv.inputValue}</value>
+                  <read-only>True</read-only>
+                </input-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_TableHeader</header-style>
+              <header-label>#{bindings.EstimateView.hints.StudyLplv.label}</header-label>
+              <cell-style>=IF(AND("#{row.bindings.GroupingType.inputValue}"="","#{row.bindings.SubtypeCode.inputValue}"&lt;&gt;"OEI"),"IPMS_TableCell_Date_ReadOnly", "IPMS_TableCell_Date_Total") </cell-style>
+              <annotation>StudyLplv</annotation>
+            </column>
+            <column id="FunctionName">
+              <update-component>
+                <input-text>
+                  <double-click-action-set>
+                    <alert>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <success-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_SUCCESS_PROMPT']}</success-message>
+                      <failure-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_FAILURE_PROMPT']}</failure-message>
+                      <ok-button-label>#{_ADFDIres['DIALOGS_OK_BUTTON_LABEL']}</ok-button-label>
+                    </alert>
+                    <status>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <message>#{_ADFDIres['STATUS_MESSAGE_PROMPT']}</message>
+                    </status>
+                  </double-click-action-set>
+                  <value>#{row.bindings.FunctionName.inputValue}</value>
+                  <read-only>True</read-only>
+                </input-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_TableHeader</header-style>
+              <header-label>#{bindings.EstimateView.hints.FunctionName.label}</header-label>
+              <cell-style>=IF(AND("#{row.bindings.GroupingType.inputValue}"="","#{row.bindings.SubtypeCode.inputValue}"&lt;&gt;"OEI"),"IPMS_TableCell_Text_ReadOnly", "IPMS_TableCell_Text_Total") </cell-style>
+              <annotation>FunctionName</annotation>
+            </column>
+            <column id="CurrBudgetDeterministic">
+              <update-component>
+                <input-text>
+                  <double-click-action-set>
+                    <alert>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <success-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_SUCCESS_PROMPT']}</success-message>
+                      <failure-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_FAILURE_PROMPT']}</failure-message>
+                      <ok-button-label>#{_ADFDIres['DIALOGS_OK_BUTTON_LABEL']}</ok-button-label>
+                    </alert>
+                    <status>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <message>#{_ADFDIres['STATUS_MESSAGE_PROMPT']}</message>
+                    </status>
+                  </double-click-action-set>
+                  <value>=IF(AND("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"&lt;&gt;"OEI"),
+"=SUMIFS(n,
+av,"""",ar,""#{row.bindings.ProjectSbeCode.inputValue}*"",IF(#{row.bindings.GroupingType.inputValue}&gt;1,aq,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;1,""#{row.bindings.DevelopmentPhaseCode.inputValue}"",""""),IF(#{row.bindings.GroupingType.inputValue}&gt;2,as,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;2,""#{row.bindings.ProgramId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}&gt;3,at,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;3,""#{row.bindings.ProjectId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}=5,au,aw),IF(#{row.bindings.GroupingType.inputValue}=5,""#{row.bindings.StudyStatusCode.inputValue}"",""""))",
+"#{row.bindings.CurrBudgetDeterministic.inputValue}")</value>
+                  <read-only>True</read-only>
+                </input-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_TableHeader_Budget</header-style>
+              <header-label>Budget (d, #{bindings.ProcessYear})</header-label>
+              <cell-style>=IF(OR("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"="OEI"),"IPMS_TableCell_Number_Total","IPMS_TableCell_Number_ReadOnly")</cell-style>
+              <annotation>CurrBudgetDeterministic</annotation>
+            </column>
+            <column id="CurrBudgetProbabilistic">
+              <update-component>
+                <input-text>
+                  <double-click-action-set>
+                    <alert>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <success-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_SUCCESS_PROMPT']}</success-message>
+                      <failure-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_FAILURE_PROMPT']}</failure-message>
+                      <ok-button-label>#{_ADFDIres['DIALOGS_OK_BUTTON_LABEL']}</ok-button-label>
+                    </alert>
+                    <status>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <message>#{_ADFDIres['STATUS_MESSAGE_PROMPT']}</message>
+                    </status>
+                  </double-click-action-set>
+                  <value>=IF(AND("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"&lt;&gt;"OEI"),
+"=SUMIFS(o,
+av,"""",ar,""#{row.bindings.ProjectSbeCode.inputValue}*"",IF(#{row.bindings.GroupingType.inputValue}&gt;1,aq,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;1,""#{row.bindings.DevelopmentPhaseCode.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}&gt;2,as,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;2,""#{row.bindings.ProgramId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}&gt;3,at,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;3,""#{row.bindings.ProjectId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}=5,au,aw),IF(#{row.bindings.GroupingType.inputValue}=5,""#{row.bindings.StudyStatusCode.inputValue}"",""""))",
+"#{row.bindings.CurrBudgetProbabilistic.inputValue}")</value>
+                  <read-only>True</read-only>
+                </input-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_TableHeader_Budget</header-style>
+              <header-label>Budget (p, #{bindings.ProcessYear})</header-label>
+              <cell-style>=IF(OR("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"="OEI"),"IPMS_TableCell_Number_Total","IPMS_TableCell_Number_ReadOnly")</cell-style>
+              <annotation>CurrBudgetProbabilistic</annotation>
+            </column>
+            <column id="CurrForecastDeterministic">
+              <update-component>
+                <input-text>
+                  <double-click-action-set>
+                    <alert>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <success-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_SUCCESS_PROMPT']}</success-message>
+                      <failure-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_FAILURE_PROMPT']}</failure-message>
+                      <ok-button-label>#{_ADFDIres['DIALOGS_OK_BUTTON_LABEL']}</ok-button-label>
+                    </alert>
+                    <status>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <message>#{_ADFDIres['STATUS_MESSAGE_PROMPT']}</message>
+                    </status>
+                  </double-click-action-set>
+                  <value>=IF(AND("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"&lt;&gt;"OEI"),
+"=SUMIFS(p,
+av,"""",ar,""#{row.bindings.ProjectSbeCode.inputValue}*"",IF(#{row.bindings.GroupingType.inputValue}&gt;1,aq,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;1,""#{row.bindings.DevelopmentPhaseCode.inputValue}"",""""),IF(#{row.bindings.GroupingType.inputValue}&gt;2,as,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;2,""#{row.bindings.ProgramId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}&gt;3,at,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;3,""#{row.bindings.ProjectId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}=5,au,aw),IF(#{row.bindings.GroupingType.inputValue}=5,""#{row.bindings.StudyStatusCode.inputValue}"",""""))",
+"#{row.bindings.CurrForecastDeterministic.inputValue}")</value>
+                  <read-only>True</read-only>
+                </input-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_TableHeader_Forecast</header-style>
+              <header-label>FC#{bindings.CostsForecastNumberVersion} 
+(d, #{bindings.ProcessYear})</header-label>
+              <cell-style>=IF(OR("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"="OEI"),"IPMS_TableCell_Number_Total","IPMS_TableCell_Number_ReadOnly")</cell-style>
+              <annotation>CurrForecastDeterministic</annotation>
+            </column>
+            <column id="CurrForecastProbabilistic">
+              <update-component>
+                <input-text>
+                  <double-click-action-set>
+                    <alert>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <success-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_SUCCESS_PROMPT']}</success-message>
+                      <failure-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_FAILURE_PROMPT']}</failure-message>
+                      <ok-button-label>#{_ADFDIres['DIALOGS_OK_BUTTON_LABEL']}</ok-button-label>
+                    </alert>
+                    <status>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <message>#{_ADFDIres['STATUS_MESSAGE_PROMPT']}</message>
+                    </status>
+                  </double-click-action-set>
+                  <value>=IF(AND("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"&lt;&gt;"OEI"),
+"=SUMIFS(q,
+av,"""",ar,""#{row.bindings.ProjectSbeCode.inputValue}*"",IF(#{row.bindings.GroupingType.inputValue}&gt;1,aq,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;1,""#{row.bindings.DevelopmentPhaseCode.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}&gt;2,as,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;2,""#{row.bindings.ProgramId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}&gt;3,at,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;3,""#{row.bindings.ProjectId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}=5,au,aw),IF(#{row.bindings.GroupingType.inputValue}=5,""#{row.bindings.StudyStatusCode.inputValue}"",""""))",
+"#{row.bindings.CurrForecastProbabilistic.inputValue}")</value>
+                  <read-only>True</read-only>
+                </input-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_TableHeader_Forecast</header-style>
+              <header-label>FC#{bindings.CostsForecastNumberVersion} 
+(p, #{bindings.ProcessYear})</header-label>
+              <cell-style>=IF(OR("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"="OEI"),"IPMS_TableCell_Number_Total","IPMS_TableCell_Number_ReadOnly")</cell-style>
+              <annotation>CurrForecastProbabilistic</annotation>
+            </column>
+            <column id="CurrActualsDeterministic">
+              <update-component>
+                <input-text>
+                  <double-click-action-set>
+                    <alert>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <success-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_SUCCESS_PROMPT']}</success-message>
+                      <failure-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_FAILURE_PROMPT']}</failure-message>
+                      <ok-button-label>#{_ADFDIres['DIALOGS_OK_BUTTON_LABEL']}</ok-button-label>
+                    </alert>
+                    <status>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <message>#{_ADFDIres['STATUS_MESSAGE_PROMPT']}</message>
+                    </status>
+                  </double-click-action-set>
+                  <value>=IF(AND("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"&lt;&gt;"OEI"),
+"=SUMIFS(_r,
+av,"""",ar,""#{row.bindings.ProjectSbeCode.inputValue}*"",IF(#{row.bindings.GroupingType.inputValue}&gt;1,aq,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;1,""#{row.bindings.DevelopmentPhaseCode.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}&gt;2,as,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;2,""#{row.bindings.ProgramId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}&gt;3,at,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;3,""#{row.bindings.ProjectId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}=5,au,aw),IF(#{row.bindings.GroupingType.inputValue}=5,""#{row.bindings.StudyStatusCode.inputValue}"",""""))",
+"#{row.bindings.CurrActualsDeterministic.inputValue}")</value>
+                  <read-only>True</read-only>
+                </input-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_TableHeader_Actuals</header-style>
+              <header-label>Actuals (#{bindings.ProcessYear})</header-label>
+              <cell-style>=IF(OR("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"="OEI"),"IPMS_TableCell_Number_Total","IPMS_TableCell_Number_ReadOnly")</cell-style>
+              <annotation>CurrActualsDeterministic</annotation>
+            </column>
+            <column id="CurrRunrateDeterministic">
+              <update-component>
+                <input-text>
+                  <double-click-action-set>
+                    <alert>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <success-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_SUCCESS_PROMPT']}</success-message>
+                      <failure-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_FAILURE_PROMPT']}</failure-message>
+                      <ok-button-label>#{_ADFDIres['DIALOGS_OK_BUTTON_LABEL']}</ok-button-label>
+                    </alert>
+                    <status>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <message>#{_ADFDIres['STATUS_MESSAGE_PROMPT']}</message>
+                    </status>
+                  </double-click-action-set>
+                  <value>=IF(AND("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"&lt;&gt;"OEI"),
+"=SUMIFS(_s,
+av,"""",ar,""#{row.bindings.ProjectSbeCode.inputValue}*"",IF(#{row.bindings.GroupingType.inputValue}&gt;1,aq,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;1,""#{row.bindings.DevelopmentPhaseCode.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}&gt;2,as,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;2,""#{row.bindings.ProgramId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}&gt;3,at,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;3,""#{row.bindings.ProjectId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}=5,au,aw),IF(#{row.bindings.GroupingType.inputValue}=5,""#{row.bindings.StudyStatusCode.inputValue}"",""""))",
+"#{row.bindings.CurrRunrateDeterministic.inputValue}")</value>
+                  <read-only>True</read-only>
+                </input-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_TableHeader_RR</header-style>
+              <header-label>RR (#{bindings.ProcessYear})</header-label>
+              <cell-style>=IF(OR("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"="OEI"),"IPMS_TableCell_Number_Total","IPMS_TableCell_Number_ReadOnly")</cell-style>
+              <annotation>CurrRunrateDeterministic</annotation>
+            </column>
+            <column id="CurrFpsCommited">
+              <update-component>
+                <input-text>
+                  <value>=IF(AND("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"&lt;&gt;"OEI"),
+"=SUMIFS(CurrFpsComm,
+av,"""",ar,""#{row.bindings.ProjectSbeCode.inputValue}*"",IF(#{row.bindings.GroupingType.inputValue}&gt;1,aq,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;1,""#{row.bindings.DevelopmentPhaseCode.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}&gt;2,as,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;2,""#{row.bindings.ProgramId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}&gt;3,at,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;3,""#{row.bindings.ProjectId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}=5,au,aw),IF(#{row.bindings.GroupingType.inputValue}=5,""#{row.bindings.StudyStatusCode.inputValue}"",""""))",
+"#{row.bindings.CurrFpsCommited.inputValue}")</value>
+                  <read-only>True</read-only>
+                </input-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_TableHeader_FPS_Costs</header-style>
+              <header-label>#{bindings.EstimateView.hints.CurrFpsCommited.label} (d, #{bindings.ProcessYear})</header-label>
+              <cell-style>=IF(OR("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"="OEI"),"IPMS_TableCell_Number_Total","IPMS_TableCell_Number_ReadOnly")</cell-style>
+              <annotation>CurrFpsCommited</annotation>
+            </column>
+            <column id="CurrFpsUncommited">
+              <update-component>
+                <input-text>
+                  <value>=IF(AND("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"&lt;&gt;"OEI"),
+"=SUMIFS(CurrFpsUncomm,
+av,"""",ar,""#{row.bindings.ProjectSbeCode.inputValue}*"",IF(#{row.bindings.GroupingType.inputValue}&gt;1,aq,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;1,""#{row.bindings.DevelopmentPhaseCode.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}&gt;2,as,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;2,""#{row.bindings.ProgramId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}&gt;3,at,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;3,""#{row.bindings.ProjectId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}=5,au,aw),IF(#{row.bindings.GroupingType.inputValue}=5,""#{row.bindings.StudyStatusCode.inputValue}"",""""))",
+"#{row.bindings.CurrFpsUncommited.inputValue}")</value>
+                  <read-only>True</read-only>
+                </input-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_TableHeader_FPS_Costs</header-style>
+              <header-label>#{bindings.EstimateView.hints.CurrFpsUncommited.label} (d, #{bindings.ProcessYear})</header-label>
+              <cell-style>=IF(OR("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"="OEI"),"IPMS_TableCell_Number_Total","IPMS_TableCell_Number_ReadOnly")</cell-style>
+              <annotation>CurrFpsUncommited</annotation>
+            </column>
+            <column id="CurrFpsIncUnspecTotal">
+              <update-component>
+                <input-text>
+                  <value>=IF(AND("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"&lt;&gt;"OEI"),
+"=SUMIFS(CurrFpsIncUnspec,
+av,"""",ar,""#{row.bindings.ProjectSbeCode.inputValue}*"",IF(#{row.bindings.GroupingType.inputValue}&gt;1,aq,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;1,""#{row.bindings.DevelopmentPhaseCode.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}&gt;2,as,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;2,""#{row.bindings.ProgramId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}&gt;3,at,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;3,""#{row.bindings.ProjectId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}=5,au,aw),IF(#{row.bindings.GroupingType.inputValue}=5,""#{row.bindings.StudyStatusCode.inputValue}"",""""))",
+"#{row.bindings.CurrFpsIncUnspecTotal.inputValue}")</value>
+                  <read-only>True</read-only>
+                </input-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_TableHeader_FPS_Costs</header-style>
+              <header-label>#{bindings.EstimateView.hints.CurrFpsIncUnspecTotal.label} (d, #{bindings.ProcessYear})</header-label>
+              <cell-style>=IF(OR("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"="OEI"),"IPMS_TableCell_Number_Total","IPMS_TableCell_Number_ReadOnly")</cell-style>
+              <annotation>CurrFpsIncUnspecTotal</annotation>
+            </column>
+            <column id="EstimateDetOldCurrYear">
+              <update-component>
+                <input-text>
+                  <double-click-action-set>
+                    <alert>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <success-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_SUCCESS_PROMPT']}</success-message>
+                      <failure-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_FAILURE_PROMPT']}</failure-message>
+                      <ok-button-label>#{_ADFDIres['DIALOGS_OK_BUTTON_LABEL']}</ok-button-label>
+                    </alert>
+                    <status>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <message>#{_ADFDIres['STATUS_MESSAGE_PROMPT']}</message>
+                    </status>
+                  </double-click-action-set>
+                  <value>=IF(AND("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"&lt;&gt;"OEI"),
+"=SUMIFS(y1prev,
+av,"""",ar,""#{row.bindings.ProjectSbeCode.inputValue}*"",IF(#{row.bindings.GroupingType.inputValue}&gt;1,aq,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;1,""#{row.bindings.DevelopmentPhaseCode.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}&gt;2,as,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;2,""#{row.bindings.ProgramId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}&gt;3,at,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;3,""#{row.bindings.ProjectId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}=5,au,aw),IF(#{row.bindings.GroupingType.inputValue}=5,""#{row.bindings.StudyStatusCode.inputValue}"",""""))",
+"#{row.bindings.EstimateDetOldCurrYear.inputValue}")</value>
+                  <read-only>True</read-only>
+                </input-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_TableHeader_PrevProcess</header-style>
+              <header-label>#{bindings.ProcessYear} LE prev (d)</header-label>
+              <cell-style>=IF(OR("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"="OEI"),"IPMS_TableCell_Number_Total","IPMS_TableCell_Number_ReadOnly")</cell-style>
+              <annotation>EstimateDetOldCurrYear</annotation>
+            </column>
+            <column id="EstimateDetCurrYear">
+              <update-component>
+                <input-text>
+                  <double-click-action-set>
+                    <alert>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <success-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_SUCCESS_PROMPT']}</success-message>
+                      <failure-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_FAILURE_PROMPT']}</failure-message>
+                      <ok-button-label>#{_ADFDIres['DIALOGS_OK_BUTTON_LABEL']}</ok-button-label>
+                    </alert>
+                    <status>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <message>#{_ADFDIres['STATUS_MESSAGE_PROMPT']}</message>
+                    </status>
+                  </double-click-action-set>
+                  <value>=IF(AND("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"&lt;&gt;"OEI"),
+"=SUMIFS(t,
+av,"""",ar,""#{row.bindings.ProjectSbeCode.inputValue}*"",IF(#{row.bindings.GroupingType.inputValue}&gt;1,aq,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;1,""#{row.bindings.DevelopmentPhaseCode.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}&gt;2,as,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;2,""#{row.bindings.ProgramId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}&gt;3,at,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;3,""#{row.bindings.ProjectId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}=5,au,aw),IF(#{row.bindings.GroupingType.inputValue}=5,""#{row.bindings.StudyStatusCode.inputValue}"",""""))",
+"#{row.bindings.EstimateDetCurrYear.inputValue}")</value>
+                  <read-only>=IF(OR("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.StudyStatusCode.inputValue}"="OTHER-OEI"),"True","False")</read-only>
+                </input-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_TableHeader</header-style>
+              <header-label>#{bindings.ProcessYear} LE (d)</header-label>
+              <cell-style>=IF(OR("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"="OEI"),"IPMS_TableCell_Number_Total",IF("#{row.bindings.StudyStatusCode.inputValue}"="OTHER-OEI","IPMS_TableCell_Number_ReadOnly","IPMS_TableCell_Number"))</cell-style>
+              <annotation>EstimateDetCurrYear</annotation>
+            </column>
+            <column id="EstimateProbCurrYear">
+              <update-component>
+                <input-text>
+                  <double-click-action-set>
+                    <alert>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <success-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_SUCCESS_PROMPT']}</success-message>
+                      <failure-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_FAILURE_PROMPT']}</failure-message>
+                      <ok-button-label>#{_ADFDIres['DIALOGS_OK_BUTTON_LABEL']}</ok-button-label>
+                    </alert>
+                    <status>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <message>#{_ADFDIres['STATUS_MESSAGE_PROMPT']}</message>
+                    </status>
+                  </double-click-action-set>
+                  <value>=IF(AND("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"&lt;&gt;"OEI"),
+"=SUMIFS(u,
+av,"""",ar,""#{row.bindings.ProjectSbeCode.inputValue}*"",IF(#{row.bindings.GroupingType.inputValue}&gt;1,aq,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;1,""#{row.bindings.DevelopmentPhaseCode.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}&gt;2,as,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;2,""#{row.bindings.ProgramId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}&gt;3,at,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;3,""#{row.bindings.ProjectId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}=5,au,aw),IF(#{row.bindings.GroupingType.inputValue}=5,""#{row.bindings.StudyStatusCode.inputValue}"",""""))",
+"#{row.bindings.EstimateProbCurrYear.inputValue}")</value>
+                  <read-only>=IF(OR("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.StudyStatusCode.inputValue}"="OTHER-OEI"),"True","False")</read-only>
+                </input-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_TableHeader</header-style>
+              <header-label>#{bindings.ProcessYear} LE (p)</header-label>
+              <cell-style>=IF(OR("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"="OEI"),"IPMS_TableCell_Number_Total",IF("#{row.bindings.StudyStatusCode.inputValue}"="OTHER-OEI","IPMS_TableCell_Number_ReadOnly","IPMS_TableCell_Number"))</cell-style>
+              <annotation>EstimateProbCurrYear</annotation>
+            </column>
+            <column id="CommentsCurrYear">
+              <update-component>
+                <input-text>
+                  <double-click-action-set>
+                    <alert>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <success-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_SUCCESS_PROMPT']}</success-message>
+                      <failure-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_FAILURE_PROMPT']}</failure-message>
+                      <ok-button-label>#{_ADFDIres['DIALOGS_OK_BUTTON_LABEL']}</ok-button-label>
+                    </alert>
+                    <status>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <message>#{_ADFDIres['STATUS_MESSAGE_PROMPT']}</message>
+                    </status>
+                  </double-click-action-set>
+                  <value>#{row.bindings.CommentsCurrYear.inputValue}</value>
+                  <read-only>=IF("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","True","False")</read-only>
+                </input-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_TableHeader</header-style>
+              <header-label>#{bindings.EstimateView.hints.CommentsCurrYear.label}</header-label>
+              <cell-style>=IF(OR("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"="OEI"),"IPMS_TableCell_Text_Total","IPMS_TableCell_Text")</cell-style>
+              <annotation>CommentsCurrYear</annotation>
+            </column>
+            <column id="NextBudgetDeterministic">
+              <update-component>
+                <input-text>
+                  <double-click-action-set>
+                    <alert>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <success-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_SUCCESS_PROMPT']}</success-message>
+                      <failure-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_FAILURE_PROMPT']}</failure-message>
+                      <ok-button-label>#{_ADFDIres['DIALOGS_OK_BUTTON_LABEL']}</ok-button-label>
+                    </alert>
+                    <status>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <message>#{_ADFDIres['STATUS_MESSAGE_PROMPT']}</message>
+                    </status>
+                  </double-click-action-set>
+                  <value>=IF(AND("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"&lt;&gt;"OEI"),
+"=SUMIFS(v,
+av,"""",
+ar,""#{row.bindings.ProjectSbeCode.inputValue}*"",IF(#{row.bindings.GroupingType.inputValue}&gt;1,aq,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;1,""#{row.bindings.DevelopmentPhaseCode.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}&gt;2,as,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;2,""#{row.bindings.ProgramId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}&gt;3,at,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;3,""#{row.bindings.ProjectId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}=5,au,aw),IF(#{row.bindings.GroupingType.inputValue}=5,""#{row.bindings.StudyStatusCode.inputValue}"",""""))",
+"#{row.bindings.NextBudgetDeterministic.inputValue}")</value>
+                  <read-only>True</read-only>
+                </input-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_TableHeader_Budget</header-style>
+              <header-label>=concatenate("Budget (d, ",#{bindings.ProcessYear}+1,")")</header-label>
+              <cell-style>=IF(OR("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"="OEI"),"IPMS_TableCell_Number_Total","IPMS_TableCell_Number_ReadOnly")</cell-style>
+              <annotation>NextBudgetDeterministic</annotation>
+            </column>
+            <column id="NextBudgetProbabilistic">
+              <update-component>
+                <input-text>
+                  <double-click-action-set>
+                    <alert>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <success-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_SUCCESS_PROMPT']}</success-message>
+                      <failure-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_FAILURE_PROMPT']}</failure-message>
+                      <ok-button-label>#{_ADFDIres['DIALOGS_OK_BUTTON_LABEL']}</ok-button-label>
+                    </alert>
+                    <status>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <message>#{_ADFDIres['STATUS_MESSAGE_PROMPT']}</message>
+                    </status>
+                  </double-click-action-set>
+                  <value>=IF(AND("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"&lt;&gt;"OEI"),
+"=SUMIFS(w,
+av,"""",ar,""#{row.bindings.ProjectSbeCode.inputValue}*"",IF(#{row.bindings.GroupingType.inputValue}&gt;1,aq,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;1,""#{row.bindings.DevelopmentPhaseCode.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}&gt;2,as,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;2,""#{row.bindings.ProgramId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}&gt;3,at,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;3,""#{row.bindings.ProjectId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}=5,au,aw),IF(#{row.bindings.GroupingType.inputValue}=5,""#{row.bindings.StudyStatusCode.inputValue}"",""""))",
+"#{row.bindings.NextBudgetProbabilistic.inputValue}")</value>
+                  <read-only>True</read-only>
+                </input-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_TableHeader_Budget</header-style>
+              <header-label>=concatenate("Budget (p, ",#{bindings.ProcessYear}+1,")")</header-label>
+              <cell-style>=IF(OR("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"="OEI"),"IPMS_TableCell_Number_Total","IPMS_TableCell_Number_ReadOnly")</cell-style>
+              <annotation>NextBudgetProbabilistic</annotation>
+            </column>
+            <column id="NextForecastDeterministic">
+              <update-component>
+                <input-text>
+                  <double-click-action-set>
+                    <alert>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <success-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_SUCCESS_PROMPT']}</success-message>
+                      <failure-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_FAILURE_PROMPT']}</failure-message>
+                      <ok-button-label>#{_ADFDIres['DIALOGS_OK_BUTTON_LABEL']}</ok-button-label>
+                    </alert>
+                    <status>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <message>#{_ADFDIres['STATUS_MESSAGE_PROMPT']}</message>
+                    </status>
+                  </double-click-action-set>
+                  <value>=IF(AND("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"&lt;&gt;"OEI"),
+"=SUMIFS(x,
+av,"""",ar,""#{row.bindings.ProjectSbeCode.inputValue}*"",IF(#{row.bindings.GroupingType.inputValue}&gt;1,aq,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;1,""#{row.bindings.DevelopmentPhaseCode.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}&gt;2,as,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;2,""#{row.bindings.ProgramId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}&gt;3,at,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;3,""#{row.bindings.ProjectId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}=5,au,aw),IF(#{row.bindings.GroupingType.inputValue}=5,""#{row.bindings.StudyStatusCode.inputValue}"",""""))",
+"#{row.bindings.NextForecastDeterministic.inputValue}")</value>
+                  <read-only>True</read-only>
+                </input-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_TableHeader_Forecast</header-style>
+              <header-label>=concatenate("FC#{bindings.CostsForecastNumberVersion}
+(d, ",#{bindings.ProcessYear}+1,")")</header-label>
+              <cell-style>=IF(OR("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"="OEI"),"IPMS_TableCell_Number_Total","IPMS_TableCell_Number_ReadOnly")</cell-style>
+              <annotation>NextForecastDeterministic</annotation>
+            </column>
+            <column id="NextForecastProbabilistic">
+              <update-component>
+                <input-text>
+                  <double-click-action-set>
+                    <alert>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <success-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_SUCCESS_PROMPT']}</success-message>
+                      <failure-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_FAILURE_PROMPT']}</failure-message>
+                      <ok-button-label>#{_ADFDIres['DIALOGS_OK_BUTTON_LABEL']}</ok-button-label>
+                    </alert>
+                    <status>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <message>#{_ADFDIres['STATUS_MESSAGE_PROMPT']}</message>
+                    </status>
+                  </double-click-action-set>
+                  <value>=IF(AND("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"&lt;&gt;"OEI"),
+"=SUMIFS(y,
+av,"""",ar,""#{row.bindings.ProjectSbeCode.inputValue}*"",IF(#{row.bindings.GroupingType.inputValue}&gt;1,aq,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;1,""#{row.bindings.DevelopmentPhaseCode.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}&gt;2,as,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;2,""#{row.bindings.ProgramId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}&gt;3,at,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;3,""#{row.bindings.ProjectId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}=5,au,aw),IF(#{row.bindings.GroupingType.inputValue}=5,""#{row.bindings.StudyStatusCode.inputValue}"",""""))",
+"#{row.bindings.NextForecastProbabilistic.inputValue}")</value>
+                  <read-only>True</read-only>
+                </input-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_TableHeader_Forecast</header-style>
+              <header-label>=concatenate("FC#{bindings.CostsForecastNumberVersion}
+(p, ",#{bindings.ProcessYear}+1,")")</header-label>
+              <cell-style>=IF(OR("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"="OEI"),"IPMS_TableCell_Number_Total","IPMS_TableCell_Number_ReadOnly")</cell-style>
+              <annotation>NextForecastProbabilistic</annotation>
+            </column>
+            <column id="NextFpsCommited">
+              <update-component>
+                <input-text>
+                  <value>=IF(AND("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"&lt;&gt;"OEI"),
+"=SUMIFS(NextFpsComm,
+av,"""",ar,""#{row.bindings.ProjectSbeCode.inputValue}*"",IF(#{row.bindings.GroupingType.inputValue}&gt;1,aq,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;1,""#{row.bindings.DevelopmentPhaseCode.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}&gt;2,as,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;2,""#{row.bindings.ProgramId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}&gt;3,at,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;3,""#{row.bindings.ProjectId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}=5,au,aw),IF(#{row.bindings.GroupingType.inputValue}=5,""#{row.bindings.StudyStatusCode.inputValue}"",""""))",
+"#{row.bindings.NextFpsCommited.inputValue}")</value>
+                  <read-only>True</read-only>
+                </input-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_TableHeader_FPS_Costs</header-style>
+              <header-label>=concatenate("#{bindings.EstimateView.hints.NextFpsCommited.label} (d, ",#{bindings.ProcessYear}+1,")")</header-label>
+              <cell-style>=IF(OR("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"="OEI"),"IPMS_TableCell_Number_Total","IPMS_TableCell_Number_ReadOnly")</cell-style>
+              <annotation>NextFpsCommited</annotation>
+            </column>
+            <column id="NextFpsUncommited">
+              <update-component>
+                <input-text>
+                  <value>=IF(AND("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"&lt;&gt;"OEI"),
+"=SUMIFS(NextFpsUncomm,
+av,"""",ar,""#{row.bindings.ProjectSbeCode.inputValue}*"",IF(#{row.bindings.GroupingType.inputValue}&gt;1,aq,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;1,""#{row.bindings.DevelopmentPhaseCode.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}&gt;2,as,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;2,""#{row.bindings.ProgramId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}&gt;3,at,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;3,""#{row.bindings.ProjectId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}=5,au,aw),IF(#{row.bindings.GroupingType.inputValue}=5,""#{row.bindings.StudyStatusCode.inputValue}"",""""))",
+"#{row.bindings.NextFpsUncommited.inputValue}")</value>
+                  <read-only>True</read-only>
+                </input-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_TableHeader_FPS_Costs</header-style>
+              <header-label>=concatenate("#{bindings.EstimateView.hints.NextFpsUncommited.label} (d, ",#{bindings.ProcessYear}+1,")")</header-label>
+              <cell-style>=IF(OR("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"="OEI"),"IPMS_TableCell_Number_Total","IPMS_TableCell_Number_ReadOnly")</cell-style>
+              <annotation>NextFpsUncommited</annotation>
+            </column>
+            <column id="NextFpsIncUnspecTotal">
+              <update-component>
+                <input-text>
+                  <value>=IF(AND("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"&lt;&gt;"OEI"),
+"=SUMIFS(NextFpsIncUnspec,
+av,"""",ar,""#{row.bindings.ProjectSbeCode.inputValue}*"",IF(#{row.bindings.GroupingType.inputValue}&gt;1,aq,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;1,""#{row.bindings.DevelopmentPhaseCode.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}&gt;2,as,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;2,""#{row.bindings.ProgramId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}&gt;3,at,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;3,""#{row.bindings.ProjectId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}=5,au,aw),IF(#{row.bindings.GroupingType.inputValue}=5,""#{row.bindings.StudyStatusCode.inputValue}"",""""))",
+"#{row.bindings.NextFpsIncUnspecTotal.inputValue}")</value>
+                  <read-only>True</read-only>
+                </input-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_TableHeader_FPS_Costs</header-style>
+              <header-label>=concatenate("#{bindings.EstimateView.hints.NextFpsIncUnspecTotal.label} (d, ",#{bindings.ProcessYear}+1,")")</header-label>
+              <cell-style>=IF(OR("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"="OEI"),"IPMS_TableCell_Number_Total","IPMS_TableCell_Number_ReadOnly")</cell-style>
+              <annotation>NextFpsIncUnspecTotal</annotation>
+            </column>
+            <column id="EstimateDetOldNextYear">
+              <update-component>
+                <input-text>
+                  <double-click-action-set>
+                    <alert>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <success-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_SUCCESS_PROMPT']}</success-message>
+                      <failure-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_FAILURE_PROMPT']}</failure-message>
+                      <ok-button-label>#{_ADFDIres['DIALOGS_OK_BUTTON_LABEL']}</ok-button-label>
+                    </alert>
+                    <status>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <message>#{_ADFDIres['STATUS_MESSAGE_PROMPT']}</message>
+                    </status>
+                  </double-click-action-set>
+                  <value>=IF(AND("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"&lt;&gt;"OEI"),
+"=SUMIFS(y2prev,
+av,"""",ar,""#{row.bindings.ProjectSbeCode.inputValue}*"",IF(#{row.bindings.GroupingType.inputValue}&gt;1,aq,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;1,""#{row.bindings.DevelopmentPhaseCode.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}&gt;2,as,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;2,""#{row.bindings.ProgramId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}&gt;3,at,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;3,""#{row.bindings.ProjectId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}=5,au,aw),IF(#{row.bindings.GroupingType.inputValue}=5,""#{row.bindings.StudyStatusCode.inputValue}"",""""))",
+"#{row.bindings.EstimateDetOldNextYear.inputValue}")</value>
+                  <read-only>True</read-only>
+                </input-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_TableHeader_PrevProcess</header-style>
+              <header-label>=concatenate(#{bindings.ProcessYear}+1," LE prev (d)")</header-label>
+              <cell-style>=IF(OR("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"="OEI"),"IPMS_TableCell_Number_Total","IPMS_TableCell_Number_ReadOnly")</cell-style>
+              <annotation>EstimateDetOldNextYear</annotation>
+            </column>
+            <column id="EstimateDetNextYear">
+              <update-component>
+                <input-text>
+                  <double-click-action-set>
+                    <alert>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <success-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_SUCCESS_PROMPT']}</success-message>
+                      <failure-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_FAILURE_PROMPT']}</failure-message>
+                      <ok-button-label>#{_ADFDIres['DIALOGS_OK_BUTTON_LABEL']}</ok-button-label>
+                    </alert>
+                    <status>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <message>#{_ADFDIres['STATUS_MESSAGE_PROMPT']}</message>
+                    </status>
+                  </double-click-action-set>
+                  <value>=IF(AND("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"&lt;&gt;"OEI"),
+"=SUMIFS(_z,
+av,"""",ar,""#{row.bindings.ProjectSbeCode.inputValue}*"",IF(#{row.bindings.GroupingType.inputValue}&gt;1,aq,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;1,""#{row.bindings.DevelopmentPhaseCode.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}&gt;2,as,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;2,""#{row.bindings.ProgramId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}&gt;3,at,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;3,""#{row.bindings.ProjectId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}=5,au,aw),IF(#{row.bindings.GroupingType.inputValue}=5,""#{row.bindings.StudyStatusCode.inputValue}"",""""))",
+"#{row.bindings.EstimateDetNextYear.inputValue}")</value>
+                  <read-only>=IF(OR(#{bindings.ProcessIsNextYear}=0,"#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.StudyStatusCode.inputValue}"="OTHER-OEI"), "True","False")</read-only>
+                </input-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_TableHeader</header-style>
+              <header-label>=concatenate(#{bindings.ProcessYear}+1," LE (d)")</header-label>
+              <cell-style>=IF(OR("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"="OEI"),"IPMS_TableCell_Number_Total",IF(OR(#{bindings.ProcessIsNextYear}=0,"#{row.bindings.StudyStatusCode.inputValue}"="OTHER-OEI"),"IPMS_TableCell_Number_ReadOnly","IPMS_TableCell_Number") )</cell-style>
+              <annotation>EstimateDetNextYear</annotation>
+            </column>
+            <column id="EstimateProbNextYear">
+              <update-component>
+                <input-text>
+                  <double-click-action-set>
+                    <alert>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <success-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_SUCCESS_PROMPT']}</success-message>
+                      <failure-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_FAILURE_PROMPT']}</failure-message>
+                      <ok-button-label>#{_ADFDIres['DIALOGS_OK_BUTTON_LABEL']}</ok-button-label>
+                    </alert>
+                    <status>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <message>#{_ADFDIres['STATUS_MESSAGE_PROMPT']}</message>
+                    </status>
+                  </double-click-action-set>
+                  <value>=IF(AND("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"&lt;&gt;"OEI"),
+"=SUMIFS(aa,
+av,"""",
+ar,""#{row.bindings.ProjectSbeCode.inputValue}*"",IF(#{row.bindings.GroupingType.inputValue}&gt;1,aq,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;1,""#{row.bindings.DevelopmentPhaseCode.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}&gt;2,as,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;2,""#{row.bindings.ProgramId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}&gt;3,at,aw),IF(#{row.bindings.GroupingType.inputValue}&gt;3,""#{row.bindings.ProjectId.inputValue}"",""""),
+IF(#{row.bindings.GroupingType.inputValue}=5,au,aw),IF(#{row.bindings.GroupingType.inputValue}=5,""#{row.bindings.StudyStatusCode.inputValue}"",""""))",
+"#{row.bindings.EstimateProbNextYear.inputValue}")</value>
+                  <read-only>=IF(OR(#{bindings.ProcessIsNextYear}=0,"#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.StudyStatusCode.inputValue}"="OTHER-OEI"), "True","False")</read-only>
+                </input-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_TableHeader</header-style>
+              <header-label>=concatenate(#{bindings.ProcessYear}+1," LE (p)")</header-label>
+              <cell-style>=IF(OR("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"="OEI"),"IPMS_TableCell_Number_Total",IF(OR(#{bindings.ProcessIsNextYear}=0,"#{row.bindings.StudyStatusCode.inputValue}"="OTHER-OEI"),"IPMS_TableCell_Number_ReadOnly","IPMS_TableCell_Number") )</cell-style>
+              <annotation>EstimateProbNextYear</annotation>
+            </column>
+            <column id="NextComments">
+              <update-component>
+                <input-text>
+                  <value>#{row.bindings.CommentsNextYear.inputValue}</value>
+                  <read-only>=IF("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","True","False")</read-only>
+                </input-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_TableHeader</header-style>
+              <header-label>#{bindings.EstimateView.hints.CommentsNextYear.label}</header-label>
+              <cell-style>=IF(OR("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.SubtypeCode.inputValue}"="OEI"),"IPMS_TableCell_Text_Total","IPMS_TableCell_Text")</cell-style>
+              <annotation>NextComments</annotation>
+            </column>
+            <column id="COL849071653">
+              <update-component>
+                <input-text>
+                  <value>#{row.bindings.EstimateDetCurrYear.inputValue}</value>
+                  <read-only>=IF(OR("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.StudyStatusCode.inputValue}"="OTHER-OEI"),"True","False")</read-only>
+                </input-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_Service</header-style>
+              <header-label>#{bindings.EstimateView.hints.EstimateDetCurrYear.label} - Service (DO NOT EDIT!)</header-label>
+              <cell-style>IPMS_Service</cell-style>
+              <annotation>EstimateDetCurrYear - Service</annotation>
+            </column>
+            <column id="COL144991482">
+              <update-component>
+                <input-text>
+                  <value>#{row.bindings.EstimateProbCurrYear.inputValue}</value>
+                  <read-only>=IF(OR("#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.StudyStatusCode.inputValue}"="OTHER-OEI"),"True","False")</read-only>
+                </input-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_Service</header-style>
+              <header-label>#{bindings.EstimateView.hints.EstimateProbCurrYear.label} - Service (DO NOT EDIT!)</header-label>
+              <cell-style>IPMS_Service</cell-style>
+              <annotation>EstimateProbCurrYear - Service</annotation>
+            </column>
+            <column id="COL957006755">
+              <update-component>
+                <input-text>
+                  <value>#{row.bindings.EstimateDetNextYear.inputValue}</value>
+                  <read-only>=IF(OR(#{bindings.ProcessIsNextYear}=0,"#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.StudyStatusCode.inputValue}"="OTHER-OEI"), "True","False")</read-only>
+                </input-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_Service</header-style>
+              <header-label>#{bindings.EstimateView.hints.EstimateDetNextYear.label} - Service (DO NOT EDIT!)</header-label>
+              <cell-style>IPMS_Service</cell-style>
+              <annotation>EstimateDetNextYear - Service (DO NOT EDIT!)</annotation>
+            </column>
+            <column id="COL375817512">
+              <update-component>
+                <input-text>
+                  <value>#{row.bindings.EstimateProbNextYear.inputValue}</value>
+                  <read-only>=IF(OR(#{bindings.ProcessIsNextYear}=0,"#{row.bindings.GroupingType.inputValue}"&lt;&gt;"","#{row.bindings.StudyStatusCode.inputValue}"="OTHER-OEI"), "True","False")</read-only>
+                </input-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_Service</header-style>
+              <header-label>#{bindings.EstimateView.hints.EstimateProbNextYear.label} - Service (DO NOT EDIT!)</header-label>
+              <cell-style>IPMS_Service</cell-style>
+              <annotation>EstimateProbNextYear - Service (DO NOT EDIT!)</annotation>
+            </column>
+            <column id="_ADF_ChangedColumn">
+              <update-component>
+                <output-text>
+                  <double-click-action-set>
+                    <alert>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <success-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_SUCCESS_PROMPT']}</success-message>
+                      <failure-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_FAILURE_PROMPT']}</failure-message>
+                      <ok-button-label>#{_ADFDIres['DIALOGS_OK_BUTTON_LABEL']}</ok-button-label>
+                    </alert>
+                    <status>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <message>#{_ADFDIres['STATUS_MESSAGE_PROMPT']}</message>
+                    </status>
+                  </double-click-action-set>
+                </output-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_TableHeader</header-style>
+              <header-label>Changed</header-label>
+              <cell-style>IPMS_TableCell_Changed</cell-style>
+            </column>
+            <column id="_ADF_StatusColumn">
+              <update-component>
+                <output-text>
+                  <double-click-action-set>
+                    <alert>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <success-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_SUCCESS_PROMPT']}</success-message>
+                      <failure-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_FAILURE_PROMPT']}</failure-message>
+                      <ok-button-label>#{_ADFDIres['DIALOGS_OK_BUTTON_LABEL']}</ok-button-label>
+                    </alert>
+                    <status enabled="false">
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <message>#{_ADFDIres['STATUS_MESSAGE_PROMPT']}</message>
+                    </status>
+                    <action-list>
+                      <component-action>
+                        <component-id>TAB340665983</component-id>
+                        <action>DisplayRowErrors</action>
+                      </component-action>
+                    </action-list>
+                  </double-click-action-set>
+                </output-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_TableHeader</header-style>
+              <header-label>Status</header-label>
+              <cell-style>IPMS_TableCell_Text_ReadOnly</cell-style>
+            </column>
+            <column id="_ADF_FlagColumn">
+              <update-component>
+                <output-text>
+                  <double-click-action-set>
+                    <alert>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <success-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_SUCCESS_PROMPT']}</success-message>
+                      <failure-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_FAILURE_PROMPT']}</failure-message>
+                      <ok-button-label>#{_ADFDIres['DIALOGS_OK_BUTTON_LABEL']}</ok-button-label>
+                    </alert>
+                    <status>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <message>#{_ADFDIres['STATUS_MESSAGE_PROMPT']}</message>
+                    </status>
+                  </double-click-action-set>
+                </output-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_TableHeader</header-style>
+              <header-label>#{_ADFDIres[COMPONENTS_TABLE_FLAGGED_COL_LABEL]}</header-label>
+              <cell-style>IPMS_TableCell_Text_ReadOnly</cell-style>
+            </column>
+            <column id="_ADF_RowKeyColumn">
+              <update-component>
+                <output-text>
+                  <double-click-action-set>
+                    <alert>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <success-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_SUCCESS_PROMPT']}</success-message>
+                      <failure-message>#{_ADFDIres['DIALOGS_ACTION_ALERT_FAILURE_PROMPT']}</failure-message>
+                      <ok-button-label>#{_ADFDIres['DIALOGS_OK_BUTTON_LABEL']}</ok-button-label>
+                    </alert>
+                    <status>
+                      <title>#{_ADFDIres['DIALOGS_ACTION_TITLE']}</title>
+                      <message>#{_ADFDIres['STATUS_MESSAGE_PROMPT']}</message>
+                    </status>
+                  </double-click-action-set>
+                </output-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_Service</header-style>
+              <header-label>#{_ADFDIres[COMPONENTS_TABLE_ROWKEY_COL_LABEL]} - Service</header-label>
+              <cell-style>IPMS_Service</cell-style>
+            </column>
+            <column id="COL752427951">
+              <visible>True</visible>
+              <header-style>_ADFDI_HeaderStyle</header-style>
+              <header-label>Reserved</header-label>
+              <cell-style>_ADFDI_TableCellStyle</cell-style>
+              <annotation>Reserved</annotation>
+            </column>
+            <column id="COL1009550782">
+              <visible>True</visible>
+              <header-style>_ADFDI_HeaderStyle</header-style>
+              <header-label>Reserved</header-label>
+              <cell-style>_ADFDI_TableCellStyle</cell-style>
+              <annotation>Reserved</annotation>
+            </column>
+            <column id="COL1416591884">
+              <visible>True</visible>
+              <header-style>_ADFDI_HeaderStyle</header-style>
+              <header-label>Reserved</header-label>
+              <cell-style>_ADFDI_TableCellStyle</cell-style>
+              <annotation>Reserved</annotation>
+            </column>
+            <column id="COL303849929">
+              <visible>True</visible>
+              <header-style>_ADFDI_HeaderStyle</header-style>
+              <header-label>Reserved</header-label>
+              <cell-style>_ADFDI_TableCellStyle</cell-style>
+              <annotation>Reserved</annotation>
+            </column>
+            <column id="COL1937928479">
+              <visible>True</visible>
+              <header-style>_ADFDI_HeaderStyle</header-style>
+              <header-label>Reserved</header-label>
+              <cell-style>_ADFDI_TableCellStyle</cell-style>
+              <annotation>Reserved</annotation>
+            </column>
+            <column id="COL1895382881">
+              <visible>True</visible>
+              <header-style>_ADFDI_HeaderStyle</header-style>
+              <header-label>Reserved</header-label>
+              <cell-style>_ADFDI_TableCellStyle</cell-style>
+              <annotation>Reserved</annotation>
+            </column>
+            <column id="COL43008067">
+              <update-component>
+                <output-text>
+                  <value>#{row.bindings.DevelopmentPhaseCode.inputValue}</value>
+                </output-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_Service</header-style>
+              <header-label>#{bindings.EstimateView.hints.DevelopmentPhaseCode.label} - Service</header-label>
+              <cell-style>IPMS_Service</cell-style>
+              <annotation>DevelopmentPhaseCode - Service</annotation>
+            </column>
+            <column id="COL960697907">
+              <update-component>
+                <output-text>
+                  <value>#{row.bindings.ProjectSbeCode.inputValue}</value>
+                </output-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_Service</header-style>
+              <header-label>#{bindings.EstimateView.hints.ProjectSbeCode.label} - Service</header-label>
+              <cell-style>IPMS_Service</cell-style>
+              <annotation>ProjectSbeCode - Service</annotation>
+            </column>
+            <column id="COL1855677071">
+              <update-component>
+                <output-text>
+                  <value>#{row.bindings.ProgramId.inputValue}</value>
+                </output-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_Service</header-style>
+              <header-label>#{bindings.EstimateView.hints.ProgramId.label} - Service</header-label>
+              <cell-style>IPMS_Service</cell-style>
+              <annotation>ProgramId - Service</annotation>
+            </column>
+            <column id="COL1296281189">
+              <update-component>
+                <output-text>
+                  <value>#{row.bindings.ProjectId.inputValue}</value>
+                </output-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_Service</header-style>
+              <header-label>#{bindings.EstimateView.hints.ProjectId.label} - Service</header-label>
+              <cell-style>IPMS_Service</cell-style>
+              <annotation>ProjectId - Service</annotation>
+            </column>
+            <column id="COL1289870293">
+              <update-component>
+                <output-text>
+                  <value>#{row.bindings.StudyStatusCode.inputValue}</value>
+                </output-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_Service</header-style>
+              <header-label>#{bindings.EstimateView.hints.StudyStatusCode.label} - Service</header-label>
+              <cell-style>IPMS_Service</cell-style>
+              <annotation>StudyStatusCode - Service</annotation>
+            </column>
+            <column id="COL574368633">
+              <update-component>
+                <output-text>
+                  <value>#{row.bindings.GroupingType.inputValue}</value>
+                </output-text>
+              </update-component>
+              <visible>True</visible>
+              <header-style>IPMS_Service</header-style>
+              <header-label>#{bindings.EstimateView.hints.GroupingType.label} - Service</header-label>
+              <cell-style>IPMS_Service</cell-style>
+              <annotation>GroupingType - Service</annotation>
+            </column>
+            <column id="COL1897026326">
+              <visible>True</visible>
+              <header-style>IPMS_Service</header-style>
+              <header-label>EmptyColumn - Service</header-label>
+              <cell-style>IPMS_Service</cell-style>
+              <annotation>Empty Column - Service</annotation>
+            </column>
+          </column-list>
+          <row-limit enabled="false">
+            <warning-message>#{_ADFDIres['ROWLIMIT_WARNINGS_MESSAGE_1']}</warning-message>
+            <max-rows>500</max-rows>
+          </row-limit>
+        </table-component>
+        <label-component id="LBL1015632059" origin="B2">
+          <label>Name</label>
+          <style>IPMS_Label</style>
+        </label-component>
+        <label-component id="LBL1795100163" origin="B3">
+          <label>Comments</label>
+          <style>IPMS_Label</style>
+        </label-component>
+        <output-text-component id="OTX1777933347" origin="C2">
+          <output-text>
+            <value>#{bindings.TagProcessName}</value>
+          </output-text>
+          <style>IPMS_OutputText</style>
+        </output-text-component>
+        <output-text-component id="OTX150728042" origin="C3">
+          <output-text>
+            <value>#{bindings.ProcessComments}</value>
+          </output-text>
+          <style>IPMS_OutputText</style>
+        </output-text-component>
+        <output-text-component id="OTX1353820206" origin="BJ3">
+          <output-text>
+            <value>#{bindings.LeScope}</value>
+          </output-text>
+          <style>_ADFDI_OutputTextStyle</style>
+        </output-text-component>
+        <output-text-component id="OTX1088092678" origin="BJ2">
+          <output-text>
+            <value>#{bindings.ProcessIsNextYear}</value>
+          </output-text>
+          <style>_ADFDI_OutputTextStyle</style>
+          <tooltip>#{bindings.ProcessIsNextYear.hints.tooltip}</tooltip>
+        </output-text-component>
+      </component-list>
+    </worksheet>
+  </worksheet-list>
+</workbook>

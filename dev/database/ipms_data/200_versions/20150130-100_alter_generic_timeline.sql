@@ -1,0 +1,1 @@
+alter table generic_timeline add(calculation_date date default sysdate not null);

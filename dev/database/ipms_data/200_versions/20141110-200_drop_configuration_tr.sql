@@ -1,0 +1,1 @@
+drop trigger ipms_data.configuration_tr;

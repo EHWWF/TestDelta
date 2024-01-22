@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="windows-1257" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="CostsProbabilitySpecificView"
+  Version="11.1.1.64.93"
+  Extends="com.bayer.ipms.model.views.CostsProbabilityView"
+  InheritPersonalization="true"
+  BindingStyle="OracleName"
+  CustomQuery="false"
+  FetchMode="FETCH_AS_NEEDED"
+  FetchSize="100"
+  PageIterMode="Full"
+  ViewLinkAccessorRetained="true"
+  UseGlueCode="false"
+  FromList="COSTS_PROBABILITY CostsProbability, PHASE Phase, STRATEGIC_BUSINESS_ENTITY StrategicBusinessEntity, SUBSTANCE_TYPE SubstanceType"
+  Where="CostsProbability.PROJECT_ID IS NULL AND CostsProbability.scope_code='INT' AND CostsProbability.PHASE_CODE = Phase.CODE AND CostsProbability.SBE_CODE = StrategicBusinessEntity.CODE(+) AND CostsProbability.SUBSTANCE_TYPE_CODE = SubstanceType.CODE(+)"
+  SelectList="CostsProbability.CREATE_DATE, 
+       CostsProbability.CREATE_USER_ID, 
+       CostsProbability.ID, 
+       CostsProbability.PROBABILITY, 
+       CostsProbability.SCOPE_CODE, 
+       CostsProbability.UPDATE_DATE, 
+       CostsProbability.UPDATE_USER_ID, 
+       CostsProbability.PHASE_CODE, 
+       CostsProbability.SBE_CODE, 
+       CostsProbability.SUBSTANCE_TYPE_CODE, 
+       Phase.CODE, 
+       Phase.NAME, 
+       StrategicBusinessEntity.CODE AS CODE1, 
+       StrategicBusinessEntity.NAME AS NAME1, 
+       SubstanceType.CODE AS CODE2, 
+       SubstanceType.NAME AS NAME2, 
+       CostsProbability.PROJECT_ID"
+  OrderBy="CostsProbability.SBE_CODE,CostsProbability.SUBSTANCE_TYPE_CODE,CostsProbability.PHASE_CODE"
+  RowClass="com.bayer.ipms.model.views.CostsProbabilitySpecificViewRowImpl"
+  RowInterface="com.bayer.ipms.model.views.common.CostsProbabilitySpecificViewRow"
+  ClientRowProxyName="com.bayer.ipms.model.views.client.CostsProbabilitySpecificViewRowClient">
+  <DesignTime>
+    <Attr Name="_isCodegen" Value="true"/>
+    <Attr Name="_codeGenFlag2" Value="Access"/>
+  </DesignTime>
+  <ViewAccessor
+    Name="CostsProbabilityPhaseView"
+    ViewObjectName="com.bayer.ipms.model.views.lookups.PhaseView"
+    AMUsageName="SharedAppModule"
+    ViewInstanceName="PhaseView"
+    RowLevelBinds="true"/>
+  <ViewAccessor
+    Name="CostsProbabilitySbeView"
+    ViewObjectName="com.bayer.ipms.model.views.lookups.StrategicBusinessEntityView"
+    AMUsageName="SharedAppModule"
+    ViewInstanceName="StrategicBusinessEntityView"
+    RowLevelBinds="true"/>
+  <ViewAccessor
+    Name="CostsProbabilitySubstanceTypeView"
+    ViewObjectName="com.bayer.ipms.model.views.lookups.SubstanceTypeView"
+    AMUsageName="SharedAppModule"
+    ViewInstanceName="SubstanceTypeView"
+    RowLevelBinds="true"/>
+  <ViewAccessor
+    Name="CostsProbabilityPTRPhaseView"
+    ViewObjectName="com.bayer.ipms.model.views.lookups.PhaseView"
+    AMUsageName="SharedAppModule"
+    ViewInstanceName="PTRPhaseView"
+    RowLevelBinds="true"/>
+  <ListBinding
+    Name="LOV_PhaseCode"
+    ListVOName="CostsProbabilityPTRPhaseView"
+    ListRangeSize="-1"
+    NullValueFlag="none"
+    NullValueId="LOV_PhaseCode_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="PhaseCode"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="Code"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="Name"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_SbeCode"
+    ListVOName="CostsProbabilitySbeView"
+    ListRangeSize="-1"
+    NullValueFlag="start"
+    NullValueId="LOV_SbeCode_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="SbeCode"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="Code"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="Name"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_SubstanceTypeCode"
+    ListVOName="CostsProbabilitySubstanceTypeView"
+    ListRangeSize="-1"
+    NullValueFlag="start"
+    NullValueId="LOV_SubstanceTypeCode_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="SubstanceTypeCode"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="Code"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="Name"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <EntityUsage
+    Name="Phase"
+    Entity="com.bayer.ipms.model.entities.lookups.Phase"
+    Association="com.bayer.ipms.model.entities.assoc.CostsProbabilityPhase"
+    AssociationEnd="com.bayer.ipms.model.entities.assoc.CostsProbabilityPhase.Phase"
+    SourceUsage="com.bayer.ipms.model.views.CostsProbabilityView.CostsProbability"
+    ReadOnly="true"
+    Reference="true"
+    DeleteParticipant="false"
+    JoinType="INNER JOIN">
+    <DesignTime>
+      <AttrArray Name="_srcAttributes">
+        <Item Value="com.bayer.ipms.model.entities.CostsProbability.PhaseCode"/>
+      </AttrArray>
+      <AttrArray Name="_dstAttributes">
+        <Item Value="com.bayer.ipms.model.entities.lookups.Phase.Code"/>
+      </AttrArray>
+    </DesignTime>
+  </EntityUsage>
+  <EntityUsage
+    Name="StrategicBusinessEntity"
+    Entity="com.bayer.ipms.model.entities.lookups.StrategicBusinessEntity"
+    SourceUsage="com.bayer.ipms.model.views.CostsProbabilitySpecificView.Phase"
+    ReadOnly="true"
+    Reference="true"
+    DeleteParticipant="false"/>
+  <EntityUsage
+    Name="SubstanceType"
+    Entity="com.bayer.ipms.model.entities.lookups.SubstanceType"
+    SourceUsage="com.bayer.ipms.model.views.CostsProbabilitySpecificView.StrategicBusinessEntity"
+    ReadOnly="true"
+    Reference="true"
+    DeleteParticipant="false"/>
+  <ViewAttribute
+    Name="ScopeCode"
+    IsUpdateable="while_insert"
+    IsNotNull="true"
+    PrecisionRule="true"
+    DiscrColumn="true"
+    EntityAttrName="ScopeCode"
+    EntityUsage="CostsProbability"
+    AliasName="SCOPE_CODE"
+    DefaultValue="INT">
+    <DesignTime>
+      <Attr Name="_OverrideAttr" Value="true"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="PhaseCode"
+    PrecisionRule="true"
+    EntityAttrName="PhaseCode"
+    EntityUsage="CostsProbability"
+    AliasName="PHASE_CODE"
+    LOVName="LOV_PhaseCode">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.CostsProbabilitySpecificView.PhaseCode_LABEL"/>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="SbeCode"
+    PrecisionRule="true"
+    EntityAttrName="SbeCode"
+    EntityUsage="CostsProbability"
+    AliasName="SBE_CODE"
+    LOVName="LOV_SbeCode">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.CostsProbabilitySpecificView.SbeCode_LABEL"/>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="SubstanceTypeCode"
+    PrecisionRule="true"
+    EntityAttrName="SubstanceTypeCode"
+    EntityUsage="CostsProbability"
+    AliasName="SUBSTANCE_TYPE_CODE"
+    LOVName="LOV_SubstanceTypeCode">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.CostsProbabilitySpecificView.SubstanceTypeCode_LABEL"/>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="_PhaseCode"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Code"
+    EntityUsage="Phase"
+    AliasName="CODE"
+    IsUpdateable="false"/>
+  <ViewAttribute
+    Name="PhaseName"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Name"
+    EntityUsage="Phase"
+    AliasName="NAME"/>
+  <ViewAttribute
+    Name="_SbeCode"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Code"
+    EntityUsage="StrategicBusinessEntity"
+    AliasName="CODE1"
+    IsUpdateable="false"/>
+  <ViewAttribute
+    Name="SbeName"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Name"
+    EntityUsage="StrategicBusinessEntity"
+    AliasName="NAME1"/>
+  <ViewAttribute
+    Name="_SubstanceTypeCode"
+    IsUpdateable="false"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Code"
+    EntityUsage="SubstanceType"
+    AliasName="CODE2"/>
+  <ViewAttribute
+    Name="Name"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Name"
+    EntityUsage="SubstanceType"
+    AliasName="NAME2"/>
+  <ViewAttribute
+    Name="ProjectId"
+    IsUpdateable="while_insert"
+    IsUnique="true"
+    PrecisionRule="true"
+    EntityAttrName="ProjectId"
+    EntityUsage="CostsProbability"
+    AliasName="PROJECT_ID"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.bayer.ipms.model.bundles.modelBundle"/>
+  </ResourceBundle>
+</ViewObject>

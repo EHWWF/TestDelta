@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE ViewLink SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewLink
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ImportTimelineElementSubs"
+  Version="11.1.1.64.93"
+  InheritPersonalization="true"
+  Where="(:Bind_WbsId = PARENT_WBS_ID) AND (:Bind_ImportId = IMPORT_ID) and (type_code='PLAN' or type_code is null)">
+  <DesignTime>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="com.bayer.ipms.model.views.links.ImportTimelineElementSubs_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <ViewLinkDefEnd
+    Name="ImportTimelineElementView"
+    Cardinality="1"
+    Owner="com.bayer.ipms.model.views.imports.ImportTimelineView"
+    Source="true">
+    <DesignTime>
+      <Attr Name="_finderName" Value="ImportTimelineElementView"/>
+      <Attr Name="_isUpdateable" Value="true"/>
+      <Attr Name="_minCardinality" Value="1"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.views.imports.ImportTimelineView.WbsId"/>
+      <Item
+        Value="com.bayer.ipms.model.views.imports.ImportTimelineView.ImportId"/>
+    </AttrArray>
+  </ViewLinkDefEnd>
+  <ViewLinkDefEnd
+    Name="WbsIdImportTimelineElementView"
+    Cardinality="-1"
+    Owner="com.bayer.ipms.model.views.imports.ImportTimelineView">
+    <DesignTime>
+      <Attr Name="_finderName" Value="WbsIdImportTimelineElementView"/>
+      <Attr Name="_isUpdateable" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.views.imports.ImportTimelineView.ParentWbsId"/>
+      <Item
+        Value="com.bayer.ipms.model.views.imports.ImportTimelineView.ImportId"/>
+    </AttrArray>
+  </ViewLinkDefEnd>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.bayer.ipms.model.bundles.modelBundle"/>
+  </ResourceBundle>
+</ViewLink>

@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich" xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <c:set var="bundle" value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <f:view>
+        <af:document id="d1" title="#{bundle.globalProMIS}">
+            <af:messages id="m1"/>
+            <af:form id="f1">
+                <af:pageTemplate viewId="/WEB-INF/com.bayer.ipms.view/templates/ipms-page-template.jspx" id="tmpl">
+                    <f:facet name="navigation">
+                        <af:panelAccordion id="ac1" rendered="#{securityContext.userInRole['TaskView']}">
+                            <af:showDetailItem text="#{bundle.taskAllAssigned}" id="taskList" stretchChildren="first"
+                                               disclosed="#{pageFlowScope.tasksBean.tasksDisclosed}"
+                                               disclosureListener="#{pageFlowScope.tasksBean.onTasksDisclose}">
+                                <f:facet name="toolbar">
+                                    <af:menuBar id="tlb1">
+                                        <af:commandMenuItem id="cmdRefTasks" icon="/images/reload.png"
+                                                            text="#{bundle.globalRefresh}"
+                                                            action="#{pageFlowScope.tasksBean.onTasksRefresh}"/>
+                                    </af:menuBar>
+                                </f:facet>
+                                <af:panelStretchLayout id="psl" topHeight="auto" startWidth="50px">
+                                    <f:facet name="top">
+                                        <af:query id="qryId1" headerText="#{bundle.globalFilter}" disclosed="true"
+                                                  value="#{bindings.AccessibleQuery.queryDescriptor}"
+                                                  model="#{bindings.AccessibleQuery.queryModel}"
+                                                  queryListener="#{bindings.AccessibleQuery.processQuery}"
+                                                  modeChangeVisible="false" saveQueryMode="hidden"
+                                                  searchButtonText="#{bundle.globalFilter}" labelAlignment="start"
+                                                  queryOperationListener="#{bindings.AccessibleQuery.processQueryOperation}"
+                                                  resultComponentId="::trTasks"/>
+                                    </f:facet>
+                                    <f:facet name="center">
+                                        <af:tree value="#{bindings.TaskLocalView.treeModel}" var="node"
+                                                 selectionListener="#{bindings.TaskLocalView.collectionModel.makeCurrent}"
+                                                 rowSelection="single" id="trTasks"
+                                                 selectedRowKeys="#{bindings.TaskLocalView.collectionModel.selectedRow}"
+                                                 displayRow="first" fetchSize="#{bindings.TaskLocalViewIterator.rangeSize}">
+                                            <f:facet name="nodeStamp">
+                                                <af:outputText value="#{node.Title}" id="ot1"/>
+                                            </f:facet>
+                                        </af:tree>
+                                    </f:facet>
+                                </af:panelStretchLayout>
+                            </af:showDetailItem>
+                            <af:showDetailItem text="#{bundle.taskAllTerminated}" id="terminatedList"
+                                               disclosed="#{!pageFlowScope.tasksBean.tasksDisclosed}"
+                                               disclosureListener="#{pageFlowScope.tasksBean.onTerminatedDisclose}"
+                                               stretchChildren="first">
+                                <f:facet name="toolbar">
+                                    <af:menuBar id="tlb2">
+                                        <af:commandMenuItem id="cmdRefTerminated" icon="/images/reload.png"
+                                                            text="#{bundle.globalRefresh}"
+                                                            action="#{pageFlowScope.tasksBean.onTerminatedRefresh}"/>
+                                    </af:menuBar>
+                                </f:facet>
+                                <af:panelStretchLayout id="ps22" topHeight="auto" startWidth="50px">
+                                    <f:facet name="top">
+                                        <af:query id="qryId2" headerText="#{bundle.globalFilter}" disclosed="true"
+                                                  value="#{bindings.TerminatedQuery.queryDescriptor}"
+                                                  model="#{bindings.TerminatedQuery.queryModel}"
+                                                  queryListener="#{bindings.TerminatedQuery.processQuery}"
+                                                  modeChangeVisible="false" saveQueryMode="hidden"
+                                                  searchButtonText="#{bundle.globalFilter}" labelAlignment="start"
+                                                  queryOperationListener="#{bindings.TerminatedQuery.processQueryOperation}"
+                                                  resultComponentId="::trTerm"/>
+                                    </f:facet>
+                                    <f:facet name="center">
+                                        <af:tree value="#{bindings.TerminatedView.treeModel}" var="node"
+                                                 selectionListener="#{bindings.TerminatedView.collectionModel.makeCurrent}"
+                                                 rowSelection="single" id="trTerm"
+                                                 selectedRowKeys="#{bindings.TerminatedView.collectionModel.selectedRow}"
+                                                 displayRow="first"
+                                                 fetchSize="#{bindings.TerminatedViewIterator.rangeSize}">
+                                            <f:facet name="nodeStamp">
+                                                <af:outputText value="#{node}" id="ot2"/>
+                                            </f:facet>
+                                        </af:tree>
+                                    </f:facet>
+                                </af:panelStretchLayout>
+                            </af:showDetailItem>
+                        </af:panelAccordion>
+                    </f:facet>
+                    <f:facet name="content">
+                        <af:region value="#{bindings.dynamicRegion1.regionModel}" id="region"
+                                   rendered="#{securityContext.userInRole['TaskView']}"/>
+                    </f:facet>
+                    <f:attribute name="tab" value="tasks"/>
+                </af:pageTemplate>
+            </af:form>
+            <f:facet name="metaContainer">
+                <f:verbatim>                 <link type="image/x-icon" href="images/promis.png" rel="shortcut icon"/>             </f:verbatim>
+            </f:facet>
+        </af:document>
+    </f:view>
+</jsp:root>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="LTCProcessView"
+  Version="12.2.1.22.48"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="com.bayer.ipms.model.base.IPMSViewRowImpl"
+  ComponentClass="com.bayer.ipms.model.base.IPMSViewObjectImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_isExpertMode" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="com.bayer.ipms.model.views.lookups.LTCProcessView_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <SQLQuery><![CDATA[SELECT   distinct (LtcProcess.PROCESS_DESCRIPTION),     
+        case when (LENGTH(LtcProcess.PROCESS_DESCRIPTION)) > 70 then    
+    CONCAT(SUBSTR (LtcProcess.PROCESS_DESCRIPTION, 0, 70) , '....')    
+    else LtcProcess.PROCESS_DESCRIPTION   end AS SUB_PROCESS_DESCRIPTION     
+         FROM  LTC_PROCESS LtcProcess order by PROCESS_DESCRIPTION desc]]></SQLQuery>
+  <ViewAttribute
+    Name="ProcessDescription"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="PROCESS_DESCRIPTION"
+    Expression="PROCESS_DESCRIPTION"
+    SQLType="VARCHAR"/>
+  <ViewAttribute
+    Name="SubProcessDescription"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="SUB_PROCESS_DESCRIPTION"
+    Expression="SUB_PROCESS_DESCRIPTION"
+    SQLType="VARCHAR"/>
+  <ViewCriteria
+    Name="ProcessDescVC"
+    ViewObjectName="com.bayer.ipms.model.views.lookups.LTCProcessView"
+    Conjunction="AND">
+    <Properties Name="_Props">
+      <CustomProperties>
+        <Property
+          Name="autoExecute"
+          Value="false"/>
+        <Property
+          Name="mode"
+          Value="Basic"/>
+        <Property
+          Name="allowConjunctionOverride"
+          Value="true"/>
+        <Property
+          Name="showInList"
+          Value="true"/>
+        <Property
+          Name="displayOperators"
+          Value="InAdvancedMode"/>
+      </CustomProperties>
+    </Properties>
+    <ViewCriteriaRow
+      Name="LTCProcessViewCriteria_row_0"
+      UpperColumns="1">
+      <ViewCriteriaItem
+        Name="ProcessDescription"
+        ViewAttribute="ProcessDescription"
+        Operator="ISNOTBLANK"
+        Conjunction="AND"
+        Required="Optional"/>
+    </ViewCriteriaRow>
+  </ViewCriteria>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.bayer.ipms.model.bundles.modelBundle"/>
+  </ResourceBundle>
+</ViewObject>

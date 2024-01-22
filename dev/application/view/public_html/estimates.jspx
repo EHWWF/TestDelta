@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <f:view>
+        <f:loadBundle basename="com.bayer.ipms.view.bundles.viewBundle" var="bundle"/>
+        <af:document title="#{bundle.globalProMIS}" id="doc">
+            <af:messages id="m1"/>
+            <af:form id="form" usesUpload="true">
+                <af:pageTemplate viewId="/WEB-INF/com.bayer.ipms.view/templates/ipms-page-template.jspx" id="tmpl"
+                                 value="#{bindings.ptb1}">
+                    <f:facet name="navigation">
+                        <af:panelHeader text="#{bundle.estimatesAll}" id="ph1"
+                                        rendered="#{securityContext.userInRole['EstimatesTagProcessView']}">
+                            <af:panelCollection id="pc111" styleClass="AFStretchWidth"
+                                                featuresOff="detach statusBar showAsTopToolbarItem">
+                                <f:facet name="toolbar">
+                                    <af:menuBar id="toolbar" partialTriggers="cmdRefresh">
+                                        <af:commandMenuItem id="cmdNewtag" icon="/images/new.png"
+                                                            text="#{bundle.estimatesTagCreate}" immediate="true"
+                                                            rendered="#{securityContext.userInRole['EstimatesTagCreate']}">
+                                            <af:showPopupBehavior popupId="::createTagPopup"/>
+                                        </af:commandMenuItem>
+                                        <af:commandMenuItem id="cmdRefresh" icon="/images/reload.png"
+                                                            text="#{bundle.globalRefresh}"
+                                                            action="#{pageFlowScope.estimatesBean.onEstimatesRefresh}"
+                                                            immediate="true"/>
+                                    </af:menuBar>
+                                </f:facet>
+                                <af:tree value="#{bindings.LatestEstimatesTagView.treeModel}" var="node"
+                                         rowSelection="single" id="prcTree"
+                                         selectionListener="#{pageFlowScope.estimatesBean.onProcessTreeSelect}"
+                                         contentDelivery="immediate" displayRow="first"
+                                         fetchSize="#{bindings.LatestEstimatesTagViewIterator.rangeSize}">
+                                    <?audit suppress oracle.adf.faces.compreqsummary?>
+                                    <f:facet name="nodeStamp">
+                                        <af:outputText value="#{node}" id="ot1"/>
+                                    </f:facet>
+                                </af:tree>
+                            </af:panelCollection>
+                        </af:panelHeader>
+                    </f:facet>
+                    <f:facet name="content">
+                        <af:region value="#{bindings.dynamicRegion1.regionModel}" id="r1"/>
+                    </f:facet>
+                    <f:facet name="popup">
+                        <af:popup childCreation="deferred" autoCancel="disabled" id="createTagPopup"
+                                  contentDelivery="lazyUncached"
+                                  popupFetchListener="#{pageFlowScope.estimatesBean.onCreateTagPopupFetch}"
+                                  popupCanceledListener="#{pageFlowScope.estimatesBean.onCreateTagPopupCancel}">
+                            <af:dialog id="d1" title="#{bundle.estimatesTagCreate}"
+                                       dialogListener="#{pageFlowScope.estimatesBean.onTagCreate}" contentWidth="600">
+                                <f:facet name="buttonBar"/>
+                                <af:panelBox text="#{bundle.globalSummary}" id="pb1">
+                                    <f:facet name="toolbar"/>
+                                    <af:panelFormLayout id="pfl1" maxColumns="2" rows="1">
+                                        <af:inputText value="#{bindings.LetName.inputValue}"
+                                                      label="#{bindings.LetName.hints.label}"
+                                                      required="#{bindings.LetName.hints.mandatory}"
+                                                      columns="#{bindings.LetName.hints.displayWidth}"
+                                                      maximumLength="#{bindings.LetName.hints.precision}"
+                                                      shortDesc="#{bindings.LetName.hints.tooltip}" id="it1">
+                                            <f:validator binding="#{bindings.LetName.validator}"/>
+                                        </af:inputText>
+                                        <af:selectOneChoice value="#{bindings.OldProcessId.inputValue}"
+                                                            label="#{bindings.OldProcessId.hints.label}" id="soc1"
+                                                            autoSubmit="true" >
+                                            <!--af:selectItem label="" value="blank" id="si1"/-->
+                                            <f:selectItems value="#{bindings.OldProcessId.items}" id="si2"/>
+                                        </af:selectOneChoice>
+                                    </af:panelFormLayout>
+                                </af:panelBox>
+                            </af:dialog>
+                        </af:popup>
+                    </f:facet>
+                    <f:attribute name="tab" value="estimates"/>
+                </af:pageTemplate>
+            </af:form>
+            <f:facet name="metaContainer">
+                <f:verbatim><?audit suppress oracle.adf.faces.verbatimUsage?>                                     <link type="image/x-icon"
+                                                                                                                        href="images/promis.png"
+                                                                                                                        rel="shortcut icon"/>                 </f:verbatim>
+            </f:facet>
+        </af:document>
+    </f:view>
+</jsp:root>

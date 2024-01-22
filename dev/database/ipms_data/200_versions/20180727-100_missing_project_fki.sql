@@ -1,0 +1,1 @@
+create index project_project_group_fki on project(project_group_code);

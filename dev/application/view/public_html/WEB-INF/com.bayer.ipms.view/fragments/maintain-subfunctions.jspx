@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:h="http://java.sun.com/jsf/html"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+  <f:view>
+    <f:loadBundle basename="com.bayer.ipms.view.bundles.viewBundle"
+                  var="bundle"/>
+    <af:document id="d1" title="#{bundle.maintainSubFunctions}">
+      <af:messages id="m1"/>
+      <af:form id="f1">
+        <af:pageTemplate viewId="/WEB-INF/com.bayer.ipms.view/templates/ipms-popup-template.jspx"
+                         id="pt1">
+          <f:facet name="summary"/>
+          <f:facet name="content">
+            <af:panelCollection id="pc1" styleClass="AFStretchWidth"
+                                featuresOff="detach viewMenu statusBar">
+              <af:table value="#{bindings.SubFunctionView.collectionModel}"
+                        var="row" rows="#{bindings.SubFunctionView.rangeSize}"
+                        emptyText="#{bindings.SubFunctionView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                        fetchSize="#{bindings.SubFunctionView.rangeSize}"
+                        rowBandingInterval="0" styleClass="AFStretchWidth"
+                        editingMode="clickToEdit"
+                        filterModel="#{bindings.SubFunctionViewQuery.queryDescriptor}"
+                        queryListener="#{bindings.SubFunctionViewQuery.processQuery}"
+                        selectedRowKeys="#{bindings.SubFunctionView.collectionModel.selectedRow}"
+                        selectionListener="#{bindings.SubFunctionView.collectionModel.makeCurrent}"
+                        filterVisible="false" varStatus="vs"
+                        rowSelection="single" id="tSubfunctions"
+                        autoHeightRows="0" columnStretching="last">
+                <af:column sortProperty="#{bindings.SubFunctionView.hints.Code.name}"
+                           filterable="true" sortable="true"
+                           filterFeatures="caseInsensitive"
+                           headerText="#{bindings.SubFunctionView.hints.Code.label}"
+                           id="c2">
+                  <af:outputText value="#{row.Code}" id="ot1"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.SubFunctionView.hints.Name.name}"
+                           filterable="true" sortable="true"
+                           filterFeatures="caseInsensitive"
+                           headerText="#{bindings.SubFunctionView.hints.Name.label}"
+                           id="c3">
+                  <af:outputText value="#{row.Name}" id="ot2"/>
+                </af:column>
+                <af:column headerText="#{bindings.SubFunctionView.hints.FunctionCode.label}"
+                           id="c4" filterable="true"
+                           filterFeatures="caseInsensitive"
+                           sortProperty="#{bindings.SubFunctionView.hints.FunctionCode.name}"
+                           sortable="true">
+                  <af:selectOneChoice value="#{row.bindings.FunctionCode.inputValue}"
+                                      label="#{row.bindings.FunctionCode.label}"
+                                      required="#{bindings.SubFunctionView.hints.FunctionCode.mandatory}"
+                                      shortDesc="#{bindings.SubFunctionView.hints.FunctionCode.tooltip}"
+                                      id="soc1" readOnly="true">
+                    <f:selectItems value="#{utilsBean.lookup[bindings.SubFunctionView.currentRow.functionView]}"/>
+                  </af:selectOneChoice>
+                  <f:facet name="filter">
+                    <af:selectOneChoice value="#{vs.filterCriteria.FunctionCode}"
+                                        label="" unselectedLabel="">
+                      <f:selectItems value="#{utilsBean.lookup[bindings.SubFunctionView.currentRow.functionView]}"/>
+                    </af:selectOneChoice>
+                  </f:facet>
+                </af:column>
+              </af:table>
+            </af:panelCollection>
+          </f:facet>
+          <f:facet name="controls">
+            <f:subview id="sub1">
+              <af:panelGroupLayout layout="horizontal" halign="right">
+                <af:spacer height="30"/>
+                <af:commandButton text="#{bundle.globalClose}" id="cmdCancel" action="cancel" immediate="true"/>
+                <af:spacer width="3"/>
+              </af:panelGroupLayout>
+            </f:subview>
+          </f:facet>
+        </af:pageTemplate>
+      </af:form>
+    </af:document>
+  </f:view>
+</jsp:root>

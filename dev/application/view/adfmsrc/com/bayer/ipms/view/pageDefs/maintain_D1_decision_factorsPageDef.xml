@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.1.3.10.8"
+                id="maintain_D1_decision_factorsPageDef" Package="com.bayer.ipms.view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <searchRegion id="ProjectGoalFactorQuery" Binds="ProjectGoalFactorViewIterator"
+                  Criteria="ProjectGoalFactorViewCriteria"
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"/>
+    <iterator Binds="ManagementAppModule.ProjectGoalFactorView" DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="ProjectGoalFactorViewIterator"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="ProjectGoalFactorViewIterator" id="ProjectGoalFactorView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.lookups.ProjectGoalFactorView" Name="ProjectGoalFactorView10">
+        <AttrNames>
+          <Item Value="Id"/>
+          <Item Value="AreaCode"/>
+          <Item Value="ProjectCode"/>
+          <Item Value="ProjectName"/>
+          <Item Value="MilestoneType"/>
+          <Item Value="Factor"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+  </bindings>
+</pageDefinition>

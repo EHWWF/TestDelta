@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"  xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:c="http://java.sun.com/jsp/jstl/core">
+  <c:set var="bundle" value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+  
+  
+     <af:panelBox text="#{bundle.teamMembers}" showDisclosure="false"
+                                  shortDesc="#{bundle.teamMembers}">
+    
+      <f:facet name="toolbar">
+           <af:toolbar id="tlbTeamMembers" >
+                <af:group id="grpTeammembers">
+                    <af:button partialSubmit="false" rendered="#{rolesBean.projectEditDev or rolesBean.projectEditD2Prj or rolesBean.projectEditSAMD or rolesBean.projectEditPrdMnt}"
+                               icon="/images/edit.png" action="edit-team-members"
+                               text="#{bundle.globalEdit}" id="teammemberedit">
+                    </af:button>
+                </af:group>
+            </af:toolbar>
+          </f:facet>
+                                    
+      <af:table value="#{bindings.ProjectMemberView.collectionModel}" var="row"
+                rows="#{bindings.ProjectMemberView.rangeSize}"
+                emptyText="#{bindings.ProjectMemberView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                fetchSize="#{bindings.ProjectMemberView.rangeSize}"
+                rowBandingInterval="0" filterVisible="false" rowSelection="none"
+                columnStretching="last" styleClass="AFStretchWidth"
+                contentDelivery="immediate"
+                id="team"
+                autoHeightRows="0">
+        <af:column sortProperty="#{bindings.ProjectMemberView.hints.EmployeeName.name}"
+                   sortable="true"
+                   headerText="#{bindings.ProjectMemberView.hints.EmployeeName.label}" width="200">
+          <af:outputText value="#{row.EmployeeName}"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.ProjectMemberView.hints.TeamRoleName.name}"
+                   sortable="true"
+                   headerText="#{bindings.ProjectMemberView.hints.TeamRoleName.label}" width="200">
+          <af:outputText value="#{row.TeamRoleName}"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.ProjectMemberView.hints.UserRoleCode.name}"
+                   sortable="true"
+                   headerText="#{bindings.ProjectMemberView.hints.UserRoleCode.label}">
+          <af:outputText value="#{row.UserRoleCode}"/>
+        </af:column>
+      </af:table>
+      </af:panelBox>
+  
+</jsp:root>

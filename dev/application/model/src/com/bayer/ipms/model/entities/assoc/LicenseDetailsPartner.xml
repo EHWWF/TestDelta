@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Association SYSTEM "jbo_03_01.dtd">
+<!---->
+<Association
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="LicenseDetailsPartner"
+  Version="12.2.1.20.47"
+  InheritPersonalization="merge">
+  <DesignTime>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <AssociationEnd
+    Name="Partner"
+    Cardinality="1"
+    Source="true"
+    Owner="com.bayer.ipms.model.entities.lookups.Partner"
+    LockLevel="NONE"
+    ExposedAccessor="false">
+    <DesignTime>
+      <Attr Name="_isUpdateable" Value="true"/>
+      <Attr Name="_minCardinality" Value="1"/>
+      <Attr Name="_aggregation" Value="0"/>
+      <Attr Name="_finderName" Value="Partner"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.lookups.Partner.Code"/>
+      <Item Value="com.bayer.ipms.model.entities.lookups.Partner.Code"/>
+    </AttrArray>
+    <AttrArray Name="UnboundAttributes">
+      <Item Value="Code"/>
+      <Item Value="Code"/>
+    </AttrArray>
+  </AssociationEnd>
+  <AssociationEnd
+    Name="LicenseDetails"
+    Cardinality="-1"
+    Owner="com.bayer.ipms.model.entities.LicenseDetails"
+    ExposedAccessor="false">
+    <DesignTime>
+      <Attr Name="_isUpdateable" Value="true"/>
+      <Attr Name="_aggregation" Value="0"/>
+      <Attr Name="_finderName" Value="LicenseDetails"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.LicenseDetails.LicensorCode"/>
+      <Item Value="com.bayer.ipms.model.entities.LicenseDetails.LicenseeCode"/>
+    </AttrArray>
+    <AttrArray Name="UnboundAttributes">
+      <Item Value="Licensor"/>
+      <Item Value="Licensee"/>
+    </AttrArray>
+  </AssociationEnd>
+</Association>

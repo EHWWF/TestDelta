@@ -1,0 +1,1 @@
+alter table PLAN_ASSUMPTION_REQUEST flashback archive fda_le;

@@ -1,0 +1,1 @@
+alter table ltc_value add (comments nvarchar2(255));

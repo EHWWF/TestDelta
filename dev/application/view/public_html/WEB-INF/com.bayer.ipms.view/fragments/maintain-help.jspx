@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <f:view>
+        <f:loadBundle basename="com.bayer.ipms.view.bundles.viewBundle" var="bundle"/>
+        <af:document title="#{bundle.helpMaintain}" id="d1">
+            <af:messages id="m1"/>
+            <af:form id="f1">
+                <af:pageTemplate viewId="/WEB-INF/com.bayer.ipms.view/templates/ipms-popup-template.jspx" id="pt1">
+                    <f:facet name="summary"/>
+                    <f:facet name="content">
+                        <af:panelCollection id="pc1" featuresOff="detach viewMenu statusBar">
+                            <af:table value="#{bindings.HelpBundleView.collectionModel}" var="row"
+                                      rows="#{bindings.HelpBundleView.rangeSize}"
+                                      emptyText="#{bindings.HelpBundleView.viewable ? 'No data to display.' : 'Access Denied.'}"
+                                      rowBandingInterval="0" fetchSize="#{bindings.HelpBundleView.rangeSize}" id="t1"
+                                      columnStretching="last"
+                                      filterModel="#{bindings.HelpBundleViewQuery.queryDescriptor}"
+                                      filterVisible="false"
+                                      queryListener="#{bindings.HelpBundleViewQuery.processQuery}" varStatus="vs"
+                                      rowSelection="single">
+                                <af:column headerText="#{bindings.HelpBundleView.hints.Name.label}" width="370" id="c1"
+                                           sortProperty="#{bindings.HelpBundleView.hints.Name.name}" filterable="true"
+                                           sortable="true">
+                                    <af:inputText value="#{row.bindings.Name.inputValue}"
+                                                  label="#{bindings.HelpBundleView.hints.Name.label}"
+                                                  required="#{bindings.HelpBundleView.hints.Name.mandatory}"
+                                                  columns="#{bindings.HelpBundleView.hints.Name.displayWidth}"
+                                                  maximumLength="#{bindings.HelpBundleView.hints.Name.precision}"
+                                                  shortDesc="#{bindings.HelpBundleView.hints.Name.tooltip}" id="it3"
+                                                  readOnly="true">
+                                        <f:validator binding="#{row.bindings.Name.validator}"/>
+                                    </af:inputText>
+                                </af:column>                                
+                                <af:column headerText="#{bundle.helpMaintainGuideDefinition}" width="70" id="cdef1">
+                                    <af:inputText value="#{row.bindings.Definition.inputValue}" id="itdef3"
+                                                  readOnly="true">
+                                        <f:validator binding="#{row.bindings.Definition.validator}"/>
+                                    </af:inputText>
+                                </af:column>
+                                <af:column headerText="#{bindings.HelpBundleView.hints.Url.label}" id="c3"
+                                           sortProperty="#{bindings.HelpBundleView.hints.Url.name}" filterable="true"
+                                           sortable="true">
+                                    <af:inputText value="#{row.bindings.Url.inputValue}"
+                                                  label="#{bindings.HelpBundleView.hints.Url.label}"
+                                                  required="#{bindings.HelpBundleView.hints.Url.mandatory}"
+                                                  columns="#{bindings.HelpBundleView.hints.Url.displayWidth}"
+                                                  maximumLength="#{bindings.HelpBundleView.hints.Url.precision}"
+                                                  shortDesc="#{bindings.HelpBundleView.hints.Url.tooltip}" id="it2">
+                                        <f:validator binding="#{row.bindings.Url.validator}"/>
+                                    </af:inputText>
+                                </af:column>
+                            </af:table>
+                        </af:panelCollection>
+                    </f:facet>
+                    <f:facet name="controls">
+                        <af:declarativeComponent viewId="global-ok-cancel.jsff" id="goc">
+                            <f:attribute name="showCancel" value="true"/>
+                        </af:declarativeComponent>
+                    </f:facet>
+                </af:pageTemplate>
+            </af:form>
+        </af:document>
+    </f:view>
+</jsp:root>

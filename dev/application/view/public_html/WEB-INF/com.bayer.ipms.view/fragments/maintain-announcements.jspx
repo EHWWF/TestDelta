@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:h="http://java.sun.com/jsf/html"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+  <f:view>
+    <f:loadBundle basename="com.bayer.ipms.view.bundles.viewBundle"
+                  var="bundle"/>
+    <af:document id="d1" title="#{bundle.maintainAnnouncements}">
+      <af:messages id="m1"/>
+      <af:form id="f1">
+        <af:pageTemplate viewId="/WEB-INF/com.bayer.ipms.view/templates/ipms-popup-template.jspx"
+                         id="pt1">
+          <f:facet name="summary"/>
+          <f:facet name="content">
+            <af:panelCollection id="pc1" styleClass="AFStretchWidth"
+                                featuresOff="detach viewMenu statusBar">
+              <f:facet name="toolbar">
+                <af:toolbar id="tools">
+                  <af:commandToolbarButton shortDesc="#{bundle.globalAdd}"
+                                           id="btnAdd"
+                                           text="#{bundle.globalAdd}"
+                                           icon="images/new.png"
+                                           immediate="true"
+                                           actionListener="#{bindings.CreateInsert.execute}"/>
+                  <af:commandToolbarButton shortDesc="#{bundle.globalRemove}"
+                                           id="btnRemove"
+                                           text="#{bundle.globalRemove}"
+                                           icon="/images/remove.png"
+                                           immediate="true"
+                                           actionListener="#{utilsBean.onDelete}">
+                    <f:attribute name="table" value="table"/>
+                    <f:attribute name="iterator"
+                                 value="#{bindings.AnnouncementViewIterator}"/>
+                  </af:commandToolbarButton>
+                </af:toolbar>
+              </f:facet>
+              <af:table value="#{bindings.AnnouncementView.collectionModel}"
+                        var="row" rows="#{bindings.AnnouncementView.rangeSize}"
+                        emptyText="#{bindings.AnnouncementView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                        fetchSize="#{bindings.AnnouncementView.rangeSize}"
+                        rowBandingInterval="0" rowSelection="multiple"
+                        id="table" columnStretching="last" editingMode="editAll"
+                        autoHeightRows="5" contentDelivery="immediate"
+                        partialTriggers="::btnAdd ::btnRemove">
+                <af:column sortProperty="#{bindings.AnnouncementView.hints.StartDate.name}"
+                           sortable="true"
+                           headerText="#{bindings.AnnouncementView.hints.StartDate.label}"
+                           id="c3">
+                  <af:inputDate value="#{row.bindings.StartDate.inputValue}"
+                                label="#{bindings.AnnouncementView.hints.StartDate.label}"
+                                required="#{bindings.AnnouncementView.hints.StartDate.mandatory}"
+                                shortDesc="#{bindings.AnnouncementView.hints.StartDate.tooltip}"
+                                id="id1">
+                    <f:validator binding="#{row.bindings.StartDate.validator}"/>
+                    <af:convertDateTime pattern="#{bindings.AnnouncementView.hints.StartDate.format}"/>
+                  </af:inputDate>
+                </af:column>
+                <af:column sortProperty="#{bindings.AnnouncementView.hints.FinishDate.name}"
+                           sortable="true"
+                           headerText="#{bindings.AnnouncementView.hints.FinishDate.label}"
+                           id="c1">
+                  <af:inputDate value="#{row.bindings.FinishDate.inputValue}"
+                                label="#{bindings.AnnouncementView.hints.FinishDate.label}"
+                                required="#{bindings.AnnouncementView.hints.FinishDate.mandatory}"
+                                shortDesc="#{bindings.AnnouncementView.hints.FinishDate.tooltip}"
+                                id="id2">
+                    <f:validator binding="#{row.bindings.FinishDate.validator}"/>
+                    <af:convertDateTime pattern="#{bindings.AnnouncementView.hints.FinishDate.format}"/>
+                  </af:inputDate>
+                </af:column>
+                <af:column sortProperty="#{bindings.AnnouncementView.hints.Text.name}"
+                           sortable="false"
+                           headerText="#{bindings.AnnouncementView.hints.Text.label}"
+                           id="c2">
+                  <af:inputText value="#{row.bindings.Text.inputValue}"
+                                label="#{bindings.AnnouncementView.hints.Text.label}"
+                                required="#{bindings.AnnouncementView.hints.Text.mandatory}"
+                                columns="#{bindings.AnnouncementView.hints.Text.displayWidth}"
+                                maximumLength="#{bindings.AnnouncementView.hints.Text.precision}"
+                                shortDesc="#{bindings.AnnouncementView.hints.Text.tooltip}"
+                                styleClass="AFStretchWidth"
+                                dimensionsFrom="parent"
+                                rows="#{bindings.AnnouncementView.hints.Text.displayHeight}"
+                                id="it1" simple="true"
+                                contentStyle="min-width:100%;">
+                    <f:validator binding="#{row.bindings.Text.validator}"/>
+                  </af:inputText>
+                </af:column>
+              </af:table>
+            </af:panelCollection>
+          </f:facet>
+          <f:facet name="controls">
+            <f:subview id="sub1">
+              <af:declarativeComponent viewId="global-ok-cancel.jsff" id="goc">
+                <f:attribute name="showCancel" value="true"/>
+              </af:declarativeComponent>
+            </f:subview>
+          </f:facet>
+        </af:pageTemplate>
+      </af:form>
+    </af:document>
+  </f:view>
+</jsp:root>

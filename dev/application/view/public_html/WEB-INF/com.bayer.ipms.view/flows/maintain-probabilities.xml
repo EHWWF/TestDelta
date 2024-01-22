@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="maintain-probabilities">
+    <default-activity>maintain-probabilities-view</default-activity>
+    <transaction>
+      <requires-transaction/>
+    </transaction>
+    <data-control-scope>
+      <shared/>
+    </data-control-scope>
+    <view id="maintain-probabilities-view">
+      <page>/WEB-INF/com.bayer.ipms.view/fragments/maintain-probabilities.jspx</page>
+    </view>
+    <task-flow-return id="ok">
+      <outcome>
+        <name>ok</name>
+        <commit/>
+      </outcome>
+    </task-flow-return>
+    <task-flow-return id="cancel">
+      <outcome>
+        <name>cancel</name>
+        <rollback/>
+      </outcome>
+    </task-flow-return>
+    <method-call id="setBACode">
+      <method>#{utilsBean.setBaCode2}</method>
+    
+      <parameter>
+        <class>java.lang.String</class>
+        <value>MaintainProbabilities</value>
+      </parameter>
+        <outcome>
+        <fixed-outcome>setBACode</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="clearBACode">
+      <method>#{utilsBean.clearBaCode}</method>
+        <outcome>
+        <fixed-outcome>clearBACode</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="Commit">
+      <method>#{bindings.Commit.execute}</method>
+      <outcome>
+        <fixed-outcome>Commit</fixed-outcome>
+      </outcome>
+    </method-call>
+    <control-flow-rule id="__1">
+      <from-activity-id>maintain-probabilities-view</from-activity-id>
+      <control-flow-case id="__2">
+        <from-outcome>ok</from-outcome>
+        <to-activity-id>setBACode</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__3">
+        <from-outcome>cancel</from-outcome>
+        <to-activity-id>cancel</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__4">
+      <from-activity-id>setBACode</from-activity-id>
+      <control-flow-case id="__5">
+        <from-outcome>setBACode</from-outcome>
+        <to-activity-id>Commit</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__6">
+      <from-activity-id>Commit</from-activity-id>
+      <control-flow-case id="__7">
+        <from-outcome>Commit</from-outcome>
+        <to-activity-id>clearBACode</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__8">
+      <from-activity-id>clearBACode</from-activity-id>
+      <control-flow-case id="__9">
+        <from-outcome>clearBACode</from-outcome>
+        <to-activity-id>ok</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+  </task-flow-definition>
+</adfc-config>

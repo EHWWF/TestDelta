@@ -1,0 +1,1 @@
+alter table project modify is_device_project number(1,0) default 0 constraint project_is_device_prj_ca check(is_device_project in (0,1));

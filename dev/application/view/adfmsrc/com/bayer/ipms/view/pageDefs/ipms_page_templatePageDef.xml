@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.64.93" id="ipms_page_templatePageDef"
+                Package="com.bayer.ipms.view.templates">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="AnnouncementView"
+              DataControl="SharedAppModuleDataControl" RangeSize="100"
+              id="AnnouncementViewIterator" ChangeEventPolicy="ppr"
+              CacheResults="false"/>
+    <iterator id="ConfigurationViewIterator" Binds="ConfigurationView"
+              DataControl="SharedAppModuleDataControl" RangeSize="100"
+              ChangeEventPolicy="ppr"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="AnnouncementViewIterator" id="AnnouncementView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.AnnouncementView"
+                      Name="AnnouncementView0">
+        <AttrNames>
+          <Item Value="StartDate"/>
+          <Item Value="FinishDate"/>
+          <Item Value="Text"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="AnnouncementViewIterator" id="Text">
+      <AttrNames>
+        <Item Value="Text"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?audit suppress oracle.ide.audit.disabled-rules?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.64.93" id="estimatesPageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+    <parameters/>
+    <executables>
+        <variableIterator id="variables"/>
+        <page path="com.bayer.ipms.view.pageDefs.ipms_page_templatePageDef" id="ptb1" Refresh="ifNeeded"/>
+    <iterator Binds="EstimatesAppModule.LatestEstimatesTagView" RangeSize="500" DataControl="PrivateAppModuleDataControl"
+              id="LatestEstimatesTagViewIterator" ChangeEventPolicy="none"/>
+    <taskFlow id="dynamicRegion1" taskFlowId="${pageFlowScope.estimatesBean.estimatesViewTaskFlowId}" activation="deferred"
+              xmlns="http://xmlns.oracle.com/adf/controller/binding" Refresh="ifNeeded"/>
+        <iterator id="LatestEstimatesProcessViewIterator" Binds="EstimatesAppModule.LatestEstimatesProcessView"
+                  DataControl="PrivateAppModuleDataControl" RangeSize="500"/>
+        <iterator Binds="EstimatesAppModule.PreviousTagLatestEstimatesProcessView"
+                  DataControl="PrivateAppModuleDataControl" RangeSize="-1"
+                  id="PreviousTagLatestEstimatesProcessViewIterator"/>
+    </executables>
+    <bindings>
+    <tree
+          id="LatestEstimatesTagView" IterBinding="LatestEstimatesTagViewIterator">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.estimates.LatestEstimatesTagView"
+                            Name="LatestEstimatesProcessView0">
+                <AttrNames>
+                    <Item Value="QualifiedName"/>
+                </AttrNames>
+                <Accessors>
+                    <Item Value="LatestEstimatesProcessView"/>
+                </Accessors>
+            </nodeDefinition>
+            <nodeDefinition DefName="com.bayer.ipms.model.views.estimates.LatestEstimatesProcessView"
+                            Name="LatestEstimatesProcessView1">
+                <AttrNames>
+                    <Item Value="QualifiedName"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+    <methodAction id="receiveEstimatesEvent"
+                  InstanceName="ContextualEventReceiver.dataProvider"
+                  DataControl="ContextualEventReceiver"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="receiveEvent" IsViewObjectMethod="false">
+      <NamedData NDName="payload" NDType="java.lang.Object"/>
+      <NamedData NDName="eventHandler"
+                 NDValue="#{pageFlowScope.estimatesBean.estimatesEventHandler}"
+                       NDType="com.bayer.ipms.view.events.ContextualEventHandler"/>
+        </methodAction>
+        <attributeValues IterBinding="LatestEstimatesTagViewIterator" id="LetName">
+            <AttrNames>
+                <Item Value="Name"/>
+            </AttrNames>
+        </attributeValues>
+        <action IterBinding="LatestEstimatesTagViewIterator" id="LetCreateInsert"
+                InstanceName="PrivateAppModuleDataControl.EstimatesAppModule.LatestEstimatesTagView"
+                DataControl="PrivateAppModuleDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+        <list ListOperMode="navigation" IterBinding="PreviousTagLatestEstimatesProcessViewIterator"
+              ListIter="PreviousTagLatestEstimatesProcessViewIterator" id="PreviousTagProcesses">
+            <AttrNames>
+                <Item Value="QualifiedName"/>
+            </AttrNames>
+        </list>
+        <list Uses="LOV_OldProcessId" StaticList="false" IterBinding="LatestEstimatesTagViewIterator"
+              id="OldProcessId" DTSupportsMRU="true" />
+    </bindings>
+    <eventMap xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="estimates">
+            <producer region="*">
+        <consumer region="" handler="receiveEstimatesEvent"
+                  handleCondition="">
+                    <parameters>
+                        <parameter name="payload" value="#{payLoad}"/>
+                    </parameters>
+                </consumer>
+            </producer>
+        </event>
+    </eventMap>
+</pageDefinition>

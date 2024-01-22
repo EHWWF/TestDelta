@@ -1,0 +1,1 @@
+create index notice_create_date_i on notice (create_date);

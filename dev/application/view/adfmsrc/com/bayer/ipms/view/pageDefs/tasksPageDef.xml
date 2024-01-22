@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.61.92" id="tasksPageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="WorkspaceAppModule.TaskLocalView" RangeSize="100"
+              DataControl="PrivateAppModuleDataControl"
+              id="TaskLocalViewIterator" ChangeEventPolicy="ppr">
+      <sortCriteria>
+        <sort attribute="TitleOrdering" ascending="true" ignoreCase="true"/>
+      </sortCriteria>
+    </iterator>
+    <taskFlow id="dynamicRegion1"
+              taskFlowId="${pageFlowScope.tasksBean.contentFlowId}"
+              activation="deferred"
+              xmlns="http://xmlns.oracle.com/adf/controller/binding"/>
+    <iterator Binds="WorkspaceAppModule.LatestEstimatesTaskView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="TerminatedViewIterator" ChangeEventPolicy="ppr"/>
+    <searchRegion Criteria="Accessible" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="TaskLocalViewIterator" id="AccessibleQuery"/>
+    <searchRegion Criteria="Terminated" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="TerminatedViewIterator" id="TerminatedQuery"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="TaskLocalViewIterator" id="TaskLocalView" ChangeEventPolicy="ppr">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.TaskLocalView"
+                      Name="TaskLocalView0">
+        <AttrNames>
+          <Item Value="Title"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="TerminatedViewIterator"
+          id="TerminatedView" ChangeEventPolicy="ppr">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.estimates.LatestEstimatesTaskView"
+                      Name="LatestEstimatesTaskView0">
+        <AttrNames>
+          <Item Value="Name"/>
+          <Item Value="ProgramName"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+  </bindings>
+</pageDefinition>

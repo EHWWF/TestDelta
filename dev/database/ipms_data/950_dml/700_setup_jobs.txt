@@ -1,0 +1,3 @@
+execute job_pkg.setup;
+commit;
+/

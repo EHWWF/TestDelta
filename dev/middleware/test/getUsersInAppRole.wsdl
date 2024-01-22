@@ -1,0 +1,30 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
+<wsdl:definitions
+     name="getUsersInAppRole"
+     targetNamespace="http://xmlns.bayer.com/ipms/test"
+     xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+     xmlns:client="http://xmlns.bayer.com/ipms/test"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    >
+    <plnk:partnerLinkType name="getUsersInAppRole">
+        <plnk:role name="getUsersInAppRoleProvider" portType="client:getUsersInAppRole"/>
+    </plnk:partnerLinkType>
+    <wsdl:types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+             xmlns:client="http://xmlns.bayer.com/ipms/test" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            <import namespace="http://xmlns.bayer.com/ipms/test" schemaLocation="xsd/getUsersInAppRole.xsd"/>
+        </schema>
+    </wsdl:types>
+    <wsdl:message name="getUsersInAppRoleRequestMessage">
+        <wsdl:part name="payload" element="client:process"/>
+    </wsdl:message>
+    <wsdl:message name="getUsersInAppRoleResponseMessage">
+        <wsdl:part name="payload" element="client:processResponse"/>
+    </wsdl:message>
+    <wsdl:portType name="getUsersInAppRole">
+        <wsdl:operation name="process">
+            <wsdl:input message="client:getUsersInAppRoleRequestMessage"/>
+            <wsdl:output message="client:getUsersInAppRoleResponseMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+</wsdl:definitions>

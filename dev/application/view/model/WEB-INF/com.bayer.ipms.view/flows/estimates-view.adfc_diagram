@@ -1,0 +1,58 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<SDM>
+   <OverallProperties
+      id="OverallProperties1">
+      <property
+         name="y">345.20117</property>
+      <property
+         name="x">91.5</property>
+   </OverallProperties>
+   <View
+      id="View7">
+      <property
+         name="activityId">estimates-view1</property>
+      <property
+         name="page">/WEB-INF/com.bayer.ipms.view/fragments/estimates-view.jsff</property>
+      <property
+         name="start">true</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>estimates-view1&lt;/b> (Default Activity)&lt;/p>&lt;p>Activity Type:  View&lt;/p></property>
+      <property
+         name="exceptionHandler">false</property>
+      <property
+         name="y">327.44824</property>
+      <property
+         name="x">305.01367</property>
+      <property
+         name="pageFragment">true</property>
+   </View>
+   <TaskFlowCall
+      id="TaskFlowCall3">
+      <property
+         name="taskFlowId">estimates-start</property>
+      <property
+         name="activityId">estimates-start</property>
+      <property
+         name="documentReference">/WEB-INF/com.bayer.ipms.view/flows/estimates-start.xml</property>
+      <property
+         name="runAsDialog">true</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>estimates-start&lt;/b>&lt;/p>&lt;p>Activity Type:  Task Flow Call&lt;/p></property>
+      <property
+         name="exceptionHandler">false</property>
+      <property
+         name="y">326.48828</property>
+      <property
+         name="x">778.3428</property>
+   </TaskFlowCall>
+   <ControlFlowCase
+      islink="true"
+      id="ControlFlowCase4"
+      from="View7"
+      to="TaskFlowCall3">
+      <property
+         name="fromOutcome">estimates-update</property>
+      <property
+         name="sdm:polyPoints">R50,346.01367,327.09766,737.3428,326.1377,L50</property>
+   </ControlFlowCase>
+</SDM>

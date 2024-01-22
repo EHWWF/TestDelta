@@ -1,0 +1,17 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
+<wsdl:definitions
+     name="CacheService"
+     targetNamespace="http://xmlns.bayer.com/ipms/cache"
+     xmlns:plnk="http://schemas.xmlsoap.org/ws/2003/05/partner-link/"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+     xmlns:tns="http://xmlns.bayer.com/ipms/cache"
+     xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    >
+    <plnk:partnerLinkType name="CacheService">
+        <plnk:role name="CachePortType">
+            <plnk:portType name="tns:CachePortType"/>
+        </plnk:role>
+    </plnk:partnerLinkType>
+    <wsdl:import namespace="http://xmlns.bayer.com/ipms/cache" location="oramds:/apps/com/bayer/xmlns/ipms/cache/CacheService.wsdl"/>
+</wsdl:definitions>

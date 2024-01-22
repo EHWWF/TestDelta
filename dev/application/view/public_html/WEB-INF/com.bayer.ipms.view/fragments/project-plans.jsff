@@ -1,0 +1,284 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    <af:componentDef>
+        <c:set var="bundle" value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+        <af:panelGroupLayout layout="vertical" id="plans">
+            <af:subform>
+                <af:panelBox text="#{bundle.projectTimelines}" showDisclosure="false" type="flow"
+                             background="#{pageFlowScope.projectViewBean.editable eq 'plans' ? 'light' : 'default'}"
+                             helpTopicId="HELP_PROJECT_#{fn:toUpperCase(pageFlowScope.projectType)}_OVERVIEW_PLANS">
+                    <f:facet name="toolbar">
+                        <af:toolbar rendered="#{rolesBean.timelinePublishDev or rolesBean.timelinePublishPrdMnt or rolesBean.timelinePublishD3Tr or rolesBean.timelinePublishD2Prj or rolesBean.timelinePublishSAMD}">
+                            <af:commandToolbarButton rendered="#{empty pageFlowScope.projectViewBean.editable}"
+                                                     icon="/images/edit.png" immediate="true"
+                                                     actionListener="#{pageFlowScope.projectViewBean.onEdit}"
+                                                     text="#{bundle.globalEdit}">
+                                <f:attribute name="target" value="plans"/>
+                            </af:commandToolbarButton>
+                            <af:commandToolbarButton rendered="#{pageFlowScope.projectViewBean.editable eq 'plans'}"
+                                                     icon="/images/commit.png"
+                                                     actionListener="#{pageFlowScope.projectViewBean.onPlans}"
+                                                     text="#{bundle.globalOk}" id="prPlnOk"/>
+                            <af:commandToolbarButton rendered="#{pageFlowScope.projectViewBean.editable eq 'plans'}"
+                                                     icon="/images/rollback.png"
+                                                     actionListener="#{pageFlowScope.projectViewBean.onRollback}"
+                                                     immediate="true" text="#{bundle.globalCancel}"/>
+                        </af:toolbar>
+                    </f:facet>
+                    <af:panelCollection styleClass="AFStretchWidth" featuresOff="detach statusBar showAsTopToolbarItem"
+                                        id="dc_pc1">
+                        <af:popup id="popPublish" contentDelivery="lazyUncached"
+                                  popupCanceledListener="#{pageFlowScope.projectViewBean.onPopupCancel}">
+                            <af:dialog id="diagPublish" title="#{bundle.timelinePublish}" contentWidth="500"
+                                       dialogListener="#{pageFlowScope.projectViewBean.onPublish}">
+                                <af:panelBox text="#{bundle.globalSummary}" showDisclosure="false">
+                                    <af:panelFormLayout styleClass="AFStretchWidth" fieldWidth="100%">
+                                        <af:inputText label="#{bindings.Code.hints.label}"
+                                                      value="#{empty bindings.Code.inputValue ? bundle.globalNotAvailable : bindings.Code.inputValue}"
+                                                      styleClass="#{empty bindings.Code.inputValue ? 'empty' : ''}"
+                                                      readOnly="true"/>
+                                        <af:inputText label="#{bindings.Name.hints.label}"
+                                                      value="#{bindings.Name.inputValue}" readOnly="true"/>
+                                    </af:panelFormLayout>
+                                </af:panelBox>
+                                <af:panelBox text="#{bundle.timeline}" showDisclosure="false">
+                                    <af:panelFormLayout>
+                                        <af:panelLabelAndMessage label="#{bindings.TimelineTypeName.hints.label}">
+                                            <af:outputText value="#{bindings.TimelineTypeName.inputValue}"/>
+                                        </af:panelLabelAndMessage>
+                                        <af:panelLabelAndMessage label="#{bindings.TimelinePublish.hints.label}"
+                                                                 id="plam30">
+                                            <af:inputText value="#{bindings.TimelinePublish.inputValue}"
+                                                          required="#{bindings.TimelinePublish.hints.mandatory}"
+                                                          columns="#{bindings.TimelinePublish.hints.displayWidth}"
+                                                          rows="#{bindings.TimelinePublish.hints.displayHeight}"
+                                                          maximumLength="#{bindings.TimelinePublish.hints.precision}"
+                                                          shortDesc="#{bindings.TimelinePublish.hints.tooltip}"
+                                                          id="pubComment" clientComponent="true">
+                                                <f:validator binding="#{bindings.TimelinePublish.validator}"/>
+                                            </af:inputText>
+                                        </af:panelLabelAndMessage>
+                                        <af:panelLabelAndMessage label="#{bundle.timelinePreviousComments}" id="plam34">
+                                            <af:selectOneChoice id="pubComments" valuePassThru="true"
+                                                                clientComponent="true">
+                                                <f:selectItem itemLabel="" itemValue=""/>
+                                                <af:forEach var="val"
+                                                            items="#{bindings.ProjectView.currentRow.timelinePublishCommentsView.allRowsInRange}">
+                                                    <c:if test="${not empty val.comments}">
+                                                        <f:selectItem itemLabel="#{fn:substring(val.comments,0,70)}#{fn:length(val.comments)>70?'...':''}"
+                                                                      itemValue="#{val.comments}"
+                                                                      itemDescription="#{val.comments}"/>
+                                                    </c:if>
+                                                </af:forEach>
+                                                <af:clientListener type="valueChange" method="onCommentsChange"/>
+                                            </af:selectOneChoice>
+                                        </af:panelLabelAndMessage>
+                                        <af:panelLabelAndMessage label="#{bindings.BaselineTypeId.label}" id="dc_plam1">
+                                            <af:selectOneChoice value="#{bindings.BaselineTypeId.inputValue}" label=""
+                                                                required="false"
+                                                                shortDesc="#{bindings.BaselineTypeId.hints.tooltip}"
+                                                                id="dc_soc1">
+                                                <f:selectItem itemLabel="" itemValue=""/>
+                                                <f:selectItems value="#{utilsBean.lookup[bindings.TimelineViewIterator.currentRow.baseLineTypeView]}"/>
+                                            </af:selectOneChoice>
+                                        </af:panelLabelAndMessage>
+                                    </af:panelFormLayout>
+                                </af:panelBox>
+                            </af:dialog>
+                        </af:popup>
+                        <af:popup id="popSensor" contentDelivery="lazyUncached">
+                            <af:dialog id="diagSensor" title="#{bundle.timelineSensor}" contentWidth="500" type="cancel"
+                                       resize="on">
+                                <af:panelBox text="#{bundle.globalSummary}" showDisclosure="false">
+                                    <af:panelFormLayout styleClass="AFStretchWidth" fieldWidth="100%">
+                                        <af:inputText label="#{bindings.Code.hints.label}"
+                                                      value="#{empty bindings.Code.inputValue ? bundle.globalNotAvailable : bindings.Code.inputValue}"
+                                                      styleClass="#{empty bindings.Code.inputValue ? 'empty' : ''}"
+                                                      readOnly="true"/>
+                                        <af:inputText label="#{bindings.Name.hints.label}"
+                                                      value="#{bindings.Name.inputValue}" readOnly="true"/>
+                                    </af:panelFormLayout>
+                                </af:panelBox>
+                                <af:table value="#{bindings.TimelineSensorView.collectionModel}" var="row"
+                                          rows="#{bindings.TimelineSensorView.rangeSize}" columnStretching="last"
+                                          autoHeightRows="5"
+                                          emptyText="#{bindings.TimelineSensorView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                                          fetchSize="#{bindings.TimelineSensorView.rangeSize}" rowBandingInterval="0"
+                                          id="sensors" styleClass="AFStretchWidth" contentDelivery="immediate">
+                                    <af:column sortProperty="#{bindings.TimelineSensorView.hints.CreateDate.name}"
+                                               sortable="false" width="110"
+                                               headerText="#{bindings.TimelineSensorView.hints.CreateDate.label}"
+                                               id="c34">
+                                        <af:outputText value="#{row.CreateDate}" id="ot64">
+                                            <af:convertDateTime pattern="#{bindings.TimelineSensorView.hints.CreateDate.format}"/>
+                                        </af:outputText>
+                                    </af:column>
+                                    <af:column sortProperty="#{bindings.TimelineSensorView.hints.SensorName.name}"
+                                               sortable="false"
+                                               headerText="#{bindings.TimelineSensorView.hints.SensorName.label}"
+                                               id="c35">
+                                        <af:outputText value="#{row.SensorName}" id="ot63"/>
+                                    </af:column>
+                                </af:table>
+                            </af:dialog>
+                        </af:popup>
+                        <af:popup id="popBaselines" contentDelivery="lazyUncached"
+                                  rendered="#{rolesBean.maintainBaselines}" resetEditableValues="whenCanceled">
+                            <af:dialog id="diagBaselines" title="#{bundle.projectMaintainBaselines}" contentWidth="500"
+                                       dialogListener="#{pageFlowScope.projectViewBean.onMaintainBaselines}">
+                                <af:panelFormLayout id="pfl1">
+                                    <!--<af:inputText autoSubmit="true" id="clnBslTimelineId_in01"
+                                                  binding="#{pageFlowScope.projectViewBean.baselineTimelineId}"
+                                                  visible="false"
+                                                  valueChangeListener="#{pageFlowScope.projectViewBean.onSetBaselineTimelineId}"
+                                                  value="#{bindings.TimelineTypeCode == 'RAW' ? bindings.ProjectViewIterator.currentRow.versions['RAW'].id : bindings.TimelineTypeCode == 'CUR' ? bindings.ProjectViewIterator.currentRow.versions['CUR'].id : bindings.ProjectViewIterator.currentRow.versions['APR'].id }"
+                                                  columns="18">
+                                    </af:inputText>-->
+                                    <af:inputText value="#{bindings.TimelineTypeCode == 'RAW' ? bindings.ProjectViewIterator.currentRow.versions['RAW'].id : bindings.TimelineTypeCode == 'CUR' ? bindings.ProjectViewIterator.currentRow.versions['CUR'].id : bindings.ProjectViewIterator.currentRow.versions['APR'].id }"
+                                                  label="#{bindings.TimelineTypeCode.hints.label}"
+                                                  required="#{bindings.TimelineTypeCode.hints.mandatory}"
+                                                  columns="#{bindings.TimelineTypeCode.hints.displayWidth}"
+                                                  maximumLength="#{bindings.TimelineTypeCode.hints.precision}"
+                                                  shortDesc="#{bindings.TimelineTypeCode.hints.tooltip}"
+                                                  id="clnBslTimelineId_in01"
+                                                  visible="false"
+                                                  valueChangeListener="#{pageFlowScope.projectViewBean.onSetBaselineTimelineId}">
+                                        <f:validator binding="#{bindings.TimelineTypeCode.validator}"/>
+                                    </af:inputText>
+                                    <f:facet name="footer">
+                                        <af:message id="m7" messageType="confirmation"
+                                                    message="#{bundle.projectMaintainBaselinesText3}"/>
+                                    </f:facet>
+                                </af:panelFormLayout>
+                            </af:dialog>
+                        </af:popup>
+                        <f:facet name="secondaryToolbar">
+                            <af:toolbar partialTriggers="trPlans tlUnlock tlReceive" id="tlbPlans"
+                                        rendered="#{empty pageFlowScope.projectViewBean.editable}">
+                                <af:poll interval="5000" rendered="#{pageFlowScope.projectViewBean.isBusyAnyTimeline}"
+                                         pollListener="#{pageFlowScope.projectViewBean.onTimelinePoll}"
+                                         immediate="true"/>
+                                <af:commandToolbarButton text="#{bundle.timelinePublishAsCurrent}"
+                                                         icon="/images/publish.png" immediate="true"
+                                                         visible="#{bindings.TimelineTypeCode == 'RAW'}"
+                                                         disabled="#{bindings.IsInactive.inputValue or bindings.TimelineIsSyncing.inputValue or bindings.Code.inputValue eq null or pageFlowScope.projectViewBean.timelineBaselineNodeLevel ne 1}"
+                                                         rendered="#{(rolesBean.timelinePublishDev or rolesBean.timelinePublishPrdMnt or rolesBean.timelinePublishD3Tr or rolesBean.timelinePublishD2Prj or rolesBean.timelinePublishSAMD)}">
+                                    <af:showPopupBehavior popupId="popPublish" triggerType="action"/>
+                                </af:commandToolbarButton>
+                                <af:commandToolbarButton text="#{bundle.timelinePublishAsApproved}"
+                                                         icon="/images/publish.png" immediate="true"
+                                                         visible="#{bindings.TimelineTypeCode == 'CUR'}"
+                                                         rendered="#{(rolesBean.timelinePublishDev or rolesBean.timelinePublishPrdMnt or rolesBean.timelinePublishD3Tr or rolesBean.timelinePublishD2Prj or rolesBean.timelinePublishSAMD)}"
+                                                         disabled="#{bindings.IsInactive.inputValue or bindings.TimelineIsSyncing.inputValue or bindings.Code.inputValue eq null or pageFlowScope.projectViewBean.timelineBaselineNodeLevel ne 1}">
+                                    <af:showPopupBehavior popupId="popPublish" triggerType="action"/>
+                                </af:commandToolbarButton>
+                                <af:commandToolbarButton text="#{bundle.globalUnlock}" icon="/images/unlock.png"
+                                                         shortDesc="Terminate Background Processes"
+                                                         actionListener="#{pageFlowScope.projectViewBean.onTimelineUnlock}"
+                                                         rendered="#{(securityContext.userInRole['MaintainIntegration'] or rolesBean.timelinePublishDev or rolesBean.timelinePublishPrdMnt or rolesBean.timelinePublishD3Tr or rolesBean.timelinePublishSAMD)}"
+                                                         disabled="#{not bindings.TimelineIsSyncing.inputValue or pageFlowScope.projectViewBean.timelineBaselineNodeLevel ne 1}"
+                                                         immediate="true" id="tlUnlock"/>
+                                <af:commandToolbarButton text="#{bundle.globalRefreshP6 }" icon="/images/reload.png"
+                                                         actionListener="#{pageFlowScope.projectViewBean.onTimelineReceive}"
+                                                         rendered="#{(securityContext.userInRole['MaintainIntegration'] or rolesBean.timelinePublishDev or rolesBean.timelinePublishPrdMnt or rolesBean.timelinePublishD3Tr or rolesBean.timelinePublishSAMD)}"
+                                                         disabled="#{bindings.TimelineId.inputValue eq null or bindings.TimelineIsSyncing.inputValue or pageFlowScope.projectViewBean.timelineBaselineNodeLevel ne 1}"
+                                                         immediate="true" id="tlReceive"/>
+                                <af:commandToolbarButton text="#{bundle.projectMaintainBaselines}"
+                                                         icon="/images/maintain.png" immediate="true"
+                                                         disabled="#{empty bindings.ProjectViewIterator.currentRow.versions['RAW'] or pageFlowScope.projectViewBean.timelineBaselineNodeLevel ne 1}"
+                                                         rendered="#{rolesBean.maintainBaselines and bindings.TimelineTypeCode ne 'APR'}"
+                                                         id="tlCleanUp">
+                                    <af:showPopupBehavior popupId="popBaselines" triggerType="action"/>
+                                </af:commandToolbarButton>
+                            </af:toolbar>
+                        </f:facet>
+                        <af:treeTable value="#{bindings.TimelineBaselineMainView.treeModel}" var="node"
+                                      selectionListener="#{pageFlowScope.projectViewBean.onTimelineBaselineTreeSelect}"
+                                      fetchSize="#{bindings.TimelineBaselineMainView.rangeSize}" rowSelection="single"
+                                      id="trPlans" contentDelivery="immediate"
+                                      selectedRowKeys="#{bindings.TimelineBaselineMainView.collectionModel.selectedRow}"
+                                      columnStretching="multiple" autoHeightRows="15">
+                            <f:facet name="nodeStamp">
+                                <af:column id="dc_c1" headerText="#{bundle.globalVersion}" width="20%">
+                                    <af:outputText value="#{bindings.TimelineBaselineMainView.treeModel.depth ==0 ? node.TypeName : node.BaselineVersion}"
+                                                   id="dc_ot22"/>
+                                </af:column>
+                            </f:facet>
+                            <f:facet name="pathStamp">
+                                <af:column id="dc_c11">
+                                    <af:outputText value="#{node}" id="dc_ot2"/>
+                                </af:column>
+                            </f:facet>
+                            <af:column headerText="#{bindings.TimelineBaselineMainView.hints.ReferenceId.label}"
+                                       id="dc_c2" width="30%" minimumWidth="12">
+                                <af:goLink text="#{bundle.primavera}" targetFrame="primavera"
+                                           rendered="#{bindings.TimelineBaselineMainView.treeModel.depth == 0 }"
+                                           destination="#{bindings.ConfigurationViewIterator.viewObject.values['P6']}/bookmark?uri=navigatetopage&amp;ctx=projectList%3D#{node.ReferenceId}%26key%3Dactivities"
+                                           disabled="#{not (rolesBean.projectRoles[bindings.ProjectViewIterator.currentRow]['ProjectViewAssignedDev'] or rolesBean.projectRoles[bindings.ProjectViewIterator.currentRow]['ProjectViewAssignedPrdMnt'] or rolesBean.projectRoles[bindings.ProjectViewIterator.currentRow]['ProjectViewAssignedD3Tr'] or node.BaselineType ne 'RAW' or securityContext.userInRole['TimelineViewRawDev'] or securityContext.userInRole['TimelineViewRawPrdMnt'])}"/>
+                                <af:commandLink text=" #{bundle.ltcExcel}"
+                                                rendered="#{bindings.TimelineBaselineMainView.treeModel.depth == 0 and not empty node.LtciId and empty node.LtcProcessId and not empty node.excelReport}"
+                                                id="cmdReportP1an1">
+                                    <af:fileDownloadActionListener filename="LtcReport.xls"
+                                                                   contentType="application/vnd.ms-excel; charset=utf-8"
+                                                                   method="#{pageFlowScope.projectViewBean.onReport}"/>
+                                </af:commandLink>
+                                <af:commandLink text=" #{bundle.ltcExcel}"
+                                                rendered="#{bindings.TimelineBaselineMainView.treeModel.depth == 1 and empty node.BaselineLtcProcessId and not empty node.BaselineLtciId}"
+                                                id="cmdReportBaseline1">
+                                    <af:fileDownloadActionListener filename="LtcReport.xls"
+                                                                   contentType="application/vnd.ms-excel; charset=utf-8"
+                                                                   method="#{pageFlowScope.projectViewBean.onBaselineReport}"/>
+                                </af:commandLink>
+                                <!-- LTC/FTE Excel Report-->
+                                <af:goLink text="#{bundle.ltcExcel}" targetFrame="ltcExcel"
+                                           rendered="#{bindings.TimelineBaselineMainView.treeModel.depth == 0 and not empty node.LtciId and not empty node.MaxLtcProcessId}"
+                                           destination="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.requestContextPath}/excel/ltcEstimates-readonly.xlsm?tagId=#{node.LtcTagId}&amp;processId=#{node.MaxLtcProcessId}&amp;programId=#{bindings.ProgramId.inputValue}&amp;projectId=#{bindings.Id.inputValue}&amp;scn=#{node.LtciId}&amp;PD=#{node.ProcessDescription}&amp;type='LTC'"/>
+                                <af:goLink text="#{bundle.ltcFteExcel}" targetFrame="fteExcel"
+                                           rendered="#{bindings.TimelineBaselineMainView.treeModel.depth == 0 and not empty node.LtciId and not empty node.MaxLtcProcessId}"
+                                           destination="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.requestContextPath}/excel/fteEstimates-readonly.xlsm?tagId=#{node.LtcTagId}&amp;processId=#{node.MaxLtcProcessId}&amp;programId=#{bindings.ProgramId.inputValue}&amp;projectId=#{bindings.Id.inputValue}&amp;scn=#{node.LtciId}&amp;type='FTE'"/>
+                                <af:goLink text="#{bundle.ltcExcel}" targetFrame="ltcExcel"
+                                           rendered="#{bindings.TimelineBaselineMainView.treeModel.depth == 1 and not empty node.BaselineLtciId and not empty node.BaselineLtcProcessId}"
+                                           destination="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.requestContextPath}/excel/ltcEstimates-readonly.xlsm?tagId=#{node.BaselineLtcTagId}&amp;processId=#{node.BaselineLtcProcessId}&amp;programId=#{bindings.ProgramId.inputValue}&amp;projectId=#{bindings.Id.inputValue}&amp;scn=#{node.BaselineLtciId}&amp;PD=#{node.ProcessDescription}&amp;type='LTC'"/>
+                                <af:goLink text="#{bundle.ltcFteExcel}" targetFrame="fteExcel"
+                                           rendered="#{bindings.TimelineBaselineMainView.treeModel.depth == 1 and not empty node.BaselineLtciId and not empty node.BaselineLtcProcessId}"
+                                           destination="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.requestContextPath}/excel/fteEstimates-readonly.xlsm?tagId=#{node.BaselineLtcTagId}&amp;processId=#{node.BaselineLtcProcessId}&amp;programId=#{bindings.ProgramId.inputValue}&amp;projectId=#{bindings.Id.inputValue}&amp;scn=#{node.BaselineLtciId}&amp;type='FTE'"/>
+                            </af:column>
+                            <af:column id="dc_c7"
+                                       headerText="#{bindings.TimelineBaselineMainView.hints.IsSyncing.label}"
+                                       width="10%" noWrap="false">
+                                <af:commandLink text="#{node.IsSyncing ? bundle.globalYes : bundle.globalNo}"
+                                                rendered="#{bindings.TimelineBaselineMainView.treeModel.depth == 0 }"
+                                                disabled="#{not node.IsSyncing}" id="dc_cl1">
+                                    <af:showPopupBehavior popupId="::popSensor" triggerType="action"/>
+                                </af:commandLink>
+                            </af:column>
+                            <af:column id="dc_c5" headerText="#{bundle.globalBaselineType}" width="20%" noWrap="false">
+                                    <af:selectOneChoice value="#{node.BaselineTypeId2}" label=""
+                                                                required="false"
+                                                                readOnly="true"
+                                                                id="dc_soc122">
+                                                <f:selectItem itemLabel="" itemValue=""/>
+                                                <f:selectItems value="#{utilsBean.lookup[bindings.TimelineViewIterator.currentRow.baseLineTypeView]}"/>
+                                            </af:selectOneChoice>
+                                               
+                            </af:column>
+                            <af:column id="dc_c6" headerText="#{bindings.TimelineBaselineMainView.hints.Comments.label}"
+                                       width="20%" noWrap="false">
+                                <af:inputText value="#{bindings.TimelineBaselineMainView.treeModel.depth == 0 ? node.Comments : node.BaselineDescription}"
+                                              columns="#{bindings.TimelineView.hints.Comments.displayWidth}"
+                                              required="#{bindings.TimelineView.hints.Comments.mandatory}"
+                                              maximumLength="#{bindings.TimelineView.hints.Comments.precision}"
+                                              readOnly="#{pageFlowScope.projectViewBean.editable ne 'plans' or bindings.TimelineBaselineMainView.treeModel.depth == 1}"
+                                              styleClass="AFStretchWidth" dimensionsFrom="parent"
+                                              rows="#{pageFlowScope.projectViewBean.editable eq 'plans' and bindings.TimelineBaselineMainView.treeModel.depth == 0 ? bindings.TimelineView.hints.Comments.displayHeight : utilsBean.rowCount[row.Comments]}"
+                                              simple="true" contentStyle="min-width:100%;" id="dc_ot6"></af:inputText>
+                            </af:column>
+                        </af:treeTable>
+                    </af:panelCollection>
+                </af:panelBox>
+            </af:subform>
+        </af:panelGroupLayout>
+    </af:componentDef>
+</jsp:root>

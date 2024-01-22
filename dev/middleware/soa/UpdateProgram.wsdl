@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="UpdateProgram"
+             targetNamespace="http://xmlns.bayer.com/ipms/soa"
+             xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:client="http://xmlns.bayer.com/ipms/soa"
+             xmlns:ns1="http://xmlns.bayer.com/ipms/soa"
+             xmlns:plnk="http://schemas.xmlsoap.org/ws/2003/05/partner-link/">
+
+	<wsdl:types>
+		<schema xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://xmlns.bayer.com/ipms/soa" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/soa/soa.xsd" />
+		</schema>
+	</wsdl:types>
+
+	<wsdl:message name="UpdateProgramRequestMessage">
+		<wsdl:part name="payload" element="ns1:update" />
+	</wsdl:message>
+	<wsdl:message name="UpdateProgramResponseMessage">
+		<wsdl:part name="payload" element="ns1:response" />
+	</wsdl:message>
+
+	<wsdl:portType name="UpdateProgram">
+		<wsdl:operation name="process">
+			<wsdl:input  message="client:UpdateProgramRequestMessage" />
+		</wsdl:operation>
+	</wsdl:portType>
+
+        <wsdl:portType name="UpdateProgramCallback">
+		<wsdl:operation name="callback">
+			<wsdl:input message="client:UpdateProgramResponseMessage"/>
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<plnk:partnerLinkType name="UpdateProgram">
+		<plnk:role name="UpdateProgramProvider">
+			<plnk:portType name="client:UpdateProgram"/>
+		</plnk:role>
+		<plnk:role name="UpdateProgramRequester">
+			<plnk:portType name="client:UpdateProgramCallback"/>
+		</plnk:role>
+	</plnk:partnerLinkType>
+
+</wsdl:definitions>

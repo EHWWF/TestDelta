@@ -1,0 +1,1 @@
+alter table ltc_estimate add (project_phase_ordering number(10,0));

@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Published by JAX-WS RI (http://jax-ws.java.net). RI's version is JAX-WS RI 2.3.0-b170407.2038 svn-revision#2eaca54d17a59d265c6fe886b7fd0027836c766c. -->
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://xmlns.oracle.com/Primavera/P6/WS/WSImport/V1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:intgfault="http://xmlns.oracle.com/Primavera/P6/WS/IntegrationFaultType/V1" xmlns:xmime="http://www.w3.org/2005/05/xmlmime" targetNamespace="http://xmlns.oracle.com/Primavera/P6/WS/WSImport/V1" name="ImportService">
+    <wsdl:types>
+        <xsd:schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" targetNamespace="http://xmlns.oracle.com/Primavera/P6/WS/WSImport/V1" elementFormDefault="qualified">
+        <xsd:import namespace="http://xmlns.oracle.com/Primavera/P6/WS/IntegrationFaultType/V1" schemaLocation="oramds:/apps/com/oracle/xmlns/Primavera/P6/WS/IntegrationFaultType/V1/IntegrationFault.xsd"/>
+
+        <xsd:simpleType name="FileType">
+            <xsd:restriction base="xsd:string">
+                <xsd:enumeration value="GZIP"/>
+                <xsd:enumeration value="XML"/>
+                <xsd:enumeration value="ZIP"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+
+        <xsd:simpleType name="LogLevel">
+            <xsd:restriction base="xsd:string">
+                <xsd:enumeration value="SEVERE"/>
+                <xsd:enumeration value="WARNING"/>
+                <xsd:enumeration value="INFO"/>
+                <xsd:enumeration value="CONFIG"/>
+                <xsd:enumeration value="FINE"/>
+                <xsd:enumeration value="FINER"/>
+                <xsd:enumeration value="FINEST"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+
+        <xsd:simpleType name="ImportOption">
+            <xsd:restriction base="xsd:string">
+                <xsd:enumeration value="Create New"/>
+                <xsd:enumeration value="Do Not Import"/>
+                <xsd:enumeration value="Keep Existing"/>
+                <xsd:enumeration value="Update Existing"/>
+            </xsd:restriction>
+        </xsd:simpleType>
+        <!--  <xsd:simpleType name="ImportType">
+            <xsd:restriction base="xsd:string">
+                <xsd:enumeration value="Primavera"/>
+                <xsd:enumeration value="MSP"/>
+               </xsd:restriction>
+        </xsd:simpleType>-->
+        <xsd:complexType name="BusinessObjectType">
+            <xsd:sequence>
+                <xsd:element name="ImportOption" type="tns:ImportOption" minOccurs="0"/>
+            </xsd:sequence>
+        </xsd:complexType>
+
+        <xsd:complexType name="DeleteUnreferencedType">
+            <xsd:sequence>
+                <xsd:element name="ImportOption" type="tns:ImportOption" minOccurs="0"/>
+                <xsd:element name="DeleteUnreferenced" type="xsd:boolean" minOccurs="0"/>
+            </xsd:sequence>
+        </xsd:complexType>
+
+        <xsd:complexType name="GlobalBusinessObjectOptions">
+            <xsd:sequence>
+                <xsd:element name="ActivityCode" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="ActivityCodeType" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="Calendar" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="CostAccount" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="Currency" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="ExpenseCategory" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="FinancialPeriod" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="FundingSource" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="NotebookTopic" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="OBS" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="ProjectCode" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="ProjectCodeType" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="ProjectResourceCategory" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="Resource" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="ResourceCode" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="ResourceCodeType" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="ResourceCurve" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="ResourceRate" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="ResourceRole" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="RiskCategory" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="RiskMatrixScore" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="RiskMatrixThreshold" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="RiskMatrix" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="RiskThreshold" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="RiskThresholdLevel" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="Role" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="RoleRate" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="RoleLimit" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="Shift" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="ThresholdParameter" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="UDFCode" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="UDFType" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="UnitOfMeasure" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="WBSCategory" type="tns:BusinessObjectType" minOccurs="0"/>
+            </xsd:sequence>
+        </xsd:complexType>
+
+        <xsd:complexType name="ProjectSpecificBusinessObjectOptions">
+            <xsd:sequence>
+                <xsd:element name="Activity" type="tns:DeleteUnreferencedType" minOccurs="0"/>
+                <xsd:element name="ActivityCode" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="ActivityCodeType" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="ActivityExpense" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="ActivityNote" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="ActivityPeriodActual" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="ActivityRisk" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="ActivityStep" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="Calendar" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="ProjectBudgetChangeLog" type="tns:BusinessObjectType" minOccurs="0"/>                
+                <xsd:element name="ProjectFunding" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="ProjectIssue" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="ProjectNote" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="ProjectResource" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="ProjectResourceQuantity" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="ProjectSpendingPlan" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="ProjectThreshold" type="tns:DeleteUnreferencedType" minOccurs="0"/>
+                <xsd:element name="Relationship" type="tns:DeleteUnreferencedType" minOccurs="0"/>
+                <xsd:element name="ResourceAssignment" type="tns:DeleteUnreferencedType" minOccurs="0"/>
+                <xsd:element name="ResourceAssignmentPeriodActual" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="Risk" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="RiskImpact" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="RiskResponseAction" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="RiskResponseActionImpact" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="RiskResponsePlan" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="WBS" type="tns:BusinessObjectType" minOccurs="0"/>
+                <xsd:element name="WBSMilestone" type="tns:BusinessObjectType" minOccurs="0"/>
+            </xsd:sequence>
+        </xsd:complexType>
+
+        <xsd:complexType name="BusinessObjectOptions">
+            <xsd:sequence>
+                <xsd:element name="Global" type="tns:GlobalBusinessObjectOptions" minOccurs="0"/>
+                <xsd:element name="ProjectSpecific" type="tns:ProjectSpecificBusinessObjectOptions" minOccurs="0"/>
+            </xsd:sequence>
+        </xsd:complexType>
+
+        <xsd:complexType name="CreateNewProject">
+            <xsd:sequence>
+                <xsd:element name="DefaultGlobalImportOption" type="tns:ImportOption" minOccurs="0"/>
+                <xsd:element name="DefaultProjectSpecificImportOption" type="tns:ImportOption" minOccurs="0"/>
+                <xsd:element name="EPSObjectId" type="xsd:int"/>
+                <xsd:element name="FileType" type="tns:FileType" minOccurs="0"/>
+                <xsd:element name="IgnoreGUID" type="xsd:boolean" minOccurs="0"/>
+                <xsd:element name="IgnoreSequenceNumber" type="xsd:boolean" minOccurs="0"/>
+                <xsd:element name="LogLevel" type="tns:LogLevel" minOccurs="0"/>
+                <xsd:element name="ProjectData" type="xsd:base64Binary" xmime:expectedContentTypes="application/xml,application/zip,application/x-gzip"/>
+                <xsd:element name="BusinessObjectOptions" type="tns:BusinessObjectOptions" minOccurs="0"/>
+            </xsd:sequence>
+        </xsd:complexType>
+
+        <xsd:complexType name="CreateNewProjectResponse">
+            <xsd:sequence>
+                <xsd:element name="LogFile" type="xsd:base64Binary" xmime:expectedContentTypes="text/plain,application/zip,application/x-gzip"/>
+                <xsd:element name="ErrorMessage" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="ProjectObjectId" type="xsd:int"/>
+                <xsd:element name="Success" type="xsd:boolean"/>
+            </xsd:sequence>
+        </xsd:complexType>
+
+<xsd:element name="CreateNewProject" type="tns:CreateNewProject"/>
+        <xsd:element name="CreateNewProjectResponse" type="tns:CreateNewProjectResponse"/>
+
+
+<xsd:complexType name="ImportProjectAsyncASAP">
+            <xsd:sequence>
+           		 <xsd:element name="ImportProject" type="tns:ImportProject" maxOccurs="unbounded"/>	
+                <xsd:element name="ImportType" type="xsd:string"/>
+               <xsd:element name="ImportTemplateName" type="xsd:string"/>
+                <xsd:element name="PreImportCustomizationTemplateName" type="xsd:string"/>
+                <xsd:element name="FileType" type="tns:FileType" minOccurs="0"/>
+                <xsd:element name="IgnoreGUID" type="xsd:boolean" minOccurs="0"/>
+                <xsd:element name="IgnoreSequenceNumber" type="xsd:boolean" minOccurs="0"/>
+                <xsd:element name="LogLevel" type="tns:LogLevel" minOccurs="0"/>
+                <xsd:element name="ProjectData" type="xsd:base64Binary" xmime:expectedContentTypes="application/xml,application/zip,application/x-gzip"/>
+               </xsd:sequence>
+        </xsd:complexType>
+
+        <xsd:complexType name="ImportProjectAsyncASAPResponse">
+            <xsd:sequence>
+                <xsd:element name="ErrorMessage" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="JobObjectId" type="xsd:int"/>
+                <xsd:element name="Success" type="xsd:boolean"/>
+                <xsd:element name="SuccessMessage" type="xsd:string"/>
+            </xsd:sequence>
+        </xsd:complexType>
+
+<xsd:element name="ImportProjectAsyncASAP" type="tns:ImportProjectAsyncASAP"/>
+        <xsd:element name="ImportProjectAsyncASAPResponse" type="tns:ImportProjectAsyncASAPResponse"/>
+
+        <xsd:complexType name="UpdateExistingProject">
+            <xsd:sequence>
+                <xsd:element name="DefaultGlobalImportOption" type="tns:ImportOption" minOccurs="0"/>
+                <xsd:element name="DefaultProjectSpecificImportOption" type="tns:ImportOption" minOccurs="0"/>
+                <xsd:element name="ProjectObjectId" type="xsd:int"/>
+                <xsd:element name="FileType" type="tns:FileType" minOccurs="0"/>
+                <xsd:element name="IgnoreGUID" type="xsd:boolean" minOccurs="0"/>
+                <xsd:element name="IgnoreSequenceNumber" type="xsd:boolean" minOccurs="0"/>
+                <xsd:element name="LogLevel" type="tns:LogLevel" minOccurs="0"/>
+                <xsd:element name="ProjectData" type="xsd:base64Binary" xmime:expectedContentTypes="application/xml,application/zip,application/x-gzip"/>
+                <xsd:element name="BusinessObjectOptions" type="tns:BusinessObjectOptions" minOccurs="0"/>
+            </xsd:sequence>
+        </xsd:complexType>
+
+        <xsd:complexType name="UpdateExistingProjectResponse">
+            <xsd:sequence>
+                <xsd:element name="LogFile" type="xsd:base64Binary" xmime:expectedContentTypes="text/plain,application/zip,application/x-gzip"/>
+                <xsd:element name="ErrorMessage" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="Success" type="xsd:boolean"/>
+            </xsd:sequence>
+        </xsd:complexType>
+
+        <xsd:element name="UpdateExistingProject" type="tns:UpdateExistingProject"/>
+        <xsd:element name="UpdateExistingProjectResponse" type="tns:UpdateExistingProjectResponse"/>
+
+        <xsd:complexType name="ImportProject">
+            <xsd:sequence>
+                <xsd:element name="ProjectObjectId" type="xsd:int" minOccurs="0"/>
+                <xsd:element name="ImportOption" type="tns:ImportOption" minOccurs="0"/>		
+                <xsd:element name="EPSObjectId" type="xsd:int"/>
+            </xsd:sequence>
+        </xsd:complexType>
+		
+        <xsd:complexType name="ImportProjects">
+            <xsd:sequence>
+                    <xsd:element name="ImportProject" type="tns:ImportProject" maxOccurs="unbounded"/>		
+					<xsd:element name="ProjectData" type="xsd:base64Binary" xmime:expectedContentTypes="application/xml,application/zip,application/x-gzip"/>
+					<xsd:element name="FileType" type="tns:FileType" minOccurs="0"/>
+					<xsd:element name="BusinessObjectOptions" type="tns:BusinessObjectOptions" minOccurs="0"/>
+					<xsd:element name="IgnoreGUID" type="xsd:boolean" minOccurs="0"/>
+					<xsd:element name="IgnoreSequenceNumber" type="xsd:boolean" minOccurs="0"/>
+					<xsd:element name="LogLevel" type="tns:LogLevel" minOccurs="0"/>					
+					<xsd:element name="DefaultGlobalImportOption" type="tns:ImportOption" minOccurs="0"/>
+					<xsd:element name="DefaultProjectSpecificImportOption" type="tns:ImportOption" minOccurs="0"/>					
+            </xsd:sequence>
+        </xsd:complexType>		
+		
+        <xsd:complexType name="ImportProjectsResponse">
+            <xsd:sequence>
+                <xsd:element name="LogFile" type="xsd:base64Binary" xmime:expectedContentTypes="text/plain,application/zip,application/x-gzip"/>
+                <xsd:element name="ErrorMessage" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="Success" type="xsd:boolean"/>
+                <xsd:element name="ProjectObjectId" type="xsd:int" maxOccurs="unbounded"/>				
+            </xsd:sequence>
+        </xsd:complexType>
+		
+        <xsd:element name="ImportProjects" type="tns:ImportProjects"/>
+        <xsd:element name="ImportProjectsResponse" type="tns:ImportProjectsResponse"/>
+		
+        </xsd:schema>
+    </wsdl:types>
+
+    <wsdl:message name="CreateNewProject">
+        <wsdl:part name="params" element="tns:CreateNewProject"/>
+    </wsdl:message>
+    <wsdl:message name="CreateNewProjectResponse">
+        <wsdl:part name="result" element="tns:CreateNewProjectResponse"/>
+    </wsdl:message>
+    <wsdl:message name="UpdateExistingProject">
+        <wsdl:part name="params" element="tns:UpdateExistingProject"/>
+    </wsdl:message>
+    <wsdl:message name="UpdateExistingProjectResponse">
+        <wsdl:part name="result" element="tns:UpdateExistingProjectResponse"/>
+    </wsdl:message>
+
+
+    <wsdl:message name="ImportProjects">
+        <wsdl:part name="params" element="tns:ImportProjects"/>
+    </wsdl:message>
+    <wsdl:message name="ImportProjectsResponse">
+        <wsdl:part name="result" element="tns:ImportProjectsResponse"/>
+    </wsdl:message>
+
+<wsdl:message name="ImportProjectAsyncASAP">
+        <wsdl:part name="params" element="tns:ImportProjectAsyncASAP"/>
+    </wsdl:message>
+    <wsdl:message name="ImportProjectAsyncASAPResponse">
+        <wsdl:part name="result" element="tns:ImportProjectAsyncASAPResponse"/>
+    </wsdl:message>
+
+	
+    <wsdl:message name="IntegrationFault">
+        <wsdl:part name="fault" element="intgfault:IntegrationFault"/>
+    </wsdl:message>
+
+    <wsdl:portType name="ImportPortType">
+        <wsdl:operation name="CreateNewProject">
+            <wsdl:input name="CreateNewProjectRequest" message="tns:CreateNewProject"/>
+            <wsdl:output name="CreateNewProjectResponse" message="tns:CreateNewProjectResponse"/>
+            <wsdl:fault name="IntegrationFault" message="tns:IntegrationFault"/>
+        </wsdl:operation>
+		<wsdl:operation name="ImportProjectAsyncASAP">
+            <wsdl:input name="ImportProjectAsyncASAPRequest" message="tns:ImportProjectAsyncASAP"/>
+            <wsdl:output name="ImportProjectAsyncASAPResponse" message="tns:ImportProjectAsyncASAPResponse"/>
+            <wsdl:fault name="IntegrationFault" message="tns:IntegrationFault"/>
+        </wsdl:operation>
+        <wsdl:operation name="UpdateExistingProject">
+            <wsdl:input name="UpdateExistingProjectRequest" message="tns:UpdateExistingProject"/>
+            <wsdl:output name="UpdateExistingProjectResponse" message="tns:UpdateExistingProjectResponse"/>
+            <wsdl:fault name="IntegrationFault" message="tns:IntegrationFault"/>
+        </wsdl:operation>
+        <wsdl:operation name="ImportProjects">
+            <wsdl:input name="ImportProjectsRequest" message="tns:ImportProjects"/>
+            <wsdl:output name="ImportProjectsResponse" message="tns:ImportProjectsResponse"/>
+            <wsdl:fault name="IntegrationFault" message="tns:IntegrationFault"/>
+        </wsdl:operation>		
+	</wsdl:portType>
+
+    <wsdl:binding name="ImportPortBinding" type="tns:ImportPortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="CreateNewProject">
+            <soap:operation soapAction="CreateNewProject" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="IntegrationFault">
+                <soap:fault name="IntegrationFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+		<wsdl:operation name="ImportProjectAsyncASAP">
+            <soap:operation soapAction="ImportProjectAsyncASAP" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="IntegrationFault">
+                <soap:fault name="IntegrationFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        
+        <wsdl:operation name="UpdateExistingProject">
+            <soap:operation soapAction="UpdateExistingProject" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="IntegrationFault">
+                <soap:fault name="IntegrationFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="ImportProjects">
+            <soap:operation soapAction="ImportProjects" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="IntegrationFault">
+                <soap:fault name="IntegrationFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>		
+    </wsdl:binding>
+
+    <wsdl:service name="ImportService">
+        <wsdl:port name="ImportPort" binding="tns:ImportPortBinding">
+            <soap:address location="http://p6.ipms:8206/p6ws/services/ImportService"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

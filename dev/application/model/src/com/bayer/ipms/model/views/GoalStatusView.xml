@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="GoalStatusView"
+  Version="12.2.1.0.31"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="com.bayer.ipms.model.views.GoalStatusViewRowImpl"
+  ComponentClass="com.bayer.ipms.model.views.GoalStatusViewImpl"
+  PageIterMode="Full"
+  RowInterface="com.bayer.ipms.model.views.common.GoalStatusViewRow"
+  ClientRowProxyName="com.bayer.ipms.model.views.client.GoalStatusViewRowClient">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|VarAccess"/>
+    <Attr Name="_isCodegen" Value="true"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="com.bayer.ipms.model.views.GoalStatusView_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <SQLQuery><![CDATA[SELECT GoalStatus.CODE, 
+       GoalStatus.IS_ACTIVE, 
+       GoalStatus.NAME,
+       1 true_flag
+FROM  GOAL_STATUS GoalStatus]]></SQLQuery>
+  <EntityUsage
+    Name="GoalStatus"
+    Entity="com.bayer.ipms.model.entities.GoalStatus"/>
+  <ViewAttribute
+    Name="Code"
+    IsUpdateable="false"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Code"
+    EntityUsage="GoalStatus"
+    AliasName="CODE"/>
+  <ViewAttribute
+    Name="IsActive"
+    IsUpdateable="false"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="IsActive"
+    EntityUsage="GoalStatus"
+    AliasName="IS_ACTIVE"/>
+  <ViewAttribute
+    Name="Name"
+    IsUpdateable="false"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Name"
+    EntityUsage="GoalStatus"
+    AliasName="NAME"/>
+  <ViewAttribute
+    Name="TrueFlag"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="TRUE_FLAG"
+    Expression="TRUE_FLAG"
+    SQLType="NUMERIC"/>
+  <ClientRowInterface
+    Name="__rowClientInterface">
+    <Method
+      Name="refresh"
+      MethodName="refresh">
+      <Return
+        Name="_return_type_"
+        Type="void"/>
+    </Method>
+  </ClientRowInterface>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.bayer.ipms.model.bundles.modelBundle"/>
+  </ResourceBundle>
+</ViewObject>

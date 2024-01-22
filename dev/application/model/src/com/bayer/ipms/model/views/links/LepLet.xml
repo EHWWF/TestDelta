@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE ViewLink SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewLink
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="LepLet"
+  Version="12.1.3.10.8"
+  InheritPersonalization="merge"
+  EntityAssociation="com.bayer.ipms.model.entities.assoc.LepLet">
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="com.bayer.ipms.model.views.links.LepLet_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <ViewLinkDefEnd
+    Name="LatestEstimatesProcessView"
+    Cardinality="-1"
+    Source="true"
+    Owner="com.bayer.ipms.model.views.estimates.LatestEstimatesProcessView">
+    <DesignTime>
+      <Attr Name="_finderName" Value="LatestEstimatesProcessView"/>
+      <Attr Name="_isUpdateable" Value="true"/>
+      <Attr Name="_accessor" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.views.estimates.LatestEstimatesProcessView.LetId"/>
+    </AttrArray>
+  </ViewLinkDefEnd>
+  <ViewLinkDefEnd
+    Name="LatestEstimatesTagView"
+    Cardinality="1"
+    Owner="com.bayer.ipms.model.views.estimates.LatestEstimatesTagView">
+    <DesignTime>
+      <Attr Name="_finderName" Value="LatestEstimatesTagView"/>
+      <Attr Name="_isUpdateable" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.views.estimates.LatestEstimatesTagView.Id"/>
+    </AttrArray>
+  </ViewLinkDefEnd>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.bayer.ipms.model.bundles.modelBundle"/>
+  </ResourceBundle>
+</ViewLink>

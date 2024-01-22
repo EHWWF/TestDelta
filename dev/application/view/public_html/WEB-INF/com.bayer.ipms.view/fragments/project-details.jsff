@@ -1,0 +1,413 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:c="http://java.sun.com/jsp/jstl/core">
+  <af:componentDef>
+    <c:set var="bundle" value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+    <af:subform id="detailsEditArea">
+    <af:panelGroupLayout layout="scroll" styleClass="AFStretchWidth">
+                <af:panelGridLayout styleClass="AFStretchWidth">
+                    <af:gridRow>
+                        <af:gridCell halign="end" columnSpan="2">
+                            <af:toolbar rendered="#{rolesBean.projectEditDev or rolesBean.projectEditPrdMnt  or rolesBean.projectEditD2Prj or rolesBean.projectEditSAMD}">
+                                <af:commandToolbarButton rendered="#{empty pageFlowScope.projectViewBean.editable}"
+                                                         icon="/images/edit.png" immediate="true"
+                                                         actionListener="#{pageFlowScope.projectViewBean.onEdit}"
+                                                         text="#{bundle.globalEdit}">
+                                    <f:attribute name="target" value="detailsEditArea"/>
+                                </af:commandToolbarButton>
+                                <af:commandToolbarButton rendered="#{pageFlowScope.projectViewBean.editable eq 'detailsEditArea'}"
+                                                         icon="/images/commit.png"
+                                                         actionListener="#{pageFlowScope.projectViewBean.onCommit}"
+                                                         text="#{bundle.globalOk}"/>
+                                <af:commandToolbarButton rendered="#{pageFlowScope.projectViewBean.editable eq 'detailsEditArea'}"
+                                                         icon="/images/rollback.png"
+                                                         actionListener="#{pageFlowScope.projectViewBean.onRollback}"
+                                                         immediate="true" text="#{bundle.globalCancel}"/>
+                            </af:toolbar>
+                        </af:gridCell>
+                    </af:gridRow>
+                    <af:gridRow>
+                        <af:gridCell halign="stretch" width="100%">
+                            <af:panelBox text="#{bindings.AreaCode eq 'SAMD' ? bindings.DetailsObjective.hints.label : bindings.DetailsIndication.label}" showDisclosure="false"
+                                         background="#{pageFlowScope.projectViewBean.editable eq 'detailsEditArea' ? 'light' : 'default'}"
+                                         rendered="#{rolesBean.projectViewSAMD or rolesBean.projectViewDev or rolesBean.projectViewPrdMnt or rolesBean.projectViewD2Prj}">
+                                <af:inputText value="#{bindings.DetailsIndication.inputValue}" simple="true"
+                                              required="#{bindings.DetailsIndication.mandatory}"
+                                              styleClass="AFStretchWidth" dimensionsFrom="parent"
+                                              contentStyle="width:100%;"
+                                              rendered="#{bindings.AreaCode ne 'SAMD'}"
+                                              maximumLength="#{bindings.DetailsIndication.hints.precision}"
+                                              shortDesc="#{bindings.DetailsIndication.tooltip}"
+                                              readOnly="#{pageFlowScope.projectViewBean.editable ne 'detailsEditArea'}"
+                                              rows="10">
+                                    <f:validator binding="#{bindings.DetailsIndication.validator}"/>
+                                </af:inputText>
+                                <af:inputText value="#{bindings.DetailsObjective.inputValue}" simple="true"
+                                              required="#{bindings.DetailsObjective.hints.mandatory}"
+                                              styleClass="AFStretchWidth" dimensionsFrom="parent"
+                                              contentStyle="width:100%;"
+                                              rendered="#{bindings.AreaCode eq 'SAMD'}"
+                                              columns="#{bindings.DetailsObjective.hints.displayWidth}"
+                                              maximumLength="#{bindings.DetailsObjective.hints.precision}"
+                                              shortDesc="#{bindings.DetailsObjective.hints.tooltip}" id="dc_it1"
+                                              readOnly="#{pageFlowScope.projectViewBean.editable ne 'detailsEditArea'}"
+                                              rows="10">
+                                    <f:validator binding="#{bindings.DetailsObjective.validator}"/>
+                                </af:inputText>
+                            </af:panelBox>
+                            <!--<af:panelBox text="#{bindings.AreaCode eq 'SAMD' ? bindings.DetailsObjective.hints.label : bindings.DetailsIndication.label}" showDisclosure="false"
+                                         background="#{pageFlowScope.projectViewBean.editable eq 'detailsEditArea' ? 'light' : 'default'}"
+                                         rendered="#{rolesBean.projectViewSAMD}"/>-->
+                        </af:gridCell>
+                        <af:gridCell halign="stretch" width="100%">
+                            <af:panelBox text="#{bindings.DetailsMesh.label}" showDisclosure="false"
+                                         background="#{pageFlowScope.projectViewBean.editable eq 'detailsEditArea' ? 'light' : 'default'}"
+                                         rendered="#{rolesBean.projectViewDev or rolesBean.projectViewPrdMnt or rolesBean.projectViewD2Prj}">
+                                <af:inputText value="#{bindings.DetailsMesh.inputValue}" simple="true"
+                                              required="#{bindings.DetailsMesh.mandatory}" styleClass="AFStretchWidth"
+                                              dimensionsFrom="parent" contentStyle="width:100%;"
+                                              columns="#{bindings.DetailsMesh.displayWidth}"
+                                              maximumLength="#{bindings.DetailsMesh.hints.precision}"
+                                              shortDesc="#{bindings.DetailsMesh.tooltip}"
+                                              readOnly="#{pageFlowScope.projectViewBean.editable ne 'detailsEditArea' or not (rolesBean.projectEditD2Prj or rolesBean.projectEditDevOnlyGlobal or rolesBean.projectEditPrdMntOnlyGlobal)}"
+                                              rows="4">
+                                    <f:validator binding="#{bindings.DetailsMesh.validator}"/>
+                                </af:inputText>
+                            </af:panelBox>
+                            <af:panelBox text="#{bindings.DetailsModality.label}" showDisclosure="false"
+                                         background="#{pageFlowScope.projectViewBean.editable eq 'detailsEditArea' ? 'light' : 'default'}"
+                                         rendered="#{rolesBean.projectViewDev or rolesBean.projectViewD2Prj}">
+                                <af:selectManyChoice id="smcPhP"
+                                                     value="#{bindings.ProjectViewIterator.currentRow.detailsModalityCodes}"
+                                                     label="#{bindings.DetailsModality.label}"
+                                                     contentStyle="white-space: normal;" simple="true"
+                                                     required="#{bindings.DetailsModality.hints.mandatory}"
+                                                     shortDesc="#{bindings.DetailsModality.hints.tooltip}"
+                                                     readOnly="#{pageFlowScope.projectViewBean.editable ne 'detailsEditArea'}">
+                                    <f:selectItems value="#{utilsBean.lookup[bindings.ProjectViewIterator.currentRow.projectModalityView]}"
+                                                   id="siPhP"/>
+                                </af:selectManyChoice>
+                            </af:panelBox>
+                            <af:panelBox text="#{bindings.DetailsRationale.hints.label}" showDisclosure="false"
+                                         background="#{pageFlowScope.projectViewBean.editable eq 'detailsEditArea' ? 'light' : 'default'}"
+                                         rendered="#{rolesBean.projectViewSAMD}">
+                                <af:inputText value="#{bindings.DetailsRationale.inputValue}"
+                                              required="#{bindings.DetailsRationale.hints.mandatory}" simple="true"
+                                              styleClass="AFStretchWidth" dimensionsFrom="parent"
+                                              contentStyle="width:100%;"
+                                              maximumLength="#{bindings.DetailsRationale.hints.precision}"
+                                              shortDesc="#{bindings.DetailsRationale.hints.tooltip}"
+                                              readOnly="#{pageFlowScope.projectViewBean.editable ne 'detailsEditArea'}"
+                                              rows="10">
+                                    <f:validator binding="#{bindings.DetailsRationale.validator}"/>
+                                </af:inputText>
+                            </af:panelBox>
+                        </af:gridCell>
+                    </af:gridRow>
+                    <af:gridRow>
+                        <af:gridCell halign="stretch" width="100%">
+                            <af:panelBox text="#{bindings.DetailsProgress.label}" showDisclosure="false"
+                                         background="#{pageFlowScope.projectViewBean.editable eq 'detailsEditArea' ? 'light' : 'default'}"
+                                         rendered="#{rolesBean.projectViewDev or rolesBean.projectViewPrdMnt or rolesBean.projectViewD2Prj}">
+                                <af:inputText value="#{bindings.DetailsProgress.inputValue}" simple="true"
+                                              required="#{bindings.DetailsProgress.mandatory}"
+                                              styleClass="AFStretchWidth" contentStyle="width:100%;"
+                                              dimensionsFrom="parent" columns="#{bindings.DetailsProgress.displayWidth}"
+                                              maximumLength="#{bindings.DetailsProgress.hints.precision}"
+                                              shortDesc="#{bindings.DetailsProgress.tooltip}"
+                                              readOnly="#{pageFlowScope.projectViewBean.editable ne 'detailsEditArea'}"
+                                              rows="10">
+                                    <f:validator binding="#{bindings.DetailsProgress.validator}"/>
+                                </af:inputText>
+                                <af:inputDate label="#{bindings.ProgressDate.label}"
+                                              value="#{bindings.ProgressDate.inputValue}" readOnly="true"
+                                              inlineStyle="margin-top:5.0px;">
+                                    <af:convertDateTime pattern="#{bindings.ProgressDate.format}"/>
+                                </af:inputDate>
+                            </af:panelBox>
+                            <af:panelBox text="#{bindings.DetailsRisks.label}" showDisclosure="false"
+                                         background="#{pageFlowScope.projectViewBean.editable eq 'detailsEditArea' ? 'light' : 'default'}"
+                                         rendered="#{rolesBean.projectViewSAMD}">
+                                <af:inputText value="#{bindings.DetailsRisks.inputValue}" simple="true"
+                                              required="#{bindings.DetailsRisks.hints.mandatory}"
+                                              styleClass="AFStretchWidth" contentStyle="width:100%;"
+                                              dimensionsFrom="parent"
+                                              maximumLength="#{bindings.DetailsRisks.hints.precision}"
+                                              shortDesc="#{bindings.DetailsRisks.hints.tooltip}" rows="10"
+                                              readOnly="#{pageFlowScope.projectViewBean.editable ne 'detailsEditArea'}">
+                                    <f:validator binding="#{bindings.DetailsRisks.validator}"/>
+                                </af:inputText>
+                                <af:inputDate label="#{bindings.ProgressDate.label}"
+                                              value="#{bindings.ProgressDate.inputValue}" readOnly="true"
+                                              inlineStyle="margin-top:5.0px;">
+                                    <af:convertDateTime pattern="#{bindings.ProgressDate.format}"/>
+                                </af:inputDate>
+                            </af:panelBox>
+                        </af:gridCell>
+                        <af:gridCell halign="stretch" width="100%">
+                            <af:panelBox text="#{bindings.DetailsCriteria.label}" showDisclosure="false"
+                                         background="#{pageFlowScope.projectViewBean.editable eq 'detailsEditArea' ? 'light' : 'default'}"
+                                         rendered="#{rolesBean.projectViewDev or rolesBean.projectViewPrdMnt or rolesBean.projectViewD2Prj}">
+                                <af:inputText value="#{bindings.DetailsCriteria.inputValue}" simple="true"
+                                              required="#{bindings.DetailsCriteria.mandatory}"
+                                              styleClass="AFStretchWidth" contentStyle="width:100%;height:100%;"
+                                              dimensionsFrom="parent" columns="#{bindings.DetailsCriteria.displayWidth}"
+                                              maximumLength="#{bindings.DetailsCriteria.hints.precision}"
+                                              shortDesc="#{bindings.DetailsCriteria.tooltip}"
+                                              readOnly="#{pageFlowScope.projectViewBean.editable ne 'detailsEditArea'}"
+                                              rows="10">
+                                    <f:validator binding="#{bindings.DetailsCriteria.validator}"/>
+                                </af:inputText>
+                            </af:panelBox>
+                            <af:panelBox text="#{bindings.DetailsIntendedUse.label}" showDisclosure="false"
+                                         background="#{pageFlowScope.projectViewBean.editable eq 'detailsEditArea' ? 'light' : 'default'}"
+                                         rendered="#{rolesBean.projectViewSAMD}">
+                                <af:inputText value="#{bindings.DetailsIntendedUse.inputValue}" simple="true"
+                                              required="#{bindings.DetailsIntendedUse.hints.mandatory}"
+                                              styleClass="AFStretchWidth" contentStyle="width:100%;height:100%;"
+                                              dimensionsFrom="parent"
+                                              columns="#{bindings.DetailsIntendedUse.hints.displayWidth}"
+                                              maximumLength="#{bindings.DetailsIntendedUse.hints.precision}"
+                                              shortDesc="#{bindings.DetailsIntendedUse.hints.tooltip}" rows="10"
+                                              readOnly="#{pageFlowScope.projectViewBean.editable ne 'detailsEditArea'}">
+                                    <f:validator binding="#{bindings.DetailsIntendedUse.validator}"/>
+                                </af:inputText>
+                            </af:panelBox>
+                        </af:gridCell>
+                    </af:gridRow>
+                    <af:gridRow>
+                        <af:gridCell halign="stretch" width="100%">
+                            <af:panelBox text="#{bindings.DetailsProduct.label}" showDisclosure="false"
+                                         background="#{pageFlowScope.projectViewBean.editable eq 'detailsEditArea' ? 'light' : 'default'}"
+                                         rendered="#{rolesBean.projectViewDev or rolesBean.projectViewPrdMnt or rolesBean.projectViewD2Prj}">
+                                <af:inputText value="#{bindings.DetailsProduct.inputValue}" simple="true"
+                                              required="#{bindings.DetailsProduct.mandatory}"
+                                              styleClass="AFStretchWidth" contentStyle="width:100%;"
+                                              dimensionsFrom="parent" columns="#{bindings.DetailsProduct.displayWidth}"
+                                              maximumLength="#{bindings.DetailsProduct.hints.precision}"
+                                              shortDesc="#{bindings.DetailsProduct.tooltip}"
+                                              readOnly="#{pageFlowScope.projectViewBean.editable ne 'detailsEditArea'}"
+                                              rows="10">
+                                    <f:validator binding="#{bindings.DetailsProduct.validator}"/>
+                                </af:inputText>
+                            </af:panelBox>
+                            <af:panelBox text="#{bindings.DetailsExecutiveSummary.label}" showDisclosure="false"
+                                         background="#{pageFlowScope.projectViewBean.editable eq 'detailsEditArea' ? 'light' : 'default'}"
+                                         rendered="#{rolesBean.projectViewSAMD}">
+                                <af:inputText value="#{bindings.DetailsExecutiveSummary.inputValue}" simple="true"
+                                              required="#{bindings.DetailsExecutiveSummary.hints.mandatory}"
+                                              styleClass="AFStretchWidth" contentStyle="width:100%;"
+                                              dimensionsFrom="parent"
+                                              columns="#{bindings.DetailsExecutiveSummary.hints.displayWidth}"
+                                              maximumLength="#{bindings.DetailsExecutiveSummary.hints.precision}"
+                                              shortDesc="#{bindings.DetailsExecutiveSummary.hints.tooltip}" rows="10"
+                                              readOnly="#{pageFlowScope.projectViewBean.editable ne 'detailsEditArea'}">
+                                    <f:validator binding="#{bindings.DetailsExecutiveSummary.validator}"/>
+                                </af:inputText>
+                            </af:panelBox>
+                        </af:gridCell>
+                        <af:gridCell halign="stretch" width="100%">
+                            <af:panelBox text="#{bindings.DetailsGoal.label}" showDisclosure="false"
+                                         background="#{pageFlowScope.projectViewBean.editable eq 'detailsEditArea' ? 'light' : 'default'}"
+                                         rendered="#{rolesBean.projectViewDev or rolesBean.projectViewPrdMnt or rolesBean.projectViewD2Prj}">
+                                <af:inputText value="#{bindings.DetailsGoal.inputValue}" simple="true"
+                                              required="#{bindings.DetailsGoal.mandatory}" styleClass="AFStretchWidth"
+                                              contentStyle="width:100%;" dimensionsFrom="parent"
+                                              columns="#{bindings.DetailsGoal.displayWidth}"
+                                              maximumLength="#{bindings.DetailsGoal.hints.precision}"
+                                              shortDesc="#{bindings.DetailsGoal.tooltip}"
+                                              readOnly="#{pageFlowScope.projectViewBean.editable ne 'detailsEditArea'}"
+                                              rows="10">
+                                    <f:validator binding="#{bindings.DetailsGoal.validator}"/>
+                                </af:inputText>
+                            </af:panelBox>
+                            <af:panelBox text="#{bindings.DetailsScope.label}" showDisclosure="false"
+                                         background="#{pageFlowScope.projectViewBean.editable eq 'detailsEditArea' ? 'light' : 'default'}"
+                                         rendered="#{rolesBean.projectViewSAMD}">
+                                <af:inputText value="#{bindings.DetailsScope.inputValue}" simple="true"
+                                              required="#{bindings.DetailsScope.hints.mandatory}"
+                                              styleClass="AFStretchWidth" contentStyle="width:100%;"
+                                              dimensionsFrom="parent"
+                                              columns="#{bindings.DetailsScope.hints.displayWidth}"
+                                              maximumLength="#{bindings.DetailsScope.hints.precision}"
+                                              shortDesc="#{bindings.DetailsScope.hints.tooltip}" rows="10"
+                                              readOnly="#{pageFlowScope.projectViewBean.editable ne 'detailsEditArea'}">
+                                    <f:validator binding="#{bindings.DetailsScope.validator}"/>
+                                </af:inputText>
+                            </af:panelBox>
+                        </af:gridCell>
+                    </af:gridRow>
+                    <af:gridRow>
+                        <af:gridCell halign="stretch" width="100%">
+                            <af:panelBox text="#{bindings.DetailsAction.label}" showDisclosure="false"
+                                         background="#{pageFlowScope.projectViewBean.editable eq 'detailsEditArea' ? 'light' : 'default'}"
+                                         rendered="#{rolesBean.projectViewDev or rolesBean.projectViewPrdMnt or rolesBean.projectViewD2Prj}">
+                                <af:inputText value="#{bindings.DetailsAction.inputValue}" simple="true"
+                                              required="#{bindings.DetailsAction.mandatory}" styleClass="AFStretchWidth"
+                                              contentStyle="width:100%;" dimensionsFrom="parent"
+                                              columns="#{bindings.DetailsAction.displayWidth}"
+                                              maximumLength="#{bindings.DetailsAction.hints.precision}"
+                                              shortDesc="#{bindings.DetailsAction.tooltip}"
+                                              readOnly="#{pageFlowScope.projectViewBean.editable ne 'detailsEditArea'}"
+                                              rows="10">
+                                    <f:validator binding="#{bindings.DetailsAction.validator}"/>
+                                </af:inputText>
+                            </af:panelBox>
+                            <af:panelBox text="#{bindings.DetailsHighlights.label}" showDisclosure="false"
+                                         background="#{pageFlowScope.projectViewBean.editable eq 'detailsEditArea' ? 'light' : 'default'}"
+                                         rendered="#{rolesBean.projectViewSAMD}">
+                                <af:inputText value="#{bindings.DetailsHighlights.inputValue}" simple="true"
+                                              required="#{bindings.DetailsHighlights.hints.mandatory}"
+                                              styleClass="AFStretchWidth" contentStyle="width:100%;"
+                                              dimensionsFrom="parent"
+                                              columns="#{bindings.DetailsHighlights.hints.displayWidth}"
+                                              maximumLength="#{bindings.DetailsHighlights.hints.precision}"
+                                              shortDesc="#{bindings.DetailsHighlights.hints.tooltip}" rows="10"
+                                              readOnly="#{pageFlowScope.projectViewBean.editable ne 'detailsEditArea'}">
+                                    <f:validator binding="#{bindings.DetailsHighlights.validator}"/>
+                                </af:inputText>
+                            </af:panelBox>
+                        </af:gridCell>
+                        <af:gridCell halign="stretch" width="100%">
+                            <af:panelBox text="#{bindings.DetailsSales.label}" showDisclosure="false"
+                                         background="#{pageFlowScope.projectViewBean.editable eq 'detailsEditArea' ? 'light' : 'default'}"
+                                         rendered="#{rolesBean.projectViewDev or rolesBean.projectViewPrdMnt or rolesBean.projectViewD2Prj}">
+                                <af:inputText value="#{bindings.DetailsSales.inputValue}" simple="true"
+                                              required="#{bindings.DetailsSales.mandatory}" styleClass="AFStretchWidth"
+                                              contentStyle="width:100%;" dimensionsFrom="parent"
+                                              columns="#{bindings.DetailsSales.displayWidth}"
+                                              maximumLength="#{bindings.DetailsSales.hints.precision}"
+                                              shortDesc="#{bindings.DetailsSales.tooltip}"
+                                              readOnly="#{pageFlowScope.projectViewBean.editable ne 'detailsEditArea'}"
+                                              rows="10">
+                                    <f:validator binding="#{bindings.DetailsSales.validator}"/>
+                                </af:inputText>
+                            </af:panelBox>
+                            <af:panelBox text="#{bindings.DetailsBenefits.label}" showDisclosure="false"
+                                         background="#{pageFlowScope.projectViewBean.editable eq 'detailsEditArea' ? 'light' : 'default'}"
+                                         rendered="#{rolesBean.projectViewSAMD}">
+                                <af:inputText value="#{bindings.DetailsBenefits.inputValue}" simple="true"
+                                              required="#{bindings.DetailsBenefits.hints.mandatory}"
+                                              styleClass="AFStretchWidth" contentStyle="width:100%;"
+                                              dimensionsFrom="parent"
+                                              columns="#{bindings.DetailsBenefits.hints.displayWidth}"
+                                              maximumLength="#{bindings.DetailsBenefits.hints.precision}"
+                                              shortDesc="#{bindings.DetailsBenefits.hints.tooltip}" rows="10"
+                                              readOnly="#{pageFlowScope.projectViewBean.editable ne 'detailsEditArea'}">
+                                    <f:validator binding="#{bindings.DetailsBenefits.validator}"/>
+                                </af:inputText>
+                            </af:panelBox>
+                        </af:gridCell>
+                    </af:gridRow>
+                    <af:gridRow>
+                        <af:gridCell halign="stretch" width="100%">
+                            <af:panelBox text="#{bindings.DetailsCompetition.label}" showDisclosure="false"
+                                         background="#{pageFlowScope.projectViewBean.editable eq 'detailsEditArea' ? 'light' : 'default'}"
+                                         rendered="#{rolesBean.projectViewDev or rolesBean.projectViewPrdMnt or rolesBean.projectViewD2Prj}">
+                                <af:inputText value="#{bindings.DetailsCompetition.inputValue}" simple="true"
+                                              required="#{bindings.DetailsCompetition.mandatory}"
+                                              styleClass="AFStretchWidth" contentStyle="width:100%;"
+                                              dimensionsFrom="parent"
+                                              columns="#{bindings.DetailsCompetition.displayWidth}"
+                                              maximumLength="#{bindings.DetailsCompetition.hints.precision}"
+                                              shortDesc="#{bindings.DetailsCompetition.tooltip}"
+                                              readOnly="#{pageFlowScope.projectViewBean.editable ne 'detailsEditArea'}"
+                                              rows="10">
+                                    <f:validator binding="#{bindings.DetailsCompetition.validator}"/>
+                                </af:inputText>
+                            </af:panelBox>
+                            <af:panelBox text="#{bindings.DetailsActivitiesEvents.label}" showDisclosure="false"
+                                         background="#{pageFlowScope.projectViewBean.editable eq 'detailsEditArea' ? 'light' : 'default'}"
+                                         rendered="#{rolesBean.projectViewSAMD}">
+                                <af:inputText value="#{bindings.DetailsActivitiesEvents.inputValue}" simple="true"
+                                              required="#{bindings.DetailsActivitiesEvents.hints.mandatory}"
+                                              styleClass="AFStretchWidth" contentStyle="width:100%;"
+                                              dimensionsFrom="parent"
+                                              columns="#{bindings.DetailsActivitiesEvents.hints.displayWidth}"
+                                              maximumLength="#{bindings.DetailsActivitiesEvents.hints.precision}"
+                                              shortDesc="#{bindings.DetailsActivitiesEvents.hints.tooltip}" rows="10"
+                                              readOnly="#{pageFlowScope.projectViewBean.editable ne 'detailsEditArea'}">
+                                    <f:validator binding="#{bindings.DetailsActivitiesEvents.validator}"/>
+                                </af:inputText>
+                            </af:panelBox>
+                        </af:gridCell>
+                        <af:gridCell halign="stretch" width="100%">
+                            <af:panelBox text="#{bindings.DetailsPatent.label}" showDisclosure="false"
+                                         background="#{pageFlowScope.projectViewBean.editable eq 'detailsEditArea' ? 'light' : 'default'}"
+                                         rendered="#{rolesBean.projectViewDev or rolesBean.projectViewPrdMnt or rolesBean.projectViewD2Prj}">
+                                <af:inputText value="#{bindings.DetailsPatent.inputValue}" simple="true"
+                                              required="#{bindings.DetailsPatent.mandatory}" styleClass="AFStretchWidth"
+                                              contentStyle="width:100%;" dimensionsFrom="parent"
+                                              columns="#{bindings.DetailsPatent.displayWidth}"
+                                              maximumLength="#{bindings.DetailsPatent.hints.precision}"
+                                              shortDesc="#{bindings.DetailsPatent.tooltip}"
+                                              readOnly="#{pageFlowScope.projectViewBean.editable ne 'detailsEditArea'}"
+                                              rows="10">
+                                    <f:validator binding="#{bindings.DetailsPatent.validator}"/>
+                                </af:inputText>
+                            </af:panelBox>
+                            <af:panelGroupLayout id="dc_pgl2">
+                                <af:panelBox text="#{bindings.DetailsBudget.label}" showDisclosure="false"
+                                             background="#{pageFlowScope.projectViewBean.editable eq 'detailsEditArea' ? 'light' : 'default'}"
+                                             rendered="#{rolesBean.projectViewSAMD}" id="dc_pb1">
+                                    <af:inputText value="#{bindings.DetailsBudget.inputValue}" simple="true"
+                                                  required="#{bindings.DetailsBudget.hints.mandatory}"
+                                                  styleClass="AFStretchWidth" contentStyle="width:100%;"
+                                                  dimensionsFrom="parent"
+                                                  columns="#{bindings.DetailsBudget.hints.displayWidth}"
+                                                  maximumLength="#{bindings.DetailsBudget.hints.precision}"
+                                                  shortDesc="#{bindings.DetailsBudget.hints.tooltip}" rows="8"
+                                                  readOnly="#{pageFlowScope.projectViewBean.editable ne 'detailsEditArea'}"
+                                                  id="dc_it2">
+                                        <f:validator binding="#{bindings.DetailsBudget.validator}"/>
+                                    </af:inputText>
+                                </af:panelBox>
+                                <af:panelGroupLayout id="dc_pgl1" layout="horizontal" rendered="#{bindings.AreaCode eq 'SAMD'}">
+                                    <af:selectOneChoice value="#{bindings.DetailsBudgetStatus1.inputValue}"
+                                                        label="#{bindings.DetailsBudgetStatus1.label}"
+                                                        required="#{bindings.DetailsBudgetStatus1.hints.mandatory}"
+                                                        shortDesc="#{bindings.DetailsBudgetStatus1.hints.tooltip}"
+                                                        id="dc_soc1"
+                                                        readOnly="#{pageFlowScope.projectViewBean.editable ne 'detailsEditArea'}">
+                                        <f:selectItems value="#{utilsBean.lookup[bindings.ProjectViewIterator.currentRow.budgetStatusView]}" id="dc_si1"/>
+                                        <f:validator binding="#{bindings.DetailsBudgetStatus1.validator}"/>
+                                    </af:selectOneChoice>
+                                    <af:spacer width="20" height="10" id="dc_s1"/>
+                                    <af:selectOneChoice value="#{bindings.DetailsSamdStatus.inputValue}"
+                                                        label="#{bindings.DetailsSamdStatus.label}"
+                                                        required="#{bindings.DetailsSamdStatus.hints.mandatory}"
+                                                        shortDesc="#{bindings.DetailsSamdStatus.hints.tooltip}"
+                                                        id="dc_soc2"
+                                                        autoSubmit="true"
+                                                        readOnly="#{pageFlowScope.projectViewBean.editable ne 'detailsEditArea'}">
+                                        <f:selectItems value="#{utilsBean.lookup[bindings.ProjectViewIterator.currentRow.samdStatusView]}" id="dc_si2"/>
+                                        <f:validator binding="#{bindings.DetailsSamdStatus.validator}"/>
+                                    </af:selectOneChoice>
+                                </af:panelGroupLayout>
+                            </af:panelGroupLayout>
+                        </af:gridCell>
+                    </af:gridRow>
+                    <af:gridRow rendered="#{rolesBean.projectCommentsPMODev or rolesBean.projectCommentsPMOPrdMnt or rolesBean.projectCommentsPMOD2Prj or rolesBean.projectCommentsPMOSAMD}">
+                        <af:gridCell halign="stretch" columnSpan="2">
+                            <af:panelBox text="#{bindings.DetailsPmo.label}" showDisclosure="false"
+                                         background="#{pageFlowScope.projectViewBean.editable eq 'detailsEditArea' ? 'light' : 'default'}">
+                                <af:inputText value="#{bindings.DetailsPmo.inputValue}" simple="true"
+                                              required="#{bindings.DetailsPmo.mandatory}" styleClass="AFStretchWidth"
+                                              contentStyle="width:100%;" dimensionsFrom="parent"
+                                              columns="#{bindings.DetailsPmo.displayWidth}"
+                                              maximumLength="#{bindings.DetailsPmo.hints.precision}"
+                                              shortDesc="#{bindings.DetailsPmo.tooltip}"
+                                              readOnly="#{pageFlowScope.projectViewBean.editable ne 'detailsEditArea'  or not (rolesBean.projectEditD2Prj or rolesBean.projectEditDev or rolesBean.projectEditSAMD)}"
+                                              rows="10">
+                                    <f:validator binding="#{bindings.DetailsPmo.validator}"/>
+                                </af:inputText>
+                            </af:panelBox>
+                        </af:gridCell>
+                    </af:gridRow>
+                </af:panelGridLayout>
+            </af:panelGroupLayout>
+    </af:subform>
+  </af:componentDef>
+</jsp:root>

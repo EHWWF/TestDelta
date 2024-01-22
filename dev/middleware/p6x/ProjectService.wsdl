@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions
+		targetNamespace="http://xmlns.bayer.com/ipms/p6"
+		xmlns:client="http://xmlns.bayer.com/ipms/p6"
+		xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+		xmlns:ns1="http://xmlns.bayer.com/ipms/p6">
+
+	<wsdl:types>
+		<schema xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://xmlns.bayer.com/ipms/p6" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/p6/p6.xsd" />
+		</schema>
+	</wsdl:types>
+
+	<wsdl:message name="CloseRequestMessage">
+		<wsdl:part name="payload" element="ns1:close" />
+	</wsdl:message>
+	<wsdl:message name="ResponseMessage">
+		<wsdl:part name="payload" element="ns1:empty" />
+	</wsdl:message>
+	<wsdl:message name="ReadWBSRequestMessage">
+		<wsdl:part name="payload" element="ns1:ReadWBS" />
+	</wsdl:message>
+	<wsdl:message name="ReadWBSResponseMessage">
+		<wsdl:part name="payload" element="ns1:WBS" />
+	</wsdl:message>
+        <wsdl:message name="UpdateTaskRequestMessage">
+            <wsdl:part name="payload" element="ns1:updateTask"/>
+        </wsdl:message>
+
+	<wsdl:portType name="ProjectPortType">
+		<wsdl:operation name="close">
+			<wsdl:input  message="client:CloseRequestMessage" />
+			<wsdl:output message="client:ResponseMessage"/>
+			<wsdl:fault message="client:ResponseMessage" name="projectServiceFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="readWBS">
+			<wsdl:input  message="client:ReadWBSRequestMessage" />
+			<wsdl:output message="client:ReadWBSResponseMessage"/>
+			<wsdl:fault message="client:ReadWBSResponseMessage" name="projectServiceFault"/>
+		</wsdl:operation>
+                <wsdl:operation name="updateTask">
+                    <wsdl:input message="ns1:UpdateTaskRequestMessage"/>
+                    <wsdl:output message="ns1:ResponseMessage"/>
+                    <wsdl:fault name="projectServiceFault" message="ns1:ResponseMessage"/>
+                </wsdl:operation>
+	</wsdl:portType>
+</wsdl:definitions>

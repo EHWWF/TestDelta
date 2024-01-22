@@ -1,0 +1,477 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:h="http://java.sun.com/jsf/html" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <c:set var="ipms_adf_viewBundle" value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <f:view>
+        <f:loadBundle basename="com.bayer.ipms.view.bundles.viewBundle" var="bundle"/>
+        <af:document title="#{bundle.globalProMIS}" id="doc">
+            <af:messages id="m1"/>
+            <af:resource type="javascript">
+              function onTreeSelect(event) {
+                  var _tree = event.getSource();
+                  var rwKeySet = event.getAddedSet();
+                  var firstRowKey;
+                  for (rowKey in rwKeySet) {
+                      firstRowKey = rowKey;
+                      break;
+                  }
+                  _tree.setDisclosedRowKey(firstRowKey, true);
+              }
+              
+              
+              //stops the polling after first call
+              function resetPollInterval(e) {
+                var src = e.getSource();
+                src.setInterval( - 1);
+              }
+            </af:resource>
+            <af:form id="form" usesUpload="true">
+                <af:pageTemplate viewId="/WEB-INF/com.bayer.ipms.view/templates/ipms-page-template.jspx" id="tmpl">
+                    <f:facet name="navigation">
+                        <af:panelAccordion id="pa1" discloseNone="true" binding="#{requestScope.programMenu}" >
+                            <af:showDetailItem text="#{bundle.projectDevelopment}" id="Dev" stretchChildren="first"
+                                               disclosed="true"
+                                               rendered="#{securityContext.userInRole['ProgramViewDev,ProgramViewAssignedDev']}"
+                                               disclosureListener="#{pageFlowScope.programsBean.tabDisclosure}"
+                                               icon="#{pageFlowScope.programsBean.areaCodeImporting['PRE-POT'] or pageFlowScope.programsBean.areaCodeImporting['POST-POT']?'/images/attention.png':''}"
+                                               shortDesc="#{pageFlowScope.programsBean.areaCodeImporting['PRE-POT'] or pageFlowScope.programsBean.areaCodeImporting['POST-POT']?bundle.globalImportRunning:''}">
+                                <f:facet name="toolbar">
+                                    <af:menuBar id="prgtools">
+                                        <af:commandMenuItem id="cmdNew" icon="/images/new.png"
+                                                            rendered="#{securityContext.userInRole['ProgramCreateDev']}"
+                                                            text="#{bundle.programCreate}" immediate="true">
+                                            <af:showPopupBehavior popupId="popCreate" triggerType="action"/>
+                                        </af:commandMenuItem>
+                                        <af:commandMenuItem id="cmdRefresh" icon="/images/reload.png"
+                                                            text="#{bundle.globalRefresh}"
+                                                            action="#{pageFlowScope.programsBean.onRefresh}"
+                                                            immediate="true"/>
+                                    </af:menuBar>
+                                </f:facet>
+                                <af:panelStretchLayout id="psl" topHeight="auto" startWidth="50px">
+                                    <f:facet name="top">
+                                        <af:query id="qDev" headerText="#{bundle.globalFilter}"
+                                                  value="#{bindings.DevQuery.queryDescriptor}"
+                                                  model="#{bindings.DevQuery.queryModel}"
+                                                  queryListener="#{pageFlowScope.programsBean.customQueryListener}"
+                                                  queryOperationListener="#{pageFlowScope.programsBean.customQueryOperation}"
+                                                  modeChangeVisible="false" saveQueryMode="hidden"
+                                                  searchButtonText="#{bundle.globalFilter}" labelAlignment="start"
+                                                  resultComponentId="::treeDev"/>
+                                    </f:facet>
+                                    <f:facet name="center">
+                                        <af:tree value="#{bindings.ProgramView.treeModel}" var="node"
+                                                 selectionListener="#{pageFlowScope.programsBean.onTreeSelect}"
+                                                 rowSelection="single" id="treeDev" contentDelivery="immediate"
+                                                 summary="Programs and Projects"
+                                                 fetchSize="#{bindings.ProgramViewIterator.rangeSize}">
+                                            <f:facet name="nodeStamp">
+                                                <af:panelGroupLayout id="pgl2">
+                                                <af:outputText visible="#{! pageFlowScope.programsBean.modalMode }" value="#{node.QualifiedName}" id="ot1"
+                                                               inlineStyle="color:#{node.hierTypeBinding.viewDefName == 'com.bayer.ipms.model.views.ProgramView' or node.IsActive ? 'inherit' : '#585858'}; #{node.ProgramId == 'RBIN' ? 'text-decoration: line-through':''}"/>
+                                                <af:outputText visible="#{ pageFlowScope.programsBean.modalMode }"
+                                                     value="#{node.QualifiedName}" id="ot12"
+                                                               inlineStyle="color:#585858"/>
+                                              
+                                                </af:panelGroupLayout>
+                                            </f:facet>
+                                            <af:clientListener type="selection" method="onTreeSelect"/>
+                                        </af:tree>
+                                    </f:facet>
+                                </af:panelStretchLayout>
+                            </af:showDetailItem>
+                            <af:showDetailItem text="#{bundle.projectMaintenance}" id="PrdMnt" stretchChildren="first" disclosed="false"
+                                               icon="#{pageFlowScope.programsBean.areaCodeImporting['PRD-MNT']?'/images/attention.png':''}"
+                                               shortDesc="#{pageFlowScope.programsBean.areaCodeImporting['PRD-MNT']?bundle.globalImportRunning:''}"
+                                               rendered="#{securityContext.userInRole['ProgramViewPrdMnt,ProgramViewAssignedPrdMnt']}"
+                                               disclosureListener="#{pageFlowScope.programsBean.tabDisclosure}">
+                                <f:facet name="toolbar">
+                                    <af:menuBar id="toolsMaintenance"></af:menuBar>
+                                </f:facet>
+                                <af:panelStretchLayout id="psl7" topHeight="auto" startWidth="50px">
+                                    <f:facet name="top">
+                                        <af:query id="qryId3" headerText="#{bundle.globalFilter}" disclosed="true"
+                                                  value="#{bindings.PrdMntQuery.queryDescriptor}"
+                                                  model="#{bindings.PrdMntQuery.queryModel}"
+                                                  queryListener="#{pageFlowScope.programsBean.customQueryListener}"
+                                                  queryOperationListener="#{bindings.PrdMntQuery.processQueryOperation}"
+                                                  modeChangeVisible="false" saveQueryMode="hidden"
+                                                  searchButtonText="#{bundle.globalFilter}" labelAlignment="start"
+                                                  resultComponentId="::treePrdMnt"/>
+                                    </f:facet>
+                                    <f:facet name="center">
+                                        <af:tree value="#{bindings.ProgramView.treeModel}" var="node"
+                                                 selectionListener="#{pageFlowScope.programsBean.onTreeSelect}"
+                                                 rowSelection="single" id="treePrdMnt" contentDelivery="immediate"
+                                                 summary="Programs and Projects"
+                                                 fetchSize="#{bindings.ProgramViewIterator.rangeSize}">
+                                           
+                                              <f:facet name="nodeStamp">
+                                                <af:panelGroupLayout id="pgl22">
+                                                    <af:outputText visible="#{! pageFlowScope.programsBean.modalMode }"  value="#{node.QualifiedName}" id="ot2"
+                                                                   inlineStyle="color:#{node.hierTypeBinding.viewDefName == 'com.bayer.ipms.model.views.ProgramView' or node.IsActive ? 'inherit' : '#585858'};"/>
+                                                    <af:outputText visible="#{ pageFlowScope.programsBean.modalMode }"
+                                                         value="#{node.QualifiedName}" id="ot1d2"
+                                                                   inlineStyle="color:#585858"/>
+                                                </af:panelGroupLayout>
+                                           
+                                            </f:facet>
+                                            <af:clientListener type="selection" method="onTreeSelect"/>
+                                        </af:tree>
+                                    </f:facet>
+                                </af:panelStretchLayout>
+                            </af:showDetailItem>
+                            <af:showDetailItem text="#{bundle.projectD1}" id="D1" disclosed="false"
+                                               icon="#{pageFlowScope.programsBean.areaCodeImporting['D1']?'/images/attention.png':''}"
+                                               shortDesc="#{pageFlowScope.programsBean.areaCodeImporting['D1']?bundle.globalImportRunning:''}"
+                                               disclosureListener="#{pageFlowScope.programsBean.tabDisclosure}"
+                                               rendered="#{rolesBean.projectViewD1}">
+                                <f:facet name="toolbar">
+                                    <af:menuBar id="toolsD1"/>
+                                </f:facet>
+                            </af:showDetailItem>
+                            <af:showDetailItem text="#{bundle.projectD2}" id="D2Prj" stretchChildren="first" disclosed="false"
+                                               icon="#{pageFlowScope.programsBean.areaCodeImporting['D2-PRJ']?'/images/attention.png':''}"
+                                               shortDesc="#{pageFlowScope.programsBean.areaCodeImporting['D2-PRJ']?bundle.globalImportRunning:''}"
+                                               rendered="#{securityContext.userInRole['ProjectViewD2Prj']}"
+                                               disclosureListener="#{pageFlowScope.programsBean.tabDisclosure}">
+                                <f:facet name="toolbar">
+                                    <af:menuBar id="toolsD2">
+                                        <af:commandMenuItem id="cmdNewPr" icon="/images/new.png"
+                                                            rendered="#{securityContext.userInRole['ProjectCreateD2Prj']}"
+                                                            text="#{bundle.projectCreate}" immediate="true">
+                                            <af:showPopupBehavior popupId="popCrPr:popCreateProject"
+                                                                  triggerType="action"/>
+                                        </af:commandMenuItem>
+                                    </af:menuBar>
+                                </f:facet>
+                                <af:panelStretchLayout id="psl6" topHeight="auto" startWidth="50px">
+                                    <f:facet name="top">
+                                        <af:query id="qD2Prj" headerText="#{bundle.globalFilter}" disclosed="true"
+                                                  value="#{bindings.D2PrjQuery.queryDescriptor}"
+                                                  model="#{bindings.D2PrjQuery.queryModel}"
+                                                  queryListener="#{pageFlowScope.programsBean.customQueryListener}"
+                                                  queryOperationListener="#{bindings.D2PrjQuery.processQueryOperation}"
+                                                  modeChangeVisible="false" saveQueryMode="hidden"
+                                                  searchButtonText="#{bundle.globalFilter}" labelAlignment="start"
+                                                  resultComponentId="::treeD2Prj"/>
+                                    </f:facet>
+                                    <f:facet name="center">
+                                        <af:tree value="#{bindings.ProjectView.treeModel}" var="node"
+                                                 selectionListener="#{pageFlowScope.programsBean.onTreeSelect}"
+                                                 fetchSize="#{bindings.ProgramViewIterator.rangeSize}"
+                                                 rowSelection="single" id="treeD2Prj">
+                                               <f:facet name="nodeStamp">
+                                                <af:panelGroupLayout id="pgl2d2">
+                                                <af:outputText  visible="#{! pageFlowScope.programsBean.modalMode }" value="#{node.QualifiedName}" id="otD2"
+                                                               inlineStyle="color:#{node.IsActive ? 'inherit' : '#585858'}; #{bindings.ProgramViewIterator.currentRow.id == 'RBIN' ? 'text-decoration: line-through':''};"/>
+                                                <af:outputText visible="#{ pageFlowScope.programsBean.modalMode }"
+                                                     value="#{node.QualifiedName}" id="ot1e2"
+                                                               inlineStyle="color:#585858"/>
+                                              
+                                                </af:panelGroupLayout>
+                                                </f:facet>
+                                        </af:tree>
+                                    </f:facet>
+                                </af:panelStretchLayout>
+                            </af:showDetailItem>
+                            <af:showDetailItem text="#{bundle.projectD3}" id="D3Tr" stretchChildren="first" disclosed="false"
+                                               icon="#{pageFlowScope.programsBean.areaCodeImporting['D3-TR']?'/images/attention.png':''}"
+                                               shortDesc="#{pageFlowScope.programsBean.areaCodeImporting['D3-TR']?bundle.globalImportRunning:''}"
+                                               rendered="#{securityContext.userInRole['ProjectViewD3Tr,ProjectViewAssignedD3Tr']}"
+                                               disclosureListener="#{pageFlowScope.programsBean.tabDisclosure}">
+                                <f:facet name="toolbar">
+                                    <af:menuBar id="toolsD3"></af:menuBar>
+                                </f:facet>
+                                <af:panelStretchLayout id="psl5" topHeight="auto" startWidth="50px">
+                                    <f:facet name="top">
+                                        <af:query id="qryId5" headerText="#{bundle.globalFilter}" disclosed="true"
+                                                  value="#{bindings.D3TrQuery.queryDescriptor}"
+                                                  model="#{bindings.D3TrQuery.queryModel}"
+                                                  queryListener="#{pageFlowScope.programsBean.customQueryListener}"
+                                                  queryOperationListener="#{bindings.D3TrQuery.processQueryOperation}"
+                                                  modeChangeVisible="false" saveQueryMode="hidden"
+                                                  searchButtonText="#{bundle.globalFilter}" labelAlignment="start"
+                                                  resultComponentId="::treeD3Tr"/>
+                                    </f:facet>
+                                    <f:facet name="center">
+                                        <af:tree value="#{bindings.ProjectView.treeModel}" var="node"
+                                                 selectionListener="#{pageFlowScope.programsBean.onTreeSelect}"
+                                                 fetchSize="#{bindings.ProgramViewIterator.rangeSize}"
+                                                 rowSelection="single" id="treeD3Tr">
+                                            <f:facet name="nodeStamp">
+                                                <af:outputText value="#{node.QualifiedName}" id="otD3"
+                                                               inlineStyle="color:#{node.IsActive ? 'inherit' : '#585858'};"/>
+                                            </f:facet>
+                                        </af:tree>
+                                    </f:facet>
+                                </af:panelStretchLayout>
+                            </af:showDetailItem>
+                            <af:showDetailItem text="#{bundle.projectResearch}" id="Rs" stretchChildren="first" disclosed="false"
+                                               icon="#{pageFlowScope.programsBean.areaCodeImporting['RS']?'/images/attention.png':''}"
+                                               shortDesc="#{pageFlowScope.programsBean.areaCodeImporting['RS']?bundle.globalImportRunning:''}"
+                                               rendered="#{securityContext.userInRole['ProjectViewRs']}"
+                                               disclosureListener="#{pageFlowScope.programsBean.tabDisclosure}">
+                                <f:facet name="toolbar">
+                                    <af:menuBar id="toolsResearch"></af:menuBar>
+                                </f:facet>
+                                <af:panelStretchLayout id="psl2" topHeight="auto" startWidth="50px">
+                                    <f:facet name="top">
+                                        <af:query id="qryId6" headerText="#{bundle.globalFilter}" disclosed="true"
+                                                  value="#{bindings.RsQuery.queryDescriptor}"
+                                                  model="#{bindings.RsQuery.queryModel}"
+                                                  queryListener="#{pageFlowScope.programsBean.customQueryListener}"
+                                                  queryOperationListener="#{bindings.RsQuery.processQueryOperation}"
+                                                  modeChangeVisible="false" saveQueryMode="hidden"
+                                                  searchButtonText="#{bundle.globalFilter}" labelAlignment="start"
+                                                  resultComponentId="::treeRs"/>
+                                    </f:facet>
+                                    <f:facet name="center">
+                                        <af:tree value="#{bindings.ProjectView.treeModel}" var="node"
+                                                 selectionListener="#{pageFlowScope.programsBean.onTreeSelect}"
+                                                 fetchSize="#{bindings.ProgramViewIterator.rangeSize}"
+                                                 rowSelection="single" id="treeRs">
+                                            <f:facet name="nodeStamp">
+                                                <af:outputText value="#{node.QualifiedName}" id="otRs"
+                                                               inlineStyle="color:#{node.IsActive ? 'inherit' : '#585858'};"/>
+                                            </f:facet>
+                                        </af:tree>
+                                    </f:facet>
+                                </af:panelStretchLayout>
+                            </af:showDetailItem>
+                            <af:showDetailItem text="#{bundle.projectLg}" id="Lg" stretchChildren="first" disclosed="false"
+                                               icon="#{pageFlowScope.programsBean.areaCodeImporting['LG']?'/images/attention.png':''}"
+                                               shortDesc="#{pageFlowScope.programsBean.areaCodeImporting['LG']?bundle.globalImportRunning:''}"
+                                               rendered="#{securityContext.userInRole['ProjectViewLg']}"
+                                               disclosureListener="#{pageFlowScope.programsBean.tabDisclosure}">
+                                <f:facet name="toolbar">
+                                    <af:menuBar id="toolsLg"></af:menuBar>
+                                </f:facet>
+                                <af:panelStretchLayout id="psl3" topHeight="auto" startWidth="50px">
+                                    <f:facet name="top">
+                                        <af:query id="qryId2" headerText="#{bundle.globalFilter}" disclosed="true"
+                                                  value="#{bindings.LgQuery.queryDescriptor}"
+                                                  model="#{bindings.LgQuery.queryModel}"
+                                                  queryListener="#{pageFlowScope.programsBean.customQueryListener}"
+                                                  queryOperationListener="#{bindings.LgQuery.processQueryOperation}"
+                                                  modeChangeVisible="false" saveQueryMode="hidden"
+                                                  searchButtonText="#{bundle.globalFilter}" labelAlignment="start"
+                                                  resultComponentId="::treeLg"/>
+                                    </f:facet>
+                                    <f:facet name="center">
+                                        <af:tree value="#{bindings.ProjectView.treeModel}" var="node"
+                                                 selectionListener="#{pageFlowScope.programsBean.onTreeSelect}"
+                                                 fetchSize="#{bindings.ProgramViewIterator.rangeSize}"
+                                                 rowSelection="single" id="treeLg">
+                                            <f:facet name="nodeStamp">
+                                                <af:outputText value="#{node.QualifiedName}" id="ot3"
+                                                               inlineStyle="color:#{node.IsActive ? 'inherit' : '#585858'};"/>
+                                            </f:facet>
+                                        </af:tree>
+                                    </f:facet>
+                                </af:panelStretchLayout>
+                            </af:showDetailItem>
+                            <af:showDetailItem text="#{bundle.projectLo}" id="Lo" stretchChildren="first" disclosed="false"
+                                               icon="#{pageFlowScope.programsBean.areaCodeImporting['LO']?'/images/attention.png':''}"
+                                               shortDesc="#{pageFlowScope.programsBean.areaCodeImporting['LO']?bundle.globalImportRunning:''}"
+                                               rendered="#{securityContext.userInRole['ProjectViewLo']}"
+                                               disclosureListener="#{pageFlowScope.programsBean.tabDisclosure}">
+                                <f:facet name="toolbar">
+                                    <af:menuBar id="toolsLo"></af:menuBar>
+                                </f:facet>
+                                <af:panelStretchLayout id="psl4" topHeight="auto" startWidth="50px">
+                                    <f:facet name="top">
+                                        <af:query id="qryId7" headerText="#{bundle.globalFilter}" disclosed="true"
+                                                  value="#{bindings.LoQuery.queryDescriptor}"
+                                                  model="#{bindings.LoQuery.queryModel}"
+                                                  queryListener="#{pageFlowScope.programsBean.customQueryListener}"
+                                                  queryOperationListener="#{bindings.LoQuery.processQueryOperation}"
+                                                  modeChangeVisible="false" saveQueryMode="hidden"
+                                                  searchButtonText="#{bundle.globalFilter}" labelAlignment="start"
+                                                  resultComponentId="::treeLo"/>
+                                    </f:facet>
+                                    <f:facet name="center">
+                                        <af:tree value="#{bindings.ProjectView.treeModel}" var="node"
+                                                 selectionListener="#{pageFlowScope.programsBean.onTreeSelect}"
+                                                 fetchSize="#{bindings.ProgramViewIterator.rangeSize}"
+                                                 rowSelection="single" id="treeLo">
+                                            <f:facet name="nodeStamp">
+                                                <af:outputText value="#{node.QualifiedName}" id="otLo"
+                                                               inlineStyle="color:#{node.IsActive ? 'inherit' : '#585858'};"/>
+                                            </f:facet>
+                                        </af:tree>
+                                    </f:facet>
+                                </af:panelStretchLayout>
+                            </af:showDetailItem>
+                            <af:showDetailItem text="#{bundle.projectControllingObject}" id="Co" stretchChildren="first" disclosed="false"
+                                               icon="#{pageFlowScope.programsBean.areaCodeImporting['CO']?'/images/attention.png':''}"
+                                               shortDesc="#{pageFlowScope.programsBean.areaCodeImporting['CO']?bundle.globalImportRunning:''}"
+                                               rendered="#{securityContext.userInRole['ProjectViewCo']}"
+                                               disclosureListener="#{pageFlowScope.programsBean.tabDisclosure}">
+                                <f:facet name="toolbar">
+                                    <af:menuBar id="toolsControlling"></af:menuBar>
+                                </f:facet>
+                                <af:panelStretchLayout id="psl72" topHeight="auto" startWidth="50px">
+                                    <f:facet name="top">
+                                        <af:query id="qryId8" headerText="#{bundle.globalFilter}" disclosed="true"
+                                                  value="#{bindings.CoQuery.queryDescriptor}"
+                                                  model="#{bindings.CoQuery.queryModel}"
+                                                  queryListener="#{pageFlowScope.programsBean.customQueryListener}"
+                                                  queryOperationListener="#{bindings.CoQuery.processQueryOperation}"
+                                                  modeChangeVisible="false" saveQueryMode="hidden"
+                                                  searchButtonText="#{bundle.globalFilter}" labelAlignment="start"
+                                                  resultComponentId="::treeCo"/>
+                                    </f:facet>
+                                    <f:facet name="center">
+                                        <af:tree value="#{bindings.ProjectView.treeModel}" var="node"
+                                                 selectionListener="#{pageFlowScope.programsBean.onTreeSelect}"
+                                                 fetchSize="#{bindings.ProgramViewIterator.rangeSize}"
+                                                 rowSelection="single" id="treeCo">
+                                            <f:facet name="nodeStamp">
+                                                <af:outputText value="#{node.QualifiedName}" id="otCo"
+                                                               inlineStyle="color:#{node.IsActive ? 'inherit' : '#585858'};"/>
+                                            </f:facet>
+                                        </af:tree>
+                                    </f:facet>
+                                </af:panelStretchLayout>
+                            </af:showDetailItem>
+                            
+
+                            <af:showDetailItem text="#{bundle.projectSAMD}" id="SAMD" stretchChildren="first" disclosed="false"
+                                               icon="#{pageFlowScope.programsBean.areaCodeImporting['SAMD']?'/images/attention.png':''}"
+                                               shortDesc="#{pageFlowScope.programsBean.areaCodeImporting['SAMD']?bundle.globalImportRunning:''}"
+                                               rendered="#{securityContext.userInRole['ProjectViewSAMD']}"
+                                               disclosureListener="#{pageFlowScope.programsBean.tabDisclosure}">
+                                <f:facet name="toolbar">
+                                    <af:menuBar id="toolsSAMD">
+                                        <af:commandMenuItem id="cmdNewPrSAMD" icon="/images/new.png"
+                                                            rendered="#{securityContext.userInRole['ProjectCreateSAMD']}"
+                                                            text="#{bundle.projectCreate}" immediate="true">
+                                            <af:showPopupBehavior popupId="popCrPr1:popCreateProject"
+                                                                  triggerType="action"/>
+                                        </af:commandMenuItem>
+                                    </af:menuBar>
+                                </f:facet>
+                                <af:panelStretchLayout id="psl9" topHeight="auto" startWidth="50px">
+                                    <f:facet name="top">
+                                        
+                                        <af:query id="qSAMD" headerText="#{bundle.globalFilter}" disclosed="true"
+                                                  value="#{bindings.SAMDQuery.queryDescriptor}"
+                                                  model="#{bindings.SAMDQuery.queryModel}"
+                                                  queryListener="#{pageFlowScope.programsBean.customQueryListener}"
+                                                  queryOperationListener="#{bindings.SAMDQuery.processQueryOperation}"
+                                                  modeChangeVisible="false" saveQueryMode="hidden"
+                                                  searchButtonText="#{bundle.globalFilter}" labelAlignment="start"
+                                                  resultComponentId="::treeSAMD"/>
+                                    </f:facet>
+                                    <f:facet name="center">
+                                        <af:tree value="#{bindings.ProjectView.treeModel}" var="node"
+                                                 selectionListener="#{pageFlowScope.programsBean.onTreeSelect}"
+                                                 fetchSize="#{bindings.ProgramViewIterator.rangeSize}"
+                                                 rowSelection="single" id="treeSAMD">
+                                               <f:facet name="nodeStamp">
+                                                <af:panelGroupLayout id="pgl2samd">
+                                                <af:outputText  visible="#{! pageFlowScope.programsBean.modalMode }" value="#{node.QualifiedName}" id="otSAMD"
+                                                               inlineStyle="color:#{node.IsActive ? 'inherit' : '#585858'}; #{bindings.ProgramViewIterator.currentRow.id == 'RBIN' ? 'text-decoration: line-through':''};"/>
+                                                <af:outputText visible="#{ pageFlowScope.programsBean.modalMode }"
+                                                     value="#{node.QualifiedName}" id="ot1esamd"
+                                                               inlineStyle="color:#585858"/>
+                                              
+                                                </af:panelGroupLayout>
+                                                </f:facet>
+                                        </af:tree>
+                                    </f:facet>
+                                </af:panelStretchLayout>
+                            </af:showDetailItem>
+                            <af:showDetailItem text="#{bundle.projectUntypified}" id="Unt" stretchChildren="first" disclosed="false"
+                                               rendered="#{securityContext.userInRole['ProjectTypify']}"
+                                               disclosureListener="#{pageFlowScope.programsBean.tabDisclosure}">
+                                <f:facet name="toolbar">
+                                    <af:menuBar id="toolsUntypified"></af:menuBar>
+                                </f:facet>
+                            </af:showDetailItem>
+                        </af:panelAccordion>
+                    </f:facet>
+                    <f:facet name="popup">
+                        <af:group id="g1">
+                            <af:panelGroupLayout id="pgl1"/>
+                            <af:popup id="popCreate" contentDelivery="lazyUncached"
+                                      popupCanceledListener="#{pageFlowScope.programsBean.onPopupCancel}"
+                                      popupFetchListener="#{pageFlowScope.programsBean.onPopupFetch}">
+                                <af:dialog id="dlgCreate" title="#{bundle.programCreate}"
+                                           dialogListener="#{pageFlowScope.programsBean.onCreate}" contentWidth="500">
+                                    <af:panelBox text="#{bundle.globalSummary}" showDisclosure="false" type="flow"
+                                                 id="pb1">
+                                        <af:panelFormLayout styleClass="AFStretchWidth" fieldWidth="100%" id="pfl1">
+                                            <af:inputText value="#{bindings.Code.inputValue}"
+                                                          label="#{bindings.Code.hints.label}"
+                                                          required="#{bindings.Code.hints.mandatory}"
+                                                          columns="#{bindings.Code.hints.displayWidth}"
+                                                          maximumLength="#{bindings.Code.hints.precision}"
+                                                          shortDesc="#{bindings.Code.hints.tooltip}" id="code">
+                                                <f:validator binding="#{bindings.Code.validator}"/>
+                                            </af:inputText>
+                                            <af:inputText value="#{bindings.Name.inputValue}"
+                                                          label="#{bindings.Name.hints.label}"
+                                                          required="#{bindings.Name.hints.mandatory}"
+                                                          columns="#{bindings.Name.hints.displayWidth}"
+                                                          maximumLength="#{bindings.Name.hints.precision}"
+                                                          shortDesc="#{bindings.Name.hints.tooltip}" id="name">
+                                                <f:validator binding="#{bindings.Name.validator}"/>
+                                            </af:inputText>
+                                            <af:inputText value="#{bindings.Substance.inputValue}"
+                                                          label="#{bindings.Substance.hints.label}"
+                                                          required="#{bindings.Substance.hints.mandatory}"
+                                                          columns="#{bindings.Substance.hints.displayWidth}"
+                                                          maximumLength="#{bindings.Substance.hints.precision}"
+                                                          shortDesc="#{bindings.Substance.hints.tooltip}"
+                                                          rows="#{bindings.Substance.hints.displayHeight}"
+                                                          styleClass="AFStretchWidth" contentStyle="width:100%;"
+                                                          dimensionsFrom="parent" id="subst">
+                                                <f:validator binding="#{bindings.Substance.validator}"/>
+                                            </af:inputText>
+                                            <af:inputText value="#{bindings.Description.inputValue}"
+                                                          label="#{bindings.Description.hints.label}"
+                                                          required="#{bindings.Description.hints.mandatory}"
+                                                          columns="#{bindings.Description.hints.displayWidth}"
+                                                          maximumLength="#{bindings.Description.hints.precision}"
+                                                          shortDesc="#{bindings.Description.hints.tooltip}"
+                                                          styleClass="AFStretchWidth" contentStyle="width:100%;"
+                                                          dimensionsFrom="parent" id="descr"
+                                                          rows="#{bindings.Description.hints.displayHeight}">
+                                                <f:validator binding="#{bindings.Description.validator}"/>
+                                            </af:inputText>
+                                        </af:panelFormLayout>
+                                    </af:panelBox>
+                                </af:dialog>
+                            </af:popup>
+                            <af:declarativeComponent viewId="/WEB-INF/com.bayer.ipms.view/fragments/project-create-popup.jsff"
+                                                     id="popCrPr"
+                                                     rendered="#{securityContext.userInRole['ProjectCreateD2Prj']}">
+                                <f:attribute name="areaCode" value="#{bindings.D2PrjAreaCode}"/>
+                                <f:attribute name="bean" value="#{pageFlowScope.programsBean}"/>
+                                <f:attribute name="projectType" value="D2Prj"/>
+                            </af:declarativeComponent>
+                             <af:declarativeComponent viewId="/WEB-INF/com.bayer.ipms.view/fragments/project-create-popup.jsff"
+                                                     id="popCrPr1"
+                                                     rendered="#{securityContext.userInRole['ProjectCreateSAMD']}">
+                                <f:attribute name="areaCode" value="#{bindings.SAMDAreaCode}"/>
+                                <f:attribute name="bean" value="#{pageFlowScope.programsBean}"/>
+                                <f:attribute name="projectType" value="SAMD"/>
+                            </af:declarativeComponent>
+                        </af:group>
+                    </f:facet>
+                    <f:facet name="content">
+                        <af:region value="#{bindings.dynamicRegion1.regionModel}" id="region"/>
+                    </f:facet>
+                    <f:attribute name="tab" value="programs"/>
+                </af:pageTemplate>
+            </af:form>
+            <f:facet name="metaContainer">
+                <f:verbatim>      <link type="image/x-icon" href="images/promis.png" rel="shortcut icon"/>     </f:verbatim>
+            </f:facet>
+        </af:document>
+    </f:view>
+</jsp:root>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24"
+                id="project_team_project_team_team_members_viewPageDef" Package="com.bayer.ipms.view.flows"
+                SkipValidation="true">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+     <iterator Binds="ProgramAppModule.ProgramView" RangeSize="10" DataControl="PrivateAppModuleDataControl"
+                  id="ProgramViewIterator" ChangeEventPolicy="none"/>
+       
+     <iterator Binds="ProgramAppModule.ProjectView" RangeSize="10" DataControl="PrivateAppModuleDataControl"
+                  id="ProjectViewIterator" ChangeEventPolicy="none"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="ProgramViewIterator" id="ProgramId">
+            <AttrNames>
+                <Item Value="Id"/>
+            </AttrNames>
+    </attributeValues>
+ <attributeValues IterBinding="ProjectViewIterator" id="ProjectId">
+            <AttrNames>
+                <Item Value="Id"/>
+            </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

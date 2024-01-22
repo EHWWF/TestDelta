@@ -1,0 +1,44 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
+<wsdl:definitions
+     name="AdjustActivities"
+     targetNamespace="http://xmlns.bayer.com/ipms/soa"
+     xmlns:ns2="http://xmlns.bayer.com/ipms/cache"
+     xmlns:ns1="http://xmlns.bayer.com/ipms"
+     xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+     xmlns:client="http://xmlns.bayer.com/ipms/soa"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    >
+    <plnk:partnerLinkType name="AdjustActivities">
+        <plnk:role name="AdjustActivitiesProvider" portType="client:AdjustActivities"/>
+        <plnk:role name="AdjustActivitiesRequester" portType="client:AdjustActivitiesCallback"/>
+    </plnk:partnerLinkType>
+    <wsdl:types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://xmlns.bayer.com/ipms"
+             xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:client="http://xmlns.bayer.com/ipms/soa"
+             xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+            <import namespace="http://xmlns.bayer.com/ipms" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/types.xsd"/>
+        </schema>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:import namespace="http://xmlns.bayer.com/ipms/cache" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/cache/cache.xsd"/>
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:message name="AdjustActivitiesRequestMessage">
+        <wsdl:part name="payload" element="ns1:id"/>
+    </wsdl:message>
+    <wsdl:message name="AdjustActivitiesResponseMessage">
+        <wsdl:part name="payload" element="ns1:id"/>
+    </wsdl:message>
+    <wsdl:message name="AdjustActivitiesErrorMessage">
+        <wsdl:part name="payload" element="ns1:error"/>
+    </wsdl:message>
+    <wsdl:portType name="AdjustActivities">
+        <wsdl:operation name="process">
+            <wsdl:input message="client:AdjustActivitiesRequestMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:portType name="AdjustActivitiesCallback">
+        <wsdl:operation name="callback">
+            <wsdl:input message="client:AdjustActivitiesResponseMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+</wsdl:definitions>

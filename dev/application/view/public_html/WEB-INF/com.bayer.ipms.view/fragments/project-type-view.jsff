@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:c="http://java.sun.com/jsp/jstl/core">
+  <c:set var="bundle"
+         value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+  <af:pageTemplate viewId="/WEB-INF/com.bayer.ipms.view/templates/ipms-content-template.jspx"
+                   id="pt1">
+    <f:facet name="popup">
+      <af:group id="g1">
+        <af:declarativeComponent viewId="program-roles-popup.jsff" id="popRoles"
+                                 rendered="#{rolesBean.projectRolesD3Tr}">
+          <f:attribute name="projectType" value="D3Tr"/>
+          <f:attribute name="bean"
+                       value="#{pageFlowScope.projectTypeViewBean}"/>
+        </af:declarativeComponent>
+      </af:group>
+    </f:facet>
+    <f:facet name="toolbar">
+      <af:panelGroupLayout id="tools" layout="horizontal">
+        <af:poll id="poll" interval="30000"
+                 rendered="#{bindings.ProgramViewIterator.currentRow != null and bindings.IsSyncing.inputValue}"
+                 pollListener="#{pageFlowScope.projectTypeViewBean.onPoll}"
+                 immediate="true"/>
+      </af:panelGroupLayout>
+    </f:facet>
+    <f:facet name="content">
+       <af:panelTabbed id="prgTabPanel" dimensionsFrom="parent" rendered="#{rolesBean.programTeamD2Prj or rolesBean.programTeamSAMD}"
+                                    styleClass="AFStretchWidth AFStretchHeight">
+         <af:showDetailItem text="#{bundle.programWelcome}" immediate="true" stretchChildren="first"
+                                           rendered="#{rolesBean.programTeamD2Prj}"
+                                           id="sdiWelcome">
+              <af:declarativeComponent id="prgWelc" viewId="program-welcome.jsff"/>
+          </af:showDetailItem>
+          <af:showDetailItem text="#{bundle.programSAMDWelcome}" immediate="true" stretchChildren="first"
+                                           rendered="#{rolesBean.programTeamSAMD}"
+                                           id="sdiWelcomeSAMD">
+              <af:declarativeComponent id="prgWelcSAMD" viewId="program-welcome.jsff"/>
+          </af:showDetailItem>
+         <af:showDetailItem text="#{bundle.programTeamMembers}" immediate="true" stretchChildren="first"
+                                           rendered="#{rolesBean.programTeamD2Prj or rolesBean.programTeamSAMD}"
+                                           id="sdiTeamMembers">
+              <af:region value="#{bindings.teammembersview21.regionModel}" id="r1"/>
+          </af:showDetailItem>                    
+      </af:panelTabbed>
+    </f:facet>
+    <f:attribute name="message"
+                 value="#{bindings.IsSyncing.inputValue and pageFlowScope.projectType ne 'Dev' and pageFlowScope.projectType ne 'PrdMnt' ? bundle.globalIsSyncingWarning : ''}"/>
+  </af:pageTemplate>
+</jsp:root>

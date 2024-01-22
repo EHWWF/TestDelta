@@ -1,0 +1,1426 @@
+<?xml version="1.0" encoding="windows-1257" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="StudyView"
+  Version="12.2.1.0.31"
+  InheritPersonalization="true"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="com.bayer.ipms.model.base.IPMSViewRowImpl"
+  ComponentClass="com.bayer.ipms.model.base.IPMSViewObjectImpl"
+  FetchMode="FETCH_AS_NEEDED"
+  FetchSize="100"
+  Passivate="None"
+  PageIterMode="Full"
+  ViewLinkAccessorRetained="true">
+  <DesignTime>
+    <Attr Name="_isExpertMode" Value="true"/>
+  </DesignTime>
+  <Variable
+    Name="StudyRemoveVar"
+    Kind="where"
+    Type="java.lang.String"
+    DefaultValue="0">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYHINT
+          Value="Hide"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Variable>
+  
+   <Variable
+    Name="ProjectIdVar"
+    Kind="where"
+    Type="java.lang.String">
+   
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYHINT
+          Value="Hide"/>
+      </SchemaBasedProperties>
+    </Properties>
+    <TransientExpression Name="expression"><![CDATA[if (adf.object.applicationModule.getName()=="ProgramAppModule") adf.object.applicationModule.getProjectView().getCurrentId()]]></TransientExpression>
+  </Variable>
+  <Variable
+    Name="SearchPlanCodeVar"
+    Kind="where"
+    Type="java.lang.String">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYHINT
+          Value="Hide"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Variable>
+  <Variable
+    Name="SearchPlaceholderVar"
+    Kind="where"
+    Type="java.lang.String">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYHINT
+          Value="Hide"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Variable>
+  <ViewAccessor
+    Name="StudyModusView"
+    ViewObjectName="com.bayer.ipms.model.views.lookups.StudyModusView"
+    RowLevelBinds="true"/>
+  <ViewAccessor
+    Name="SearchStudyPlanView"
+    ViewObjectName="com.bayer.ipms.model.views.lookups.SearchStudyPlanView"
+    RowLevelBinds="true"/>
+  <ListBinding
+    Name="LOV_StudyModusName"
+    ListVOName="StudyModusView"
+    ListRangeSize="-1"
+    NullValueFlag="start"
+    NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="StudyModusName"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="StudyModusName"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="StudyModusName"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_SearchPlanCode"
+    ListVOName="SearchStudyPlanView"
+    ListRangeSize="-1"
+    NullValueFlag="start"
+    NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="SearchPlanCode"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="Code"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="Name"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <SQLQuery><![CDATA[with study_data as (select * from study_data_vw where TIMELINE_TYPE_CODE in ('CUR','RAW') and project_id=:ProjectIdVar)      
+select      
+  nvl(straw.id,stcur.id) id,--+      
+  nvl(straw.wbs_id,stcur.wbs_id) wbs_id,      
+  nvl(straw.code,stcur.code) code,      
+      
+  nvl(straw.name,stcur.name) name,--+      
+  case when straw.name != stcur.name then 1 else 0 end is_name_discrep,      
+      
+  nvl(straw.project_id,stcur.project_id) project_id,      
+      
+  nvl(straw.status_code,stcur.status_code) status_code,      
+      
+  nvl(rawsta.name,cursta.name) status_name,--+      
+  case when rawsta.code != cursta.code then 1 else 0 end is_status_discrep,      
+      
+  nvl(straw.finish_date,stcur.finish_date) finish_date,--+      
+  case when straw.finish_date != stcur.finish_date then 1 else 0 end is_finish_date_discrep,      
+      
+  nvl(straw.fpfv,stcur.fpfv) fpfv,--+      
+  case when straw.fpfv != stcur.fpfv then 1 else 0 end is_fpfv_discrep,      
+        
+  nvl(straw.lplv,stcur.lplv) lplv,--+      
+  case when straw.lplv != stcur.lplv then 1 else 0 end is_lplv_discrep,      
+        
+  nvl(straw.timeline_id,stcur.timeline_id) timeline_id,      
+      
+  nvl(straw.phase,stcur.phase) phase,--+      
+  case when straw.phase != stcur.phase then 1 else 0 end is_phase_discrep,      
+      
+  nvl(straw.start_date,stcur.start_date) start_date,--+      
+  case when straw.start_date != stcur.start_date then 1 else 0 end is_start_date_discrep,      
+      
+  nvl(straw.timeline_type_code,stcur.timeline_type_code) timeline_type_code,      
+      
+  nvl(straw.is_gpdc_approved,stcur.is_gpdc_approved) is_gpdc_approved,--+      
+  case when straw.is_gpdc_approved != stcur.is_gpdc_approved then 1 else 0 end is_gpdc_approved_discrep,      
+      
+  nvl(straw.is_obligation,stcur.is_obligation) is_obligation,--+      
+  case when straw.is_obligation != stcur.is_obligation then 1 else 0 end is_obligation_discrep,      
+      
+  nvl(straw.is_probing,stcur.is_probing) is_probing,--+      
+  case when straw.is_probing != stcur.is_probing then 1 else 0 end is_probing_discrep,      
+      
+  nvl(straw.placeholder,stcur.placeholder) placeholder,--+      
+  case when straw.placeholder != stcur.placeholder then 1 else 0 end is_placeholder_discrep,      
+      
+  nvl(straw.dmc_actual,stcur.dmc_actual) dmc_actual,--+      
+  case when straw.dmc_actual != stcur.dmc_actual then 1 else 0 end is_dmc_actual_discrep,      
+      
+  nvl(straw.dmc_plan,stcur.dmc_plan) dmc_plan,--+      
+  case when straw.dmc_plan != stcur.dmc_plan then 1 else 0 end is_dmc_plan_discrep,      
+  nvl(straw.wbs_count,stcur.wbs_count) wbs_count,      
+      
+  nvl(straw.plan_patients,stcur.plan_patients) plan_patients,--+      
+  case when straw.plan_patients != stcur.plan_patients then 1 else 0 end is_plan_patients_discrep,      
+      
+  nvl(straw.actual_patients,stcur.actual_patients) actual_patients,--+      
+  case when straw.actual_patients != stcur.actual_patients then 1 else 0 end is_actual_patients_discrep,      
+      
+  nvl(straw.project_id,stcur.project_id) project_id1,      
+      
+  nvl(straw.timeline_id,stcur.timeline_id) timeline_id1,      
+      
+  nvl(straw.update_date,stcur.update_date) update_date,      
+      
+  nvl(straw.therapeutic_group_code,stcur.therapeutic_group_code) therapeutic_group_code,      
+      
+  nvl(straw.therapeutic_group_desc,stcur.therapeutic_group_desc) therapeutic_group_desc,      
+  case when straw.therapeutic_group_desc != stcur.therapeutic_group_desc then 1 else 0 end is_ther_group_desc_discrep,      
+      
+  nvl(straw.int_ext_flag,stcur.int_ext_flag) int_ext_flag,--+      
+  case when straw.int_ext_flag != stcur.int_ext_flag then 1 else 0 end is_int_ext_flag_discrep,      
+      
+  nvl(straw.is_timeline_auto_import,stcur.is_timeline_auto_import) is_timeline_auto_import,--+      
+  case when straw.is_timeline_auto_import != stcur.is_timeline_auto_import then 1 else 0 end is_timeline_auto_imp_discrep,      
+      
+  nvl(straw.act_entered_screen,stcur.act_entered_screen) act_entered_screen,--+      
+  case when straw.act_entered_screen != stcur.act_entered_screen then 1 else 0 end is_act_entered_screen_discrep,      
+      
+  nvl(straw.plan_entered_screen,stcur.plan_entered_screen) plan_entered_screen,--+      
+  case when straw.plan_entered_screen != stcur.plan_entered_screen then 1 else 0 end is_plan_entered_screen_discrep,      
+      
+  nvl(straw.study_country_count,stcur.study_country_count) study_country_count,--+      
+  case when straw.study_country_count != stcur.study_country_count then 1 else 0 end is_study_country_count_discrep,      
+      
+  nvl(straw.study_country_count_plan,stcur.study_country_count_plan) study_country_count_plan,--+      
+  case when straw.study_country_count_plan != stcur.study_country_count_plan then 1 else 0 end is_country_count_plan_discrep,      
+      
+  nvl(straw.study_unit_count,stcur.study_unit_count) study_unit_count,--+      
+  case when straw.study_unit_count != stcur.study_unit_count then 1 else 0 end is_study_unit_count_discrep,      
+      
+  nvl(straw.study_unit_count_plan,stcur.study_unit_count_plan) study_unit_count_plan,--+      
+  case when straw.study_unit_count_plan != stcur.study_unit_count_plan then 1 else 0 end is_unit_count_plan_discrep,      
+      
+  nvl(straw.is_lead,stcur.is_lead) is_lead,--+      
+  case when straw.is_lead != stcur.is_lead then 1 else 0 end is_lead_discrep,      
+      
+  nvl(straw.cdblock,stcur.cdblock) cdblock,--+      
+  case when straw.cdblock != stcur.cdblock then 1 else 0 end is_cdblock_discrep,      
+      
+  nvl(straw.csrapp,stcur.csrapp) csrapp,--+      
+  case when straw.csrapp != stcur.csrapp then 1 else 0 end is_csrapp_discrep,      
+      
+  nvl(straw.prcompl,stcur.prcompl) prcompl,      
+  case when straw.prcompl != stcur.prcompl then 1 else 0 end is_prcompl_discrep,      
+      
+  nvl(straw.is_delete,stcur.is_delete) is_delete,      
+      
+  nvl(straw.budget_class,stcur.budget_class) budget_class,      
+  case when straw.budget_class != stcur.budget_class then 1 else 0 end is_budget_class_discrep,      
+      
+  nvl2(straw.id,1,0) is_in_raw_plan,      
+  nvl2(stcur.id,1,0) is_in_cur_plan,      
+      
+  --nvl2(straw.id,nvl2(stcur.id,'RAW|CUR','RAW'),'CUR') search_plan,      
+      
+  nvl(straw.study_modus_name,stcur.study_modus_name) study_modus_name,--+      
+  case when straw.study_modus_name != stcur.study_modus_name then 1 else 0 end is_study_modus_name_discrep,      
+        
+  nvl(straw.fpfvb,stcur.fpfvb) fpfvb,--+      
+  case when straw.fpfvb != stcur.fpfvb then 1 else 0 end is_fpfvb_discrep,      
+        
+  nvl(straw.lplva,stcur.lplva) lplva,--+      
+  case when straw.lplva != stcur.lplva then 1 else 0 end is_lplva_discrep,      
+    
+  nvl(straw.study_modus_no,stcur.study_modus_no) study_modus_no    
+    
+from (select * from study_data where TIMELINE_TYPE_CODE='RAW') straw      
+  left join study_status rawsta on straw.status_code = rawsta.code      
+      
+  full outer join (select * from study_data where TIMELINE_TYPE_CODE='CUR' ) stcur      
+    on straw.id = stcur.id      
+  left join study_status cursta on stcur.status_code = cursta.code      
+      
+where      
+  (:SearchPlanCodeVar is null or nvl2(straw.id,nvl2(stcur.id,'RAW|CUR','RAW'),'CUR')=:SearchPlanCodeVar or nvl2(straw.id,nvl2(stcur.id,'RAW|CUR','RAW'),'CUR')='RAW|CUR' )      
+  and (:SearchPlaceholderVar is null or nvl(straw.placeholder,stcur.placeholder)=decode(:SearchPlaceholderVar,'true',1,0) or :SearchPlaceholderVar='false')      
+  -- filtering for straw removal    
+  and ( 0=:StudyRemoveVar or 1=:StudyRemoveVar      
+                             and not      
+                             (exists(select 1      
+                                     from costs_fps fps      
+                                     where fps.study_id = straw.id       
+									 and fps.project_id=straw.project_id      
+									 and extract(year from fps.start_date) >= extract(year from sysdate)      
+									 ) or      
+                              exists(select 1      
+                                     from costs cs      
+                                     where cs.study_id = straw.id       
+									 and cs.project_id=straw.project_id      
+									 and extract(year from cs.start_date) >= extract(year from sysdate)      
+									 )))   
+order by nvl(straw.wbs_count,stcur.wbs_count), nvl(straw.id,stcur.id)]]></SQLQuery>
+  <EntityUsage
+    Name="Study"
+    Entity="com.bayer.ipms.model.entities.Study"/>
+  <ViewAttribute
+    Name="Id"
+    IsUpdateable="false"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Id"
+    EntityUsage="Study"
+    AliasName="ID">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.StudyView.Id_LABEL"/>
+        <DISPLAYWIDTH
+          Value="10"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="WbsId"
+    IsUpdateable="while_insert"
+    PrecisionRule="true"
+    EntityAttrName="WbsId"
+    EntityUsage="Study"
+    AliasName="WBS_ID"/>
+  <ViewAttribute
+    Name="Code"
+    IsUpdateable="false"
+    IsUnique="true"
+    PrecisionRule="true"
+    EntityAttrName="Code"
+    EntityUsage="Study"
+    AliasName="CODE"/>
+  <ViewAttribute
+    Name="Name"
+    IsUpdateable="false"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Name"
+    EntityUsage="Study"
+    AliasName="NAME"/>
+  <ViewAttribute
+    Name="IsNameDiscrep"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    AliasName="IS_NAME_DISCREP"
+    Expression="IS_NAME_DISCREP"
+    SQLType="BIT"/>
+  <ViewAttribute
+    Name="ProjectId"
+    IsUpdateable="false"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="ProjectId"
+    EntityUsage="Study"
+    AliasName="PROJECT_ID"/>
+  <ViewAttribute
+    Name="StatusCode"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="StatusCode"
+    EntityUsage="Study"
+    AliasName="STATUS_CODE"/>
+  <ViewAttribute
+    Name="StatusName"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="STATUS_NAME"
+    Expression="STATUS_NAME"
+    SQLType="VARCHAR"/>
+  <ViewAttribute
+    Name="IsStatusDiscrep"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    AliasName="IS_STATUS_DISCREP"
+    Expression="IS_STATUS_DISCREP"
+    SQLType="BIT"/>
+  <ViewAttribute
+    Name="FinishDate"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="FinishDate"
+    EntityUsage="Study"
+    AliasName="FINISH_DATE">
+    <Properties>
+      <SchemaBasedProperties>
+        <FMT_FORMATTER
+          ResId="com.bayer.ipms.model.views.StudyView.FinishDate_FMT_FORMATTER"/>
+        <FMT_FORMAT
+          ResId="com.bayer.ipms.model.views.StudyView.FinishDate_FMT_FORMAT"/>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.StudyView.FinishDate_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IsFinishDateDiscrep"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    AliasName="IS_FINISH_DATE_DISCREP"
+    Expression="IS_FINISH_DATE_DISCREP"
+    SQLType="BIT"/>
+  <ViewAttribute
+    Name="Fpfv"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="Fpfv"
+    EntityUsage="Study"
+    AliasName="FPFV">
+    <Properties>
+      <SchemaBasedProperties>
+        <FMT_FORMATTER
+          ResId="com.bayer.ipms.model.views.StudyView.Fpfv_FMT_FORMATTER"/>
+        <FMT_FORMAT
+          ResId="com.bayer.ipms.model.views.StudyView.Fpfv_FMT_FORMAT"/>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.StudyView.Fpfv_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IsFpfvDiscrep"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    AliasName="IS_FPFV_DISCREP"
+    Expression="IS_FPFV_DISCREP"
+    SQLType="BIT"/>
+  <ViewAttribute
+    Name="Lplv"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="Lplv"
+    EntityUsage="Study"
+    AliasName="LPLV">
+    <Properties>
+      <SchemaBasedProperties>
+        <FMT_FORMATTER
+          ResId="com.bayer.ipms.model.views.StudyView.Lplv_FMT_FORMATTER"/>
+        <FMT_FORMAT
+          ResId="com.bayer.ipms.model.views.StudyView.Lplv_FMT_FORMAT"/>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.StudyView.Lplv_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IsLplvDiscrep"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    AliasName="IS_LPLV_DISCREP"
+    Expression="IS_LPLV_DISCREP"
+    SQLType="BIT"/>
+  <ViewAttribute
+    Name="TimelineId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="TIMELINE_ID"
+    Expression="TIMELINE_ID"
+    SQLType="VARCHAR"/>
+  <ViewAttribute
+    Name="Phase"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="Phase"
+    EntityUsage="Study"
+    AliasName="PHASE"/>
+  <ViewAttribute
+    Name="IsPhaseDiscrep"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    AliasName="IS_PHASE_DISCREP"
+    Expression="IS_PHASE_DISCREP"
+    SQLType="BIT"/>
+  <ViewAttribute
+    Name="StartDate"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="StartDate"
+    EntityUsage="Study"
+    AliasName="START_DATE">
+    <Properties>
+      <SchemaBasedProperties>
+        <FMT_FORMATTER
+          ResId="com.bayer.ipms.model.views.StudyView.StartDate_FMT_FORMATTER"/>
+        <FMT_FORMAT
+          ResId="com.bayer.ipms.model.views.StudyView.StartDate_FMT_FORMAT"/>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.StudyView.StartDate_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IsStartDateDiscrep"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    AliasName="IS_START_DATE_DISCREP"
+    Expression="IS_START_DATE_DISCREP"
+    SQLType="BIT"/>
+  <ViewAttribute
+    Name="TimelineTypeCode"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="TIMELINE_TYPE_CODE"
+    Expression="TIMELINE_TYPE_CODE"
+    SQLType="VARCHAR"/>
+  <ViewAttribute
+    Name="IsGpdcApproved"
+    PrecisionRule="true"
+    EntityAttrName="IsGpdcApproved"
+    EntityUsage="Study"
+    AliasName="IS_GPDC_APPROVED">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.StudyView.IsGpdcApproved_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IsGpdcApprovedDiscrep"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    AliasName="IS_GPDC_APPROVED_DISCREP"
+    Expression="IS_GPDC_APPROVED_DISCREP"
+    SQLType="BIT"/>
+  <ViewAttribute
+    Name="IsObligation"
+    PrecisionRule="true"
+    EntityAttrName="IsObligation"
+    EntityUsage="Study"
+    AliasName="IS_OBLIGATION">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.StudyView.IsObligation_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IsObligationDiscrep"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    AliasName="IS_OBLIGATION_DISCREP"
+    Expression="IS_OBLIGATION_DISCREP"
+    SQLType="BIT"/>
+  <ViewAttribute
+    Name="IsProbing"
+    PrecisionRule="true"
+    EntityAttrName="IsProbing"
+    EntityUsage="Study"
+    AliasName="IS_PROBING">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.StudyView.IsProbing_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IsProbingDiscrep"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    AliasName="IS_PROBING_DISCREP"
+    Expression="IS_PROBING_DISCREP"
+    SQLType="BIT"/>
+  <ViewAttribute
+    Name="Placeholder"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="Placeholder"
+    EntityUsage="Study"
+    AliasName="PLACEHOLDER">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.StudyView.Placeholder_LABEL"/>
+        <CONTROLTYPE
+          Value="check_box"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IsPlaceholderDiscrep"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    AliasName="IS_PLACEHOLDER_DISCREP"
+    Expression="IS_PLACEHOLDER_DISCREP"
+    SQLType="BIT"/>
+  <ViewAttribute
+    Name="DmcActual"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="DmcActual"
+    EntityUsage="Study"
+    AliasName="DMC_ACTUAL">
+    <Properties>
+      <SchemaBasedProperties>
+        <FMT_FORMATTER
+          ResId="com.bayer.ipms.model.views.StudyView.DmcActual_FMT_FORMATTER"/>
+        <FMT_FORMAT
+          ResId="com.bayer.ipms.model.views.StudyView.DmcActual_FMT_FORMAT"/>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.StudyView.DmcActual_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IsDmcActualDiscrep"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    AliasName="IS_DMC_ACTUAL_DISCREP"
+    Expression="IS_DMC_ACTUAL_DISCREP"
+    SQLType="BIT"/>
+  <ViewAttribute
+    Name="DmcPlan"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="DmcPlan"
+    EntityUsage="Study"
+    AliasName="DMC_PLAN">
+    <Properties>
+      <SchemaBasedProperties>
+        <FMT_FORMATTER
+          ResId="com.bayer.ipms.model.views.StudyView.DmcPlan_FMT_FORMATTER"/>
+        <FMT_FORMAT
+          ResId="com.bayer.ipms.model.views.StudyView.DmcPlan_FMT_FORMAT"/>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.StudyView.DmcPlan_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IsDmcPlanDiscrep"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    AliasName="IS_DMC_PLAN_DISCREP"
+    Expression="IS_DMC_PLAN_DISCREP"
+    SQLType="BIT"/>
+  <ViewAttribute
+    Name="WbsCount"
+    PrecisionRule="true"
+    EntityAttrName="WbsCount"
+    EntityUsage="Study"
+    AliasName="WBS_COUNT"/>
+  <ViewAttribute
+    Name="PlanPatients"
+    PrecisionRule="true"
+    EntityAttrName="PlanPatients"
+    EntityUsage="Study"
+    AliasName="PLAN_PATIENTS">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.StudyView.PlanPatients_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IsPlanPatientsDiscrep"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    AliasName="IS_PLAN_PATIENTS_DISCREP"
+    Expression="IS_PLAN_PATIENTS_DISCREP"
+    SQLType="BIT"/>
+  <ViewAttribute
+    Name="ActualPatients"
+    PrecisionRule="true"
+    EntityAttrName="ActualPatients"
+    EntityUsage="Study"
+    AliasName="ACTUAL_PATIENTS">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.StudyView.ActualPatients_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IsActualPatientsDiscrep"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    AliasName="IS_ACTUAL_PATIENTS_DISCREP"
+    Expression="IS_ACTUAL_PATIENTS_DISCREP"
+    SQLType="BIT"/>
+  <ViewAttribute
+    Name="ProjectId1"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="PROJECT_ID1"
+    Expression="PROJECT_ID1"
+    SQLType="VARCHAR"/>
+  <ViewAttribute
+    Name="TimelineId1"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="TIMELINE_ID1"
+    Expression="TIMELINE_ID1"
+    SQLType="VARCHAR"/>
+  <ViewAttribute
+    Name="UpdateDate"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    AliasName="UPDATE_DATE"
+    Expression="UPDATE_DATE"
+    SQLType="DATE"/>
+  <ViewAttribute
+    Name="TherapeuticGroupCode"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="TherapeuticGroupCode"
+    EntityUsage="Study"
+    AliasName="THERAPEUTIC_GROUP_CODE"/>
+  <ViewAttribute
+    Name="TherapeuticGroupDesc"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="TherapeuticGroupDesc"
+    EntityUsage="Study"
+    AliasName="THERAPEUTIC_GROUP_DESC">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.StudyView.TherapeuticGroupDesc_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IsTherGroupDescDiscrep"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    AliasName="IS_THER_GROUP_DESC_DISCREP"
+    Expression="IS_THER_GROUP_DESC_DISCREP"
+    SQLType="BIT"/>
+  <ViewAttribute
+    Name="IntExtFlag"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="IntExtFlag"
+    EntityUsage="Study"
+    AliasName="INT_EXT_FLAG">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.StudyView.IntExtFlag_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IsIntExtFlagDiscrep"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    AliasName="IS_INT_EXT_FLAG_DISCREP"
+    Expression="IS_INT_EXT_FLAG_DISCREP"
+    SQLType="BIT"/>
+  <ViewAttribute
+    Name="IsTimelineAutoImport"
+    PrecisionRule="true"
+    EntityAttrName="IsTimelineAutoImport"
+    EntityUsage="Study"
+    AliasName="IS_TIMELINE_AUTO_IMPORT">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.StudyView.IsTimelineAutoImport_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IsTimelineAutoImportDiscrep"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    AliasName="IS_TIMELINE_AUTO_IMP_DISCREP"
+    Expression="IS_TIMELINE_AUTO_IMP_DISCREP"
+    SQLType="BIT"/>
+  <ViewAttribute
+    Name="ActEnteredScreen"
+    PrecisionRule="true"
+    EntityAttrName="ActEnteredScreen"
+    EntityUsage="Study"
+    AliasName="ACT_ENTERED_SCREEN">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.StudyView.ActEnteredScreen_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IsActEnteredScreenDiscrep"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    AliasName="IS_ACT_ENTERED_SCREEN_DISCREP"
+    Expression="IS_ACT_ENTERED_SCREEN_DISCREP"
+    SQLType="BIT"/>
+  <ViewAttribute
+    Name="PlanEnteredScreen"
+    PrecisionRule="true"
+    EntityAttrName="PlanEnteredScreen"
+    EntityUsage="Study"
+    AliasName="PLAN_ENTERED_SCREEN">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.StudyView.PlanEnteredScreen_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IsPlanEnteredScreenDiscrep"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    AliasName="IS_PLAN_ENTERED_SCREEN_DISCREP"
+    Expression="IS_PLAN_ENTERED_SCREEN_DISCREP"
+    SQLType="BIT"/>
+  <ViewAttribute
+    Name="StudyCountryCount"
+    PrecisionRule="true"
+    EntityAttrName="StudyCountryCount"
+    EntityUsage="Study"
+    AliasName="STUDY_COUNTRY_COUNT">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.StudyView.StudyCountryCount_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IsStudyCountryCountDiscrep"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    AliasName="IS_STUDY_COUNTRY_COUNT_DISCREP"
+    Expression="IS_STUDY_COUNTRY_COUNT_DISCREP"
+    SQLType="BIT"/>
+  <ViewAttribute
+    Name="StudyCountryCountPlan"
+    PrecisionRule="true"
+    EntityAttrName="StudyCountryCountPlan"
+    EntityUsage="Study"
+    AliasName="STUDY_COUNTRY_COUNT_PLAN">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.StudyView.StudyCountryCountPlan_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IsCountryCountPlanDiscrep"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    AliasName="IS_COUNTRY_COUNT_PLAN_DISCREP"
+    Expression="IS_COUNTRY_COUNT_PLAN_DISCREP"
+    SQLType="BIT"/>
+  <ViewAttribute
+    Name="StudyUnitCount"
+    PrecisionRule="true"
+    EntityAttrName="StudyUnitCount"
+    EntityUsage="Study"
+    AliasName="STUDY_UNIT_COUNT">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.StudyView.StudyUnitCount_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IsStudyUnitCountDiscrep"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    AliasName="IS_STUDY_UNIT_COUNT_DISCREP"
+    Expression="IS_STUDY_UNIT_COUNT_DISCREP"
+    SQLType="BIT"/>
+  <ViewAttribute
+    Name="StudyUnitCountPlan"
+    PrecisionRule="true"
+    EntityAttrName="StudyUnitCountPlan"
+    EntityUsage="Study"
+    AliasName="STUDY_UNIT_COUNT_PLAN">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.StudyView.StudyUnitCountPlan_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IsUnitCountPlanDiscrep"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    AliasName="IS_UNIT_COUNT_PLAN_DISCREP"
+    Expression="IS_UNIT_COUNT_PLAN_DISCREP"
+    SQLType="BIT"/>
+  <ViewAttribute
+    Name="IsLead"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    AliasName="IS_LEAD"
+    Expression="IS_LEAD"
+    SQLType="BIT">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.StudyView.IsLead_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IsLeadDiscrep"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    AliasName="IS_LEAD_DISCREP"
+    Expression="IS_LEAD_DISCREP"
+    SQLType="BIT"/>
+  <ViewAttribute
+    Name="Cdblock"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="Cdblock"
+    EntityUsage="Study"
+    AliasName="CDBLOCK">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.StudyView.Cdblock_LABEL"/>
+        <FMT_FORMAT
+          ResId="com.bayer.ipms.model.views.StudyView.Cdblock_FMT_FORMAT"/>
+        <FMT_FORMATTER
+          ResId="com.bayer.ipms.model.views.StudyView.Cdblock_FMT_FORMATTER"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IsCdblockDiscrep"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    AliasName="IS_CDBLOCK_DISCREP"
+    Expression="IS_CDBLOCK_DISCREP"
+    SQLType="BIT"/>
+  <ViewAttribute
+    Name="Csrapp"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="Csrapp"
+    EntityUsage="Study"
+    AliasName="CSRAPP">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.StudyView.Csrapp_LABEL"/>
+        <FMT_FORMATTER
+          ResId="com.bayer.ipms.model.views.StudyView.Csrapp_FMT_FORMATTER"/>
+        <FMT_FORMAT
+          ResId="com.bayer.ipms.model.views.StudyView.Csrapp_FMT_FORMAT"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IsCsrappDiscrep"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    AliasName="IS_CSRAPP_DISCREP"
+    Expression="IS_CSRAPP_DISCREP"
+    SQLType="BIT"/>
+  <ViewAttribute
+    Name="Prcompl"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="Prcompl"
+    EntityUsage="Study"
+    AliasName="PRCOMPL">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.StudyView.Prcompl_LABEL"/>
+        <FMT_FORMATTER
+          ResId="com.bayer.ipms.model.views.StudyView.Prcompl_FMT_FORMATTER"/>
+        <FMT_FORMAT
+          ResId="com.bayer.ipms.model.views.StudyView.Prcompl_FMT_FORMAT"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IsPrcomplDiscrep"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    AliasName="IS_PRCOMPL_DISCREP"
+    Expression="IS_PRCOMPL_DISCREP"
+    SQLType="BIT"/>
+  <ViewAttribute
+    Name="IsDelete"
+    PrecisionRule="true"
+    EntityAttrName="IsDelete"
+    EntityUsage="Study"
+    AliasName="IS_DELETE">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="check_box"/>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.StudyView.IsDelete_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="BudgetClass"
+    PrecisionRule="true"
+    EntityAttrName="BudgetClass"
+    EntityUsage="Study"
+    AliasName="BUDGET_CLASS">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.StudyView.BudgetClass_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IsBudgetClassDiscrep"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    AliasName="IS_BUDGET_CLASS_DISCREP"
+    Expression="IS_BUDGET_CLASS_DISCREP"
+    SQLType="BIT"/>
+  <ViewAttribute
+    Name="IsInRawPlan"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    AliasName="IS_IN_RAW_PLAN"
+    SQLType="BIT"
+    Expression="IS_IN_RAW_PLAN">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.StudyView.IsInRawPlan_LABEL"/>
+        <CONTROLTYPE
+          Value="check_box"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IsInCurPlan"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    AliasName="IS_IN_CUR_PLAN"
+    SQLType="BIT"
+    Expression="IS_IN_CUR_PLAN">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="check_box"/>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.StudyView.IsInCurPlan_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="StudyModusName"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="StudyModusName"
+    EntityUsage="Study"
+    AliasName="STUDY_MODUS_NAME"
+    LOVName="LOV_StudyModusName">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.StudyView.StudyModusName_LABEL"/>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IsStudyModusNameDiscrep"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    AliasName="IS_STUDY_MODUS_NAME_DISCREP"
+    Expression="IS_STUDY_MODUS_NAME_DISCREP"
+    SQLType="BIT"/>
+  <ViewAttribute
+    Name="Fpfvb"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="Fpfvb"
+    EntityUsage="Study"
+    AliasName="FPFVB">
+    <Properties>
+      <SchemaBasedProperties>
+        <FMT_FORMAT
+          ResId="com.bayer.ipms.model.views.StudyView.Fpfvb_FMT_FORMAT"/>
+        <FMT_FORMATTER
+          ResId="com.bayer.ipms.model.views.StudyView.Fpfvb_FMT_FORMATTER"/>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.StudyView.Fpfvb_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IsFpfvbDiscrep"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    AliasName="IS_FPFVB_DISCREP"
+    Expression="IS_FPFVB_DISCREP"
+    SQLType="BIT"/>
+  <ViewAttribute
+    Name="Lplva"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="Lplva"
+    EntityUsage="Study"
+    AliasName="LPLVA">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.StudyView.Lplva_LABEL"/>
+        <FMT_FORMAT
+          ResId="com.bayer.ipms.model.views.StudyView.Lplva_FMT_FORMAT"/>
+        <FMT_FORMATTER
+          ResId="com.bayer.ipms.model.views.StudyView.Lplva_FMT_FORMATTER"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IsLplvaDiscrep"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    AliasName="IS_LPLVA_DISCREP"
+    Expression="IS_LPLVA_DISCREP"
+    SQLType="BIT"/>
+  <ViewAttribute
+    Name="StudyModusNo"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="STUDY_MODUS_NO"
+    Expression="STUDY_MODUS_NO"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="SearchPlanCode"
+    IsUpdateable="false"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    LOVName="LOV_SearchPlanCode">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.StudyView.SearchPlanCode_LABEL"/>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="SearchPlaceholder"
+    IsUpdateable="false"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="BIT"
+    AliasName="VIEW_ATTR"
+    SQLType="BIT">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="check_box"/>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.StudyView.SearchPlaceholder_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewCriteria
+    Name="Raw"
+    ViewObjectName="com.bayer.ipms.model.views.StudyView"
+    Conjunction="AND">
+    <Properties Name="_Props">
+      <CustomProperties>
+        <Property
+          Name="displayOperators"
+          Value="InAdvancedMode"/>
+        <Property
+          Name="autoExecute"
+          Value="false"/>
+        <Property
+          Name="showInList"
+          Value="true"/>
+        <Property
+          Name="allowConjunctionOverride"
+          Value="true"/>
+        <Property
+          Name="mode"
+          Value="Basic"/>
+      </CustomProperties>
+    </Properties>
+    <ViewCriteriaRow
+      Name="Raw_row_0"
+      UpperColumns="1">
+      <ViewCriteriaItem
+        Name="IsInRawPlan"
+        ViewAttribute="IsInRawPlan"
+        Operator="="
+        Conjunction="AND"
+        Value="1"
+        Required="Optional"/>
+    </ViewCriteriaRow>
+  </ViewCriteria>
+  <ViewCriteria
+    Name="Filter"
+    ViewObjectName="com.bayer.ipms.model.views.StudyView"
+    Conjunction="AND">
+    <Properties Name="_Props">
+      <CustomProperties>
+        <Property
+          Name="autoExecute"
+          Value="true"/>
+        <Property
+          Name="mode"
+          Value="Basic"/>
+        <Property
+          Name="allowConjunctionOverride"
+          Value="false"/>
+        <Property
+          Name="showInList"
+          Value="true"/>
+        <Property
+          Name="displayOperators"
+          Value="InAdvancedMode"/>
+      </CustomProperties>
+    </Properties>
+    <ViewCriteriaRow
+      Name="StudyViewCriteria_row_0"
+      UpperColumns="1"
+      Conjunction="AND">
+      <ViewCriteriaItem
+        Name="Id"
+        ViewAttribute="Id"
+        Operator="="
+        Conjunction="AND"
+        Required="Optional">
+        <Properties>
+          <SchemaBasedProperties>
+            <DISPLAYWIDTH
+              Value="10"/>
+          </SchemaBasedProperties>
+        </Properties>
+      </ViewCriteriaItem>
+      <ViewCriteriaItem
+        Name="StudyModusName"
+        ViewAttribute="StudyModusName"
+        Operator="="
+        Conjunction="AND"
+        Required="Optional"/>
+      <ViewCriteriaItem
+        Name="SearchPlanCode"
+        ViewAttribute="SearchPlanCode"
+        Operator="="
+        Conjunction="AND"
+        Value=":SearchPlanCodeVar"
+        GenerateIsNullClauseForBindVars="false"
+        IsBindVarValue="true"
+        Required="Optional"/>
+      <ViewCriteriaItem
+        Name="SearchPlaceholder"
+        ViewAttribute="SearchPlaceholder"
+        Operator="="
+        Conjunction="AND"
+        Required="Optional"
+        Value=":SearchPlaceholderVar"
+        GenerateIsNullClauseForBindVars="false"
+        IsBindVarValue="true"/>
+    </ViewCriteriaRow>
+  </ViewCriteria>
+  <ViewCriteria
+    Name="Cancelled"
+    ViewObjectName="com.bayer.ipms.model.views.StudyView"
+    Conjunction="AND">
+    <Properties Name="_Props">
+      <CustomProperties>
+        <Property
+          Name="autoExecute"
+          Value="false"/>
+        <Property
+          Name="mode"
+          Value="Basic"/>
+        <Property
+          Name="allowConjunctionOverride"
+          Value="true"/>
+        <Property
+          Name="showInList"
+          Value="true"/>
+        <Property
+          Name="displayOperators"
+          Value="InAdvancedMode"/>
+      </CustomProperties>
+    </Properties>
+    <ViewCriteriaRow
+      Name="StudyViewCriteria_row_0"
+      UpperColumns="1">
+      <ViewCriteriaItem
+        Name="IsInRawPlan"
+        ViewAttribute="IsInRawPlan"
+        Operator="="
+        Conjunction="AND"
+        Value="1"
+        Required="Optional"/>
+      <ViewCriteriaItem
+        Name="StudyModusNo"
+        ViewAttribute="StudyModusNo"
+        Operator="="
+        Conjunction="AND"
+        Value="4"
+        Required="Optional"/>
+    </ViewCriteriaRow>
+  </ViewCriteria>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="Id"/>
+    <Item Value="ProjectId"/>
+    <Item Value="WbsId"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.bayer.ipms.model.bundles.modelBundle"/>
+  </ResourceBundle>
+</ViewObject>

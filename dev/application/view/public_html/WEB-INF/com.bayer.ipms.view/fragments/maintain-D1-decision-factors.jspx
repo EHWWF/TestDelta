@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:h="http://java.sun.com/jsf/html" xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+ <af:componentDef var="attrs" componentVar="comp">
+  <af:xmlContent>
+   <component xmlns="http://xmlns.oracle.com/adf/faces/rich/component">
+    <attribute>
+     <attribute-name>showCancel</attribute-name>
+    </attribute>
+   </component>
+  </af:xmlContent>
+  </af:componentDef>
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <f:view>
+        <f:loadBundle basename="com.bayer.ipms.view.bundles.viewBundle" var="bundle"/>
+        <af:document id="d1" title="#{bundle.maintainD1DecisionFactors}">
+            <af:messages id="m1"/>
+            <af:form id="f1">
+                <af:pageTemplate viewId="/WEB-INF/com.bayer.ipms.view/templates/ipms-popup-template.jspx" id="pt1">
+                    <f:facet name="summary"></f:facet>
+                    <f:facet name="content">
+                        <af:panelStretchLayout topHeight="auto" bottomHeight="0" styleClass="AFStretchWidth"
+                                               id="contentGoalFactor">
+                            <f:facet name="top">
+                                <af:query id="qryGoalFactId1" headerText="#{bundle.globalFilter}" disclosed="true"
+                                          value="#{bindings.ProjectGoalFactorQuery.queryDescriptor}"
+                                          model="#{bindings.ProjectGoalFactorQuery.queryModel}"
+                                          queryListener="#{pageFlowScope.ProjectD1ViewBean.customQueryListener}"
+                                          queryOperationListener="#{bindings.ProjectGoalFactorQuery.processQueryOperation}"
+                                          saveQueryMode="hidden" searchButtonText="#{bundle.globalFilter}"
+                                          labelAlignment="start" resultComponentId="::pDecFactr1"
+                                          modeChangeVisible="false" runQueryAutomatically="allSavedSearches"/>
+                            </f:facet>
+                            <f:facet name="center">
+                                <af:panelBox id="pDecFactr1" showDisclosure="false"
+                                             styleClass="AFStretchWidth AFStretchHeight" type="stretch"
+                                             partialTriggers="pDecFactr1">
+                                    <af:table value="#{bindings.ProjectGoalFactorView.collectionModel}" var="row"
+                                              rows="#{bindings.ProjectGoalFactorView.rangeSize}"
+                                              emptyText="#{bindings.ProjectGoalFactorView.viewable ? 'No data to display.' : 'Access Denied.'}"
+                                              rowBandingInterval="0" rowSelection="single" summary=" "
+                                              autoHeightRows="0" fetchSize="#{bindings.ProjectGoalFactorView.rangeSize}"
+                                              id="tblGoalFact1" columnStretching="multiple">
+                                        <af:column sortProperty="#{bindings.ProjectGoalFactorView.hints.AreaCode.name}"
+                                                   sortable="true" rowHeader="true"
+                                                   headerText="#{bindings.ProjectGoalFactorView.hints.AreaCode.label}"
+                                                   id="c1" width="15%" align="left">
+                                            <af:selectOneChoice value="#{row.bindings.AreaCode.inputValue}"
+                                                                label="#{row.bindings.AreaCode.label}"
+                                                                required="#{bindings.ProjectGoalFactorView.hints.AreaCode.mandatory}"
+                                                                shortDesc="#{bindings.ProjectGoalFactorView.hints.AreaCode.tooltip}"
+                                                                readOnly="true" id="soc1">
+                                                <f:selectItems value="#{row.bindings.AreaCode.items}" id="si1"/>
+                                                <f:validator binding="#{row.bindings.AreaCode.validator}"/>
+                                            </af:selectOneChoice>
+                                        </af:column>
+                                        <af:column sortProperty="#{bindings.ProjectGoalFactorView.hints.ProjectCode.name}"
+                                                   sortable="true"
+                                                   headerText="#{bindings.ProjectGoalFactorView.hints.ProjectCode.label}"
+                                                   id="c2" width="12%">
+                                            <af:outputText value="#{row.ProjectCode}"
+                                                           shortDesc="#{bindings.ProjectGoalFactorView.hints.ProjectCode.tooltip}"
+                                                           id="ot2"/>
+                                        </af:column>
+                                        <af:column sortProperty="#{bindings.ProjectGoalFactorView.hints.ProjectName.name}"
+                                                   sortable="true"
+                                                   headerText="#{bindings.ProjectGoalFactorView.hints.ProjectName.label}"
+                                                   id="c3" width="55%">
+                                            <af:outputText value="#{row.ProjectName}"
+                                                           shortDesc="#{bindings.ProjectGoalFactorView.hints.ProjectName.tooltip}"
+                                                           id="ot3"/>
+                                        </af:column>
+                                        <af:column sortProperty="#{bindings.ProjectGoalFactorView.hints.MilestoneType.name}"
+                                                   sortable="true"
+                                                   headerText="#{bindings.ProjectGoalFactorView.hints.MilestoneType.label}"
+                                                   id="c4" width="10%">
+                                            <af:outputText value="#{row.MilestoneType}"
+                                                           shortDesc="#{bindings.ProjectGoalFactorView.hints.MilestoneType.tooltip}"
+                                                           id="ot4"/>
+                                        </af:column>
+                                        <af:column sortProperty="#{bindings.ProjectGoalFactorView.hints.Factor.name}"
+                                                   sortable="true"
+                                                   headerText="#{bindings.ProjectGoalFactorView.hints.Factor.label}"
+                                                   id="c5" width="8%">
+                                            <af:inputText value="#{row.bindings.Factor.inputValue}"
+                                                          required="#{bindings.ProjectGoalFactorView.hints.Factor.mandatory}"
+                                                          columns="#{bindings.ProjectGoalFactorView.hints.Factor.displayWidth}"
+                                                          maximumLength="#{bindings.ProjectGoalFactorView.hints.Factor.precision}"
+                                                          shortDesc="#{bindings.ProjectGoalFactorView.hints.Factor.tooltip}"
+                                                          id="it1" >
+                                                <f:validator binding="#{row.bindings.Factor.validator}"/>
+                                                <af:convertNumber groupingUsed="false"
+                                                                  pattern="#{bindings.ProjectGoalFactorView.hints.Factor.format}"/>
+                                            </af:inputText>
+                                        </af:column>
+                                    </af:table>
+                                </af:panelBox>
+                            </f:facet>
+                        </af:panelStretchLayout>
+                    </f:facet>
+                    <f:facet name="controls">
+                        <af:panelGroupLayout layout="horizontal" halign="right" id="pgl1">
+                            <f:facet name="separator">
+                                <af:spacer width="5" id="s2"/>
+                            </f:facet>
+                            <af:commandToolbarButton shortDesc="#{bundle.globalOk}" text="#{bundle.globalOk}"
+                                                     id="dc_ctb1"
+                                                     actionListener="#{pageFlowScope.ProjectD1ViewBean.fillProjectGoalFactors}"
+                                                     action="ok"
+                                                     rendered="#{rolesBean.maintainGoalFactors}"/>
+                            <af:commandToolbarButton shortDesc="#{bundle.globalCancel}" text="#{bundle.globalCancel}"
+                                                     immediate="true" id="dc_ctb2" 
+                                                     action="cancel"/>
+                        </af:panelGroupLayout>
+                    </f:facet>
+                </af:pageTemplate>
+            </af:form>
+        </af:document>
+    </f:view>
+</jsp:root>

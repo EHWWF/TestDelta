@@ -1,0 +1,249 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:h="http://java.sun.com/jsf/html"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+  <f:view>
+    <f:loadBundle basename="com.bayer.ipms.view.bundles.viewBundle"
+                  var="bundle"/>
+    <af:document id="d1" title="#{bundle.planningAssumpReqInitiate}"
+                 initialFocusId="templ:name">
+      <af:messages id="m1"/>
+      <af:form id="f1">
+        <af:pageTemplate viewId="/WEB-INF/com.bayer.ipms.view/templates/ipms-popup-template.jspx"
+                         id="templ">
+          <f:facet name="summary">
+            <af:panelGroupLayout valign="top" layout="vertical">
+              <af:panelBox text="#{bundle.globalSummary}" showDisclosure="true"
+                           type="flow">
+                <af:panelFormLayout id="pfl1" styleClass="AFStretchWidth">
+                  <af:inputText value="#{bindings.Name.inputValue}"
+                                label="#{bindings.Name.hints.label}"
+                                required="#{bindings.Name.hints.mandatory}"
+                                columns="#{bindings.Name.hints.displayWidth}"
+                                maximumLength="#{bindings.Name.hints.precision}"
+                                shortDesc="#{bindings.Name.hints.tooltip}"
+                                id="name" autoSubmit="true">
+                    <f:validator binding="#{bindings.Name.validator}"/>
+                  </af:inputText>
+                  <af:inputText value="#{bindings.ForecastNo.inputValue}"
+                                label="#{bindings.ForecastNo.hints.label}"
+                                required="#{bindings.ForecastNo.hints.mandatory}"
+                                columns="#{bindings.ForecastNo.hints.displayWidth}"
+                                maximumLength="#{bindings.ForecastNo.hints.precision}"
+                                shortDesc="#{bindings.ForecastNo.hints.tooltip}"
+                                id="it2" autoSubmit="true">
+                    <f:validator binding="#{bindings.ForecastNo.validator}"/>
+                  </af:inputText>
+                  <af:inputDate value="#{bindings.TerminationDate.inputValue}"
+                                label="#{bindings.TerminationDate.hints.label}"
+                                required="#{bindings.TerminationDate.hints.mandatory}"
+                                shortDesc="#{bindings.TerminationDate.hints.tooltip}"
+                                id="id1" autoSubmit="true">
+                    <f:validator binding="#{bindings.TerminationDate.validator}"/>
+                    <af:convertDateTime pattern="#{bindings.TerminationDate.format}"/>
+                  </af:inputDate>
+                </af:panelFormLayout>
+              </af:panelBox>
+            </af:panelGroupLayout>
+          </f:facet>
+          <f:facet name="content">
+            <af:panelBox text="#{bundle.greenList}" showDisclosure="false"
+                         type="stretch" id="pb3">
+              <af:panelCollection styleClass="AFStretchWidth"
+                                  featuresOff="detach statusBar">
+                <f:facet name="toolbar"/>
+                <af:table value="#{bindings.GreenListProjectView.collectionModel}"
+                          var="row"
+                          rows="#{bindings.GreenListProjectView.rangeSize}"
+                          emptyText="#{bindings.GreenListProjectView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                          fetchSize="#{bindings.GreenListProjectView.rangeSize}"
+                          rowBandingInterval="0" id="tbGrLst"
+                          filterVisible="false" varStatus="vs"
+                          rowSelection="none"
+                          styleClass="AFStretchWidth AFStretchHeight"
+                          autoHeightRows="0" contentDelivery="immediate"
+                          columnStretching="last" scrollPolicy="auto"
+                          filterModel="#{bindings.GreenListProjectViewQuery.queryDescriptor}"
+                          queryListener="#{bindings.GreenListProjectViewQuery.processQuery}">
+                  <af:column sortProperty="#{bindings.GreenListProjectView.hints.Code.name}"
+                             sortable="true" filterable="true"
+                             filterFeatures="caseInsensitive"
+                             headerText="#{bindings.GreenListProjectView.hints.Code.label}"
+                             id="dc_c1">
+                    <af:outputText value="#{row.Code}" id="dc_ot5"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.GreenListProjectView.hints.Name.name}"
+                             sortable="true" filterable="true"
+                             filterFeatures="caseInsensitive"
+                             headerText="#{bindings.GreenListProjectView.hints.Name.label}"
+                             id="dc_c4">
+                    <af:outputText value="#{row.Name}" id="dc_ot3"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.GreenListProjectView.hints.MainGroupName.name}"
+                             sortable="true" filterable="true"
+                             filterFeatures="caseInsensitive"
+                             headerText="#{bindings.GreenListProjectView.hints.MainGroupName.label}"
+                             id="dc_c9">
+                    <af:outputText value="#{row.MainGroupName}" id="dc_ot1"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.GreenListProjectView.hints.CommentPreviousFc.name}"
+                             sortable="false" filterable="true"
+                             filterFeatures="caseInsensitive"
+                             headerText="#{bindings.GreenListProjectView.hints.CommentPreviousFc.label}"
+                             id="dc_c12">
+                    <af:outputFormatted value="#{row.CommentPreviousFc}"
+                                        id="dc_of1"
+                                        converter="com.bayer.ipms.view.converters.LinefeedConverter"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.GreenListProjectView.hints.CurrentComment.name}"
+                             sortable="false" filterable="true"
+                             filterFeatures="caseInsensitive"
+                             headerText="#{bindings.GreenListProjectView.hints.CurrentComment.label}"
+                             id="dc_c10">
+                    <af:outputFormatted value="#{row.CurrentComment}"
+                                        id="dc_of2"
+                                        converter="com.bayer.ipms.view.converters.LinefeedConverter"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.GreenListProjectView.hints.GbuName.name}"
+                             sortable="true" filterable="true"
+                             filterFeatures="caseInsensitive"
+                             headerText="#{bindings.GreenListProjectView.hints.GbuName.label}"
+                             id="dc_c13" visible="false">
+                    <af:outputText value="#{row.GbuName}" id="dc_ot14"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.GreenListProjectView.hints.SbeName.name}"
+                             sortable="true" filterable="true"
+                             filterFeatures="caseInsensitive"
+                             headerText="#{bindings.GreenListProjectView.hints.SbeName.label}"
+                             id="dc_c11" visible="false">
+                    <af:outputText value="#{row.SbeName}" id="dc_ot7"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.GreenListProjectView.hints.IsPortfolio.name}"
+                             sortable="true"
+                             headerText="#{bindings.GreenListProjectView.hints.IsPortfolio.label}"
+                             id="dc_c3" visible="false">
+                    <af:outputText value="#{row.IsPortfolio}" id="dc_ot12"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.GreenListProjectView.hints.IsTerminated.name}"
+                             sortable="true"
+                             headerText="#{bindings.GreenListProjectView.hints.IsTerminated.label}"
+                             id="dc_c8" visible="false">
+                    <af:outputText value="#{row.IsTerminated}" id="dc_ot8"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.GreenListProjectView.hints.IsOnHold.name}"
+                             sortable="true"
+                             headerText="#{bindings.GreenListProjectView.hints.IsOnHold.label}"
+                             id="dc_c14" visible="false">
+                    <af:outputText value="#{row.IsOnHold}" id="dc_ot9"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.GreenListProjectView.hints.ControllingProjectType.name}"
+                             sortable="true" filterable="true"
+                             filterFeatures="caseInsensitive"
+                             headerText="#{bindings.GreenListProjectView.hints.ControllingProjectType.label}"
+                             id="dc_c5" visible="false">
+                    <af:outputText value="#{row.ControllingProjectType}"
+                                   id="dc_ot6"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.GreenListProjectView.hints.IsHpr.name}"
+                             sortable="true"
+                             headerText="#{bindings.GreenListProjectView.hints.IsHpr.label}"
+                             id="dc_c6" visible="false">
+                    <af:outputText value="#{row.IsHpr}" id="dc_ot11"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.GreenListProjectView.hints.PhaseName.name}"
+                             sortable="true" filterable="true"
+                             filterFeatures="caseInsensitive"
+                             headerText="#{bindings.GreenListProjectView.hints.PhaseName.label}"
+                             id="dc_c2" visible="false">
+                    <af:outputText value="#{row.PhaseName}" id="dc_ot2"/>
+                  </af:column>
+                  <af:column headerText="#{bindings.GreenListProjectView.hints.D3Date.label}"
+                             id="dc_c7" sortable="true"
+                             sortProperty="#{bindings.GreenListProjectView.hints.D3Date.name}"
+                             visible="false">
+                    <af:outputText value="#{row.D3Date}" id="dc_ot4"/>
+                  </af:column>
+                  <af:column headerText="#{bindings.GreenListProjectView.hints.D4Date.label}"
+                             id="dc_c15" sortable="true"
+                             sortProperty="#{bindings.GreenListProjectView.hints.D4Date.name}"
+                             visible="false">
+                    <af:outputText value="#{row.D4Date}" id="dc_ot15"/>
+                  </af:column>
+                  <af:column headerText="#{bindings.GreenListProjectView.hints.M4cDate.label}"
+                             id="dc_c16" sortable="true"
+                             sortProperty="#{bindings.GreenListProjectView.hints.M4cDate.name}"
+                             visible="false">
+                    <af:outputText value="#{row.M4cDate}" id="dc_ot16"/>
+                  </af:column>
+                  <af:column headerText="#{bindings.GreenListProjectView.hints.PocDate.label}"
+                             id="dc_c17" sortable="true"
+                             sortProperty="#{bindings.GreenListProjectView.hints.PocDate.name}"
+                             visible="false">
+                    <af:outputText value="#{row.PocDate}" id="dc_ot17"/>
+                  </af:column>
+                  <af:column headerText="#{bindings.GreenListProjectView.hints.D6Date.label}"
+                             id="dc_c18" sortable="true"
+                             sortProperty="#{bindings.GreenListProjectView.hints.D6Date.name}"
+                             visible="false">
+                    <af:outputText value="#{row.D6Date}" id="dc_ot18"/>
+                  </af:column>
+                  <af:column headerText="#{bindings.GreenListProjectView.hints.D7Date.label}"
+                             id="dc_c19" sortable="true"
+                             sortProperty="#{bindings.GreenListProjectView.hints.D7Date.name}"
+                             visible="false">
+                    <af:outputText value="#{row.D7Date}" id="dc_ot19"/>
+                  </af:column>
+                  <af:column headerText="#{bindings.GreenListProjectView.hints.D8Date.label}"
+                             id="dc_c20" sortable="true"
+                             sortProperty="#{bindings.GreenListProjectView.hints.D8Date.name}"
+                             visible="false">
+                    <af:outputText value="#{row.D8Date}" id="dc_ot20"/>
+                  </af:column>
+                  <af:column headerText="#{bindings.GreenListProjectView.hints.ProbabilityPreclinical.label}"
+                             id="dc_c21" visible="false">
+                    <af:outputText value="#{row.ProbabilityPreclinical}"
+                                   id="dc_ot21"/>
+                  </af:column>
+                  <af:column headerText="#{bindings.GreenListProjectView.hints.ProbabilityPhase1.label}"
+                             id="dc_c22" visible="false">
+                    <af:outputText value="#{row.ProbabilityPhase1}"
+                                   id="dc_ot22"/>
+                  </af:column>
+                  <af:column headerText="#{bindings.GreenListProjectView.hints.ProbabilityPhase2.label}"
+                             id="dc_c23" visible="false">
+                    <af:outputText value="#{row.ProbabilityPhase2}"
+                                   id="dc_ot23"/>
+                  </af:column>
+                  <af:column headerText="#{bindings.GreenListProjectView.hints.ProbabilityPhase3.label}"
+                             id="dc_c24" visible="false">
+                    <af:outputText value="#{row.ProbabilityPhase3}"
+                                   id="dc_ot24"/>
+                  </af:column>
+                  <af:column headerText="#{bindings.GreenListProjectView.hints.ProbabilitySubmission.label}"
+                             id="dc_c25" visible="false">
+                    <af:outputText value="#{row.ProbabilitySubmission}"
+                                   id="dc_ot25"/>
+                  </af:column>
+                  <af:column headerText="#{bindings.GreenListProjectView.hints.ProbabilityTotal.label}"
+                             id="dc_c26" visible="false">
+                    <af:outputText value="#{row.ProbabilityTotal}"
+                                   id="dc_ot26"/>
+                  </af:column>
+                </af:table>
+              </af:panelCollection>
+            </af:panelBox>
+          </f:facet>
+          <f:facet name="controls">
+            <f:subview id="sub1">
+              <af:declarativeComponent viewId="global-ok-cancel.jsff" id="goc">
+                <f:attribute name="showCancel" value="true"/>
+              </af:declarativeComponent>
+            </f:subview>
+          </f:facet>
+        </af:pageTemplate>
+      </af:form>
+    </af:document>
+  </f:view>
+</jsp:root>

@@ -1,0 +1,1 @@
+grant execute on notice_pkg to ipms_repo;

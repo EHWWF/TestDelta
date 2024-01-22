@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.61.92" id="task_estimatesPageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+  <parameters>
+    <parameter id="programId" value=""/>
+    <parameter id="processId" value=""/>
+    <parameter id="tagId" value=""/>
+  </parameters>
+  <executables>
+    <iterator Binds="WorkspaceAppModule.LatestEstimateView"
+              DataControl="PrivateAppModuleDataControl"
+              id="LatestEstimateViewIterator" RangeSize="25"/>
+    <variableIterator id="variables">
+      <variable Name="leYear" Type="java.Lang.String"/>
+      <variable Name="tagProcessName" Type="java.Lang.String"/>
+      <variable Name="processComment" Type="java.Lang.String"/>
+      <variable Name="leScope" Type="java.Lang.String"/>
+      <variable Name="leIsNextYear" Type="java.Lang.String"/>
+      <variable Name="fcNumberVersion" Type="java.lang.String"/>
+    </variableIterator>
+  </executables>
+  <bindings>
+    <tree IterBinding="LatestEstimateViewIterator" id="EstimateView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.estimates.LatestEstimateView" Name="LatestEstimateView10">
+        <AttrNames>
+          <Item Value="Id"/>
+          <Item Value="CurrActualsDeterministic"/>
+          <Item Value="CurrBudgetDeterministic"/>
+          <Item Value="CurrBudgetProbabilistic"/>
+          <Item Value="CurrForecastDeterministic"/>
+          <Item Value="CurrForecastProbabilistic"/>
+          <Item Value="CurrRunrateDeterministic"/>
+          <Item Value="DevelopmentPhaseCode"/>
+          <Item Value="DevelopmentPhaseName"/>
+          <Item Value="EstimateDetCurrYear"/>
+          <Item Value="EstimateDetNextYear"/>
+          <Item Value="EstimateProbCurrYear"/>
+          <Item Value="EstimateProbNextYear"/>
+          <Item Value="FunctionCode"/>
+          <Item Value="FunctionName"/>
+          <Item Value="GroupingType"/>
+          <Item Value="NextBudgetDeterministic"/>
+          <Item Value="NextBudgetProbabilistic"/>
+          <Item Value="NextForecastDeterministic"/>
+          <Item Value="NextForecastProbabilistic"/>
+          <Item Value="ProcessComments"/>
+          <Item Value="ProcessId"/>
+          <Item Value="ProcessName"/>
+          <Item Value="ProgramCode"/>
+          <Item Value="ProgramId"/>
+          <Item Value="ProgramName"/>
+          <Item Value="ProjectCode"/>
+          <Item Value="ProjectDevelopmentPhaseCode"/>
+          <Item Value="ProjectDevelopmentPhaseName"/>
+          <Item Value="ProjectId"/>
+          <Item Value="ProjectName"/>
+          <Item Value="ProjectSbeCode"/>
+          <Item Value="ProjectSbeName"/>
+          <Item Value="StudyFpfv"/>
+          <Item Value="StudyId"/>
+          <Item Value="StudyLplv"/>
+          <Item Value="StudyName"/>
+          <Item Value="StudyPhase"/>
+          <Item Value="StudyStatusCode"/>
+          <Item Value="StudyStatusName"/>
+          <Item Value="SubtypeCode"/>
+          <Item Value="SubtypeName"/>
+          <Item Value="ProjectFundY1"/>
+          <Item Value="ProjectFundY2"/>
+          <Item Value="CurrCforecastProbabilistic"/>
+          <Item Value="NextCforecastProbabilistic"/>
+          <Item Value="StudyIsGpdcApproved"/>
+          <Item Value="StudyIsObligation"/>
+          <Item Value="StudyIsProbing"/>
+          <Item Value="CommentsCurrYear"/>
+          <Item Value="CommentsNextYear"/>
+          <Item Value="CurrFpsCommited"/>
+          <Item Value="CurrFpsUncommited"/>
+          <Item Value="CurrFpsIncUnspecTotal"/>
+          <Item Value="NextFpsCommited"/>
+          <Item Value="NextFpsUncommited"/>
+          <Item Value="NextFpsIncUnspecTotal"/>
+          <Item Value="ProjectGbuCode"/>
+          <Item Value="EstimateDetOldCurrYear"/>
+          <Item Value="EstimateDetOldNextYear"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="LatestEstimateViewIterator" id="ExecuteWithParamsLE"
+            InstanceName="PrivateAppModuleDataControl.WorkspaceAppModule.LatestEstimateView"
+            DataControl="PrivateAppModuleDataControl" RequiresUpdateModel="true"
+            Action="executeWithParams">
+      <NamedData NDName="programId" NDValue="${bindings.programId}" NDType="java.lang.String"/>
+      <NamedData NDName="processId" NDValue="${bindings.processId}" NDType="java.lang.String"/>
+      <NamedData NDName="tagId" NDValue="${bindings.tagId}" NDType="java.lang.String"/>
+      <NamedData NDName="UserNameVar"
+                 NDValue="${securityContext.userInRole['EstimatesProcessMeetingView'] ? null : securityContext.userName}"
+                 NDType="java.lang.String"/>
+    </action>
+    <methodAction id="setup"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="setup" IsViewObjectMethod="true"
+                  DataControl="PrivateAppModuleDataControl"
+                  InstanceName="PrivateAppModuleDataControl.dataProvider.WorkspaceAppModule.LatestEstimateView">
+      <NamedData NDName="tagId" NDValue="${bindings.tagId}" NDType="java.lang.String"/>
+      <NamedData NDName="processId" NDValue="${bindings.processId}" NDType="java.lang.String"/>
+      <NamedData NDName="programId" NDValue="${bindings.programId}" NDType="java.lang.String"/>
+    </methodAction>
+    <attributeValues IterBinding="variables"
+                     id="ProcessComments">
+      <AttrNames>
+        <Item Value="processComment"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="variables" id="TagProcessName">
+      <AttrNames>
+        <Item Value="tagProcessName"/>
+      </AttrNames>
+    </attributeValues>
+
+    <attributeValues IterBinding="variables"
+                     id="CostsForecastNumberVersion">
+      <AttrNames>
+        <Item Value="fcNumberVersion"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="variables" id="ProcessYear">
+      <AttrNames>
+        <Item Value="leYear"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="variables" id="LeScope">
+      <AttrNames>
+        <Item Value="leScope"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="variables" id="ProcessIsNextYear">
+      <AttrNames>
+        <Item Value="leIsNextYear"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="initLeExcelForm" RequiresUpdateModel="true" Action="invokeMethod" MethodName="initLeExcelForm"
+                  IsViewObjectMethod="false" DataControl="PrivateAppModuleDataControl"
+                  InstanceName="data.PrivateAppModuleDataControl.dataProvider.WorkspaceAppModule"
+                  ReturnName="data.PrivateAppModuleDataControl.methodResults.initLeExcelForm_PrivateAppModuleDataControl_dataProvider_WorkspaceAppModule_initLeExcelForm_result">
+      <NamedData NDName="tagId" NDValue="${bindings.tagId}" NDType="java.lang.String"/>
+      <NamedData NDName="processId" NDValue="${bindings.processId}" NDType="java.lang.String"/>
+      <NamedData NDName="programId" NDValue="${bindings.programId}" NDType="java.lang.String"/>
+    </methodAction>
+    <methodAction id="commitLe" RequiresUpdateModel="true" Action="invokeMethod" MethodName="commitLe"
+                  IsViewObjectMethod="false" DataControl="PrivateAppModuleDataControl"
+                  InstanceName="data.PrivateAppModuleDataControl.dataProvider.WorkspaceAppModule"
+                  ReturnName="data.PrivateAppModuleDataControl.methodResults.commitLe_PrivateAppModuleDataControl_dataProvider_WorkspaceAppModule_commitLe_result"/>
+  </bindings>
+</pageDefinition>

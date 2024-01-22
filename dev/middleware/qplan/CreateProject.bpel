@@ -1,0 +1,246 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Mon Nov 10 14:19:10 EET 2014
+  Author:  donatas
+  Type: BPEL 1.1 Process
+  Purpose: Asynchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="CreateProject"
+         targetNamespace="http://xmlns.bayer.com/ipms/qplan"
+         xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:client="http://xmlns.bayer.com/ipms/qplan"
+         xmlns:ora="http://schemas.oracle.com/xpath/extension"
+         xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:qplan="https://quickplan-p.bayer-ag.com/services"
+         xmlns:bpel2="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ipms="http://xmlns.bayer.com/ipms"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:ipms-soa="http://xmlns.bayer.com/ipms/soa"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        PARTNERLINKS                                                      
+        List of services participating in this BPEL process               
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+   <bpelx:annotation>
+      <bpelx:analysis>
+         <bpelx:property name="wsdlFile">
+            <![CDATA[CreateProject.wsdl]]>
+         </bpelx:property>
+      </bpelx:analysis>
+   </bpelx:annotation>
+   <partnerLinks>
+        <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+        <partnerLink name="CreateProject" partnerLinkType="client:CreateProject" myRole="CreateProjectProvider" partnerRole="CreateProjectRequester"/>
+        <partnerLink name="IProMISInterface"
+                     partnerLinkType="qplan:IProMISInterface"
+                     partnerRole="IProMISInterface"/>
+      <partnerLink name="UpdateProject" partnerLinkType="client:UpdateProject"
+                   partnerRole="UpdateProjectProvider"/>
+   </partnerLinks>
+
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        VARIABLES                                                        
+        List of messages and XML documents used within this BPEL process 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <variables>
+        <!-- Reference to the message passed as input during initiation -->
+        <variable name="inputVariable" messageType="client:CreateProjectRequestMessage"/>
+
+        <!-- Reference to the message that will be sent back to the requester during callback -->
+        <variable name="outputVariable" messageType="client:CreateProjectResponseMessage"/>
+        <variable name="CreateProject_In"
+                  messageType="qplan:IProMISInterface_CreateProject_InputMessage"/>
+        <variable name="CreateProject_Out"
+                  messageType="qplan:IProMISInterface_CreateProject_OutputMessage"/>
+        <variable name="text" type="xsd:string"/>
+      <variable name="invoke_UpdateProject_In"
+                messageType="client:UpdateProjectRequestMessage"/>
+   </variables>
+   <faultHandlers>
+      <catchAll><sequence name="HandleAllErrors">
+	  <assign name="assign_error"
+   xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+   xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/">
+               <bpelx:remove>
+                  <bpelx:target variable="outputVariable" part="payload"
+                                query="/ipms-soa:response/ipms-soa:complete"/>
+               </bpelx:remove>
+               <copy>
+                  <from variable="inputVariable" part="payload"
+                        query="/client:callQPlan/@id"/>
+                  <to variable="outputVariable" part="payload"
+                      query="/ipms-soa:response/@id"/>
+               </copy>
+               <copy>
+                  <from expression="ora:getFaultName()"/>
+                  <to variable="outputVariable" part="payload"
+                      query="/ipms-soa:response/ipms:error/ipms:code"/>
+               </copy>
+               <copy>
+                  <from expression="ora:getFaultAsString()"/>
+                  <to variable="outputVariable" part="payload"
+                      query="/ipms-soa:response/ipms:error/ipms:description"/>
+               </copy>
+            </assign><invoke name="callback" inputVariable="outputVariable"
+                    partnerLink="CreateProject"
+                    portType="client:CreateProjectCallback"
+                    operation="processResponse" bpelx:invokeAsDetail="no"/></sequence></catchAll>
+   </faultHandlers>
+   <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+       ORCHESTRATION LOGIC                                               
+       Set of activities coordinating the flow of messages across the    
+       services integrated within this business process                  
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <sequence name="main">
+        <!-- Receive input from requestor. (Note: This maps to operation defined in CreateProject.wsdl) -->
+        <receive name="receive_input" partnerLink="CreateProject" portType="client:CreateProject" operation="process" variable="inputVariable" createInstance="yes"/><assign name="init_response"
+                                                                                                                                                                             xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/">
+      <copy>
+         <from variable="inputVariable" part="payload"
+               query="/client:callQPlan/@id"/>
+         <to variable="outputVariable" part="payload"
+             query="/ipms-soa:response/@id"/>
+      </copy>
+      <copy>
+         <from variable="inputVariable" part="payload"
+               query="/client:callQPlan/@id"/>
+         <to variable="outputVariable" part="payload"
+             query="/ipms-soa:response/ipms:error/@id"/>
+      </copy>
+      <copy>
+         <from variable="inputVariable" part="payload"
+               query="/client:callQPlan/@id"/>
+         <to variable="outputVariable" part="payload"
+             query="/ipms-soa:response/ipms-soa:complete/@id"/>
+      </copy>
+   </assign><sequence name="CreateProject"
+                      xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+                      xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+                      bpelx:skipCondition="empty(bpws:getVariableData('inputVariable','payload','/client:callQPlan/client:createProject/client:masterData')) or empty(bpws:getVariableData('outputVariable','payload','/ipms-soa:response/ipms-soa:complete'))">
+      <assign name="assign_CreateProject_In">
+         <bpelx:annotation>
+            <bpelx:pattern>transformation</bpelx:pattern>
+         </bpelx:annotation>
+         <copy>
+            <from expression="ora:doXSLTransformForDoc('xsl/callQPlan_To_CreateProject.xsl', $inputVariable.payload)"/>
+            <to variable="CreateProject_In" part="parameters"/>
+         </copy>
+      </assign>
+      <invoke name="invoke_CreateProject" inputVariable="CreateProject_In"
+              outputVariable="CreateProject_Out" partnerLink="IProMISInterface"
+              portType="qplan:IProMISInterface" operation="CreateProject"
+              bpelx:invokeAsDetail="no"/>
+      <assign name="check_error"
+              bpelx:skipCondition="bpws:getVariableData('CreateProject_Out','parameters','/qplan:CreateProjectResponse/qplan:CreateProjectResult/qplan:ok') = 'true' or bpws:getVariableData('CreateProject_Out','parameters','/qplan:CreateProjectResponse/qplan:CreateProjectResult/qplan:msgCode') = '502'">
+            <bpelx:remove>
+               <bpelx:target variable="outputVariable" part="payload"
+                             query="/ipms-soa:response/ipms-soa:complete"/>
+            </bpelx:remove>
+            <copy>
+               <from variable="CreateProject_Out" part="parameters"
+                     query="/qplan:CreateProjectResponse/qplan:CreateProjectResult/qplan:msgCode"/>
+               <to variable="outputVariable" part="payload"
+                   query="/ipms-soa:response/ipms:error/ipms:code"/>
+            </copy>
+            <copy>
+               <from expression="concat('CreateProject: ', bpws:getVariableData('CreateProject_Out','parameters','/qplan:CreateProjectResponse/qplan:CreateProjectResult/qplan:message'))"/>
+               <to variable="outputVariable" part="payload"
+                   query="/ipms-soa:response/ipms:error/ipms:description"/>
+            </copy>
+         </assign>
+      <assign name="concat_text"
+              xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/">
+         <copy>
+            <from expression="oraext:left-trim(concat(bpws:getVariableData('text'), ' ', bpws:getVariableData('CreateProject_Out','parameters','/qplan:CreateProjectResponse/qplan:CreateProjectResult/qplan:message'), '.'))"/>
+            <to variable="text"/>
+         </copy>
+      </assign>
+         <assign name="assign_UpdateProject_In">
+            <copy>
+               <from variable="inputVariable" part="payload"
+                     query="/client:callQPlan/@id"/>
+               <to variable="invoke_UpdateProject_In" part="payload"
+                   query="/client:callQPlan/@id"/>
+            </copy>
+            <copy>
+               <from variable="inputVariable" part="payload"
+                     query="/client:callQPlan/client:createProject/@cwid"/>
+               <to variable="invoke_UpdateProject_In" part="payload"
+                   query="/client:callQPlan/client:updateProject/@cwid"/>
+            </copy>
+            <copy>
+               <from variable="inputVariable" part="payload"
+                     query="/client:callQPlan/client:createProject/@projectId"/>
+               <to variable="invoke_UpdateProject_In" part="payload"
+                   query="/client:callQPlan/client:updateProject/@projectId"/>
+            </copy>
+            <copy>
+               <from variable="inputVariable" part="payload"
+                     query="/client:callQPlan/client:createProject/@projectCode"/>
+               <to variable="invoke_UpdateProject_In" part="payload"
+                   query="/client:callQPlan/client:updateProject/@projectCode"/>
+            </copy>
+            <copy>
+               <from variable="inputVariable" part="payload"
+                     query="/client:callQPlan/client:createProject/client:masterData"/>
+               <to variable="invoke_UpdateProject_In" part="payload"
+                   query="/client:callQPlan/client:updateProject/client:masterData"/>
+            </copy>
+            <copy>
+               <from variable="inputVariable" part="payload"
+                     query="/client:callQPlan/client:createProject/client:decisionMilestones"/>
+               <to variable="invoke_UpdateProject_In" part="payload"
+                   query="/client:callQPlan/client:updateProject/client:decisionMilestones"/>
+            </copy>
+            <copy>
+               <from variable="inputVariable" part="payload"
+                     query="/client:callQPlan/client:createProject/client:ptrValues"/>
+               <to variable="invoke_UpdateProject_In" part="payload"
+                   query="/client:callQPlan/client:updateProject/client:ptrValues"/>
+            </copy>
+         </assign>
+         <invoke name="invoke_UpdateProject_ifExists" partnerLink="UpdateProject" portType="client:UpdateProject"
+                 bpelx:skipCondition="not(bpws:getVariableData('CreateProject_Out','parameters','/qplan:CreateProjectResponse/qplan:CreateProjectResult/qplan:msgCode')='502')" operation="process"
+                 inputVariable="invoke_UpdateProject_In"
+                 bpelx:invokeAsDetail="no"/>
+      </sequence>
+      <assign name="assign_response"
+                      xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+                      bpelx:skipCondition="empty(bpws:getVariableData('outputVariable','payload','/ipms-soa:response/ipms-soa:complete'))">
+         <bpelx:remove>
+            <bpelx:target variable="outputVariable" part="payload"
+                          query="/ipms-soa:response/ipms:error"/>
+         </bpelx:remove>
+      </assign>
+      <bpelx:validate name="validate_response" variables="outputVariable"/>
+      <!-- 
+          Asynchronous callback to the requester. (Note: the callback location and correlation id is transparently handled using WS-addressing.)
+        -->
+        <invoke name="callback" partnerLink="CreateProject" portType="client:CreateProjectCallback" operation="processResponse" inputVariable="outputVariable"/>
+    </sequence>
+</process>

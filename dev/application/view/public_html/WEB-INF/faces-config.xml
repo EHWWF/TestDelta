@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="windows-1257"?>
+<faces-config version="2.2" xmlns="http://java.sun.com/xml/ns/javaee">
+  <application>
+    <default-render-kit-id>oracle.adf.rich</default-render-kit-id>
+    <resource-bundle>
+      <base-name>com.bayer.ipms.view.bundles.ConfigurationBundle</base-name>
+      <var>configBundle</var>
+    </resource-bundle>
+    <locale-config/>
+  </application>
+  <converter>
+    <converter-id>com.bayer.ipms.view.converters.LinefeedConverter</converter-id>
+    <converter-class>com.bayer.ipms.view.converters.LinefeedConverter</converter-class>
+  </converter>
+  <validator>
+    <validator-id>ProgramGoalsValidator</validator-id>
+    <validator-class>com.bayer.ipms.view.beans.ProgramGoalsValidator</validator-class>
+    <attribute>
+      <attribute-name>targetDate</attribute-name>
+      <attribute-class>java.lang.String</attribute-class>
+    </attribute>
+    <attribute>
+      <attribute-name>goalSetupYear</attribute-name>
+      <attribute-class>java.lang.Integer</attribute-class>
+    </attribute>
+    <attribute>
+      <attribute-name>isGpm</attribute-name>
+      <attribute-class>java.lang.Boolean</attribute-class>
+    </attribute>
+    <attribute>
+      <attribute-name>goalType</attribute-name>
+      <attribute-class>java.lang.String</attribute-class>
+    </attribute>
+    <attribute>
+      <attribute-name>achievedDate</attribute-name>
+      <attribute-class>java.lang.String</attribute-class>
+    </attribute>
+    <attribute>
+      <attribute-name>revisedDate</attribute-name>
+      <attribute-class>java.lang.String</attribute-class>
+    </attribute>
+    <attribute>
+      <attribute-name>isEdit</attribute-name>
+      <attribute-class>java.lang.Boolean</attribute-class>
+    </attribute>
+  </validator>
+</faces-config>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.22.48"
+                id="maintain_goals_maintain_goals_initMaintainGoalsScreenPageDef" Package="com.bayer.ipms.view.flows"
+                SkipValidation="true">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+   
+
+  </executables>
+  <bindings>
+    <methodAction id="initMaintainGoals" RequiresUpdateModel="true" Action="invokeMethod" MethodName="initMaintainGoals"
+                  IsViewObjectMethod="true" DataControl="PrivateAppModuleDataControl"
+                  InstanceName="data.PrivateAppModuleDataControl.ProgramAppModule.ProgramView">
+      <NamedData NDName="programId" NDValue="#{pageFlowScope.programId}" NDType="java.lang.String"/>
+      <NamedData NDName="programGoalsId" NDValue="#{pageFlowScope.programGoalId}" NDType="java.lang.Integer"/>
+      <NamedData NDName="projectId" NDValue="#{pageFlowScope.projectId}" NDType="java.lang.String"/>
+    </methodAction>
+    
+    
+     <methodAction id="searchByPatientId" RequiresUpdateModel="true" Action="invokeMethod" MethodName="searchByPatientId"
+                  IsViewObjectMethod="true" DataControl="SunstoneModuleDataControl"
+                  InstanceName="data.SunstoneModuleDataControl.PatientsResultsListView1">
+      <NamedData NDName="patientId" NDType="java.lang.Integer"/>
+    </methodAction>
+  </bindings>
+</pageDefinition>

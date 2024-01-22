@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+
+<Entity
+   xmlns="http://xmlns.oracle.com/bc4j"
+   Name="TppCategory"
+   Version="12.1.3.10.8"
+   InheritPersonalization="merge"
+   DBObjectType="table"
+   DBObjectName="TPP_CATEGORY"
+   AliasName="TppCategory"
+   BindingStyle="OracleName"
+   RowClass="com.bayer.ipms.model.base.IPMSEntityImpl"
+   xmlns:validation="http://xmlns.oracle.com/adfm/validation">
+   <Attribute
+      Name="Code"
+      IsNotNull="true"
+      ColumnName="CODE"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="TPP_CATEGORY"
+      PrimaryKey="true"
+      Precision="20">
+   </Attribute>
+   <Attribute
+      Name="Name"
+      IsNotNull="true"
+      ColumnName="NAME"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="TPP_CATEGORY"
+      Precision="200">
+   </Attribute>
+   <Attribute
+      Name="Description"
+      ColumnName="DESCRIPTION"
+      SQLType="VARCHAR"
+      Type="java.lang.String"
+      ColumnType="NVARCHAR2"
+      TableName="TPP_CATEGORY"
+      Precision="500">
+   </Attribute>
+   <Attribute
+      Name="IsActive"
+      ColumnName="IS_ACTIVE"
+      SQLType="NUMERIC"
+      Type="java.lang.Boolean"
+      ColumnType="NUMBER"
+      TableName="TPP_CATEGORY"
+      RetrievedOnInsert="true"
+      IsNotNull="true">
+      <validation:PreDefinedValidationBean
+         Name="IsActivePrecisionScale0"
+         Description="Precision : (1)"
+         ValName="Precision : (1,0)"
+         Subtype="PRECISION_SCALE"/>
+   </Attribute>
+   <Attribute
+      Name="ModifyDate"
+      ColumnName="MODIFY_DATE"
+      SQLType="DATE"
+      Type="java.sql.Date"
+      ColumnType="DATE"
+      TableName="TPP_CATEGORY"
+      RetrievedOnInsert="true">
+   </Attribute>
+   <AccessorAttribute
+      Name="TppSubcategory"
+      Association="com.bayer.ipms.model.entities.assoc.TppCategorySubcategory"
+      AssociationEnd="com.bayer.ipms.model.entities.assoc.TppCategorySubcategory.TppSubcategory"
+      AssociationOtherEnd="com.bayer.ipms.model.entities.assoc.TppCategorySubcategory.TppCategory"
+      Type="oracle.jbo.RowIterator"
+      IsUpdateable="false" >
+   </AccessorAttribute>
+   <Key
+      Name="SysC0055428"
+      PrimaryKey="true" >
+      <DesignTime>
+         <Attr Name="_DBObjectName" Value="SYS_C0055428"/>
+      </DesignTime>
+      <AttrArray Name="Attributes">
+         <Item Value="com.bayer.ipms.model.entities.TppCategory.Code" />
+      </AttrArray>
+   </Key>
+   <Key
+      Name="TppCategoryIsActiveCheck">
+      <DesignTime>
+         <Attr Name="_isNotNull" Value="true"/>
+         <Attr Name="_DBObjectName" Value="TPP_CATEGORY_IS_ACTIVE_CHECK"/>
+         <Attr Name="_checkCondition" Value='"IS_ACTIVE" IS NOT NULL'/>
+         <Attr Name="_isCheck" Value="true"/>
+      </DesignTime>
+      <AttrArray Name="Attributes">
+         <Item Value="com.bayer.ipms.model.entities.TppCategory.IsActive"/>
+      </AttrArray>
+   </Key>
+</Entity>

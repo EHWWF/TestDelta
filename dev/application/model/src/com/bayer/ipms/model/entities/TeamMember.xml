@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="windows-1257" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="TeamMember"
+  Version="12.2.1.12.2"
+  InheritPersonalization="true"
+  DBObjectType="table"
+  DBObjectName="TEAM_MEMBER"
+  AliasName="TeamMember"
+  BindingStyle="OracleName"
+  RowClass="com.bayer.ipms.model.entities.TeamMemberImpl"
+  xmlns:validation="http://xmlns.oracle.com/adfm/validation">
+  <DesignTime>
+    <Attr Name="_isCodegen" Value="true"/>
+    <Attr Name="_codeGenFlag2" Value="Init|Delete|Access|DML"/>
+  </DesignTime>
+  <ViewAccessor
+    Name="TeamMemberReadonlyVA"
+    ViewObjectName="com.bayer.ipms.model.views.readonly.TeamMemberReadonlyView"
+    RowLevelBinds="true">
+    <ViewCriteriaUsage
+      Name="FilterbyEmployeeAndProgram"
+      FullName="com.bayer.ipms.model.views.readonly.TeamMemberReadonlyView.FilterbyEmployeeAndProgram"/>
+    <ParameterMap>
+      <PIMap Variable="pEmpCode">
+        <TransientExpression
+          trustMode="untrusted"
+          Name="ExpressionScript"><![CDATA[EmployeeCode]]></TransientExpression>
+      </PIMap>
+      <PIMap Variable="pProgId">
+        <TransientExpression
+          trustMode="untrusted"
+          Name="ExpressionScript"><![CDATA[ProgramId]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="ProgramReadonlyVA"
+    ViewObjectName="com.bayer.ipms.model.views.readonly.ProgramReadonly"
+    RowLevelBinds="true">
+    <ViewCriteriaUsage
+      Name="FilterbyCodeReserved"
+      FullName="com.bayer.ipms.model.views.readonly.ProgramReadonly.FilterbyCodeReserved"/>
+    <ParameterMap>
+      <PIMap Variable="pProgramId">
+        <TransientExpression
+          trustMode="untrusted"
+          Name="ExpressionScript"><![CDATA[ProgramId]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <Attribute
+    Name="Id"
+    IsUpdateable="false"
+    Precision="20"
+    Scale="0"
+    ColumnName="ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="TEAM_MEMBER"
+    PrimaryKey="true"
+    RetrievedOnInsert="true">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="ProgramId"
+    IsUpdateable="while_insert"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="PROGRAM_ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="TEAM_MEMBER">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="CreateUserId"
+    IsUpdateable="false"
+    Precision="20"
+    Scale="0"
+    ColumnName="CREATE_USER_ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="TEAM_MEMBER"
+    RetrievedOnInsert="true">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="CreateDate"
+    IsUpdateable="false"
+    ColumnName="CREATE_DATE"
+    SQLType="TIMESTAMP"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    TableName="TEAM_MEMBER"
+    RetrievedOnInsert="true">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="7"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="UpdateUserId"
+    IsUpdateable="false"
+    Precision="20"
+    Scale="0"
+    ColumnName="UPDATE_USER_ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="TEAM_MEMBER"
+    RetrievedOnUpdate="true">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="UpdateDate"
+    IsUpdateable="false"
+    ColumnName="UPDATE_DATE"
+    SQLType="TIMESTAMP"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    TableName="TEAM_MEMBER"
+    ChangeIndicator="true"
+    RetrievedOnUpdate="true">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="7"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="RoleCode"
+    IsNotNull="true"
+    Precision="20"
+    Scale="0"
+    ColumnName="ROLE_CODE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="TEAM_MEMBER">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="EmployeeCode"
+    IsNotNull="true"
+    Precision="20"
+    Scale="0"
+    ColumnName="EMPLOYEE_CODE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="TEAM_MEMBER">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </Attribute>
+  <Key
+    Name="SysC0032718">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0032718"/>
+      <Attr Name="_checkCondition" Value='"ID" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.TeamMember.Id"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0032719">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0032719"/>
+      <Attr Name="_checkCondition" Value='"PROGRAM_ID" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.TeamMember.ProgramId"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0032720">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0032720"/>
+      <Attr Name="_checkCondition" Value='"EMPLOYEE_CODE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.TeamMember.EmployeeCode"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0032721">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0032721"/>
+      <Attr Name="_checkCondition" Value='"ROLE_CODE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.TeamMember.RoleCode"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0032722">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0032722"/>
+      <Attr Name="_checkCondition" Value='"CREATE_USER_ID" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.TeamMember.CreateUserId"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0032723">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0032723"/>
+      <Attr Name="_checkCondition" Value='"CREATE_DATE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.TeamMember.CreateDate"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0032724"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0032724"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.TeamMember.Id"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0032725">
+    <DesignTime>
+      <Attr Name="_isUnique" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0032725"/>
+    </DesignTime>
+    <AttrArray Name="Attributes"/>
+  </Key>
+  <Key
+    Name="SysC0032726">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0011157"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0032726"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.TeamMember.ProgramId"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0032727">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0032717"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0032727"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.TeamMember.EmployeeCode"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0032728">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0032162"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0032728"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.TeamMember.RoleCode"/>
+    </AttrArray>
+  </Key>
+  <validation:MethodValidationBean
+    Name="TeamMemberRule"
+    ResId="com.bayer.ipms.model.entities.TeamMember_Rule_0"
+    MethodName="validateTeamMember">
+    <validation:OnAttributes>
+      <validation:Item
+        Value="EmployeeCode"/>
+    </validation:OnAttributes>
+    <validation:ResExpressions
+      Name="TeamMemberRule_ResExprList"/>
+  </validation:MethodValidationBean>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.bayer.ipms.model.bundles.modelBundle"/>
+  </ResourceBundle>
+</Entity>

@@ -1,0 +1,21 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://xmlns.oracle.com/Primavera/P6/WS/ProjectProfile/V1">
+	<soapenv:Header/>
+	<soapenv:Body>
+		<v1:CreateProjectProfiles>
+			<v1:ProjectProfile>
+				<v1:Name>Project Manager</v1:Name>
+				<!--v1:Privilege>
+					<v1:Has>?</v1:Has>
+					<v1:Name>?</v1:Name>
+				</v1:Privilege-->
+			</v1:ProjectProfile>
+			<v1:ProjectProfile>
+				<v1:Name>ReadOnly</v1:Name>
+				<!--v1:Privilege>
+					<v1:Has>?</v1:Has>
+					<v1:Name>?</v1:Name>
+				</v1:Privilege-->
+			</v1:ProjectProfile>
+		</v1:CreateProjectProfiles>
+	</soapenv:Body>
+</soapenv:Envelope>

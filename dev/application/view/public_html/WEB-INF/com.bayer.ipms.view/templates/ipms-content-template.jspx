@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:h="http://java.sun.com/jsf/html" xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <af:pageTemplateDef var="attrs">
+        <af:xmlContent>
+            <component xmlns="http://xmlns.oracle.com/adf/faces/rich/component">
+                <display-name>IPMS Content Template</display-name>
+                <facet>
+                    <facet-name>toolbar</facet-name>
+                </facet>
+                <facet>
+                    <facet-name>content</facet-name>
+                </facet>
+                <facet>
+                    <facet-name>popup</facet-name>
+                </facet>
+                <attribute>
+                    <attribute-name>title</attribute-name>
+                    <attribute-class>java.lang.String</attribute-class>
+                    <required>true</required>
+                </attribute>
+                <attribute>
+                    <attribute-name>message</attribute-name>
+                    <attribute-class>java.lang.String</attribute-class>
+                    <required>false</required>
+                </attribute>
+            </component>
+        </af:xmlContent>
+        <af:panelStretchLayout>
+            <f:facet name="center">
+                <af:panelHeader text="#{attrs.title}" size="1" type="stretch">
+                    <f:facet name="context">
+                        <af:panelGroupLayout layout="horizontal">
+                            <af:facetRef facetName="popup"/>
+                            <af:facetRef facetName="toolbar"/>
+                            <af:outputText value="#{attrs.message}" inlineStyle="margin-left:5px; color:Maroon; "
+                                           id="syncmsg"/>
+                        </af:panelGroupLayout>
+                    </f:facet>
+                    <af:panelGroupLayout inlineStyle="padding:2px 0px 0px 4px;">
+                        <af:facetRef facetName="content"/>
+                    </af:panelGroupLayout>
+                </af:panelHeader>
+            </f:facet>
+        </af:panelStretchLayout>
+    </af:pageTemplateDef>
+</jsp:root>

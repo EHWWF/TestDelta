@@ -1,0 +1,8 @@
+alter table cost_ltc_fct add (is_study number(1) default 0 not null);
+prompt --
+prompt --
+prompt --
+prompt --ERROR, FEHLER: it just a note for deployment that manual task must be done, see: 20161017_Manual_ltc_is_study.TXT
+prompt --
+prompt --
+prompt --

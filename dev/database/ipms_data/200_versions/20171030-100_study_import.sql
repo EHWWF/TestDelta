@@ -1,0 +1,1 @@
+alter table study add (is_study_auto_import number(1,0) default 1 constraint study_auto_import_cnn not null);

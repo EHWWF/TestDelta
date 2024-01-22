@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.64.93"
+                id="planning_assumption_request_startPageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="Root.ProgramAppModule.PlanAssumptionRequestView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="25"
+              id="PlanAssumptionRequestViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator Binds="Root.ProgramAppModule.GreenListProjectView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="25"
+              id="GreenListProjectViewIterator" ChangeEventPolicy="ppr"/>
+    <searchRegion Binds="GreenListProjectViewIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="GreenListProjectViewQuery"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="PlanAssumptionRequestViewIterator" id="Name">
+      <AttrNames>
+        <Item Value="Name"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PlanAssumptionRequestViewIterator"
+                     id="ForecastNo">
+      <AttrNames>
+        <Item Value="ForecastNo"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PlanAssumptionRequestViewIterator"
+                     id="TerminationDate">
+      <AttrNames>
+        <Item Value="TerminationDate"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="GreenListProjectViewIterator" id="GreenListProjectView"
+          ChangeEventPolicy="ppr">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.ProjectView"
+                      Name="GreenListProjectView0">
+        <AttrNames>
+          <Item Value="Code"/>
+          <Item Value="Name"/>
+          <Item Value="MainGroupName"/>
+          <Item Value="CommentPreviousFc"/>
+          <Item Value="CurrentComment"/>
+          <Item Value="GbuName"/>
+          <Item Value="SbeName"/>
+          <Item Value="IsPortfolio"/>
+          <Item Value="IsTerminated"/>
+          <Item Value="IsOnHold"/>
+          <Item Value="ControllingProjectType"/>
+          <Item Value="IsHpr"/>
+          <Item Value="PhaseName"/>
+          <Item Value="SuccessorProjectId"/>
+          <Item Value="Id"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+  </bindings>
+</pageDefinition>

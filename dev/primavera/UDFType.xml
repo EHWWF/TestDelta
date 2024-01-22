@@ -1,0 +1,50 @@
+<CreateUDFTypes xmlns="http://xmlns.oracle.com/Primavera/P6/WS/UDFType/V1">
+	<UDFType>
+		<DataType>Text</DataType>
+		<IsCalculated>false</IsCalculated>
+		<IsConditional>false</IsConditional>
+		<IsSecureCode>false</IsSecureCode>
+		<SubjectArea>Project</SubjectArea>
+		<Title>IPMS ID</Title>
+	</UDFType>
+	<UDFType>
+		<DataType>Text</DataType>
+		<IsCalculated>false</IsCalculated>
+		<IsConditional>false</IsConditional>
+		<IsSecureCode>false</IsSecureCode>
+		<SubjectArea>WBS</SubjectArea>
+		<Title>Study ID</Title>
+	</UDFType>
+	<UDFType>
+		<DataType>Text</DataType>
+		<IsCalculated>false</IsCalculated>
+		<IsConditional>false</IsConditional>
+		<IsSecureCode>false</IsSecureCode>
+		<SubjectArea>WBS</SubjectArea>
+		<Title>Study Placeholder</Title>
+	</UDFType>
+	<UDFType>
+		<DataType>Text</DataType>
+		<IsCalculated>false</IsCalculated>
+		<IsConditional>false</IsConditional>
+		<IsSecureCode>false</IsSecureCode>
+		<SubjectArea>Activity</SubjectArea>
+		<Title>Study Element ID</Title>
+	</UDFType>
+	<UDFType>
+		<DataType>Text</DataType>
+		<IsCalculated>false</IsCalculated>
+		<IsConditional>false</IsConditional>
+		<IsSecureCode>false</IsSecureCode>
+		<SubjectArea>WBS</SubjectArea>
+		<Title>Study Phase</Title>
+	</UDFType>
+		<UDFType>
+		<DataType>Text</DataType>
+		<IsCalculated>false</IsCalculated>
+		<IsConditional>false</IsConditional>
+		<IsSecureCode>false</IsSecureCode>
+		<SubjectArea>Activity</SubjectArea>
+		<Title>Plan Version ID</Title>
+	</UDFType>
+</CreateUDFTypes>

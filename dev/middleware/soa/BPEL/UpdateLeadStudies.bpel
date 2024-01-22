@@ -1,0 +1,328 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Wed Mar 16 18:21:25 EET 2016
+  Author:  danas
+  Type: BPEL 2.0 Process
+  Purpose: Asynchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="UpdateLeadStudies"
+         targetNamespace="http://xmlns.bayer.com/ipms/soa"
+         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:client="http://xmlns.bayer.com/ipms/soa"
+         xmlns:ora="http://schemas.oracle.com/xpath/extension"
+         xmlns:ui="http://xmlns.oracle.com/soa/designer"
+         xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ns1="http://xmlns.oracle.com/Primavera/P6/WS/UDFValue/V1"
+         xmlns:ns2="http://xmlns.oracle.com/Primavera/P6/WS/Relationship/V1"
+         xmlns:ns7="http://xmlns.bayer.com/ipms/cache"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions" xmlns:ess="http://xmlns.oracle.com/scheduler"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap" xmlns:ns3="http://xmlns.bayer.com/ipms"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         xmlns:ns4="http://xmlns.oracle.com/Primavera/P6/WS/IntegrationFaultType/V1">
+    <import namespace="http://xmlns.oracle.com/Primavera/P6/WS/IntegrationFaultType/V1"
+            location="oramds:/apps/com/oracle/xmlns/Primavera/P6/WS/IntegrationFaultType/V1/IntegrationFault.xsd"
+            importType="http://www.w3.org/2001/XMLSchema"/>
+    <import ui:processWSDL="true" namespace="http://xmlns.bayer.com/ipms/soa" location="../WSDLs/UpdateLeadStudies.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        PARTNERLINKS                                                      
+        List of services participating in this BPEL process               
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    --> 
+    <partnerLinks>
+        <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+        <partnerLink name="UpdateLeadStudiesService" partnerLinkType="client:UpdateLeadStudies" myRole="UpdateLeadStudiesProvider" partnerRole="UpdateLeadStudiesRequester"/>
+        <partnerLink name="UDFValueService" partnerLinkType="ns1:UDFValueService" partnerRole="UDFValuePortType"/>
+        <partnerLink name="RelatioinshipService" partnerLinkType="ns2:RelationshipPortType_PLT"
+                     partnerRole="RelationshipPortType_Role"/>
+        <partnerLink name="ReadConfiguration.ReadConfigurationService" partnerLinkType="client:ReadConfiguration"
+                     partnerRole="ReadConfigurationProvider" myRole="ReadConfigurationRequester"/>
+    </partnerLinks>
+
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        VARIABLES                                                        
+        List of messages and XML documents used within this BPEL process 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <variables>
+        <!-- Reference to the message passed as input during initiation -->
+        <variable name="inputVariable" messageType="client:UpdateLeadStudiesRequestMessage"/>
+
+        <!-- Reference to the message that will be sent back to the requester during callback -->
+        <variable name="outputVariable" messageType="client:UpdateLeadStudiesResponseMessage"/>
+        <variable name="UpdateLeadStudyFlagIn" messageType="ns1:UpdateUDFValues"/>
+        <variable name="UpdateLeadStudyFlagOut" messageType="ns1:UpdateUDFValuesResponse"/>
+		  <variable name="ReadConfigIn" messageType="client:ReadConfigurationRequestMessage"/>
+        <variable name="ReadConfigOut" messageType="client:ReadConfigurationResponseMessage"/>
+        <variable name="CreateLeadStudyFlagIn" messageType="ns1:CreateUDFValues"/>
+        <variable name="CreateLeadStudyFlagOut" messageType="ns1:CreateUDFValuesResponse"/>
+        <variable name="CreateRelationshipIn" messageType="ns2:CreateRelationships"/>
+        <variable name="CreateRelationshipOut" messageType="ns2:CreateRelationshipsResponse"/>
+    </variables>
+
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+       ORCHESTRATION LOGIC                                               
+       Set of activities coordinating the flow of messages across the    
+       services integrated within this business process                  
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <sequence name="main">
+        <!-- Receive input from requestor. (Note: This maps to operation defined in UpdateLeadStudies.wsdl) -->
+        <receive name="receiveInput" partnerLink="UpdateLeadStudiesService" portType="client:UpdateLeadStudies" operation="process" variable="inputVariable" createInstance="yes"/>
+    
+	   <sequence name="ReadConfig">
+            <scope name="ReadConfigFile">
+                <variables>
+                    <variable name="VariableCache" element="ns7:cache"/>
+                </variables>
+                <faultHandlers>
+                    <catchAll>
+                        <empty name="Empty2"/>
+                    </catchAll>
+                </faultHandlers>
+                <sequence name="ReadFromFile">
+                    <assign name="AssignFromCache">
+                            <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                <from>ora:readFile("file:///opt/oracle/soa12.2.1/file_adapter/ipms/config.cache", "oramds:/apps/com/bayer/xmlns/ipms/cache/cache.xsd")</from>
+                                <to>$VariableCache/ns7:cache</to>
+                            </copy>
+                            <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                <from>$VariableCache/ns7:cache/*</from>
+                                <to>$ReadConfigOut.payload</to>
+                            </copy>
+                        </assign>
+                    <empty name="Empty1"/>
+                </sequence>
+            </scope>
+            <sequence name="SKIP-ReadConfig">
+                <bpelx:skipCondition>$ReadConfigOut.payload/client:program/client:epsId!=''</bpelx:skipCondition>
+                <assign name="PrepareReadCOnfig">
+                    <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                        <from>"cfg"</from>
+                        <to>$ReadConfigIn.payload</to>
+                    </copy>
+                </assign>
+                    <invoke name="ReadConfigIn" bpelx:invokeAsDetail="no"
+                            partnerLink="ReadConfiguration.ReadConfigurationService"
+                            portType="client:ReadConfiguration" operation="process" inputVariable="ReadConfigIn"/>
+                    <receive name="ReadConfigOut" partnerLink="ReadConfiguration.ReadConfigurationService"
+                             portType="client:ReadConfigurationCallback" operation="callback" variable="ReadConfigOut"/>
+                </sequence>
+        </sequence>
+        <assign name="PrepareOutput">
+            <copy>
+                <from>$inputVariable.payload/ns3:leadStudies</from>
+                <to>$outputVariable.payload/client:complete/ns3:leadStudies</to>
+            </copy>
+        </assign>
+        <flow name="Parralelize">
+            
+                <sequence name="UpdateLeadStudyFlag">
+                    <scope name="UpdateLeadStudyFlag">
+                        <variables>
+                            <variable name="nodeCounter" type="xsd:integer">
+                                <from><literal>0</literal></from>
+                            </variable>
+                        </variables>
+                        <sequence name="PrepareOutput">
+                            <forEach parallel="no" counterName="ForEach1Counter" name="ForEachStudy">
+                                <startCounterValue>1</startCounterValue>
+                                <finalCounterValue>count($inputVariable.payload/ns3:leadStudies/ns3:studies/ns3:study)</finalCounterValue>
+                                <scope name="ForEachStudy">
+                                    <faultHandlers>
+                                        <catchAll>
+                                            <sequence name="Sequence3">
+                                                <assign name="AssignStatus">
+                                                    <copy bpelx:insertMissingToData="yes">
+                                                        <from>"FAIL"</from>
+                                                        <to>$outputVariable.payload/client:complete/ns3:leadStudies/ns3:studies/ns3:study[$nodeCounter]/@status</to>
+                                                    </copy>
+                                                    <copy bpelx:insertMissingToData="yes">
+                                                        <from>ora:getFaultAsString()</from>
+                                                        <to>$outputVariable.payload/client:complete/ns3:leadStudies/ns3:studies/ns3:study[$nodeCounter]/ns3:errorDetails</to>
+                                                    </copy>
+                                                </assign>
+                                            </sequence>
+                                        </catchAll>
+                                    </faultHandlers>
+                                    <sequence name="ProcessEachStudy">
+                                        <scope name="ProcessEachStudy">
+                                            <faultHandlers>
+                                                <catch bpelx:name="Catch runtime fault" faultName="ns1:IntegrationFault"
+                                                       faultVariable="IntegrationFaultVar"
+                                                       faultElement="ns4:IntegrationFault">
+                                                    <sequence name="UpdateLeadStudyUDFFailed">
+                                                        <if name="CheckFaultErrorCode">
+                                                            <documentation>
+                                                                <![CDATA[LeadStudyUDF does not exist]]>
+                                                            </documentation>
+                                                            <condition>$IntegrationFaultVar/ns4:ErrorCode ='5002'</condition>
+                                                            <sequence name="CreateLeadStudyUDF">
+                                                                <assign name="PreapareCreatLeadStudyFlag">
+                                                                    <copy>
+                                                                        <from>$ReadConfigOut.payload/client:wbs/client:leadStudyTypeId</from>
+                                                                        <to>$CreateLeadStudyFlagIn.params/ns1:UDFValue/ns1:UDFTypeObjectId</to>
+                                                                    </copy>
+                                                                    <copy>
+                                                                        <from>$outputVariable.payload/client:complete/ns3:leadStudies/ns3:studies/ns3:study[$nodeCounter]/@wbsId</from>
+                                                                        <to>$CreateLeadStudyFlagIn.params/ns1:UDFValue/ns1:ForeignObjectId</to>
+                                                                    </copy>
+                                                                    <copy>
+                                                                        <from>$outputVariable.payload/client:complete/ns3:leadStudies/ns3:studies/ns3:study[$nodeCounter]/@isLead</from>
+                                                                        <to>$CreateLeadStudyFlagIn.params/ns1:UDFValue/ns1:Text</to>
+                                                                    </copy>
+                                                                </assign>
+                                                                <invoke name="CreateLeadStudyFlag"
+                                                                        bpelx:invokeAsDetail="no"
+                                                                        partnerLink="UDFValueService"
+                                                                        portType="ns1:UDFValuePortType"
+                                                                        operation="CreateUDFValues"
+                                                                        inputVariable="CreateLeadStudyFlagIn"
+                                                                        outputVariable="CreateLeadStudyFlagOut"/>
+                                                            </sequence>
+                                                            <else>
+                                                                <documentation>
+                                                                    <![CDATA[Other Error]]>
+                                                                </documentation>
+                                                                <rethrow name="Rethrow"/>
+                                                            </else>
+                                                        </if>
+                                                    </sequence>
+                                                </catch>
+                                            </faultHandlers>
+                                            <sequence>
+                                                <assign name="PrepareUpdate">
+                                                    <copy>
+                                                        <from>$ReadConfigOut.payload/client:wbs/client:leadStudyTypeId</from>
+                                                        <to>$UpdateLeadStudyFlagIn.params/ns1:UDFValue/ns1:UDFTypeObjectId</to>
+                                                    </copy>
+                                                    <copy>
+                                                        <from>$nodeCounter+1</from>
+                                                        <to>$nodeCounter</to>
+                                                    </copy>
+                                                    <copy>
+                                                        <from>$inputVariable.payload/ns3:leadStudies/ns3:studies/ns3:study[$nodeCounter]/@wbsId</from>
+                                                        <to>$UpdateLeadStudyFlagIn.params/ns1:UDFValue/ns1:ForeignObjectId</to>
+                                                    </copy>
+                                                    <copy>
+                                                        <from>$inputVariable.payload/ns3:leadStudies/ns3:studies/ns3:study[$nodeCounter]/@isLead</from>
+                                                        <to>$UpdateLeadStudyFlagIn.params/ns1:UDFValue/ns1:Text</to>
+                                                    </copy>
+                                                </assign>
+                                                <invoke name="UpdateLeadStudyFlag" partnerLink="UDFValueService"
+                                                        portType="ns1:UDFValuePortType" operation="UpdateUDFValues"
+                                                        inputVariable="UpdateLeadStudyFlagIn"
+                                                        outputVariable="UpdateLeadStudyFlagOut"
+                                                        bpelx:invokeAsDetail="no"/>
+                                            </sequence>
+                                        </scope>
+                                        <assign name="AssignStatus">
+                                            <copy bpelx:insertMissingToData="yes">
+                                                <from>"DONE"</from>
+                                                <to>$outputVariable.payload/client:complete/ns3:leadStudies/ns3:studies/ns3:study[$nodeCounter]/@status</to>
+                                            </copy>
+                                        </assign>
+                                    </sequence>
+                                </scope>
+                            </forEach>
+                        </sequence>
+                    </scope>
+                </sequence>
+            <sequence name="CreateRelationships">
+                <scope name="Scope1">
+                    <variables>
+                        <variable name="nodeCounter" type="xsd:integer">
+                            <from><literal>0</literal></from>
+                        </variable>
+                    </variables>
+                    <forEach parallel="no" counterName="ForEach1Counter" name="ForEachRelationship">
+                        <startCounterValue>1</startCounterValue>
+                        <finalCounterValue>count($outputVariable.payload/client:complete/ns3:leadStudies/ns3:relationships/ns3:relationship)</finalCounterValue>
+                        <scope name="CreateRelationship">
+                        <faultHandlers>
+                                        <catchAll>
+                                            <sequence name="CatchFault">
+                                                <assign name="AssignStatus">
+                                            <copy bpelx:insertMissingToData="yes">
+                                                <from>"FAIL"</from>
+                                                <to>$outputVariable.payload/client:complete/ns3:leadStudies/ns3:relationships/ns3:relationship[$nodeCounter]/@status</to>
+                                            </copy>
+                                            <copy bpelx:insertMissingToData="yes">
+                                                <from>ora:getFaultAsString()</from>
+                                                <to>$outputVariable.payload/client:complete/ns3:leadStudies/ns3:relationships/ns3:relationship[$nodeCounter]/ns3:errorDetails</to>
+                                            </copy>
+                                        </assign>
+                                            </sequence>
+                                        </catchAll>
+                                    </faultHandlers>
+                            <sequence name="CreateRelationship">
+                                <assign name="PrepareCreateRelationship">
+                                    <copy bpelx:insertMissingToData="yes">
+                                        <from>$nodeCounter+1</from>
+                                        <to>$nodeCounter</to>
+                                    </copy>
+                                    <copy bpelx:insertMissingToData="yes">
+                                        <from>$outputVariable.payload/client:complete/ns3:leadStudies/ns3:relationships/ns3:relationship[$nodeCounter]/@type</from>
+                                        <to>$CreateRelationshipIn.params/ns2:Relationship/ns2:Type</to>
+                                    </copy>
+                                    <copy bpelx:insertMissingToData="yes">
+                                        <from>$outputVariable.payload/client:complete/ns3:leadStudies/ns3:relationships/ns3:relationship[$nodeCounter]/@drvActivityId</from>
+                                        <to>$CreateRelationshipIn.params/ns2:Relationship/ns2:PredecessorActivityObjectId</to>
+                                    </copy>
+                                    <copy bpelx:insertMissingToData="yes">
+                                        <from>$outputVariable.payload/client:complete/ns3:leadStudies/ns3:relationships/ns3:relationship[$nodeCounter]/@devActivityId</from>
+                                        <to>$CreateRelationshipIn.params/ns2:Relationship/ns2:SuccessorActivityObjectId</to>
+                                    </copy>
+                                </assign>
+                                <invoke name="CreateRelationship" bpelx:invokeAsDetail="no"
+                                        partnerLink="RelatioinshipService" portType="ns2:RelationshipPortType"
+                                        operation="CreateRelationships" inputVariable="CreateRelationshipIn"
+                                        outputVariable="CreateRelationshipOut"/>
+                                <assign name="AssignStatus">
+                                  <copy bpelx:insertMissingToData="yes">
+                                                <from>"DONE"</from>
+                                                <to>$outputVariable.payload/client:complete/ns3:leadStudies/ns3:relationships/ns3:relationship[$nodeCounter]/@status</to>
+                                            </copy>
+                                </assign>
+                            </sequence>
+                        </scope>
+                    </forEach>
+                </scope>
+            </sequence>
+            
+        </flow>
+        <assign name="IDAssignment">
+            <copy>
+                <from>$inputVariable.payload/@id</from>
+                <to>$outputVariable.payload/@id</to>
+            </copy>
+            <copy>
+                <from>$inputVariable.payload/@id</from>
+                <to>$outputVariable.payload/client:complete/@id</to>
+            </copy>
+        </assign>
+        <!-- 
+          Asynchronous callback to the requester. (Note: the callback location and correlation id is transparently handled using WS-addressing.)
+        -->
+        <invoke name="callbackClient" partnerLink="UpdateLeadStudiesService" portType="client:UpdateLeadStudiesCallback" operation="processResponse" inputVariable="outputVariable"/>
+    </sequence>
+</process>

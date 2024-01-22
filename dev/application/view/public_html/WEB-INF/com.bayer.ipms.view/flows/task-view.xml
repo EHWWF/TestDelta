@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="windows-1257" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="task-view">
+    <template-reference>
+      <document id="__2">/WEB-INF/com.bayer.ipms.view/templates/ipms-taskflow-template-fragment.xml</document>
+      <id id="__1">ipms-taskflow-template-fragment</id>
+    </template-reference>
+    <default-activity id="__3">task-view-form</default-activity>
+    <transaction id="__4">
+      <requires-transaction/>
+    </transaction>
+    <managed-bean id="__26">
+      <managed-bean-name id="__27">taskViewBean</managed-bean-name>
+      <managed-bean-class id="__37">com.bayer.ipms.view.beans.TaskViewBean</managed-bean-class>
+      <managed-bean-scope id="__34">pageFlow</managed-bean-scope>
+    </managed-bean>
+    <exception-handler id="__38">handleException</exception-handler>
+    <view id="task-view-form">
+      <page>/WEB-INF/com.bayer.ipms.view/fragments/task-view.jsff</page>
+    </view>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

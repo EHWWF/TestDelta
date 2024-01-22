@@ -1,0 +1,197 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <af:componentDef>
+        <c:set var="bundle" value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+        <af:subform id="prjgoal">
+            <af:panelStretchLayout id="content" styleClass="AFStretchWidth" topHeight="auto" dimensionsFrom="parent"
+                                   bottomHeight="0px">
+                <f:facet name="top">
+                    <af:panelBox text="" showDisclosure="false" type="flow" id="summary"
+                                 background="#{pageFlowScope.programViewBean.editable eq 'summary' ? 'light' : 'default'}">
+                        <af:panelFormLayout id="prjgoalPhase" maxColumns="2" rows="3" fieldWidth="100%">
+                            <af:panelLabelAndMessage label="#{bundle.programGoalCanBeStarted}" id="dc_plam1">
+                                <af:outputFormatted value="#{bindings.GoalTrackYear.inputValue}" id="dc_of1"/>
+                            </af:panelLabelAndMessage>
+                        </af:panelFormLayout>
+                    </af:panelBox>
+                </f:facet>
+                <f:facet name="center">
+                    <af:panelBox text="#{bundle.projectGoal}" showDisclosure="false" binding="#{pageFlowScope.projectViewBean.goalTable}"
+                                  shortDesc="#{bundle.projectGoal}">
+                        <af:panelStretchLayout topHeight="auto" bottomHeight="0" styleClass="AFStretchWidth">
+                            <f:facet name="top">
+                                <af:query id="qryPrjGoal1" headerText="#{bundle.globalFilter}" disclosed="true"
+                                          value="#{bindings.ProjectGoalFilterQuery.queryDescriptor}"
+                                          model="#{bindings.ProjectGoalFilterQuery.queryModel}"
+                                          queryListener="#{bindings.ProjectGoalFilterQuery.processQuery}"
+                                          queryOperationListener="#{bindings.ProjectGoalFilterQuery.processQueryOperation}"
+                                          modeChangeVisible="false" saveQueryMode="hidden"
+                                          searchButtonText="#{bundle.globalFilter}" labelAlignment="start"
+                                          resultComponentId="::dc_pbgoal"/>
+                            </f:facet>
+                            <f:facet name="center">
+                                <af:panelBox showDisclosure="false" styleClass="AFStretchWidth AFStretchHeight"
+                                             type="stretch" id="dc_pbgoal" >
+                                      <f:facet name="toolbar">
+                                      
+                                          <af:toolbar id="tlbPrgGoal" rendered="#{rolesBean.goalsCreateDev}">
+                                                <af:group id="goaladdid">
+                                                    <af:commandToolbarButton id="goalxcreateid" text="#{bundle.globalAdd}"
+                                                                             icon="/images/new.png" useWindow="true"
+                                                                             disabled="#{bindings.IsSyncing.inputValue}"
+                                                                             windowWidth="500"
+                                                                             windowHeight="400"
+                                                                             returnListener="#{pageFlowScope.projectViewBean.onMaintainGoalsReturn}"
+                                                                             action="#{pageFlowScope.projectViewBean.gotoAddGoals}">
+                                                    </af:commandToolbarButton>
+                                                  
+                                                
+                                                    <af:button id="prggoalremoveid" icon="/images/remove.png"
+                                                               disabled="#{bindings.IsSyncing.inputValue or bindings.ProjectGoalView.currentRow eq null}"
+                                                               rendered="#{rolesBean.goalsDeleteDev}"
+                                                               immediate="true" text="#{bundle.globalRemove}"
+                                                               clientComponent="true">
+                                                        <af:showPopupBehavior popupId="popDeletePrjGoal"
+                                                                              triggerType="action"/>
+                                                    </af:button>
+                                                   
+                                                    <af:button rendered="#{rolesBean.goalsEditDev}"
+                                                               icon="/images/edit.png"  useWindow="true"
+                                                               text="#{bundle.globalEdit}" id="prggoalsedit"
+                                                               windowWidth="500"
+                                                               windowHeight="400"
+                                                               returnListener="#{pageFlowScope.projectViewBean.onMaintainGoalsReturn}"
+                                                               action="#{pageFlowScope.projectViewBean.gotoEditGoals}"
+                                                               disabled="#{bindings.IsSyncing.inputValue or bindings.ProjectGoalView.estimatedRowCount == 0}">
+                                                    </af:button>
+                                                    
+                                                     <af:popup id="popDeletePrjGoal" contentDelivery="lazyUncached"
+                                                              rendered="#{rolesBean.goalsEditDev }">
+                                                        <af:dialog id="dlgDeletePrjGoal" title="#{bundle.projectGoalDelete}"
+                                                                   dialogListener="#{pageFlowScope.projectViewBean.onGoalDelete}"
+                                                                   contentWidth="500">
+                                                            <af:message message="#{bundle.projectGoalDeleteWarning}" messageType="warning"
+                                                                        id="dc_m2"/>
+                                                        </af:dialog>
+                                                    </af:popup>
+                                                  
+                                                </af:group>
+                                            </af:toolbar>
+                                          
+                                      </f:facet>  
+                                             
+                                    <af:table value="#{bindings.ProjectGoalView.collectionModel}" var="row"
+                                              rows="#{bindings.ProjectGoalView.rangeSize}"
+                                              emptyText="#{bindings.ProjectGoalView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                                              rowBandingInterval="0" fetchSize="#{bindings.ProjectGoalView.rangeSize}"
+                                              id="prjtblgoal" columnStretching="last" 
+                                              rowSelection="single"
+                                              selectedRowKeys="#{bindings.ProjectGoalView.collectionModel.selectedRow}"
+                                              selectionListener="#{pageFlowScope.projectViewBean.onGoalSelect}">
+                                        
+                                        <af:column sortProperty="#{bindings.ProjectGoalView.hints.Goal.name}"
+                                                   sortable="true"
+                                                   headerText="#{bindings.ProjectGoalView.hints.Goal.label}" id="dc_c2"
+                                                   width="400px">
+                                            <af:outputText value="#{row.Goal}"
+                                                           shortDesc="#{bindings.ProjectGoalView.hints.Goal.tooltip}"
+                                                           id="dc_ot2"/>
+                                        </af:column>
+                                        <af:column sortProperty="#{bindings.ProjectGoalView.hints.Type.name}"
+                                                   sortable="true"
+                                                   headerText="#{bindings.ProjectGoalView.hints.Type.label}" id="dc_c3">
+                                            <af:selectOneChoice value="#{row.bindings.Type.inputValue}"
+                                                                label="#{row.bindings.Type.label}"
+                                                                required="#{bindings.ProjectGoalView.hints.Type.mandatory}"
+                                                                shortDesc="#{bindings.ProjectGoalView.hints.Type.tooltip}"
+                                                                readOnly="true" id="dc_soc1">
+                                                <f:selectItems value="#{row.bindings.Type.items}" id="dc_si1"/>
+                                                <f:validator binding="#{row.bindings.Type.validator}"/>
+                                            </af:selectOneChoice>
+                                        </af:column>
+                                        <af:column sortProperty="#{bindings.ProjectGoalView.hints.StudyId.name}"
+                                                   sortable="true"
+                                                   headerText="#{bindings.ProjectGoalView.hints.StudyId.label}"
+                                                   id="dc_c5">
+                                            <af:outputText value="#{row.StudyId}"
+                                                           shortDesc="#{bindings.ProjectGoalView.hints.StudyId.tooltip}"
+                                                           id="dc_ot5"/>
+                                        </af:column>
+                                        <af:column sortProperty="#{bindings.ProjectGoalView.hints.PlanReference.name}"
+                                                   sortable="true"
+                                                   headerText="#{bindings.ProjectGoalView.hints.PlanReference.label}"
+                                                   id="dc_c6">
+                                            <af:outputText value="#{row.PlanReference}"
+                                                           shortDesc="#{bindings.ProjectGoalView.hints.PlanReference.tooltip}"
+                                                           id="dc_ot6"/>
+                                        </af:column>
+                                        <af:column sortProperty="#{bindings.ProjectGoalView.hints.PlanReferenceDate.name}"
+                                                   sortable="true"
+                                                   headerText="#{bindings.ProjectGoalView.hints.PlanReferenceDate.label}"
+                                                   id="dc_c7">
+                                            <af:outputText value="#{row.PlanReferenceDate}"
+                                                           shortDesc="#{bindings.ProjectGoalView.hints.PlanReferenceDate.tooltip}"
+                                                           id="dc_ot7">
+                                                <af:convertDateTime pattern="#{bindings.ProjectGoalView.hints.PlanReferenceDate.format}"/>
+                                            </af:outputText>
+                                        </af:column>
+                                        <af:column sortProperty="#{bindings.ProjectGoalView.hints.Status.name}"
+                                                   sortable="true"
+                                                   headerText="#{bindings.ProjectGoalView.hints.Status.label}"                                                  
+                                                   id="dc_c8">
+                                            <af:selectOneChoice value="#{row.bindings.Status.inputValue}"
+                                                                label="#{row.bindings.Status.label}"
+                                                                required="#{bindings.ProjectGoalView.hints.Status.mandatory}"
+                                                                shortDesc="#{bindings.ProjectGoalView.hints.Status.tooltip}"
+                                                                readOnly="true" id="dc_soc2">
+                                                <f:selectItems value="#{row.bindings.Status.items}" id="dc_si2"/>
+                                                <f:validator binding="#{row.bindings.Status.validator}"/>
+                                            </af:selectOneChoice>
+                                        </af:column>
+                                        <af:column sortProperty="#{bindings.ProjectGoalView.hints.TargetDate.name}"
+                                                   sortable="true"
+                                                   headerText="#{bindings.ProjectGoalView.hints.TargetDate.label}"
+                                                   id="dc_c9">
+                                            <af:outputText value="#{row.TargetDate}"
+                                                           shortDesc="#{bindings.ProjectGoalView.hints.TargetDate.tooltip}"
+                                                           id="dc_ot9">
+                                                <af:convertDateTime pattern="#{bindings.ProjectGoalView.hints.TargetDate.format}"/>
+                                            </af:outputText>
+                                        </af:column>
+                                        <af:column sortProperty="#{bindings.ProjectGoalView.hints.AchievedDate.name}"
+                                                   sortable="true"
+                                                   headerText="#{bindings.ProjectGoalView.hints.AchievedDate.label}"
+                                                   id="dc_c10">
+                                            <af:outputText value="#{row.AchievedDate}"
+                                                           shortDesc="#{bindings.ProjectGoalView.hints.AchievedDate.tooltip}"
+                                                           id="dc_ot10">
+                                                <af:convertDateTime pattern="#{bindings.ProjectGoalView.hints.AchievedDate.format}"/>
+                                            </af:outputText>
+                                        </af:column>
+                                        <af:column sortProperty="#{bindings.ProjectGoalView.hints.RevisedDate.name}"
+                                                   sortable="true"
+                                                   headerText="#{bindings.ProjectGoalView.hints.RevisedDate.label}"
+                                                   id="dc_c11">
+                                            <af:outputText value="#{row.RevisedDate}"
+                                                           shortDesc="#{bindings.ProjectGoalView.hints.RevisedDate.tooltip}"
+                                                           id="dc_ot11">
+                                                <af:convertDateTime pattern="#{bindings.ProjectGoalView.hints.RevisedDate.format}"/>
+                                            </af:outputText>
+                                        </af:column>
+                                        <af:column headerText="#{bindings.ProjectGoalView.hints.Comments.label}"
+                                                   id="dc_c1">
+                                            <af:outputText value="#{row.Comments}"
+                                                           shortDesc="#{bindings.ProjectGoalView.hints.Comments.tooltip}"
+                                                           id="dc_ot1"/>
+                                        </af:column>
+                                    </af:table>
+                                </af:panelBox>
+                            </f:facet>
+                        </af:panelStretchLayout>
+                    </af:panelBox>
+                </f:facet>
+            </af:panelStretchLayout>
+        </af:subform>
+    </af:componentDef>
+</jsp:root>

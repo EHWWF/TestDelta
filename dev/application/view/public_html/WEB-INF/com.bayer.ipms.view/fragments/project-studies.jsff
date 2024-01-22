@@ -1,0 +1,321 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    <af:componentDef>
+        <c:set var="bundle" value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+        <af:resource type="css">
+            .invalid {
+                background-color: rgb(255, 214, 214);
+            }
+             .discrepancy {
+                color: red;
+            }
+              .noPlan {
+                color: red;
+            }
+        </af:resource>
+     
+            <af:subform id="studiesEditArea">
+                <af:panelStretchLayout topHeight="auto">
+                    <f:facet name="top">
+                        <af:query id="qryId1" headerText="Search" disclosed="true"
+                                  value="#{bindings.FilterQuery.queryDescriptor}"
+                                  model="#{bindings.FilterQuery.queryModel}"
+                                  queryListener="#{bindings.FilterQuery.processQuery}"
+                                  queryOperationListener="#{bindings.FilterQuery.processQueryOperation}"
+                                   modeChangeVisible="false" saveQueryMode="hidden"
+                                   searchButtonText="#{bundle.globalFilter}"
+                                   labelAlignment="start" rows="2" maxColumns="2"/>
+                    </f:facet>
+                    <f:facet name="center">
+                        <af:panelBox text="#{bundle.projectStudies}" type="stretch" showDisclosure="false"
+                                     background="#{pageFlowScope.projectViewBean.editable eq 'studiesEditArea' ? 'light' : 'default'}"
+                                     helpTopicId="HELP_PROJECT_#{fn:toUpperCase(pageFlowScope.projectType)}_STUDIES_STUDIES">
+                            <af:panelCollection id="pc1" styleClass="AFStretchWidth" featuresOff="detach statusBar">
+                                <f:facet name="toolbar">
+                                    <af:toolbar id="studiesToolbar" rendered="#{rolesBean.projectEditDev or rolesBean.projectEditPrdMnt or rolesBean.projectEditD3Tr or rolesBean.projectEditD2Prj or rolesBean.importRunConfigureDev}">
+                                        <af:commandToolbarButton icon="/images/edit.png" immediate="true"
+                                                                 rendered="#{pageFlowScope.projectViewBean.editable ne 'studiesEditArea'}"
+                                                                 disabled="#{not empty pageFlowScope.projectViewBean.editable or bindings.IsProjectSyncing.inputValue}"
+                                                                 actionListener="#{pageFlowScope.projectViewBean.onEdit}"
+                                                                 text="#{bundle.globalEdit}">
+                                            <f:attribute name="target" value="studiesEditArea"/>
+                                        </af:commandToolbarButton>
+                                        <af:commandToolbarButton rendered="#{pageFlowScope.projectViewBean.editable eq 'studiesEditArea'}"
+                                                                 icon="/images/commit.png"
+                                                                 actionListener="#{pageFlowScope.projectViewBean.onCommit}"
+                                                                 text="#{bundle.globalOk}"/>
+                                        <af:commandToolbarButton rendered="#{pageFlowScope.projectViewBean.editable eq 'studiesEditArea'}"
+                                                                 icon="/images/rollback.png"
+                                                                 actionListener="#{pageFlowScope.projectViewBean.onRollback}"
+                                                                 immediate="true" text="#{bundle.globalCancel}"/>
+                                        <af:button text="#{bundle.importTimeline}" action="import-run" useWindow="true"
+                                                   windowWidth="#{bundle.globalPopupWidth}"
+                                                   windowHeight="#{bundle.globalPopupHeight}" immediate="true"
+                                                   returnListener="#{pageFlowScope.projectViewBean.onReturnImport}"
+                                                   icon="/images/upload.png"
+                                                   rendered="#{rolesBean.importRunDev or rolesBean.importRunPrdMnt or rolesBean.importRunD2Prj or rolesBean.importRunD3Tr}"
+                                                   disabled="#{bindings.IsSyncing.inputValue or bindings.ProjectViewIterator.currentRow.code == null or bindings.ProjectViewIterator.currentRow.versions['RAW'].isSyncing}"
+                                                   id="cmi9">
+                                            <af:setActionListener from="#{bindings.Id.inputValue}"
+                                                                  to="#{requestScope.projectId}"/>
+                                            <af:setActionListener from="#{bindings.Code.inputValue}"
+                                                                  to="#{requestScope.projectCode}"/>
+                                            <af:setActionListener from="#{bindings.Name.inputValue}"
+                                                                  to="#{requestScope.projectName}"/>
+                                            <af:setActionListener from="#{bindings.IsLead.inputValue}"
+                                                                  to="#{requestScope.projectIsLead}"/>
+                                            <af:setActionListener from="16" to="#{requestScope.typeMask}"/>
+                                            <af:setActionListener from="IMPACT" to="#{requestScope.importSource}"/>
+                                        </af:button>
+                                        <af:button text="#{bundle.importTimelineFps}" action="import-run"
+                                                   useWindow="true" windowWidth="#{bundle.globalPopupWidth}"
+                                                   windowHeight="#{bundle.globalPopupHeight}" immediate="true"
+                                                   returnListener="#{pageFlowScope.projectViewBean.onReturnImport}"
+                                                   icon="/images/upload.png"
+                                                   rendered="#{(rolesBean.importRunFpsDev or rolesBean.importRunFpsD2Prj)}"
+                                                   disabled="#{bindings.IsSyncing.inputValue or bindings.ProjectViewIterator.currentRow.code == null or bindings.ProjectViewIterator.currentRow.versions['RAW'].isSyncing}"
+                                                   id="cmi10">
+                                            <af:setActionListener from="#{bindings.Id.inputValue}"
+                                                                  to="#{requestScope.projectId}"/>
+                                            <af:setActionListener from="#{bindings.Code.inputValue}"
+                                                                  to="#{requestScope.projectCode}"/>
+                                            <af:setActionListener from="#{bindings.Name.inputValue}"
+                                                                  to="#{requestScope.projectName}"/>
+                                            <af:setActionListener from="#{bindings.Id.inputValue}"
+                                                                  to="#{requestScope.projectId}"/>
+                                            <af:setActionListener from="FPS" to="#{requestScope.importSource}"/>
+                                            <af:setActionListener from="16" to="#{requestScope.typeMask}"/>
+                                        </af:button>
+                                        <af:button text="#{bundle.importMissingStudies}" useWindow="true"
+                                                   windowWidth="#{bundle.globalPopupWidth}" windowHeight="600"
+                                                   immediate="true" icon="/images/upload.png"
+                                                   action="import-missing-studies" id="cmdMisStudies"
+                                                   disabled="#{bindings.IsSyncing.inputValue or bindings.ProjectViewIterator.currentRow.code == null or not bindings.IsActive.inputValue or bindings.ProjectViewIterator.currentRow.versions['RAW'].isSyncing}"
+                                                   rendered="#{rolesBean.importMissingStudies}">
+                                            <af:setActionListener from="#{bindings.Id.inputValue}"
+                                                                  to="#{requestScope.projectId}"/>
+                                        </af:button>
+                                        <af:button text="#{bundle.importPlaceholderFps}" action="import-study"
+                                                   useWindow="true" windowWidth="#{bundle.globalPopupWidth}"
+                                                   windowHeight="#{bundle.globalPopupHeight}" immediate="true"
+                                                   returnListener="#{pageFlowScope.projectViewBean.onReturnImport}"
+                                                   icon="/images/upload.png" rendered="#{rolesBean.importRunFpsD3Tr}"
+                                                   disabled="#{bindings.IsSyncing.inputValue or bindings.ProjectViewIterator.currentRow.code == null or not bindings.IsActive.inputValue}"
+                                                   id="cmi11">
+                                            <af:setActionListener from="#{bindings.Id.inputValue}"
+                                                                  to="#{requestScope.projectId}"/>
+                                        </af:button>
+                                        <af:button text="#{bundle.projectMaintainLeadStudies}"
+                                                   action="setup-lead-studies" useWindow="true"
+                                                   windowWidth="#{bundle.globalPopupWidth}"
+                                                   windowHeight="#{bundle.globalPopupHeight}" immediate="true"
+                                                   icon="/images/mapping.png"
+                                                   rendered="#{rolesBean.maintainLeadStudiesDev}"
+                                                   disabled="#{bindings.IsSyncing.inputValue or bindings.ProjectViewIterator.currentRow.code == null}"
+                                                   id="cmi923">
+                                            <af:setActionListener from="#{bindings.Code.inputValue}"
+                                                                  to="#{requestScope.projectCode}"/>
+                                            <af:setActionListener from="#{bindings.Name.inputValue}"
+                                                                  to="#{requestScope.projectName}"/>
+                                        </af:button>
+                                        <af:button text="#{bundle.projectRemoveStudies}" action="remove-studies"
+                                                   useWindow="true" windowWidth="#{bundle.globalPopupWidth}"
+                                                   windowHeight="#{bundle.globalPopupHeight}" immediate="true"
+                                                   icon="/images/mapping.png"
+                                                   rendered="#{rolesBean.maintainLeadStudiesDev}"
+                                                   disabled="#{bindings.IsSyncing.inputValue or bindings.ProjectViewIterator.currentRow.code == null or not bindings.IsActive.inputValue or bindings.ProjectViewIterator.currentRow.versions['RAW'].isSyncing}"
+                                                   id="cmirst01">
+                                            <af:setActionListener from="#{bindings.Code.inputValue}"
+                                                                  to="#{requestScope.projectCode}"/>
+                                            <af:setActionListener from="#{bindings.Name.inputValue}"
+                                                                  to="#{requestScope.projectName}"/>
+                                        </af:button>
+                                    </af:toolbar>
+                                </f:facet>
+                                <af:table value="#{bindings.StudyView.collectionModel}" var="row"
+                                          rows="#{bindings.StudyView.rangeSize}"
+                                          emptyText="#{bindings.StudyView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                                          fetchSize="#{bindings.StudyView.rangeSize}" rowBandingInterval="0"
+                                          filterVisible="false" varStatus="vs" rowSelection="none"
+                                          editingMode="#{pageFlowScope.projectViewBean.editable eq 'studiesEditArea' ? 'editAll' : ''}"
+                                          id="studiesRaw" columnStretching="last" contentDelivery="immediate"
+                                          styleClass="AFStretchWidth" autoHeightRows="-1">
+                                    <af:column headerText="#{bindings.StudyView.hints.Id.label}" sortProperty="Id"
+                                               sortable="true" styleClass="#{row.WbsCount > 1 ? 'invalid' : ''}"
+                                               width="80">
+                                        <af:outputText value="#{row.Id}"/>
+                                    </af:column>
+                                    <af:column headerText="#{bindings.StudyView.hints.Name.label}" sortProperty="Name"
+                                               sortable="true" styleClass="#{row.WbsCount > 1 ? 'invalid ' : ''}#{row.IsNameDiscrep ? 'discrepancy' : ''}"
+                                               width="256" id="rawStudNameC" frozen="true">
+                                        <af:outputText value="#{row.Name}"/>
+                                    </af:column>
+                                    <af:column headerText="#{bindings.StudyView.hints.Phase.label}" sortProperty="Phase"
+                                               sortable="true" styleClass="#{row.WbsCount > 1 ? 'invalid' : ''}#{row.IsPhaseDiscrep ? 'discrepancy' : ''}"
+                                               width="60" id="dc_c12">
+                                        <af:outputText value="#{row.Phase}" id="dc_ot12"/>
+                                    </af:column>
+                                    <af:column headerText="#{bindings.StudyView.hints.Fpfv.label}" sortProperty="Fpfv"
+                                               sortable="true" styleClass="#{row.WbsCount > 1 ? 'invalid' : ''}#{row.IsFpfvDiscrep ? 'discrepancy' : ''}"
+                                               width="80" id="dc_c13">
+                                        <af:outputText value="#{row.Fpfv}" id="dc_ot13"/>
+                                        <af:outputText value="#{row.Fpfvb}" id="dc_ot131"/>
+                                    </af:column>                                  
+                                    <af:column headerText="#{bindings.StudyView.hints.Lplv.label}" sortProperty="Lplv"
+                                               sortable="true" styleClass="#{row.WbsCount > 1 ? 'invalid' : ''}#{row.IsLplvDiscrep ? 'discrepancy' : ''}"
+                                               width="80" id="dc_c14">
+                                                <af:outputText value="#{row.Lplva}" id="dc_ot141"/>
+                                                <af:outputText value="#{row.Lplv}" id="dc_ot14" />
+                                    </af:column>
+                                    <af:column headerText="#{bindings.StudyView.hints.Prcompl.label}"
+                                               sortProperty="Prcompl" sortable="true"
+                                               styleClass="#{row.WbsCount > 1 ? 'invalid' : ''}#{row.IsPrcomplDiscrep ? 'discrepancy' : ''}" width="80"
+                                               visible="false" id="dc_c28">
+                                        <af:outputText value="#{row.Prcompl}" id="dc_ot27"/>
+                                    </af:column>
+                                    <af:column headerText="#{bindings.StudyView.hints.Cdblock.label}"
+                                               sortProperty="Cdblock" sortable="true"
+                                               styleClass="#{row.WbsCount > 1 ? 'invalid' : ''}#{row.IsCdblockDiscrep ? 'discrepancy' : ''}" width="80"
+                                               visible="false" id="dc_c29">
+                                        <af:outputText value="#{row.Cdblock}" id="dc_ot28"/>
+                                    </af:column>
+                                    <af:column headerText="#{bindings.StudyView.hints.Csrapp.label}"
+                                               sortProperty="Cdblock" sortable="true"
+                                               styleClass="#{row.WbsCount > 1 ? 'invalid' : ''}#{row.IsCsrappDiscrep ? 'discrepancy' : ''}" width="80"
+                                               visible="false" id="dc_c30">
+                                        <af:outputText value="#{row.Csrapp}" id="dc_ot29"/>
+                                    </af:column>
+                                    <af:column headerText="#{bindings.StudyView.hints.DmcPlan.label}"
+                                               sortProperty="DmcPlan" sortable="true"
+                                               styleClass="#{row.WbsCount > 1 ? 'invalid' : ''}#{row.IsDmcPlanDiscrep ? 'discrepancy' : ''}" width="80" id="dc_c15"
+                                               visible="false">
+                                        <af:outputText value="#{row.DmcPlan}" id="dc_ot15"/>
+                                    </af:column>
+                                    <af:column headerText="#{bindings.StudyView.hints.DmcActual.label}"
+                                               sortProperty="DmcActual" sortable="true"
+                                               styleClass="#{row.WbsCount > 1 ? 'invalid' : ''}#{row.IsDmcActualDiscrep ? 'discrepancy' : ''}" width="80" id="dc_c16"
+                                               visible="false">
+                                        <af:outputText value="#{row.DmcActual}" id="dc_ot16"/>
+                                    </af:column>
+                                    <af:column headerText="#{bindings.StudyView.hints.Placeholder.label}"
+                                               sortProperty="Placeholder" sortable="true"
+                                               styleClass="#{row.WbsCount > 1 ? 'invalid' : ''}#{row.IsPlaceholderDiscrep ? 'discrepancy' : ''}" width="60" id="dc_c4">
+                                        <af:outputText value="#{row.Placeholder?'Yes':'No'}" id="dc_ot3"/>
+                                    </af:column>
+                                    <af:column headerText="#{bindings.StudyView.hints.StatusName.label}"
+                                               sortProperty="StatusName" sortable="true"
+                                               styleClass="#{row.WbsCount > 1 ? 'invalid' : ''}#{row.IsStatusDiscrep ? 'discrepancy' : ''}" rendered="false"
+                                               width="60" id="dc_c1">
+                                        <af:outputText value="#{row.StatusName}" id="dc_ot1"/>
+                                    </af:column>
+                                    <af:column headerText="#{bindings.StudyView.hints.PlanPatients.label}"
+                                               sortProperty="PlanPatients" sortable="true"
+                                               styleClass="#{row.WbsCount > 1 ? 'invalid' : ''}#{row.IsPlanPatientsDiscrep ? 'discrepancy' : ''}" width="80" id="dc_c17">
+                                        <af:outputText value="#{row.PlanPatients}" id="dc_ot17"/>
+                                    </af:column>
+                                    <af:column headerText="#{bindings.StudyView.hints.ActualPatients.label}"
+                                               sortProperty="ActualPatients" sortable="true"
+                                               styleClass="#{row.WbsCount > 1 ? 'invalid' : ''}#{row.IsActualPatientsDiscrep ? 'discrepancy' : ''}" width="80" id="dc_c18">
+                                        <af:outputText value="#{row.ActualPatients}" id="dc_ot18"/>
+                                    </af:column>
+                                    <af:column headerText="#{bindings.StudyView.hints.PlanEnteredScreen.label}"
+                                               sortProperty="PlanEnteredScreen" sortable="true"
+                                               styleClass="#{row.WbsCount > 1 ? 'invalid' : ''}#{row.IsPlanEnteredScreenDiscrep ? 'discrepancy' : ''}" width="80" id="dc_c5"
+                                               visible="false">
+                                        <af:outputText value="#{row.PlanEnteredScreen}" id="dc_ot4"/>
+                                    </af:column>
+                                    <af:column headerText="#{bindings.StudyView.hints.ActEnteredScreen.label}"
+                                               sortProperty="ActEnteredScreen" sortable="true"
+                                               styleClass="#{row.WbsCount > 1 ? 'invalid' : ''}#{row.IsActEnteredScreenDiscrep ? 'discrepancy' : ''}" width="80" id="dc_c51"
+                                               visible="false">
+                                        <af:outputText value="#{row.ActEnteredScreen}" id="dc_ot41"/>
+                                    </af:column>
+                                    <af:column headerText="#{bindings.StudyView.hints.StudyCountryCountPlan.label}"
+                                               sortProperty="StudyCountryCountPlan" sortable="true"
+                                               styleClass="#{row.WbsCount > 1 ? 'invalid' : ''}#{row.IsCountryCountPlanDiscrep ? 'discrepancy' : ''}" width="80" id="dc_c61"
+                                               visible="false">
+                                        <af:outputText value="#{row.StudyCountryCountPlan}" id="dc_ot5"/>
+                                    </af:column>
+                                    <af:column headerText="#{bindings.StudyView.hints.StudyCountryCount.label}"
+                                               sortProperty="StudyCountryCount" sortable="true"
+                                               styleClass="#{row.WbsCount > 1 ? 'invalid' : ''}#{row.IsStudyCountryCountDiscrep ? 'discrepancy' : ''}" width="80" id="dc_c62"
+                                               visible="false">
+                                        <af:outputText value="#{row.StudyCountryCount}" id="dc_ot52"/>
+                                    </af:column>
+                                    <af:column headerText="#{bindings.StudyView.hints.StudyUnitCountPlan.label}"
+                                               sortProperty="StudyUnitCountPlan" sortable="true"
+                                               styleClass="#{row.WbsCount > 1 ? 'invalid' : ''}#{row.IsUnitCountPlanDiscrep ? 'discrepancy' : ''}" width="80" id="dc_c7">
+                                        <af:outputText value="#{row.StudyUnitCountPlan}" id="dc_ot6"/>
+                                    </af:column>
+                                    <af:column headerText="#{bindings.StudyView.hints.StudyUnitCount.label}"
+                                               sortProperty="StudyUnitCount" sortable="true"
+                                               styleClass="#{row.WbsCount > 1 ? 'invalid' : ''}#{row.IsStudyUnitCountDiscrep ? 'discrepancy' : ''}" width="80" id="dc_c73">
+                                        <af:outputText value="#{row.StudyUnitCount}" id="dc_ot63"/>
+                                    </af:column>
+                                    <af:column headerText="#{bindings.StudyView.hints.IntExtFlag.label}"
+                                               sortProperty="#IntExtFlag" sortable="true"
+                                               styleClass="#{row.WbsCount > 1 ? 'invalid' : ''}#{row.IsIntExtFlagDiscrep ? 'discrepancy' : ''}" width="80">
+                                        <af:outputText value="#{row.IntExtFlag}"/>
+                                    </af:column>
+                                    <af:column headerText="#{bindings.StudyView.hints.TherapeuticGroupDesc.label}"
+                                               sortProperty="TherapeuticGroupDesc" sortable="true"
+                                               styleClass="#{row.WbsCount > 1 ? 'invalid' : ''}#{row.IsTherGroupDescDiscrep ? 'discrepancy' : ''}" width="80">
+                                        <af:outputText value="#{row.TherapeuticGroupDesc}"/>
+                                    </af:column>
+                                    <af:column headerText="#{bindings.StudyView.hints.IsTimelineAutoImport.label}"
+                                               sortProperty="IsTimelineAUtoImport" sortable="true" visible="false"
+                                               styleClass="#{row.WbsCount > 1 ? 'invalid' : ''}#{row.IsTimelineAutoImportDiscrep ? 'discrepancy' : ''}" width="50">
+                                        <af:selectBooleanCheckbox id="dc_sbc1" value="#{row.IsTimelineAutoImport}"
+                                                                  readOnly="#{row.WbsCount > 1 or pageFlowScope.projectViewBean.editable ne 'studiesEditArea' or !rolesBean.importRunConfigureDev}"/>
+                                    </af:column>
+                                    <af:column headerText="#{bindings.StudyView.hints.IsLead.label}"
+                                               sortProperty="Is Lead" sortable="true"
+                                               styleClass="#{row.WbsCount > 1 ? 'invalid' : ''}#{row.IsLeadDiscrep ? 'discrepancy' : ''}" width="50" id="dc_c19">
+                                        <af:selectBooleanCheckbox id="dc_sbc12" value="#{row.IsLead}" readOnly="true"/>
+                                    </af:column>
+                                    <af:column headerText="#{bindings.StudyView.hints.StudyModusName.label}" id="dc_c27"
+                                               sortProperty="StudyModusName" sortable="true"
+                                               styleClass="#{row.WbsCount > 1 ? 'invalid' : ''}#{row.IsStudyModusNameDiscrep ? 'discrepancy' : ''}" width="80">
+                                        <af:outputText value="#{row.StudyModusName}" id="dc_ot26"/>
+                                    </af:column>
+                                    <af:column headerText="#{bindings.StudyView.hints.StartDate.label}"
+                                               sortProperty="StartDate" sortable="true"
+                                               styleClass="#{row.WbsCount > 1 ? 'invalid' : ''}#{row.IsStartDateDiscrep ? 'discrepancy' : ''}" rendered="false"
+                                               width="80" id="dc_c2">
+                                        <af:outputText value="#{row.StartDate}" id="dc_ot2"/>
+                                    </af:column>
+                                    <af:column headerText="#{bindings.StudyView.hints.FinishDate.label}"
+                                               sortProperty="FinishDate" sortable="true"
+                                               styleClass="#{row.WbsCount > 1 ? 'invalid' : ''}#{row.IsFinishDateDiscrep ? 'discrepancy' : ''}" rendered="false"
+                                               width="80" id="dc_c21">
+                                        <af:outputText value="#{row.FinishDate}" id="dc_ot21"/>
+                                    </af:column>
+                                    <af:column headerText="#{bindings.StudyView.hints.BudgetClass.label}" id="dc_c35"
+                                               sortProperty="BudgetClass" sortable="true"
+                                               styleClass="#{row.WbsCount > 1 ? 'invalid' : ''}#{row.IsBudgetClassDiscrep ? 'discrepancy' : ''}" visible="false"
+                                               width="80">
+                                        <af:outputText value="#{row.BudgetClass}" id="dc_ot32"/>
+                                    </af:column>
+                                     <af:column headerText="#{bindings.StudyView.hints.IsInRawPlan.label}" id="dc_c352"
+                                               sortProperty="IsInRawPlan" sortable="true"
+                                               styleClass="#{row.WbsCount > 1 ? 'invalid' : ''}#{not row.IsInRawPlan ? 'noPlan' : ''}" visible="true"
+                                               width="80">
+                                        <af:outputText value="#{row.IsInRawPlan?'Yes':'No'}" id="dc_ot322"/>
+                                    </af:column>
+                                     <af:column headerText="#{bindings.StudyView.hints.IsInCurPlan.label}" id="dc_c353"
+                                               sortProperty="IsInCurPlan" sortable="true"
+                                               styleClass="#{row.WbsCount > 1 ? 'invalid' : ''}#{not row.IsInCurPlan ? 'noPlan' : ''}" visible="true"
+                                               width="80">
+                                        <af:outputText value="#{row.IsInCurPlan?'Yes':'No'}" id="dc_ot323"/>
+                                    </af:column>
+                                </af:table>
+                            </af:panelCollection>
+                        </af:panelBox>
+                    </f:facet>
+                </af:panelStretchLayout>
+            </af:subform>
+      
+    </af:componentDef>
+</jsp:root>

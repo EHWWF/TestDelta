@@ -1,0 +1,1026 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+
+<process name="UpdateRoles"
+               targetNamespace="http://xmlns.bayer.com/ipms/soa"
+               xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+               xmlns:client="http://xmlns.bayer.com/ipms/soa"
+               xmlns:ora="http://schemas.oracle.com/xpath/extension"
+               xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:ns1="http://xmlns.oracle.com/Primavera/P6/WS/OBS/V1"
+         xmlns:ns2="http://xmlns.oracle.com/Primavera/P6/WS/UserOBS/V1"
+         xmlns:bpel2="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:ns3="http://xmlns.bayer.com/ipms"
+         xmlns:ns4="http://xmlns.oracle.com/Primavera/P6/WS/User/V1"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         xmlns:ns5="http://xmlns.bayer.com/ipms/cache" xmlns:ess="http://xmlns.oracle.com/scheduler">
+  <bpelx:annotation>
+    <bpelx:analysis>
+      <bpelx:property name="wsdlFile">
+        <![CDATA[UpdateRoles.wsdl]]>
+      </bpelx:property>
+    </bpelx:analysis>
+  </bpelx:annotation>
+  <partnerLinks>
+    <partnerLink name="UpdateRolesService" partnerLinkType="client:UpdateRoles" myRole="UpdateRolesProvider"
+                 partnerRole="UpdateRolesRequester"/>
+    <partnerLink name="UserOBSService" partnerLinkType="ns2:UserOBSService"
+                 partnerRole="UserOBSPortType"/>
+    <partnerLink name="OBSService" partnerLinkType="ns1:OBSService"
+                 partnerRole="OBSPortType"/>
+    <partnerLink name="UserService" partnerLinkType="ns4:UserService"
+                 partnerRole="UserPortType"/>
+    <partnerLink name="ReadConfiguration.ReadConfigurationService"
+                 partnerLinkType="client:ReadConfiguration"
+                 partnerRole="ReadConfigurationProvider"
+                 myRole="ReadConfigurationRequester"/>
+  </partnerLinks>
+
+  <variables>
+    <!-- Reference to the message passed as input during initiation -->
+    <variable name="inputVariable" messageType="client:UpdateRolesRequestMessage"/>
+
+    <!-- Reference to the message that will be returned to the requester-->
+    <variable name="outputVariable" messageType="client:UpdateRolesResponseMessage"/>
+    <variable name="ReadCfgin"
+              messageType="client:ReadConfigurationRequestMessage"/>
+    <variable name="ReadCfgout"
+              messageType="client:ReadConfigurationResponseMessage"/>
+    <variable name="ReadUbsin" messageType="ns2:ReadUserOBS"/>
+    <variable name="ReadUbsout" messageType="ns2:ReadUserOBSResponse"/>
+    <variable name="DeleteUbsin" messageType="ns2:DeleteUserOBS"/>
+    <variable name="DeleteUbsout" messageType="ns2:DeleteUserOBSResponse"/>
+    <variable name="CreateUbsin" messageType="ns2:CreateUserOBS"/>
+    <variable name="CreateUbsout" messageType="ns2:CreateUserOBSResponse"/>
+    <variable name="ReadObsin" messageType="ns1:ReadOBS"/>
+    <variable name="ReadObsout" messageType="ns1:ReadOBSResponse"/>
+    <variable name="ReadUsrin" messageType="ns4:ReadUsers"/>
+    <variable name="ReadUsrout" messageType="ns4:ReadUsersResponse"/>
+    <variable name="ReadGlobalUBSOut" messageType="ns2:CreateUserOBSResponse"/>
+    <variable name="faultVariable" messageType="client:UpdateRolesResponseMessage"/>
+    <variable name="typeProgramId" type="xsd:string"/>
+    <variable name="ProjectCreateAssigned" type="xsd:string"/>
+    <variable name="TimelineEditRawAssigned" type="xsd:string"/>
+    <variable name="ProjectViewAssigned" type="xsd:string"/>
+  </variables>
+  <faultHandlers>
+    <catchAll>
+      <sequence name="MainFaultCatching">
+        <compensate name="CompensateAll"/>
+        <assign name="assignFaultOutput">
+          <copy>
+            <from expression="ora:getFaultAsString()"/>
+            <to variable="faultVariable" part="payload"
+                query="/client:response/ns3:error/ns3:description"/>
+          </copy>
+          <copy>
+            <from expression="ora:getFaultName()"/>
+            <to variable="faultVariable" part="payload"
+                query="/client:response/ns3:error/ns3:code"/>
+          </copy>
+          <copy>
+            <from variable="inputVariable" part="payload"
+                  query="/client:update"/>
+            <to variable="faultVariable" part="payload"
+                query="/client:response/ns3:error/@id"/>
+          </copy>
+          <copy>
+            <from variable="inputVariable" part="payload"
+                  query="/client:update/@id"/>
+            <to variable="faultVariable" part="payload"
+                query="/client:response/@id"/>
+          </copy>
+        </assign>
+        <invoke name="callbackFaultOutput" bpelx:invokeAsDetail="no"
+                inputVariable="faultVariable" partnerLink="UpdateRolesService"
+                portType="client:UpdateRolesCallback" operation="callback"/>
+      </sequence>
+    </catchAll>
+  </faultHandlers>
+
+  <sequence name="main">
+
+    <receive name="receiveInput" partnerLink="UpdateRolesService" portType="client:UpdateRoles" operation="process" variable="inputVariable" createInstance="yes"/>
+    <sequence name="CreateProgramIdFromType">
+      <switch name="ProjectArea">
+        <case condition="bpws:getVariableData('inputVariable','payload','/client:update/ns3:roles/@projectType')='CACHE'">
+          <bpelx:annotation>
+            <bpelx:general>
+              <bpelx:property name="userLabel">
+                <![CDATA[CACHE]]>
+              </bpelx:property>
+            </bpelx:general>
+          </bpelx:annotation>
+          <empty name="Empty2"/>
+        </case>
+        <case condition="bpws:getVariableData('inputVariable','payload','/client:update/ns3:roles/@projectType')='PRDMNT'">
+          <bpelx:annotation>
+            <bpelx:general>
+              <bpelx:property name="userLabel">
+                <![CDATA[MNT]]>
+              </bpelx:property>
+            </bpelx:general>
+          </bpelx:annotation>
+          <assign name="AssignMNT">
+            <copy>
+              <from expression="concat('MNT-',bpws:getVariableData('inputVariable','payload','/client:update/ns3:roles/@programId'))"/>
+              <to variable="typeProgramId"/>
+            </copy>
+            <copy>
+              <from expression="'timelineeditrawassignedprdmnt'"/>
+              <to variable="TimelineEditRawAssigned"/>
+            </copy>
+            <copy>
+              <from expression="'projectviewassignedprdmnt'"/>
+              <to variable="ProjectViewAssigned"/>
+            </copy>
+          </assign>
+        </case>
+        <case condition="bpws:getVariableData('inputVariable','payload','/client:update/ns3:roles/@projectType')='D3TR'">
+          <bpelx:annotation>
+            <bpelx:general>
+              <bpelx:property name="userLabel">
+                <![CDATA[D3]]>
+              </bpelx:property>
+            </bpelx:general>
+          </bpelx:annotation>
+          <assign name="AssignD3">
+            <copy>
+              <from expression="'RESERVED-D3TR'"/>
+              <to variable="typeProgramId"/>
+            </copy>
+            <copy>
+              <from expression="'timelineeditrawassignedd3tr'"/>
+              <to variable="TimelineEditRawAssigned"/>
+            </copy>
+            <copy>
+              <from expression="'projectviewassignedd3tr'"/>
+              <to variable="ProjectViewAssigned"/>
+            </copy>
+          </assign>
+        </case>
+        <case condition="bpws:getVariableData('inputVariable','payload','/client:update/ns3:roles/@projectType')='DEV'">
+          <bpelx:annotation>
+            <bpelx:general>
+              <bpelx:property name="userLabel">
+                <![CDATA[DEV]]>
+              </bpelx:property>
+            </bpelx:general>
+          </bpelx:annotation>
+          <assign name="AssignDev">
+            <copy>
+              <from variable="inputVariable" part="payload" query="/client:update/ns3:roles/@programId"/>
+              <to variable="typeProgramId"/>
+            </copy>
+            <copy>
+              <from expression="'projectcreateassigneddev'"/>
+              <to variable="ProjectCreateAssigned"/>
+            </copy>
+            <copy>
+              <from expression="'timelineeditrawassigneddev'"/>
+              <to variable="TimelineEditRawAssigned"/>
+            </copy>
+            <copy>
+              <from expression="'projectviewassigneddev'"/>
+              <to variable="ProjectViewAssigned"/>
+            </copy>
+          </assign>
+        </case>
+        <otherwise>
+            <throw name="ThrowProjectType" faultName="bpelx:invalidVariables"/>
+        </otherwise>
+      </switch>
+    </sequence>
+    <scope name="ReadAll" variableAccessSerializable="no">
+      <variables>
+        <variable name="cacheAnyTypeVariable" element="ns5:cache"/>
+      </variables>
+      <flow name="FlowReadAll">
+        <sequence name="cfg">
+          <scope name="ReadConfigFromCache">
+            <variables>
+              <variable name="VariableCache" element="ns5:cache"/>
+            </variables>
+            <faultHandlers>
+              <catchAll>
+                <empty name="Empty1"/>
+              </catchAll>
+            </faultHandlers>
+          <sequence name="ReadConfigFromCache">
+            <assign name="AssignFromCache">
+              <copy bpelx:ignoreMissingFromData="yes"
+                    bpelx:insertMissingToData="yes">
+                <from expression='ora:readFile("file:///opt/oracle/soa12.2.1/file_adapter/ipms/config.cache", "oramds:/apps/com/bayer/xmlns/ipms/cache/cache.xsd")'/>
+                <to variable="VariableCache" query="/ns5:cache"/>
+              </copy>
+              <copy bpelx:ignoreMissingFromData="yes"
+                    bpelx:insertMissingToData="yes">
+                <from variable="VariableCache" query="/ns5:cache/*"/>
+                <to variable="ReadCfgout" part="payload"/>
+              </copy>
+            </assign>
+            <empty name="EmptyBeforeSkip"/>
+          </sequence>
+          </scope>
+          <sequence name="FULL-ReadConfig-SKIP"
+                    bpelx:skipCondition="bpws:getVariableData('ReadCfgout','payload','/client:config/client:program/client:epsId')!=''">
+            <assign name="AssignReadCfg">
+              <copy>
+                <from expression="'any'"/>
+                <to variable="ReadCfgin" part="payload" query="/ns3:empty"/>
+              </copy>
+            </assign>
+            <invoke name="ReadConfigurationIn" bpelx:invokeAsDetail="no"
+                    inputVariable="ReadCfgin"
+                    partnerLink="ReadConfiguration.ReadConfigurationService"
+                    portType="client:ReadConfiguration" operation="process"/>
+            <receive name="ReadConfigurationOut" createInstance="no"
+                     variable="ReadCfgout"
+                     partnerLink="ReadConfiguration.ReadConfigurationService"
+                     portType="client:ReadConfigurationCallback"
+                     operation="callback"/>
+          </sequence>
+        </sequence>
+        <sequence name="obs">
+          <assign name="AssignReadObs">
+            <copy>
+              <from expression="'Name'"/>
+              <to variable="ReadObsin" part="params"
+                  query="/ns1:ReadOBS/ns1:Field"/>
+            </copy>
+            <copy>
+              <from expression="concat(&quot;Name like '&quot;, bpws:getVariableData('typeProgramId'),  &quot;-%'&quot;)"/>
+              <to variable="ReadObsin" part="params"
+                  query="/ns1:ReadOBS/ns1:Filter"/>
+            </copy>
+          </assign>
+          <invoke name="ReadObs" bpelx:invokeAsDetail="no"
+                  inputVariable="ReadObsin" outputVariable="ReadObsout"
+                  partnerLink="OBSService" portType="ns1:OBSPortType"
+                  operation="ReadOBS"/>
+        </sequence>
+        <sequence name="ubs">
+          <assign name="AssignReadUbs">
+            <copy>
+              <from expression="'UserObjectId'"/>
+              <to variable="ReadUbsin" part="params"
+                  query="/ns2:ReadUserOBS/ns2:Field"/>
+            </copy>
+            <bpelx:insertAfter>
+              <bpelx:from><v1:Field xmlns:v1="http://xmlns.oracle.com/Primavera/P6/WS/UserOBS/V1">OBSObjectId</v1:Field></bpelx:from>
+              <bpelx:to variable="ReadUbsin" part="params"
+                        query="/ns2:ReadUserOBS/ns2:Field"/>
+            </bpelx:insertAfter>
+            <bpelx:insertAfter>
+              <bpelx:from><v1:Field xmlns:v1="http://xmlns.oracle.com/Primavera/P6/WS/UserOBS/V1">ProjectProfileObjectId</v1:Field></bpelx:from>
+              <bpelx:to variable="ReadUbsin" part="params"
+                        query="/ns2:ReadUserOBS/ns2:Field"/>
+            </bpelx:insertAfter>
+            <copy>
+              <from expression="concat(&quot;OBSName like '&quot;, bpws:getVariableData('typeProgramId') ,&quot;-%'&quot;)"/>
+              <to variable="ReadUbsin" part="params"
+                  query="/ns2:ReadUserOBS/ns2:Filter"/>
+            </copy>
+          </assign>
+          <invoke name="ReadUbs" bpelx:invokeAsDetail="no"
+                  inputVariable="ReadUbsin" outputVariable="ReadUbsout"
+                  partnerLink="UserOBSService" portType="ns2:UserOBSPortType"
+                  operation="ReadUserOBS"/>
+          <empty name="EmptyNeededHere"/>
+          <sequence name="SKIP-when-count0"
+                    bpelx:skipCondition="count(bpws:getVariableData('ReadUbsout','result','/ns2:ReadUserOBSResponse/ns2:UserOBS'))=0">
+            <assign name="SetDeleteUbs-NEEDED-LATER">
+              <bpelx:annotation>
+                <bpelx:pattern>transformation</bpelx:pattern>
+              </bpelx:annotation>
+              <copy>
+                <from expression="ora:doXSLTransformForDoc('xsl/UpdateRolesDelRoles.xsl', $ReadUbsout.result)"/>
+                <to variable="DeleteUbsin" part="params"/>
+              </copy>
+            </assign>
+          </sequence>
+        </sequence>
+      </flow>
+    </scope>
+    <sequence name="SKIP-When-OBS-0"
+              bpelx:skipCondition="count(bpws:getVariableData('ReadObsout','result','/ns1:ReadOBSResponse/ns1:OBS'))=0">
+      <scope name="ForEveryUser" variableAccessSerializable="no">
+        <variables>
+          <variable name="loopCount" type="xsd:integer"/>
+          <variable name="roleIdIPMS" type="xsd:string"/>
+          <variable name="userIdIPMS" type="xsd:string"/>
+          <variable name="userIdP6" type="xsd:string"/>
+          <variable name="rowNum" type="xsd:integer"/>
+        </variables>
+        <sequence name="ForEveryUser">
+          <assign name="AssignLoopCount">
+            <copy>
+              <from expression="count(bpws:getVariableData('inputVariable','payload','/client:update/ns3:roles/ns3:role'))"/>
+              <to variable="loopCount"/>
+            </copy>
+            <copy>
+              <from expression="'0'"/>
+              <to variable="rowNum"/>
+            </copy>
+          </assign>
+          <while name="WhileUsers"
+                 condition="bpws:getVariableData('loopCount')>0">
+            <sequence name="Looping">
+              <assign name="AssignLoopStart">
+                <copy bpelx:ignoreMissingFromData="yes">
+                  <from variable="inputVariable" part="payload"
+                        query="/client:update/ns3:roles/ns3:role[bpws:getVariableData('loopCount')]/@roleId"/>
+                  <to variable="roleIdIPMS"/>
+                </copy>
+                <copy bpelx:ignoreMissingFromData="yes">
+                  <from variable="inputVariable" part="payload"
+                        query="/client:update/ns3:roles/ns3:role[bpws:getVariableData('loopCount')]/@userId"/>
+                  <to variable="userIdIPMS"/>
+                </copy>
+                <copy>
+                  <from expression="''"/>
+                  <to variable="userIdP6"/>
+                </copy>
+                <copy bpelx:insertMissingToData="yes"
+                      bpelx:ignoreMissingFromData="yes">
+                  <from expression="'Name'"/>
+                  <to variable="ReadUsrin" part="params"
+                      query="/ns4:ReadUsers[1]/ns4:Field"/>
+                </copy>
+                <copy bpelx:insertMissingToData="yes"
+                      bpelx:ignoreMissingFromData="yes">
+                  <from expression="concat(&quot;Name='&quot;,bpws:getVariableData('userIdIPMS'),&quot;'&quot;)"/>
+                  <to variable="ReadUsrin" part="params"
+                      query="/ns4:ReadUsers[1]/ns4:Filter"/>
+                </copy>
+                <copy>
+                  <from expression="bpws:getVariableData('loopCount')-1"/>
+                  <to variable="loopCount"/>
+                </copy>
+              </assign>
+              <invoke name="ReadUsr" bpelx:invokeAsDetail="no"
+                      inputVariable="ReadUsrin" outputVariable="ReadUsrout"
+                      partnerLink="UserService" portType="ns4:UserPortType"
+                      operation="ReadUsers"/>
+              <assign name="AssignUserId">
+                <copy bpelx:ignoreMissingFromData="yes"
+                      bpelx:insertMissingToData="yes">
+                  <from variable="ReadUsrout" part="result"
+                        query="/ns4:ReadUsersResponse/ns4:User/ns4:ObjectId"/>
+                  <to variable="userIdP6"/>
+                </copy>
+              </assign>
+              <scope name="IfUserExists-else-SKIP"
+                     variableAccessSerializable="no"
+                     bpelx:skipCondition="bpws:getVariableData('userIdP6')=''">
+                <variables>
+                  <variable name="tmpOBS" type="xsd:string"/>
+                  <variable name="tmpProjectProfileObjectId" type="xsd:string"/>
+                  <variable name="tmpOBSObjectId" type="xsd:string"/>
+                  <variable name="ProjectManagerProfileId" type="xsd:string"/>
+                  <variable name="ReadOnlyProfileId" type="xsd:string"/>
+                </variables>
+                <sequence name="GoAllAppRolesCases">
+                  <sequence name="SKIP-When-ProjectCreateAssigned-Null"
+                            bpelx:skipCondition="bpws:getVariableData('ProjectCreateAssigned')=''">
+                    <switch name="Switch-ProjectCreateAssigned">
+                      <case condition="bpws:getVariableData('inputVariable','payload','/client:update/ns3:roles/ns3:appRoles/ns3:appRole[@refAppRole=bpws:getVariableData(&quot;roleIdIPMS&quot;)]')=bpws:getVariableData('ProjectCreateAssigned')">
+                        <bpelx:annotation>
+                          <bpelx:general>
+                            <bpelx:property name="userLabel">
+                              <![CDATA[exists-mapping-for-ProjectCreateAssigned]]>
+                            </bpelx:property>
+                          </bpelx:general>
+                        </bpelx:annotation>
+                        <scope name="Exists-ProjectCreateAssignedX" variableAccessSerializable="no">
+                          <sequence name="CheckRole-ProjectCreateAssignedDev">
+                            <assign name="IfOBS-RAW">
+                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                <from expression="concat(bpws:getVariableData('typeProgramId'),'-RAW')"/>
+                                <to variable="tmpOBS"/>
+                              </copy>
+                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                <from variable="ReadObsout" part="result"
+                                      query="/ns1:ReadOBSResponse/ns1:OBS[ns1:Name=bpws:getVariableData('tmpOBS')]/ns1:ObjectId"/>
+                                <to variable="tmpOBSObjectId"/>
+                              </copy>
+                              <copy>
+                                <from expression="bpws:getVariableData('ReadCfgout','payload','/client:config/client:role/client:profiles/client:profile[client:name=&quot;Manager&quot; and client:scope=&quot;Project&quot;]/@id')"/>
+                                <to variable="ProjectManagerProfileId"/>
+                              </copy>
+                            </assign>
+                            <sequence name="ProjectCreateAssignedDev-else-SKIP"
+                                      bpelx:skipCondition="bpws:getVariableData('tmpOBSObjectId')='' or count(bpws:getVariableData('CreateUbsin','params','/ns2:CreateUserOBS/ns2:UserOBS[ns2:OBSObjectId=bpws:getVariableData(&quot;tmpOBSObjectId&quot;) and ns2:UserObjectId=bpws:getVariableData(&quot;userIdP6&quot;)]/ns2:OBSObjectId'))>0">
+                              <assign name="ProjectCreateAssignedDev">
+                                <copy>
+                                  <from expression="bpws:getVariableData('rowNum')+1"/>
+                                  <to variable="rowNum"/>
+                                </copy>
+                                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                  <from variable="userIdP6"/>
+                                  <to variable="CreateUbsin" part="params"
+                                      query="/ns2:CreateUserOBS/ns2:UserOBS[bpws:getVariableData('rowNum')]/ns2:UserObjectId"/>
+                                </copy>
+                                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                  <from variable="tmpOBSObjectId"/>
+                                  <to variable="CreateUbsin" part="params"
+                                      query="/ns2:CreateUserOBS/ns2:UserOBS[bpws:getVariableData('rowNum')]/ns2:OBSObjectId"/>
+                                </copy>
+                                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                  <from variable="ProjectManagerProfileId"/>
+                                  <to variable="CreateUbsin" part="params"
+                                      query="/ns2:CreateUserOBS/ns2:UserOBS[bpws:getVariableData('rowNum')]/ns2:ProjectProfileObjectId"/>
+                                </copy>
+                                <copy>
+                                  <from expression="''"/>
+                                  <to variable="tmpOBS"/>
+                                </copy>
+                                <copy>
+                                  <from expression="''"/>
+                                  <to variable="tmpOBSObjectId"/>
+                                </copy>
+                              </assign>
+                            </sequence>
+                          </sequence>
+                        </scope>
+                      </case>
+                      <otherwise>
+                        <empty name="NO-mapping-for-ProjectCreateAssigned"/>
+                      </otherwise>
+                    </switch>
+                    <switch name="Switch-Sandbox">
+                      <case condition="bpws:getVariableData('inputVariable','payload','/client:update/ns3:roles/ns3:appRoles/ns3:appRole[@refAppRole=bpws:getVariableData(&quot;roleIdIPMS&quot;)]')='sandboxplanmodifyassigneddev' or bpws:getVariableData('inputVariable','payload','/client:update/ns3:roles/ns3:appRoles/ns3:appRole[@refAppRole=bpws:getVariableData(&quot;roleIdIPMS&quot;)]')='sandboxplandeleteassigneddev'">
+                        <bpelx:annotation>
+                          <bpelx:general>
+                            <bpelx:property name="userLabel">
+                              <![CDATA[exists-mapping-for-Sandbox]]>
+                            </bpelx:property>
+                          </bpelx:general>
+                        </bpelx:annotation>
+                        <scope name="Exists-Sandbox"
+                               variableAccessSerializable="no">
+                          <sequence name="CheckRole-SandboxPlanModifyAssignedDev">
+                            <assign name="IfOBS-SND">
+                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                <from expression="concat(bpws:getVariableData('typeProgramId'),'-SND')"/>
+                                <to variable="tmpOBS"/>
+                              </copy>
+                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                <from variable="ReadObsout" part="result"
+                                      query="/ns1:ReadOBSResponse/ns1:OBS[ns1:Name=bpws:getVariableData('tmpOBS')]/ns1:ObjectId"/>
+                                <to variable="tmpOBSObjectId"/>
+                              </copy>
+                              <copy>
+                                <from expression="bpws:getVariableData('ReadCfgout','payload','/client:config/client:role/client:profiles/client:profile[client:name=&quot;Manager&quot; and client:scope=&quot;Project&quot;]/@id')"/>
+                                <to variable="ProjectManagerProfileId"/>
+                              </copy>
+                            </assign>
+                            <sequence name="ProjectCreateAssignedDev-else-SKIP"
+                                      bpelx:skipCondition="bpws:getVariableData('tmpOBSObjectId')='' or count(bpws:getVariableData('CreateUbsin','params','/ns2:CreateUserOBS/ns2:UserOBS[ns2:OBSObjectId=bpws:getVariableData(&quot;tmpOBSObjectId&quot;) and ns2:UserObjectId=bpws:getVariableData(&quot;userIdP6&quot;)]/ns2:OBSObjectId'))>0">
+                              <assign name="SandboxPlanModifyDeleteAssignedDev">
+                                <copy>
+                                  <from expression="bpws:getVariableData('rowNum')+1"/>
+                                  <to variable="rowNum"/>
+                                </copy>
+                                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                  <from variable="userIdP6"/>
+                                  <to variable="CreateUbsin" part="params"
+                                      query="/ns2:CreateUserOBS/ns2:UserOBS[bpws:getVariableData('rowNum')]/ns2:UserObjectId"/>
+                                </copy>
+                                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                  <from variable="tmpOBSObjectId"/>
+                                  <to variable="CreateUbsin" part="params"
+                                      query="/ns2:CreateUserOBS/ns2:UserOBS[bpws:getVariableData('rowNum')]/ns2:OBSObjectId"/>
+                                </copy>
+                                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                  <from variable="ProjectManagerProfileId"/>
+                                  <to variable="CreateUbsin" part="params"
+                                      query="/ns2:CreateUserOBS/ns2:UserOBS[bpws:getVariableData('rowNum')]/ns2:ProjectProfileObjectId"/>
+                                </copy>
+                                <copy>
+                                  <from expression="''"/>
+                                  <to variable="tmpOBS"/>
+                                </copy>
+                                <copy>
+                                  <from expression="''"/>
+                                  <to variable="tmpOBSObjectId"/>
+                                </copy>
+                              </assign>
+                            </sequence>
+                          </sequence>
+                        </scope>
+                      </case>
+                      <otherwise>
+                        <empty name="NO-mapping-for-Sandbox"/>
+                      </otherwise>
+                    </switch>
+                  </sequence>
+                  <sequence name="SKIP-When-TimelineEditRawAssigned-Null"
+                            bpelx:skipCondition="bpws:getVariableData('TimelineEditRawAssigned')=''">
+                    <switch name="Switch-TimelineEditRawAssigned">
+                      <case condition="bpws:getVariableData('inputVariable','payload','/client:update/ns3:roles/ns3:appRoles/ns3:appRole[@refAppRole=bpws:getVariableData(&quot;roleIdIPMS&quot;)]')=bpws:getVariableData('TimelineEditRawAssigned')">
+                        <bpelx:annotation>
+                          <bpelx:general>
+                            <bpelx:property name="userLabel">
+                              <![CDATA[exists-mapping-for-TimelineEditRawAssigned]]>
+                            </bpelx:property>
+                          </bpelx:general>
+                        </bpelx:annotation>
+                        <scope name="Exists-Mapping-TimelineEditRawAssigned" variableAccessSerializable="no">
+                          <sequence name="TimelineEditRawAssignedDev">
+                            <assign name="IfOBS-RAW">
+                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                <from expression="concat(bpws:getVariableData('typeProgramId'),'-RAW')"/>
+                                <to variable="tmpOBS"/>
+                              </copy>
+                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                <from variable="ReadObsout" part="result"
+                                      query="/ns1:ReadOBSResponse/ns1:OBS[ns1:Name=bpws:getVariableData('tmpOBS')]/ns1:ObjectId"/>
+                                <to variable="tmpOBSObjectId"/>
+                              </copy>
+                              <copy>
+                                <from expression="bpws:getVariableData('ReadCfgout','payload','/client:config/client:role/client:profiles/client:profile[client:name=&quot;Manager&quot; and client:scope=&quot;Project&quot;]/@id')"/>
+                                <to variable="ProjectManagerProfileId"/>
+                              </copy>
+                            </assign>
+                            <sequence name="TimelineEditRawAssignedDev-RAW-else-SKIP"
+                                      bpelx:skipCondition="bpws:getVariableData('tmpOBSObjectId')='' or count(bpws:getVariableData('CreateUbsin','params','/ns2:CreateUserOBS/ns2:UserOBS[ns2:OBSObjectId=bpws:getVariableData(&quot;tmpOBSObjectId&quot;) and ns2:UserObjectId=bpws:getVariableData(&quot;userIdP6&quot;)]/ns2:OBSObjectId'))>0">
+                              <assign name="TimelineEditRawAssignedDev-RAW">
+                                <copy>
+                                  <from expression="bpws:getVariableData('rowNum')+1"/>
+                                  <to variable="rowNum"/>
+                                </copy>
+                                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                  <from variable="userIdP6"/>
+                                  <to variable="CreateUbsin" part="params"
+                                      query="/ns2:CreateUserOBS/ns2:UserOBS[bpws:getVariableData('rowNum')]/ns2:UserObjectId"/>
+                                </copy>
+                                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                  <from variable="tmpOBSObjectId"/>
+                                  <to variable="CreateUbsin" part="params"
+                                      query="/ns2:CreateUserOBS/ns2:UserOBS[bpws:getVariableData('rowNum')]/ns2:OBSObjectId"/>
+                                </copy>
+                                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                  <from variable="ProjectManagerProfileId"/>
+                                  <to variable="CreateUbsin" part="params"
+                                      query="/ns2:CreateUserOBS/ns2:UserOBS[bpws:getVariableData('rowNum')]/ns2:ProjectProfileObjectId"/>
+                                </copy>
+                                <copy>
+                                  <from expression="''"/>
+                                  <to variable="tmpOBS"/>
+                                </copy>
+                                <copy>
+                                  <from expression="''"/>
+                                  <to variable="tmpOBSObjectId"/>
+                                </copy>
+                              </assign>
+                            </sequence>
+                            <assign name="IfOBS-CUR">
+                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                <from expression="concat(bpws:getVariableData('typeProgramId'),'-CUR')"/>
+                                <to variable="tmpOBS"/>
+                              </copy>
+                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                <from variable="ReadObsout" part="result"
+                                      query="/ns1:ReadOBSResponse/ns1:OBS[ns1:Name=bpws:getVariableData('tmpOBS')]/ns1:ObjectId"/>
+                                <to variable="tmpOBSObjectId"/>
+                              </copy>
+                              <copy>
+                                <from expression="bpws:getVariableData('ReadCfgout','payload','/client:config/client:role/client:profiles/client:profile[client:name=&quot;ReadOnly&quot; and client:scope=&quot;Project&quot;]/@id')"/>
+                                <to variable="ReadOnlyProfileId"/>
+                              </copy>
+                            </assign>
+                            <sequence name="TimelineEditRawAssignedDev-CUR-else-SKIP"
+                                      bpelx:skipCondition="bpws:getVariableData('tmpOBSObjectId')='' or count(bpws:getVariableData('CreateUbsin','params','/ns2:CreateUserOBS/ns2:UserOBS[ns2:OBSObjectId=bpws:getVariableData(&quot;tmpOBSObjectId&quot;) and ns2:UserObjectId=bpws:getVariableData(&quot;userIdP6&quot;)]/ns2:OBSObjectId'))>0">
+                              <assign name="TimelineEditRawAssignedDev-CUR">
+                                <copy>
+                                  <from expression="bpws:getVariableData('rowNum')+1"/>
+                                  <to variable="rowNum"/>
+                                </copy>
+                                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                  <from variable="userIdP6"/>
+                                  <to variable="CreateUbsin" part="params"
+                                      query="/ns2:CreateUserOBS/ns2:UserOBS[bpws:getVariableData('rowNum')]/ns2:UserObjectId"/>
+                                </copy>
+                                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                  <from variable="tmpOBSObjectId"/>
+                                  <to variable="CreateUbsin" part="params"
+                                      query="/ns2:CreateUserOBS/ns2:UserOBS[bpws:getVariableData('rowNum')]/ns2:OBSObjectId"/>
+                                </copy>
+                                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                  <from variable="ReadOnlyProfileId"/>
+                                  <to variable="CreateUbsin" part="params"
+                                      query="/ns2:CreateUserOBS/ns2:UserOBS[bpws:getVariableData('rowNum')]/ns2:ProjectProfileObjectId"/>
+                                </copy>
+                                <copy>
+                                  <from expression="''"/>
+                                  <to variable="tmpOBS"/>
+                                </copy>
+                                <copy>
+                                  <from expression="''"/>
+                                  <to variable="tmpOBSObjectId"/>
+                                </copy>
+                              </assign>
+                            </sequence>
+                            <assign name="IfOBS-APR">
+                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                <from expression="concat(bpws:getVariableData('typeProgramId'),'-APR')"/>
+                                <to variable="tmpOBS"/>
+                              </copy>
+                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                <from variable="ReadObsout" part="result"
+                                      query="/ns1:ReadOBSResponse/ns1:OBS[ns1:Name=bpws:getVariableData('tmpOBS')]/ns1:ObjectId"/>
+                                <to variable="tmpOBSObjectId"/>
+                              </copy>
+                            </assign>
+                            <sequence name="TimelineEditRawAssignedDev-APR-else-SKIP"
+                                      bpelx:skipCondition="bpws:getVariableData('tmpOBSObjectId')='' or count(bpws:getVariableData('CreateUbsin','params','/ns2:CreateUserOBS/ns2:UserOBS[ns2:OBSObjectId=bpws:getVariableData(&quot;tmpOBSObjectId&quot;) and ns2:UserObjectId=bpws:getVariableData(&quot;userIdP6&quot;)]/ns2:OBSObjectId'))>0">
+                              <assign name="TimelineEditRawAssignedDev-APR">
+                                <copy>
+                                  <from expression="bpws:getVariableData('rowNum')+1"/>
+                                  <to variable="rowNum"/>
+                                </copy>
+                                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                  <from variable="userIdP6"/>
+                                  <to variable="CreateUbsin" part="params"
+                                      query="/ns2:CreateUserOBS/ns2:UserOBS[bpws:getVariableData('rowNum')]/ns2:UserObjectId"/>
+                                </copy>
+                                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                  <from variable="tmpOBSObjectId"/>
+                                  <to variable="CreateUbsin" part="params"
+                                      query="/ns2:CreateUserOBS/ns2:UserOBS[bpws:getVariableData('rowNum')]/ns2:OBSObjectId"/>
+                                </copy>
+                                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                  <from variable="ReadOnlyProfileId"/>
+                                  <to variable="CreateUbsin" part="params"
+                                      query="/ns2:CreateUserOBS/ns2:UserOBS[bpws:getVariableData('rowNum')]/ns2:ProjectProfileObjectId"/>
+                                </copy>
+                                <copy>
+                                  <from expression="''"/>
+                                  <to variable="tmpOBS"/>
+                                </copy>
+                                <copy>
+                                  <from expression="''"/>
+                                  <to variable="tmpOBSObjectId"/>
+                                </copy>
+                              </assign>
+                            </sequence>
+                            <assign name="IfOBS-SND">
+                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                <from expression="concat(bpws:getVariableData('typeProgramId'),'-SND')"/>
+                                <to variable="tmpOBS"/>
+                              </copy>
+                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                <from variable="ReadObsout" part="result"
+                                      query="/ns1:ReadOBSResponse/ns1:OBS[ns1:Name=bpws:getVariableData('tmpOBS')]/ns1:ObjectId"/>
+                                <to variable="tmpOBSObjectId"/>
+                              </copy>
+                            </assign>
+                            <sequence name="TimelineEditRawAssignedDev-SND-else-SKIP"
+                                      bpelx:skipCondition="bpws:getVariableData('tmpOBSObjectId')='' or count(bpws:getVariableData('CreateUbsin','params','/ns2:CreateUserOBS/ns2:UserOBS[ns2:OBSObjectId=bpws:getVariableData(&quot;tmpOBSObjectId&quot;) and ns2:UserObjectId=bpws:getVariableData(&quot;userIdP6&quot;)]/ns2:OBSObjectId'))>0">
+                              <assign name="TimelineEditRawAssignedDev-SND">
+                                <copy>
+                                  <from expression="bpws:getVariableData('rowNum')+1"/>
+                                  <to variable="rowNum"/>
+                                </copy>
+                                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                  <from variable="userIdP6"/>
+                                  <to variable="CreateUbsin" part="params"
+                                      query="/ns2:CreateUserOBS/ns2:UserOBS[bpws:getVariableData('rowNum')]/ns2:UserObjectId"/>
+                                </copy>
+                                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                  <from variable="tmpOBSObjectId"/>
+                                  <to variable="CreateUbsin" part="params"
+                                      query="/ns2:CreateUserOBS/ns2:UserOBS[bpws:getVariableData('rowNum')]/ns2:OBSObjectId"/>
+                                </copy>
+                                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                  <from variable="ReadOnlyProfileId"/>
+                                  <to variable="CreateUbsin" part="params"
+                                      query="/ns2:CreateUserOBS/ns2:UserOBS[bpws:getVariableData('rowNum')]/ns2:ProjectProfileObjectId"/>
+                                </copy>
+                                <copy>
+                                  <from expression="''"/>
+                                  <to variable="tmpOBS"/>
+                                </copy>
+                                <copy>
+                                  <from expression="''"/>
+                                  <to variable="tmpOBSObjectId"/>
+                                </copy>
+                              </assign>
+                            </sequence>
+                          </sequence>
+                        </scope>
+                      </case>
+                      <otherwise>
+                        <empty name="NO-mapping-for-TimelineEditRawAssigned"/>
+                      </otherwise>
+                    </switch>
+                  </sequence>
+                  <sequence name="SKIP-When-ProjectViewAssigned-Null"
+                            bpelx:skipCondition="bpws:getVariableData('ProjectViewAssigned')=''">
+                    <switch name="Switch-ProjectViewAssigned">
+                      <case condition="bpws:getVariableData('inputVariable','payload','/client:update/ns3:roles/ns3:appRoles/ns3:appRole[@refAppRole=bpws:getVariableData(&quot;roleIdIPMS&quot;)]')=bpws:getVariableData('ProjectViewAssigned')">
+                        <bpelx:annotation>
+                          <bpelx:general>
+                            <bpelx:property name="userLabel">
+                              <![CDATA[exists-mapping-for-ProjectViewAssigned]]>
+                            </bpelx:property>
+                          </bpelx:general>
+                        </bpelx:annotation>
+                        <scope name="Exists-mapping-for-ProjectViewAssigned"
+                               variableAccessSerializable="no">
+                          <sequence name="CheckRole-ProjectViewAssignedDev">
+                            <assign name="IfOBS-RAW">
+                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                <from expression="concat(bpws:getVariableData('typeProgramId'),'-RAW')"/>
+                                <to variable="tmpOBS"/>
+                              </copy>
+                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                <from variable="ReadObsout" part="result"
+                                      query="/ns1:ReadOBSResponse/ns1:OBS[ns1:Name=bpws:getVariableData('tmpOBS')]/ns1:ObjectId"/>
+                                <to variable="tmpOBSObjectId"/>
+                              </copy>
+                              <copy>
+                                <from expression="bpws:getVariableData('ReadCfgout','payload','/client:config/client:role/client:profiles/client:profile[client:name=&quot;ReadOnly&quot; and client:scope=&quot;Project&quot;]/@id')"/>
+                                <to variable="ReadOnlyProfileId"/>
+                              </copy>
+                            </assign>
+                            <sequence name="ProjectViewAssignedDev-RAW-else-SKIP"
+                                      bpelx:skipCondition="bpws:getVariableData('tmpOBSObjectId')='' or count(bpws:getVariableData('CreateUbsin','params','/ns2:CreateUserOBS/ns2:UserOBS[ns2:OBSObjectId=bpws:getVariableData(&quot;tmpOBSObjectId&quot;) and ns2:UserObjectId=bpws:getVariableData(&quot;userIdP6&quot;)]/ns2:OBSObjectId'))>0">
+                              <assign name="ProjectViewAssignedDev-RAW">
+                                <copy>
+                                  <from expression="bpws:getVariableData('rowNum')+1"/>
+                                  <to variable="rowNum"/>
+                                </copy>
+                                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                  <from variable="userIdP6"/>
+                                  <to variable="CreateUbsin" part="params"
+                                      query="/ns2:CreateUserOBS/ns2:UserOBS[bpws:getVariableData('rowNum')]/ns2:UserObjectId"/>
+                                </copy>
+                                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                  <from variable="tmpOBSObjectId"/>
+                                  <to variable="CreateUbsin" part="params"
+                                      query="/ns2:CreateUserOBS/ns2:UserOBS[bpws:getVariableData('rowNum')]/ns2:OBSObjectId"/>
+                                </copy>
+                                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                  <from variable="ReadOnlyProfileId"/>
+                                  <to variable="CreateUbsin" part="params"
+                                      query="/ns2:CreateUserOBS/ns2:UserOBS[bpws:getVariableData('rowNum')]/ns2:ProjectProfileObjectId"/>
+                                </copy>
+                                <copy>
+                                  <from expression="''"/>
+                                  <to variable="tmpOBS"/>
+                                </copy>
+                                <copy>
+                                  <from expression="''"/>
+                                  <to variable="tmpOBSObjectId"/>
+                                </copy>
+                              </assign>
+                            </sequence>
+                            <assign name="IfOBS-CUR">
+                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                <from expression="concat(bpws:getVariableData('typeProgramId'),'-CUR')"/>
+                                <to variable="tmpOBS"/>
+                              </copy>
+                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                <from variable="ReadObsout" part="result"
+                                      query="/ns1:ReadOBSResponse/ns1:OBS[ns1:Name=bpws:getVariableData('tmpOBS')]/ns1:ObjectId"/>
+                                <to variable="tmpOBSObjectId"/>
+                              </copy>
+                            </assign>
+                            <sequence name="ProjectViewAssignedDev-CUR-else-SKIP"
+                                      bpelx:skipCondition="bpws:getVariableData('tmpOBSObjectId')='' or count(bpws:getVariableData('CreateUbsin','params','/ns2:CreateUserOBS/ns2:UserOBS[ns2:OBSObjectId=bpws:getVariableData(&quot;tmpOBSObjectId&quot;) and ns2:UserObjectId=bpws:getVariableData(&quot;userIdP6&quot;)]/ns2:OBSObjectId'))>0">
+                              <assign name="ProjectViewAssignedDev-CUR">
+                                <copy>
+                                  <from expression="bpws:getVariableData('rowNum')+1"/>
+                                  <to variable="rowNum"/>
+                                </copy>
+                                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                  <from variable="userIdP6"/>
+                                  <to variable="CreateUbsin" part="params"
+                                      query="/ns2:CreateUserOBS/ns2:UserOBS[bpws:getVariableData('rowNum')]/ns2:UserObjectId"/>
+                                </copy>
+                                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                  <from variable="tmpOBSObjectId"/>
+                                  <to variable="CreateUbsin" part="params"
+                                      query="/ns2:CreateUserOBS/ns2:UserOBS[bpws:getVariableData('rowNum')]/ns2:OBSObjectId"/>
+                                </copy>
+                                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                  <from variable="ReadOnlyProfileId"/>
+                                  <to variable="CreateUbsin" part="params"
+                                      query="/ns2:CreateUserOBS/ns2:UserOBS[bpws:getVariableData('rowNum')]/ns2:ProjectProfileObjectId"/>
+                                </copy>
+                                <copy>
+                                  <from expression="''"/>
+                                  <to variable="tmpOBS"/>
+                                </copy>
+                                <copy>
+                                  <from expression="''"/>
+                                  <to variable="tmpOBSObjectId"/>
+                                </copy>
+                              </assign>
+                            </sequence>
+                            <assign name="IfOBS-APR">
+                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                <from expression="concat(bpws:getVariableData('typeProgramId'),'-APR')"/>
+                                <to variable="tmpOBS"/>
+                              </copy>
+                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                <from variable="ReadObsout" part="result"
+                                      query="/ns1:ReadOBSResponse/ns1:OBS[ns1:Name=bpws:getVariableData('tmpOBS')]/ns1:ObjectId"/>
+                                <to variable="tmpOBSObjectId"/>
+                              </copy>
+                            </assign>
+                            <sequence name="ProjectViewAssignedDev-APR-else-SKIP"
+                                      bpelx:skipCondition="bpws:getVariableData('tmpOBSObjectId')='' or count(bpws:getVariableData('CreateUbsin','params','/ns2:CreateUserOBS/ns2:UserOBS[ns2:OBSObjectId=bpws:getVariableData(&quot;tmpOBSObjectId&quot;) and ns2:UserObjectId=bpws:getVariableData(&quot;userIdP6&quot;)]/ns2:OBSObjectId'))>0">
+                              <assign name="ProjectViewAssignedDev-APR">
+                                <copy>
+                                  <from expression="bpws:getVariableData('rowNum')+1"/>
+                                  <to variable="rowNum"/>
+                                </copy>
+                                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                  <from variable="userIdP6"/>
+                                  <to variable="CreateUbsin" part="params"
+                                      query="/ns2:CreateUserOBS/ns2:UserOBS[bpws:getVariableData('rowNum')]/ns2:UserObjectId"/>
+                                </copy>
+                                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                  <from variable="tmpOBSObjectId"/>
+                                  <to variable="CreateUbsin" part="params"
+                                      query="/ns2:CreateUserOBS/ns2:UserOBS[bpws:getVariableData('rowNum')]/ns2:OBSObjectId"/>
+                                </copy>
+                                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                  <from variable="ReadOnlyProfileId"/>
+                                  <to variable="CreateUbsin" part="params"
+                                      query="/ns2:CreateUserOBS/ns2:UserOBS[bpws:getVariableData('rowNum')]/ns2:ProjectProfileObjectId"/>
+                                </copy>
+                                <copy>
+                                  <from expression="''"/>
+                                  <to variable="tmpOBS"/>
+                                </copy>
+                                <copy>
+                                  <from expression="''"/>
+                                  <to variable="tmpOBSObjectId"/>
+                                </copy>
+                              </assign>
+                            </sequence>
+                            <assign name="IfOBS-SND">
+                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                <from expression="concat(bpws:getVariableData('typeProgramId'),'-SND')"/>
+                                <to variable="tmpOBS"/>
+                              </copy>
+                              <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                <from variable="ReadObsout" part="result"
+                                      query="/ns1:ReadOBSResponse/ns1:OBS[ns1:Name=bpws:getVariableData('tmpOBS')]/ns1:ObjectId"/>
+                                <to variable="tmpOBSObjectId"/>
+                              </copy>
+                            </assign>
+                            <sequence name="ProjectViewAssignedDev-SND-else-SKIP"
+                                      bpelx:skipCondition="bpws:getVariableData('tmpOBSObjectId')='' or count(bpws:getVariableData('CreateUbsin','params','/ns2:CreateUserOBS/ns2:UserOBS[ns2:OBSObjectId=bpws:getVariableData(&quot;tmpOBSObjectId&quot;) and ns2:UserObjectId=bpws:getVariableData(&quot;userIdP6&quot;)]/ns2:OBSObjectId'))>0">
+                              <assign name="ProjectViewAssignedDev-SND">
+                                <copy>
+                                  <from expression="bpws:getVariableData('rowNum')+1"/>
+                                  <to variable="rowNum"/>
+                                </copy>
+                                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                  <from variable="userIdP6"/>
+                                  <to variable="CreateUbsin" part="params"
+                                      query="/ns2:CreateUserOBS/ns2:UserOBS[bpws:getVariableData('rowNum')]/ns2:UserObjectId"/>
+                                </copy>
+                                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                  <from variable="tmpOBSObjectId"/>
+                                  <to variable="CreateUbsin" part="params"
+                                      query="/ns2:CreateUserOBS/ns2:UserOBS[bpws:getVariableData('rowNum')]/ns2:OBSObjectId"/>
+                                </copy>
+                                <copy bpelx:ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                  <from variable="ReadOnlyProfileId"/>
+                                  <to variable="CreateUbsin" part="params"
+                                      query="/ns2:CreateUserOBS/ns2:UserOBS[bpws:getVariableData('rowNum')]/ns2:ProjectProfileObjectId"/>
+                                </copy>
+                                <copy>
+                                  <from expression="''"/>
+                                  <to variable="tmpOBS"/>
+                                </copy>
+                                <copy>
+                                  <from expression="''"/>
+                                  <to variable="tmpOBSObjectId"/>
+                                </copy>
+                              </assign>
+                            </sequence>
+                          </sequence>
+                        </scope>
+                      </case>
+                      <otherwise>
+                        <empty name="NO-mapping-for-ProjectViewAssigned"/>
+                      </otherwise>
+                    </switch>
+                  </sequence>
+                </sequence>
+              </scope>
+            </sequence>
+          </while>
+        </sequence>
+      </scope>
+      <sequence name="DeleteUbs-SKIP-Count0"
+                bpelx:skipCondition="count(bpws:getVariableData('DeleteUbsin','params','/ns2:DeleteUserOBS/ns2:ObjectId/ns2:UserObjectId'))=0">
+        <scope name="DeleteUbs" variableAccessSerializable="no">
+          <compensationHandler>
+            <scope name="CompensationDeleteUbs" variableAccessSerializable="no">
+              <variables>
+                <variable name="CreateDeletedUbsIn"
+                          messageType="ns2:CreateUserOBS"/>
+                <variable name="CreateDeletedUbsOut"
+                          messageType="ns2:CreateUserOBSResponse"/>
+              </variables>
+              <faultHandlers>
+                <catchAll>
+                  <empty name="SkipCompensationErrors"/>
+                </catchAll>
+              </faultHandlers>
+              <sequence name="CompensationDeleteUbs-SKIP"
+                        bpelx:skipCondition="count(bpws:getVariableData('DeleteUbsin','params','/ns2:DeleteUserOBS/ns2:ObjectId/ns2:UserObjectId'))=0">
+                <assign name="AssignStartCompensation">
+                  <copy>
+                    <from expression="'DeleteUbs'"/>
+                    <to variable="faultVariable" part="payload"
+                        query="/client:response/ns3:error/ns3:rollbacks/ns3:rollback/ns3:name"/>
+                  </copy>
+                  <copy>
+                    <from expression="xp20:current-dateTime()"/>
+                    <to variable="faultVariable" part="payload"
+                        query="/client:response/ns3:error/ns3:rollbacks/ns3:rollback/ns3:startTime"/>
+                  </copy>
+                  <copy bpelx:ignoreMissingFromData="yes"
+                        bpelx:insertMissingToData="yes">
+                    <from variable="ReadUbsout" part="result"
+                          query="/ns2:ReadUserOBSResponse/ns2:UserOBS"/>
+                    <to variable="CreateDeletedUbsIn" part="params"
+                        query="/ns2:CreateUserOBS/ns2:UserOBS"/>
+                  </copy>
+                </assign>
+                <invoke name="CreateDeletedUbs-SKIP"
+                        inputVariable="CreateDeletedUbsIn"
+                        outputVariable="CreateDeletedUbsOut"
+                        partnerLink="UserOBSService"
+                        portType="ns2:UserOBSPortType" operation="CreateUserOBS"
+                        bpelx:invokeAsDetail="no"
+                        bpelx:skipCondition="count(bpws:getVariableData('CreateDeletedUbsIn','params','/ns2:CreateUserOBS/ns2:UserOBS/ns2:OBSObjectId'))=0"/>
+                <assign name="AssignEndCompensation">
+                  <copy bpelx:insertMissingToData="yes">
+                    <from expression="xp20:current-dateTime()"/>
+                    <to variable="faultVariable" part="payload"
+                        query="/client:response/ns3:error/ns3:rollbacks/ns3:rollback[ns3:name='DeleteUbs']/ns3:finishTime"/>
+                  </copy>
+                </assign>
+              </sequence>
+            </scope>
+          </compensationHandler>
+          <invoke name="DeleteUbs" inputVariable="DeleteUbsin"
+                  outputVariable="DeleteUbsout" partnerLink="UserOBSService"
+                  portType="ns2:UserOBSPortType" operation="DeleteUserOBS"
+                  bpelx:invokeAsDetail="no"/>
+        </scope>
+      </sequence>
+      <sequence name="CreateUbs-SKIP-Count0"
+                bpelx:skipCondition="count(bpws:getVariableData('CreateUbsin','params','/ns2:CreateUserOBS/ns2:UserOBS/ns2:UserObjectId'))=0">
+        <invoke name="CreateUbs" inputVariable="CreateUbsin"
+                outputVariable="CreateUbsout" partnerLink="UserOBSService"
+                portType="ns2:UserOBSPortType" operation="CreateUserOBS"
+                bpelx:invokeAsDetail="no"/>
+      </sequence>
+    </sequence>
+    <assign name="AssignOutput">
+      <copy>
+        <from variable="inputVariable" part="payload"
+              query="/client:update/ns3:roles"/>
+        <to variable="outputVariable" part="payload"
+            query="/client:response/client:complete/ns3:roles"/>
+      </copy>
+      <copy>
+        <from variable="inputVariable" part="payload"
+              query="/client:update/@id"/>
+        <to variable="outputVariable" part="payload"
+            query="/client:response/client:complete/@id"/>
+      </copy>
+      <copy>
+        <from variable="inputVariable" part="payload"
+              query="/client:update/@id"/>
+        <to variable="outputVariable" part="payload"
+            query="/client:response/@id"/>
+      </copy>
+    </assign>
+    <invoke name="callbackOutput" bpelx:invokeAsDetail="no"
+            inputVariable="outputVariable" partnerLink="UpdateRolesService"
+            portType="client:UpdateRolesCallback" operation="callback"/>
+    <!-- Generate reply to synchronous request -->
+  </sequence>
+</process>

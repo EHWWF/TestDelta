@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.61.92" id="noticesPageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="Root.ReportAppModule.NoticeView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="NoticeViewIterator" Refresh="always" ChangeEventPolicy="ppr">
+      <sortCriteria>
+        <sort attribute="CreateDate" ascending="false"/>
+      </sortCriteria>
+    </iterator>
+    <searchRegion Binds="NoticeViewIterator" Criteria="Filter"
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="NoticeViewQuery"/>
+    <page path="com.bayer.ipms.view.pageDefs.ipms_page_templatePageDef"
+          id="tmpl"/>
+    <iterator Binds="Root.ReportAppModule.FPSLogView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="FPSLogViewIterator"/>
+    <searchRegion Criteria="FPS"
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="FPSLogViewIterator" id="FPSQuery"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="NoticeViewIterator" id="NoticeView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.NoticeView"
+                      Name="NoticeView0">
+        <AttrNames>
+          <Item Value="Id"/>
+          <Item Value="Subject"/>
+          <Item Value="CreateDate"/>
+          <Item Value="SeverityName"/>
+          <Item Value="Content"/>
+          <Item Value="SeverityCode"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="FPSLogViewIterator" id="FPSLogView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.ProjectAuditView"
+                      Name="FPSLogView0">
+        <AttrNames>
+          <Item Value="CreateDate"/>
+          <Item Value="ProjectCode"/>
+          <Item Value="ProjectName"/>
+          <Item Value="ChangeComment"/>
+          <Item Value="ProjectId"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+  </bindings>
+</pageDefinition>

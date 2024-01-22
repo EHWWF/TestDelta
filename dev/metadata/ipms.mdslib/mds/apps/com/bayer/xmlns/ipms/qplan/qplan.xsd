@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			xmlns:ipms="http://xmlns.bayer.com/ipms"
+			xmlns:ipms-qplan="http://xmlns.bayer.com/ipms/qplan"
+			targetNamespace="http://xmlns.bayer.com/ipms/qplan"
+			elementFormDefault="qualified">
+			
+	<xsd:import namespace="http://xmlns.bayer.com/ipms" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/types.xsd"/>
+	
+	<xsd:complexType name="masterData">
+		<xsd:sequence>
+			<xsd:element name="entry" minOccurs="0" maxOccurs="unbounded">
+			<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="key" type="xsd:string" />
+				<xsd:element name="value" type="xsd:string" />
+			</xsd:sequence>
+			</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="decisionMilestones">
+		<xsd:sequence>
+			<xsd:element name="milestone" minOccurs="0" maxOccurs="unbounded">
+			<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="milestoneCode" type="xsd:string" />
+				<xsd:element name="planDate" type="xsd:dateTime" minOccurs="0" nillable="true" />
+				<xsd:element name="actualDate" type="xsd:dateTime" minOccurs="0" nillable="true" />
+				<xsd:element name="genericDate" type="xsd:dateTime" minOccurs="0" nillable="true" />
+			</xsd:sequence>
+			</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="outOfSync" type="xsd:boolean" use="optional" default="false" />
+	</xsd:complexType>
+	
+	<xsd:complexType name="ptrValues">
+		<xsd:sequence>
+			<xsd:element name="ptr" minOccurs="0" maxOccurs="unbounded">
+			<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="phase" type="xsd:string" />
+				<xsd:element name="defaultProbability" type="xsd:decimal" minOccurs="0" nillable="true" />
+				<xsd:element name="projectProbability" type="xsd:decimal" minOccurs="0" nillable="true" />
+			</xsd:sequence>
+			</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>	
+	
+
+	<xsd:element name="callQPlan">
+		<xsd:complexType>
+		<xsd:complexContent>
+		<xsd:extension base="ipms:messageType">
+		<xsd:choice>
+			<xsd:element name="createProject">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="masterData" type="ipms-qplan:masterData" />
+						<xsd:element name="decisionMilestones" type="ipms-qplan:decisionMilestones" />
+						<xsd:element name="ptrValues" type="ipms-qplan:ptrValues" minOccurs="0" />
+					</xsd:sequence>
+					<xsd:attribute name="cwid" type="ipms:identifierType" use="required" />
+					<xsd:attribute name="projectId" type="ipms:identifierType" use="required" />
+					<xsd:attribute name="projectCode" type="ipms:codeType" use="optional" />
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="updateProject">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="masterData" type="ipms-qplan:masterData" minOccurs="0" />
+						<xsd:element name="decisionMilestones" type="ipms-qplan:decisionMilestones" minOccurs="0" />
+						<xsd:element name="ptrValues" type="ipms-qplan:ptrValues" minOccurs="0" />
+					</xsd:sequence>
+					<xsd:attribute name="cwid" type="ipms:identifierType" use="required" />
+					<xsd:attribute name="projectId" type="ipms:identifierType" use="required" />
+					<xsd:attribute name="projectCode" type="ipms:codeType" use="optional" />
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="readTimeline">
+				<xsd:complexType>
+					<xsd:attribute name="cwid" type="ipms:identifierType" use="required" />
+					<xsd:attribute name="projectId" type="ipms:identifierType" use="required" />
+					<xsd:attribute name="projectCode" type="ipms:codeType" use="required" />
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="readPlaceholderStudies">
+				<xsd:complexType>
+					<xsd:attribute name="cwid" type="ipms:identifierType" use="required" />
+					<xsd:attribute name="projectId" type="ipms:identifierType" use="required" />
+					<xsd:attribute name="projectCode" type="ipms:codeType" use="required" />
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:choice>
+		</xsd:extension>
+		</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	
+</xsd:schema>

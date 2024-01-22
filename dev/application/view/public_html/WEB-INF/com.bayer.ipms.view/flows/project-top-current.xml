@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="project-top-current">
+    <template-reference>
+      <document id="__2">/WEB-INF/com.bayer.ipms.view/templates/ipms-taskflow-template-fragment.xml</document>
+      <id id="__1">ipms-taskflow-template-fragment</id>
+    </template-reference>
+    <default-activity id="__4">initProjectTopCurrentScreen</default-activity>
+    <data-control-scope id="__19">
+      <shared/>
+    </data-control-scope>
+    <input-parameter-definition id="__11">
+      <name>projectId</name>
+      <value>#{pageFlowScope.projectId}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+      <input-parameter-definition id="__15s">
+      <name>projectType</name>
+      <value>#{pageFlowScope.projectType}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <managed-bean id="__50">
+      <managed-bean-name id="__47">projectViewBean</managed-bean-name>
+      <managed-bean-class id="__48">com.bayer.ipms.view.beans.ProjectViewBean</managed-bean-class>
+      <managed-bean-scope id="__49">pageFlow</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__6">
+      <managed-bean-name id="__8">programViewBean</managed-bean-name>
+      <managed-bean-class id="__15">com.bayer.ipms.view.beans.ProgramViewBean</managed-bean-class>
+      <managed-bean-scope id="__9">pageFlow</managed-bean-scope>
+    </managed-bean>
+    <exception-handler id="__3">handleException</exception-handler>
+    <view id="view">
+      <page>/WEB-INF/com.bayer.ipms.view/fragments/project-top-current.jsff</page>
+    </view>
+    <task-flow-call id="program-top">
+      <task-flow-reference>
+        <document>/WEB-INF/com.bayer.ipms.view/flows/program-top.xml</document>
+        <id>program-top</id>
+      </task-flow-reference>
+      <input-parameter id="__10">
+        <name>mode</name>
+        <value>project</value>
+      </input-parameter>
+      <input-parameter id="__14">
+        <name>projectType</name>
+        <value>#{pageFlowScope.projectType}</value>
+      </input-parameter>
+    </task-flow-call>
+    <method-call id="initProjectTopCurrentScreen">
+      <method>#{pageFlowScope.projectViewBean.initProjectTopCurrentScreen}</method>
+      <outcome>
+        <fixed-outcome>next</fixed-outcome>
+      </outcome>
+    </method-call>
+    <control-flow-rule id="__5">
+      <from-activity-id>view</from-activity-id>
+      <control-flow-case id="__7">
+        <from-outcome>edit-top</from-outcome>
+        <to-activity-id>program-top</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__12">
+      <from-activity-id>initProjectTopCurrentScreen</from-activity-id>
+      <control-flow-case id="__13">
+        <from-outcome>next</from-outcome>
+        <to-activity-id>view</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+   
+  </task-flow-definition>
+</adfc-config>

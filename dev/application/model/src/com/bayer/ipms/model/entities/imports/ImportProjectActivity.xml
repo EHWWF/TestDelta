@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ImportProjectActivity"
+  Version="12.2.1.0.31"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="IMPORT_PROJECT_ACTIVITY"
+  AliasName="ImportProjectActivity"
+  BindingStyle="OracleName"
+  RowClass="com.bayer.ipms.model.base.IPMSEntityImpl"
+  xmlns:validation="http://xmlns.oracle.com/adfm/validation">
+  <Attribute
+    Name="Id"
+    IsNotNull="true"
+    ColumnName="ID"
+    SQLType="NUMERIC"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    TableName="IMPORT_PROJECT_ACTIVITY"
+    PrimaryKey="true"/>
+  <Attribute
+    Name="ImportId"
+    IsUnique="true"
+    IsNotNull="true"
+    ColumnName="IMPORT_ID"
+    SQLType="STRUCT"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    TableName="IMPORT_PROJECT_ACTIVITY"/>
+  <Attribute
+    Name="ProjectId"
+    IsUnique="true"
+    IsNotNull="true"
+    ColumnName="PROJECT_ID"
+    SQLType="STRUCT"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    TableName="IMPORT_PROJECT_ACTIVITY"/>
+  <Attribute
+    Name="ProjectActivityId"
+    IsUnique="true"
+    IsNotNull="true"
+    Precision="100"
+    ColumnName="PROJECT_ACTIVITY_ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="IMPORT_PROJECT_ACTIVITY">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="ProjectActivityName"
+    IsNotNull="true"
+    Precision="240"
+    ColumnName="PROJECT_ACTIVITY_NAME"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="IMPORT_PROJECT_ACTIVITY">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="240"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="P6ActivityId"
+    Precision="100"
+    ColumnName="P6_ACTIVITY_ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="IMPORT_PROJECT_ACTIVITY">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="PlanStartDate"
+    ColumnName="PLAN_START_DATE"
+    SQLType="DATE"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    TableName="IMPORT_PROJECT_ACTIVITY"/>
+  <Attribute
+    Name="PlanFinishDate"
+    ColumnName="PLAN_FINISH_DATE"
+    SQLType="DATE"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    TableName="IMPORT_PROJECT_ACTIVITY"/>
+  <Attribute
+    Name="ActStartDate"
+    ColumnName="ACT_START_DATE"
+    SQLType="DATE"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    TableName="IMPORT_PROJECT_ACTIVITY"/>
+  <Attribute
+    Name="ActFinishDate"
+    ColumnName="ACT_FINISH_DATE"
+    SQLType="DATE"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    TableName="IMPORT_PROJECT_ACTIVITY"/>
+  <Attribute
+    Name="StatusCode"
+    Precision="10"
+    ColumnName="STATUS_CODE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="IMPORT_PROJECT_ACTIVITY">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="StatusDescription"
+    Precision="2000"
+    ColumnName="STATUS_DESCRIPTION"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="IMPORT_PROJECT_ACTIVITY">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="2000"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="WbsCategory"
+    Precision="100"
+    ColumnName="WBS_CATEGORY"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="IMPORT_PROJECT_ACTIVITY">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="StudyId"
+    IsUnique="true"
+    Precision="20"
+    ColumnName="STUDY_ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="IMPORT_PROJECT_ACTIVITY">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="IsManual"
+    IsUnique="true"
+    IsNotNull="true"
+    Precision="1"
+    Scale="0"
+    ColumnName="IS_MANUAL"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="IMPORT_PROJECT_ACTIVITY"/>
+  <Key
+    Name="BusinessUK"
+    AltKey="true">
+    <DesignTime>
+      <Attr Name="_isUnique" Value="true"/>
+      <Attr Name="_DBObjectName" Value="IMPORT_PROJECT_ACTIVITY"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.imports.ImportProjectActivity.ImportId"/>
+      <Item Value="com.bayer.ipms.model.entities.imports.ImportProjectActivity.ProjectActivityId"/>
+      <Item Value="com.bayer.ipms.model.entities.imports.ImportProjectActivity.ProjectId"/>
+      <Item Value="com.bayer.ipms.model.entities.imports.ImportProjectActivity.StudyId"/>
+      <Item Value="com.bayer.ipms.model.entities.imports.ImportProjectActivity.WbsCategory"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="IpactPk"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="IPACT_PK"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.imports.ImportProjectActivity.Id"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="IpactUk1">
+    <DesignTime>
+      <Attr Name="_isUnique" Value="true"/>
+      <Attr Name="_DBObjectName" Value="IPACT_UK1"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.imports.ImportProjectActivity.ImportId"/>
+      <Item Value="com.bayer.ipms.model.entities.imports.ImportProjectActivity.ProjectId"/>
+      <Item Value="com.bayer.ipms.model.entities.imports.ImportProjectActivity.ProjectActivityId"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="IpactImportIdFk">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0052811"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="IPACT_IMPORT_ID_FK"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.imports.ImportProjectActivity.ImportId"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="IpactPhaseCodeFk">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0052734"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="IPACT_PHASE_CODE_FK"/>
+    </DesignTime>
+    <AttrArray Name="Attributes"/>
+  </Key>
+  <Key
+    Name="IpactProjectIdFk">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0052741"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="IPACT_PROJECT_ID_FK"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.imports.ImportProjectActivity.ProjectId"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="IpactSubfunctionIdFk">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0052705"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="IPACT_SUBFUNCTION_ID_FK"/>
+    </DesignTime>
+    <AttrArray Name="Attributes"/>
+  </Key>
+  <validation:UniqueKeyValidationBean
+    Name="BusinessUKValidator"
+    ResId="com.bayer.ipms.model.entities.imports.ImportProjectActivity_Rule_0"
+    KeyName="BusinessUK">
+    <validation:OnAttributes>
+      <validation:Item
+        Value="ImportId"/>
+      <validation:Item
+        Value="ProjectActivityId"/>
+      <validation:Item
+        Value="ProjectId"/>
+      <validation:Item
+        Value="StudyId"/>
+      <validation:Item
+        Value="WbsCategory"/>
+    </validation:OnAttributes>
+  </validation:UniqueKeyValidationBean>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.bayer.ipms.model.bundles.modelBundle"/>
+  </ResourceBundle>
+</Entity>

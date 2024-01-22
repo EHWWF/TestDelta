@@ -1,0 +1,85 @@
+declare
+	v_id number;
+	iii number:=0;
+begin
+for diff in (select * from cost_ltc_fte_fct_copy_vw)-- where ltci_id=1183 and study_id='17426')
+loop
+	iii:=iii+1;
+	select ipms_data.ltc_estimate_id_seq.nextval into v_id from dual; 
+	insert into cost_ltc_fte_fct
+		(
+			ltci_id,
+			estimate_id,
+			period_id,
+			tag_id,
+			ltc_process_id,
+			ltc_year,
+			project_id,
+			timeline_id,
+			wbs_id,
+			study_id,
+			study_name,
+			study_fpfv,
+			study_lplv,
+			project_phase_code,
+			function_code,
+			function_name,
+			top_function_name,
+			function_cost_rate,
+			scope_code,
+			is_external_fte,
+			cost_start_date,
+			cost_finish_date,
+			project_phase_name,
+			study_phase_code,
+			comments,
+			fct_det,
+			fct_prob,
+			ltc_det,
+			ltc_prob,
+			fte_calc,
+			--estimate_create_date,
+			--estimate_update_date,
+			estimate_type_code
+		)
+	 values 
+		(
+			diff.ltci_id,
+			v_id,--diff.estimate_id,
+			diff.period_id,
+			diff.tag_id,
+			diff.ltc_process_id,
+			diff.ltc_year,
+			diff.project_id,
+			diff.timeline_id,
+			diff.wbs_id,
+			diff.study_id,
+			diff.study_name,
+			diff.study_fpfv,
+			diff.study_lplv,
+			diff.project_phase_code,
+			diff.function_code,
+			diff.function_name,
+			diff.top_function_name,
+			diff.function_cost_rate,
+			diff.scope_code,
+			diff.is_external_fte,
+			diff.cost_start_date,
+			diff.cost_finish_date,
+			diff.project_phase_name,
+			diff.study_phase_code,
+			diff.comments,
+			diff.fct_det,
+			null,--diff.fct_prob,
+			diff.ltc_det,
+			null,--diff.ltc_prob,
+			null,--diff.fte_calc,
+			--diff.estimate_create_date,
+			--diff.estimate_update_date,
+			'LTC'--diff.estimate_type_code
+		)
+		;
+	if mod(iii, 1000) = 0 then commit; end if;
+end loop;
+commit;
+end;

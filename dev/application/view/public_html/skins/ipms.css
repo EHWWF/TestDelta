@@ -1,0 +1,55 @@
+/**ADFFaces_Skin_File / DO NOT REMOVE**/
+@namespace af "http://xmlns.oracle.com/adf/faces/rich";
+@namespace dvt "http://xmlns.oracle.com/dss/adf/faces";
+
+af|panelWindow::close-icon-style{display:none;}
+
+af|inputText.empty::content, af|selectOneChoice.empty::content, af|inputDate.empty::content, af|outputText.empty::content {
+    color: silver;
+}
+
+af|panelBox {
+    margin-bottom: 5px;
+}
+
+af|panelFormLayout::label-cell  {
+    white-space: nowrap;
+}
+
+af|inputText::content {
+    resize:none;
+}
+
+af|inputText.warning::content {
+    text-transform: uppercase;
+    color: red;
+}
+
+af|query {
+  -tr-label-alignment: end;
+}
+
+af|query::info {
+  display: none;
+}
+
+/* Hide Filter icon for GreenList and RedList */
+div[id="tmpl\:grLst\:greenListPanelCollection\:_tbr"] {
+    display: none;
+}
+div[id="tmpl\:rdLst\:redListPanelCollection\:_tbr"] {
+    display: none;
+}
+
+/* Hide Advanced button in inputListOfValues component used for employee code selection */
+button[id*="employeeCodeId"][id*="_afrLovInternalQueryId"][id$="mode"]  {  
+    display: none;
+} 
+
+af|menu {
+    -tr-visible-items: 20;
+}
+
+af|inputListOfValues{
+             -tr-stretch-search-dialog: true;
+           }

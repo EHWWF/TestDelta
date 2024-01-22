@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="LeadStudyInstance"
+  Version="12.1.3.2.1"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="LEAD_STUDY_INSTANCE"
+  AliasName="LeadStudyInstance"
+  BindingStyle="OracleName"
+  RowClass="com.bayer.ipms.model.base.IPMSEntityImpl">
+  <Attribute
+    Name="Id"
+    ColumnName="ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="LEAD_STUDY_INSTANCE"
+    PrimaryKey="true"
+    IsUpdateable="false"
+    RetrievedOnInsert="true"
+    Precision="50"/>
+  <Attribute
+    Name="ProjectId"
+    ColumnName="PROJECT_ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="LEAD_STUDY_INSTANCE"
+    Precision="30"/>
+  <Key
+    Name="SysC0066990"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0066990"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.LeadStudyInstance.Id"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0066991">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0043880"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0066991"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.LeadStudyInstance.ProjectId"/>
+    </AttrArray>
+  </Key>
+</Entity>

@@ -1,0 +1,778 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:h="http://java.sun.com/jsf/html">
+    <af:componentDef>
+        <c:set var="bundle" value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+        <af:panelGroupLayout id="overview" layout="scroll">
+            <af:panelGridLayout>
+                <af:gridRow height="auto">
+                    <af:gridCell width="100%" halign="stretch">
+                        <af:subform id="parametersEditArea">
+                            <af:panelBox showDisclosure="false" type="flow" text="#{bundle.projectParameters}"
+                                         background="#{pageFlowScope.projectViewBean.editable eq 'parametersEditArea' ? 'light' : 'default'}"
+                                         helpTopicId="HELP_PROJECT_#{fn:toUpperCase(pageFlowScope.projectType)}_OVERVIEW_CHARACTERISTICS"
+                                         styleClass="AFStretchWidth">
+                                <f:facet name="toolbar">
+                                    <af:toolbar rendered="#{rolesBean.projectEditDev or rolesBean.projectEditPrdMnt or rolesBean.projectEditD2Prj or rolesBean.projectEditSAMD or rolesBean.projectEditD3Tr or rolesBean.projectEditRs or rolesBean.projectEditLg or rolesBean.projectEditCo or rolesBean.projectEditLo}"
+                                                id="t1">
+                                        <af:commandToolbarButton icon="/images/edit.png" immediate="true"
+                                                                 rendered="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea'}"
+                                                                 disabled="#{not empty pageFlowScope.projectViewBean.editable}"
+                                                                 actionListener="#{pageFlowScope.projectViewBean.onEdit}"
+                                                                 text="#{bundle.globalEdit}">
+                                            <f:attribute name="target" value="parametersEditArea"/>
+                                        </af:commandToolbarButton>
+                                        <af:commandToolbarButton rendered="#{pageFlowScope.projectViewBean.editable eq 'parametersEditArea'}"
+                                                                 icon="/images/commit.png"
+                                                                 id="btnOverviewCharactOk"
+                                                                 actionListener="#{pageFlowScope.projectViewBean.onCommit}"
+                                                                 text="#{bundle.globalOk}"/>
+                                        <af:commandToolbarButton rendered="#{pageFlowScope.projectViewBean.editable eq 'parametersEditArea'}"
+                                                                 icon="/images/rollback.png"
+                                                                 id="btnOverviewCharactCancel"
+                                                                 actionListener="#{pageFlowScope.projectViewBean.onRollback}"
+                                                                 immediate="true" text="#{bundle.globalCancel}"/>
+                                    </af:toolbar>
+                                </f:facet>
+                                <af:panelFormLayout maxColumns="2" rows="2" styleClass="AFStretchWidth"
+                                                    fieldWidth="100%" partialTriggers="state collab">
+                                    <af:inputText value="#{bindings.PidtBuName.inputValue}"
+                                                  label="#{bindings.PidtBuName.hints.label}"
+                                                  required="#{bindings.PidtBuName.hints.mandatory}"
+                                                  columns="#{bindings.PidtBuName.hints.displayWidth}"
+                                                  maximumLength="#{bindings.PidtBuName.hints.precision}"
+                                                  shortDesc="#{bindings.PidtBuName.hints.tooltip}"
+                                                  rendered="#{bindings.AreaCode eq 'PRD-MNT' or bindings.AreaCode eq 'D3-TR' or bindings.AreaCode eq 'CO' or bindings.AreaCode eq 'LO' or bindings.AreaCode eq 'LG' or bindings.AreaCode eq 'RS'}"
+                                                  readOnly="true" id="dc_it3"/>
+                                    <af:selectOneChoice value="#{bindings.TaCode.inputValue}"
+                                                        label="#{bindings.TaCode.label}"
+                                                        required="#{bindings.AreaCode eq 'PRE-POT' or bindings.AreaCode eq 'POST-POT'}"
+                                                        shortDesc="#{bindings.TaCode.hints.tooltip}" id="soc1"
+                                                        rendered="#{bindings.AreaCode eq 'PRE-POT' or bindings.AreaCode eq 'POST-POT' or bindings.AreaCode eq 'PRD-MNT' or bindings.AreaCode eq 'D3-TR' or bindings.AreaCode eq 'CO' or bindings.AreaCode eq 'LO' or bindings.AreaCode eq 'LG' or bindings.AreaCode eq 'RS' or bindings.AreaCode eq 'D2-PRJ' or bindings.AreaCode eq 'SAMD'}"
+                                                        unselectedLabel="#{bundle.globalNotAvailable}"
+                                                        readOnly="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea'}"
+                                                        styleClass="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea' and bindings.TaCode.inputValue eq null ? 'empty' : ''}">
+                                        <f:selectItems value="#{utilsBean.lookup[bindings.ProjectViewIterator.currentRow.therapeuticAreaView]}"
+                                                       id="dc_si1"/>
+                                    </af:selectOneChoice>
+                                    <af:selectOneChoice value="#{bindings.StateCode.inputValue}"
+                                                        label="#{bindings.StateCode.label}" required="true"
+                                                        shortDesc="#{bindings.StateCode.hints.tooltip}" id="state"
+                                                        rendered="true" unselectedLabel="#{bundle.globalNotAvailable}"
+                                                        readOnly="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea' or not (rolesBean.projectEditD2Prj or rolesBean.projectEditSAMD or rolesBean.projectEditDevOnlyGlobal or rolesBean.projectEditPrdMntOnlyGlobal or rolesBean.projectEditD3TrOnlyGlobal or rolesBean.projectEditRs or rolesBean.projectEditLg or rolesBean.projectEditLo or rolesBean.projectEditCo)}"
+                                                        styleClass="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea' and bindings.StateCode.inputValue eq null ? 'empty' : 'AFStretchWidth'}">
+                                        <f:selectItems value="#{utilsBean.lookup[bindings.ProjectViewIterator.currentRow.projectStateView]}"
+                                                       id="dc_si4"/>
+                                    </af:selectOneChoice>
+                                    <af:inputText value="#{bindings.AreaName.inputValue}"
+                                                  label="#{bindings.AreaName.hints.label}"
+                                                  required="#{bindings.AreaName.hints.mandatory}"
+                                                  columns="#{bindings.AreaName.hints.displayWidth}"
+                                                  maximumLength="#{bindings.AreaName.hints.precision}"
+                                                  shortDesc="#{bindings.AreaName.hints.tooltip}"
+                                                  rendered="#{bindings.AreaCode eq 'PRD-MNT' or bindings.AreaCode eq 'D3-TR' or bindings.AreaCode eq 'CO' or bindings.AreaCode eq 'LO' or bindings.AreaCode eq 'LG' or bindings.AreaCode eq 'RS' or bindings.AreaCode eq 'D2-PRJ' or bindings.AreaCode eq 'SAMD'}"
+                                                  id="dc_it1">
+                                        <f:validator binding="#{bindings.AreaName.validator}"/>
+                                    </af:inputText>
+                                    <af:selectOneChoice value="#{bindings.AreaCode.inputValue}"
+                                                        label="#{bindings.AreaCode.label}" required="true"
+                                                        shortDesc="#{bindings.AreaCode.hints.tooltip}" id="soc6"
+                                                        rendered="#{bindings.AreaCode eq 'PRE-POT' or bindings.AreaCode eq 'POST-POT'}"
+                                                        unselectedLabel="#{bundle.globalNotAvailable}"
+                                                        readOnly="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea' or not rolesBean.projectEditDev}"
+                                                        styleClass="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea' and bindings.AreaCode.inputValue eq null ? 'empty' : ''}">
+                                        <f:selectItems value="#{utilsBean.lookup[bindings.ProjectViewIterator.currentRow.projectAreaView]}"
+                                                       id="dc_si5"/>
+                                    </af:selectOneChoice>
+                                    <af:selectOneChoice value="#{bindings.TcCode.inputValue}"
+                                                        label="#{bindings.TcCode.label}"
+                                                        required="false"
+                                                        shortDesc="#{bindings.TcCode.hints.tooltip}" id="dc_soc5"
+                                                        rendered="#{bindings.AreaCode eq 'D2-PRJ'}"
+                                                        unselectedLabel="#{bundle.globalNotAvailable}"
+                                                        readOnly="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea'}"
+                                                        styleClass="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea' and bindings.TcCode.inputValue eq null ? 'empty' : 'AFStretchWidth'}">
+                                        <f:selectItems value="#{utilsBean.lookup[bindings.ProjectViewIterator.currentRow.targetClassView]}"
+                                                       id="dc_si14"/>
+                                    </af:selectOneChoice>
+                                    <af:selectOneChoice value="#{bindings.ToCode.inputValue}"
+                                                        label="#{bindings.ToCode.label}"
+                                                        required="false"
+                                                        shortDesc="#{bindings.ToCode.hints.tooltip}" id="dc_soc6"
+                                                        rendered="#{bindings.AreaCode eq 'D2-PRJ'}"
+                                                        unselectedLabel="#{bundle.globalNotAvailable}"
+                                                        readOnly="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea'}"
+                                                        styleClass="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea' and bindings.ToCode.inputValue eq null ? 'empty' : ''}">
+                                        <f:selectItems value="#{utilsBean.lookup[bindings.ProjectViewIterator.currentRow.targetOriginView]}"
+                                                       id="dc_si15"/>
+                                    </af:selectOneChoice>
+                                    <af:selectOneChoice value="#{bindings.PriorityCode2.inputValue}"
+                                                        label="#{bindings.PriorityCode2.label}"
+                                                        required="#{bindings.PriorityCode2.hints.mandatory}"
+                                                        shortDesc="#{bindings.LoReviewResultCode.hints.tooltip}"
+                                                        id="dc_soc4n"
+                                                        readOnly="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea'}"
+                                                        rendered="#{bindings.AreaCode eq 'PRE-POT' or bindings.AreaCode eq 'POST-POT'}">
+                                        <f:selectItems value="#{utilsBean.lookup[bindings.ProjectViewIterator.currentRow.priorityView]}" id="dc_sin"/>
+                                        <f:validator binding="#{bindings.PriorityCode2.validator}"/>
+                                    </af:selectOneChoice>
+                                    <af:selectOneChoice value="#{bindings.SourceCode.inputValue}"
+                                                        label="#{bindings.SourceCode.label}" required="true"
+                                                        shortDesc="#{bindings.SourceCode.hints.tooltip}" id="soc75"
+                                                        rendered="#{bindings.AreaCode eq 'SAMD'}"
+                                                        unselectedLabel="#{bundle.globalNotAvailable}"
+                                                        readOnly="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea' or not (rolesBean.projectEditSAMD)}"
+                                                        styleClass="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea' and bindings.SourceCode.inputValue eq null ? 'empty' : ''}">
+                                        <f:selectItems value="#{utilsBean.lookup[bindings.ProjectViewIterator.currentRow.projectSourceView]}"
+                                                       id="dc_si66"/>
+                                    </af:selectOneChoice>
+                                    <af:selectOneChoice value="#{bindings.PhaseCode.inputValue}"
+                                                        label="#{bindings.PhaseCode.label}" required="true"
+                                                        shortDesc="#{bindings.PhaseCode.hints.tooltip}" id="soc054"
+                                                        rendered="#{bindings.AreaCode eq 'SAMD'}"
+                                                        unselectedLabel="#{bundle.globalNotAvailable}"
+                                                        readOnly="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea' or not rolesBean.projectEditSAMD}"
+                                                        styleClass="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea' and bindings.PhaseCode.inputValue eq null ? 'empty' : 'AFStretchWidth'}">
+                                        <f:selectItems value="#{utilsBean.lookup[bindings.ProjectViewIterator.currentRow.projectPhaseViewSAMD]}"
+                                                       id="dc_si094"/>
+                                    </af:selectOneChoice>
+                                </af:panelFormLayout>
+                                <af:separator id="s4123"
+                                              rendered="#{bindings.AreaCode eq 'PRE-POT' or bindings.AreaCode eq 'POST-POT' or bindings.AreaCode eq 'PRD-MNT' or bindings.AreaCode eq 'D3-TR' or bindings.AreaCode eq 'D2-PRJ' or bindings.AreaCode eq 'RS' or bindings.AreaCode eq 'LO' or bindings.AreaCode eq 'LG'}"/>
+                                <af:panelFormLayout maxColumns="2" rows="3" styleClass="AFStretchWidth"
+                                                    fieldWidth="100%" partialTriggers="state collab">
+                                    <af:inputText value="#{empty bindings.DevelopmentPhaseName.inputValue ? bundle.globalNotAvailable : bindings.DevelopmentPhaseName.inputValue}"
+                                                  label="#{bindings.DevelopmentPhaseName.hints.label}" id="it1"
+                                                  rendered="#{bindings.AreaCode eq 'PRE-POT' or bindings.AreaCode eq 'POST-POT' or bindings.AreaCode eq 'PRD-MNT' or bindings.AreaCode eq 'D3-TR'}"
+                                                  readOnly="true"
+                                                  styleClass="#{empty bindings.DevelopmentPhaseName.inputValue ? 'empty' : ''}">
+                                        <f:validator binding="#{bindings.DevelopmentPhaseName.validator}"/>
+                                    </af:inputText>
+                                    <af:inputText value="#{bindings.PlanningCode.inputValue}"
+                                                  label="#{bindings.PlanningCode.hints.label}"
+                                                  required="#{bindings.PlanningCode.hints.mandatory}"
+                                                  rendered="#{(bindings.AreaCode eq 'D2-PRJ' or bindings.AreaCode eq 'RS' or bindings.AreaCode eq 'LO' or bindings.AreaCode eq 'LG') and  pageFlowScope.projectViewBean.editable ne 'parametersEditArea'}"
+                                                  readOnly="true" columns="#{bindings.PlanningCode.hints.displayWidth}"
+                                                  maximumLength="#{bindings.PlanningCode.hints.precision}"
+                                                  shortDesc="#{bindings.PlanningCode.hints.tooltip}" id="dc_it2"
+                                                  styleClass="AFStretchWidth">
+                                        <f:validator binding="#{bindings.PlanningCode.validator}"/>
+                                    </af:inputText>
+                                    <af:selectOneChoice value="#{bindings.PlanningCode1.inputValue}"
+                                                        label="#{bindings.PlanningCode1.hints.label}"
+                                                        required="#{bindings.PlanningCode1.hints.mandatory}"
+                                                        rendered="#{(bindings.AreaCode eq 'D2-PRJ' or bindings.AreaCode eq 'RS' or bindings.AreaCode eq 'LO' or bindings.AreaCode eq 'LG' ) and  pageFlowScope.projectViewBean.editable eq 'parametersEditArea'}"
+                                                        shortDesc="#{bindings.PlanningCode1.hints.tooltip}"
+                                                        id="dc_soc7" styleClass="AFStretchWidth">
+                                        <!--<f:selectItems value="#{bindings.PlanningCode1.items}" id="dc_si16"/>-->
+                                        <f:selectItems value="#{utilsBean.lookupQualified[bindings.ProjectViewIterator.currentRow.projectPlanningCodeView]}"
+                                                       id="dc_si16"/>
+                                        <f:validator binding="#{bindings.PlanningCode1.validator}"/>
+                                    </af:selectOneChoice>
+                                    <af:panelLabelAndMessage label="#{bindings.SuccProjectQualifiedName.hints.label}"
+                                                             id="dc_plam6"
+                                                             rendered="#{bindings.AreaCode eq 'D2-PRJ' or bindings.AreaCode eq 'D3-TR'}">
+                                        <af:outputText value="#{bindings.SuccProjectQualifiedName.inputValue}"
+                                                       shortDesc="#{bindings.SuccProjectQualifiedName.hints.tooltip}"
+                                                       id="dc_ot6"/>
+                                    </af:panelLabelAndMessage>
+                                    <af:selectOneChoice value="#{bindings.SourceCode.inputValue}"
+                                                        label="#{bindings.SourceCode.label}" required="true"
+                                                        shortDesc="#{bindings.SourceCode.hints.tooltip}" id="soc7"
+                                                        rendered="#{bindings.AreaCode eq 'PRE-POT' or bindings.AreaCode eq 'POST-POT' or bindings.AreaCode eq 'PRD-MNT' or bindings.AreaCode eq 'D2-PRJ'}"
+                                                        unselectedLabel="#{bundle.globalNotAvailable}"
+                                                        readOnly="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea' or not (rolesBean.projectEditPrdMnt or rolesBean.projectEditDev or rolesBean.projectEditD2Prj)}"
+                                                        styleClass="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea' and bindings.SourceCode.inputValue eq null ? 'empty' : ''}">
+                                        <f:selectItems value="#{utilsBean.lookup[bindings.ProjectViewIterator.currentRow.projectSourceView]}"
+                                                       id="dc_si6"/>
+                                    </af:selectOneChoice>
+                                    <af:selectOneChoice value="#{bindings.SubstanceTypeCode.inputValue}"
+                                                        label="#{bindings.SubstanceTypeCode.label}" required="true"
+                                                        shortDesc="#{bindings.SubstanceTypeCode.hints.tooltip}"
+                                                        id="soc8"
+                                                        rendered="#{bindings.AreaCode eq 'PRE-POT' or bindings.AreaCode eq 'POST-POT' or bindings.AreaCode eq 'PRD-MNT' or bindings.AreaCode eq 'D2-PRJ' or bindings.AreaCode eq 'D3-TR'}"
+                                                        unselectedLabel="#{bundle.globalNotAvailable}"
+                                                        readOnly="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea' or not (rolesBean.projectEditD2Prj or rolesBean.projectEditDev or rolesBean.projectEditD3Tr or rolesBean.projectEditPrdMnt)}"
+                                                        styleClass="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea' and bindings.SubstanceTypeCode.inputValue eq null ? 'empty' : ''}">
+                                        <f:selectItems value="#{utilsBean.lookup[bindings.ProjectViewIterator.currentRow.substanceTypeView]}"
+                                                       id="dc_si7"/>
+                                    </af:selectOneChoice>
+                                    <af:selectOneChoice value="#{bindings.CategoryCode.inputValue}"
+                                                        label="#{bindings.CategoryCode.label}" required="true"
+                                                        shortDesc="#{bindings.CategoryCode.hints.tooltip}" id="soc4"
+                                                        rendered="#{bindings.AreaCode ne 'SAMD'}"
+                                                        unselectedLabel="#{bundle.globalNotAvailable}"
+                                                        readOnly="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea' or not (rolesBean.projectEditD2Prj or rolesBean.projectEditDevOnlyGlobal or rolesBean.projectEditPrdMnt or rolesBean.projectEditD3Tr or rolesBean.projectEditRs or rolesBean.projectEditLg or rolesBean.projectEditLo or rolesBean.projectEditCo)}"
+                                                        styleClass="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea' and bindings.CategoryCode.inputValue eq null ? 'empty' : ''}">
+                                        <f:selectItems value="#{utilsBean.lookup[bindings.ProjectViewIterator.currentRow.projectCategoryView]}"
+                                                       id="dc_si8"/>
+                                    </af:selectOneChoice>
+                                    <!--af:inputText value="#{bindings.PhaseName.inputValue}"
+                                                  label="#{bindings.PhaseName.hints.label}"
+                                                  required="#{bindings.PhaseName.hints.mandatory}"
+                                                  rendered="#{bindings.AreaCode eq 'D2-PRJ'}"
+                                                  columns="#{bindings.PhaseName.hints.displayWidth}"
+                                                  maximumLength="#{bindings.PhaseName.hints.precision}"
+                                                  shortDesc="#{bindings.PhaseName.hints.tooltip}" id="dc_it7">
+                                        <f:validator binding="#{bindings.PhaseName.validator}"/>
+                                    </af:inputText-->
+                                    <af:selectOneChoice value="#{bindings.PhaseCode.inputValue}"
+                                                        label="#{bindings.PhaseCode.label}" required="true"
+                                                        shortDesc="#{bindings.PhaseCode.hints.tooltip}" id="soc5"
+                                                        rendered="#{bindings.AreaCode eq 'PRE-POT' or bindings.AreaCode eq 'POST-POT'}"
+                                                        unselectedLabel="#{bundle.globalNotAvailable}"
+                                                        readOnly="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea' or not rolesBean.projectEditDev}"
+                                                        styleClass="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea' and bindings.PhaseCode.inputValue eq null ? 'empty' : ''}">
+                                        <f:selectItems value="#{utilsBean.lookup[bindings.ProjectViewIterator.currentRow.projectPhaseView]}"
+                                                       id="dc_si9"/>
+                                    </af:selectOneChoice>
+                                    <af:selectOneChoice value="#{bindings.PhaseCode.inputValue}"
+                                                        label="#{bindings.PhaseCode.label}" required="true"
+                                                        shortDesc="#{bindings.PhaseCode.hints.tooltip}" id="soc05"
+                                                        rendered="#{bindings.AreaCode eq 'D2-PRJ'}"
+                                                        unselectedLabel="#{bundle.globalNotAvailable}"
+                                                        readOnly="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea' or not rolesBean.projectEditD2Prj}"
+                                                        styleClass="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea' and bindings.PhaseCode.inputValue eq null ? 'empty' : ''}">
+                                        <f:selectItems value="#{utilsBean.lookup[bindings.ProjectViewIterator.currentRow.projectPhaseViewD2]}"
+                                                       id="dc_si09"/>
+                                    </af:selectOneChoice>
+                                    <af:selectOneChoice value="#{bindings.PhaseEstimatedCode.inputValue}"
+                                                        label="#{bindings.PhaseEstimatedCode.label}"
+                                                        required="#{bindings.PhaseEstimatedCode.hints.mandatory}"
+                                                        shortDesc="#{bindings.PhaseEstimatedCode.hints.tooltip}"
+                                                        id="dc_soc1" unselectedLabel="#{bundle.globalNotAvailable}"
+                                                        styleClass="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea' and bindings.PhaseEstimatedCode.inputValue eq null ? 'empty' : ''}"
+                                                        rendered="#{bindings.AreaCode eq 'PRE-POT' or bindings.AreaCode eq 'POST-POT'}"
+                                                        readOnly="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea' or not rolesBean.projectEditDevOnlyGlobal}">
+                                        <f:selectItems value="#{utilsBean.lookup[bindings.ProjectViewIterator.currentRow.phaseEstimatedView]}"
+                                                       id="dc_si13"/>
+                                    </af:selectOneChoice>
+                                    <af:selectManyChoice id="smcPhP"
+                                                         value="#{bindings.ProjectViewIterator.currentRow.phasePlanningCodes}"
+                                                         label="#{bindings.PhasePlanning.label}"
+                                                         contentStyle="white-space: normal;"
+                                                         required="#{bindings.PhasePlanning.hints.mandatory}"
+                                                         shortDesc="#{bindings.PhasePlanning.hints.tooltip}"
+                                                         rendered="#{bindings.AreaCode eq 'PRE-POT' or bindings.AreaCode eq 'POST-POT'}"
+                                                         readOnly="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea' or not rolesBean.projectEditDev}">
+                                        <f:selectItems value="#{utilsBean.lookup[bindings.PhasePlanningTypeViewIterator.rowSetIterator]}"
+                                                       id="siPhP"/>
+                                    </af:selectManyChoice>
+                                    <af:inputText value="#{bindings.TargetGeneCode.inputValue}"
+                                                  required="#{bindings.TargetGeneCode.hints.mandatory}"
+                                                  label="#{bindings.TargetGeneCode.hints.label}"
+                                                  columns="#{bindings.TargetGeneCode.hints.displayWidth}"
+                                                  maximumLength="#{bindings.TargetGeneCode.hints.precision}"
+                                                  shortDesc="#{bindings.TargetGeneCode.hints.tooltip}"
+                                                  rendered="#{bindings.AreaCode eq 'PRE-POT' or bindings.AreaCode eq 'POST-POT'}"
+                                                  readOnly="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea' or not rolesBean.projectEditDev}"
+                                                  id="dc_aot3">
+                                        <f:validator binding="#{bindings.TargetGeneCode.validator}"/>
+                                    </af:inputText>
+                        
+                                </af:panelFormLayout>
+                <af:separator id="sepSamd"
+                                              rendered="#{bindings.AreaCode eq 'SAMD' }"/>
+                                <af:panelFormLayout maxColumns="2" rows="2" styleClass="AFStretchWidth"
+                                                    fieldWidth="100%" >
+                                    <af:selectManyChoice id="projectRelatedSucc"
+                                                         value="#{bindings.ProjectViewIterator.currentRow.projectRelatedSuccessors}"
+                                                         label="#{bindings.RelatedSucc.label}"
+                                                         contentStyle="white-space: normal;"
+                                                         autoSubmit="true"
+                                                         required="#{bindings.RelatedSucc.hints.mandatory}"
+                                                         shortDesc="#{bindings.RelatedSucc.hints.tooltip}"
+                                                         rendered="#{bindings.AreaCode eq 'SAMD'}"
+                                                         readOnly="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea' or not rolesBean.projectEditSAMD}">
+                                                <af:forEach var="item" items="#{bindings.AllSAMDView.rangeSet}">
+                                                   <f:selectItem itemLabel="#{item.Name}"
+                                                                  itemValue="#{item.Id}" id="siRp1"/>
+                                                </af:forEach>
+                                    </af:selectManyChoice>
+                                    <af:selectManyChoice id="projectRelatedPred"
+                                                         value="#{bindings.ProjectViewIterator.currentRow.projectRelatedPredecessors}"
+                                                         label="#{bindings.RelatedPred.label}"
+                                                         contentStyle="white-space: normal;"
+                                                         autoSubmit="true"
+                                                         required="#{bindings.RelatedPred.hints.mandatory}"
+                                                         shortDesc="#{bindings.RelatedPred.hints.tooltip}"
+                                                         rendered="#{bindings.AreaCode eq 'SAMD'}"
+                                                         readOnly="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea' or not rolesBean.projectEditSAMD}">
+						<af:forEach var="item" items="#{bindings.AllSAMDView.rangeSet}">
+                                                    <f:selectItem itemLabel="#{item.Name}"
+                                                                  itemValue="#{item.Id}" id="siRp2"/>
+                                                </af:forEach>
+                                    </af:selectManyChoice>
+                                    <af:selectManyChoice id="smcPhPsdf"
+                                                         value="#{bindings.ProjectViewIterator.currentRow.relatedDevProjectsId}"
+                                                         label="#{bindings.RelatedDevProjects.label}"
+                                                         contentStyle="white-space: normal;"
+                                                         autoSubmit="true"
+                                                         selectAllVisible="false"
+                                                         required="#{bindings.RelatedDevProjects.hints.mandatory}"
+                                                         shortDesc="#{bindings.RelatedDevProjects.hints.tooltip}"
+                                                         rendered="#{bindings.AreaCode eq 'SAMD'}"
+                                                         readOnly="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea' or not rolesBean.projectEditSAMD}"
+                                                         styleClass="AFStretchWidth"
+                                                         >
+						<af:forEach var="item" items="#{bindings.AllDevPrjMntView.rangeSet}">
+                                                    <f:selectItem itemLabel="#{item.Name}"
+                                                                  itemValue="#{item.Id}" id="siSamdDev"/>
+                                                </af:forEach>
+                                    </af:selectManyChoice>
+                               
+                                </af:panelFormLayout>                   
+                                <af:separator id="s412"
+                                              rendered="#{bindings.AreaCode eq 'PRE-POT' or bindings.AreaCode eq 'POST-POT'}"/>
+                                <af:panelFormLayout maxColumns="2" rows="3" styleClass="AFStretchWidth"
+                                                    fieldWidth="100%" partialTriggers="state collab">
+                                    <af:inputText value="#{pageFlowScope.projectViewBean.editable eq 'parametersEditArea' ? bindings.PeakSales.inputValue : bindings.PeakSales.inputValue eq null ? bundle.globalNotAvailable : bindings.PeakSales.inputValue}"
+                                                  label="#{bindings.PeakSales.hints.label}"
+                                                  required="#{bindings.PeakSales.hints.mandatory}"
+                                                  columns="#{bindings.PeakSales.hints.displayWidth}"
+                                                  maximumLength="#{bindings.PeakSales.hints.precision}"
+                                                  shortDesc="#{bindings.PeakSales.hints.tooltip}" id="it15"
+                                                  rendered="#{bindings.AreaCode eq 'PRE-POT' or bindings.AreaCode eq 'POST-POT'}"
+                                                  readOnly="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea'}"
+                                                  styleClass="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea' and empty bindings.PeakSales.inputValue ? 'empty' : ''}">
+                                        <f:validator binding="#{bindings.PeakSales.validator}"/>
+                                        <af:convertNumber groupingUsed="false" pattern="#{bindings.PeakSales.format}"/>
+                                    </af:inputText>
+                                    <af:inputText value="#{pageFlowScope.projectViewBean.editable eq 'parametersEditArea' ? bindings.Enpv.inputValue : bindings.Enpv.inputValue eq null ? bundle.globalNotAvailable : bindings.Enpv.inputValue}"
+                                                  label="#{bindings.Enpv.hints.label}"
+                                                  required="#{bindings.Enpv.hints.mandatory}"
+                                                  columns="#{bindings.Enpv.hints.displayWidth}"
+                                                  maximumLength="#{bindings.Enpv.hints.precision}"
+                                                  shortDesc="#{bindings.Enpv.hints.tooltip}" id="it12"
+                                                  rendered="#{bindings.AreaCode eq 'PRE-POT' or bindings.AreaCode eq 'POST-POT'}"
+                                                  readOnly="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea'}"
+                                                  styleClass="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea' and empty bindings.Enpv.inputValue ? 'empty' : ''}">
+                                        <f:validator binding="#{bindings.Enpv.validator}"/>
+                                        <af:convertNumber groupingUsed="false" pattern="#{bindings.Enpv.format}"/>
+                                    </af:inputText>
+                                    <af:inputText value="#{pageFlowScope.projectViewBean.editable eq 'parametersEditArea' ? bindings.Npv.inputValue : bindings.Npv.inputValue eq null ? bundle.globalNotAvailable : bindings.Npv.inputValue}"
+                                                  label="#{bindings.Npv.hints.label}"
+                                                  required="#{bindings.Npv.hints.mandatory}"
+                                                  columns="#{bindings.Npv.hints.displayWidth}"
+                                                  maximumLength="#{bindings.Npv.hints.precision}"
+                                                  shortDesc="#{bindings.Npv.hints.tooltip}" id="it13"
+                                                  rendered="#{bindings.AreaCode eq 'PRE-POT' or bindings.AreaCode eq 'POST-POT'}"
+                                                  readOnly="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea'}"
+                                                  styleClass="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea' and empty bindings.Npv.inputValue ? 'empty' : ''}">
+                                        <f:validator binding="#{bindings.Npv.validator}"/>
+                                        <af:convertNumber groupingUsed="false" pattern="#{bindings.Npv.format}"/>
+                                    </af:inputText>
+                                    <af:selectOneChoice value="#{bindings.PredecessorProjectId.inputValue}"
+                                                        label="#{bindings.PredecessorProjectId.label}"
+                                                        required="#{bindings.PredecessorProjectId.hints.mandatory}"
+                                                        shortDesc="#{bindings.PredecessorProjectId.hints.tooltip}"
+                                                        rendered="#{(bindings.AreaCode eq 'PRE-POT' or bindings.AreaCode eq 'POST-POT') and pageFlowScope.projectViewBean.editable eq 'parametersEditArea'}"
+                                                        id="dc_soc2">
+                                        <f:selectItems value="#{bindings.PredecessorProjectId.items}" id="dc_si2"/>
+                                    </af:selectOneChoice>
+                                    <af:inputText value="#{bindings.PredProjectQualifiedName.inputValue}"
+                                                  label="#{bindings.PredProjectQualifiedName.hints.label}"
+                                                  rendered="#{(bindings.AreaCode eq 'PRE-POT' or bindings.AreaCode eq 'POST-POT') and pageFlowScope.projectViewBean.editable ne 'parametersEditArea'}"
+                                                  readOnly="true"
+                                                  styleClass="#{empty bindings.PredProjectQualifiedName.inputValue ? 'empty' : ''}"
+                                                  id="dc_it4"></af:inputText>
+                                    <af:selectOneChoice value="#{bindings.PriorityCode.inputValue}"
+                                                        label="#{bindings.PriorityCode.label}" required="true"
+                                                        shortDesc="#{bindings.PriorityCode.hints.tooltip}" id="soc3"
+                                                        rendered="#{(bindings.AreaCode eq 'PRE-POT' or bindings.AreaCode eq 'POST-POT') and (bindings.AreaCode eq 'PROMIS-569')}"
+                                                        unselectedLabel="#{bundle.globalNotAvailable}"
+                                                        readOnly="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea' or not rolesBean.projectEditDevOnlyGlobal}"
+                                                        styleClass="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea' and bindings.PriorityCode.inputValue eq null ? 'empty' : ''}">
+                                        <f:selectItems value="#{utilsBean.lookup[bindings.ProjectViewIterator.currentRow.priorityView]}"
+                                                       id="dc_si10"/>
+                                    </af:selectOneChoice>
+                                    <af:selectManyChoice id="smcRelMsp"
+                                                         value="#{bindings.ProjectViewIterator.currentRow.relatedMspProjectsId}"
+                                                         label="#{bindings.RelatedMspProjects.label}"
+                                                         contentStyle="white-space: normal;"
+                                                         required="#{bindings.RelatedMspProjects.hints.mandatory}"
+                                                         shortDesc="#{bindings.RelatedMspProjects.hints.tooltip}"
+                                                         rendered="#{bindings.AreaCode eq 'PRE-POT' or bindings.AreaCode eq 'POST-POT'}"
+                                                         readOnly="true">
+                                                <af:forEach var="item" items="#{bindings.AllSAMDView.rangeSet}">
+                                                   <f:selectItem itemLabel="#{item.Name}"
+                                                                  itemValue="#{item.Id}" id="siRp16"/>
+                                                </af:forEach>
+                                    </af:selectManyChoice>
+                                </af:panelFormLayout>
+                                <af:separator id="s41" rendered="#{bindings.AreaCode eq 'D2-PRJ'}"/>
+                                <af:panelFormLayout maxColumns="2" rows="#{bindings.AreaCode eq 'D2-PRJ' ? 3 : 4}" styleClass="AFStretchWidth"
+                                                    fieldWidth="100%" partialTriggers="state collab">
+                                    <!--<af:inputDate value="#{bindings.LoReviewMeetingDate.inputValue}"
+                                                  label="#{bindings.LoReviewMeetingDate.hints.label}"
+                                                  required="#{bindings.LoReviewMeetingDate.hints.mandatory}"
+                                                  columns="#{bindings.LoReviewMeetingDate.hints.displayWidth}"
+                                                  shortDesc="#{bindings.LoReviewMeetingDate.hints.tooltip}" id="dc_id1"
+                                                  readOnly="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea'}"
+                                                  rendered="#{bindings.AreaCode eq 'D2-PRJ'}">
+                                        <f:validator binding="#{bindings.LoReviewMeetingDate.validator}"/>
+                                        <af:convertDateTime pattern="#{bindings.LoReviewMeetingDate.format}"/>
+                                    </af:inputDate>-->
+                                    <af:selectOneChoice value="#{bindings.PriorityCode2.inputValue}"
+                                                        label="#{bindings.PriorityCode2.label}"
+                                                        required="#{bindings.PriorityCode2.hints.mandatory}"
+                                                        shortDesc="#{bindings.LoReviewResultCode.hints.tooltip}"
+                                                        id="dc_soc4"
+                                                        readOnly="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea'}"
+                                                        rendered="#{bindings.AreaCode eq 'D2-PRJ'}">
+                                        <f:selectItems value="#{utilsBean.lookup[bindings.ProjectViewIterator.currentRow.priorityView]}" id="dc_si3"/>
+                                        <f:validator binding="#{bindings.PriorityCode2.validator}"/>
+                                    </af:selectOneChoice>
+                                    <af:panelLabelAndMessage label="#{bindings.D2Compound.hints.label}" id="dc_plam1"
+                                                             rendered="#{bindings.AreaCode eq 'D2-PRJ'}">
+                                        <af:outputText value="#{bindings.D2Compound.inputValue}"
+                                                       shortDesc="#{bindings.D2Compound.hints.tooltip}" id="dc_ot2"/>
+                                    </af:panelLabelAndMessage>
+                                    <af:selectOneChoice value="#{bindings.IsLead.inputValue}"
+                                                        label="#{bindings.IsLead.label}" required="true"
+                                                        shortDesc="#{bindings.IsLead.hints.tooltip}" id="dc_soc3"
+                                                        rendered="#{bindings.AreaCode eq 'D2-PRJ'}"
+                                                        unselectedLabel="#{bundle.globalNotAvailable}"
+                                                        readOnly="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea' or not (rolesBean.projectEditD2Prj)}"
+                                                        styleClass="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea' and bindings.IsLead.inputValue eq null ? 'empty' : ''}">
+                                        <af:selectItem label="#{bundle.globalYes}" value="true" id="dc_si11"/>
+                                        <af:selectItem label="#{bundle.globalNo}" value="false" id="dc_si12"/>
+                                    </af:selectOneChoice>
+                                    <af:panelLabelAndMessage label="#{bindings.Trg.hints.label}" id="dc_plam3"
+                                                             rendered="#{bindings.AreaCode eq 'D2-PRJ' or bindings.AreaCode eq 'D1'}">
+                                        <af:outputText value="#{bindings.Trg.inputValue}"
+                                                       shortDesc="#{bindings.Trg.hints.tooltip}" id="dc_ot1"/>
+                                    </af:panelLabelAndMessage>
+                                    <af:panelLabelAndMessage label="#{bindings.GeneralProjectFrame.hints.label}"
+                                                             id="dc_plam5" rendered="#{bindings.AreaCode eq 'D1'}">
+                                        <af:outputText value="#{bindings.GeneralProjectFrame.inputValue}"
+                                                       shortDesc="#{bindings.GeneralProjectFrame.hints.tooltip}"
+                                                       id="dc_ot5"/>
+                                    </af:panelLabelAndMessage>
+                                    <af:panelLabelAndMessage label="#{bindings.Er.hints.label}" id="dc_plam4"
+                                                             rendered="#{bindings.AreaCode eq 'D2-PRJ' or bindings.AreaCode eq 'D1'}">
+                                        <af:outputText value="#{bindings.Er.inputValue}"
+                                                       shortDesc="#{bindings.Er.hints.tooltip}" id="dc_ot4"/>
+                                    </af:panelLabelAndMessage>
+                                    <af:panelLabelAndMessage label="#{bindings.TargetGeneCode.hints.label}"
+                                                             id="dc_plam2"
+                                                             rendered="#{bindings.AreaCode eq 'D2-PRJ' or bindings.AreaCode eq 'D1'}">
+                                        <af:outputText value="#{bindings.TargetGeneCode.inputValue}"
+                                                       shortDesc="#{bindings.TargetGeneCode.hints.tooltip}"
+                                                       id="dc_ot3"/>
+                                    </af:panelLabelAndMessage>
+                                </af:panelFormLayout>
+                                <af:separator id="s4"
+                                              rendered="#{bindings.AreaCode eq 'PRE-POT' or bindings.AreaCode eq 'POST-POT' or bindings.AreaCode eq 'D2-PRJ' or bindings.AreaCode eq 'PRD-MNT'}"/>
+                                <af:panelFormLayout maxColumns="2" rows="4" styleClass="AFStretchWidth"
+                                                    fieldWidth="100%" partialTriggers="state collab sbc_dp" id="pfl2">
+                                    <af:selectBooleanCheckbox value="#{bindings.IsPortfolio.inputValue}"
+                                                              text="#{bindings.IsPortfolio.label}"
+                                                              shortDesc="#{bindings.IsPortfolio.hints.tooltip}"
+                                                              rendered="#{bindings.AreaCode eq 'PRE-POT' or bindings.AreaCode eq 'POST-POT'}"
+                                                              id="sbc1"
+                                                              readOnly="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea' or not rolesBean.projectEditDevOnlyGlobal}"/>
+                                    <af:selectBooleanCheckbox value="#{bindings.IsRegional.inputValue}"
+                                                              text="#{bindings.IsRegional.label}"
+                                                              shortDesc="#{bindings.IsRegional.hints.tooltip}" id="sbc3"
+                                                              rendered="#{bindings.AreaCode eq 'PRE-POT' or bindings.AreaCode eq 'POST-POT'}"
+                                                              readOnly="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea'}"/>
+                                    <af:selectBooleanCheckbox value="#{bindings.IsCollaboration.inputValue}"
+                                                              text="#{bindings.IsCollaboration.label}"
+                                                              shortDesc="#{bindings.IsCollaboration.hints.tooltip}"
+                                                              id="collab"
+                                                              rendered="#{bindings.AreaCode eq 'PRE-POT' or bindings.AreaCode eq 'POST-POT'  or bindings.AreaCode eq 'PRD-MNT' or bindings.AreaCode eq 'D2-PRJ' or bindings.AreaCode eq 'SAMD'}"
+                                                              readOnly="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea'}"
+                                                              autoSubmit="true" immediate="true"
+                                                              valueChangeListener="#{utilsBean.onValueChange}"/>
+                                    <af:selectBooleanCheckbox value="#{bindings.IsDeviceProject.inputValue}"
+                                                              text="#{bindings.IsDeviceProject.label}"
+                                                              shortDesc="#{bindings.IsDeviceProject.hints.tooltip}"
+                                                              id="sbc_dp"
+                                                              rendered="#{bindings.AreaCode eq 'PRE-POT' or bindings.AreaCode eq 'POST-POT'}"
+                                                              readOnly="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea'}"
+                                                              autoSubmit="true" immediate="true"
+                                                              valueChangeListener="#{utilsBean.onValueChange}"/>
+                                    <af:selectBooleanCheckbox value="#{bindings.IsExternalPortfolio.inputValue}"
+                                                              text="#{bindings.IsExternalPortfolio.label}"
+                                                              shortDesc="#{bindings.IsExternalPortfolio.hints.tooltip}"
+                                                              rendered="#{bindings.AreaCode eq 'PRE-POT' or bindings.AreaCode eq 'POST-POT'}"
+                                                              id="expo"
+                                                              readOnly="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea' or not rolesBean.projectEditDevOnlyGlobal}"/>
+                                    <af:selectBooleanCheckbox value="#{bindings.IsHpr.inputValue}"
+                                                              text="#{bindings.IsHpr.label}"
+                                                              shortDesc="#{bindings.IsHpr.hints.tooltip}"
+                                                              rendered="#{bindings.AreaCode eq 'PRE-POT' or bindings.AreaCode eq 'POST-POT'}"
+                                                              id="sbc2"
+                                                              readOnly="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea' or not rolesBean.projectEditDevOnlyGlobal}"/>
+                                    <af:selectBooleanCheckbox value="#{bindings.IsOrphanDrug.inputValue}"
+                                                              text="#{bindings.IsOrphanDrug.label}"
+                                                              shortDesc="#{bindings.IsOrphanDrug.hints.tooltip}"
+                                                              rendered="#{bindings.AreaCode eq 'PRE-POT' or bindings.AreaCode eq 'POST-POT'}"
+                                                              id="sbc4"
+                                                              readOnly="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea'}"/>
+                                    <af:selectBooleanCheckbox value="#{bindings.IsPip.inputValue}"
+                                                              text="#{bindings.IsPip.label}"
+                                                              rendered="#{bindings.AreaCode eq 'PRE-POT' or bindings.AreaCode eq 'POST-POT'}"
+                                                              shortDesc="#{bindings.IsPip.hints.tooltip}" id="sbc8"
+                                                              readOnly="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea'}"/>
+                                </af:panelFormLayout>
+                                <af:separator id="s1" rendered="#{bindings.IsCollaboration.inputValue}"/>
+                                <af:inputText value="#{bindings.DetailsPartner.inputValue}"
+                                              label="#{bindings.DetailsPartner.hints.label}"
+                                              required="#{bindings.DetailsPartner.hints.mandatory}"
+                                              maximumLength="#{bindings.DetailsPartner.hints.precision}"
+                                              shortDesc="#{bindings.DetailsPartner.hints.tooltip}" id="it19"
+                                              rendered="#{bindings.IsCollaboration.inputValue and (bindings.AreaCode eq 'PRD-MNT' or bindings.AreaCode eq 'SAMD' or bindings.AreaCode eq 'D3-TR' or bindings.AreaCode eq 'RS' or bindings.AreaCode eq 'LG' or bindings.AreaCode eq 'CO' or bindings.AreaCode eq 'LO')}"
+                                              partialTriggers="state"
+                                              readOnly="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea'}"
+                                              columns="#{bindings.DetailsPartner.hints.displayWidth}"
+                                              rows="#{bindings.DetailsPartner.hints.displayHeight}"
+                                              dimensionsFrom="parent" styleClass="AFStretchWidth"
+                                              contentStyle="width:100%;">
+                                    <f:validator binding="#{bindings.DetailsPartner.validator}"/>
+                                </af:inputText>
+                                <af:declarativeComponent id="CollaborationDetails"
+                                                         rendered="#{bindings.IsCollaboration.inputValue and (bindings.AreaCode eq 'PRE-POT' or bindings.AreaCode eq 'POST-POT' or bindings.AreaCode eq 'D2-PRJ')}"
+                                                         viewId="project-collaboration-details.jsff"/>
+                                <af:spacer width="5" height="5" id="dc_s3"/>
+                                <af:separator id="s111"
+                                              rendered="#{pageFlowScope.projectViewBean.editable eq 'parametersEditArea' or bindings.LicenseDetailsView.estimatedRowCount gt 0}"/>
+                                <af:declarativeComponent id="LicenseDetails"
+                                                         rendered="#{(pageFlowScope.projectViewBean.editable eq 'parametersEditArea' or bindings.LicenseDetailsView.estimatedRowCount gt 0) and (bindings.AreaCode eq 'PRE-POT' or bindings.AreaCode eq 'POST-POT' or bindings.AreaCode eq 'D2-PRJ')}"
+                                                         viewId="project-license-details.jsff"/>
+                                <af:separator id="s_dp" rendered="#{bindings.IsDeviceProject.inputValue}"/>
+                                <af:panelFormLayout maxColumns="2" rows="1" styleClass="AFStretchWidth"
+                                                    fieldWidth="100%" partialTriggers="state sbc_dp" id="pf_dp">
+                                    <af:selectOneChoice value="#{bindings.ProjectDeviceTypeCode.inputValue}"
+                                                        label="#{bindings.ProjectDeviceTypeCode.label}"
+                                                        required="#{bindings.IsDeviceProject.inputValue}"
+                                                        shortDesc="#{bindings.ProjectDeviceTypeCode.hints.tooltip}"
+                                                        rendered="#{bindings.IsDeviceProject.inputValue}"
+                                                        readOnly="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea'}"
+                                                        id="socPDT">
+                                        <f:selectItems value="#{utilsBean.lookup[bindings.ProjectDeviceTypeViewIterator.rowSetIterator]}"
+                                                       id="siPDT"/>
+                                    </af:selectOneChoice>
+                                    <af:selectOneChoice value="#{bindings.DevicePhaseCode.inputValue}"
+                                                        label="#{bindings.DevicePhaseCode.label}"
+                                                        required="#{bindings.IsDeviceProject.inputValue}"
+                                                        shortDesc="#{bindings.DevicePhaseCode.hints.tooltip}"
+                                                        rendered="#{bindings.IsDeviceProject.inputValue}"
+                                                        readOnly="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea'}"
+                                                        id="socPDPT">
+                                        <f:selectItems value="#{utilsBean.lookup[bindings.ProjectViewIterator.currentRow.devicePhaseView]}"
+                                                       id="siPDPT"/>
+                                    </af:selectOneChoice>
+                                    <af:inputText value="#{bindings.BpiNo.inputValue}"
+                                                  required="#{bindings.BpiNo.hints.mandatory}"
+                                                  contentStyle="white-space: normal;" label="#{bindings.BpiNo.label}"
+                                                  columns="#{bindings.BpiNo.hints.displayWidth}"
+                                                  maximumLength="#{bindings.BpiNo.hints.precision}"
+                                                  shortDesc="#{bindings.BpiNo.hints.tooltip}"
+                                                  rendered="#{bindings.IsDeviceProject.inputValue}"
+                                                  readOnly="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea'}"
+                                                  rows="3" wrap="soft" id="it_dp">
+                                        <f:validator binding="#{bindings.BpiNo.validator}"/>
+                                    </af:inputText>
+                                </af:panelFormLayout>
+                                <af:spacer width="5" height="5" id="dc_s1"/>
+                                <af:table value="#{bindings.ProjectDeviceView.collectionModel}" var="row"
+                                          rows="#{bindings.ProjectDeviceView.rangeSize}"
+                                          emptyText="#{bindings.ProjectDeviceView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                                          rowBandingInterval="0" fetchSize="#{bindings.ProjectDeviceView.rangeSize}"
+                                          id="tblPd"
+                                          rendered="#{bindings.IsDeviceProject.inputValue and pageFlowScope.projectViewBean.editable ne 'parametersEditArea'}"
+                                          contentDelivery="immediate" styleClass="AFStretchWidth" filterVisible="false"
+                                          varStatus="vs" rowSelection="none" columnStretching="column:cPrjName"
+                                          autoHeightRows="0">
+                                    <af:column headerText="#{bindings.ProjectDeviceView.hints.PrjCode.label}"
+                                               id="cPrjCode">
+                                        <af:outputText value="#{row.PrjCode}"/>
+                                    </af:column>
+                                    <af:column headerText="#{bindings.ProjectDeviceView.hints.PrjName.label}"
+                                               id="cPrjName">
+                                        <af:outputText value="#{row.PrjName}"/>
+                                    </af:column>
+                                </af:table>
+                                <af:panelBox text="#{bundle.projectRelatedProjects}" showDisclosure="false"
+                                             background="#{pageFlowScope.projectViewBean.editable eq 'parametersEditArea' ? 'light' : 'default'}"
+                                             rendered="#{bindings.IsDeviceProject.inputValue and pageFlowScope.projectViewBean.editable eq 'parametersEditArea'}">
+                                    <af:panelStretchLayout topHeight="auto" styleClass="AFStretchWidth AFStretchHeight"
+                                                           rendered="#{bindings.IsDeviceProject.inputValue and pageFlowScope.projectViewBean.editable eq 'parametersEditArea'}"
+                                                           shortDesc="#{bundle.projectRelatedProjects}">
+                                        <f:facet name="top">
+                                            <af:panelFormLayout maxColumns="2" rows="1" styleClass="AFStretchWidth"
+                                                                fieldWidth="100%" partialTriggers="state sbc_dp"
+                                                                id="pf_srp">
+                                                <af:inputText autoSubmit="true" immediate="true"
+                                                              id="itSearchRelatedPrjName"
+                                                              label="#{bindings.ProjectDeviceView.hints.PrjName.label}"
+                                                              rendered="#{bindings.IsDeviceProject.inputValue and pageFlowScope.projectViewBean.editable eq 'parametersEditArea'}"
+                                                              valueChangeListener="#{pageFlowScope.projectViewBean.onRelatedProjectFilter}"
+                                                              columns="60">
+                                                    <?audit suppress oracle.adf.faces.compnotlabelled?>
+                                                </af:inputText>
+                                                <af:inputText autoSubmit="true" immediate="true"
+                                                              id="itSearchRelatedPrjCode"
+                                                              label="#{bindings.ProjectDeviceView.hints.PrjCode.label}"
+                                                              rendered="#{bindings.IsDeviceProject.inputValue and pageFlowScope.projectViewBean.editable eq 'parametersEditArea'}"
+                                                              valueChangeListener="#{pageFlowScope.projectViewBean.onRelatedProjectFilter}"
+                                                              columns="10">
+                                                    <?audit suppress oracle.adf.faces.compnotlabelled?>
+                                                </af:inputText>
+                                            </af:panelFormLayout>
+                                        </f:facet>
+                                        <f:facet name="center">
+                                            <af:selectManyShuttle value="#{bindings.ProjectViewIterator.currentRow.relatedProjectsIds}"
+                                                                  id="smsRp" autoSubmit="true" immediate="true"
+                                                                  styleClass="AFStretchWidth"
+                                                                  rendered="#{bindings.IsDeviceProject.inputValue and pageFlowScope.projectViewBean.editable eq 'parametersEditArea'}"
+                                                                  readOnly="#{pageFlowScope.projectViewBean.editable ne 'parametersEditArea'}"
+                                                                  leadingHeader="#{bundle.globalAvailable}"
+                                                                  trailingHeader="#{bundle.globalSelected}">
+                                                <af:forEach var="item" items="#{bindings.AllDevProjectView.rangeSet}">
+                                                    <f:selectItem itemLabel="#{item.Name} (#{item.IsActive ? bundle.globalActive : bundle.globalInactive})"
+                                                                  itemValue="#{item.Id}" id="siRp"/>
+                                                </af:forEach>
+                                            </af:selectManyShuttle>
+                                        </f:facet>
+                                    </af:panelStretchLayout>
+                                </af:panelBox>
+                            </af:panelBox>
+                        </af:subform>
+                        <af:subform id="termination"
+                                    rendered="#{bindings.AreaCode eq 'PRE-POT' or bindings.AreaCode eq 'POST-POT' or bindings.AreaCode eq 'D2-PRJ' or bindings.AreaCode eq 'PRD-MNT'}">
+                            <af:panelBox text="#{bundle.projectTermination}" showDisclosure="false"
+                                         visible="#{bindings.StateCode.attributeValue == 5}"
+                                         background="#{pageFlowScope.projectViewBean.editable eq 'termination' ? 'light' : 'default'}"
+                                         partialTriggers="::parametersEditArea:btnOverviewCharactOk"
+                                         styleClass="AFStretchWidth">
+                                <f:facet name="toolbar">
+                                    <af:toolbar rendered="#{rolesBean.projectEditDev or rolesBean.projectEditD2Prj or rolesBean.projectEditPrdMnt}">
+                                        <af:commandToolbarButton icon="/images/edit.png"
+                                                                 rendered="#{pageFlowScope.projectViewBean.editable ne 'termination'}"
+                                                                 immediate="true"
+                                                                 disabled="#{not empty pageFlowScope.projectViewBean.editable}"
+                                                                 actionListener="#{pageFlowScope.projectViewBean.onEdit}"
+                                                                 text="#{bundle.globalEdit}">
+                                            <f:attribute name="target" value="termination"/>
+                                        </af:commandToolbarButton>
+                                        <af:commandToolbarButton rendered="#{pageFlowScope.projectViewBean.editable eq 'termination'}"
+                                                                 icon="/images/commit.png"
+                                                                 actionListener="#{pageFlowScope.projectViewBean.onCommit}"
+                                                                 text="#{bundle.globalOk}"/>
+                                        <af:commandToolbarButton rendered="#{pageFlowScope.projectViewBean.editable eq 'termination'}"
+                                                                 icon="/images/rollback.png"
+                                                                 actionListener="#{pageFlowScope.projectViewBean.onRollback}"
+                                                                 immediate="true" partialSubmit="true"
+                                                                 text="#{bundle.globalCancel}"/>
+                                    </af:toolbar>
+                                </f:facet>
+                                <af:panelFormLayout id="pfl4" rows="4" fieldWidth="100%" partialTriggers="soc9">
+                                    <af:inputDate value="#{bindings.TerminationDate.inputValue}"
+                                                  label="#{bindings.TerminationDate.hints.label}" required="true"
+                                                  shortDesc="#{bindings.TerminationDate.hints.tooltip}" id="id2"
+                                                  readOnly="#{pageFlowScope.projectViewBean.editable ne 'termination'}">
+                                        <af:convertDateTime pattern="#{bindings.TerminationDate.format}"/>
+                                    </af:inputDate>
+                                    <af:selectOneChoice value="#{bindings.TerminationCode.inputValue}"
+                                                        label="#{bindings.TerminationCode.label}" required="true"
+                                                        shortDesc="#{bindings.TerminationCode.hints.tooltip}" id="soc9"
+                                                        unselectedLabel="#{bundle.globalNotAvailable}"
+                                                        readOnly="#{pageFlowScope.projectViewBean.editable ne 'termination'}"
+                                                        autoSubmit="true"
+                                                        styleClass="#{pageFlowScope.projectViewBean.editable ne 'termination' and empty bindings.TerminationCode.inputValue ? 'empty' : ''}">
+                                        <f:selectItems value="#{utilsBean.lookup[bindings.ProjectViewIterator.currentRow.terminationReason4AreaView_VO]}"
+                                                       id="dc_si17"/>
+                                    </af:selectOneChoice>
+                                    <af:separator id="dc_s2"/>
+                                    <af:inputText value="#{bindings.TerminationReasonText.inputValue}"
+                                                  label="#{bindings.TerminationReasonText.hints.label}" 
+                                                  maximumLength="#{bindings.TerminationReasonText.hints.precision}"
+                                                  shortDesc="#{bindings.TerminationReasonText.hints.tooltip}" id="it7"
+                                                  columns="#{bindings.TerminationReasonText.hints.displayWidth}"
+                                                  rows="#{bindings.TerminationReasonText.hints.displayHeight}"
+                                                  readOnly="#{!(pageFlowScope.projectViewBean.editable eq 'termination' and  rolesBean.projectCommentsPMODev)}"
+                                                  styleClass="AFStretchWidth" contentStyle="width:100%;"
+                                                  dimensionsFrom="parent" partialTriggers="soc9 dc_si17"
+                                                  binding="#{pageFlowScope.projectViewBean.trReaTextBind}"/>
+                                </af:panelFormLayout>
+                            </af:panelBox>
+                        </af:subform>
+                        <af:declarativeComponent id="pip"
+                                                 rendered="#{bindings.AreaCode eq 'PRE-POT' or bindings.AreaCode eq 'POST-POT'}"
+                                                 viewId="project-pip.jsff"/>
+                        <af:declarativeComponent id="licenses"
+                                                 rendered="#{bindings.AreaCode eq 'PRE-POT' or bindings.AreaCode eq 'POST-POT'}"
+                                                 viewId="project-licenses.jsff"/>
+                        <af:declarativeComponent id="api" rendered="#{bindings.AreaCode ne 'SAMD'}" viewId="project-ingredients.jsff"/>
+                        <af:declarativeComponent id="RoadMap" rendered="#{bindings.AreaCode eq 'SAMD'}"
+                                                 viewId="project-roadmap.jsff"/>
+                        <af:subform id="regulatory"
+                                    rendered="#{bindings.AreaCode eq 'PRE-POT' or bindings.AreaCode eq 'POST-POT'}">
+                            <af:panelBox text="#{bundle.projectRegulatory}" showDisclosure="false"
+                                         background="#{pageFlowScope.projectViewBean.editable eq 'regulatory' ? 'light' : 'default'}"
+                                         styleClass="AFStretchWidth">
+                                <f:facet name="toolbar">
+                                    <af:toolbar rendered="#{rolesBean.projectEditDev}">
+                                        <af:commandToolbarButton icon="/images/edit.png"
+                                                                 rendered="#{pageFlowScope.projectViewBean.editable ne 'regulatory'}"
+                                                                 immediate="true"
+                                                                 disabled="#{not empty pageFlowScope.projectViewBean.editable}"
+                                                                 actionListener="#{pageFlowScope.projectViewBean.onEdit}"
+                                                                 text="#{bundle.globalEdit}">
+                                            <f:attribute name="target" value="regulatory"/>
+                                        </af:commandToolbarButton>
+                                        <af:commandToolbarButton rendered="#{pageFlowScope.projectViewBean.editable eq 'regulatory'}"
+                                                                 icon="/images/commit.png"
+                                                                 actionListener="#{pageFlowScope.projectViewBean.onCommit}"
+                                                                 text="#{bundle.globalOk}"/>
+                                        <af:commandToolbarButton rendered="#{pageFlowScope.projectViewBean.editable eq 'regulatory'}"
+                                                                 icon="/images/rollback.png"
+                                                                 actionListener="#{pageFlowScope.projectViewBean.onRollback}"
+                                                                 immediate="true" partialSubmit="true"
+                                                                 text="#{bundle.globalCancel}"/>
+                                    </af:toolbar>
+                                </f:facet>
+                                <af:panelFormLayout id="pfl41" maxColumns="1" rows="8" styleClass="AFStretchWidth"
+                                                    fieldWidth="100%" partialTriggers="">
+                                    <af:selectManyChoice id="smcReg"
+                                                         value="#{bindings.ProjectViewIterator.currentRow.regulatoryCodes}"
+                                                         label="#{bindings.RegulatoryCode.label}"
+                                                         required="#{bindings.RegulatoryCode.hints.mandatory}"
+                                                         shortDesc="#{bindings.RegulatoryCode.hints.tooltip}"
+                                                         rendered="#{bindings.AreaCode eq 'PRE-POT' or bindings.AreaCode eq 'POST-POT'}"
+                                                         readOnly="#{pageFlowScope.projectViewBean.editable ne 'regulatory'}"
+                                                         contentStyle="white-space: normal;">
+                                        <f:selectItems value="#{utilsBean.lookup[bindings.RegulatoryTypeViewIterator.rowSetIterator]}"
+                                                       id="siReg"/>
+                                        <f:validator binding="#{bindings.RegulatoryCode.validator}"/>
+                                    </af:selectManyChoice>
+                                    <af:inputText value="#{bindings.RegulatoryOther.inputValue}"
+                                                  label="#{bindings.RegulatoryOther.hints.label}"
+                                                  required="#{bindings.RegulatoryOther.hints.mandatory}"
+                                                  maximumLength="#{bindings.RegulatoryOther.hints.precision}"
+                                                  readOnly="#{pageFlowScope.projectViewBean.editable ne 'regulatory'}"
+                                                  shortDesc="#{bindings.RegulatoryOther.hints.tooltip}" id="dc_it5"
+                                                  rows="5" styleClass="AFStretchWidth">
+                                        <f:validator binding="#{bindings.RegulatoryOther.validator}"/>
+                                    </af:inputText>
+                                </af:panelFormLayout>
+                            </af:panelBox>
+                        </af:subform>
+                    </af:gridCell>
+                    <af:gridCell width="100%" halign="stretch">
+                        <af:declarativeComponent id="plans"
+                                                 rendered="#{bindings.AreaCode eq 'PRE-POT' or bindings.AreaCode eq 'POST-POT' or bindings.AreaCode eq 'D2-PRJ' or bindings.AreaCode eq 'SAMD' or bindings.AreaCode eq 'D3-TR' or bindings.AreaCode eq 'PRD-MNT'}"
+                                                 viewId="project-plans.jsff"/>
+                        <af:declarativeComponent id="milestones"
+                                                 rendered="#{bindings.AreaCode eq 'PRE-POT' or bindings.AreaCode eq 'POST-POT' or bindings.AreaCode eq 'D2-PRJ' or bindings.AreaCode eq 'SAMD' or bindings.AreaCode eq 'D3-TR'}"
+                                                 viewId="project-milestones.jsff"/>
+                    </af:gridCell>
+                </af:gridRow>
+            </af:panelGridLayout>
+        </af:panelGroupLayout>
+    </af:componentDef>
+</jsp:root>

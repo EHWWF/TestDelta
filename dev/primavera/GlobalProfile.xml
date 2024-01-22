@@ -1,0 +1,21 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://xmlns.oracle.com/Primavera/P6/WS/GlobalProfile/V1">
+	<soapenv:Header/>
+	<soapenv:Body>
+		<v1:CreateGlobalProfiles>
+			<v1:GlobalProfile>
+				<v1:Name>Default</v1:Name>
+				<!--v1:Privilege>
+					<v1:Has>?</v1:Has>
+					<v1:Name>?</v1:Name>
+				</v1:Privilege-->
+			</v1:GlobalProfile>
+			<v1:GlobalProfile>
+				<v1:Name>Manager</v1:Name>
+				<!--v1:Privilege>
+					<v1:Has>?</v1:Has>
+					<v1:Name>?</v1:Name>
+				</v1:Privilege-->
+			</v1:GlobalProfile>
+		</v1:CreateGlobalProfiles>
+	</soapenv:Body>
+</soapenv:Envelope>

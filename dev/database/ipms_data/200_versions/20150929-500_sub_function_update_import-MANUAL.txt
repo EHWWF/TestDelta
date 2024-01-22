@@ -1,0 +1,122 @@
+set serveroutput on
+declare
+	v_guid sys_guid_transaction.guid%type;
+	v_what nvarchar2(100):='import_sub_functions';
+	v_rowcount number;
+	v_loop pls_integer:=0;
+	v_f_code nvarchar2(99);
+	r_sfun subfunction%rowtype;
+begin
+	v_guid:=ba_log_pkg.generate_guid;
+	ba_log_pkg.put_guid(v_guid,'DEPLOY', v_what);
+--create table subfunction_del as select * from subfunction;
+--delete from subfunction where substr(code,1,1)='0' and function_code is null;
+--the source of SubFunction comes from COMBASE so, update all Subfunctions, historically based on Combase
+	for rr in (
+					select 
+						to_nchar(to_number(s.kfu3_no)) as subfunction_code, 
+						to_nchar(to_number(r.kfu2_no)) as function_code, 
+						kfu3_name as subfunction_name, 
+						greatest(s.valid_from, r.valid_from) as valid_from, 
+						greatest(nvl(s.valid_to, r.valid_to),nvl(r.valid_to, s.valid_to)) as valid_to
+					from bdo_costcenter_function_sub1@combase_db s
+					left join bdr_kfu_m_kfu_s1@combase_db r on (r.kfu3_no=s.kfu3_no)
+					--where s.kfu3_no in ('0122') 
+					order by s.kfu3_no, greatest(nvl(s.valid_to, r.valid_to),nvl(r.valid_to, s.valid_to))
+					)
+	loop
+		begin
+		--processing:
+		dbms_output.put_line('rr.subfunction_code='||rr.subfunction_code
+									||';function_code='||rr.function_code
+									||';subfunction_name='||rr.subfunction_name
+									||';valid_from='||rr.valid_from
+									||';valid_to='||rr.valid_to);
+		--just validating
+		if rr.function_code is not null then
+			begin
+				select code into v_f_code from function where code=rr.function_code;
+
+			exception when others then
+				--log_pkg.log(v_what, 'rr.function_code='||rr.function_code,sqlerrm);
+				dbms_output.put_line('rr.function_code='||rr.function_code||';sqlerrm='||sqlerrm);
+				raise;
+			end;
+		else
+			v_f_code := null;
+		end if;
+		
+		--Update or insert
+			begin
+				select * into r_sfun from subfunction where code=rr.subfunction_code;
+
+				--check changes
+				
+				if nvl(r_sfun.name,'#')<>nvl(rr.subfunction_name,'#') or
+					nvl(r_sfun.function_code,'#')<>nvl(rr.function_code,'#') or
+					nvl(r_sfun.valid_from,sysdate)<>nvl(rr.valid_from,sysdate) or
+					nvl(r_sfun.valid_to,sysdate)<>nvl(rr.valid_to,sysdate) then
+				
+					update subfunction set
+						name=rr.subfunction_name,
+						function_code=rr.function_code,
+						valid_from=rr.valid_from,
+						valid_to=rr.valid_to
+					where code=rr.subfunction_code;
+					
+					--log_pkg.log(v_what, 'rr.subfunction_code='||rr.subfunction_code,'UPDATE');
+					dbms_output.put_line('rr.subfunction_code='||rr.subfunction_code||';UPDATE');
+				else
+					--log_pkg.log(v_what, 'rr.subfunction_code='||rr.subfunction_code,'NO-UPDATE');
+					dbms_output.put_line('rr.subfunction_code='||rr.subfunction_code||';NO-UPDATE');
+				end if;
+					
+			exception 
+				when no_data_found then
+					insert into subfunction (code,name,function_code,valid_from,valid_to,is_active) 
+					values (rr.subfunction_code,rr.subfunction_name,rr.function_code,rr.valid_from,rr.valid_to,1);
+					--log_pkg.log(v_what, 'rr.subfunction_code='||rr.subfunction_code,'INSERT');
+					dbms_output.put_line('rr.subfunction_code='||rr.subfunction_code||';INSERT');
+				when others then
+					--log_pkg.log(v_what, 'rr.subfunction_code='||rr.subfunction_code,sqlerrm);
+					dbms_output.put_line('rr.subfunction_code='||rr.subfunction_code||';sqlerrm='||sqlerrm);
+			end;
+		
+			exception when others then
+				--log_pkg.log(v_what, 'rr.function_code='||rr.function_code,sqlerrm);
+				dbms_output.put_line('LOOP-OTHERS;rr.subfunction_code='||rr.subfunction_code
+							||';function_code='||rr.function_code
+							||';subfunction_name='||rr.subfunction_name
+							||';valid_from='||rr.valid_from
+							||';valid_to='||rr.valid_to||';sqlerrm='||sqlerrm);
+			end;
+	
+		ba_log_pkg.put_guid(v_guid,null,null);
+		commit;
+	end loop;
+
+		
+	---Next stage UPDATING Sub-Functions
+		---Logical DELETE for not Used SUB-FUNCTIONS
+	for ff in (
+					select 
+						code
+					from subfunction
+					where regexp_like(code, '^[[:digit:]]+$')
+					and nvl(valid_to,sysdate+111)>sysdate
+					--and code='101'
+					minus
+					select 
+						to_nchar(to_number(s.kfu3_no)) as code
+					from bdo_costcenter_function_sub1@combase_db s
+					left join bdr_kfu_m_kfu_s1@combase_db r on (r.kfu3_no=s.kfu3_no)
+					where greatest(s.valid_from, r.valid_from)<sysdate 
+					and nvl(greatest(nvl(s.valid_to, r.valid_to),nvl(r.valid_to, s.valid_to)),sysdate+111)>sysdate
+					--and to_nchar(to_number(s.kfu3_no))='101'
+				)
+	loop
+		update subfunction set valid_to=sysdate, is_active=0 where code=ff.code;
+	end loop;
+
+end;
+/

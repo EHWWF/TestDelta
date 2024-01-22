@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE Association SYSTEM "jbo_03_01.dtd">
+<!---->
+<Association
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ImportCostsScope"
+  Version="11.1.1.61.92"
+  InheritPersonalization="true">
+  <DesignTime>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <AssociationEnd
+    Name="CostsScope"
+    Cardinality="1"
+    Source="true"
+    Owner="com.bayer.ipms.model.entities.lookups.CostsScope"
+    LockLevel="NONE"
+    ExposedAccessor="false">
+    <DesignTime>
+      <Attr Name="_aggregation" Value="0"/>
+      <Attr Name="_finderName" Value="CostsScope"/>
+      <Attr Name="_foreignKey"
+        Value="com.bayer.ipms.model.entities.lookups.CostsScope.SysC0012221"/>
+      <Attr Name="_isUpdateable" Value="true"/>
+      <Attr Name="_minCardinality" Value="1"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.lookups.CostsScope.Code"/>
+    </AttrArray>
+  </AssociationEnd>
+  <AssociationEnd
+    Name="ImportCost"
+    Cardinality="-1"
+    Owner="com.bayer.ipms.model.entities.imports.ImportCosts"
+    ExposedAccessor="false">
+    <DesignTime>
+      <Attr Name="_aggregation" Value="0"/>
+      <Attr Name="_finderName" Value="ImportCost"/>
+      <Attr Name="_foreignKey"
+        Value="com.bayer.ipms.model.entities.imports.ImportCosts.SysC0012276"/>
+      <Attr Name="_isUpdateable" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.imports.ImportCosts.ScopeCode"/>
+    </AttrArray>
+  </AssociationEnd>
+</Association>

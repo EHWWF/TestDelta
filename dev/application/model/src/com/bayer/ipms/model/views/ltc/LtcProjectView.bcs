@@ -1,0 +1,12 @@
+//Groovy Scripts for com.bayer.ipms.model.views.ltc.LtcProjectView
+
+package com.bayer.ipms.model.views.ltc
+
+import oracle.jbo.script.annotation.VariableExpression;
+
+@VariableExpression(path="CurrentTagIdVar")
+def CurrentTagIdVar_expression_Variable()
+{
+if (adf.object.applicationModule.getName()=="LtcAppModule") adf.object.applicationModule.getCurrentLtcTagId()
+}
+

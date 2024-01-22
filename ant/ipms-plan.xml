@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<deployment-plan xmlns="http://xmlns.oracle.com/weblogic/deployment-plan" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.oracle.com/weblogic/deployment-plan http://xmlns.oracle.com/weblogic/deployment-plan/1.0/deployment-plan.xsd">
+  <application-name>ipms</application-name>
+  <variable-definition>
+    <variable>
+      <name>SessionDescriptor_timeoutSecs_13820255205690</name>
+      <value>3601</value>
+    </variable>
+    <!-- DOES NOT WORK 
+	<variable>
+      <name>var_GPT_group</name>
+      <value>GPT-group-from-LDAP</value>
+    </variable-->
+  </variable-definition>
+  <module-override>
+    <module-name>ipms.ear</module-name>
+    <module-type>ear</module-type>
+    <module-descriptor external="false">
+      <root-element>weblogic-application</root-element>
+      <uri>META-INF/weblogic-application.xml</uri>
+      <variable-assignment>
+        <name>SessionDescriptor_timeoutSecs_13820255205690</name>
+        <xpath>/weblogic-application/session-descriptor/timeout-secs</xpath>
+      </variable-assignment>
+    </module-descriptor>
+	<!-- DOES NOT WORK 
+    <module-descriptor external="false">
+      <root-element>jazn-data</root-element>
+      <uri>META-INF/jazn-data.xml</uri>	  
+      <variable-assignment>
+        <name>var_GPT_group</name>
+        <xpath>/jazn-data/policy-store/applications/application/[name="IPMS"]/app-roles/app-role/[name="GPT"]/members/member/[class="weblogic.security.principal.WLSGroupImpl"]/name</xpath>
+      </variable-assignment>
+    </module-descriptor-->
+    <module-descriptor external="false">
+      <root-element>application</root-element>
+      <uri>META-INF/application.xml</uri>
+    </module-descriptor>
+    <module-descriptor external="true">
+      <root-element>wldf-resource</root-element>
+      <uri>META-INF/weblogic-diagnostics.xml</uri>
+    </module-descriptor>
+  </module-override>
+  <module-override>
+    <module-name>ipms-view.war</module-name>
+    <module-type>war</module-type>
+    <module-descriptor external="false">
+      <root-element>weblogic-web-app</root-element>
+      <uri>WEB-INF/weblogic.xml</uri>
+    </module-descriptor>
+    <module-descriptor external="false">
+      <root-element>web-app</root-element>
+      <uri>WEB-INF/web.xml</uri>
+    </module-descriptor>
+  </module-override>
+</deployment-plan>

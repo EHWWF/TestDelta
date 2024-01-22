@@ -1,0 +1,51 @@
+declare
+ v_msg_id nvarchar2(22);
+ v_where nvarchar2(999):='manual.cost_ltc_comments_dim.insert';
+ iii pls_integer:=0;
+begin
+for rr in (select id from ipms_data.ltc_instance where status_code='DONE' order by id desc)
+loop
+  --find one MSG
+  begin
+    select id into v_msg_id from ipms_Data.message where callback like '%ltc_pkg.submit_receive_finish('||rr.id||'%';
+  exception when others then
+    ipms_data.log_pkg.log(v_where, 'ltci_id='||rr.id,'SELECT.ERR='||sqlerrm);
+  end;
+  if v_msg_id is not null then
+      for ii in (
+            select
+            xt.wbs_id,
+            xt.function_code as function_code,
+            xt.comments as comments,
+            count(1)
+          from
+            ipms_Data.message tl,
+            xmltable(
+              xmlnamespaces(default 'http://xmlns.bayer.com/ipms'),
+              '//timeline/expenses/expense' passing tl.response
+              columns 
+                wbs_id			nvarchar2(20)	path '@wbsId',
+                function_code	nvarchar2(20)	path 'functionCode',
+                comments		nvarchar2(4000)	path 'comments'
+            ) xt
+            where tl.id=v_msg_id 
+            and xt.comments is not null
+            group by xt.wbs_id,
+            xt.function_code,
+            xt.comments
+            )
+      loop
+			begin
+				insert into cost_ltc_comments_dim (ltci_id,wbs_id,function_code,comments)
+				values (rr.id,ii.wbs_id,ii.function_code,ii.comments);
+				iii:=iii+1;
+			exception when others then
+				ipms_data.log_pkg.log(v_where, 'ltci_id='||rr.id,'INSERT.ERR='||sqlerrm);
+			end;
+      end loop;
+      ipms_data.log_pkg.log(v_where, 'ltci_id='||rr.id,'INSERT.DONE='||iii);
+      iii:=0;
+      end if;
+      commit;
+  end loop;
+end;

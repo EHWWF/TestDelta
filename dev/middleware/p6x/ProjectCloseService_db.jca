@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<adapter-config name="ProjectCloseService" adapter="db" wsdlLocation="ProjectCloseService.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+  
+  <connection-factory location="eis/DB/P6Pool" UIConnectionName="P6Database" adapterRef=""/>
+  <endpoint-interaction portType="ProjectCloseService_ptt" operation="ProjectCloseService">
+    <interaction-spec className="oracle.tip.adapter.db.DBPureSQLInteractionSpec">
+      <property name="SqlString" value="begin     delete from upklist where pk_id=#pk_id;     delete from projshar where proj_id=#proj_id; end;"/>
+      <property name="GetActiveUnitOfWork" value="false"/>
+    </interaction-spec>
+    <input/>
+  </endpoint-interaction>
+
+</adapter-config>

@@ -1,0 +1,1 @@
+alter table import_masterdata add(collaboration_code nvarchar2(20));

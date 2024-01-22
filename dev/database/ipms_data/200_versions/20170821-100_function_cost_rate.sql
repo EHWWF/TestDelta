@@ -1,0 +1,2 @@
+alter table function add (cost_rate number);
+comment on column function.cost_rate is 'Functional specific cost rate are being applied to calculate FTEs from internal cost at LTC data sheet. Data is being change in this column using deployment DML dedicated script.';

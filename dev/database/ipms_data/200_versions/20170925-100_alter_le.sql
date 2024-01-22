@@ -1,0 +1,1 @@
+alter table latest_estimate add (study_budget_class nvarchar2(4));

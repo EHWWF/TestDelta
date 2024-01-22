@@ -1,0 +1,145 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <c:set var="bundle" value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+    <af:componentDef>
+        <af:popup contentDelivery="lazyUncached" popupFetchListener="#{pageFlowScope.projectViewBean.collaborationPopupList}"
+                  id="CollaborationP1" popupCanceledListener="#{pageFlowScope.projectViewBean.onPopupCancelDetails}">
+            <af:dialog title="#{bundle.projectCollaboration}" contentWidth="400" contentHeight="170" resize="on"
+                       stretchChildren="first" dialogListener="#{pageFlowScope.projectViewBean.onCollaborationEdit}"
+                       type="okCancel" id="collaborationDialog" affirmativeTextAndAccessKey="#{bundle.globalSaveClose}">
+                <af:panelStretchLayout topHeight="auto" styleClass="AFStretchWidth AFStretchHeight" id="dc_pscd">
+                    <f:facet name="top"/>
+                    <f:facet name="center">
+                        <af:panelBox id="dc_pb1cd">
+                            <f:facet name="toolbar"/>
+                            <af:panelFormLayout id="dc_pfl1cd">
+                                <af:selectOneChoice value="#{bindings.PartnerCode.inputValue}"
+                                                    label="#{bindings.PartnerCode.label}"
+                                                    required="#{bindings.PartnerCode.hints.mandatory}"
+                                                    shortDesc="#{bindings.PartnerCode.hints.tooltip}" id="dc_soc1">
+                                    <f:selectItems value="#{utilsBean.lookup[bindings.CollaborationDetailsViewIterator.currentRow.partnerView]}" id="dc_si1cd"/>
+                                    <f:validator binding="#{bindings.PartnerCode.validator}"/>
+                                </af:selectOneChoice>
+                                <af:selectOneChoice value="#{bindings.CollaborationTypeCode.inputValue}"
+                                                    label="#{bindings.CollaborationTypeCode.label}"
+                                                    required="#{bindings.CollaborationTypeCode.hints.mandatory}"
+                                                    shortDesc="#{bindings.CollaborationTypeCode.hints.tooltip}"
+                                                    id="dc_soc2">
+                                    <f:selectItems value="#{utilsBean.lookup[bindings.CollaborationDetailsViewIterator.currentRow.collaborationTypeView]}" id="dc_si2cd"/>
+                                    <f:validator binding="#{bindings.CollaborationTypeCode.validator}"/>
+                                </af:selectOneChoice>
+                                <af:selectOneChoice value="#{bindings.StartPhaseCode.inputValue}"
+                                                    label="#{bindings.StartPhaseCode.label}"
+                                                    required="#{bindings.StartPhaseCode.hints.mandatory}"
+                                                    shortDesc="#{bindings.StartPhaseCode.hints.tooltip}" id="dc_soc4cd">
+                                    <f:selectItems value="#{utilsBean.lookup[bindings.CollaborationDetailsViewIterator.currentRow.phaseView]}" id="dc_si4cd"/>
+                                    <f:validator binding="#{bindings.StartPhaseCode.validator}"/>
+                                </af:selectOneChoice>
+                                <af:selectOneChoice value="#{bindings.EndPhaseCode.inputValue}"
+                                                    label="#{bindings.EndPhaseCode.label}"
+                                                    required="#{bindings.EndPhaseCode.hints.mandatory}"
+                                                    shortDesc="#{bindings.EndPhaseCode.hints.tooltip}" id="dc_soc3">
+                                    <f:selectItems value="#{utilsBean.lookup[bindings.CollaborationDetailsViewIterator.currentRow.phaseView]}" id="dc_si3"/>
+                                    <f:validator binding="#{bindings.EndPhaseCode.validator}"/>
+                                </af:selectOneChoice>
+                                <af:inputText value="#{bindings.Comment.inputValue}"
+                                              label="#{bindings.Comment.hints.label}"
+                                              required="#{bindings.Comment.hints.mandatory}"
+                                              maximumLength="#{bindings.Comment.hints.precision}"
+                                              shortDesc="#{bundle.projectComment}" id="dc_it1" rows="3">
+                                    <f:validator binding="#{bindings.Comment.validator}"/>
+                                </af:inputText>
+                            </af:panelFormLayout>
+                        </af:panelBox>
+                    </f:facet>
+                </af:panelStretchLayout>
+            </af:dialog>
+        </af:popup>
+        <af:panelGroupLayout id="dc_pgl2" layout="horizontal" styleClass="AFStretchWidth">
+            <af:outputText value="Collaboration" id="dc_ot2"/>
+            <af:spacer width="18" height="10" id="dc_s1"/>
+            <af:panelGroupLayout id="dc_pgl1" styleClass="AFStretchWidth">
+                <af:panelGroupLayout id="dc_pgl3" layout="horizontal" halign="right" styleClass="AFStretchWidth"
+                                     rendered="#{pageFlowScope.projectViewBean.editable eq 'parametersEditArea'}">
+                    <af:toolbar id="dc_t1">
+                        <af:button icon="/images/new.png" text="#{bundle.globalAdd}" id="b1_addCollaboration"
+                                   rendered="#{pageFlowScope.projectViewBean.editable eq 'parametersEditArea'}">
+                            <af:showPopupBehavior popupId="CollaborationP1" triggerType="action"/>
+                        </af:button>
+                        <af:button icon="/images/edit.png" text="#{bundle.globalEdit}" id="b2_editCollaboration"
+                                   immediate="true"
+                                   rendered="#{pageFlowScope.projectViewBean.editable eq 'parametersEditArea'}">
+                            <af:showPopupBehavior popupId="CollaborationP1" triggerType="action"/>
+                        </af:button>
+                        <af:button shortDesc="#{bundle.globalRemove}" text="#{bundle.globalRemove}"
+                                   icon="/images/remove.png" id="b3_removeCollaboration"
+                                   actionListener="#{pageFlowScope.projectViewBean.deleteCollaboration}"
+                                   rendered="#{pageFlowScope.projectViewBean.editable eq 'parametersEditArea'}"/>
+                    </af:toolbar>
+                </af:panelGroupLayout>
+                <af:spacer width="10" height="10" id="dc_s111"/>
+                <af:table value="#{bindings.CollaborationDetailsView.collectionModel}" var="row"
+                          rows="#{bindings.CollaborationDetailsView.rangeSize}"
+                          emptyText="#{bindings.CollaborationDetailsView.viewable ? 'No data to display.' : 'Access Denied.'}"
+                          rowBandingInterval="0"
+                          selectedRowKeys="#{bindings.CollaborationDetailsView.collectionModel.selectedRow}"
+                          selectionListener="#{bindings.CollaborationDetailsView.collectionModel.makeCurrent}"
+                          fetchSize="#{bindings.CollaborationDetailsView.rangeSize}" columnStretching="column:dc_c3"
+                          styleClass="AFStretchWidth" filterVisible="false" autoHeightRows="0" varStatus="vs"
+                          id="tblCollaboration" editingMode="editAll" rowSelection="single">
+                    <af:column headerText="#{bindings.CollaborationDetailsView.hints.PartnerCode.label}" id="dc_c2"
+                               width="80" noWrap="false">
+                        <af:selectOneChoice value="#{row.bindings.PartnerCode.inputValue}"
+                                            label="#{row.bindings.PartnerCode.label}"
+                                            required="#{bindings.CollaborationDetailsView.hints.PartnerCode.mandatory}"
+                                            shortDesc="#{bindings.CollaborationDetailsView.hints.PartnerCode.tooltip}"
+                                            readOnly="true" id="dc_soc5">
+                            <f:selectItems value="#{utilsBean.lookup[bindings.CollaborationDetailsViewIterator.currentRow.partnerView]}" id="dc_si6"/>
+                            <f:validator binding="#{row.bindings.PartnerCode.validator}"/>
+                        </af:selectOneChoice>
+                    </af:column>
+                    <af:column headerText="#{bindings.CollaborationDetailsView.hints.CollaborationTypeCode.label}"
+                               id="dc_c1" width="105" noWrap="false">
+                        <af:selectOneChoice value="#{row.bindings.CollaborationTypeCode.inputValue}"
+                                            label="#{row.bindings.CollaborationTypeCode.label}"
+                                            required="#{bindings.CollaborationDetailsView.hints.CollaborationTypeCode.mandatory}"
+                                            shortDesc="#{bindings.CollaborationDetailsView.hints.CollaborationTypeCode.tooltip}"
+                                            readOnly="true" id="dc_soc7">
+                            <f:selectItems value="#{utilsBean.lookup[bindings.CollaborationDetailsViewIterator.currentRow.collaborationTypeView]}" id="dc_si5"/>
+                            <f:validator binding="#{row.bindings.CollaborationTypeCode.validator}"/>
+                        </af:selectOneChoice>
+                    </af:column>
+                    <af:column headerText="#{bindings.CollaborationDetailsView.hints.StartPhaseCode.label}" id="dc_c5"
+                               width="60" noWrap="false">
+                        <af:selectOneChoice value="#{row.bindings.StartPhaseCode.inputValue}"
+                                            label="#{row.bindings.StartPhaseCode.label}"
+                                            required="#{bindings.CollaborationDetailsView.hints.StartPhaseCode.mandatory}"
+                                            shortDesc="#{bindings.CollaborationDetailsView.hints.StartPhaseCode.tooltip}"
+                                            readOnly="true" id="dc_soc8">
+                            <f:selectItems value="#{utilsBean.lookup[bindings.CollaborationDetailsViewIterator.currentRow.phaseView]}" id="dc_si7"/>
+                            <f:validator binding="#{row.bindings.StartPhaseCode.validator}"/>
+                        </af:selectOneChoice>
+                    </af:column>
+                    <af:column headerText="#{bindings.CollaborationDetailsView.hints.EndPhaseCode.label}" id="dc_c4"
+                               width="60" noWrap="false">
+                        <af:selectOneChoice value="#{row.bindings.EndPhaseCode.inputValue}"
+                                            label="#{row.bindings.EndPhaseCode.label}"
+                                            required="#{bindings.CollaborationDetailsView.hints.EndPhaseCode.mandatory}"
+                                            shortDesc="#{bindings.CollaborationDetailsView.hints.EndPhaseCode.tooltip}"
+                                            readOnly="true" id="dc_soc6">
+                            <f:selectItems value="#{utilsBean.lookup[bindings.CollaborationDetailsViewIterator.currentRow.phaseView]}" id="dc_si8"/>
+                            <f:validator binding="#{row.bindings.EndPhaseCode.validator}"/>
+                        </af:selectOneChoice>
+                    </af:column>
+                    <af:column headerText="#{bindings.CollaborationDetailsView.hints.Comment.label}" id="dc_c3"
+                               width="65" noWrap="false">
+                        <af:outputText value="#{row.Comment}"
+                                       shortDesc="#{bindings.CollaborationDetailsView.hints.Comment.tooltip}"
+                                       id="dc_ot1"/>
+                    </af:column>
+                </af:table>
+            </af:panelGroupLayout>
+        </af:panelGroupLayout>
+    </af:componentDef>
+</jsp:root>

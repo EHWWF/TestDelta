@@ -1,0 +1,196 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    <af:componentDef>
+        <af:panelGroupLayout id="dc_pgl1">
+            <c:set var="bundle" value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+            <af:declarativeComponent viewId="sandbox-activity.jsff" id="popSAct">
+            </af:declarativeComponent>
+          <af:subform id="prgSandbox">         
+                <af:panelStretchLayout id="content" styleClass="AFStretchWidth" 
+                                       topHeight="auto" dimensionsFrom="parent"
+                                       bottomHeight="0px">
+                <f:facet name="top">
+                    <af:group id="popup">
+                        <af:popup id="popImplementationInProgress" contentDelivery="lazyUncached">
+                            <af:dialog id="diagImplementationInProgress"
+                                       title="#{bundle.sandboxImplementationInProgress}" contentWidth="500"
+                                       type="cancel"/>
+                        </af:popup>
+                        <af:popup id="popDeleteSand" contentDelivery="lazyUncached"
+                                  rendered="#{rolesBean.sandboxPlanDeleteDev }">
+                            <af:dialog id="dlgDeleteSand" title="#{bundle.sandboxDelete}"
+                                       dialogListener="#{pageFlowScope.programViewBean.onSandboxDelete}"
+                                       contentWidth="500">
+                                    <af:message message="#{bundle.sandboxDeleteWarning}" messageType="warning" id="dc_m2"/>
+                            </af:dialog>
+                        </af:popup>
+                        <af:popup id="popImportActualsSand" contentDelivery="lazyUncached"
+                                  rendered="#{rolesBean.sandboxPlanImportActualsDev}">
+                            <af:dialog id="dlgImpActSand" title="#{bundle.sandboxImportActuals}" contentWidth="500"
+                                       dialogListener="#{pageFlowScope.programViewBean.onSandboxImportActuals}">
+                                <af:message message="#{bundle.sandboxImportActualsWarning}" messageType="warning"
+                                            id="dc_m3"/>
+                            </af:dialog>
+                        </af:popup>
+                        <af:popup id="popSandboxLimitsExc" contentDelivery="lazyUncached"
+                                  rendered="#{rolesBean.sandboxPlanCreateDev }">
+                            <af:dialog id="dlgSandLimExc" title="#{bundle.sandboxCreate}" contentWidth="500"
+                                       type="cancel">
+                                <af:message message="#{af:format(bundle.sandboxRecordsPerProgramLimitWarning, bindings.ConfigViewIterator.viewObject.values['LMTSANDBOX'])}"
+                                            messageType="warning" id="dc_m1"/>
+                            </af:dialog>
+                        </af:popup>
+                    </af:group>
+                </f:facet>
+                <f:facet name="center">
+                        <af:panelBox text="#{bundle.programSandboxes}" showDisclosure="false" type="stretch" id="sandboxes"
+                                 styleClass="AFStretchWidth">
+                        <af:panelCollection id="pcol1s" styleClass="AFStretchWidth"
+                                featuresOff="detach statusBar viewMenu" >
+                            <f:facet name="toolbar">
+                                <af:toolbar id="tlbPrjsand" partialTriggers="tblSand"
+                                            rendered="#{not bindings.IsRecycleBin.inputValue and pageFlowScope.projectType eq 'Dev'}">
+                                    <af:group id="dc_g2">
+                                        <af:button id="sandboxcreateid" icon="/images/new_sand.png"
+                                                                 text="#{bundle.sandboxCreate}"
+                                                                 disabled="#{bindings.IsSyncing.inputValue or not empty pageFlowScope.programViewBean.editable}"
+                                                       rendered="#{rolesBean.sandboxPlanCreateDev}" 
+                                                       immediate="true" partialTriggers="rowsandboxremoveid"
+                                                                 actionListener="#{pageFlowScope.programViewBean.onSandboxCreatePopup}">
+                                            <af:setActionListener from="CopySandbox"
+                                                                  to="#{pageFlowScope.programViewBean.onSandboxPopupOpen}"/>
+                                        </af:button>
+                                    </af:group>
+                                    <af:group id="dc_g1">
+                                        <af:button id="rowSandboxModifyId" icon="/images/edit.png"
+                                                                 disabled="#{bindings.IsSyncing.inputValue or not empty pageFlowScope.programViewBean.editable or bindings.SandboxView2.currentRow eq null}"
+                                                       rendered="#{rolesBean.sandboxPlanModifyDev}" 
+                                                       immediate="true" text="#{bundle.sandboxSourceModify}" 
+                                                       visible="true"
+                                                       actionListener="#{pageFlowScope.programViewBean.onSandboxCreatePopup}">
+                                            <af:setActionListener from="ModifySource"
+                                                                  to="#{pageFlowScope.programViewBean.onSandboxPopupOpen}"/>
+                                        </af:button>
+                                        <af:button id="rowsandboxremoveid" icon="/images/remove.png"
+                                                                 disabled="#{bindings.IsSyncing.inputValue or not empty pageFlowScope.programViewBean.editable or bindings.SandboxView2.currentRow eq null}"
+                                                                 rendered="#{rolesBean.sandboxPlanDeleteDev}"
+                                                                 immediate="true" text="#{bundle.sandboxDelete}">
+                                            <af:showPopupBehavior popupId="::popDeleteSand" triggerType="action"/>
+                                        </af:button>
+                                    </af:group>
+                                    <af:button id="rowsandboxintegrateid" icon="/images/integrate.png"
+                                                             disabled="#{bindings.IsSyncing.inputValue or not empty pageFlowScope.programViewBean.editable or bindings.SandboxView2.currentRow eq null}"
+                                                             rendered="#{rolesBean.sandboxPlanIntegrateDev}"
+                                                             immediate="true" text="#{bundle.sandboxIntegrateShort}"
+                                                             shortDesc="#{bundle.sandboxIntegrate}" visible="false">
+                                        <af:showPopupBehavior popupId="::popImplementationInProgress"
+                                                              triggerType="action"/>
+                                    </af:button>
+                                    <af:button text="#{bundle.sandboxImportPlan}" action="import-run"
+                                                             useWindow="true" windowWidth="950" windowHeight="500"
+                                                             immediate="true"
+                                                             rendered="#{rolesBean.sandboxPlanImportPlanDev}"
+                                                             disabled="#{(bindings.IsSyncing.inputValue or not empty pageFlowScope.programViewBean.editable or bindings.SandboxView2.currentRow eq null or bindings.SandboxTLIsSyncing.inputValue == 1) or bindings.SandboxView2.currentRow.timelineId == null or fn:endsWith(bindings.SandboxView2.currentRow.timelineId,'SND')}"
+                                                             id="rowSandboxImportPlan" icon="/images/upload.png"
+                                                             visible="true">
+                                        <af:setActionListener from="#{pageFlowScope.programViewBean.sandboxDBId}"
+                                                              to="#{requestScope.sandboxId}"/>
+                                        <af:setActionListener from="#{pageFlowScope.programViewBean.sandboxCode}"
+                                                              to="#{requestScope.sandboxCode}"/>
+                                        <af:setActionListener from="#{pageFlowScope.programViewBean.sandboxName}"
+                                                              to="#{requestScope.sandboxName}"/>
+                                        <af:setActionListener from="16" to="#{requestScope.typeMask}"/>
+                                    </af:button>
+                                    <af:button id="rowSandboxImportActuals" icon="/images/upload.png"
+                                                             disabled="#{(bindings.IsSyncing.inputValue or not empty pageFlowScope.programViewBean.editable or bindings.SandboxView2.currentRow eq null or bindings.SandboxTLIsSyncing.inputValue == 1) or bindings.SandboxView2.currentRow.timelineId == null or fn:endsWith(bindings.SandboxView2.currentRow.timelineId,'SND')}"
+                                                             rendered="#{rolesBean.sandboxPlanImportActualsDev}"
+                                                             immediate="true" text="#{bundle.sandboxImportActuals}"
+                                                             visible="true">
+                                        <af:showPopupBehavior popupId="::popImportActualsSand" triggerType="action"/>
+                                    </af:button>
+                                </af:toolbar>
+                            </f:facet>
+                            <af:table value="#{bindings.SandboxView2.collectionModel}" var="row"
+                                      rows="#{bindings.SandboxView2.rangeSize}"
+                                      emptyText="#{bindings.SandboxView2.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                                      fetchSize="#{bindings.SandboxView2.rangeSize}" 
+                                      rowBandingInterval="0"
+                                      filterVisible="false" varStatus="vs"
+                                      filterModel="#{bindings.SandboxView2.queryDescriptor}"
+                                      queryListener="#{bindings.SandboxView2.processQuery}"
+                                      selectedRowKeys="#{pageFlowScope.programViewBean.sandboxSelectedKeys}" 
+                                      selectionListener="#{bindings.SandboxView2.collectionModel.makeCurrent}"
+                                      id="tblSand" autoHeightRows="0" summary="Sandboxes" columnStretching="last"
+                                      contentDelivery="immediate" partialTriggers=":::popDeleteSand :::popSandboxCreate"
+                                      rowSelection="multiple">
+                                <af:column sortProperty="Code" filterable="true" filterFeatures="caseInsensitive"
+                                           sortable="true" headerText="#{bundle.sandboxProjectId}" rowHeader="unstyled"
+                                           id="col1sand">
+                                    <af:outputText value="#{row.Code == null ? bundle.globalNotAvailable : row.Code}"
+                                                   id="prjCodeSand" clientComponent="true"/>
+                                </af:column>
+                                <af:column sortProperty="Name" filterable="true" filterFeatures="caseInsensitive"
+                                           sortable="true" headerText="#{bindings.SandboxView2.hints.Name.label}"
+                                           rowHeader="unstyled" id="col3Name">
+                                    <af:outputText value="#{row.Name}" id="prjName3"/>
+                                </af:column>
+                                <af:column sortProperty="Action" filterable="true" filterFeatures="caseInsensitive"
+                                           sortable="false" headerText="#{bundle.sandboxReferences}"
+                                           id="collsandboxAction" colSpan="1">
+                                    <af:goLink text="#{bundle.primavera}" targetFrame="primavera"
+                                               visible="#{row.ReferenceId != null}"
+                                               destination="#{bindings.ConfigViewIterator.viewObject.values['P6']}/bookmark?uri=navigatetopage&amp;ctx=projectList%3D#{row.ReferenceId}%26key%3Dactivities"
+                                               id="goToP6PlanSandActionId"/>
+                                </af:column>
+                                <af:column sortProperty="TimelineId" filterable="true" filterFeatures="caseInsensitive"
+                                           sortable="true" headerText="#{bindings.SandboxView2.hints.TimelineId.label}"
+                                           rowHeader="unstyled" id="col6Timl" width="200px">
+                                    <af:selectOneChoice value="#{row.bindings.TimelineId.inputValue}" label=" "
+                                                        id="col2Sand" readOnly="true">
+                                        <f:selectItems value="#{row.bindings.TimelineId.items}" id="si2"/>
+                                    </af:selectOneChoice>
+                                </af:column>
+                                <af:column sortProperty="IsDateConstraints" filterable="true"
+                                           filterFeatures="caseInsensitive" sortable="true"
+                                           headerText="#{bindings.SandboxView2.hints.IsDateConstraints.label}"
+                                           rowHeader="unstyled" id="col5">
+                                    <af:outputText value="#{row.IsDateConstraints == 0 ? bundle.sandboxConstraintsNotRemoved : bundle.sandboxConstraintsRemoved }"
+                                                   id="prjdataCOnst"/>
+                                </af:column>
+                                <af:column sortProperty="CreateDate" filterable="true" filterFeatures="caseInsensitive"
+                                           sortable="true" headerText="#{bindings.SandboxView2.hints.CreateDate.label}"
+                                           rowHeader="unstyled" id="col4CreateDate">
+                                    <af:outputText value="#{row.CreateDate}" id="prjCreateDate"/>
+                                </af:column>
+                               <af:column sortProperty="IsSyncing" filterable="true"
+                                          filterFeatures="caseInsensitive" sortable="true"
+                                          headerText="#{bindings.SandboxView2.hints.IsSyncing.label}"
+                                          rowHeader="unstyled" id="col4IsSyncingTL">
+                                <af:outputText value="#{row.IsSyncing == 1 ? bundle.globalYes : bundle.globalNo}" id="IsSyncingTL" />
+                               </af:column>
+                                <af:column sortProperty="Description" filterable="true" filterFeatures="caseInsensitive"
+                                           sortable="true" headerText="#{bindings.SandboxView2.hints.Description.label}"
+                                           rowHeader="unstyled" id="col5Descr">
+                                    <div align="left" style="vertical-align:top;">
+                                        <af:outputText value="#{row.Description}" id="prjDescription"/>
+                                    </div>
+                                </af:column>
+                                    <af:column headerText="#{bundle.sandboxActivityLog}" rowHeader="unstyled"
+                                               id="dc_c2">
+                                        <af:commandLink text="#{row.UpdateDate}" id="dc_cl1">
+                                            <af:showPopupBehavior popupId="::::popSAct:popSandAct0" triggerType="action"/>
+                                        </af:commandLink>
+                                    </af:column>
+                            </af:table>
+                        </af:panelCollection>
+                    </af:panelBox>
+                </f:facet>
+                </af:panelStretchLayout>
+           </af:subform>
+        </af:panelGroupLayout>
+    </af:componentDef>
+</jsp:root>        

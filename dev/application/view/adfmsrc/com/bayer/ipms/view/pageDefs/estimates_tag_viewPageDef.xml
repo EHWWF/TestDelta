@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.1.3.10.8" id="estimates_tag_viewPageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="EstimatesAppModule.LatestEstimatesProcessView" DataControl="PrivateAppModuleDataControl"
+              RangeSize="500" id="LatestEstimatesProcessViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator Binds="EstimatesAppModule.LatestEstimatesTagView" DataControl="PrivateAppModuleDataControl"
+              RangeSize="100"
+              id="LatestEstimatesTagViewIterator" ChangeEventPolicy="ppr"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="LatestEstimatesProcessViewIterator" id="LatestEstimatesProcessView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.estimates.LatestEstimatesProcessView"
+                      Name="LatestEstimatesProcessView0">
+        <AttrNames>
+          <Item Value="QualifiedName"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="LatestEstimatesTagViewIterator" id="LetName">
+      <AttrNames>
+        <Item Value="Name"/>
+      </AttrNames>
+    </attributeValues>
+    
+     <attributeValues IterBinding="LatestEstimatesTagViewIterator"
+                     id="LetIsPrefillProb">
+      <AttrNames>
+        <Item Value="IsPrefillProb"/>
+      </AttrNames>
+    </attributeValues>
+    
+    <attributeValues IterBinding="LatestEstimatesTagViewIterator"
+                     id="LetIsForecastProb">
+      <AttrNames>
+        <Item Value="IsForecastProb"/>
+      </AttrNames>
+    </attributeValues>
+    
+    
+     <eventBinding Listener="javax.faces.event.ActionListener"
+                  id="estimatesEventBinding">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="estimates" eventType="Action Event"
+               customPayLoad=""/>
+      </events>
+    </eventBinding>
+    <attributeValues IterBinding="LatestEstimatesTagViewIterator" id="LetIsFrozen">
+      <AttrNames>
+        <Item Value="IsFrozen"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LatestEstimatesTagViewIterator" id="LetIsMeetingAllowed">
+      <AttrNames>
+        <Item Value="IsMeetingAllowed"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LatestEstimatesTagViewIterator" id="LetId">
+      <AttrNames>
+        <Item Value="Id"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LatestEstimatesTagViewIterator" id="StartDataCollection">
+      <AttrNames>
+        <Item Value="StartDataCollection"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="LatestEstimatesTagViewIterator" StaticList="false" Uses="LOV_NyProbPrefillTagId"
+          id="LetNyProbPrefillTagId" DTSupportsMRU="true" SelectItemValueMode="ListObject"/>
+    <list IterBinding="LatestEstimatesTagViewIterator" StaticList="false" Uses="LOV_CyProbPrefillTagId"
+          id="LetCyProbPrefillTagId" DTSupportsMRU="true" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="LatestEstimatesTagViewIterator" id="LetCyProbPrefillCode">
+      <AttrNames>
+        <Item Value="CyProbPrefillCode"/>
+      </AttrNames>
+    </attributeValues>
+       <attributeValues IterBinding="LatestEstimatesTagViewIterator" id="LetNyProbPrefillCode">
+      <AttrNames>
+        <Item Value="NyProbPrefillCode"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LatestEstimatesTagViewIterator" id="PrevTagName" ChangeEventPolicy="ppr">
+      <AttrNames>
+        <Item Value="PrevProcessName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LatestEstimatesTagViewIterator" id="OldProcessId">
+      <AttrNames>
+        <Item Value="OldProcessId"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LatestEstimatesTagViewIterator" id="QualifiedName2">
+      <AttrNames>
+        <Item Value="QualifiedName2"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

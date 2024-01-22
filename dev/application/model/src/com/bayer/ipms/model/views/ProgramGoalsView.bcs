@@ -1,0 +1,27 @@
+//Groovy Scripts for com.bayer.ipms.model.views.ProgramGoalsView
+
+package com.bayer.ipms.model.views
+
+import oracle.jbo.script.annotation.VariableExpression;
+import oracle.jbo.script.annotation.AccessorParameterExpression;
+
+@VariableExpression(path="SearchTargetYearVar")
+def SearchTargetYearVar_VariableScript_Variable()
+{
+adf.object.viewObject.currentYear
+}
+
+
+@AccessorParameterExpression(accessorName="ProjectView", name="ProgramIdVar")
+def ProgramIdVar_ProjectView_BindVariable_BoundParameter()
+{
+ProgramId
+}
+
+
+@AccessorParameterExpression(accessorName="ProgramAppModule_ProjectView1", name="ProgramIdVar")
+def ProgramIdVar_ProgramAppModule_ProjectView1_BindVariable_BoundParameter()
+{
+ProgramId
+}
+

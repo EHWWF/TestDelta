@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="windows-1257" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="maintain-users">
+    <template-reference>
+      <document id="__1">/WEB-INF/com.bayer.ipms.view/templates/ipms-taskflow-template-page.xml</document>
+      <id id="__2">ipms-taskflow-template-page</id>
+    </template-reference>
+    <default-activity id="__5">send</default-activity>
+    <transaction id="__3">
+      <new-transaction/>
+    </transaction>
+    <data-control-scope id="__4">
+      <isolated/>
+    </data-control-scope>
+    <exception-handler id="__13">handleException</exception-handler>
+    <method-call id="send">
+      <method>#{bindings.send.execute}</method>
+      <outcome id="__6">
+        <fixed-outcome>send</fixed-outcome>
+      </outcome>
+    </method-call>
+    <task-flow-return id="ok">
+      <outcome id="__7">
+        <name>ok</name>
+        <commit/>
+      </outcome>
+    </task-flow-return>
+    <control-flow-rule id="__8">
+      <from-activity-id id="__9">send</from-activity-id>
+      <control-flow-case id="__11">
+        <from-outcome id="__12">send</from-outcome>
+        <to-activity-id id="__10">ok</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+  </task-flow-definition>
+</adfc-config>

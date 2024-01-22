@@ -1,0 +1,6 @@
+//Groovy Scripts for com.bayer.ipms.model.entities.TeamMember
+
+package com.bayer.ipms.model.entities
+
+import oracle.jbo.script.annotation.MessageParameterExpression;
+

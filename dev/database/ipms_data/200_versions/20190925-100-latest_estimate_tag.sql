@@ -1,0 +1,2 @@
+alter table latest_estimates_tag add old_process_id varchar2(30);
+comment on column latest_estimates_tag.old_process_id is 'Previous LE Process ID to compare LE values in LE Meeting sheet. The field was added based on requirement: PROMIS-466';

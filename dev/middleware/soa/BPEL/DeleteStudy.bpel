@@ -1,0 +1,203 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Mon Jul 04 12:05:09 CEST 2016
+  Author:  algis
+  Type: BPEL 2.0 Process
+  Purpose: Asynchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="DeleteStudy"
+         targetNamespace="http://xmlns.bayer.com/ipms/soa"
+         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:client="http://xmlns.bayer.com/ipms/soa"
+         xmlns:ora="http://schemas.oracle.com/xpath/extension"
+         xmlns:ui="http://xmlns.oracle.com/soa/designer"
+         xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns1="http://xmlns.bayer.com/ipms"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:ess="http://xmlns.oracle.com/scheduler" xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:ns2="http://xmlns.oracle.com/Primavera/P6/WS/WBS/V2" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <import namespace="http://xmlns.bayer.com/ipms/soa" location="oramds:/apps/com/bayer/xmlns/ipms/soa/soa.xsd"
+            importType="http://www.w3.org/2001/XMLSchema"/>
+    <import ui:processWSDL="true" namespace="http://xmlns.bayer.com/ipms/soa" location="../WSDLs/DeleteStudy.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        PARTNERLINKS                                                      
+        List of services participating in this BPEL process               
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    --> 
+    <partnerLinks>
+        <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+        <partnerLink name="DeleteStudyService" partnerLinkType="client:DeleteStudy" myRole="DeleteStudyProvider" partnerRole="DeleteStudyRequester"/>
+        <partnerLink name="WBSService" partnerLinkType="ns2:WBSService" partnerRole="WBSPortType"/>
+    </partnerLinks>
+
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        VARIABLES                                                        
+        List of messages and XML documents used within this BPEL process 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <variables>
+        <!-- Reference to the message passed as input during initiation -->
+        <variable name="inputVariable" messageType="client:DeleteStudyRequestMessage"/>
+
+        <!-- Reference to the message that will be sent back to the requester during callback -->
+        <variable name="outputVariable" messageType="client:DeleteStudyResponseMessage"/>
+        <variable name="wbsCount" type="xsd:int"/>
+        <variable name="ReadWBSIn" messageType="ns2:ReadWBS"/>
+        <variable name="ReadWBSOut" messageType="ns2:ReadWBSResponse"/>
+        <variable name="DeleteWBSIn" messageType="ns2:DeleteWBS"/>
+        <variable name="DeleteWBSOut" messageType="ns2:DeleteWBSResponse"/>
+        <variable name="wbsId" type="xsd:string"/>
+        <variable name="ReadWBSAfterOut" messageType="ns2:ReadWBSResponse"/>
+    </variables>
+    <faultHandlers>
+        <catchAll>
+            <scope name="Fault">
+                <variables>
+                    <variable name="CallbackFaultIn" messageType="client:DeleteStudyResponseMessage"/>
+                </variables>
+                <sequence name="Fault">
+                    <assign name="AssignFault">
+                        <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                            <from>$inputVariable.payload/@id</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$CallbackFaultIn.payload/@id</to>
+                        </copy>
+                        <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                            <from>$inputVariable.payload/@id</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$CallbackFaultIn.payload/ns1:error/@id</to>
+                        </copy>
+                        <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                            <from>$inputVariable.payload/@compositeId</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$CallbackFaultIn.payload/@compositeId</to>
+                        </copy>
+                        <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                            <from>$inputVariable.payload/@compositeId</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$CallbackFaultIn.payload/ns1:error/@compositeId</to>
+                        </copy>
+                        <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                            <from>ora:getFaultName()</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$CallbackFaultIn.payload/ns1:error/ns1:code</to>
+                        </copy>
+                        <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                            <from>ora:getFaultAsString()</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$CallbackFaultIn.payload/ns1:error/ns1:description</to>
+                        </copy>
+                    </assign>
+                    <invoke name="CallbackFault" bpelx:invokeAsDetail="no" partnerLink="DeleteStudyService"
+                            portType="client:DeleteStudyCallback" operation="processResponse"
+                            inputVariable="CallbackFaultIn"/>
+                </sequence>
+            </scope>
+        </catchAll>
+    </faultHandlers>
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+       ORCHESTRATION LOGIC                                               
+       Set of activities coordinating the flow of messages across the    
+       services integrated within this business process                  
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <sequence name="main">
+        <!-- Receive input from requestor. (Note: This maps to operation defined in DeleteStudy.wsdl) -->
+        <receive name="receiveInput" partnerLink="DeleteStudyService" portType="client:DeleteStudy" operation="process" variable="inputVariable" createInstance="yes"/>
+        <assign name="AssignStart">
+            <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                <from>count($inputVariable.payload/ns1:wbsNodes/ns1:wbs)</from>
+                <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$wbsCount</to>
+            </copy>
+            <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                <from>concat("ProjectId='",$inputVariable.payload/ns1:wbsNodes/ns1:wbs/@timelineId,"'")</from>
+                <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$ReadWBSIn.params/ns2:Filter</to>
+            </copy>
+            <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                <from>'ProjectObjectId'</from>
+                <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$ReadWBSIn.params/ns2:Field</to>
+            </copy>
+        </assign>
+        <sequence name="SKIP-WhenCountZero">
+            <bpelx:skipCondition>$wbsCount=0</bpelx:skipCondition>
+            <invoke name="ReadWBS" bpelx:invokeAsDetail="no" partnerLink="WBSService" portType="ns2:WBSPortType"
+                    operation="ReadWBS" inputVariable="ReadWBSIn" outputVariable="ReadWBSOut"/>
+            <while name="WhileCountLoop">
+                <condition>$wbsCount&gt;0</condition>
+                <sequence name="loop">
+                    <assign name="AssignWbsId">
+                        <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                            <from>$inputVariable.payload/ns1:wbsNodes/ns1:wbs[$wbsCount]/@id</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$wbsId</to>
+                        </copy>
+                    </assign>
+                    <sequence name="SKIP-WhenNoWBS">
+                        <bpelx:skipCondition>count($ReadWBSOut.result/ns2:WBS[ns2:ObjectId=$wbsId])=0</bpelx:skipCondition>
+                        <assign name="AssignDeleteId">
+                            <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                <from>$wbsId</from>
+                                <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$DeleteWBSIn.params/ns2:ObjectId</to>
+                            </copy>
+                        </assign>
+                        <invoke name="DeleteWBS" bpelx:invokeAsDetail="no" partnerLink="WBSService"
+                                portType="ns2:WBSPortType" operation="DeleteWBS" inputVariable="DeleteWBSIn"
+                                outputVariable="DeleteWBSOut"/>
+                    </sequence>
+                    <assign name="AssignMinusLoop">
+                        <copy>
+                            <from>($wbsCount)-1</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$wbsCount</to>
+                        </copy>
+                    </assign>
+                </sequence>
+            </while>
+            <invoke name="ReadWBSAfter" bpelx:invokeAsDetail="no" partnerLink="WBSService" portType="ns2:WBSPortType"
+                    operation="ReadWBS" inputVariable="ReadWBSIn" outputVariable="ReadWBSAfterOut"/>
+            <assign name="DoubleCheckDeletedWBS">
+                <bpelx:annotation>
+                    <bpelx:pattern patternName="bpelx:transformation"></bpelx:pattern>
+                </bpelx:annotation>
+                <copy>
+                    <from>ora:doXSLTransformForDoc("../xsl/DeleteStudyOutput.xsl", $inputVariable.payload, "ReadWBSAfterOut.result", $ReadWBSAfterOut.result)</from>
+                    <to variable="outputVariable" part="payload"/>
+                </copy>
+            </assign>
+        </sequence>
+        <assign name="AssignMsgId">
+            <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                <from>$inputVariable.payload/@id</from>
+                <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$outputVariable.payload/@id</to>
+            </copy>
+            <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                <from>$inputVariable.payload/@id</from>
+                <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$outputVariable.payload/client:complete/@id</to>
+            </copy>
+            <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                <from>$inputVariable.payload/@compositeId</from>
+                <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$outputVariable.payload/@compositeId</to>
+            </copy>
+            <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                <from>$inputVariable.payload/@compositeId</from>
+                <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$outputVariable.payload/client:complete/@compositeId</to>
+            </copy>
+        </assign>
+        <!-- 
+          Asynchronous callback to the requester. (Note: the callback location and correlation id is transparently handled using WS-addressing.)
+        -->
+        <invoke name="callbackClient" partnerLink="DeleteStudyService" portType="client:DeleteStudyCallback" operation="processResponse" inputVariable="outputVariable"/>
+    </sequence>
+</process>

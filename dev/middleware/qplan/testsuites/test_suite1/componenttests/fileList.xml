@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<properties>
+  <entry key="test_ReadTimeline_test1.xml"/>
+  <entry key="test_CreateProject_test1.xml"/>
+  <entry key="test_CreateProject_existing.xml"/>
+  <entry key="test_CreateProject_existing_UpdateProject.xml"/>
+  <entry key="test01_CreateProject_tests.xml"/>
+  <entry key="test02_CreateProject_tests.xml"/>
+  <entry key="test02_UpdateProject_tests.xml"/>
+  <entry key="test05_ReadTimeline_tests.xml"/>
+  <entry key="test03_UpdateProject_tests.xml"/>
+  <entry key="test06_ReadPlaceholderStudies.xml"/>
+</properties>

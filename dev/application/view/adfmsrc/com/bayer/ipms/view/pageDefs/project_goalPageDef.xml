@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.1.3.10.8" id="project_goalPageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="ProgramAppModule.ProjectGoalView" DataControl="PrivateAppModuleDataControl" RangeSize="25"
+              id="ProjectGoalViewIterator"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="ProjectGoalViewIterator" id="ProjectGoalView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.ProjectGoalView" Name="ProjectGoalView0">
+        <AttrNames>
+          <Item Value="ProjectId"/>
+          <Item Value="Goal"/>
+          <Item Value="Type"/>
+          <Item Value="Phase"/>
+          <Item Value="StudyId"/>
+          <Item Value="PlanReference"/>
+          <Item Value="PlanReferenceDate"/>
+          <Item Value="Status"/>
+          <Item Value="TargetDate"/>
+          <Item Value="AchievedDate"/>
+          <Item Value="RevisedDate"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+  </bindings>
+</pageDefinition>

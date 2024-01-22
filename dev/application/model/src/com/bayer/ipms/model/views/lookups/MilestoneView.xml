@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="windows-1257" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="MilestoneView"
+  Version="12.2.1.0.31"
+  InheritPersonalization="true"
+  SelectList="Milestone.CODE, 
+       Milestone.IS_ACTIVE, 
+       Milestone.NAME, 
+       Milestone.TYPE_CODE"
+  FromList="MILESTONE Milestone"
+  OrderBy="Milestone.IS_ACTIVE desc,Milestone.NAME"
+  BindingStyle="OracleName"
+  CustomQuery="false"
+  RowClass="com.bayer.ipms.model.base.IPMSLookupViewRowImpl"
+  ComponentClass="com.bayer.ipms.model.base.IPMSViewObjectImpl"
+  FetchMode="FETCH_ALL"
+  FetchSize="100"
+  Passivate="None"
+  PageIterMode="Full"
+  Where="Milestone.CODE NOT IN ('D5','M5A','cPoT')">
+  <DesignTime>
+    <Attr Name="_rowSuperClassName"
+      Value="com.bayer.ipms.model.base.IPMSLookupViewRowImpl"/>
+  </DesignTime>
+  <EntityUsage
+    Name="Milestone"
+    Entity="com.bayer.ipms.model.entities.lookups.Milestone"
+    ReadOnly="true"
+    DeleteParticipant="false"/>
+  <ViewAttribute
+    Name="Code"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Code"
+    EntityUsage="Milestone"
+    AliasName="CODE"/>
+  <ViewAttribute
+    Name="IsActive"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="IsActive"
+    EntityUsage="Milestone"
+    AliasName="IS_ACTIVE"/>
+  <ViewAttribute
+    Name="Name"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Name"
+    EntityUsage="Milestone"
+    AliasName="NAME"/>
+  <ViewAttribute
+    Name="TypeCode"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="TypeCode"
+    EntityUsage="Milestone"
+    AliasName="TYPE_CODE"/>
+</ViewObject>

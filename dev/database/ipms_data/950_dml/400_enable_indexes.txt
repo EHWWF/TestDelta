@@ -1,0 +1,1 @@
+alter index IPMS_DATA.TEAM_MEMBER_IDX2 enable;

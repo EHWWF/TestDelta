@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="windows-1257" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <metadata-resource></metadata-resource>
+  <view id="programs">
+    <page>/programs.jspx</page>
+  </view>
+  <view id="notices">
+    <page>/notices.jspx</page>
+  </view>
+  <view id="tasks">
+    <page>/tasks.jspx</page>
+  </view>
+  <view id="global-ba-log">
+    <page>/global-ba-log.jspx</page>
+  </view>  
+  <task-flow-call id="maintain-generic-timelines">
+    <task-flow-reference>
+      <document>/WEB-INF/com.bayer.ipms.view/flows/maintain-generic-timelines.xml</document>
+      <id>maintain-generic-timelines</id>
+    </task-flow-reference>
+    <run-as-dialog id="__1">
+      <display-type id="__2">
+        <inline-popup/>
+      </display-type>
+    </run-as-dialog>
+  </task-flow-call>
+  <task-flow-call id="maintain-phases">
+    <task-flow-reference>
+      <document>/WEB-INF/com.bayer.ipms.view/flows/maintain-phases.xml</document>
+      <id>maintain-phases</id>
+    </task-flow-reference>
+    <run-as-dialog>
+      <display-type id="__59">
+        <inline-popup/>
+      </display-type>
+    </run-as-dialog>
+  </task-flow-call>
+  <view id="estimates">
+    <page>/estimates.jspx</page>
+  </view>
+  <task-flow-call id="maintain-probabilities">
+    <task-flow-reference>
+      <document>/WEB-INF/com.bayer.ipms.view/flows/maintain-probabilities.xml</document>
+      <id>maintain-probabilities</id>
+    </task-flow-reference>
+    <run-as-dialog>
+      <display-type id="__31">
+        <inline-popup/>
+      </display-type>
+    </run-as-dialog>
+  </task-flow-call>
+  <task-flow-call id="maintain-subfunctions">
+    <task-flow-reference>
+      <document>/WEB-INF/com.bayer.ipms.view/flows/maintain-subfunctions.xml</document>
+      <id>maintain-subfunctions</id>
+    </task-flow-reference>
+    <run-as-dialog>
+      <display-type id="__49">
+        <inline-popup/>
+      </display-type>
+    </run-as-dialog>
+  </task-flow-call>
+  <task-flow-call id="maintain-announcements">
+    <task-flow-reference>
+      <document>/WEB-INF/com.bayer.ipms.view/flows/maintain-announcements.xml</document>
+      <id>maintain-announcements</id>
+    </task-flow-reference>
+    <run-as-dialog>
+      <display-type id="__500">
+        <inline-popup/>
+      </display-type>
+    </run-as-dialog>
+  </task-flow-call>
+  <task-flow-call id="maintain-studies">
+    <task-flow-reference>
+      <document>/WEB-INF/com.bayer.ipms.view/flows/maintain-studies.xml</document>
+      <id>maintain-studies</id>
+    </task-flow-reference>
+    <run-as-dialog>
+      <display-type id="__5">
+        <inline-popup/>
+      </display-type>
+    </run-as-dialog>
+  </task-flow-call>
+  <task-flow-call id="maintain-lookups">
+    <task-flow-reference>
+      <document>/WEB-INF/com.bayer.ipms.view/flows/maintain-lookups.xml</document>
+      <id>maintain-lookups</id>
+    </task-flow-reference>
+    <run-as-dialog>
+      <display-type id="__15">
+        <inline-popup/>
+      </display-type>
+    </run-as-dialog>
+  </task-flow-call>
+  <task-flow-call id="maintain-users">
+    <task-flow-reference>
+      <document>/WEB-INF/com.bayer.ipms.view/flows/maintain-users.xml</document>
+      <id>maintain-users</id>
+    </task-flow-reference>
+    <run-as-dialog>
+      <display-type id="__89">
+        <inline-popup/>
+      </display-type>
+    </run-as-dialog>
+  </task-flow-call>
+  <view id="green-red-list">
+    <page>/greenredlist.jspx</page>
+  </view>
+  <task-flow-call id="plan-assumption-request-start">
+    <task-flow-reference>
+      <document>/WEB-INF/com.bayer.ipms.view/flows/plan-assumption-request-start.xml</document>
+      <id>plan-assumption-request-start</id>
+    </task-flow-reference>
+    <run-as-dialog>
+      <display-type id="__98">
+        <inline-popup/>
+      </display-type>
+    </run-as-dialog>
+  </task-flow-call>
+  <view id="references">
+    <page>/references.jspx</page>
+  </view>
+  <task-flow-call id="FPS-details.jspx">
+    <task-flow-reference>
+      <document>/WEB-INF/com.bayer.ipms.view/flows/FPS-details.xml</document>
+      <id>FPS-details.jspx</id>
+    </task-flow-reference>
+    <input-parameter id="__106">
+      <name>projectId</name>
+      <value>#{pageFlowScope.projectId}</value>
+    </input-parameter>
+    <input-parameter id="__6">
+      <name>messageDetails</name>
+      <value>#{pageFlowScope.messageDetails}</value>
+    </input-parameter>
+    <run-as-dialog>
+      <display-type id="__118">
+        <inline-popup/>
+      </display-type>
+    </run-as-dialog>
+  </task-flow-call>
+  <task-flow-call id="maintain-tpp">
+    <task-flow-reference>
+      <document>/WEB-INF/com.bayer.ipms.view/flows/maintain-tpp.xml</document>
+      <id>maintain-tpp</id>
+    </task-flow-reference>
+    <run-as-dialog>
+      <display-type>
+        <inline-popup/>
+      </display-type>
+    </run-as-dialog>
+  </task-flow-call>
+  <task-flow-call id="switch-goal-tracking">
+    <task-flow-reference>
+      <document>/WEB-INF/com.bayer.ipms.view/flows/switch-goal-tracking.xml</document>
+      <id>switch-goal-tracking</id>
+    </task-flow-reference>
+    <run-as-dialog>
+      <display-type>
+        <inline-popup/>
+      </display-type>
+    </run-as-dialog>
+  </task-flow-call> 
+  <task-flow-call id="maintain-D1-decision-factors">
+    <task-flow-reference>
+      <document>/WEB-INF/com.bayer.ipms.view/flows/maintain-D1-decision-factors.xml</document>
+      <id>maintain-D1-decision-factors</id>
+    </task-flow-reference>
+    <run-as-dialog>
+      <display-type>
+        <inline-popup/>
+      </display-type>
+    </run-as-dialog>
+  </task-flow-call>
+  <task-flow-call id="maintain-help">
+    <task-flow-reference>
+      <document>/WEB-INF/com.bayer.ipms.view/flows/maintain-help.xml</document>
+      <id>maintain-help</id>
+    </task-flow-reference>
+    <run-as-dialog>
+      <display-type>
+        <inline-popup/>
+      </display-type>
+    </run-as-dialog>
+  </task-flow-call>
+  <view id="ltc-planning">
+    <page>/ltc-planning.jspx</page>
+  </view>
+  <task-flow-call id="maintain-top-template">
+    <task-flow-reference>
+      <document>/WEB-INF/com.bayer.ipms.view/flows/maintain-top-template.xml</document>
+      <id>maintain-top-template</id>
+    </task-flow-reference>
+    <run-as-dialog>
+      <display-type>
+        <inline-popup/>
+      </display-type>
+    </run-as-dialog>
+  </task-flow-call>
+  <control-flow-rule id="__12">
+    <from-activity-id id="__11">*</from-activity-id>
+    <control-flow-case id="__17">
+      <from-outcome id="__18">programs</from-outcome>
+      <to-activity-id id="__13">programs</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__32">
+      <from-outcome id="__34">notices</from-outcome>
+      <to-activity-id id="__33">notices</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__36">
+      <from-outcome id="__37">tasks</from-outcome>
+      <to-activity-id id="__35">tasks</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__66">
+      <from-outcome id="__67">estimates</from-outcome>
+      <to-activity-id id="__65">estimates</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__7">
+      <from-outcome id="__8">maintain-phases</from-outcome>
+      <to-activity-id id="__9">maintain-phases</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__14">
+      <from-outcome id="__22">maintain-probabilities</from-outcome>
+      <to-activity-id id="__21">maintain-probabilities</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__39">
+      <from-outcome id="__40">maintain-subfunctions</from-outcome>
+      <to-activity-id id="__38">maintain-subfunctions</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__56">
+      <from-outcome id="__57">maintain-announcements</from-outcome>
+      <to-activity-id id="__600">maintain-announcements</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__77">
+      <from-outcome id="__79">maintain-studies</from-outcome>
+      <to-activity-id id="__78">maintain-studies</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__16">
+      <from-outcome id="__81">maintain-lookups</from-outcome>
+      <to-activity-id id="__80">maintain-lookups</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__91">
+      <from-outcome id="__92">maintain-users</from-outcome>
+      <to-activity-id id="__90">maintain-users</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__4">
+      <from-outcome id="__58">maintain-generic-timelines</from-outcome>
+      <to-activity-id id="__3">maintain-generic-timelines</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__61">
+      <from-outcome id="__62">green-red-list</from-outcome>
+      <to-activity-id id="__60">green-red-list</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__100">
+      <from-outcome id="__101">references</from-outcome>
+      <to-activity-id id="__99">references</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__107">
+      <from-outcome>maintain-tpp</from-outcome>
+      <to-activity-id>maintain-tpp</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__177">
+      <from-outcome>switch-goal-tracking</from-outcome>
+      <to-activity-id>switch-goal-tracking</to-activity-id>
+    </control-flow-case> 
+   <control-flow-case id="__188">
+      <from-outcome>maintain-D1-decision-factors</from-outcome>
+      <to-activity-id>maintain-D1-decision-factors</to-activity-id>
+    </control-flow-case>    
+   <control-flow-case id="__199">
+      <from-outcome>global-ba-log</from-outcome>
+      <to-activity-id>global-ba-log</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__68">
+      <from-outcome>maintain-help</from-outcome>
+      <to-activity-id>maintain-help</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__41">
+      <from-outcome>global-ltc-planning</from-outcome>
+      <to-activity-id>ltc-planning</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__46">
+      <from-outcome>maintain-top-template</from-outcome>
+      <to-activity-id>maintain-top-template</to-activity-id>
+    </control-flow-case>
+  </control-flow-rule>
+  <control-flow-rule id="__93">
+    <from-activity-id id="__94">green-red-list</from-activity-id>
+    <control-flow-case id="__95">
+      <from-outcome id="__97">plan-assumption-request-start</from-outcome>
+      <to-activity-id id="__96">plan-assumption-request-start</to-activity-id>
+    </control-flow-case>
+  </control-flow-rule>
+  <control-flow-rule id="__69">
+    <from-activity-id>global-ba-log</from-activity-id>
+    <control-flow-case id="__70">
+      <from-outcome>FPSDetails</from-outcome>
+      <to-activity-id>FPS-details.jspx</to-activity-id>
+    </control-flow-case>
+  </control-flow-rule>
+  <managed-bean id="__10">
+    <managed-bean-name id="__25">loginBean</managed-bean-name>
+    <managed-bean-class id="__23">com.bayer.ipms.view.beans.AuthenticationBean</managed-bean-class>
+    <managed-bean-scope id="__24">request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean id="__27">
+    <managed-bean-name id="__26">rolesBean</managed-bean-name>
+    <managed-bean-class id="__28">com.bayer.ipms.view.beans.AuthorizationBean</managed-bean-class>
+    <managed-bean-scope id="__29">session</managed-bean-scope>
+  </managed-bean>
+  <managed-bean id="__115">
+    <managed-bean-name id="__116">tasksBean</managed-bean-name>
+    <managed-bean-class id="__20">com.bayer.ipms.view.beans.TasksBean</managed-bean-class>
+    <managed-bean-scope id="__19">pageFlow</managed-bean-scope>
+  </managed-bean>
+  <managed-bean id="__43">
+    <managed-bean-name id="__42">programsBean</managed-bean-name>
+    <managed-bean-class id="__30">com.bayer.ipms.view.beans.ProgramsBean</managed-bean-class>
+    <managed-bean-scope id="__44">pageFlow</managed-bean-scope>
+  </managed-bean>
+  <managed-bean id="__50">
+    <managed-bean-name id="__48">estimatesBean</managed-bean-name>
+    <managed-bean-class id="__64">com.bayer.ipms.view.beans.EstimatesBean</managed-bean-class>
+    <managed-bean-scope id="__53">pageFlow</managed-bean-scope>
+  </managed-bean>
+  <managed-bean id="__55">
+    <managed-bean-name id="__51">utilsBean</managed-bean-name>
+    <managed-bean-class id="__54">com.bayer.ipms.view.beans.UtilitiesBean</managed-bean-class>
+    <managed-bean-scope id="__52">application</managed-bean-scope>
+  </managed-bean>
+  <managed-bean id="__75">
+    <managed-bean-name id="__63">PlanningAssumptionBean</managed-bean-name>
+    <managed-bean-class id="__76">com.bayer.ipms.view.beans.PlanningAssumptionBean</managed-bean-class>
+    <managed-bean-scope id="__74">request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean id="__104">
+    <managed-bean-name id="__105">referencesBean</managed-bean-name>
+    <managed-bean-class id="__102">com.bayer.ipms.view.beans.ReferenceViewBean</managed-bean-class>
+    <managed-bean-scope id="__103">pageFlow</managed-bean-scope>
+  </managed-bean>
+  <managed-bean id="__108">
+    <managed-bean-name>administrationBean</managed-bean-name>
+    <managed-bean-class>com.bayer.ipms.view.beans.AdministrationBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean id="__45">
+    <managed-bean-name>ltcBean2</managed-bean-name>
+    <managed-bean-class>com.bayer.ipms.view.beans.LtcBean2</managed-bean-class>
+    <managed-bean-scope>pageFlow</managed-bean-scope>
+  </managed-bean>
+  <managed-bean id="__47">
+    <managed-bean-name>modalStateBean</managed-bean-name>
+    <managed-bean-class>com.bayer.ipms.view.beans.ModalStateBean</managed-bean-class>
+    <managed-bean-scope>pageFlow</managed-bean-scope>
+  </managed-bean>
+</adfc-config>

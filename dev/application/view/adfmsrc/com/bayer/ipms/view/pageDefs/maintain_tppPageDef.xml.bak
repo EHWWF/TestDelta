@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.1.3.10.8" id="maintain_tppPageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+    <parameters/>
+    <executables>
+        <variableIterator id="variables"/>
+        <iterator Binds="ManagementAppModule.TppCategoryView" DataControl="PrivateAppModuleDataControl" RangeSize="100"
+                  id="TppCategoryViewIterator"/>
+        <iterator Binds="ManagementAppModule.TppSubcategoryView" DataControl="PrivateAppModuleDataControl"
+                  RangeSize="100" id="TppSubcategoryViewIterator"/>
+    </executables>
+    <bindings>
+        <tree IterBinding="TppCategoryViewIterator" id="TppCategoryView">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.TppCategoryView" Name="TppCategoryView0">
+                <AttrNames>
+                    <Item Value="Code"/>
+                    <Item Value="Name"/>
+                    <Item Value="IsActive"/>
+                    <Item Value="Description"/>
+                    <Item Value="ModifyDate"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <tree IterBinding="TppSubcategoryViewIterator" id="TppSubcategoryView">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.TppSubcategoryView" Name="TppSubcategoryView0">
+                <AttrNames>
+                    <Item Value="Code"/>
+                    <Item Value="Name"/>
+                    <Item Value="IsActive"/>
+                    <Item Value="Description"/>
+                    <Item Value="ModifyDate"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <action IterBinding="TppCategoryViewIterator" id="CreateInsert"
+                InstanceName="PrivateAppModuleDataControl.Root.ManagementAppModule.TppCategoryView"
+                DataControl="PrivateAppModuleDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+        <action IterBinding="TppCategoryViewIterator" id="DeleteCat"
+                InstanceName="PrivateAppModuleDataControl.ManagementAppModule.TppCategoryView"
+                DataControl="PrivateAppModuleDataControl" RequiresUpdateModel="false" Action="removeCurrentRow"/>
+        <action IterBinding="TppSubcategoryViewIterator" id="CreateInsertSub"
+                InstanceName="PrivateAppModuleDataControl.ManagementAppModule.TppSubcategoryView"
+                DataControl="PrivateAppModuleDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+        <action IterBinding="TppSubcategoryViewIterator" id="DeleteSubc"
+                InstanceName="PrivateAppModuleDataControl.ManagementAppModule.TppSubcategoryView"
+                DataControl="PrivateAppModuleDataControl" RequiresUpdateModel="false" Action="removeCurrentRow"/>
+        <attributeValues IterBinding="TppCategoryViewIterator" id="CategoryModifyDate">
+            <AttrNames>
+                <Item Value="ModifyDate"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="TppSubcategoryViewIterator" id="SubcategoryModifyDate">
+            <AttrNames>
+                <Item Value="ModifyDate"/>
+            </AttrNames>
+        </attributeValues>
+    </bindings>
+</pageDefinition>

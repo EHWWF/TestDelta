@@ -1,0 +1,12 @@
+//Groovy Scripts for com.bayer.ipms.model.views.lookups.EmployeeView
+
+package com.bayer.ipms.model.views.lookups
+
+import oracle.jbo.script.annotation.TransientValueExpression;
+
+@TransientValueExpression(attributeName="Fullname")
+def Fullname_ExpressionScript_Expression()
+{
+Surname + " " + Forename
+}
+

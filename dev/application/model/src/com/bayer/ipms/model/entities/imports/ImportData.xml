@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="windows-1257" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ImportData"
+  Version="12.2.1.0.31"
+  InheritPersonalization="true"
+  DBObjectType="table"
+  DBObjectName="IMPORT"
+  AliasName="ImportData"
+  BindingStyle="OracleName"
+  RowClass="com.bayer.ipms.model.base.IPMSEntityImpl">
+  <Attribute
+    Name="Id"
+    IsUpdateable="false"
+    Precision="20"
+    ColumnName="ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="IMPORT"
+    PrimaryKey="true"
+    RetrievedOnInsert="true"
+    Scale="0">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="ProjectId"
+    IsUpdateable="while_insert"
+    Precision="20"
+    ColumnName="PROJECT_ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="IMPORT"
+    Scale="0">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="CreateDate"
+    IsUpdateable="false"
+    ColumnName="CREATE_DATE"
+    SQLType="TIMESTAMP"
+    Type="oracle.jbo.domain.Date"
+    ColumnType="DATE"
+    TableName="IMPORT"
+    RetrievedOnInsert="true">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="7"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="UpdateDate"
+    IsUpdateable="false"
+    ColumnName="UPDATE_DATE"
+    SQLType="TIMESTAMP"
+    Type="oracle.jbo.domain.Date"
+    ColumnType="DATE"
+    TableName="IMPORT"
+    ChangeIndicator="true"
+    RetrievedOnUpdate="true"
+    RetrievedOnInsert="true">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="7"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="SyncDate"
+    IsUpdateable="false"
+    ColumnName="SYNC_DATE"
+    SQLType="TIMESTAMP"
+    Type="oracle.jbo.domain.Date"
+    ColumnType="DATE"
+    TableName="IMPORT"
+    RetrievedOnUpdate="true"
+    RetrievedOnInsert="true">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="7"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="IsSyncing"
+    ColumnName="IS_SYNCING"
+    SQLType="NUMERIC"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    TableName="IMPORT"
+    RetrievedOnUpdate="true"
+    RetrievedOnInsert="true"
+    PrecisionRule="false"
+    Precision="1"
+    IsUpdateable="false">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="2"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="StatusCode"
+    IsUpdateable="false"
+    Precision="10"
+    ColumnName="STATUS_CODE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="IMPORT"
+    RetrievedOnUpdate="true"
+    RetrievedOnInsert="true"
+    Scale="0">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="CreateUserId"
+    Precision="20"
+    Scale="0"
+    ColumnName="CREATE_USER_ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="IMPORT"
+    IsUpdateable="false"
+    RetrievedOnInsert="true">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="UpdateUserId"
+    Precision="20"
+    Scale="0"
+    ColumnName="UPDATE_USER_ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="IMPORT"
+    IsUpdateable="false"
+    RetrievedOnUpdate="true"
+    RetrievedOnInsert="true">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="TypeMask"
+    IsNotNull="true"
+    Precision="20"
+    ColumnName="TYPE_MASK"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="IMPORT">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="21"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="IsManual"
+    IsNotNull="true"
+    Precision="1"
+    Scale="0"
+    ColumnName="IS_MANUAL"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="IMPORT">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="2"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="Source"
+    Precision="20"
+    ColumnName="SOURCE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="IMPORT">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="SandboxId"
+    Precision="15"
+    ColumnName="SANDBOX_ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="IMPORT">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="15"/>
+    </DesignTime>
+  </Attribute>
+  <AccessorAttribute
+    Name="ImportTimeline"
+    Association="com.bayer.ipms.model.entities.assoc.ImportDataTimeline"
+    AssociationEnd="com.bayer.ipms.model.entities.assoc.ImportDataTimeline.ImportTimeline"
+    AssociationOtherEnd="com.bayer.ipms.model.entities.assoc.ImportDataTimeline.ImportData"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <Key
+    Name="SysC0022111">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0022111"/>
+      <Attr Name="_checkCondition" Value='"ID" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.imports.ImportData.Id"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0022112">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0022112"/>
+      <Attr Name="_checkCondition" Value='"STATUS_CODE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes"/>
+  </Key>
+  <Key
+    Name="SysC0022114">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0022114"/>
+      <Attr Name="_checkCondition" Value='"CREATE_USER_ID" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.imports.ImportData.CreateUserId"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0022115">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0022115"/>
+      <Attr Name="_checkCondition" Value='"CREATE_DATE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.imports.ImportData.CreateDate"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0022116">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0022116"/>
+      <Attr Name="_checkCondition" Value='"IS_SYNCING" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.imports.ImportData.IsSyncing"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0022117">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0022117"/>
+      <Attr Name="_checkCondition" Value="is_syncing >= 0"/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.imports.ImportData.IsSyncing"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0022118"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0022118"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.imports.ImportData.Id"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0022613">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0022613"/>
+      <Attr Name="_checkCondition" Value='"TYPE_MASK" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.imports.ImportData.TypeMask"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0023867">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0023867"/>
+      <Attr Name="_checkCondition" Value='"IS_MANUAL" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.imports.ImportData.IsManual"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0023868">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0023868"/>
+      <Attr Name="_checkCondition" Value="is_manual in (1,0)"/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.imports.ImportData.IsManual"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0022119">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0012263"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0022119"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.imports.ImportData.StatusCode"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0022120">
+    <DesignTime>
+      <Attr Name="_isCascadeDelete" Value="true"/>
+      <Attr Name="_referencedKey" Value="SYS_C0011166"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0022120"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.imports.ImportData.ProjectId"/>
+    </AttrArray>
+  </Key>
+</Entity>

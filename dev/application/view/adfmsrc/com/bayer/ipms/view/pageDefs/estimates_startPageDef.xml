@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.64.93" id="estimates_startPageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="EstimatesAppModule.LatestEstimatesProcessView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="LatestEstimatesProcessViewIterator" ChangeEventPolicy="ppr">
+      <sortCriteria>
+        <sort attribute="CreateDate" ascending="false"/>
+      </sortCriteria>
+    </iterator>
+    <iterator Binds="EstimatesAppModule.DevProgramView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="DevProgramViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator Binds="EstimatesAppModule.LatestEstimatesProjectView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="LatestEstimatesProjectViewIterator" ChangeEventPolicy="ppr"/>
+    <searchRegion Binds="LatestEstimatesProjectViewIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="LatestEstimatesProjectViewQuery"/>
+    <searchRegion Criteria="LatestEstimatesDev"
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="DevProgramViewIterator" id="LatestEstimatesDevQuery"/>
+    <iterator Binds="EstimatesAppModule.PrdMntProgramView" RangeSize="100"
+              DataControl="PrivateAppModuleDataControl"
+              id="PrdMntProgramViewIterator"/>
+    <searchRegion Criteria="LatestEstimatesPrdMnt"
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="PrdMntProgramViewIterator"
+                  id="LatestEstimatesPrdMntQuery"/>
+    <iterator Binds="EstimatesAppModule.D3TrProjectView" RangeSize="100"
+              DataControl="PrivateAppModuleDataControl"
+              id="D3TrProjectViewIterator"/>
+    <searchRegion Criteria="LatestEstimatesD3Tr"
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="D3TrProjectViewIterator"
+                  id="LatestEstimatesD3TrQuery"/>
+    <iterator Binds="EstimatesAppModule.LatestEstimatesTagView" DataControl="PrivateAppModuleDataControl" RangeSize="25"
+              id="LatestEstimatesTagViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator id="DevProjectAreaViewIterator" Binds="EstimatesAppModule.DevProjectAreaView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="-1"/>
+    <iterator Binds="EstimatesAppModule.PreviousTagLatestEstimatesProcessView" DataControl="PrivateAppModuleDataControl"
+              RangeSize="-1" id="PreviousTagLatestEstimatesProcessViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator id="PreviousTagLatestEstimatesProjectViewIterator"
+              Binds="EstimatesAppModule.PreviousTagLatestEstimatesProjectView" DataControl="PrivateAppModuleDataControl"
+              RangeSize="25"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="LatestEstimatesProcessViewIterator" id="Name">
+      <AttrNames>
+        <Item Value="Name"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LatestEstimatesProcessViewIterator"
+                     id="Comments">
+      <AttrNames>
+        <Item Value="Comments"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LatestEstimatesProcessViewIterator"
+                     id="TerminationDate">
+      <AttrNames>
+        <Item Value="TerminationDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LatestEstimatesProcessViewIterator" id="Year">
+      <AttrNames>
+        <Item Value="Year"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LatestEstimatesProcessViewIterator"
+                     id="IsNextYear">
+      <AttrNames>
+        <Item Value="IsNextYear"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="DevProgramViewIterator" id="DevProgramView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.ProgramView"
+                      Name="ProgramView0">
+        <AttrNames>
+          <Item Value="QualifiedName"/>
+        </AttrNames>
+        <Accessors>
+          <Item Value="ProjectView"/>
+        </Accessors>
+      </nodeDefinition>
+      <nodeDefinition DefName="com.bayer.ipms.model.views.ProjectView"
+                      Name="ProgramView1">
+        <AttrNames>
+          <Item Value="QualifiedName"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="LatestEstimatesProjectViewIterator"
+          id="LatestEstimatesProjectView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.estimates.LatestEstimatesProjectView"
+                      Name="LatestEstimatesProjectView0">
+        <AttrNames>
+          <Item Value="ProgramName"/>
+          <Item Value="ProjectName"/>
+          <Item Value="ProjectAreaName"/>
+          <Item Value="ProjectSbeName"/>
+          <Item Value="ProjectStateName"/>
+          <Item Value="ProjectCode"/>
+          <Item Value="ProgramNameQualified"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <list IterBinding="LatestEstimatesProcessViewIterator" StaticList="false"
+          Uses="LOV_CyDetPrefillCode" id="CyDetPrefillCode"
+          DTSupportsMRU="true"/>
+    <list IterBinding="LatestEstimatesProcessViewIterator" StaticList="false"
+          Uses="LOV_NyDetPrefillCode" id="NyDetPrefillCode"
+          DTSupportsMRU="true"/>
+    <attributeValues IterBinding="LatestEstimatesProcessViewIterator"
+                     id="StatusCode">
+      <AttrNames>
+        <Item Value="StatusCode"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="PrdMntProgramViewIterator" id="PrdMntProgramView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.ProgramView"
+                      Name="PrdMntProgramView0">
+        <AttrNames>
+          <Item Value="QualifiedName"/>
+        </AttrNames>
+        <Accessors>
+          <Item Value="ProjectView"/>
+        </Accessors>
+      </nodeDefinition>
+      <nodeDefinition DefName="com.bayer.ipms.model.views.ProjectView"
+                      Name="PrdMntProgramView1">
+        <AttrNames>
+          <Item Value="QualifiedName"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="D3TrProjectViewIterator" id="D3TrProjectView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.ProjectView"
+                      Name="D3TrProjectView0">
+        <AttrNames>
+          <Item Value="QualifiedName"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="LatestEstimatesTagViewIterator" id="LetName">
+      <AttrNames>
+        <Item Value="Name"/>
+      </AttrNames>
+    </attributeValues>
+    <list ListOperMode="navigation" IterBinding="PreviousTagLatestEstimatesProcessViewIterator"
+          ListIter="PreviousTagLatestEstimatesProcessViewIterator" id="PreviousTagProcesses">
+      <AttrNames>
+        <Item Value="Name"/>
+      </AttrNames>
+    </list>
+    <list StaticList="false" IterBinding="LatestEstimatesProcessViewIterator"
+          ListIter="PreviousTagLatestEstimatesProcessViewIterator" id="CyDetPrefillLepId">
+      <AttrNames>
+        <Item Value="CyDetPrefillLepId"/>
+      </AttrNames>
+      <ListAttrNames>
+        <Item Value="Id"/>
+      </ListAttrNames>
+      <ListDisplayAttrNames>
+        <Item Value="Name"/>
+      </ListDisplayAttrNames>
+    </list>
+    <list StaticList="false" IterBinding="LatestEstimatesProcessViewIterator"
+          ListIter="PreviousTagLatestEstimatesProcessViewIterator" id="NyDetPrefillLepId">
+      <AttrNames>
+        <Item Value="NyDetPrefillLepId"/>
+      </AttrNames>
+      <ListAttrNames>
+        <Item Value="Id"/>
+      </ListAttrNames>
+      <ListDisplayAttrNames>
+        <Item Value="Name"/>
+      </ListDisplayAttrNames>
+    </list>
+  </bindings>
+  <ResourceBundle>
+    <PropertiesBundle xmlns="http://xmlns.oracle.com/adfm/resourcebundle"
+                      PropertiesFile="com.bayer.ipms.view.bundles.viewBundle"/>
+  </ResourceBundle>
+</pageDefinition>

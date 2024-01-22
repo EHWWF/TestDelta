@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.0.31"
+                id="ltc_planning_start_ltc_planning_start_CreateInsertPageDef" Package="com.bayer.ipms.view.pageDefs"
+                SkipValidation="true">
+  <parameters/>
+  <executables>
+    <iterator Binds="LtcAppModule.LtcProcessView" DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="LtcProcessViewIterator"/>
+  </executables>
+  <bindings>
+    <action IterBinding="LtcProcessViewIterator" id="CreateInsert" RequiresUpdateModel="true" Action="createWithParams">
+    <NamedData NDName="Id" NDType="java.lang.String" NDValue='0'/>    
+    </action>
+  </bindings>
+</pageDefinition>

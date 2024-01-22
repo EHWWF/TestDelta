@@ -1,0 +1,133 @@
+set serveroutput on
+declare
+	v_guid sys_guid_transaction.guid%type;
+	v_what nvarchar2(100):='update_functions';
+	v_count number;
+	v_sum number:=0;
+	r_fun_n function%rowtype;
+	r_fun_c function%rowtype;
+begin
+	v_guid:=ba_log_pkg.generate_guid;
+	ba_log_pkg.put_guid(v_guid,'DEPLOY', v_what);
+for rr in (
+				select 
+					name, 
+					count(1) counnn
+				from function 
+				group by name 
+				having count(1)=2
+				order by name
+)
+loop
+	begin
+		--select number code 
+		select * into r_fun_n from function where name=rr.name and regexp_like(code, '^[[:digit:]]+$');
+		--select nchar code
+		select * into r_fun_c from function where name=rr.name and code<>r_fun_n.code;
+		dbms_output.put_line('*****************************************************************');
+		dbms_output.put_line('name='||rr.name||';r_fun_n.code='||r_fun_n.code||';r_fun_c.code='||r_fun_c.code);
+		
+		---Update
+		v_sum:=0;
+		select count(1) into v_count from costs where function_code=r_fun_c.code;
+		if v_count>0 then
+			dbms_output.put_line('name='||rr.name||';v_count='||v_count||';table=costs');
+			v_sum:=v_sum+v_count;
+			update costs set function_code=r_fun_n.code where function_code=r_fun_c.code;
+		end if;
+		
+		select count(1) into v_count from costs_fps where function_code=r_fun_c.code;
+		if v_count>0 then
+			dbms_output.put_line('name='||rr.name||';v_count='||v_count||';table=COSTS_FPS');
+			v_sum:=v_sum+v_count;
+			update costs_fps set function_code=r_fun_n.code where function_code=r_fun_c.code;
+		end if;
+		
+		select count(1) into v_count from costs_probability where function_code=r_fun_c.code;
+		if v_count>0 then
+			dbms_output.put_line('name='||rr.name||';v_count='||v_count||';table=costs_probability');
+			v_sum:=v_sum+v_count;
+			update costs_probability set function_code=r_fun_n.code where function_code=r_fun_c.code;
+		end if;
+		
+		select count(1) into v_count from headcount where function_code=r_fun_c.code;
+		if v_count>0 then
+			dbms_output.put_line('name='||rr.name||';v_count='||v_count||';table=headcount');
+			v_sum:=v_sum+v_count;
+			update headcount set function_code=r_fun_n.code where function_code=r_fun_c.code;
+		end if;
+		
+		select count(1) into v_count from import_costs_fps where function_code=r_fun_c.code;
+		if v_count>0 then
+			dbms_output.put_line('name='||rr.name||';v_count='||v_count||';table=import_costs_fps');
+			v_sum:=v_sum+v_count;
+			update import_costs_fps set function_code=r_fun_n.code where function_code=r_fun_c.code;
+		end if;
+		
+		select count(1) into v_count from latest_estimate where function_code=r_fun_c.code;
+		if v_count>0 then
+			dbms_output.put_line('name='||rr.name||';v_count='||v_count||';table=LATEST_ESTIMATE');
+			v_sum:=v_sum+v_count;
+			update latest_estimate set function_code=r_fun_n.code where function_code=r_fun_c.code;
+		end if;
+		
+		select count(1) into v_count from ltc_value where function_code=r_fun_c.code;
+		if v_count>0 then
+			dbms_output.put_line('name='||rr.name||';v_count='||v_count||';table=ltc_value');
+			v_sum:=v_sum+v_count;
+			update ltc_value set function_code=r_fun_n.code where function_code=r_fun_c.code;
+		end if;
+		
+		select count(1) into v_count from resources where function_code=r_fun_c.code;
+		if v_count>0 then
+			dbms_output.put_line('name='||rr.name||';v_count='||v_count||';table=resources');
+			v_sum:=v_sum+v_count;
+			update resources set function_code=r_fun_n.code where function_code=r_fun_c.code;
+		end if;
+				
+		select count(1) into v_count from resources_cs where function_code=r_fun_c.code;
+		if v_count>0 then
+			dbms_output.put_line('name='||rr.name||';v_count='||v_count||';table=RESOURCES_CS');
+			v_sum:=v_sum+v_count;
+			update resources_cs set function_code=r_fun_n.code where function_code=r_fun_c.code;
+		end if;
+				
+		select count(1) into v_count from resources_ged where function_code=r_fun_c.code;
+		if v_count>0 then
+			dbms_output.put_line('name='||rr.name||';v_count='||v_count||';table=resources_ged');
+			v_sum:=v_sum+v_count;
+			update resources_ged set function_code=r_fun_n.code where function_code=r_fun_c.code;
+		end if;
+		
+		select count(1) into v_count from subfunction where function_code=r_fun_c.code;
+		if v_count>0 then
+			dbms_output.put_line('name='||rr.name||';v_count='||v_count||';table=subfunction');
+			v_sum:=v_sum+v_count;
+			update subfunction set function_code=r_fun_n.code where function_code=r_fun_c.code;
+		end if;
+		
+		select count(1) into v_count from timeline_expense where function_code=r_fun_c.code;
+		if v_count>0 then
+			dbms_output.put_line('name='||rr.name||';v_count='||v_count||';table=timeline_expense');
+			v_sum:=v_sum+v_count;
+			update timeline_expense set function_code=r_fun_n.code where function_code=r_fun_c.code;
+		end if;
+		
+		
+		if v_sum =0 then
+			dbms_output.put_line('DELETE;name='||rr.name||';r_fun_c.code='||r_fun_c.code||';v_sum='||v_sum);
+			update function set name='OBSOLETE.'||name, is_active=0 where code=r_fun_c.code and name=rr.name;
+		else
+			dbms_output.put_line('STILL----USED;name='||rr.name||';r_fun_c.code='||r_fun_c.code||';v_sum='||v_sum);
+		end if;
+		
+--exit;
+		ba_log_pkg.put_guid(v_guid,null,null);
+		commit;
+	exception when others then
+		dbms_output.put_line('LOOP-OTHER;name='||rr.name||';sqlerrm='||sqlerrm);
+	end;
+end loop;
+	
+	
+end;

@@ -1,0 +1,165 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich" xmlns:h="http://java.sun.com/jsf/html"
+          xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <c:set var="bundle" value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+    <f:view>
+        <af:document title="#{bundle.activitiesSetMissingPhases}" id="d1">
+            <af:serverListener type="onLoadEvent" method="#{activitiesPhasesBean.onPageLoad}"/>
+            <af:clientListener type="load" method="triggerOnLoad"/>
+            <af:resource type="javascript">
+              function triggerOnLoad(event) {
+                  AdfCustomEvent.queue(event.getSource(), "onLoadEvent", 
+                  {
+                  },
+                  false);
+                  return true;
+              }
+            </af:resource>
+            <af:messages id="m1"/>
+            <af:form id="f1">
+                <af:pageTemplate viewId="/WEB-INF/com.bayer.ipms.view/templates/ipms-popup-template.jspx" id="pt1">
+                    <f:facet name="summary">
+                        <af:panelBox text="#{bundle.project}" showDisclosure="true">
+                            <af:panelFormLayout styleClass="AFStretchWidth" fieldWidth="100%" maxColumns="2" rows="2">
+                                <af:panelLabelAndMessage label="#{bundle.globalCode}">
+                                    <af:outputText value="#{pageFlowScope.projectCode}"/>
+                                </af:panelLabelAndMessage>
+                                <af:panelLabelAndMessage label="#{bundle.globalName}">
+                                    <af:outputText value="#{pageFlowScope.projectName}"/>
+                                </af:panelLabelAndMessage>
+                                <af:train value="#{controllerContext.currentViewPort.taskFlowContext.trainModel}"
+                                          id="t1" inlineStyle="min-width:100%;"/>
+                            </af:panelFormLayout>
+                        </af:panelBox>
+                    </f:facet>
+                    <f:facet name="content">
+                        <af:panelBox text="#{bundle.importDetails}" showDisclosure="false" type="stretch" id="pb3">
+                            <af:panelStretchLayout topHeight="auto" bottomHeight="0">
+                                <f:facet name="center">
+                                    <af:group id="g1">
+                                        <af:outputText value="#{bundle.projectActivitiesReceiveMessage}" id="otReceive"
+                                                       rendered="#{activitiesPhasesBean.currTrainActivityId eq 'receive-data'}"/>
+                                        <af:outputText value="#{bundle.projectActivitiesSubmitMessage}" id="otSubmit"
+                                                       rendered="#{activitiesPhasesBean.currTrainActivityId eq 'submit'}"/>
+                                        <af:outputText value="#{bundle.projectActivitiesEmpty}" id="otEmpty" visible="false"/>
+                                        <af:outputText value="#{bundle.projectActivitiesDuplicates}" id="otDuplicates" visible="false"/>
+                                        <af:outputText value="#{bundle.projectActivitiesError}" id="otError" visible="false"/>
+                                        
+                                        <af:panelCollection id="pc1" styleClass="AFStretchWidth"
+                                                            featuresOff="detach statusBar" visible="false">
+                                            <af:table value="#{bindings.ImportProjectActivityView.collectionModel}"
+                                                      var="row" rows="#{bindings.ImportProjectActivityView.rangeSize}"
+                                                      emptyText="#{bindings.ImportProjectActivityView.viewable ? 'No data to display.' : 'Access Denied.'}"
+                                                      rowBandingInterval="0"
+                                                      fetchSize="#{bindings.ImportProjectActivityView.rangeSize}"
+                                                      id="t2" columnStretching="last">
+                                                <af:column headerText="#{bindings.ImportProjectActivityView.hints.ProjectActivityId.label}"
+                                                           id="c2">
+                                                    <af:outputText value="#{row.ProjectActivityId}"
+                                                                   shortDesc="#{bindings.ImportProjectActivityView.hints.ProjectActivityId.tooltip}"
+                                                                   id="ot2"/>
+                                                </af:column>
+                                                <af:column headerText="#{bindings.ImportProjectActivityView.hints.ProjectActivityName.label}"
+                                                           id="c3">
+                                                    <af:outputText value="#{row.ProjectActivityName}"
+                                                                   shortDesc="#{bindings.ImportProjectActivityView.hints.ProjectActivityName.tooltip}"
+                                                                   id="ot3"/>
+                                                </af:column>
+                                                <af:column headerText="#{bindings.ImportProjectActivityView.hints.StudyId.label}"
+                                                           id="c32">
+                                                    <af:outputText value="#{row.StudyId}"
+                                                                   shortDesc="#{bindings.ImportProjectActivityView.hints.StudyId.tooltip}"
+                                                                   id="ot32"/>
+                                                </af:column>
+                                                <af:column headerText="#{bindings.ImportProjectActivityView.hints.PlanStartDate.label}"
+                                                           id="c4">
+                                                    <af:inputDate value="#{row.bindings.PlanStartDate.inputValue}"
+                                                                  readOnly="true"
+                                                                  label="#{bindings.ImportProjectActivityView.hints.PlanStartDate.label}"
+                                                                  required="#{bindings.ImportProjectActivityView.hints.PlanStartDate.mandatory}"
+                                                                  columns="#{bindings.ImportProjectActivityView.hints.PlanStartDate.displayWidth}"
+                                                                  shortDesc="#{bindings.ImportProjectActivityView.hints.PlanStartDate.tooltip}"
+                                                                  id="id1">
+                                                        <f:validator binding="#{row.bindings.PlanStartDate.validator}"/>
+                                                        <af:convertDateTime pattern="#{bindings.ImportProjectActivityView.hints.PlanStartDate.format}"/>
+                                                    </af:inputDate>
+                                                    </af:column>
+                                                <af:column headerText="#{bindings.ImportProjectActivityView.hints.PlanFinishDate.label}"
+                                                           id="c5">
+                                                    <af:inputDate value="#{row.bindings.PlanFinishDate.inputValue}"
+                                                                  readOnly="true"
+                                                                  label="#{bindings.ImportProjectActivityView.hints.PlanFinishDate.label}"
+                                                                  required="#{bindings.ImportProjectActivityView.hints.PlanFinishDate.mandatory}"
+                                                                  columns="#{bindings.ImportProjectActivityView.hints.PlanFinishDate.displayWidth}"
+                                                                  shortDesc="#{bindings.ImportProjectActivityView.hints.PlanFinishDate.tooltip}"
+                                                                  id="id2">
+                                                        <f:validator binding="#{row.bindings.PlanFinishDate.validator}"/>
+                                                        <af:convertDateTime pattern="#{bindings.ImportProjectActivityView.hints.PlanFinishDate.format}"/>
+                                                    </af:inputDate>
+                                                </af:column>
+                                                <af:column headerText="#{bindings.ImportProjectActivityView.hints.ActStartDate.label}"
+                                                           id="c6">
+                                                    <af:inputDate value="#{row.bindings.ActStartDate.inputValue}"
+                                                                  readOnly="true"
+                                                                  label="#{bindings.ImportProjectActivityView.hints.ActStartDate.label}"
+                                                                  required="#{bindings.ImportProjectActivityView.hints.ActStartDate.mandatory}"
+                                                                  columns="#{bindings.ImportProjectActivityView.hints.ActStartDate.displayWidth}"
+                                                                  shortDesc="#{bindings.ImportProjectActivityView.hints.ActStartDate.tooltip}"
+                                                                  id="id3">
+                                                        <f:validator binding="#{row.bindings.ActStartDate.validator}"/>
+                                                        <af:convertDateTime pattern="#{bindings.ImportProjectActivityView.hints.ActStartDate.format}"/>
+                                                    </af:inputDate>
+                                                </af:column>
+                                                <af:column headerText="#{bindings.ImportProjectActivityView.hints.ActFinishDate.label}"
+                                                           id="c7">
+                                                    <af:inputDate value="#{row.bindings.ActFinishDate.inputValue}"
+                                                                  readOnly="true"
+                                                                  label="#{bindings.ImportProjectActivityView.hints.ActFinishDate.label}"
+                                                                  required="#{bindings.ImportProjectActivityView.hints.ActFinishDate.mandatory}"
+                                                                  columns="#{bindings.ImportProjectActivityView.hints.ActFinishDate.displayWidth}"
+                                                                  shortDesc="#{bindings.ImportProjectActivityView.hints.ActFinishDate.tooltip}"
+                                                                  id="id4">
+                                                        <f:validator binding="#{row.bindings.ActFinishDate.validator}"/>
+                                                        <af:convertDateTime pattern="#{bindings.ImportProjectActivityView.hints.ActFinishDate.format}"/>
+                                                    </af:inputDate>
+                                                </af:column>
+                                                <af:column headerText="#{bindings.ImportProjectActivityView.hints.WbsCategory.label}"
+                                                           id="c8">
+                                                    <af:selectOneChoice value="#{row.bindings.WbsCategory.inputValue}"
+                                                                        label="#{row.bindings.WbsCategory.label}"
+                                                                        required="#{bindings.ImportProjectActivityView.hints.WbsCategory.mandatory}"
+                                                                        shortDesc="#{bindings.ImportProjectActivityView.hints.WbsCategory.tooltip}"
+                                                                        id="soc1">
+                                                        <f:selectItems value="#{row.bindings.WbsCategory.items}"
+                                                                       id="si1"/>
+                                                        <f:validator binding="#{row.bindings.WbsCategory.validator}"/>
+                                                    </af:selectOneChoice>
+                                                </af:column>
+                                            </af:table>
+                                        </af:panelCollection>
+                                    </af:group>
+                                </f:facet>
+                            </af:panelStretchLayout>
+                        </af:panelBox>
+                    </f:facet>
+                    <f:facet name="controls">
+                        <af:panelGroupLayout layout="horizontal" halign="right" id="pgl12">
+                            <f:facet name="separator">
+                                <af:spacer width="5" id="s12"/>
+                            </f:facet>
+                            
+                            <af:button text="#{bundle.globalSubmit}" id="b3" action="submit"
+                                       rendered="#{activitiesPhasesBean.currTrainActivityId eq 'maintain'}"/>
+                            <af:button text="#{bundle.globalCancel}" id="b1" action="cancel" immediate="true"
+                                       rendered="#{activitiesPhasesBean.currTrainActivityId eq 'maintain'}"/>
+                            <af:button text="#{bundle.globalClose}" id="b12" action="cancel" immediate="true"
+                                       rendered="#{activitiesPhasesBean.currTrainActivityId eq 'complete'}"/>
+                        </af:panelGroupLayout>
+                    </f:facet>
+                </af:pageTemplate>
+            </af:form>
+        </af:document>
+    </f:view>
+</jsp:root>

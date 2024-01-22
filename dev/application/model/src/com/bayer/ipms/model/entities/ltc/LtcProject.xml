@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="LtcProject"
+  Version="12.2.1.0.31"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="LTC_PROJECT"
+  AliasName="LtcProject"
+  BindingStyle="OracleName"
+  RowClass="com.bayer.ipms.model.entities.ltc.LtcProjectImpl">
+  <DesignTime>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Attribute
+    Name="Id"
+    ColumnName="ID"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="LTC_PROJECT"
+    IsUpdateable="while_insert"
+    RetrievedOnInsert="true"
+    RetrievedOnUpdate="true"/>
+  <Attribute
+    Name="LtcProcessId"
+    IsNotNull="true"
+    ColumnName="LTC_PROCESS_ID"
+    SQLType="NUMERIC"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    TableName="LTC_PROJECT"
+    IsUpdateable="while_insert"
+    PrimaryKey="true"/>
+  <Attribute
+    Name="ProjectId"
+    IsUnique="true"
+    IsNotNull="true"
+    ColumnName="PROJECT_ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="LTC_PROJECT"
+    IsUpdateable="while_insert"
+    Precision="20"
+    Scale="0"
+    PrimaryKey="true"/>
+  <AccessorAttribute
+    Name="LtcProcess"
+    Association="com.bayer.ipms.model.entities.LtcProjectProcIdFkAssoc"
+    AssociationEnd="com.bayer.ipms.model.entities.LtcProjectProcIdFkAssoc.LtcProcess"
+    AssociationOtherEnd="com.bayer.ipms.model.entities.LtcProjectProcIdFkAssoc.LtcProject"
+    Type="com.bayer.ipms.model.base.IPMSEntityImpl"
+    IsUpdateable="true"/>
+  <AccessorAttribute
+    Name="Project"
+    Association="com.bayer.ipms.model.entities.assoc.LtcProject"
+    AssociationEnd="com.bayer.ipms.model.entities.assoc.LtcProject.Project"
+    AssociationOtherEnd="com.bayer.ipms.model.entities.assoc.LtcProject.LtcProject"
+    Type="com.bayer.ipms.model.base.IPMSEntityImpl"
+    IsUpdateable="true"/>
+  <Key
+    Name="LtcProjectPk"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="LTC_PROJECT_PK"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.ltc.LtcProject.LtcProcessId"/>
+      <Item Value="com.bayer.ipms.model.entities.ltc.LtcProject.ProjectId"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="LtcProjectUi">
+    <DesignTime>
+      <Attr Name="_isUnique" Value="true"/>
+      <Attr Name="_DBObjectName" Value="LTC_PROJECT_UI"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.ltc.LtcProject.LtcProcessId"/>
+      <Item Value="com.bayer.ipms.model.entities.ltc.LtcProject.ProjectId"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="LtcProjectProcIdFk">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="LTC_PROCESS_PK"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="LTC_PROJECT_PROC_ID_FK"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.ltc.LtcProject.LtcProcessId"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="LtcProjectProjectIdFk">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0043880"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="LTC_PROJECT_PROJECT_ID_FK"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.ltc.LtcProject.ProjectId"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="fk_LtcProject">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="LTC_PROCESS_PK"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_LTC_PROJECT"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.ltc.LtcProject.LtcProcessId"/>
+    </AttrArray>
+  </Key>
+</Entity>

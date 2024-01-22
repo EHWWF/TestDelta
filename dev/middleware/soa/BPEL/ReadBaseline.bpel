@@ -1,0 +1,307 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Tue Apr 12 15:04:51 CEST 2016
+  Author:  algis
+  Type: BPEL 2.0 Process
+  Purpose: Asynchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="ReadBaseline"
+         targetNamespace="http://xmlns.bayer.com/ipms/soa"
+         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:client="http://xmlns.bayer.com/ipms/soa"
+         xmlns:ora="http://schemas.oracle.com/xpath/extension"
+         xmlns:ui="http://xmlns.oracle.com/soa/designer"
+         xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:ns1="http://xmlns.bayer.com/ipms"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:ns2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions" xmlns:ess="http://xmlns.oracle.com/scheduler"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap" xmlns:ns3="http://xmlns.bayer.com/ipms/cache"
+         xmlns:ns4="http://xmlns.oracle.com/Primavera/P6/WS/UDFValue/V1"
+         xmlns:ns5="http://xmlns.oracle.com/Primavera/P6/WS/Activity/V1"
+         xmlns:ns6="http://xmlns.oracle.com/Primavera/P6/WS/WBS/V2"
+         xmlns:ns7="http://xmlns.oracle.com/Primavera/P6/WS/ActivityCodeAssignment/V1">
+    <import namespace="http://xmlns.bayer.com/ipms/soa" location="oramds:/apps/com/bayer/xmlns/ipms/soa/soa.xsd"
+            importType="http://www.w3.org/2001/XMLSchema"/>
+    <import namespace="http://xmlns.bayer.com/ipms/cache" location="oramds:/apps/com/bayer/xmlns/ipms/cache/cache.xsd"
+            importType="http://www.w3.org/2001/XMLSchema"/>
+    <import ui:processWSDL="true" namespace="http://xmlns.bayer.com/ipms/soa" location="../WSDLs/ReadBaseline.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        PARTNERLINKS                                                      
+        List of services participating in this BPEL process               
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    --> 
+    <partnerLinks>
+        <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+        <partnerLink name="ReadBaselineService" partnerLinkType="client:ReadBaseline" myRole="ReadBaselineProvider" partnerRole="ReadBaselineRequester"/>
+        <partnerLink name="ReadConfiguration.ReadConfigurationService" partnerLinkType="client:ReadConfiguration"
+                     partnerRole="ReadConfigurationProvider" myRole="ReadConfigurationRequester"/>
+        <partnerLink name="UDFValueService" partnerLinkType="ns4:UDFValueService" partnerRole="UDFValuePortType"/>
+        <partnerLink name="ActivityService" partnerLinkType="ns5:ActivityService" partnerRole="ActivityPortType"/>
+        <partnerLink name="WBSService" partnerLinkType="ns6:WBSService" partnerRole="WBSPortType"/>
+        <partnerLink name="ActivityCodeAssignmentService" partnerLinkType="ns7:ActivityCodeAssignmentService"
+                     partnerRole="ActivityCodeAssignmentPortType"/>
+    </partnerLinks>
+
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        VARIABLES                                                        
+        List of messages and XML documents used within this BPEL process 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <variables>
+        <!-- Reference to the message passed as input during initiation -->
+        <variable name="inputVariable" messageType="client:ReadBaselineRequestMessage"/>
+
+        <!-- Reference to the message that will be sent back to the requester during callback -->
+        <variable name="outputVariable" messageType="client:ReadBaselineResponseMessage"/>
+        <variable name="ReadConfigIn" messageType="client:ReadConfigurationRequestMessage"/>
+        <variable name="ReadConfigOut" messageType="client:ReadConfigurationResponseMessage"/>
+        <variable name="ReadAllUDFsIn" messageType="ns4:ReadUDFValues"/>
+        <variable name="ReadAllUDFsOut" messageType="ns4:ReadUDFValuesResponse"/>
+        <variable name="ReadAllActivitiesIn" messageType="ns5:ReadActivities"/>
+        <variable name="ReadAllActivitiesOut" messageType="ns5:ReadActivitiesResponse"/>
+        <variable name="ReadWBSIn" messageType="ns6:ReadWBS"/>
+        <variable name="ReadWBSOut" messageType="ns6:ReadWBSResponse"/>
+        <variable name="ReadMilestoneCodesIn" messageType="ns7:ReadActivityCodeAssignments"/>
+        <variable name="ReadMilestoneCodesOut" messageType="ns7:ReadActivityCodeAssignmentsResponse"/>
+    </variables>
+    <faultHandlers>
+        <catchAll>
+            <scope name="Fault">
+                <variables>
+                    <variable name="faultVariable" element="client:response"/>
+                </variables>
+                <sequence name="Fault">
+                    <assign name="AssignFault">
+                        <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                            <from>$inputVariable.payload/@id</from>
+                            <to>$faultVariable/@id</to>
+                        </copy>
+                        <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                            <from>$inputVariable.payload/@id</from>
+                            <to>$faultVariable/ns1:error/@id</to>
+                        </copy>
+                        <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                            <from>ora:getFaultName()</from>
+                            <to>$faultVariable/ns1:error/ns1:code</to>
+                        </copy>
+                        <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                            <from>ora:getFaultAsString()</from>
+                            <to>$faultVariable/ns1:error/ns1:description</to>
+                        </copy>
+                    </assign>
+                    <invoke name="faultCallback" bpelx:invokeAsDetail="no" partnerLink="ReadBaselineService"
+                            portType="client:ReadBaselineCallback" operation="processResponse"
+                            inputVariable="faultVariable"/>
+                </sequence>
+            </scope>
+        </catchAll>
+    </faultHandlers>
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+       ORCHESTRATION LOGIC                                               
+       Set of activities coordinating the flow of messages across the    
+       services integrated within this business process                  
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <sequence name="main">
+        <!-- Receive input from requestor. (Note: This maps to operation defined in ReadBaseline.wsdl) -->
+        <receive name="receiveInput" partnerLink="ReadBaselineService" portType="client:ReadBaseline" operation="process" variable="inputVariable" createInstance="yes"/>
+        <sequence name="ReadConfig">
+            <scope name="ReadConfigFromFile">
+                <variables>
+                    <variable name="VariableCache" element="ns3:cache"/>
+                </variables>
+                <faultHandlers>
+                    <catchAll>
+                        <empty name="EmptyCatchAllForCache"/>
+                    </catchAll>
+                </faultHandlers>
+                <sequence name="ReadConfigFile">
+                    <assign name="AssignReadConfigFile">
+                        <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                            <from>ora:readFile("file:///opt/oracle/soa12.2.1/file_adapter/ipms/config.cache", "oramds:/apps/com/bayer/xmlns/ipms/cache/cache.xsd")</from>
+                            <to>$VariableCache/ns3:cache</to>
+                        </copy>
+                        <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                            <from>$VariableCache/ns3:cache/*</from>
+                            <to>$ReadConfigOut.payload</to>
+                        </copy>
+                    </assign>
+                    <empty name="EmptyBeforeSkip"/>
+                </sequence>
+            </scope>
+            <sequence name="FullConfigRead-SKIP">
+                <bpelx:skipCondition>$ReadConfigOut.payload/client:program/client:epsId!=''</bpelx:skipCondition>
+                <assign name="FullConfigRead">
+                    <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                        <from>"cfg"</from>
+                        <to>$ReadConfigIn.payload</to>
+                    </copy>
+                </assign>
+                <invoke name="ReadConfigIn" bpelx:invokeAsDetail="no"
+                        partnerLink="ReadConfiguration.ReadConfigurationService" portType="client:ReadConfiguration"
+                        operation="process" inputVariable="ReadConfigIn"/>
+                <receive name="ReadConfigOut" partnerLink="ReadConfiguration.ReadConfigurationService"
+                         portType="client:ReadConfigurationCallback" operation="callback" variable="ReadConfigOut"/>
+            </sequence>
+        </sequence>
+        <sequence name="ReadAllUDFs">
+            <assign name="AssignReadAllUDFs">
+                <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                    <from>concat("ProjectObjectId='",$inputVariable.payload/ns1:baseline/@id,"' AND (UDFTypeSubjectArea='WBS' OR (UDFTypeObjectId='",$ReadConfigOut.payload/client:activity/client:studyElementIdTypeId,"' AND Text IN (",$inputVariable.payload/ns1:baseline/ns1:studyElementIdList,")))")</from>
+                    <to>$ReadAllUDFsIn.params/ns4:Filter</to>
+                </copy>
+                <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                    <from>"ForeignObjectId"</from>
+                    <to>$ReadAllUDFsIn.params/ns4:Field[1]</to>
+                </copy>
+                <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                    <from>"Text"</from>
+                    <to>$ReadAllUDFsIn.params/ns4:Field[2]</to>
+                </copy>
+                <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                    <from>"UDFTypeObjectId"</from>
+                    <to>$ReadAllUDFsIn.params/ns4:Field[3]</to>
+                </copy>
+            </assign>
+            <invoke name="ReadAllUDFs" bpelx:invokeAsDetail="no" partnerLink="UDFValueService"
+                    portType="ns4:UDFValuePortType" operation="ReadUDFValues" inputVariable="ReadAllUDFsIn"
+                    outputVariable="ReadAllUDFsOut"/>
+        </sequence>
+        <sequence name="ReadAllActivities">
+            <assign name="AssignReadAllActivities">
+                <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                    <from>concat("ProjectObjectId='",$inputVariable.payload/ns1:baseline/@id,"' and Type in ('Start Milestone','Finish Milestone')")</from>
+                    <to>$ReadAllActivitiesIn.params/ns5:Filter</to>
+                </copy>
+                <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                    <from>"WBSObjectId"</from>
+                    <to>$ReadAllActivitiesIn.params/ns5:Field[1]</to>
+                </copy>
+                <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                    <from>"PlannedFinishDate"</from>
+                    <to>$ReadAllActivitiesIn.params/ns5:Field[2]</to>
+                </copy>
+                <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                    <from>"PlannedStartDate"</from>
+                    <to>$ReadAllActivitiesIn.params/ns5:Field[3]</to>
+                </copy>
+                <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                    <from>"ActualStartDate"</from>
+                    <to>$ReadAllActivitiesIn.params/ns5:Field[4]</to>
+                </copy>
+                <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                    <from>"ActualFinishDate"</from>
+                    <to>$ReadAllActivitiesIn.params/ns5:Field[5]</to>
+                </copy>
+                <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                    <from>"Id"</from>
+                    <to>$ReadAllActivitiesIn.params/ns5:Field[6]</to>
+                </copy>
+                <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                    <from>"Name"</from>
+                    <to>$ReadAllActivitiesIn.params/ns5:Field[7]</to>
+                </copy>
+                <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                    <from>"Type"</from>
+                    <to>$ReadAllActivitiesIn.params/ns5:Field[8]</to>
+                </copy>
+            </assign>
+            <invoke name="ReadAllActivities" bpelx:invokeAsDetail="no" partnerLink="ActivityService"
+                    portType="ns5:ActivityPortType" operation="ReadActivities" inputVariable="ReadAllActivitiesIn"
+                    outputVariable="ReadAllActivitiesOut"/>
+        </sequence>
+        <sequence name="ReadAllWBS">
+            <assign name="AssignReadWBS">
+                <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                    <from>concat("ProjectObjectId='", $inputVariable.payload/ns1:baseline/@id ,"'")</from>
+                    <to>$ReadWBSIn.params/ns6:Filter</to>
+                </copy>
+                <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                    <from>"ParentObjectId"</from>
+                    <to>$ReadWBSIn.params/ns6:Field[1]</to>
+                </copy>
+                <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                    <from>"Code"</from>
+                    <to>$ReadWBSIn.params/ns6:Field[2]</to>
+                </copy>
+                <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                    <from>"Name"</from>
+                    <to>$ReadWBSIn.params/ns6:Field[3]</to>
+                </copy>
+                <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                    <from>"StartDate"</from>
+                    <to>$ReadWBSIn.params/ns6:Field[4]</to>
+                </copy>
+                <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                    <from>"FinishDate"</from>
+                    <to>$ReadWBSIn.params/ns6:Field[5]</to>
+                </copy>
+                <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                    <from>"SequenceNumber"</from>
+                    <to>$ReadWBSIn.params/ns6:Field[6]</to>
+                </copy>
+                <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                    <from>"WBSCategoryObjectId"</from>
+                    <to>$ReadWBSIn.params/ns6:Field[7]</to>
+                </copy>
+                
+            </assign>
+            <invoke name="ReadWBS" bpelx:invokeAsDetail="no" partnerLink="WBSService" portType="ns6:WBSPortType"
+                    operation="ReadWBS" inputVariable="ReadWBSIn" outputVariable="ReadWBSOut"/>
+        </sequence>
+        <sequence name="ReadAllMilestoneCodes">
+            <assign name="AssignMilCodes">
+                <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                    <from>concat( "ProjectObjectId='", $inputVariable.payload/ns1:baseline/@id ,"' AND ActivityCodeTypeObjectId='",$ReadConfigOut.payload/client:activity/client:milestoneTypeId,"'")</from>
+                    <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$ReadMilestoneCodesIn.params/ns7:Filter</to>
+                </copy>
+                <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                    <from>"ActivityCodeValue"</from>
+                    <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$ReadMilestoneCodesIn.params/ns7:Field[1]</to>
+                </copy>
+                <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                    <from>"ActivityObjectId"</from>
+                    <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$ReadMilestoneCodesIn.params/ns7:Field[2]</to>
+                </copy>
+            </assign>
+            <invoke name="ReadMilestoneCodes" bpelx:invokeAsDetail="no" partnerLink="ActivityCodeAssignmentService"
+                    portType="ns7:ActivityCodeAssignmentPortType" operation="ReadActivityCodeAssignments"
+                    inputVariable="ReadMilestoneCodesIn" outputVariable="ReadMilestoneCodesOut"/>
+        </sequence>
+        <sequence name="TransformResponse">
+            <assign name="TransformationReadBaselineOutput">
+                <bpelx:annotation>
+                    <bpelx:pattern patternName="bpelx:transformation"></bpelx:pattern>
+                </bpelx:annotation>
+                <copy>
+                    <from>ora:doXSLTransformForDoc("../xsl/ReadBaselineOutput.xsl", $ReadConfigOut.payload, "inputVariable.payload", $inputVariable.payload, "ReadAllUDFsOut.result", $ReadAllUDFsOut.result, "ReadAllActivitiesOut.result", $ReadAllActivitiesOut.result, "ReadWBSOut.result", $ReadWBSOut.result, "ReadMilestoneCodesOut.result", $ReadMilestoneCodesOut.result)</from>
+                    <to variable="outputVariable" part="payload"/>
+                </copy>
+            </assign>
+        </sequence>
+        <!-- 
+          Asynchronous callback to the requester. (Note: the callback location and correlation id is transparently handled using WS-addressing.)
+        -->
+        <invoke name="callbackClient" partnerLink="ReadBaselineService" portType="client:ReadBaselineCallback" operation="processResponse" inputVariable="outputVariable"/>
+    </sequence>
+</process>

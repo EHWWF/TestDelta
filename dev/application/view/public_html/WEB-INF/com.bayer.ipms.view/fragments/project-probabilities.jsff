@@ -1,0 +1,138 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <af:componentDef>
+        <c:set var="bundle" value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+        <af:panelGroupLayout layout="vertical">
+            <af:panelBox text="#{bundle.projectPtr}" showDisclosure="false">
+                <af:popup id="popProb" contentDelivery="lazyUncached"
+                          popupCanceledListener="#{pageFlowScope.projectViewBean.onPopupCancel}">
+                    <af:dialog id="diagProb" title="#{bundle.probabilitiesInternal}" contentWidth="700"
+                               dialogListener="#{pageFlowScope.projectViewBean.onProbability}">
+                        <af:panelBox text="#{bundle.globalSummary}" showDisclosure="false">
+                            <af:panelGridLayout id="dc_pgl1" styleClass="AFStretchWidth">
+                                <af:gridRow marginTop="5px" height="auto" id="dc_gr1">
+                                    <af:gridCell marginStart="5px" width="50%" id="dc_gc1">
+                                        <af:inputText label="#{bindings.Code.hints.label}"
+                                                      value="#{empty bindings.Code.inputValue ? bundle.globalNotAvailable : bindings.Code.inputValue}"
+                                                      styleClass="#{empty bindings.Code.inputValue ? 'empty' : ''}"
+                                                      readOnly="true" id="dc_it2"/>
+                                    </af:gridCell>
+                                    <af:gridCell marginStart="5px" rowSpan="3" width="50%" marginEnd="5px" id="dc_gc2">
+                                        <af:inputText value="#{bindings.PtrComment.inputValue}"
+                                                      label="#{bindings.PtrComment.hints.label}"
+                                                      required="#{bindings.PtrComment.hints.mandatory}"
+                                                      columns="#{bindings.PtrComment.hints.displayWidth}"
+                                                      maximumLength="#{bindings.PtrComment.hints.precision}"
+                                                      shortDesc="#{bindings.PtrComment.hints.tooltip}" id="dc_it1"
+                                                      rows="4">
+                                            <f:validator binding="#{bindings.PtrComment.validator}"/>
+                                        </af:inputText>
+                                    </af:gridCell>
+                                </af:gridRow>
+                                <af:gridRow marginTop="5px" height="auto" id="dc_gr2">
+                                    <af:gridCell marginStart="5px" width="50%" marginEnd="5px" id="dc_gc3">
+                                        <af:inputText label="#{bindings.Name.hints.label}"
+                                                      value="#{bindings.Name.inputValue}" readOnly="true" id="dc_it3"
+                                                      columns="50" rows="2"/>
+                                    </af:gridCell>
+                                </af:gridRow>
+                                <af:gridRow marginTop="5px" height="auto" marginBottom="5px" id="dc_gr3">
+                                    <af:gridCell marginStart="5px" width="50%" marginEnd="5px" id="dc_gc4">
+                                        <af:inputDate value="#{bindings.ReviewDate.inputValue}"
+                                                      label="#{bindings.ReviewDate.hints.label}"
+                                                      required="#{bindings.ReviewDate.hints.mandatory}"
+                                                      shortDesc="#{bindings.ReviewDate.hints.tooltip}" id="id1"
+                                                      disabled="#{bindings.IsInactive.inputValue}">
+                                            <af:convertDateTime pattern="#{bindings.ReviewDate.format}"/>
+                                        </af:inputDate>
+                                    </af:gridCell>
+                                </af:gridRow>
+                            </af:panelGridLayout>
+                        </af:panelBox>
+                        <af:panelCollection id="pc2" styleClass="AFStretchWidth AFStretchHeight"
+                                            featuresOff="detach statusBar viewMenu">
+                            <f:facet name="toolbar">
+                                <af:toolbar id="tbar" visible="true">
+                                    <af:commandToolbarButton text="#{bundle.globalApplyDefaults}"
+                                                             icon="/images/apply-all.png" id="cmdApplyDefaults"
+                                                             action="#{pageFlowScope.projectViewBean.onApplyDefaultProbabilities}"/>
+                                </af:toolbar>
+                            </f:facet>
+                            <af:table value="#{bindings.CostsProbabilityInternalView.collectionModel}" var="row"
+                                      rows="#{bindings.CostsProbabilityInternalView.rangeSize}"
+                                      emptyText="#{bindings.CostsProbabilityInternalView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                                      fetchSize="#{bindings.CostsProbabilityInternalView.rangeSize}"
+                                      rowBandingInterval="0" rowSelection="none" id="probs" editingMode="editAll"
+                                      contentDelivery="immediate" columnStretching="column:cPhase" autoHeightRows="0">
+                                <af:column sortProperty="#{bindings.CostsProbabilityInternalView.hints.PhaseName.name}"
+                                           sortable="false"
+                                           headerText="#{bindings.CostsProbabilityInternalView.hints.PhaseName.label}"
+                                           id="cPhase">
+                                    <af:outputText value="#{row.PhaseName}" id="probPhase"/>
+                                </af:column>
+                                <af:column sortProperty="#{bindings.CostsProbabilityInternalView.hints.Probability.name}"
+                                           sortable="false"
+                                           headerText="#{bindings.CostsProbabilityInternalView.hints.Probability.label}"
+                                           id="c30">
+                                    <af:inputText value="#{row.bindings.Probability.inputValue}"
+                                                  label="#{bindings.CostsProbabilityInternalView.hints.Probability.label}"
+                                                  required="#{bindings.CostsProbabilityInternalView.hints.Probability.mandatory}"
+                                                  columns="#{bindings.CostsProbabilityInternalView.hints.Probability.displayWidth}"
+                                                  maximumLength="#{bindings.CostsProbabilityInternalView.hints.Probability.precision}"
+                                                  shortDesc="#{bindings.CostsProbabilityInternalView.hints.Probability.tooltip}"
+                                                  id="prob" styleClass="AFFieldNumberMarker">
+                                        <f:validator binding="#{row.bindings.Probability.validator}"/>
+                                        <af:convertNumber groupingUsed="false"
+                                                          pattern="#{bindings.CostsProbabilityInternalView.hints.Probability.format}"/>
+                                    </af:inputText>
+                                </af:column>
+                                <af:column sortable="false" headerText="#{bundle.probabilityDefault}" id="c51"
+                                           inlineStyle="text-align:right;" width="110">
+                                    <af:inputText value="#{row.row.default == null ? '-' : row.row.default.probability}"
+                                                  columns="#{bindings.CostsProbabilityInternalView.hints.Probability.displayWidth}"
+                                                  maximumLength="#{bindings.CostsProbabilityInternalView.hints.Probability.precision}"
+                                                  id="it2" readOnly="true"></af:inputText>
+                                </af:column>
+                            </af:table>
+                        </af:panelCollection>
+                    </af:dialog>
+                </af:popup>
+                <f:facet name="toolbar">
+                    <af:toolbar rendered="#{rolesBean.projectEditDev or rolesBean.projectEditD3Tr}">
+                        <af:commandToolbarButton icon="/images/edit.png" text="#{bundle.globalEdit}"
+                                                 disabled="#{not empty pageFlowScope.projectViewBean.editable}"
+                                                 immediate="true">
+                            <af:showPopupBehavior popupId="popProb" triggerType="action"/>
+                        </af:commandToolbarButton>
+                    </af:toolbar>
+                </f:facet>
+                <af:panelGroupLayout layout="horizontal">
+                    <af:table rowSelection="none" rows="2" value="phase,probability" columnStretching="multiple"
+                              rowBandingInterval="0" autoHeightRows="1" id="ptstab" styleClass="AFStretchWidth"
+                              rendered="#{bindings.Probability.inputValue != null}" contentDelivery="immediate">
+                        <af:forEach var="col" items="#{bindings.CostsProbabilityInternalViewIterator.allRowsInRange}">
+                            <af:column headerText="#{col.phaseName}" headerNoWrap="true">
+                                <af:outputText value="#{col.probability}"/>
+                            </af:column>
+                        </af:forEach>
+                        <af:column headerText="#{bundle.projectPtsTotal}" rowHeader="unstyled" headerNoWrap="true">
+                            <af:outputText value="#{bindings.Probability.inputValue}"/>
+                        </af:column>
+                    </af:table>
+                </af:panelGroupLayout>
+                <af:inputDate value="#{bindings.ReviewDate.inputValue}" label="#{bindings.ReviewDate.hints.label}"
+                              required="#{bindings.ReviewDate.hints.mandatory}"
+                              shortDesc="#{bindings.ReviewDate.hints.tooltip}" readOnly="true"
+                              inlineStyle="margin-top: 5px;"
+                              styleClass="#{empty bindings.ReviewDate.inputValue ? 'empty' : ''}">
+                    <af:convertDateTime pattern="#{bindings.ReviewDate.hints.format}"/>
+                </af:inputDate>
+                <af:panelLabelAndMessage label="#{bindings.PtrComment.hints.label}" id="dc_plam1">
+                    <af:outputFormatted value="#{utilsBean.brFormattedString[bindings.PtrComment.inputValue]}"
+                                        id="of1"/>
+                </af:panelLabelAndMessage>
+            </af:panelBox>
+        </af:panelGroupLayout>
+    </af:componentDef>
+</jsp:root>

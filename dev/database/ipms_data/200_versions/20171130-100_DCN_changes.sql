@@ -1,0 +1,16 @@
+alter trigger timeline_tr disable;
+update timeline set notify_id = null where notify_id is not null;
+commit;
+alter table timeline modify (notify_id varchar2(50));
+update timeline set notify_id=id||':'||is_syncing;
+commit;
+alter trigger timeline_tr enable;
+alter trigger lead_study_instance_tr disable;
+alter table lead_study_instance modify(notify_id nvarchar2(50) null);
+update lead_study_instance set notify_id=null;
+commit;
+alter table lead_study_instance modify(notify_id varchar2(50));
+update lead_study_instance set notify_id=id||':'||status_code;
+commit;
+alter table lead_study_instance modify(notify_id varchar2(50) not null);
+alter trigger lead_study_instance_tr enable;

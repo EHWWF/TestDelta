@@ -1,0 +1,53 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<SDM>
+   <OverallProperties
+      id="OverallProperties1"/>
+   <View
+      id="View2">
+      <property
+         name="activityId">view</property>
+      <property
+         name="page">/WEB-INF/com.bayer.ipms.view/fragments/project-type-view.jsff</property>
+      <property
+         name="start">true</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>view&lt;/b> (Default Activity)&lt;/p>&lt;p>Activity Type:  View&lt;/p></property>
+      <property
+         name="exceptionHandler">false</property>
+      <property
+         name="y">342.44824</property>
+      <property
+         name="x">675.68555</property>
+      <property
+         name="pageFragment">true</property>
+   </View>
+   <TaskFlowCall
+      id="TaskFlowCall3">
+      <property
+         name="taskFlowId">team-members-view</property>
+      <property
+         name="activityId">team-members-view</property>
+      <property
+         name="documentReference">/WEB-INF/com.bayer.ipms.view/flows/team-members-view.xml</property>
+      <property
+         name="runAsDialog">true</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>team-members-view&lt;/b>&lt;/p>&lt;p>Activity Type:  Task Flow Call&lt;/p></property>
+      <property
+         name="exceptionHandler">false</property>
+      <property
+         name="y">341.99414</property>
+      <property
+         name="x">1003.3428</property>
+   </TaskFlowCall>
+   <ControlFlowCase
+      islink="true"
+      id="ControlFlowCase4"
+      from="View2"
+      to="TaskFlowCall3">
+      <property
+         name="fromOutcome">team-members-view</property>
+      <property
+         name="sdm:polyPoints">R50,716.68555,342.09766,962.3428,341.64355,L50</property>
+   </ControlFlowCase>
+</SDM>

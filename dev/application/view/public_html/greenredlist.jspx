@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:h="http://java.sun.com/jsf/html">
+  <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+  <f:view>
+    <f:loadBundle basename="com.bayer.ipms.view.bundles.viewBundle"
+                  var="bundle"/>
+    <af:document title="#{bundle.globalProMIS}" id="doc">
+      <af:messages id="m1"/>
+      <af:form id="frm" usesUpload="true">
+        <af:pageTemplate viewId="/WEB-INF/com.bayer.ipms.view/templates/ipms-page-template.jspx"
+                         id="tmpl">
+          <f:facet name="content">
+            <af:panelStretchLayout topHeight="auto" bottomHeight="0">
+              <f:facet name="top"></f:facet>
+              <f:facet name="center">
+                <af:panelTabbed id="tabPanel" dimensionsFrom="parent"
+                                styleClass="AFStretchWidth">
+                  <af:showDetailItem text="#{bundle.greenList}" immediate="true"
+                                     stretchChildren="first" id="sdi1"
+                                     rendered="#{securityContext.userInRole['GreenRedListView']}">
+                    <af:declarativeComponent id="grLst"
+                                             viewId="/WEB-INF/com.bayer.ipms.view/fragments/green-list.jsff"/>
+                  </af:showDetailItem>
+                  <af:showDetailItem text="#{bundle.redList}" immediate="true"
+                                     id="sdi2" stretchChildren="first"
+                                     rendered="#{securityContext.userInRole['GreenRedListView']}">
+                    <af:declarativeComponent id="rdLst"
+                                             viewId="/WEB-INF/com.bayer.ipms.view/fragments/red-list.jsff"/>
+                  </af:showDetailItem>
+                  <af:showDetailItem text="#{bundle.planningAssumpReqs}" stretchChildren="first"
+                                     immediate="true" id="sdi3"
+                                     rendered="#{securityContext.userInRole['PlanningAssumptionsView']}">
+                    <af:declarativeComponent id="plAsm"
+                                             viewId="/WEB-INF/com.bayer.ipms.view/fragments/planning-assumptions.jsff"/>
+                  </af:showDetailItem>
+                </af:panelTabbed>
+              </f:facet>
+            </af:panelStretchLayout>
+          </f:facet>
+          <f:attribute name="tab" value="greenRedList"/>
+        </af:pageTemplate>
+      </af:form>
+      <f:facet name="metaContainer">
+        <f:verbatim>
+          <link type="image/x-icon" href="images/promis.png"
+                rel="shortcut icon"/>
+        </f:verbatim>
+      </f:facet>
+    </af:document>
+  </f:view>
+</jsp:root>

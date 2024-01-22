@@ -1,0 +1,12 @@
+//Groovy Scripts for com.bayer.ipms.model.entities.ltc.LtcTag
+
+package com.bayer.ipms.model.entities.ltc
+
+import oracle.jbo.script.annotation.TransientValueExpression;
+
+@TransientValueExpression(attributeName="StartYear")
+def StartYear_ExpressionScript_Expression()
+{
+1900 + adf.currentDate.year
+}
+

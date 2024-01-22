@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="windows-1257" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="LatestEstimatesProject"
+  Version="12.1.3.10.8"
+  InheritPersonalization="true"
+  DBObjectType="view"
+  DBObjectName="LATEST_ESTIMATES_PROJECT"
+  AliasName="LatestEstimatesProject"
+  BindingStyle="OracleName"
+  RowClass="com.bayer.ipms.model.entities.estimates.LatestEstimatesProjectImpl">
+  <DesignTime>
+    <AttrArray Name="_publishEvents"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Attribute
+    Name="ProcessId"
+    Precision="20"
+    ColumnName="PROCESS_ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="LATEST_ESTIMATES_PROJECT"
+    PrimaryKey="true"
+    IsUpdateable="while_insert"
+    IsNotNull="true">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="ProjectId"
+    IsNotNull="true"
+    Precision="20"
+    ColumnName="PROJECT_ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="LATEST_ESTIMATES_PROJECT"
+    PrimaryKey="true"
+    IsUpdateable="while_insert">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="4000"/>
+    </DesignTime>
+  </Attribute>
+  <AccessorAttribute
+    Name="Project"
+    Association="com.bayer.ipms.model.entities.assoc.EstimatesProject"
+    AssociationEnd="com.bayer.ipms.model.entities.assoc.EstimatesProject.Project"
+    AssociationOtherEnd="com.bayer.ipms.model.entities.assoc.EstimatesProject.LatestEstimatesProject"
+    Type="com.bayer.ipms.model.base.IPMSEntityImpl"
+    IsUpdateable="true"/>
+  <Key
+    Name="LatestEstimatesProjectVwProcessIdCheck">
+    <DesignTime>
+      <Attr Name="_isNotNull" Value="true"/>
+      <Attr Name="_DBObjectName" Value="LATEST_ESTIMATES_PROJECT_VW_PR"/>
+      <Attr Name="_checkCondition" Value='"PROCESS_ID" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.estimates.LatestEstimatesProject.ProcessId"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="LatestEstimatesProjectVwProjectIdCheck">
+    <DesignTime>
+      <Attr Name="_isNotNull" Value="true"/>
+      <Attr Name="_DBObjectName" Value="LATEST_ESTIMATES_PROJECT_VW_PR"/>
+      <Attr Name="_checkCondition" Value='"PROJECT_ID" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.estimates.LatestEstimatesProject.ProjectId"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="LatestestimatesprojectPrimaryKey"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="LATESTESTIMATESPROJECT_PRIMARY"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.estimates.LatestEstimatesProject.ProcessId"/>
+      <Item
+        Value="com.bayer.ipms.model.entities.estimates.LatestEstimatesProject.ProjectId"/>
+    </AttrArray>
+  </Key>
+</Entity>

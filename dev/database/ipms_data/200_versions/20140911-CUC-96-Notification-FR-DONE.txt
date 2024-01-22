@@ -1,0 +1,16 @@
+create sequence project_audit_id_seq maxvalue 9999999999999999999 minvalue 1 cycle;
+
+create table project_audit (
+id nvarchar2(20) not null primary key,
+project_id nvarchar2(20) not null references project(id) on delete cascade,
+prj_update_user_id nvarchar2(20) not null,
+details xmltype not null,
+details_for_diff xmltype not null,
+change_comment nvarchar2(200),
+sys_job_id nvarchar2(20) not null,
+create_user_id nvarchar2(20) default 'IPMS' not null,
+create_date date default sysdate not null
+);
+
+create index project_audit_idx1 on project_audit(project_id);
+create index project_audit_idx2 on project_audit(sys_job_id);

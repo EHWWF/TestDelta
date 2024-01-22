@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.0.31" id="ltc_planning_startPageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="LtcAppModule.LtcProcessView" DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="LtcProcessViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator Binds="LtcAppModule.LtcTagView" DataControl="PrivateAppModuleDataControl" RangeSize="25"
+              id="LtcTagViewIterator" ChangeEventPolicy="ppr"/> 
+    <iterator Binds="LtcAppModule.D3TrProjectView" RangeSize="100"
+              DataControl="PrivateAppModuleDataControl"
+              id="D3TrProjectViewIterator"/>
+    <searchRegion Criteria="LtcD3Tr"
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="D3TrProjectViewIterator"
+                  id="LtcD3TrQuery"/>       
+    <iterator Binds="LtcAppModule.PrdMntProgramView" RangeSize="100"
+              DataControl="PrivateAppModuleDataControl"
+              id="PrdMntProgramViewIterator"/>
+    <searchRegion Criteria="LtcPrdMnt"
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="PrdMntProgramViewIterator"
+                  id="LtcPrdMntQuery"/>
+    <iterator Binds="LtcAppModule.LtcProjectView" DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="LtcProjectViewIterator" ChangeEventPolicy="ppr"/>
+<searchRegion Binds="LtcProjectViewIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="LtcProjectViewQuery"/>
+    <iterator id="DevProjectAreaViewIterator" Binds="LtcAppModule.DevProjectAreaView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="25"/>
+    <iterator DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="DevProgramViewIterator" Binds="LtcAppModule.DevProgramView" ChangeEventPolicy="ppr"/>
+    <searchRegion Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="DevProgramViewIterator" id="LtcDevQuery" Criteria="LtcDev"/>
+    <iterator Binds="LtcAppModule.ParentTagProcessView" DataControl="PrivateAppModuleDataControl" RangeSize="10"
+              id="ParentTagProcessViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator id="ParentTagProjectViewIterator" Binds="LtcAppModule.ParentTagProjectView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="25"/>
+    <iterator Binds="LtcAppModule.LTCProcessLookUp" DataControl="PrivateAppModuleDataControl" RangeSize="25"
+              id="LTCProcessLookUpIterator"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="LtcProcessViewIterator" id="Name">
+      <AttrNames>
+        <Item Value="Name"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcProcessViewIterator"
+                     id="Comments">
+      <AttrNames>
+        <Item Value="Comments"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcProcessViewIterator"
+                     id="TerminationDate">
+      <AttrNames>
+        <Item Value="TerminationDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcTagViewIterator" id="TagName">
+      <AttrNames>
+        <Item Value="Name"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcProcessViewIterator"
+                     id="StatusCode">
+      <AttrNames>
+        <Item Value="StatusCode"/>
+      </AttrNames>   
+      </attributeValues>   
+     <tree IterBinding="PrdMntProgramViewIterator" id="PrdMntProgramView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.ProgramView"
+                      Name="PrdMntProgramView0">
+        <AttrNames>
+          <Item Value="QualifiedName"/>
+        </AttrNames>
+        <Accessors>
+          <Item Value="ProjectView"/>
+        </Accessors>
+      </nodeDefinition>
+      <nodeDefinition DefName="com.bayer.ipms.model.views.ProjectView"
+                      Name="PrdMntProgramView1">
+        <AttrNames>
+          <Item Value="QualifiedName"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>    
+    <tree IterBinding="D3TrProjectViewIterator" id="D3TrProjectView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.ProjectView"
+                      Name="D3TrProjectView0">
+        <AttrNames>
+          <Item Value="QualifiedName"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="LtcProjectViewIterator" id="LtcProjectView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.ltc.LtcProjectView" Name="LtcProjectView0">
+        <AttrNames>
+          <Item Value="ProgramNameQualified"/>
+          <Item Value="ProjectName"/>
+          <Item Value="ProjectCode"/>
+          <Item Value="ProjectAreaName"/>
+          <Item Value="ProjectSbeName"/>
+          <Item Value="ProjectStateName"/>
+          <Item Value="IsActive"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="LtcTagViewIterator" id="Year">
+      <AttrNames>
+        <Item Value="StartYear"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="DevProgramViewIterator" id="DevProgramView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.ProgramView" Name="DevProgramView0">
+        <AttrNames>
+          <Item Value="Id"/>
+          <Item Value="QualifiedName"/>
+        </AttrNames>
+        <Accessors>
+          <Item Value="ProjectView"/>
+        </Accessors>
+      </nodeDefinition>
+      <nodeDefinition DefName="com.bayer.ipms.model.views.ProjectView" Name="DevProgramView1">
+        <AttrNames>
+          <Item Value="QualifiedName"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <list ListOperMode="navigation" IterBinding="ParentTagProcessViewIterator" ListIter="ParentTagProcessViewIterator"
+          id="PreviousTagProcesses" ChangeEventPolicy="ppr">
+      <AttrNames>
+        <Item Value="Name"/>
+      </AttrNames>
+    </list>
+    <attributeValues IterBinding="LtcTagViewIterator" id="FcNumbver">
+      <AttrNames>
+        <Item Value="FcNumbver"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcTagViewIterator" id="ForecastVersion">
+      <AttrNames>
+        <Item Value="ForecastVersion"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcTagViewIterator" id="ForecastNumber">
+      <AttrNames>
+        <Item Value="ForecastNumber"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcProcessViewIterator" id="ProcessDescription">
+      <AttrNames>
+        <Item Value="ProcessDescription"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="LtcProcessViewIterator" StaticList="false" Uses="LOV_PreviousPD" id="PreviousPD"
+          DTSupportsMRU="true" SelectItemValueMode="ListObject"/>
+  </bindings>
+</pageDefinition>

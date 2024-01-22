@@ -1,0 +1,221 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:h="http://java.sun.com/jsf/html" xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <f:view>
+        <f:loadBundle basename="com.bayer.ipms.view.bundles.viewBundle" var="bundle"/>
+        <af:document id="d1" title="#{bundle.maintainProbabilities}">
+            <af:messages id="m1"/>
+            <f:facet name="metaContainer">
+                <af:group id="g2">
+                    <![CDATA[
+                    <style>
+                     .functionSelectBox option[title=Function]{background-color: #dddddd; font-weight: bold; color: black;}
+                     .functionSelectBox option[title=Subfunction]{text-indent: 15px}
+                    </style>
+                ]]>
+                </af:group>
+            </f:facet>
+            <af:form id="f1">
+                <af:pageTemplate viewId="/WEB-INF/com.bayer.ipms.view/templates/ipms-popup-template.jspx" id="pt1">
+                    <f:facet name="summary"></f:facet>
+                    <f:facet name="content">
+                        <af:panelTabbed id="pt2">
+                            <af:showDetailItem text="#{bundle.probabilitiesExternal}" id="sdi1" stretchChildren="first">
+                                <af:panelCollection id="pc1" styleClass="AFStretchWidth"
+                                                    featuresOff="detach viewMenu statusBar">
+                                    <f:facet name="toolbar">
+                                        <af:toolbar id="tools">
+                                            <af:button shortDesc="#{bundle.globalAdd}"
+                                                                     text="#{bundle.globalAdd}" icon="/images/new.png"
+                                                                     immediate="true"
+                                                                     actionListener="#{bindings.CreateInsert.execute}"
+                                                                     id="ctb3"/>
+                                            <af:button shortDesc="#{bundle.globalRemove}"
+                                                                     text="#{bundle.globalRemove}"
+                                                                     icon="/images/remove.png" immediate="true"
+                                                                     actionListener="#{utilsBean.onDelete}" id="ctb4"
+                                                                     partialTriggers="tblExtProb">
+                                                <f:attribute name="table" value="tblExtProb"/>
+                                                <f:attribute name="iterator"
+                                                             value="#{bindings.CostsProbabilityExternalViewIterator}"/>
+                                            </af:button>
+                                        </af:toolbar>
+                                    </f:facet>
+                                    <af:table value="#{bindings.CostsProbabilityExternalView.collectionModel}" var="row"
+                                              rows="#{bindings.CostsProbabilityExternalView.rangeSize}"
+                                              emptyText="#{bindings.CostsProbabilityExternalView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                                              fetchSize="#{bindings.CostsProbabilityExternalView.rangeSize}"
+                                              selectedRowKeys="#{bindings.CostsProbabilityExternalView.collectionModel.selectedRow}"
+                                              rowBandingInterval="0" rowSelection="multiple" id="tblExtProb"
+                                              columnStretching="column:cFunction" contentDelivery="immediate"
+                                              editingMode="editAll" autoHeightRows="0" styleClass="AFStretchWidth"
+                                              filterVisible="false" varStatus="vs" partialTriggers="::ctb3 ::ctb4">
+                                        <af:column sortProperty="#{bindings.CostsProbabilityExternalView.hints.FunctionCode.name}"
+                                                   sortable="true"
+                                                   headerText="#{bindings.CostsProbabilityExternalView.hints.FunctionCode.label}"
+                                                   id="cFunction">
+                                            <af:selectOneChoice value="#{row.bindings.FunctionCode.inputValue}"
+                                                                label="#{row.bindings.FunctionCode.label}"
+                                                                required="#{bindings.CostsProbabilityExternalView.hints.FunctionCode.mandatory}"
+                                                                shortDesc="#{bindings.CostsProbabilityExternalView.hints.FunctionCode.tooltip}"
+                                                                partialTriggers="rule" id="fct">
+                                                <f:selectItems value="#{utilsBean.lookupQualified[bindings.CostsProbabilityExternalView.currentRow.functionView]}"/>
+                                            </af:selectOneChoice>
+                                        </af:column>
+                                        <af:column sortProperty="#{bindings.CostsProbabilityExternalView.hints.StudyElementId.name}"
+                                                   sortable="true"
+                                                   headerText="#{bindings.CostsProbabilityExternalView.hints.StudyElementId.label}">
+                                            <af:inputText value="#{row.bindings.StudyElementId.inputValue}"
+                                                          label="#{bindings.CostsProbabilityExternalView.hints.StudyElementId.label}"
+                                                          required="#{bindings.CostsProbabilityExternalView.hints.StudyElementId.mandatory}"
+                                                          columns="#{bindings.CostsProbabilityExternalView.hints.StudyElementId.displayWidth}"
+                                                          maximumLength="#{bindings.CostsProbabilityExternalView.hints.StudyElementId.precision}"
+                                                          shortDesc="#{bindings.CostsProbabilityExternalView.hints.StudyElementId.tooltip}"
+                                                          partialTriggers="rule" id="stdElm">
+                                                <f:validator binding="#{row.bindings.StudyElementId.validator}"/>
+                                            </af:inputText>
+                                        </af:column>
+                                        <af:column sortProperty="#{bindings.CostsProbabilityExternalView.hints.RuleCode.name}"
+                                                   sortable="true"
+                                                   headerText="#{bindings.CostsProbabilityExternalView.hints.RuleCode.label}">
+                                            <af:selectOneChoice value="#{row.bindings.RuleCode.inputValue}"
+                                                                label="#{row.bindings.RuleCode.label}" required="true"
+                                                                shortDesc="#{bindings.CostsProbabilityExternalView.hints.RuleCode.tooltip}"
+                                                                id="rule" autoSubmit="true" immediate="true"
+                                                                valueChangeListener="#{utilsBean.onValueChange}">
+                                                <f:selectItems value="#{row.bindings.RuleCode.items}" id="si3"/>
+                                            </af:selectOneChoice>
+                                        </af:column>
+                                        <af:column sortProperty="#{bindings.CostsProbabilityExternalView.hints.Lag.name}"
+                                                   sortable="true"
+                                                   headerText="#{bindings.CostsProbabilityExternalView.hints.Lag.label}">
+                                            <af:inputText value="#{row.bindings.Lag.inputValue}"
+                                                          label="#{bindings.CostsProbabilityExternalView.hints.Lag.label}"
+                                                          columns="#{bindings.CostsProbabilityExternalView.hints.Lag.displayWidth}"
+                                                          maximumLength="#{bindings.CostsProbabilityExternalView.hints.Lag.precision}"
+                                                          shortDesc="#{bindings.CostsProbabilityExternalView.hints.Lag.tooltip}"
+                                                          id="lag" partialTriggers="rule"
+                                                          visible="#{row.RuleCode=='BEFORE'}"
+                                                          required="#{row.RuleCode=='BEFORE'}">
+                                                <f:validator binding="#{row.bindings.Lag.validator}"/>
+                                            </af:inputText>
+                                        </af:column>
+                                        <af:column sortProperty="#{bindings.CostsProbabilityExternalView.hints.Probability.name}"
+                                                   sortable="true"
+                                                   headerText="#{bindings.CostsProbabilityExternalView.hints.Probability.label}">
+                                            <af:inputText value="#{row.bindings.Probability.inputValue}"
+                                                          label="#{bindings.CostsProbabilityExternalView.hints.Probability.label}"
+                                                          required="#{bindings.CostsProbabilityExternalView.hints.Probability.mandatory}"
+                                                          columns="#{bindings.CostsProbabilityExternalView.hints.Probability.displayWidth}"
+                                                          maximumLength="#{bindings.CostsProbabilityExternalView.hints.Probability.precision}"
+                                                          shortDesc="#{bindings.CostsProbabilityExternalView.hints.Probability.tooltip}"
+                                                          partialTriggers="rule" id="prob">
+                                                <f:validator binding="#{row.bindings.Probability.validator}"/>
+                                                <af:convertNumber groupingUsed="false"
+                                                                  pattern="#{bindings.CostsProbabilityExternalView.hints.Probability.format}"/>
+                                            </af:inputText>
+                                        </af:column>
+                                    </af:table>
+                                </af:panelCollection>
+                            </af:showDetailItem>
+                            <af:showDetailItem text="#{bundle.probabilitiesInternalDefault}" id="sdi3"
+                                               stretchChildren="first">
+                                <af:panelCollection id="pc2" featuresOff="detach viewMenu statusBar">
+                                    <f:facet name="menus"/>
+                                    <f:facet name="toolbar">
+                                        <af:toolbar id="tools2">
+                                            <af:commandToolbarButton shortDesc="#{bundle.globalAdd}"
+                                                                     text="#{bundle.globalAdd}" icon="/images/new.png"
+                                                                     immediate="true"
+                                                                     actionListener="#{bindings.CreateInsertSpecific.execute}"
+                                                                     id="ctb1"/>
+                                            <af:commandToolbarButton shortDesc="#{bundle.globalRemove}"
+                                                                     text="#{bundle.globalRemove}"
+                                                                     icon="/images/remove.png" immediate="true"
+                                                                     actionListener="#{utilsBean.onDelete}" id="ctb2">
+                                                <f:attribute name="table" value="t2"/>
+                                                <f:attribute name="iterator"
+                                                             value="#{bindings.CostsProbabilitySpecificViewIterator}"/>
+                                            </af:commandToolbarButton>
+                                        </af:toolbar>
+                                    </f:facet>
+                                    <af:table value="#{bindings.CostsProbabilitySpecificView.collectionModel}" var="row"
+                                              rows="#{bindings.CostsProbabilitySpecificView.rangeSize}"
+                                              emptyText="#{bindings.CostsProbabilitySpecificView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                                              fetchSize="#{bindings.CostsProbabilitySpecificView.rangeSize}"
+                                              rowBandingInterval="0" rowSelection="multiple" id="t2"
+                                              columnStretching="last" contentDelivery="immediate"
+                                              partialTriggers="::ctb1">
+                                        <af:column sortProperty="#{bindings.CostsProbabilitySpecificView.hints.SbeCode.name}"
+                                                   sortable="false"
+                                                   headerText="#{bindings.CostsProbabilitySpecificView.hints.SbeCode.label}"
+                                                   id="c3">
+                                            <af:selectOneChoice value="#{row.bindings.SbeCode.inputValue}"
+                                                                label="#{row.bindings.SbeCode.label}"
+                                                                shortDesc="#{bindings.CostsProbabilitySpecificView.hints.SbeCode.tooltip}"
+                                                                id="soc3"
+                                                                disabled="#{row.SbeCode eq null and row.SubstanceTypeCode eq null and row.PhaseCode ne null}">
+                                                <f:selectItems value="#{row.bindings.SbeCode.items}" id="si4"/>
+                                            </af:selectOneChoice>
+                                        </af:column>
+                                        <af:column sortProperty="#{bindings.CostsProbabilitySpecificView.hints.SubstanceTypeCode.name}"
+                                                   sortable="false"
+                                                   headerText="#{bindings.CostsProbabilitySpecificView.hints.SubstanceTypeCode.label}"
+                                                   id="c4">
+                                            <af:selectOneChoice value="#{row.bindings.SubstanceTypeCode.inputValue}"
+                                                                label="#{row.bindings.SubstanceTypeCode.label}"
+                                                                required="#{bindings.CostsProbabilitySpecificView.hints.SubstanceTypeCode.mandatory}"
+                                                                shortDesc="#{bindings.CostsProbabilitySpecificView.hints.SubstanceTypeCode.tooltip}"
+                                                                id="soc1"
+                                                                disabled="#{row.SbeCode eq null and row.SubstanceTypeCode eq null and row.PhaseCode ne null}">
+                                                <f:selectItems value="#{row.bindings.SubstanceTypeCode.items}"
+                                                               id="si1"/>
+                                            </af:selectOneChoice>
+                                        </af:column>
+                                        <af:column sortProperty="#{bindings.CostsProbabilitySpecificView.hints.PhaseCode.name}"
+                                                   sortable="false"
+                                                   headerText="#{bindings.CostsProbabilitySpecificView.hints.PhaseCode.label}"
+                                                   id="c6">
+                                            <af:selectOneChoice value="#{row.bindings.PhaseCode.inputValue}"
+                                                                label="#{row.bindings.PhaseCode.label}"
+                                                                required="#{bindings.CostsProbabilitySpecificView.hints.PhaseCode.mandatory}"
+                                                                shortDesc="#{bindings.CostsProbabilitySpecificView.hints.PhaseCode.tooltip}"
+                                                                id="soc2"
+                                                                disabled="#{row.SbeCode eq null and row.SubstanceTypeCode eq null and row.PhaseCode ne null}">
+                                                <f:selectItems value="#{row.bindings.PhaseCode.items}" id="si2"/>
+                                            </af:selectOneChoice>
+                                        </af:column>
+                                        <af:column sortProperty="#{bindings.CostsProbabilitySpecificView.hints.Probability.name}"
+                                                   sortable="false"
+                                                   headerText="#{bindings.CostsProbabilitySpecificView.hints.Probability.label}"
+                                                   id="c5">
+                                            <af:inputText value="#{row.bindings.Probability.inputValue}"
+                                                          label="#{bindings.CostsProbabilitySpecificView.hints.Probability.label}"
+                                                          required="#{bindings.CostsProbabilitySpecificView.hints.Probability.mandatory}"
+                                                          columns="#{bindings.CostsProbabilitySpecificView.hints.Probability.displayWidth}"
+                                                          maximumLength="#{bindings.CostsProbabilitySpecificView.hints.Probability.precision}"
+                                                          shortDesc="#{bindings.CostsProbabilitySpecificView.hints.Probability.tooltip}"
+                                                          id="it1">
+                                                <f:validator binding="#{row.bindings.Probability.validator}"/>
+                                                <af:convertNumber groupingUsed="false"
+                                                                  pattern="#{bindings.CostsProbabilitySpecificView.hints.Probability.format}"/>
+                                            </af:inputText>
+                                        </af:column>
+                                    </af:table>
+                                </af:panelCollection>
+                            </af:showDetailItem>
+                        </af:panelTabbed>
+                    </f:facet>
+                    <f:facet name="controls">
+                        <f:subview id="sub1">
+                            <af:declarativeComponent viewId="global-ok-cancel.jsff" id="goc">
+                                <f:attribute name="showCancel" value="true"/>
+                            </af:declarativeComponent>
+                        </f:subview>
+                    </f:facet>
+                </af:pageTemplate>
+            </af:form>
+        </af:document>
+    </f:view>
+</jsp:root>

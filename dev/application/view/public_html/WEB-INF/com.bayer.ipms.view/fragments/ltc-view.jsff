@@ -1,0 +1,208 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <c:set var="bundle" value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+    <af:pageTemplate viewId="/WEB-INF/com.bayer.ipms.view/templates/ipms-content-template.jspx" id="pt1">
+        <af:resource type="javascript" source="/js/promis-utils.js"/>
+        <af:resource type="javascript">
+          function onWindowOpen(event) {
+              downloadFileWithTimestamp(event.getSource().getProperty('url2'), "ltcEstimates.xlsm");
+          }
+
+          function onFteWindowOpen(event) {
+              downloadFileWithTimestamp(event.getSource().getProperty('urrevfte'), "fteEstimates.xlsm");
+          }
+        </af:resource>
+        <f:facet name="toolbar">
+            <af:panelGroupLayout id="tools" layout="horizontal">
+                <af:menuBar rendered="#{bindings.LtcProcessViewIterator.currentRow != null}"
+                            partialTriggers="cmdUpdate cmdTerminate"
+                            disabled="#{not empty pageFlowScope.ltcViewBean.editable}" id="mb1">
+                    <af:menu text="#{bundle.globalEdit}"
+                             rendered="#{securityContext.userInRole['EstimatesProcessStartLTC,EstimatesProcessUpdateLTC,EstimatesProcessDeleteLTC']}"
+                             id="m3">
+                        <af:commandMenuItem id="cmdUpdate" icon="/images/edit.png" action="ltc-update" useWindow="true"
+                                            text="#{bundle.ltcUpdate}"
+                                            rendered="#{securityContext.userInRole['EstimatesProcessUpdateLTC']}"
+                                            disabled="#{bindings.IsSyncing.inputValue ==1 or bindings.TagIsFrozen.inputValue }"
+                                            returnListener="#{pageFlowScope.ltcViewBean.onLtcUpdateReturn}"
+                                            windowWidth="950" immediate="true" windowHeight="600">
+                            <af:setActionListener from="#{bindings.Id.inputValue}" to="#{requestScope.processId}"/>
+                        </af:commandMenuItem>
+                        <af:commandMenuItem text="#{bundle.globalRemove}" icon="/images/remove.png" id="cmd1"
+                                            immediate="true"
+                                            rendered="#{securityContext.userInRole['EstimatesProcessDeleteLTC']}"
+                                            disabled="#{bindings.StatusCode.inputValue ne 'FIN' or bindings.IsSyncing.inputValue ==1 or bindings.TagIsFrozen.inputValue}">
+                            <af:showPopupBehavior popupId="popDelete" triggerType="action"/>
+                        </af:commandMenuItem>
+                    </af:menu>
+                    <af:menu text="#{bundle.globalView}" id="m1">
+                        <af:separator id="s1"/>
+                        <af:commandMenuItem text="#{bundle.globalRefresh}" icon="/images/reload.png" immediate="true"
+                                            action="#{pageFlowScope.ltcViewBean.onRefresh}" id="cmi2"/>
+                    </af:menu>
+                    <af:menu text="#{bundle.globalTools}"
+                             rendered="#{securityContext.userInRole['EstimatesProcessReport,EstimatesProcessTerminateLTC']}"
+                             id="m2">
+                        <af:commandMenuItem text="#{bundle.ltcTerminate}"
+                                            action="#{pageFlowScope.ltcViewBean.onTerminate}"
+                                            rendered="#{securityContext.userInRole['EstimatesProcessTerminateLTC']}"
+                                            immediate="true"
+                                            disabled="#{bindings.StatusCode.inputValue eq 'FIN' or bindings.IsSyncing.inputValue == 1 or bindings.TagIsFrozen.inputValue}"
+                                            icon="/images/stop.png" id="cmdTerminate"/>
+                    </af:menu>
+                </af:menuBar>
+            </af:panelGroupLayout>
+        </f:facet>
+        <f:facet name="content">
+            <af:panelStretchLayout id="content" styleClass="AFStretchWidth" topHeight="auto" dimensionsFrom="parent"
+                                   bottomHeight="0px" inlineStyle="height:100%;">
+                <f:facet name="top">
+                    <af:panelGroupLayout layout="vertical" id="content2" partialTriggers="cmdUpdate">
+                        <af:poll id="poll" interval="3000" rendered="#{bindings.IsSyncing.inputValue ==1}"
+                                 pollListener="#{pageFlowScope.ltcViewBean.onPoll}" immediate="true"/>
+                        <af:panelBox text="#{bundle.globalSummary}" showDisclosure="false" type="flow" id="pb1">
+                            <af:panelFormLayout styleClass="AFStretchWidth" fieldWidth="100%" maxColumns="2" rows="3"
+                                                id="pfl1">
+                                <af:inputText value="#{bindings.TagName.inputValue}" label="#{bundle.ltcTagName}"
+                                              required="#{bindings.TagName.hints.mandatory}"
+                                              columns="#{bindings.TagName.hints.displayWidth}"
+                                              maximumLength="#{bindings.TagName.hints.precision}" readOnly="true"
+                                              shortDesc="#{bindings.TagName.hints.tooltip}" id="it1">
+                                    <f:validator binding="#{bindings.TagName.validator}"/>
+                                </af:inputText>
+                                <af:inputText label="#{bindings.Name.label}" value="#{bindings.Name}" readOnly="true"
+                                              id="it2"/>
+                                <af:inputText label="#{bindings.Comments.label}" value="#{bindings.Comments.inputValue}"
+                                              columns="#{bindings.Comments.displayWidth}"
+                                              rows="#{utilsBean.rowCount[bindings.Comments]}" readOnly="true"
+                                              styleClass="AFStretchWidth" dimensionsFrom="parent" wrap="soft"
+                                              contentStyle="min-width:100%;" id="it3"/>
+                                <af:inputText label="#{bindings.TerminationDate.label}"
+                                              value="#{bindings.TerminationDate}" readOnly="true" id="it5"/>
+                                <af:inputText label="#{bundle.ltcProcessFinished}"
+                                              value="#{bindings.StatusCode.inputValue=='FIN'? bindings.TerminateDate.inputValue:''}"
+                                              readOnly="true" id="it6"/>
+                            </af:panelFormLayout>
+                            <af:panelFormLayout styleClass="AFStretchWidth" fieldWidth="100%" id="pfl3">
+                                <af:inputText value="#{bindings.ProcessDescription.inputValue}"
+                                              rows="#{utilsBean.rowCount[bindings.ProcessDescription]}"
+                                              label="#{bindings.ProcessDescription.hints.label}" readOnly="true"
+                                              styleClass="AFStretchWidth" dimensionsFrom="parent" wrap="soft"
+                                              contentStyle="min-width:100%;"
+                                              maximumLength="#{bindings.ProcessDescription.hints.precision}"
+                                              shortDesc="#{bindings.ProcessDescription.hints.tooltip}" id="it9"></af:inputText>
+                            </af:panelFormLayout>
+                        </af:panelBox>
+                    </af:panelGroupLayout>
+                </f:facet>
+                <f:facet name="center">
+                    <af:panelBox text="#{bundle.programProjects}" showDisclosure="false" type="stretch" id="pb2">
+                        <af:panelCollection id="pcol1" styleClass="AFStretchWidth"
+                                            featuresOff="detach viewMenu statusBar">
+                            <f:facet name="toolbar">
+                                <af:toolbar id="t1">
+                                    <af:group id="dc_g1">
+                                        <af:commandMenuItem text="#{bundle.ltcUpdateLtcData}" immediate="true"
+                                                            id="cmdReviewLtcData"
+                                                            disabled="#{ bindings.TagIsFrozen.inputValue or bindings.StatusCode.inputValue ne 'FIN' or bindings.LtcProjectViewIterator.currentRow.projectName == null}"
+                                                            icon="/images/meeting.png"
+                                                            rendered="#{securityContext.userInRole['EstimatesProcessProjectUpdateLTC']}">
+                                            <af:clientAttribute name="url2"
+                                                                value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.requestContextPath}/excel/ltcEstimates.xlsm?tagId=#{bindings.TagId.inputValue}&amp;processId=#{bindings.ProcessId.inputValue}&amp;programId=#{bindings.ProgramId.inputValue}&amp;projectId=#{pageFlowScope.ltcViewBean.dataLtcProjectId}&amp;PD=#{bindings.ProcessDescription.inputValue}"/>
+                                            <af:clientListener method="onWindowOpen" type="action"/>
+                                        </af:commandMenuItem>
+                                        <af:commandMenuItem text="#{bundle.ltcUpdateFteData}" immediate="true"
+                                                            id="cmdReviewFteData"
+                                                            disabled="#{ bindings.TagIsFrozen.inputValue or bindings.StatusCode.inputValue ne 'FIN' or bindings.LtcProjectViewIterator.currentRow.projectName == null}"
+                                                            icon="/images/meeting.png"
+                                                            rendered="#{securityContext.userInRole['EstimatesProcessProjectUpdateLTC']}">
+                                            <af:clientAttribute name="urrevfte"
+                                                                value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.requestContextPath}/excel/fteEstimates.xlsm?tagId=#{bindings.TagId.inputValue}&amp;processId=#{bindings.ProcessId.inputValue}&amp;programId=#{bindings.ProgramId.inputValue}&amp;projectId=#{bindings.ProjectId.inputValue}"/>
+                                            <af:clientListener method="onFteWindowOpen" type="action"/>
+                                        </af:commandMenuItem>
+                                    </af:group>
+                                </af:toolbar>
+                            </f:facet>
+                            <af:table value="#{bindings.LtcProjectView.collectionModel}" var="row"
+                                      styleClass="AFStretchWidth" rows="#{bindings.LtcProjectView.rangeSize}"
+                                      emptyText="#{bindings.LtcProjectView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                                      fetchSize="#{bindings.LtcProjectView.rangeSize}" rowBandingInterval="0"
+                                      columnStretching="last" contentDelivery="immediate" autoHeightRows="0" id="PrjTab"
+                                      selectionListener="#{pageFlowScope.ltcViewBean.onLtcProjectSelect}"
+                                      selectedRowKeys="#{bindings.LtcProjectView.collectionModel.selectedRow}"
+                                      partialTriggers=":::cmdUpdate" rowSelection="single">
+                                <af:column headerText="#{bindings.LtcProjectView.hints.DevelopmentPhaseName.label}"
+                                           sortProperty="DevelopmentPhaseName" filterable="true"
+                                           filterFeatures="caseInsensitive" sortable="true" id="c1">
+                                    <af:outputText value="#{row.DevelopmentPhaseName}" id="ot1"/>
+                                </af:column>
+                                <af:column headerText="#{bindings.LtcProjectView.hints.ProgramNameQualified.label}"
+                                           sortProperty="ProgramNameQualified" filterable="true"
+                                           filterFeatures="caseInsensitive" sortable="true" id="c2">
+                                    <af:outputText value="#{row.ProgramNameQualified}" id="ot2"/>
+                                </af:column>
+                                <af:column headerText="#{bindings.LtcProjectView.hints.ProjectSbeName.label}"
+                                           sortProperty="#{bindings.LtcProjectView.hints.ProjectSbeName.name}"
+                                           filterable="true" filterFeatures="caseInsensitive" sortable="true" id="c3">
+                                    <af:outputText value="#{row.ProjectSbeName}" id="ot3"/>
+                                </af:column>
+                                <af:column sortProperty="ProjectCode" filterable="true" filterFeatures="caseInsensitive"
+                                           sortable="true"
+                                           headerText="#{bindings.LtcProjectView.hints.ProjectCode.label}"
+                                           rowHeader="unstyled" id="c4">
+                                    <af:outputText value="#{row.ProjectCode == null ? bundle.globalNotAvailable : row.ProjectCode}"
+                                                   id="ot4"/>
+                                </af:column>
+                                <af:column sortProperty="ProjectName" filterable="true" filterFeatures="caseInsensitive"
+                                           sortable="true"
+                                           headerText="#{bindings.LtcProjectView.hints.ProjectName.label}" id="c5">
+                                    <af:outputText value="#{row.ProjectName}" id="ot5"/>
+                                </af:column>
+                            </af:table>
+                        </af:panelCollection>
+                    </af:panelBox>
+                </f:facet>
+            </af:panelStretchLayout>
+        </f:facet>
+        <f:facet name="popup">
+            <af:group id="popup">
+                <af:popup id="popDelete" contentDelivery="lazyUncached"
+                          rendered="#{securityContext.userInRole['EstimatesProcessDeleteLTC']}">
+                    <af:dialog id="dlgDelete" title="#{bundle.ltcDeleteProcess}"
+                               dialogListener="#{pageFlowScope.ltcViewBean.onDelete}" contentWidth="500">
+                        <af:panelBox text="#{bundle.globalSummary}" showDisclosure="false" type="flow" id="pb3">
+                            <af:panelFormLayout styleClass="AFStretchWidth" fieldWidth="100%" maxColumns="2" rows="2"
+                                                id="pfl2">
+                                <af:inputText label="#{bundle.ltcTagName}" value="#{bindings.TagName}" readOnly="true"
+                                              id="it8"/>
+                                <af:inputText label="#{bindings.Name.label}" value="#{bindings.Name}" readOnly="true"
+                                              id="it7"/>
+                                <af:inputText label="#{bindings.Comments.label}" value="#{bindings.Comments.inputValue}"
+                                              columns="#{bindings.Comments.displayWidth}"
+                                              rows="#{utilsBean.rowCount[bindings.Comments]}" readOnly="true"
+                                              styleClass="AFStretchWidth" dimensionsFrom="parent" wrap="soft"
+                                              contentStyle="min-width:100%;" id="it4"></af:inputText>
+                                <af:inputText label="#{bindings.TerminationDate.label}"
+                                              value="#{bindings.TerminationDate}" readOnly="true" id="it11"/>
+                                <af:inputText label="#{bundle.ltcProcessFinished}"
+                                              value="#{bindings.StatusCode.inputValue=='FIN'? bindings.TerminateDate.inputValue:''}"
+                                              readOnly="true" id="it12"/>
+                            </af:panelFormLayout>
+                        </af:panelBox>
+                        <af:message message="#{bundle.ltcDeleteWarning}" messageType="warning" id="m4"/>
+                    </af:dialog>
+                </af:popup>
+                <af:popup id="popReport" contentDelivery="lazyUncached"
+                          rendered="#{securityContext.userInRole['EstimatesProcessReport']}">
+                    <af:dialog id="dlgReport" title="#{bundle.ltcReport}"
+                               dialogListener="#{pageFlowScope.ltcViewBean.onReport}" contentWidth="500">
+                        <af:message message="#{bundle.ltcReportConfirmation}" messageType="confirmation" id="m5"/>
+                    </af:dialog>
+                </af:popup>
+            </af:group>
+        </f:facet>
+        <f:attribute name="title" value="#{bundle.ltcProcess}"/>
+        <f:attribute name="message" value="#{bindings.IsSyncing.inputValue ==1 ? bundle.globalIsSyncingWarning : ''}"/>
+    </af:pageTemplate>
+</jsp:root>

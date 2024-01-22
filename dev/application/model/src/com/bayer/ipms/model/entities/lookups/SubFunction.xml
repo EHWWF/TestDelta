@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="windows-1257" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="SubFunction"
+  Version="11.1.1.64.93"
+  InheritPersonalization="true"
+  DBObjectType="table"
+  DBObjectName="SUBFUNCTION"
+  AliasName="SubFunction"
+  BindingStyle="OracleName"
+  UseGlueCode="false"
+  RowClass="com.bayer.ipms.model.base.IPMSEntityImpl">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Access"/>
+    <AttrArray Name="_publishEvents"/>
+  </DesignTime>
+  <Attribute
+    Name="Code"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="CODE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="SUBFUNCTION"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="FunctionCode"
+    Precision="10"
+    Scale="0"
+    ColumnName="FUNCTION_CODE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="SUBFUNCTION">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="Name"
+    IsNotNull="true"
+    Precision="100"
+    Scale="0"
+    ColumnName="NAME"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="SUBFUNCTION">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="IsActive"
+    IsNotNull="true"
+    ColumnName="IS_ACTIVE"
+    SQLType="NUMERIC"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    TableName="SUBFUNCTION"
+    Precision="1"
+    PrecisionRule="false">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="2"/>
+    </DesignTime>
+  </Attribute>
+  <Key
+    Name="SysC0019353">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0019353"/>
+      <Attr Name="_checkCondition" Value='"CODE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.lookups.SubFunction.Code"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0019354">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0019354"/>
+      <Attr Name="_checkCondition" Value='"NAME" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.lookups.SubFunction.Name"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0019355">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0019355"/>
+      <Attr Name="_checkCondition" Value='"IS_ACTIVE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.lookups.SubFunction.IsActive"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0019356">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0019356"/>
+      <Attr Name="_checkCondition" Value="is_active in (0,1)"/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.lookups.SubFunction.IsActive"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0019357"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0019357"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.lookups.SubFunction.Code"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0019358">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0011488"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0019358"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.lookups.SubFunction.FunctionCode"/>
+    </AttrArray>
+  </Key>
+</Entity>

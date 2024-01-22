@@ -1,0 +1,88 @@
+
+--Check how many timelines needs WBS renaming
+select count(distinct timeline_id) from timeline_wbs where name = 'Project Activities from Functional Planning D3-D4' and project_id is not null;
+
+--Reset syncing flag for all relevant itmelines
+update timeline set is_syncing=0 where id in (select distinct timeline_id from timeline_wbs where name = 'Project Activities from Functional Planning D3-D4' and project_id is not null) and is_syncing=1;
+commit;
+
+--Refresh timeline data for all relevant timelines
+begin
+for r in (select distinct timeline_id from timeline_wbs where name = 'Project Activities from Functional Planning D3-D4' and project_id is not null)loop
+timeline_pkg.receive(r.timeline_id);
+commit;
+end loop;
+end;
+
+--Send renamed WBS nodes
+declare
+v_payload xmltype;
+ p_full    number := 1;
+begin
+
+for r in (
+select distinct timeline_id from timeline_wbs where name = 'Project Activities from Functional Planning D3-D4' and project_id is not null
+) loop
+
+v_payload :=null;
+
+  select xmltype(
+                 '<timeline id="' || tl.id || '" programId="' ||
+                 decode(tl.type_code, 'SND', snd.program_id, prj.program_id) || '" projectId="' ||
+                 decode(tl.type_code, 'SND', snd.id, prj.id) || '" referenceId="' || tl.reference_id || '" ' ||
+                 message_pkg.xmlns_ipms || '>' ||
+                 decode(p_full, 0, '', get_element('name', tl.name)) ||
+                 get_element('typeCode', tl.type_code) ||
+                 decode(p_full, 0, '', get_element('startDate', get_char_date(tl.start_date))) ||
+                 decode(p_full, 0, '', get_element('finishDate', get_char_date(tl.finish_date))) ||
+                 decode(p_full, 0, '', get_element('comments', '<![CDATA[' || tl.comments || ']]>', 0)) ||
+                 '</timeline>'
+            )
+            into v_payload
+        from timeline tl
+               left join project prj on prj.id = tl.project_id
+               left join program_sandbox snd on snd.snd_timeline_id = tl.id and tl.type_code = 'SND'
+        where tl.id = r.timeline_id;
+
+
+        select v_payload.appendChildXML('/*',
+                                        xmlelement("wbsNodes",
+                                                   xmlattributes(message_pkg.nsuri_ipms as "xmlns"),
+                                                   xmlagg(
+                                                     xmlelement("wbs",
+                                                                xmlattributes(
+                                                                t.wbs_id as "id",
+                                                                t.study_id as "studyId",
+                                                                t.timeline_id as "timelineId",
+                                                                t.parent_wbs_id as "parentId",
+                                                                decode(t.placeholder, 1, 'true', 'false') as
+                                                                "placeholder"
+                                                                ),
+                                                                xmlforest(
+                                                                 'Project Activities from Functional Planning PCC-D4' as "name"
+                                                                    )
+                                                         ))
+                                            ))
+            into v_payload
+        from timeline_wbs t
+        where t.timeline_id = r.timeline_id and name = 'Project Activities from Functional Planning D3-D4';
+
+        --dbms_output.put_line('Payload: ' || v_payload.getstringval());
+
+        log_pkg.log('Send PA WBS rename ', 'Timeline ID=' || r.timeline_id || ', count=' || sql%rowcount);
+
+        timeline_pkg.send(v_payload.extract('//timeline/@id', message_pkg.xmlns_ipms).getstringval(), v_payload,
+                          'begin timeline_pkg.receive(''' || r.timeline_id || '''); end;');
+
+
+        commit;
+
+        dbms_lock.sleep(5);
+
+
+end loop;
+
+end;
+
+--Check whether there are any still syncing relevant timelines
+select * from timeline where id in (select distinct timeline_id from timeline_wbs where name in ('Project Activities from Functional Planning D3-D4','Project Activities from Functional Planning D3-D4') and project_id is not null) and is_syncing=1;

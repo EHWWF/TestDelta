@@ -1,0 +1,356 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:h="http://java.sun.com/jsf/html" xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <f:view>
+        <f:loadBundle basename="com.bayer.ipms.view.bundles.viewBundle" var="bundle"/>
+        <af:document id="d1"
+                     title="#{bundle.maintainLookups} - #{empty pageFlowScope.lookup ? bundle.maintainLookupsSelect : pageFlowScope.lookup.iteratorBinding.hints.label}">
+            <af:messages id="m1"/>
+            <af:form id="f1">
+                <af:pageTemplate viewId="/WEB-INF/com.bayer.ipms.view/templates/ipms-popup-template.jspx">
+                    <f:facet name="summary"/>
+                    <f:facet name="content">
+                            <af:panelStretchLayout startWidth="auto" endWidth="0" topHeight="0" bottomHeight="0"
+                                                   id="psl1" dimensionsFrom="children">
+                                <f:facet name="start">
+                                    <af:panelGroupLayout id="pgl1" layout="vertical">
+                                        <af:panelGroupLayout valign="top" layout="scroll" id="pgl122">
+                                            <af:commandButton text="#{bindings.FunctionViewIterator.hints.label}"
+                                                              disabled="#{pageFlowScope.lookup == bindings.FunctionView}"
+                                                              inlineStyle="margin-bottom:5px; width:100%;" id="cb1">
+                                                <af:setActionListener from="#{bindings.FunctionView}"
+                                                                      to="#{pageFlowScope.lookup}"/>
+                                            </af:commandButton>
+                                            <af:commandButton text="#{bindings.GlobalBusinessUnitViewIterator.hints.label}"
+                                                              disabled="#{pageFlowScope.lookup == bindings.GlobalBusinessUnitView}"
+                                                              inlineStyle="margin-bottom:5px; width:100%;" id="cb2">
+                                                <af:setActionListener from="#{bindings.GlobalBusinessUnitView}"
+                                                                      to="#{pageFlowScope.lookup}"/>
+                                            </af:commandButton>
+                                            <af:commandButton text="#{bindings.LicenseTypeViewIterator.hints.label}"
+                                                              disabled="#{pageFlowScope.lookup == bindings.LicenseTypeView}"
+                                                              inlineStyle="margin-bottom:5px; width:100%;" id="cb3">
+                                                <af:setActionListener from="#{bindings.LicenseTypeView}"
+                                                                      to="#{pageFlowScope.lookup}"/>
+                                            </af:commandButton>
+                                            <af:commandButton text="#{bindings.LicenseDetailTypeViewIterator.hints.label}"
+                                                              disabled="#{pageFlowScope.lookup == bindings.LicenseDetailTypeView}"
+                                                              inlineStyle="margin-bottom:5px; width:100%;" id="cb4">
+                                                <af:setActionListener from="#{bindings.LicenseDetailTypeView}"
+                                                                      to="#{pageFlowScope.lookup}"/>
+                                            </af:commandButton>
+                                            <af:commandButton text="#{bindings.PartnerViewIterator.hints.label}"
+                                                              disabled="#{pageFlowScope.lookup == bindings.PartnerView}"
+                                                              inlineStyle="margin-bottom:5px; width:100%;" id="cb5">
+                                                <af:setActionListener from="#{bindings.PartnerView}"
+                                                                      to="#{pageFlowScope.lookup}"/>
+                                            </af:commandButton>
+                                            <af:commandButton text="#{bindings.CollaborationTypeViewIterator.hints.label}"
+                                                              disabled="#{pageFlowScope.lookup == bindings.CollaborationTypeView}"
+                                                              inlineStyle="margin-bottom:5px; width:100%;" id="cb6">
+                                                <af:setActionListener from="#{bindings.CollaborationTypeView}"
+                                                                      to="#{pageFlowScope.lookup}"/>
+                                            </af:commandButton>
+                                            <af:commandButton text="#{bindings.ProjectPlanningCodeViewIterator.hints.label}"
+                                                              disabled="#{pageFlowScope.lookup == bindings.ProjectPlanningCodeView}"
+                                                              inlineStyle="margin-bottom:5px; width:100%;" id="cb7">
+                                                <af:setActionListener from="#{bindings.ProjectPlanningCodeView}"
+                                                                      to="#{pageFlowScope.lookup}"/>
+                                            </af:commandButton>
+                                            <af:commandButton text="#{bindings.StrategicBusinessEntityViewIterator.hints.label}"
+                                                              disabled="#{pageFlowScope.lookup == bindings.StrategicBusinessEntityView}"
+                                                              inlineStyle="margin-bottom:5px; width:100%;" id="cb8">
+                                                <af:setActionListener from="#{bindings.StrategicBusinessEntityView}"
+                                                                      to="#{pageFlowScope.lookup}"/>
+                                            </af:commandButton>
+                                            <af:commandButton text="#{bindings.NewsCategoryViewIterator.hints.label}"
+                                                              disabled="#{pageFlowScope.lookup == bindings.NewsCategoryView}"
+                                                              inlineStyle="margin-bottom:5px; width:100%;" id="cb9">
+                                                <af:setActionListener from="#{bindings.NewsCategoryView}"
+                                                                      to="#{pageFlowScope.lookup}"/>
+                                            </af:commandButton>
+                                            <af:commandButton text="#{bindings.PriorityViewIterator.hints.label}"
+                                                              disabled="#{pageFlowScope.lookup == bindings.PriorityView}"
+                                                              inlineStyle="margin-bottom:5px; width:100%;" id="cb10">
+                                                <af:setActionListener from="#{bindings.PriorityView}"
+                                                                      to="#{pageFlowScope.lookup}"/>
+                                            </af:commandButton>
+                                            <af:commandButton text="#{bindings.ProjectAreaViewIterator.hints.label}"
+                                                              disabled="#{pageFlowScope.lookup == bindings.ProjectAreaView}"
+                                                              inlineStyle="margin-bottom:5px; width:100%;" id="cb11">
+                                                <af:setActionListener from="#{bindings.ProjectAreaView}"
+                                                                      to="#{pageFlowScope.lookup}"/>
+                                            </af:commandButton>
+                                            <af:commandButton text="#{bindings.ProjectCategoryViewIterator.hints.label}"
+                                                              disabled="#{pageFlowScope.lookup == bindings.ProjectCategoryView}"
+                                                              inlineStyle="margin-bottom:5px; width:100%;" id="cb12">
+                                                <af:setActionListener from="#{bindings.ProjectCategoryView}"
+                                                                      to="#{pageFlowScope.lookup}"/>
+                                            </af:commandButton>
+                                            <af:commandButton text="#{bindings.ProjectSourceViewIterator.hints.label}"
+                                                              disabled="#{pageFlowScope.lookup == bindings.ProjectSourceView}"
+                                                              inlineStyle="margin-bottom:5px; width:100%;" id="cb13">
+                                                <af:setActionListener from="#{bindings.ProjectSourceView}"
+                                                                      to="#{pageFlowScope.lookup}"/>
+                                            </af:commandButton>
+                                            <af:commandButton text="#{bindings.ProjectStateViewIterator.hints.label}"
+                                                              disabled="#{pageFlowScope.lookup == bindings.ProjectStateView}"
+                                                              inlineStyle="margin-bottom:5px; width:100%;" id="cb14">
+                                                <af:setActionListener from="#{bindings.ProjectStateView}"
+                                                                      to="#{pageFlowScope.lookup}"/>
+                                            </af:commandButton>
+                                            <af:commandButton text="#{bindings.RegionViewIterator.hints.label}"
+                                                              disabled="#{pageFlowScope.lookup == bindings.RegionView}"
+                                                              inlineStyle="margin-bottom:5px; width:100%;" id="cb15">
+                                                <af:setActionListener from="#{bindings.RegionView}"
+                                                                      to="#{pageFlowScope.lookup}"/>
+                                            </af:commandButton>
+                                            <af:commandButton text="#{bindings.SubstanceTypeViewIterator.hints.label}"
+                                                              disabled="#{pageFlowScope.lookup == bindings.SubstanceTypeView}"
+                                                              inlineStyle="margin-bottom:5px; width:100%;" id="cb16">
+                                                <af:setActionListener from="#{bindings.SubstanceTypeView}"
+                                                                      to="#{pageFlowScope.lookup}"/>
+                                            </af:commandButton>
+                                            <af:commandButton text="#{bindings.TeamRoleViewIterator.hints.label}"
+                                                              disabled="#{pageFlowScope.lookup == bindings.TeamRoleView}"
+                                                              inlineStyle="margin-bottom:5px; width:100%;" id="cb17">
+                                                <af:setActionListener from="#{bindings.TeamRoleView}"
+                                                                      to="#{pageFlowScope.lookup}"/>
+                                            </af:commandButton>
+                                            <af:commandButton text="#{bindings.TerminationReasonViewIterator.hints.label}"
+                                                              disabled="#{pageFlowScope.lookup == bindings.ProjectTerminationReasonsView}"
+                                                              inlineStyle="margin-bottom:5px; width:100%;" id="cb18">
+                                                <af:setActionListener from="#{bindings.ProjectTerminationReasonsView}"
+                                                                      to="#{pageFlowScope.lookup}"/>
+                                            </af:commandButton>
+                                            <af:commandButton text="#{bindings.TherapeuticAreaViewIterator.hints.label}"
+                                                              disabled="#{pageFlowScope.lookup == bindings.TherapeuticAreaView}"
+                                                              inlineStyle="margin-bottom:5px; width:100%;" id="cb19">
+                                                <af:setActionListener from="#{bindings.TherapeuticAreaView}"
+                                                                      to="#{pageFlowScope.lookup}"/>
+                                            </af:commandButton>
+                                            <af:commandButton text="#{bindings.TargetClassViewIterator.hints.label}"
+                                                              disabled="#{pageFlowScope.lookup == bindings.TargetClassView}"
+                                                              inlineStyle="margin-bottom:5px; width:100%;" id="cb20">
+                                                <af:setActionListener from="#{bindings.TargetClassView}"
+                                                                      to="#{pageFlowScope.lookup}"/>
+                                            </af:commandButton>
+                                            <af:commandButton text="#{bindings.TargetOriginViewIterator.hints.label}"
+                                                              disabled="#{pageFlowScope.lookup == bindings.TargetOriginView}"
+                                                              inlineStyle="margin-bottom:5px; width:100%;" id="cb21">
+                                                <af:setActionListener from="#{bindings.TargetOriginView}"
+                                                                      to="#{pageFlowScope.lookup}"/>
+                                            </af:commandButton>
+                                            <af:commandButton text="#{bindings.ProjectDeviceTypeViewIterator.hints.label}"
+                                                              disabled="#{pageFlowScope.lookup == bindings.ProjectDeviceTypeView}"
+                                                              inlineStyle="margin-bottom:5px; width:100%;" id="cb22">
+                                                <af:setActionListener from="#{bindings.ProjectDeviceTypeView}"
+                                                                      to="#{pageFlowScope.lookup}"/>
+                                            </af:commandButton>
+                                            <af:commandButton text="#{bindings.RegulatoryTypeViewIterator.hints.label}"
+                                                              disabled="#{pageFlowScope.lookup == bindings.RegulatoryTypeView}"
+                                                              inlineStyle="margin-bottom:5px; width:100%;" id="cb23">
+                                                <af:setActionListener from="#{bindings.RegulatoryTypeView}"
+                                                                      to="#{pageFlowScope.lookup}"/>
+                                            </af:commandButton>
+                                            <af:commandButton text="#{bindings.PhasePlanningTypeViewIterator.hints.label}"
+                                                              disabled="#{pageFlowScope.lookup == bindings.PhasePlanningTypeView}"
+                                                              inlineStyle="margin-bottom:5px; width:100%;" id="cb24">
+                                                <af:setActionListener from="#{bindings.PhasePlanningTypeView}"
+                                                                      to="#{pageFlowScope.lookup}"/>
+                                            </af:commandButton>
+                                            <af:commandButton text="#{bindings.ProjectModalityViewIterator.hints.label}"
+                                                              disabled="#{pageFlowScope.lookup == bindings.ProjectModalityView}"
+                                                              inlineStyle="margin-bottom:5px; width:100%;" id="cb25">
+                                                <af:setActionListener from="#{bindings.ProjectModalityView}"
+                                                                      to="#{pageFlowScope.lookup}"/>
+                                            </af:commandButton>
+                                            <af:commandButton text="#{bindings.DevicePhaseViewIterator.hints.label}"
+                                                              disabled="#{pageFlowScope.lookup == bindings.DevicePhaseView}"
+                                                              inlineStyle="margin-bottom:5px; width:100%;" id="cb26">
+                                                <af:setActionListener from="#{bindings.DevicePhaseView}"
+                                                                      to="#{pageFlowScope.lookup}"/>
+                                            </af:commandButton>
+                                            <af:commandButton text="#{bindings.BudgetStatusViewIterator.hints.label}"
+                                                              disabled="#{pageFlowScope.lookup == bindings.BudgetStatusView}"
+                                                              inlineStyle="margin-bottom:5px; width:100%;" id="cb28">
+                                                <af:setActionListener from="#{bindings.BudgetStatusView}"
+                                                                      to="#{pageFlowScope.lookup}"/>
+                                            </af:commandButton>
+                                        <af:commandButton text="#{bindings.SamdStatusViewIterator.hints.label}"
+                                                          disabled="#{pageFlowScope.lookup == bindings.SamdStatusView}"
+                                                          inlineStyle="margin-bottom:5px; width:100%;" id="cb27">
+                                            <af:setActionListener from="#{bindings.SamdStatusView}"
+                                                                  to="#{pageFlowScope.lookup}"/>
+                                        </af:commandButton>
+                                    </af:panelGroupLayout>
+                                    </af:panelGroupLayout>
+                                </f:facet>
+                                <f:facet name="center">
+                                    <af:panelCollection styleClass="AFStretchWidth AFStretchHeight"
+                                                        featuresOff="detach viewMenu statusBar"
+                                                        inlineStyle="margin-left:5px;" id="pc1">
+                                        <f:facet name="toolbar">
+                                            <af:toolbar id="t1">
+                                                <af:toolbar rendered="#{not empty pageFlowScope.lookup and (pageFlowScope.lookup ne bindings.FunctionView) and (pageFlowScope.lookup ne bindings.StrategicBusinessEntityView) 
+                                         and (pageFlowScope.lookup ne bindings.ProjectAreaView) and (pageFlowScope.lookup ne bindings.ProjectStateView)}"
+                                                            id="t2">
+                                                    <af:commandToolbarButton text="#{bundle.globalAdd}"
+                                                                             icon="/images/new.png" immediate="true"
+                                                                             id="add"
+                                                                             action="#{pageFlowScope.lookupsBean.onCreate}"/>
+                                                    <af:commandToolbarButton text="#{bundle.globalRemove}"
+                                                                             icon="/images/remove.png" immediate="true"
+                                                                             id="remove"
+                                                                             action="#{pageFlowScope.lookupsBean.onDelete}"
+                                                                             partialTriggers="table"/>
+                                                </af:toolbar>
+                                            </af:toolbar>
+                                        </f:facet>
+                                        <af:table value="#{pageFlowScope.lookup.collectionModel}" var="row"
+                                                  emptyText="#{pageFlowScope.lookup eq null or pageFlowScope.lookup.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                                                  rowBandingInterval="0"
+                                                  id="table" editingMode="editAll" contentDelivery="immediate"
+                                                  filterVisible="false" varStatus="vs" rowSelection="single"
+                                                  autoHeightRows="0" columnStretching="last"
+                                                  partialTriggers="::add ::remove" styleClass="AFStretchLength">
+                                            <af:column sortProperty="Code" filterable="false" sortable="true"
+                                                       headerText="#{bindings.PriorityView.hints.Code.label}" id="c1">
+                                                <af:inputText value="#{row.bindings.Code.inputValue}"
+                                                              required="#{row.bindings.Code.mandatory}"
+                                                              columns="#{row.bindings.Code.displayWidth}"
+                                                              maximumLength="#{row.bindings.Code.precision}"
+                                                              readOnly="#{ pageFlowScope.lookup.iteratorBinding.hints.label == 'Termination Reason'? false : row.row.entities[0].entityState ne 0}"
+                                                              id="it1"/>
+                                            </af:column>
+                                            <af:column sortProperty="Name" filterable="false" sortable="true"
+                                                       headerText="#{bindings.PriorityView.hints.Name.label}"
+                                                       width="160" id="c2">
+                                                <af:inputText value="#{row.bindings.Name.inputValue}"
+                                                              required="#{row.bindings.Name.mandatory}"
+                                                              columns="#{row.bindings.Name.displayWidth}"
+                                                              maximumLength="#{row.bindings.Name.precision}"
+                                                              readOnly="#{pageFlowScope.lookup eq bindings.FunctionView} and #{pageFlowScope.lookup eq bindings.StrategicBusinessEntityView}"
+                                                              id="it2"/>
+                                            </af:column>
+                                            <af:column sortProperty="IsActive" filterable="false" sortable="true"
+                                                       headerText="#{bindings.PriorityView.hints.IsActive.label}"
+                                                       id="c3">
+                                                <af:selectBooleanCheckbox value="#{row.bindings.IsActive.inputValue}"
+                                                                          required="#{row.bindings.IsActive.mandatory}"
+                                                                          readOnly="#{pageFlowScope.lookup eq bindings.FunctionView} and #{pageFlowScope.lookup eq bindings.StrategicBusinessEntityView}"
+                                                                          id="sbc3"/>
+                                            </af:column>
+                                            <af:column sortProperty="IsVisible" filterable="false" sortable="true"
+                                                       rendered="#{pageFlowScope.lookup eq bindings.StrategicBusinessEntityView}"
+                                                       headerText="Is Selectable" id="c4">
+                                                <af:selectBooleanCheckbox value="#{row.bindings.IsVisible.inputValue}"
+                                                                          readOnly="#{row.bindings.IsActive.inputValue == false}"
+                                                                          required="#{row.bindings.IsVisible.mandatory}"
+                                                                          id="sbc4"/>
+                                            </af:column>
+                                            <af:column sortProperty="RefReasonCode" filterable="false" sortable="true"
+                                                       headerText="#{bindings.ProjectTerminationReasonsView.hints.RefReasonCode.label}"
+                                                       rendered="#{pageFlowScope.lookup.iteratorBinding.hints.label == 'Termination Reason'}"
+                                                       id="c5">
+                                                <af:selectOneChoice value="#{row.bindings.RefReasonCode.inputValue}"
+                                                                    label="#{row.bindings.RefReasonCode.label}"
+                                                                    required="#{bindings.ProjectTerminationReasonsView.hints.RefReasonCode.mandatory}"
+                                                                    shortDesc="#{bindings.ProjectTerminationReasonsView.hints.RefReasonCode.tooltip}"
+                                                                    id="soc1">
+                                                    <f:selectItems value="#{row.bindings.RefReasonCode.items}"
+                                                                   id="si1"/>
+                                                    <f:validator binding="#{row.bindings.RefReasonCode.validator}"/>
+                                                </af:selectOneChoice>
+                                            </af:column>
+                                            <af:column sortProperty="D1" filterable="false" sortable="true"
+                                                       headerText="#{bindings.ProjectTerminationReasonsView.hints.D1.label}"
+                                                       rendered="#{pageFlowScope.lookup.iteratorBinding.hints.label == 'Termination Reason'}"
+                                                       id="c6">
+                                                <af:selectBooleanCheckbox value="#{row.bindings.D1.inputValue}"
+                                                                          id="sbc5"/>
+                                            </af:column>
+                                            <af:column sortProperty="D2" filterable="false" sortable="true"
+                                                       headerText="#{bindings.ProjectTerminationReasonsView.hints.D2.label}"
+                                                       rendered="#{pageFlowScope.lookup.iteratorBinding.hints.label == 'Termination Reason'}"
+                                                       id="c7">
+                                                <af:selectBooleanCheckbox value="#{row.bindings.D2.inputValue}"
+                                                                          id="sbc6"/>
+                                            </af:column>
+                                            <af:column sortProperty="Dev" filterable="false" sortable="true"
+                                                       headerText="#{bindings.ProjectTerminationReasonsView.hints.Dev.label}"
+                                                       rendered="#{pageFlowScope.lookup.iteratorBinding.hints.label == 'Termination Reason'}"
+                                                       id="c9">
+                                                <af:selectBooleanCheckbox value="#{row.bindings.Dev.inputValue}"
+                                                                          label="#{bindings.Dev.label}"
+                                                                          shortDesc="#{bindings.Dev.hints.tooltip}"
+                                                                          id="sbc1"/>
+                                            </af:column>
+                                            <af:column sortProperty="PrdMnt" filterable="false" sortable="true"
+                                                       headerText="#{bindings.ProjectTerminationReasonsView.hints.PrdMnt.label}"
+                                                       rendered="#{pageFlowScope.lookup.iteratorBinding.hints.label == 'Termination Reason'}"
+                                                       id="c10">
+                                                <af:selectBooleanCheckbox value="#{row.bindings.PrdMnt.inputValue}"
+                                                                          label="#{bindings.PrdMnt.label}"
+                                                                          shortDesc="#{bindings.PrdMnt.hints.tooltip}"
+                                                                          id="sbc2"/>
+                                            </af:column>
+                                            <af:column sortProperty="IsD2prjRelevant" filterable="false" sortable="true"
+                                                       headerText="#{bindings.TeamRoleView.hints.IsD2prjRelevant.label}"
+                                                       rendered="#{pageFlowScope.lookup.iteratorBinding.hints.label == 'Team Role'}"
+                                                       id="c11">
+                                                <af:selectBooleanCheckbox value="#{row.bindings.IsD2prjRelevant.inputValue}"
+                                                                          id="sbc8"/>
+                                            </af:column>
+                                            <af:column sortProperty="IsSamdRelevant" filterable="false" sortable="true"
+                                                       headerText="#{bindings.TeamRoleView.hints.IsSamdRelevant.label}"
+                                                       rendered="#{pageFlowScope.lookup.iteratorBinding.hints.label == 'Team Role'}"
+                                                       id="c12">
+                                                <af:selectBooleanCheckbox value="#{row.bindings.IsSamdRelevant.inputValue}"
+                                                                          id="sbc9"/>
+                                            </af:column>
+                                            <af:column sortProperty="IsDevRelevant" filterable="false" sortable="true"
+                                                       headerText="#{bindings.TeamRoleView.hints.IsDevRelevant.label}"
+                                                       rendered="#{pageFlowScope.lookup.iteratorBinding.hints.label == 'Team Role'}"
+                                                       id="c13">
+                                                <af:selectBooleanCheckbox value="#{row.bindings.IsDevRelevant.inputValue}"
+                                                                          id="sbc10"/>
+                                            </af:column>
+                                            <af:column sortProperty="IsPrdmntRelevant" filterable="false"
+                                                       sortable="true"
+                                                       headerText="#{bindings.TeamRoleView.hints.IsPrdmntRelevant.label}"
+                                                       rendered="#{pageFlowScope.lookup.iteratorBinding.hints.label == 'Team Role'}"
+                                                       id="c14">
+                                                <af:selectBooleanCheckbox value="#{row.bindings.IsPrdmntRelevant.inputValue}"
+                                                                          id="sbc11"/>
+                                            </af:column>
+                                            <af:column sortProperty="Description" filterable="false" sortable="false"
+                                                       rendered="#{(pageFlowScope.lookup ne bindings.StrategicBusinessEntityView) and (pageFlowScope.lookup ne bindings.ProjectPlanningCodeView)}"
+                                                       headerText="#{bindings.PriorityView.hints.Description.label}"
+                                                       id="c15">
+                                                <af:inputText value="#{row.bindings.Description.inputValue}"
+                                                              columns="#{row.bindings.Description.displayWidth}"
+                                                              maximumLength="#{row.bindings.Description.precision}"
+                                                              styleClass="AFStretchWidth" dimensionsFrom="parent"
+                                                              simple="true"
+                                                              readOnly="#{pageFlowScope.lookup eq bindings.FunctionView}"
+                                                              contentStyle="min-width:100%;" id="it3"/>
+                                            </af:column>
+                                        </af:table>
+                                    </af:panelCollection>
+                                </f:facet>
+                            </af:panelStretchLayout>
+                    </f:facet>
+                    <f:facet name="controls">
+                        <f:subview id="sub1">
+                            <af:declarativeComponent viewId="global-ok-cancel.jsff" id="goc">
+                                <f:attribute name="showCancel" value="true"/>
+                            </af:declarativeComponent>
+                        </f:subview>
+                    </f:facet>
+                </af:pageTemplate>
+            </af:form>
+        </af:document>
+    </f:view>
+</jsp:root>

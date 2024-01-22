@@ -1,0 +1,22 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<xs:schema targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/WBSReadService" xmlns="http://xmlns.oracle.com/pcbpel/adapter/db/WBSReadService" elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+   <xs:element name="WBSReadServiceInput" type="WBSReadServiceInput"/>
+   <xs:complexType name="WBSReadServiceInput">
+      <xs:sequence>
+         <xs:element name="object_id" type="xs:decimal" nillable="false"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="WBSReadServiceOutputCollection" type="WBSReadServiceOutputCollection"/>
+   <xs:complexType name="WBSReadServiceOutputCollection">
+      <xs:sequence>
+         <xs:element name="WBSReadServiceOutput" type="WBSReadServiceOutput" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="WBSReadServiceOutput">
+      <xs:sequence>
+         <xs:element name="wbs_object_id" type="xs:decimal" nillable="true"/>
+         <xs:element name="wbs_category_object_id" type="xs:decimal" nillable="true"/>
+         <xs:element name="wbs_category_name" type="xs:string" nillable="true"/>
+      </xs:sequence>
+   </xs:complexType>
+</xs:schema>

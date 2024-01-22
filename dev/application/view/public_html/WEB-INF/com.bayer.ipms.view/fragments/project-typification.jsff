@@ -1,0 +1,135 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:c="http://java.sun.com/jsp/jstl/core">
+  <c:set var="bundle"
+         value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+  <af:pageTemplate viewId="/WEB-INF/com.bayer.ipms.view/templates/ipms-content-template.jspx"
+                   id="pt1">
+    <f:facet name="popup">
+      <af:group id="g1">
+        <af:popup id="popApply" contentDelivery="lazyUncached">
+          <af:dialog id="diagApply" title="#{bundle.globalApply}"
+                     contentWidth="500"
+                     dialogListener="#{pageFlowScope.projectTypificationBean.onApplyConfirmed}">
+            <af:message message="#{bundle.projectTypifyMessage}"
+                        messageType="confirmation"/>
+          </af:dialog>
+        </af:popup>
+        <af:popup id="popInconsErr" contentDelivery="lazyUncached">
+          <af:dialog id="diagInconsErr" title="#{bundle.globalApply}" type="ok"
+                     contentWidth="500">
+            <af:message message="#{bundle.projectTypifyInconsErrMessage}"
+                        messageType="error"/>
+          </af:dialog>
+        </af:popup>
+      </af:group>
+    </f:facet>
+    <f:facet name="toolbar">
+      <af:panelGroupLayout id="tools" layout="horizontal">
+        <af:menuBar id="menu">
+          <af:menu text="#{bundle.globalView}">
+            <af:commandMenuItem text="#{bundle.globalRefresh}"
+                                icon="/images/reload.png" immediate="true"
+                                action="#{pageFlowScope.projectTypificationBean.onRefresh}"/>
+          </af:menu>
+        </af:menuBar>
+      </af:panelGroupLayout>
+    </f:facet>
+    <f:facet name="content">
+      <af:panelStretchLayout id="psl1" topHeight="auto" bottomHeight="0"
+                             inlineStyle="height:100%;"
+                             styleClass="AFStretchWidth">
+        <f:facet name="top">
+          <af:query id="qryId1" headerText="Search" disclosed="true"
+                    value="#{bindings.UntQuery.queryDescriptor}"
+                    model="#{bindings.UntQuery.queryModel}"
+                    queryListener="#{bindings.UntQuery.processQuery}"
+                    queryOperationListener="#{bindings.UntQuery.processQueryOperation}"
+                    modeChangeVisible="false" saveQueryMode="hidden"
+                    searchButtonText="#{bundle.globalFilter}"
+                    labelAlignment="start" resultComponentId="::pcol1:t1"/>
+        </f:facet>
+        <f:facet name="center">
+          <af:panelCollection id="pcol1"
+                              featuresOff="detach viewMenu statusBar">
+            <f:facet name="toolbar">
+              <af:toolbar id="tlbPrj">
+                <af:commandToolbarButton icon="/images/apply-all.png"
+                                         text="#{bundle.globalApply}"
+                                         rendered="#{securityContext.userInRole['ProjectTypify']}"
+                                         id="cmdApply" partialSubmit="true"
+                                         actionListener="#{pageFlowScope.projectTypificationBean.onApply}"></af:commandToolbarButton>
+              </af:toolbar>
+            </f:facet>
+            <af:table value="#{bindings.ProjectView.collectionModel}" var="row"
+                      rows="#{bindings.ProjectView.rangeSize}"
+                      emptyText="#{bindings.ProjectView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                      fetchSize="#{bindings.ProjectView.rangeSize}"
+                      rowBandingInterval="0" id="t1" autoHeightRows="0"
+                      summary="Projects" columnStretching="column:c1"
+                      rowSelection="single" contentDelivery="immediate">
+              <af:column sortProperty="#{bindings.ProjectView.hints.Code.name}"
+                         sortable="true"
+                         headerText="#{bindings.ProjectView.hints.Code.label}"
+                         id="c2" minimumWidth="12" width="140">
+                <af:outputText value="#{row.Code}" id="prjCode"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.ProjectView.hints.Name.name}"
+                         sortable="true"
+                         headerText="#{bindings.ProjectView.hints.Name.label}"
+                         id="c1">
+                <af:outputText value="#{row.Name}" id="prjName"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.ProjectView.hints.TopGroupCode.name}"
+                         sortable="false"
+                         headerText="#{bindings.ProjectView.hints.TopGroupCode.label}"
+                         id="c4">
+                <af:outputText value="#{row.TopGroupName}" id="ot3"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.ProjectView.hints.MainGroupCode.name}"
+                         sortable="false"
+                         headerText="#{bindings.ProjectView.hints.MainGroupCode.label}"
+                         id="c5">
+                <af:outputText value="#{row.MainGroupName}" id="ot2"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.ProjectView.hints.SubgroupCode.name}"
+                         sortable="false"
+                         headerText="#{bindings.ProjectView.hints.SubgroupCode.label}"
+                         id="c6">
+                <af:outputText value="#{row.CategoryName}" id="ot1"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.ProjectView.hints.AreaCode.name}"
+                         sortable="false"
+                         headerText="#{bindings.ProjectView.hints.AreaCode.label}"
+                         id="c3" width="380">
+                <af:selectOneRadio value="#{row.bindings.AreaCode.inputValue}"
+                                   layout="horizontal"
+                                   label="#{row.bindings.AreaCode.label}"
+                                   autoSubmit="false"
+                                   required="#{bindings.ProjectView.hints.AreaCode.mandatory}"
+                                   shortDesc="#{bindings.ProjectView.hints.AreaCode.tooltip}"
+                                   id="sor1">
+                  <f:selectItems value="#{row.bindings.AreaCode.items}"
+                                 id="si5"/>
+                </af:selectOneRadio>
+              </af:column>
+              <af:column sortProperty="#{bindings.ProjectView.hints.IsTypifyExcluded.name}"
+                         sortable="false"
+                         headerText="#{bindings.ProjectView.hints.IsTypifyExcluded.label}"
+                         id="c32" width="50">
+                <af:selectBooleanCheckbox value="#{row.bindings.IsTypifyExcluded.inputValue}"
+                                          label="#{row.bindings.IsTypifyExcluded.label}"
+                                          autoSubmit="false"
+                                          shortDesc="#{bindings.ProjectView.hints.IsTypifyExcluded.tooltip}"
+                                          id="sbc1"/>
+              </af:column>
+            </af:table>
+          </af:panelCollection>
+        </f:facet>
+      </af:panelStretchLayout>
+    </f:facet>
+    <f:attribute name="title" value="#{bundle.projectUntypified}"/>
+  </af:pageTemplate>
+</jsp:root>

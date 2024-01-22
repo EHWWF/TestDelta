@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.64.93"
+                id="maintain_users_maintain_users_sendPageDef"
+                Package="com.bayer.ipms.view.flows" SkipValidation="true">
+  <parameters/>
+  <executables/>
+  <bindings>
+    <action id="send" RequiresUpdateModel="true" Action="invokeMethod"
+            MethodName="send" IsViewObjectMethod="true"
+            DataControl="PrivateAppModuleDataControl"
+            InstanceName="PrivateAppModuleDataControl.dataProvider.Root.ManagementAppModule.UserView"/>
+  </bindings>
+</pageDefinition>

@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="windows-1257" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="estimates-start">
+    <template-reference>
+      <document id="__2">/WEB-INF/com.bayer.ipms.view/templates/ipms-taskflow-template-page.xml</document>
+      <id id="__1">ipms-taskflow-template-page</id>
+    </template-reference>
+    <default-activity id="__11">refreshPreviousLeTagProcesses</default-activity>
+    <transaction id="__54">
+      <requires-transaction/>
+    </transaction>
+    <data-control-scope id="__51">
+      <shared/>
+    </data-control-scope>
+    <input-parameter-definition id="__50">
+      <name id="__49">processId</name>
+      <value>#{pageFlowScope.processId}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <managed-bean id="__34">
+      <managed-bean-name id="__35">estimatesProcessBean</managed-bean-name>
+      <managed-bean-class id="__36">com.bayer.ipms.view.beans.EstimatesProcessBean</managed-bean-class>
+      <managed-bean-scope id="__37">pageFlow</managed-bean-scope>
+      <!--managed-property id="__40">
+        <property-name id="__39">allItemsIteratorName</property-name>
+        <property-class>java.lang.String</property-class>
+        <value id="__38">ProjectViewIterator</value>
+      </managed-property>
+      <managed-property id="__42">
+        <property-name id="__43">allItemsValueAttrName</property-name>
+        <property-class>java.lang.String</property-class>
+        <value id="__41">Id</value>
+      </managed-property>
+      <managed-property id="__46">
+        <property-name id="__45">allItemsDisplayAttrName</property-name>
+        <property-class>java.lang.String</property-class>
+        <value id="__44">Id</value>
+      </managed-property>
+      <managed-property id="__49">
+        <property-name id="__47">allItemsDescriptionAttrName</property-name>
+        <property-class>java.lang.String</property-class>
+        <value id="__48">Id</value>
+      </managed-property>
+      <managed-property id="__52">
+        <property-name id="__51">selectedValuesIteratorName</property-name>
+        <property-class>java.lang.String</property-class>
+        <value id="__50">LatestEstimatesProjectViewIterator</value>
+      </managed-property>
+      <managed-property id="__55">
+        <property-name id="__54">selectedValuesValueAttrName</property-name>
+        <property-class>java.lang.String</property-class>
+        <value id="__53">Project_id</value>
+      </managed-property-->
+    </managed-bean>
+    <exception-handler id="__3">handleException</exception-handler>
+    <task-flow-return id="ok">
+      <outcome id="__7">
+        <name>ok</name>
+        <commit/>
+      </outcome>
+    </task-flow-return>
+    <method-call id="setBaCodeUpdate">
+      <method>#{utilsBean.setBaCode2}</method>
+      <parameter>
+            <class>java.lang.String</class>
+            <value>EstimatesProcessUpdate</value>
+      </parameter>
+      <outcome>
+            <fixed-outcome>set</fixed-outcome>
+      </outcome>
+    </method-call>  
+    <method-call id="setBaCodeStart">
+      <method>#{utilsBean.setBaCode2}</method>
+      <parameter>
+            <class>java.lang.String</class>
+            <value>EstimatesProcessStart</value>
+      </parameter>
+      <outcome>
+            <fixed-outcome>set</fixed-outcome>
+      </outcome>
+    </method-call> 
+    <method-call id="clearBaCode">
+      <method>#{utilsBean.clearBaCode}</method>
+      <outcome>
+            <fixed-outcome>clear</fixed-outcome>
+      </outcome>
+    </method-call>     
+    <view id="estimates-init">   
+      <page>/WEB-INF/com.bayer.ipms.view/fragments/estimates-start.jspx</page>
+    </view>
+    <task-flow-return id="cancel">
+      <outcome id="__13">
+        <name>cancel</name>
+        <rollback/>
+      </outcome>
+    </task-flow-return>
+    <method-call id="Commit">
+      <method>#{bindings.Commit.execute}</method>
+      <outcome id="__19">
+        <fixed-outcome>Commit</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="start">
+      <method>#{bindings.start.execute}</method>
+      <outcome id="__23">
+        <fixed-outcome>start</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="CreateInsertProcess">
+      <method>#{bindings.CreateInsert.execute}</method>
+      <outcome id="__57">
+        <fixed-outcome>CreateInsert</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="SetCurrentRowWithKeyValue">
+      <method>#{bindings.setCurrentRowWithKeyValue.execute}</method>
+      <outcome id="__43">
+        <fixed-outcome>setCurrentRowWithKeyValue</fixed-outcome>
+      </outcome>
+    </method-call>
+    <router id="router">
+      <case>
+        <expression>#{pageFlowScope.processId==null}</expression>
+        <outcome id="__52">new</outcome>
+      </case>
+      <case>
+        <expression>#{pageFlowScope.processId!=null}</expression>
+        <outcome id="__53">update</outcome>
+      </case>
+      <default-outcome>new</default-outcome>
+    </router>
+    <method-call id="restart">
+      <method>#{bindings.restart.execute}</method>
+      <outcome id="__151">
+        <fixed-outcome>restart</fixed-outcome>
+      </outcome>
+    </method-call>
+    <router id="router2">
+      <case>
+        <expression>#{pageFlowScope.processId==null}</expression>
+        <outcome id="__76">new</outcome>
+      </case>
+      <case>
+        <expression>#{pageFlowScope.processId!=null}</expression>
+        <outcome id="__77">update</outcome>
+      </case>
+      <default-outcome>new</default-outcome>
+    </router>
+    <method-call id="Rollback">
+      <method>#{bindings.Rollback.execute}</method>
+      <outcome>
+        <fixed-outcome>Rollback</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="refreshPreviousLeTagProcesses">
+      <method>#{bindings.refreshPreviousLeTagProcesses.execute}</method>
+      <outcome>
+        <fixed-outcome>refreshPreviousLeTagProcesses</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="Commit1">
+      <method>#{bindings.Commit.execute}</method>
+      <outcome>
+        <fixed-outcome>Commit</fixed-outcome>
+      </outcome>
+    </method-call>
+    <control-flow-rule id="__14">
+      <from-activity-id id="__15">estimates-init</from-activity-id>
+      <control-flow-case id="__20">
+        <from-outcome id="__22">ok</from-outcome>
+        <to-activity-id id="__21">Commit</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__6">
+        <from-outcome>cancel</from-outcome>
+        <to-activity-id>Rollback</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__29">
+      <from-activity-id id="__30">start</from-activity-id>
+      <control-flow-case id="__31">
+        <from-outcome id="__33">start</from-outcome>
+        <to-activity-id id="__32">Commit1</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__4">
+      <from-activity-id id="__5">CreateInsertProcess</from-activity-id>
+      <control-flow-case id="__8">
+        <from-outcome id="__10">CreateInsert</from-outcome>
+        <to-activity-id id="__9">setBaCodeStart</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__44">
+      <from-activity-id id="__45">router</from-activity-id>
+      <control-flow-case id="__47">
+        <from-outcome id="__48">new</from-outcome>
+        <to-activity-id id="__46">CreateInsertProcess</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__68">
+        <from-outcome id="__70">update</from-outcome>
+        <to-activity-id id="__69">SetCurrentRowWithKeyValue</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__56">
+      <from-activity-id id="__58">SetCurrentRowWithKeyValue</from-activity-id>
+      <control-flow-case id="__60">
+        <from-outcome id="__61">setCurrentRowWithKeyValue</from-outcome>
+        <to-activity-id id="__59">setBaCodeUpdate</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__154">
+      <from-activity-id id="__55">Commit</from-activity-id>
+      <control-flow-case id="__62">
+        <from-outcome id="__63">Commit</from-outcome>
+        <to-activity-id id="__64">router2</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__65">
+      <from-activity-id id="__66">router2</from-activity-id>
+      <control-flow-case id="__74">
+        <from-outcome id="__75">update</from-outcome>
+        <to-activity-id id="__73">restart</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__83">
+        <from-outcome id="__85">new</from-outcome>
+        <to-activity-id id="__84">start</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__78">
+      <from-activity-id id="__79">restart</from-activity-id>
+      <control-flow-case id="__80">
+        <from-outcome id="__81">restart</from-outcome>
+        <to-activity-id id="__82">Commit1</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__12">
+      <from-activity-id>Rollback</from-activity-id>
+      <control-flow-case id="__16">
+        <from-outcome>Rollback</from-outcome>
+        <to-activity-id>cancel</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__17">
+      <from-activity-id>refreshPreviousLeTagProcesses</from-activity-id>
+      <control-flow-case id="__18">
+        <from-outcome>refreshPreviousLeTagProcesses</from-outcome>
+        <to-activity-id>router</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__24">
+      <from-activity-id>setBaCodeStart</from-activity-id>
+      <control-flow-case id="__25">
+        <from-outcome>set</from-outcome>
+        <to-activity-id>estimates-init</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__26">
+      <from-activity-id>setBaCodeUpdate</from-activity-id>
+      <control-flow-case id="__27">
+        <from-outcome>set</from-outcome>
+        <to-activity-id>estimates-init</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__28">
+      <from-activity-id>clearBaCode</from-activity-id>
+      <control-flow-case id="__38">
+        <from-outcome>clear</from-outcome>
+        <to-activity-id>ok</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__39">
+      <from-activity-id>Commit1</from-activity-id>
+      <control-flow-case id="__40">
+        <from-outcome>Commit</from-outcome>
+        <to-activity-id>clearBaCode</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+  </task-flow-definition>
+</adfc-config>

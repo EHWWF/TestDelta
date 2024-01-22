@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.64.93"
+                id="estimates_start_estimates_start_CreateInsertPageDef"
+                Package="com.bayer.ipms.view.flows" SkipValidation="true">
+  <parameters/>
+  <executables>
+    <iterator Binds="EstimatesAppModule.LatestEstimatesProcessView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="LatestEstimatesProcessViewIterator"/>
+  </executables>
+  <bindings>
+    <action IterBinding="LatestEstimatesProcessViewIterator" id="CreateInsert"
+            RequiresUpdateModel="true" Action="createWithParams">
+      <NamedData NDName="Id" NDType="java.lang.String" NDValue='0'/>
+    </action>
+  </bindings>
+</pageDefinition>

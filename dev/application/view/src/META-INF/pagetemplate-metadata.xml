@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<pageTemplateDefs xmlns="http://xmlns.oracle.com/adf/faces/rich/pagetemplate">
+  <pagetemplate-jsp-ui-def>/WEB-INF/com.bayer.ipms.view/templates/ipms-popup-template.jspx</pagetemplate-jsp-ui-def>
+  <pagetemplate-jsp-ui-def>/WEB-INF/com.bayer.ipms.view/templates/ipms-content-template.jspx</pagetemplate-jsp-ui-def>
+  <pagetemplate-jsp-ui-def>/WEB-INF/com.bayer.ipms.view/templates/ipms-page-template.jspx</pagetemplate-jsp-ui-def>
+</pageTemplateDefs>

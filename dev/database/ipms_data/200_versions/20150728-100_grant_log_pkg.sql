@@ -1,0 +1,1 @@
+grant execute on log_pkg to ipms_repo;

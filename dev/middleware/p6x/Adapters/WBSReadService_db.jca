@@ -1,0 +1,11 @@
+<adapter-config name="WBSReadService" adapter="db" wsdlLocation="../WSDLs/WBSReadService.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+  
+  <connection-factory UIConnectionName="P6Database" location="eis/DB/P6Pool"/>
+  <endpoint-interaction portType="WBSReadService_ptt" operation="WBSReadService">
+    <interaction-spec className="oracle.tip.adapter.db.DBPureSQLInteractionSpec">
+      <property name="SqlString" value="select wbs_id as wbs_object_id, w.phase_id as wbs_category_object_id, p.phase_name as wbs_category_name from projwbs w left join phase p on p.phase_id=w.phase_id where wbs_id=#object_id"/>
+      <property name="GetActiveUnitOfWork" value="false"/>
+    </interaction-spec>
+  </endpoint-interaction>
+
+</adapter-config>

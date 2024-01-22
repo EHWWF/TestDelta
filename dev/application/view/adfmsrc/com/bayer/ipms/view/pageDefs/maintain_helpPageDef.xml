@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.0.31" id="maintain_helpPageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="ManagementAppModule.HelpBundleView" DataControl="PrivateAppModuleDataControl" RangeSize="25"
+              id="HelpBundleViewIterator"/>
+    <searchRegion Binds="HelpBundleViewIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="HelpBundleView1Query"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="HelpBundleViewIterator" id="HelpBundleView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.HelpBundleView" Name="HelpBundleView10">
+        <AttrNames>
+          <Item Value="Name"/>
+		  <Item Value="Definition"/>
+          <Item Value="Url"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+  </bindings>
+</pageDefinition>

@@ -1,0 +1,1 @@
+alter table timeline_baseline add (details xmltype);

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="ReadProgram"
+             targetNamespace="http://xmlns.bayer.com/ipms/soa"
+             xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:client="http://xmlns.bayer.com/ipms/soa"
+             xmlns:ns1="http://xmlns.bayer.com/ipms/soa"
+             xmlns:plnk="http://schemas.xmlsoap.org/ws/2003/05/partner-link/">
+	<wsdl:types>
+		<schema xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://xmlns.bayer.com/ipms/soa" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/soa/soa.xsd"/>
+		</schema>
+	</wsdl:types>
+
+	<wsdl:message name="ReadProgramRequestMessage">
+		<wsdl:part name="payload" element="ns1:read" />
+	</wsdl:message>
+	<wsdl:message name="ReadProgramResponseMessage">
+		<wsdl:part name="payload" element="ns1:response" />
+	</wsdl:message>
+
+	<wsdl:portType name="ReadProgram">
+		<wsdl:operation name="process">
+			<wsdl:input  message="client:ReadProgramRequestMessage"/>
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<wsdl:portType name="ReadProgramCallback">
+		<wsdl:operation name="callback">
+			<wsdl:input message="client:ReadProgramResponseMessage"/>
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<plnk:partnerLinkType name="ReadProgram">
+		<plnk:role name="ReadProgramProvider">
+			<plnk:portType name="client:ReadProgram"/>
+		</plnk:role>
+		<plnk:role name="ReadProgramRequester">
+			<plnk:portType name="client:ReadProgramCallback"/>
+		</plnk:role>
+	</plnk:partnerLinkType>
+
+</wsdl:definitions>

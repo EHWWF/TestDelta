@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.0.31" id="ltc_viewPageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="LtcAppModule.LtcProcessView" DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="LtcProcessViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator id="LtcProjectViewIterator" Binds="LtcAppModule.LtcProjectView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="500" ChangeEventPolicy="ppr"/>
+    <iterator id="LtcTagViewIterator" Binds="LtcAppModule.LtcTagView" DataControl="PrivateAppModuleDataControl"
+              RangeSize="100" ChangeEventPolicy="ppr"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="LtcProjectViewIterator"
+          id="LtcProjectView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.ltc.LtcProjectView" Name="LtcProjectView0">
+        <AttrNames>
+          <Item Value="ProjectCode"/>
+          <Item Value="ProjectName"/>
+          <Item Value="ProjectSbeName"/>
+          <Item Value="ProgramName"/>
+          <Item Value="DevelopmentPhaseName"/>
+          <Item Value="ProgramNameQualified"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>  
+   <attributeValues IterBinding="LtcProcessViewIterator" id="Name">
+      <AttrNames>
+        <Item Value="Name"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcProcessViewIterator"
+                     id="Comments">
+      <AttrNames>
+        <Item Value="Comments"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcProcessViewIterator"
+                     id="TerminationDate">
+      <AttrNames>
+        <Item Value="TerminationDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcProcessViewIterator"
+                     id="StatusCode">
+      <AttrNames>
+        <Item Value="StatusCode"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcProcessViewIterator"
+                     id="IsSyncing" ChangeEventPolicy="ppr">
+      <AttrNames>
+        <Item Value="IsSyncing"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcProcessViewIterator" id="ProcessId">
+      <AttrNames>
+        <Item Value="Id"/>
+      </AttrNames>
+    </attributeValues>
+    <eventBinding Listener="javax.faces.event.ActionListener"
+                  id="ltcEventBinding">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="estimates" eventType="Action Event"
+               customPayLoad="#{bindings.LtcProcessViewIterator.currentRow.id}"/>
+      </events>
+    </eventBinding>
+    <methodAction IterBinding="LtcProcessViewIterator" id="refresh"
+                  InstanceName="bindings.LtcProcessViewIterator.currentRow"
+                  DataControl="PrivateAppModuleDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="refresh" IsViewObjectMethod="false"
+                  IsLocalObjectReference="true">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="estimates"
+               customPayLoad="#{bindings.LtcProcessViewIterator.currentRow.id}"/>
+      </events>
+    </methodAction>
+    <attributeValues IterBinding="LtcProcessViewIterator" id="Id">
+      <AttrNames>
+        <Item Value="Id"/>
+      </AttrNames>
+    </attributeValues>
+    
+    <attributeValues IterBinding="LtcTagViewIterator" id="TagName">
+      <AttrNames>
+        <Item Value="Name"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcTagViewIterator" id="TagId">
+      <AttrNames>
+        <Item Value="Id"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcProjectViewIterator" id="ProjectId">
+      <AttrNames>
+        <Item Value="_ProjectId"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcProjectViewIterator" id="ProgramId">
+      <AttrNames>
+        <Item Value="_ProgramId"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcTagViewIterator" id="TagIsFrozen">
+      <AttrNames>
+        <Item Value="IsFrozen"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcProcessViewIterator" id="TerminateDate">
+      <AttrNames>
+        <Item Value="TerminateDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcProcessViewIterator" id="ProcessDescription">
+      <AttrNames>
+        <Item Value="ProcessDescription"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

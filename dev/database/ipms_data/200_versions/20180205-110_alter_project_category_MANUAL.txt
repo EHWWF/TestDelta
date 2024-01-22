@@ -1,0 +1,70 @@
+alter table project_category add (code_temp nvarchar2(60));
+
+merge into project_category dst
+using (
+  select
+    import_id,
+    code,
+    maingroup_code,
+    name,
+    is_active
+  from (
+    select
+      1                                             as import_id,
+      code code,
+      maingroup_code,
+      name,
+      is_active,
+      row_number()
+      over (
+        partition by upper(code)
+        order by modify_date desc, is_active desc ) as rank
+    from combase_subgroup_vw
+  )
+  where rank = 1
+) src
+on (upper(src.code)=dst.code)
+when matched then update
+set dst.code_temp=src.code
+where is_promis=0;
+commit;
+
+alter table project disable constraint project_category_fk;
+alter table project disable constraint project_project_group_fk;
+
+update project_category set code= nvl(code_temp,code);
+commit;
+
+
+alter table project add (pc_code_temp nvarchar2(60));
+
+merge into project dst
+  using project_category src
+on (upper(src.code)=dst.category_code)
+when matched then update
+set dst.pc_code_temp=nvl(src.code_temp,dst.category_code);
+
+update project set category_code=nvl(pc_code_temp,category_code);
+
+commit;
+
+merge into project dst
+using project_category src
+on (upper(src.code)=dst.project_group_code)
+when matched then update
+set dst.pc_code_temp=nvl(src.code_temp,dst.project_group_code);
+
+update project set project_group_code=nvl(pc_code_temp,project_group_code);
+
+commit;
+
+alter table project enable constraint project_category_fk;
+alter table project enable constraint project_project_group_fk;
+
+alter table project_category drop column code_temp;
+alter table project drop column pc_code_temp;
+
+update project set category_code='ped' where category_code='PED';
+update project set project_group_code='ped' where project_group_code='PED';
+delete from project_category where code='PED';
+commit;

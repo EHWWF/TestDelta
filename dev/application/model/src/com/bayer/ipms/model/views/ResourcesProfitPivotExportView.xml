@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ResourcesProfitPivotExportView"
+  Version="12.2.1.0.31"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="com.bayer.ipms.model.base.IPMSViewRowImpl"
+  ComponentClass="com.bayer.ipms.model.base.IPMSViewObjectImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_isExpertMode" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="com.bayer.ipms.model.views.ResourcesProfitPivotExportView_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <SQLQuery><![CDATA[select 
+    id, 
+    project_id, 
+    project_name, 
+    study_id, 
+    study_name, 
+    function_code, 
+    function_name, 
+    subfunction_name, 
+    method_code, 
+    type_code, 
+    finish_date, 
+    month, 
+    year, 
+    round(demand,2) as demand, 
+    project_activity_id 
+from ( 
+    select 
+        rsc.id, 
+        rsc.project_id, 
+        prj.name as project_name, 
+        nvl(rsc.study_id,rsc.project_id) as study_id, 
+        nvl(st.name,prj.name) as study_name, 
+        fncd.code as function_code, 
+        nvl(fncd.name,'Not available') function_name, 
+        sbf.name as subfunction_name, 
+        rsc.method_code, 
+        rsc.type_code, 
+        rsc.finish_date, 
+        to_char(rsc.finish_date,'MONTH') month, 
+        extract(year from rsc.finish_date) as year, 
+        rsc.demand, 
+        nvl(pan.name,rsc.project_activity_id) as project_activity_id 
+    from resources rsc 
+    join project prj on prj.id=rsc.project_id 
+    left join subfunction sbf on rsc.subfunction_code = sbf.code 
+    left join function fncd on sbf.function_code=fncd.code 
+    left join timeline_wbs st on (st.study_id=rsc.study_id and st.project_id=rsc.project_id and st.timeline_type_code='RAW') 
+    left join project_activity_name pan on (pan.id = rsc.project_activity_id) 
+)]]></SQLQuery>
+  <ViewAttribute
+    Name="Id"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="ID"
+    Expression="ID"
+    SQLType="VARCHAR"/>
+  <ViewAttribute
+    Name="ProjectId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="PROJECT_ID"
+    Expression="PROJECT_ID"
+    SQLType="VARCHAR"/>
+  <ViewAttribute
+    Name="ProjectName"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="PROJECT_NAME"
+    Expression="PROJECT_NAME"
+    SQLType="VARCHAR"/>
+  <ViewAttribute
+    Name="StudyId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="STUDY_ID"
+    Expression="STUDY_ID"
+    SQLType="VARCHAR"/>
+  <ViewAttribute
+    Name="StudyName"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="4000"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="STUDY_NAME"
+    Expression="STUDY_NAME"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="4000"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="FunctionCode"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="FUNCTION_CODE"
+    Expression="FUNCTION_CODE"
+    SQLType="VARCHAR"/>
+  <ViewAttribute
+    Name="FunctionName"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="FUNCTION_NAME"
+    Expression="FUNCTION_NAME"
+    SQLType="VARCHAR"/>
+  <ViewAttribute
+    Name="SubfunctionName"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="SUBFUNCTION_NAME"
+    Expression="SUBFUNCTION_NAME"
+    SQLType="VARCHAR"/>
+  <ViewAttribute
+    Name="MethodCode"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="METHOD_CODE"
+    Expression="METHOD_CODE"
+    SQLType="VARCHAR"/>
+  <ViewAttribute
+    Name="TypeCode"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="TYPE_CODE"
+    Expression="TYPE_CODE"
+    SQLType="VARCHAR"/>
+  <ViewAttribute
+    Name="FinishDate"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    AliasName="FINISH_DATE"
+    Expression="FINISH_DATE"
+    SQLType="DATE"/>
+  <ViewAttribute
+    Name="Month"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="36"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="MONTH"
+    Expression="MONTH"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="36"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Year"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="YEAR"
+    Expression="YEAR"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="Demand"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="DEMAND"
+    Expression="DEMAND"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="ProjectActivityId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="PROJECT_ACTIVITY_ID"
+    SQLType="VARCHAR"
+    Expression="PROJECT_ACTIVITY_ID"
+    Precision="100"/>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="Id"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.bayer.ipms.model.bundles.modelBundle"/>
+  </ResourceBundle>
+</ViewObject>

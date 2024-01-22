@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.64.93" id="ltc_providePageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="ProgramAppModule.LtcInstanceView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="10"
+              id="LtcInstanceViewIterator" ChangeEventPolicy="ppr"/>
+    <iterator Binds="ProgramAppModule.LtcValueView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="LtcValueViewIterator"/>
+    <iterator id="LtcPlanRootViewIterator"
+              Binds="ProgramAppModule.LtcPlanRootView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="500"
+              ChangeEventPolicy="none"/>
+    <iterator id="LtcPlanViewIterator" Binds="ProgramAppModule.LtcPlanView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              ChangeEventPolicy="ppr"/>
+    <iterator Binds="ProgramAppModule.LtcReportView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="25"
+              id="LtcReportViewIterator" ChangeEventPolicy="ppr"/>
+    
+    <searchRegion Criteria="LtcpFilter" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="LtcPlanRootViewIterator" id="LtcpFilterQuery"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="LtcInstanceViewIterator" id="LtcIsSyncing">
+      <AttrNames>
+        <Item Value="IsSyncing"/>
+      </AttrNames>
+    </attributeValues>
+
+    <attributeValues IterBinding="LtcInstanceViewIterator" id="Id">
+      <AttrNames>
+        <Item Value="Id"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="LtcValueViewIterator" id="LtcValueView"
+          ChangeEventPolicy="none">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.LtcValueView"
+                      Name="LtcValueView10">
+        <AttrNames>
+          <Item Value="FunctionCode"/>
+          <Item Value="LtIntCost"/>
+          <Item Value="LtCroCost"/>
+          <Item Value="LtEcgCost"/>
+          <Item Value="LtOecCost"/>
+          <Item Value="FcIntCost"/>
+          <Item Value="FcCroCost"/>
+          <Item Value="FcEcgCost"/>
+          <Item Value="FcOecCost"/>
+          <Item Value="ActCroCost"/>
+          <Item Value="ActEcgCost"/>
+          <Item Value="ActIntCost"/>
+          <Item Value="ActOecCost"/>
+          <Item Value="Comments"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="LtcPlanRootViewIterator" id="LtcPlanView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.LtcPlanView"
+                      Name="LtcPlanView10"
+                      TargetIterator="${bindings.LtcPlanViewIterator}">
+        <AttrNames>
+          <Item Value="Name"/>
+          <Item Value="LtIntCost"/>
+          <Item Value="LtCroCost"/>
+          <Item Value="LtEcgCost"/>
+          <Item Value="LtOecCost"/>
+          <Item Value="FinishDate"/>
+          <Item Value="StartDate"/>
+          <Item Value="StudyId"/>
+          <Item Value="FcCroCost"/>
+          <Item Value="FcEcgCost"/>
+          <Item Value="FcIntCost"/>
+          <Item Value="ActCroCost"/>
+          <Item Value="ActEcgCost"/>
+          <Item Value="ActIntCost"/>
+          <Item Value="ActOeciCost"/>
+          <Item Value="FcOeciCost"/>
+          <Item Value="IntExtFlag"/>
+          <Item Value="ClinPlanType"/>
+          <Item Value="StudyModusName"/>
+          <Item Value="StudyModusNo"/>
+          <Item Value="StudyUnitCount"/>          
+          <Item Value="ActualPatients"/>
+          <Item Value="PlanPatients"/>
+          <Item Value="StudyUnitCountPlan"/>          
+        </AttrNames>
+        <Accessors>
+          <Item Value="LtciIdLtcPlanView"/>
+        </Accessors>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="LtcValueViewIterator" id="LtcValueCreateInsert"
+            InstanceName="PrivateAppModuleDataControl.ProgramAppModule.LtcValueView"
+            DataControl="PrivateAppModuleDataControl" RequiresUpdateModel="true"
+            Action="createInsertRow"/>
+    <action IterBinding="LtcValueViewIterator" id="LtcValueDelete"
+            InstanceName="PrivateAppModuleDataControl.ProgramAppModule.LtcValueView"
+            DataControl="PrivateAppModuleDataControl"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <action id="Commit" DataControl="PrivateAppModuleDataControl"
+            RequiresUpdateModel="true" Action="commitTransaction"/>
+    <attributeValues IterBinding="LtcInstanceViewIterator" id="LtcStatusCode">
+      <AttrNames>
+        <Item Value="StatusCode"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcInstanceViewIterator" id="StatusName">
+      <AttrNames>
+        <Item Value="StatusName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcPlanViewIterator" id="StudyId">
+      <AttrNames>
+        <Item Value="StudyId"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcPlanViewIterator" id="ParentWbsId">
+      <AttrNames>
+        <Item Value="ParentWbsId"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcPlanRootViewIterator" id="WbsId">
+      <AttrNames>
+        <Item Value="WbsId"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcPlanViewIterator" id="Name">
+      <AttrNames>
+        <Item Value="Name"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LtcInstanceViewIterator" id="IsReportGenerated" ChangeEventPolicy="ppr">
+      <AttrNames>
+        <Item Value="IsReportGenerated"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

@@ -1,0 +1,1 @@
+create or replace TYPE NVARCHAR2_TABLE_ARR_TYP as table of NVARCHAR2_TABLE_TYP;

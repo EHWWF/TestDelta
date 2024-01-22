@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ProgramTopVersion"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="PROGRAM_TOP_VERSION"
+  AliasName="ProgramTopVersion"
+  BindingStyle="OracleName"
+  RowClass="com.bayer.ipms.model.entities.ProgramTopVersionImpl">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Access|DML"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Attribute
+    Name="Id"
+    ColumnName="ID"
+    SQLType="NUMERIC"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    TableName="PROGRAM_TOP_VERSION"
+    PrimaryKey="true"
+    RetrievedOnInsert="true"/>
+  <Attribute
+    Name="Name"
+    IsNotNull="true"
+    Precision="200"
+    ColumnName="NAME"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="PROGRAM_TOP_VERSION">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="Version"
+    Precision="200"
+    ColumnName="VERSION"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="PROGRAM_TOP_VERSION">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="Description"
+    Precision="500"
+    ColumnName="DESCRIPTION"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="PROGRAM_TOP_VERSION">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="500"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="ApprovalDate"
+    ColumnName="APPROVAL_DATE"
+    SQLType="DATE"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    TableName="PROGRAM_TOP_VERSION"/>
+  <Attribute
+    Name="ParentId"
+    ColumnName="PARENT_ID"
+    SQLType="NUMERIC"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    TableName="PROGRAM_TOP_VERSION"/>
+  <Attribute
+    Name="ProgramId"
+    IsNotNull="true"
+    ColumnName="PROGRAM_ID"
+    SQLType="STRUCT"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="PROGRAM_TOP_VERSION"/>
+  <Attribute
+    Name="CreateDate"
+    ColumnName="CREATE_DATE"
+    SQLType="DATE"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    TableName="PROGRAM_TOP_VERSION"/>
+  <Attribute
+    Name="VersionNr"
+    ColumnName="VERSION_NR"
+    SQLType="NUMERIC"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    TableName="PROGRAM_TOP_VERSION"
+    IsUpdateable="false"
+    RetrievedOnInsert="true"/>
+  <Attribute
+    Name="ProjectId"
+    ColumnName="PROJECT_ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="PROGRAM_TOP_VERSION"/>
+  <AccessorAttribute
+    Name="ProgramTopValue"
+    Association="com.bayer.ipms.model.entities.ProgramTopValVerFkAssoc"
+    AssociationEnd="com.bayer.ipms.model.entities.ProgramTopValVerFkAssoc.ProgramTopValue"
+    AssociationOtherEnd="com.bayer.ipms.model.entities.ProgramTopValVerFkAssoc.ProgramTopVersion"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <AccessorAttribute
+    Name="ProgramTopValue1"
+    Association="com.bayer.ipms.model.entities.assoc.TopVersionValue"
+    AssociationEnd="com.bayer.ipms.model.entities.assoc.TopVersionValue.ProgramTopValue1"
+    AssociationOtherEnd="com.bayer.ipms.model.entities.assoc.TopVersionValue.ProgramTopVersion1"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <AccessorAttribute
+    Name="Program"
+    Association="com.bayer.ipms.model.entities.assoc.ProgramTopVersion"
+    AssociationEnd="com.bayer.ipms.model.entities.assoc.ProgramTopVersion.Program"
+    AssociationOtherEnd="com.bayer.ipms.model.entities.assoc.ProgramTopVersion.ProgramTopVersion"
+    Type="com.bayer.ipms.model.base.IPMSEntityImpl"
+    IsUpdateable="true"/>
+  <Key
+    Name="ProgramTopVPk"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PROGRAM_TOP_V_PK"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.ProgramTopVersion.Id"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="fk_ProgramTopVersion">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0011154"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="FK_PROGRAM_TOP_VERSION"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.ProgramTopVersion.ProgramId"/>
+    </AttrArray>
+  </Key>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.bayer.ipms.model.bundles.modelBundle"/>
+  </ResourceBundle>
+</Entity>

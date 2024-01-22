@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Association SYSTEM "jbo_03_01.dtd">
+<!---->
+<Association
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ProjectSamdStatus"
+  Version="12.2.1.20.47"
+  InheritPersonalization="merge">
+  <DesignTime>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <AssociationEnd
+    Name="SamdStatus"
+    Cardinality="1"
+    Source="true"
+    Owner="com.bayer.ipms.model.entities.lookups.SamdStatus"
+    LockLevel="NONE"
+    ExposedAccessor="false">
+    <DesignTime>
+      <Attr Name="_isUpdateable" Value="true"/>
+      <Attr Name="_aggregation" Value="0"/>
+      <Attr Name="_finderName" Value="SamdStatus"/>
+      <Attr Name="_foreignKey" Value="com.bayer.ipms.model.entities.lookups.SamdStatus.SamdstatusPrimaryKey"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.lookups.SamdStatus.Code"/>
+    </AttrArray>
+  </AssociationEnd>
+  <AssociationEnd
+    Name="Project"
+    Cardinality="-1"
+    Owner="com.bayer.ipms.model.entities.Project"
+    ExposedAccessor="false">
+    <DesignTime>
+      <Attr Name="_isUpdateable" Value="true"/>
+      <Attr Name="_aggregation" Value="0"/>
+      <Attr Name="_finderName" Value="Project"/>
+      <Attr Name="_foreignKey" Value="com.bayer.ipms.model.entities.Project.fk_Project"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.Project.DetailsSamdStatus"/>
+    </AttrArray>
+  </AssociationEnd>
+</Association>

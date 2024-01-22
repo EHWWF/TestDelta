@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="windows-1257" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="project-d1">
+    <template-reference>
+      <document id="__2">/WEB-INF/com.bayer.ipms.view/templates/ipms-taskflow-template-fragment.xml</document>
+      <id id="__1">ipms-taskflow-template-fragment</id>
+    </template-reference>
+    <default-activity id="__3">view</default-activity>
+    <managed-bean id="__6">
+      <managed-bean-name id="__5">projectD1ViewBean</managed-bean-name>
+      <managed-bean-class id="__7">com.bayer.ipms.view.beans.ProjectD1ViewBean</managed-bean-class>
+      <managed-bean-scope id="__4">pageFlow</managed-bean-scope>
+    </managed-bean>
+    <view id="view">
+      <page>/WEB-INF/com.bayer.ipms.view/fragments/project-D1.jsff</page>
+    </view>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

@@ -1,0 +1,3 @@
+<callQPlan id="tst-studies005" xmlns="http://xmlns.bayer.com/ipms/qplan">
+  <readPlaceholderStudies cwid="IPMS" projectId="000005" projectCode="PRJ-TST-005"/>
+</callQPlan>

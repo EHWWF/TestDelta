@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="windows-1257" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="LicenseView"
+  Version="11.1.1.64.93"
+  InheritPersonalization="true"
+  SelectList="License.CREATE_DATE, 
+       License.CREATE_USER_ID, 
+       License.EXPIRY_DATE, 
+       License.ID, 
+       License.PROJECT_ID, 
+       License.REGION_CODE, 
+       License.TYPE_CODE, 
+       License.UPDATE_DATE, 
+       License.UPDATE_USER_ID, 
+       LicenseType.NAME, 
+       LicenseType.CODE, 
+       Region.NAME AS NAME1, 
+       Region.CODE AS CODE1"
+  FromList="LICENSE License, LICENSE_TYPE LicenseType, REGION Region"
+  Where="(License.TYPE_CODE = LicenseType.CODE) AND (License.REGION_CODE = Region.CODE(+))"
+  BindingStyle="OracleName"
+  CustomQuery="false"
+  RowClass="com.bayer.ipms.model.views.LicenseViewRowImpl"
+  ComponentClass="com.bayer.ipms.model.base.IPMSViewObjectImpl"
+  RowInterface="com.bayer.ipms.model.views.common.LicenseViewRow"
+  ClientRowProxyName="com.bayer.ipms.model.views.client.LicenseViewRowClient"
+  FetchMode="FETCH_AS_NEEDED"
+  FetchSize="100"
+  PageIterMode="Full"
+  ViewLinkAccessorRetained="true"
+  UseGlueCode="false">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Access"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="com.bayer.ipms.model.views.LicenseView_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <ViewAccessor
+    Name="RegionView"
+    ViewObjectName="com.bayer.ipms.model.views.lookups.RegionView"
+    AMUsageName="SharedAppModule"
+    ViewInstanceName="RegionView"
+    SharedInstance="true"/>
+  <ViewAccessor
+    Name="LicenseTypeView"
+    ViewObjectName="com.bayer.ipms.model.views.lookups.LicenseTypeView"
+    AMUsageName="SharedAppModule"
+    ViewInstanceName="LicenseTypeView"
+    SharedInstance="true"/>
+  <ListBinding
+    Name="LOV_TypeCode"
+    ListVOName="LicenseTypeView"
+    ListRangeSize="-1"
+    NullValueFlag="none"
+    NullValueId="LOV_TypeCode1_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="TypeCode"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="Code"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="Name"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <EntityUsage
+    Name="License"
+    Entity="com.bayer.ipms.model.entities.License"/>
+  <EntityUsage
+    Name="LicenseType"
+    Entity="com.bayer.ipms.model.entities.lookups.LicenseType"
+    Association="com.bayer.ipms.model.entities.assoc.LicenseType"
+    AssociationEnd="com.bayer.ipms.model.entities.assoc.LicenseType.LicenseType"
+    SourceUsage="com.bayer.ipms.model.views.LicenseView.License"
+    ReadOnly="true"
+    Reference="true"
+    DeleteParticipant="false"
+    JoinType="INNER JOIN">
+    <DesignTime>
+      <AttrArray Name="_srcAttributes">
+        <Item Value="com.bayer.ipms.model.entities.License.TypeCode"/>
+      </AttrArray>
+      <AttrArray Name="_dstAttributes">
+        <Item Value="com.bayer.ipms.model.entities.lookups.LicenseType.Code"/>
+      </AttrArray>
+    </DesignTime>
+  </EntityUsage>
+  <EntityUsage
+    Name="Region"
+    Entity="com.bayer.ipms.model.entities.lookups.Region"
+    Association="com.bayer.ipms.model.entities.assoc.LicenseRegion"
+    AssociationEnd="com.bayer.ipms.model.entities.assoc.LicenseRegion.Region"
+    SourceUsage="com.bayer.ipms.model.views.LicenseView.License"
+    ReadOnly="true"
+    Reference="true"
+    DeleteParticipant="false"
+    JoinType="LEFT OUTER JOIN">
+    <DesignTime>
+      <AttrArray Name="_srcAttributes">
+        <Item Value="com.bayer.ipms.model.entities.License.RegionCode"/>
+      </AttrArray>
+      <AttrArray Name="_dstAttributes">
+        <Item Value="com.bayer.ipms.model.entities.lookups.Region.Code"/>
+      </AttrArray>
+    </DesignTime>
+  </EntityUsage>
+  <ViewAttribute
+    Name="CreateDate"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="CreateDate"
+    EntityUsage="License"
+    AliasName="CREATE_DATE"/>
+  <ViewAttribute
+    Name="CreateUserId"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="CreateUserId"
+    EntityUsage="License"
+    AliasName="CREATE_USER_ID"/>
+  <ViewAttribute
+    Name="ExpiryDate"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="ExpiryDate"
+    EntityUsage="License"
+    AliasName="EXPIRY_DATE">
+    <Properties>
+      <SchemaBasedProperties>
+        <FMT_FORMATTER
+          ResId="com.bayer.ipms.model.views.LicenseView.ExpiryDate_FMT_FORMATTER"/>
+        <FMT_FORMAT
+          ResId="com.bayer.ipms.model.views.LicenseView.ExpiryDate_FMT_FORMAT"/>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.LicenseView.ExpiryDate_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Id"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="Id"
+    EntityUsage="License"
+    AliasName="ID"/>
+  <ViewAttribute
+    Name="ProjectId"
+    IsUpdateable="while_insert"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="ProjectId"
+    EntityUsage="License"
+    AliasName="PROJECT_ID"/>
+  <ViewAttribute
+    Name="RegionCode"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="RegionCode"
+    EntityUsage="License"
+    AliasName="REGION_CODE">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.LicenseView.RegionCode_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TypeCode"
+    LOVName="LOV_TypeCode"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="TypeCode"
+    EntityUsage="License"
+    AliasName="TYPE_CODE">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.LicenseView.TypeCode_LABEL"/>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="UpdateDate"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="UpdateDate"
+    EntityUsage="License"
+    AliasName="UPDATE_DATE"/>
+  <ViewAttribute
+    Name="UpdateUserId"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="UpdateUserId"
+    EntityUsage="License"
+    AliasName="UPDATE_USER_ID"/>
+  <ViewAttribute
+    Name="TypeName"
+    IsUpdateable="false"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Name"
+    EntityUsage="LicenseType"
+    AliasName="NAME">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.LicenseView.TypeName_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="_TypeCode"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Code"
+    EntityUsage="LicenseType"
+    AliasName="CODE"/>
+  <ViewAttribute
+    Name="RegionName"
+    IsUpdateable="false"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Name"
+    EntityUsage="Region"
+    AliasName="NAME1">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.LicenseView.RegionName_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="_RegionCode"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Code"
+    EntityUsage="Region"
+    AliasName="CODE1"/>
+  <ClientRowInterface>
+    <Method
+      Name="getRegionView">
+      <Return
+        Type="oracle.jbo.RowSet"/>
+    </Method>
+  </ClientRowInterface>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.bayer.ipms.model.bundles.modelBundle"/>
+  </ResourceBundle>
+</ViewObject>

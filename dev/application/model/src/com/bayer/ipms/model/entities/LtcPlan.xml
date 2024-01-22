@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="LtcPlan"
+  Version="12.1.3.10.8"
+  InheritPersonalization="true"
+  DBObjectType="table"
+  DBObjectName="LTC_PLAN"
+  AliasName="LtcPlan"
+  BindingStyle="OracleName"
+  UseGlueCode="false"
+  RowClass="com.bayer.ipms.model.base.IPMSEntityImpl">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Access"/>
+    <AttrArray Name="_publishEvents"/>
+  </DesignTime>
+  <Attribute
+    Name="Id"
+    IsNotNull="true"
+    ColumnName="ID"
+    SQLType="NUMERIC"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    TableName="LTC_PLAN"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="LtciId"
+    IsNotNull="true"
+    ColumnName="LTCI_ID"
+    SQLType="NUMERIC"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    TableName="LTC_PLAN">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="StudyId"
+    Precision="30"
+    Scale="0"
+    ColumnName="STUDY_ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="LTC_PLAN">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="30"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="WbsId"
+    Precision="20"
+    Scale="0"
+    ColumnName="WBS_ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="LTC_PLAN">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="ParentWbsId"
+    Precision="20"
+    Scale="0"
+    ColumnName="PARENT_WBS_ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="LTC_PLAN">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="Name"
+    Precision="100"
+    Scale="0"
+    ColumnName="NAME"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="LTC_PLAN">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="Code"
+    Precision="20"
+    Scale="0"
+    ColumnName="CODE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="LTC_PLAN">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="StartDate"
+    ColumnName="START_DATE"
+    SQLType="TIMESTAMP"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    TableName="LTC_PLAN">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="7"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="FinishDate"
+    ColumnName="FINISH_DATE"
+    SQLType="TIMESTAMP"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    TableName="LTC_PLAN">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="7"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="CreateDate"
+    IsNotNull="true"
+    ColumnName="CREATE_DATE"
+    SQLType="TIMESTAMP"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    TableName="LTC_PLAN">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="7"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="IntExtFlag"
+    ColumnName="INT_EXT_FLAG"
+    SQLType="STRUCT"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="LTC_PLAN"
+    RetrievedOnInsert="true"
+    RetrievedOnUpdate="true"/>
+  <Attribute
+    Name="StudyModusNo"
+    ColumnName="STUDY_MODUS_NO"
+    SQLType="NUMERIC"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    TableName="LTC_PLAN"
+    RetrievedOnInsert="true"
+    RetrievedOnUpdate="true"/>
+  <Attribute
+    Name="StudyModusName"
+    ColumnName="STUDY_MODUS_NAME"
+    SQLType="STRUCT"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="LTC_PLAN"
+    RetrievedOnInsert="true"
+    RetrievedOnUpdate="true"/>
+  <Attribute
+    Name="ClinPlanType"
+    ColumnName="CLIN_PLAN_TYPE"
+    SQLType="STRUCT"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="LTC_PLAN"
+    RetrievedOnInsert="true"
+    RetrievedOnUpdate="true"/>
+  <Attribute
+    Name="StudyUnitCount"
+    ColumnName="STUDY_UNIT_COUNT"
+    SQLType="NUMERIC"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    TableName="LTC_PLAN"
+    RetrievedOnInsert="true"
+    RetrievedOnUpdate="true"/>
+  <Attribute
+    Name="ActualPatients"
+    Precision="10"
+    Scale="0"
+    ColumnName="ACTUAL_PATIENTS"
+    SQLType="NUMERIC"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    TableName="LTC_PLAN"/>
+  <Attribute
+    Name="PlanPatients"
+    Precision="10"
+    Scale="0"
+    ColumnName="PLAN_PATIENTS"
+    SQLType="NUMERIC"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    TableName="LTC_PLAN"/>
+  <Attribute
+    Name="StudyUnitCountPlan"
+    ColumnName="STUDY_UNIT_COUNT_PLAN"
+    SQLType="NUMERIC"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    TableName="LTC_PLAN"/>
+  <AccessorAttribute
+    Name="LtcInstance"
+    Association="com.bayer.ipms.model.entities.assoc.LtcInstancePlan"
+    AssociationEnd="com.bayer.ipms.model.entities.assoc.LtcInstancePlan.LtcInstance"
+    AssociationOtherEnd="com.bayer.ipms.model.entities.assoc.LtcInstancePlan.LtcPlan"
+    Type="com.bayer.ipms.model.base.IPMSEntityImpl"
+    IsUpdateable="true"/>
+  <AccessorAttribute
+    Name="LtcValue"
+    Association="com.bayer.ipms.model.entities.assoc.LtcPlanValue"
+    AssociationEnd="com.bayer.ipms.model.entities.assoc.LtcPlanValue.LtcValue"
+    AssociationOtherEnd="com.bayer.ipms.model.entities.assoc.LtcPlanValue.LtcPlan"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <Key
+    Name="SysC0055123">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0055123"/>
+      <Attr Name="_checkCondition" Value='"ID" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.LtcPlan.Id"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0055124">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0055124"/>
+      <Attr Name="_checkCondition" Value='"LTCI_ID" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.LtcPlan.LtciId"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0055125">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0055125"/>
+      <Attr Name="_checkCondition" Value='"PROJECT_ID" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes"/>
+  </Key>
+  <Key
+    Name="SysC0055126">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0055126"/>
+      <Attr Name="_checkCondition" Value='"CREATE_DATE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.LtcPlan.CreateDate"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0055127"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0055127"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.LtcPlan.Id"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0055128">
+    <DesignTime>
+      <Attr Name="_isUnique" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0055128"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.LtcPlan.LtciId"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0055129">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0055120"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0055129"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.LtcPlan.LtciId"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0055130">
+    <DesignTime>
+      <Attr Name="_isCascadeDelete" Value="true"/>
+      <Attr Name="_referencedKey" Value="SYS_C0043880"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0055130"/>
+    </DesignTime>
+    <AttrArray Name="Attributes"/>
+  </Key>
+</Entity>

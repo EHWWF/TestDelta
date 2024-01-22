@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="LtcValueView"
+  Version="12.2.1.0.31"
+  InheritPersonalization="true"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="com.bayer.ipms.model.views.LtcValueViewRowImpl"
+  ComponentClass="com.bayer.ipms.model.views.LtcValueViewImpl"
+  PageIterMode="Partial"
+  RowInterface="com.bayer.ipms.model.views.common.LtcValueViewRow"
+  ClientRowProxyName="com.bayer.ipms.model.views.client.LtcValueViewRowClient"
+  FetchSize="100"
+  FetchMode="FETCH_AS_NEEDED"
+  ComponentInterface="com.bayer.ipms.model.views.common.LtcValueView"
+  ClientProxyName="com.bayer.ipms.model.views.client.LtcValueViewClient">
+  <DesignTime>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|VarAccess"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Variable
+    Name="projectId"
+    Kind="where"
+    Type="java.lang.String">
+        <TransientExpression
+      Name="expression"><![CDATA[adf.object.viewObject.getCurrProjectId()]]></TransientExpression>
+    
+    </Variable>
+  <ViewAccessor
+    Name="LtcFunctionView"
+    ViewObjectName="com.bayer.ipms.model.views.lookups.LtcFunctionView"
+    RowLevelBinds="true"/>
+  <ListBinding
+    Name="LOV_FunctionCode"
+    ListVOName="LtcFunctionView"
+    ListRangeSize="-1"
+    NullValueFlag="none"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="FunctionCode"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="Code"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="QualifiedName"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <SQLQuery><![CDATA[SELECT LtcValue.ID,  
+                                                 LtcValue.LTCP_ID,  
+                                                 LtcValue.FUNCTION_CODE,  
+                                                 LtcValue.LT_INT_COST,  
+                                                 LtcValue.LT_CRO_COST,  
+                                                 LtcValue.LT_ECG_COST,  
+                                                 ltcvalue.lt_oec_cost,
+                                                 ci.int_act_cost act_int_cost, 
+                                                 ci.cro_act_cost act_CRO_COST,  
+                                                 ci.ecg_act_cost act_ECG_COST,  
+                                                 ci.oec_act_cost act_OEC_COST, 
+                                                 ci.int_fct_cost_fps fc_int_cost, 
+                                                 ci.cro_fct_cost_fps fc_CRO_COST,  
+                                                 ci.ecg_fct_cost_fps fc_ECG_COST,  
+                                                 ci.oec_fct_cost_fps fc_oec_cost,
+                                                 ltcvalue.comments
+                from ltc_value ltcvalue 
+                left join (
+                                select *
+                                                from (
+                                                                select
+                                                                                ltcp.id as ltcp_id,
+                                                                                cst.function_code,
+                                                                                cst.cost_type_code,
+                                                                                sum(cst.act_cost) as act_cost,
+                                                                                sum(cst.fct_cost_fps) as fct_cost_fps
+                                                                from ltc_instance ltci
+                                                                inner join ltc_plan ltcp on ltci.id=ltcp.ltci_id
+                                                                inner join (
+                                                                                                select
+                                                                                                                tl.id as timeline_id,
+                                                                                                                nvl(to_nchar(w.wbs_id), tl.reference_id) as wbs_id,
+                                                                                                                decode(w.wbs_id, null, 1, 0) as is_root_wbs,
+                                                                                                                to_nchar(w.study_id) as study_id,
+                                                                                                                cst.function_code,
+                                                                                                                cst.cost_type_code,
+                                                                                                                cst.start_date,
+                                                                                                                cst.finish_date,
+                                                                                                                cst.act_cost,
+                                                                                                                act_cost_start_date,
+                                                                                                                act_cost_finish_date,
+                                                                                                                cst.fct_cost_fps,
+                                                                                                                fct_cost_fps_start_date,
+                                                                                                                fct_cost_fps_finish_date
+                                                                                                from timeline tl
+                                                                                                left join (
+                                                                                                                select
+                                                                                                                                sbx.id as sandbox_id,
+                                                                                                                                sbx.snd_timeline_id as timeline_id,
+                                                                                                                                sbx.timeline_id as src_timeline_id,
+                                                                                                                                sbx_src_tl.project_id as src_project_id
+                                                                                                                from program_sandbox sbx
+                                                                                                                inner join timeline sbx_src_tl on (sbx_src_tl.id=sbx.timeline_id)
+                                                                                                ) sb on tl.project_id is null and sb.timeline_id=tl.id
+                                                                                                inner join ltc_costs_vw cst on (cst.project_id=nvl(tl.project_id, sb.src_project_id) and cst.project_id=:projectId)
+                                                                                                left join timeline_wbs w on (w.timeline_id=tl.id and to_nchar(w.study_id)=cst.study_id)
+                                                                ) cst on (cst.timeline_id=ltci.timeline_id and ltcp.wbs_id=cst.wbs_id)
+                                                                group by ltcp.id, cst.function_code, cst.cost_type_code
+                                                )
+                                                pivot (
+                                                                sum(act_cost) as act_cost, sum(fct_cost_fps) as fct_cost_fps
+                                                                for cost_type_code in ('INT' as int, 'ECG' as ecg, 'CRO' as cro,'OEC' as oec)
+                                )
+                ) ci on ci.ltcp_id=ltcvalue.ltcp_id and ci.function_code=ltcvalue.function_code]]></SQLQuery>
+  <EntityUsage
+    Name="LtcValue"
+    Entity="com.bayer.ipms.model.entities.LtcValue"/>
+  <ViewAttribute
+    Name="Id"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Id"
+    EntityUsage="LtcValue"
+    AliasName="ID"/>
+  <ViewAttribute
+    Name="LtcpId"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="LtcpId"
+    EntityUsage="LtcValue"
+    AliasName="LTCP_ID"
+    IsUpdateable="false"/>
+  <ViewAttribute
+    Name="FunctionCode"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="FunctionCode"
+    EntityUsage="LtcValue"
+    AliasName="FUNCTION_CODE"
+    LOVName="LOV_FunctionCode">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.LtcValueView.FunctionCode_LABEL"/>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LtIntCost"
+    PrecisionRule="true"
+    EntityAttrName="LtIntCost"
+    EntityUsage="LtcValue"
+    AliasName="LT_INT_COST">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.LtcValueView.LtIntCost_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LtCroCost"
+    PrecisionRule="true"
+    EntityAttrName="LtCroCost"
+    EntityUsage="LtcValue"
+    AliasName="LT_CRO_COST">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.LtcValueView.LtCroCost_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LtEcgCost"
+    PrecisionRule="true"
+    EntityAttrName="LtEcgCost"
+    EntityUsage="LtcValue"
+    AliasName="LT_ECG_COST">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.LtcValueView.LtEcgCost_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LtOecCost"
+    PrecisionRule="true"
+    EntityAttrName="LtOecCost"
+    EntityUsage="LtcValue"
+    AliasName="LT_OEC_COST">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.LtcValueView.LtOecCost_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ActIntCost"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="ACT_INT_COST"
+    Expression="ACT_INT_COST"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.LtcValueView.ActIntCost_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ActCroCost"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="ACT_CRO_COST"
+    Expression="ACT_CRO_COST"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.LtcValueView.ActCroCost_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ActEcgCost"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="ACT_ECG_COST"
+    Expression="ACT_ECG_COST"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.LtcValueView.ActEcgCost_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ActOecCost"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="ACT_OEC_COST"
+    Expression="ACT_OEC_COST"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.LtcValueView.ActOecCost_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="FcIntCost"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="FC_INT_COST"
+    Expression="FC_INT_COST"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.LtcValueView.FcIntCost_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="FcCroCost"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="FC_CRO_COST"
+    Expression="FC_CRO_COST"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.LtcValueView.FcCroCost_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="FcEcgCost"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="FC_ECG_COST"
+    Expression="FC_ECG_COST"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.LtcValueView.FcEcgCost_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="FcOecCost"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="FC_OEC_COST"
+    Expression="FC_OEC_COST"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.LtcValueView.FcOecCost_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Comments"
+    PrecisionRule="true"
+    AliasName="COMMENTS"
+    EntityAttrName="Comments"
+    EntityUsage="LtcValue"/>
+  <ViewLinkAccessor
+    Name="LtcPlanView"
+    ViewLink="com.bayer.ipms.model.views.links.LtcPlanValue"
+    Type="oracle.jbo.Row"
+    Reversed="true"
+    IsUpdateable="false"/>
+  <ClientInterface
+    Name="__clientInterface">
+    <Method
+      Name="getCurrProjectId"
+      MethodName="getCurrProjectId">
+      <Return
+        Name="_return_type_"
+        Type="java.lang.String"/>
+    </Method>
+  </ClientInterface>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.bayer.ipms.model.bundles.modelBundle"/>
+  </ResourceBundle>
+</ViewObject>

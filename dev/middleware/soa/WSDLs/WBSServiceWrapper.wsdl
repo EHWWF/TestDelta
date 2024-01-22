@@ -1,0 +1,15 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
+<wsdl:definitions
+     name="WBSService"
+     targetNamespace="http://xmlns.oracle.com/Primavera/P6/WS/WBS/V2"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+     xmlns:bpws="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+     xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+     xmlns:tns="http://xmlns.oracle.com/Primavera/P6/WS/WBS/V2"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    >
+    <plnk:partnerLinkType name="WBSService">
+        <plnk:role name="WBSPortType" portType="tns:WBSPortType"/>
+    </plnk:partnerLinkType>
+    <wsdl:import namespace="http://xmlns.oracle.com/Primavera/P6/WS/WBS/V2" location="../wsdl/WBSService.wsdl"/>
+</wsdl:definitions>

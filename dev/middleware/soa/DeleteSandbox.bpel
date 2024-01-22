@@ -1,0 +1,157 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Wed May 13 11:12:55 CEST 2015
+  Author:  algis
+  Type: BPEL 2.0 Process
+  Purpose: Asynchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="DeleteSandbox"
+         targetNamespace="http://xmlns.bayer.com/ipms/soa"
+         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:client="http://xmlns.bayer.com/ipms/soa"
+         xmlns:ora="http://schemas.oracle.com/xpath/extension"
+         xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ns1="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:ns2="http://xmlns.bayer.com/ipms" xmlns:ui="http://xmlns.oracle.com/soa/designer">
+
+    <import namespace="http://xmlns.bayer.com/ipms/soa" location="DeleteSandbox.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"
+            ui:processWSDL="true"/>
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        PARTNERLINKS                                                      
+        List of services participating in this BPEL process               
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    --> 
+    <partnerLinks>
+        <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+        <partnerLink name="DeleteSandboxService" partnerLinkType="client:DeleteSandbox" myRole="DeleteSandboxProvider" partnerRole="DeleteSandboxRequester"/>
+        <partnerLink name="ProjectService" partnerLinkType="ns1:ProjectService"
+                     partnerRole="ProjectPortType"/>
+    </partnerLinks>
+
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        VARIABLES                                                        
+        List of messages and XML documents used within this BPEL process 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <variables>
+        <!-- Reference to the message passed as input during initiation -->
+        <variable name="inputVariable" messageType="client:DeleteSandboxRequestMessage"/>
+
+        <!-- Reference to the message that will be sent back to the requester during callback -->
+        <variable name="outputVariable" messageType="client:DeleteSandboxResponseMessage"/>
+        <variable name="DeletePrjIn" messageType="ns1:DeleteProjects"/>
+        <variable name="DeletePrjOut" messageType="ns1:DeleteProjectsResponse"/>
+        <variable name="ReadPrjIn" messageType="ns1:ReadProjects"/>
+        <variable name="ReadPrjOut" messageType="ns1:ReadProjectsResponse"/>
+        <variable name="InvokeFaultOut"
+                  messageType="client:DeleteSandboxResponseMessage"/>
+    </variables>
+    <faultHandlers>
+        <catchAll>
+            <sequence name="outFault">
+                <assign name="AssignFault">
+                    <copy>
+                        <from>$inputVariable.payload/@id</from>
+                        <to>$InvokeFaultOut.payload/@id</to>
+                    </copy>
+                    <copy>
+                        <from>$inputVariable.payload/@id</from>
+                        <to>$InvokeFaultOut.payload/ns2:error/@id</to>
+                    </copy>
+                    <copy>
+                        <from>ora:getFaultName()</from>
+                        <to>$InvokeFaultOut.payload/ns2:error/ns2:code</to>
+                    </copy>
+                    <copy>
+                        <from>ora:getFaultAsString()</from>
+                        <to>$InvokeFaultOut.payload/ns2:error/ns2:description</to>
+                    </copy>
+                </assign>
+                <invoke name="InvokeFault" bpelx:invokeAsDetail="no"
+                        partnerLink="DeleteSandboxService"
+                        portType="client:DeleteSandboxCallback"
+                        operation="processResponse"
+                        inputVariable="InvokeFaultOut"/>
+            </sequence>
+        </catchAll>
+    </faultHandlers>
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+       ORCHESTRATION LOGIC                                               
+       Set of activities coordinating the flow of messages across the    
+       services integrated within this business process                  
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <sequence name="main">
+        <!-- Receive input from requestor. (Note: This maps to operation defined in DeleteSandbox.wsdl) -->
+        <receive name="receiveInput" partnerLink="DeleteSandboxService" portType="client:DeleteSandbox" operation="process" variable="inputVariable" createInstance="yes"/>
+        <assign name="AssignReadPrj">
+            <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                <from>'WBSObjectId'</from>
+                <to>$ReadPrjIn.params/ns1:Field</to>
+            </copy>
+            <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                <from>concat('WBSObjectId=',$inputVariable.payload/ns2:sandbox/@referenceId)</from>
+                <to>$ReadPrjIn.params/ns1:Filter</to>
+            </copy>
+        </assign>
+        <invoke name="ReadPrj" bpelx:invokeAsDetail="no"
+                partnerLink="ProjectService" portType="ns1:ProjectPortType"
+                operation="ReadProjects" inputVariable="ReadPrjIn"
+                outputVariable="ReadPrjOut"/>
+        <sequence name="DeletePrj-SKIP">
+            <bpelx:skipCondition>count($ReadPrjOut.result/ns1:Project/ns1:ObjectId)=0</bpelx:skipCondition>
+            <assign name="AssignDelete">
+                <copy ignoreMissingFromData="yes"
+                      bpelx:insertMissingToData="yes">
+                    <from>$ReadPrjOut.result/ns1:Project/ns1:ObjectId</from>
+                    <to>$DeletePrjIn.params/ns1:ObjectId</to>
+                </copy>
+            </assign>
+            <invoke name="DeletePrj" bpelx:invokeAsDetail="no"
+                    partnerLink="ProjectService" portType="ns1:ProjectPortType"
+                    operation="DeleteProjects" inputVariable="DeletePrjIn"
+                    outputVariable="DeletePrjOut"/>
+        </sequence>
+        <assign name="AssignOut">
+            <copy>
+                <from>$inputVariable.payload/@id</from>
+                <to>$outputVariable.payload/@id</to>
+            </copy>
+            <copy>
+                <from>$inputVariable.payload/@id</from>
+                <to>$outputVariable.payload/client:complete/@id</to>
+            </copy>
+            <copy>
+                <from>$inputVariable.payload/ns2:sandbox</from>
+                <to>$outputVariable.payload/client:complete/ns2:sandbox</to>
+            </copy>
+        </assign>
+        <!-- 
+          Asynchronous callback to the requester. (Note: the callback location and correlation id is transparently handled using WS-addressing.)
+        -->
+        <invoke name="callbackClient" partnerLink="DeleteSandboxService" portType="client:DeleteSandboxCallback" operation="processResponse" inputVariable="outputVariable"/>
+    </sequence>
+</process>

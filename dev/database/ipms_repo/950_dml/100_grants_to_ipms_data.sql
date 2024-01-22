@@ -1,0 +1,1 @@
+grant execute on job_pkg to ipms_data;

@@ -1,0 +1,2922 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Published by JAX-WS RI (http://jax-ws.java.net). RI's version is JAX-WS RI 2.3.0-b170407.2038 svn-revision#2eaca54d17a59d265c6fe886b7fd0027836c766c. -->
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:tns="http://xmlns.oracle.com/Primavera/P6/WS/WSExport/V2" xmlns:intgfault="http://xmlns.oracle.com/Primavera/P6/WS/IntegrationFaultType/V1" name="ExportService" targetNamespace="http://xmlns.oracle.com/Primavera/P6/WS/WSExport/V2">
+    <wsdl:types>
+        <xsd:schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" targetNamespace="http://xmlns.oracle.com/Primavera/P6/WS/WSExport/V2" elementFormDefault="qualified">
+            <xsd:import namespace="http://xmlns.oracle.com/Primavera/P6/WS/IntegrationFaultType/V1" schemaLocation="oramds:/apps/com/oracle/xmlns/Primavera/P6/WS/IntegrationFaultType/V1/IntegrationFault.xsd"/>
+
+            <xsd:simpleType name="ActivityFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="AccountingVariance"/>
+                    <xsd:enumeration value="AccountingVarianceLaborUnits"/>
+                    <xsd:enumeration value="ActivityOwnerUserId"/>
+                    <xsd:enumeration value="ActualDuration"/>
+                    <xsd:enumeration value="ActualExpenseCost"/>
+                    <xsd:enumeration value="ActualFinishDate"/>
+                    <xsd:enumeration value="ActualLaborCost"/>
+                    <xsd:enumeration value="ActualLaborUnits"/>
+                    <xsd:enumeration value="ActualMaterialCost"/>
+                    <xsd:enumeration value="ActualNonLaborCost"/>
+                    <xsd:enumeration value="ActualNonLaborUnits"/>
+                    <xsd:enumeration value="ActualStartDate"/>
+                    <xsd:enumeration value="ActualThisPeriodLaborCost"/>
+                    <xsd:enumeration value="ActualThisPeriodLaborUnits"/>
+                    <xsd:enumeration value="ActualThisPeriodMaterialCost"/>
+                    <xsd:enumeration value="ActualThisPeriodNonLaborCost"/>
+                    <xsd:enumeration value="ActualThisPeriodNonLaborUnits"/>
+                    <xsd:enumeration value="ActualTotalCost"/>
+                    <xsd:enumeration value="ActualTotalUnits"/>
+                    <xsd:enumeration value="AtCompletionDuration"/>
+                    <xsd:enumeration value="AtCompletionExpenseCost"/>
+                    <xsd:enumeration value="AtCompletionLaborCost"/>
+                    <xsd:enumeration value="AtCompletionLaborUnits"/>
+                    <xsd:enumeration value="AtCompletionLaborUnitsVariance"/>
+                    <xsd:enumeration value="AtCompletionMaterialCost"/>
+                    <xsd:enumeration value="AtCompletionNonLaborCost"/>
+                    <xsd:enumeration value="AtCompletionNonLaborUnits"/>
+                    <xsd:enumeration value="AtCompletionTotalCost"/>
+                    <xsd:enumeration value="AtCompletionTotalUnits"/>
+                    <xsd:enumeration value="AtCompletionVariance"/>
+                    <xsd:enumeration value="AutoComputeActuals"/>
+                    <xsd:enumeration value="Baseline1Duration"/>
+                    <xsd:enumeration value="Baseline1FinishDate"/>
+                    <xsd:enumeration value="Baseline1PlannedDuration"/>
+                    <xsd:enumeration value="Baseline1PlannedExpenseCost"/>
+                    <xsd:enumeration value="Baseline1PlannedLaborCost"/>
+                    <xsd:enumeration value="Baseline1PlannedLaborUnits"/>
+                    <xsd:enumeration value="Baseline1PlannedMaterialCost"/>
+                    <xsd:enumeration value="Baseline1PlannedNonLaborCost"/>
+                    <xsd:enumeration value="Baseline1PlannedNonLaborUnits"/>
+                    <xsd:enumeration value="Baseline1PlannedTotalCost"/>
+                    <xsd:enumeration value="Baseline1StartDate"/>
+                    <xsd:enumeration value="BaselineDuration"/>
+                    <xsd:enumeration value="BaselineFinishDate"/>
+                    <xsd:enumeration value="BaselinePlannedDuration"/>
+                    <xsd:enumeration value="BaselinePlannedExpenseCost"/>
+                    <xsd:enumeration value="BaselinePlannedLaborCost"/>
+                    <xsd:enumeration value="BaselinePlannedLaborUnits"/>
+                    <xsd:enumeration value="BaselinePlannedMaterialCost"/>
+                    <xsd:enumeration value="BaselinePlannedNonLaborCost"/>
+                    <xsd:enumeration value="BaselinePlannedNonLaborUnits"/>
+                    <xsd:enumeration value="BaselinePlannedTotalCost"/>
+                    <xsd:enumeration value="BaselineStartDate"/>
+                    <xsd:enumeration value="BudgetAtCompletion"/>
+                    <xsd:enumeration value="CBSCode"/>
+                    <xsd:enumeration value="CBSId"/>
+                    <xsd:enumeration value="CBSObjectId"/>
+                    <xsd:enumeration value="CalendarName"/>
+                    <xsd:enumeration value="CalendarObjectId"/>
+                    <xsd:enumeration value="CostPercentComplete"/>
+                    <xsd:enumeration value="CostPercentOfPlanned"/>
+                    <xsd:enumeration value="CostPerformanceIndex"/>
+                    <xsd:enumeration value="CostPerformanceIndexLaborUnits"/>
+                    <xsd:enumeration value="CostVariance"/>
+                    <xsd:enumeration value="CostVarianceIndex"/>
+                    <xsd:enumeration value="CostVarianceIndexLaborUnits"/>
+                    <xsd:enumeration value="CostVarianceLaborUnits"/>
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="DataDate"/>
+                    <xsd:enumeration value="Duration1Variance"/>
+                    <xsd:enumeration value="DurationPercentComplete"/>
+                    <xsd:enumeration value="DurationPercentOfPlanned"/>
+                    <xsd:enumeration value="DurationType"/>
+                    <xsd:enumeration value="DurationVariance"/>
+                    <xsd:enumeration value="EarlyFinishDate"/>
+                    <xsd:enumeration value="EarlyStartDate"/>
+                    <xsd:enumeration value="EarnedValueCost"/>
+                    <xsd:enumeration value="EarnedValueLaborUnits"/>
+                    <xsd:enumeration value="EstimateAtCompletionCost"/>
+                    <xsd:enumeration value="EstimateAtCompletionLaborUnits"/>
+                    <xsd:enumeration value="EstimateToComplete"/>
+                    <xsd:enumeration value="EstimateToCompleteLaborUnits"/>
+                    <xsd:enumeration value="EstimatedWeight"/>
+                    <xsd:enumeration value="ExpectedFinishDate"/>
+                    <xsd:enumeration value="ExpenseCost1Variance"/>
+                    <xsd:enumeration value="ExpenseCostPercentComplete"/>
+                    <xsd:enumeration value="ExpenseCostVariance"/>
+                    <xsd:enumeration value="ExternalEarlyStartDate"/>
+                    <xsd:enumeration value="ExternalLateFinishDate"/>
+                    <xsd:enumeration value="Feedback"/>
+                    <xsd:enumeration value="FinishDate"/>
+                    <xsd:enumeration value="FinishDate1Variance"/>
+                    <xsd:enumeration value="FinishDateVariance"/>
+                    <xsd:enumeration value="FloatPath"/>
+                    <xsd:enumeration value="FloatPathOrder"/>
+                    <xsd:enumeration value="FreeFloat"/>
+                    <xsd:enumeration value="GUID"/>
+                    <xsd:enumeration value="HasFutureBucketData"/>
+                    <xsd:enumeration value="Id"/>
+                    <xsd:enumeration value="IsBaseline"/>
+                    <xsd:enumeration value="IsCritical"/>
+                    <xsd:enumeration value="IsLongestPath"/>
+                    <xsd:enumeration value="IsNewFeedback"/>
+                    <xsd:enumeration value="IsStarred"/>
+                    <xsd:enumeration value="IsTemplate"/>
+                    <xsd:enumeration value="IsWorkPackage"/>
+                    <xsd:enumeration value="LaborCost1Variance"/>
+                    <xsd:enumeration value="LaborCostPercentComplete"/>
+                    <xsd:enumeration value="LaborCostVariance"/>
+                    <xsd:enumeration value="LaborUnits1Variance"/>
+                    <xsd:enumeration value="LaborUnitsPercentComplete"/>
+                    <xsd:enumeration value="LaborUnitsVariance"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="LateFinishDate"/>
+                    <xsd:enumeration value="LateStartDate"/>
+                    <xsd:enumeration value="LevelingPriority"/>
+                    <xsd:enumeration value="LocationName"/>
+                    <xsd:enumeration value="LocationObjectId"/>
+                    <xsd:enumeration value="MaterialCost1Variance"/>
+                    <xsd:enumeration value="MaterialCostPercentComplete"/>
+                    <xsd:enumeration value="MaterialCostVariance"/>
+                    <xsd:enumeration value="MaximumDuration"/>
+                    <xsd:enumeration value="MinimumDuration"/>
+                    <xsd:enumeration value="MostLikelyDuration"/>
+                    <xsd:enumeration value="Name"/>
+                    <xsd:enumeration value="NonLaborCost1Variance"/>
+                    <xsd:enumeration value="NonLaborCostPercentComplete"/>
+                    <xsd:enumeration value="NonLaborCostVariance"/>
+                    <xsd:enumeration value="NonLaborUnits1Variance"/>
+                    <xsd:enumeration value="NonLaborUnitsPercentComplete"/>
+                    <xsd:enumeration value="NonLaborUnitsVariance"/>
+                    <xsd:enumeration value="NotesToResources"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="OwnerIDArray"/>
+                    <xsd:enumeration value="OwnerNamesArray"/>
+                    <xsd:enumeration value="PercentComplete"/>
+                    <xsd:enumeration value="PercentCompleteType"/>
+                    <xsd:enumeration value="PerformancePercentComplete"/>
+                    <xsd:enumeration value="PerformancePercentCompleteByLaborUnits"/>
+                    <xsd:enumeration value="PhysicalPercentComplete"/>
+                    <xsd:enumeration value="PlannedDuration"/>
+                    <xsd:enumeration value="PlannedExpenseCost"/>
+                    <xsd:enumeration value="PlannedFinishDate"/>
+                    <xsd:enumeration value="PlannedLaborCost"/>
+                    <xsd:enumeration value="PlannedLaborUnits"/>
+                    <xsd:enumeration value="PlannedMaterialCost"/>
+                    <xsd:enumeration value="PlannedNonLaborCost"/>
+                    <xsd:enumeration value="PlannedNonLaborUnits"/>
+                    <xsd:enumeration value="PlannedStartDate"/>
+                    <xsd:enumeration value="PlannedTotalCost"/>
+                    <xsd:enumeration value="PlannedTotalUnits"/>
+                    <xsd:enumeration value="PlannedValueCost"/>
+                    <xsd:enumeration value="PlannedValueLaborUnits"/>
+                    <xsd:enumeration value="PostResponsePessimisticFinish"/>
+                    <xsd:enumeration value="PostResponsePessimisticStart"/>
+                    <xsd:enumeration value="PreResponsePessimisticFinish"/>
+                    <xsd:enumeration value="PreResponsePessimisticStart"/>
+                    <xsd:enumeration value="PrimaryConstraintDate"/>
+                    <xsd:enumeration value="PrimaryConstraintType"/>
+                    <xsd:enumeration value="PrimaryResourceId"/>
+                    <xsd:enumeration value="PrimaryResourceName"/>
+                    <xsd:enumeration value="PrimaryResourceObjectId"/>
+                    <xsd:enumeration value="ProjectFlag"/>
+                    <xsd:enumeration value="ProjectId"/>
+                    <xsd:enumeration value="ProjectName"/>
+                    <xsd:enumeration value="ProjectObjectId"/>
+                    <xsd:enumeration value="ProjectProjectFlag"/>
+                    <xsd:enumeration value="RemainingDuration"/>
+                    <xsd:enumeration value="RemainingEarlyFinishDate"/>
+                    <xsd:enumeration value="RemainingEarlyStartDate"/>
+                    <xsd:enumeration value="RemainingExpenseCost"/>
+                    <xsd:enumeration value="RemainingFloat"/>
+                    <xsd:enumeration value="RemainingLaborCost"/>
+                    <xsd:enumeration value="RemainingLaborUnits"/>
+                    <xsd:enumeration value="RemainingLateFinishDate"/>
+                    <xsd:enumeration value="RemainingLateStartDate"/>
+                    <xsd:enumeration value="RemainingMaterialCost"/>
+                    <xsd:enumeration value="RemainingNonLaborCost"/>
+                    <xsd:enumeration value="RemainingNonLaborUnits"/>
+                    <xsd:enumeration value="RemainingTotalCost"/>
+                    <xsd:enumeration value="RemainingTotalUnits"/>
+                    <xsd:enumeration value="ResumeDate"/>
+                    <xsd:enumeration value="ReviewFinishDate"/>
+                    <xsd:enumeration value="ReviewRequired"/>
+                    <xsd:enumeration value="ReviewStatus"/>
+                    <xsd:enumeration value="SchedulePercentComplete"/>
+                    <xsd:enumeration value="SchedulePerformanceIndex"/>
+                    <xsd:enumeration value="SchedulePerformanceIndexLaborUnits"/>
+                    <xsd:enumeration value="ScheduleVariance"/>
+                    <xsd:enumeration value="ScheduleVarianceIndex"/>
+                    <xsd:enumeration value="ScheduleVarianceIndexLaborUnits"/>
+                    <xsd:enumeration value="ScheduleVarianceLaborUnits"/>
+                    <xsd:enumeration value="ScopePercentComplete"/>
+                    <xsd:enumeration value="SecondaryConstraintDate"/>
+                    <xsd:enumeration value="SecondaryConstraintType"/>
+                    <xsd:enumeration value="StartDate"/>
+                    <xsd:enumeration value="StartDate1Variance"/>
+                    <xsd:enumeration value="StartDateVariance"/>
+                    <xsd:enumeration value="Status"/>
+                    <xsd:enumeration value="StatusCode"/>
+                    <xsd:enumeration value="SuspendDate"/>
+                    <xsd:enumeration value="TaskStatusCompletion"/>
+                    <xsd:enumeration value="TaskStatusDates"/>
+                    <xsd:enumeration value="TaskStatusIndicator"/>
+                    <xsd:enumeration value="ToCompletePerformanceIndex"/>
+                    <xsd:enumeration value="TotalCost1Variance"/>
+                    <xsd:enumeration value="TotalCostVariance"/>
+                    <xsd:enumeration value="TotalFloat"/>
+                    <xsd:enumeration value="Type"/>
+                    <xsd:enumeration value="UnitsPercentComplete"/>
+                    <xsd:enumeration value="UnreadCommentCount"/>
+                    <xsd:enumeration value="WBSCode"/>
+                    <xsd:enumeration value="WBSName"/>
+                    <xsd:enumeration value="WBSObjectId"/>
+                    <xsd:enumeration value="WBSPath"/>
+                    <xsd:enumeration value="WorkPackageId"/>
+                    <xsd:enumeration value="WorkPackageName"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="Activity">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:ActivityFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="ActivityCodeFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="CodeTypeName"/>
+                    <xsd:enumeration value="CodeTypeObjectId"/>
+                    <xsd:enumeration value="CodeTypeScope"/>
+                    <xsd:enumeration value="CodeValue"/>
+                    <xsd:enumeration value="Color"/>
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="Description"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="ParentObjectId"/>
+                    <xsd:enumeration value="ProjectObjectId"/>
+                    <xsd:enumeration value="SequenceNumber"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="ActivityCode">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:ActivityCodeFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="ActivityCodeAssignment">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="ActivityCodeTypeFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="EPSCodeTypeHierarchy"/>
+                    <xsd:enumeration value="EPSObjectId"/>
+                    <xsd:enumeration value="IsBaseline"/>
+                    <xsd:enumeration value="IsSecureCode"/>
+                    <xsd:enumeration value="IsTemplate"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="Length"/>
+                    <xsd:enumeration value="Name"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="ProjectObjectId"/>
+                    <xsd:enumeration value="RefProjectObjectIds"/>
+                    <xsd:enumeration value="Scope"/>
+                    <xsd:enumeration value="SequenceNumber"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="ActivityCodeType">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:ActivityCodeTypeFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="ActivityExpenseFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="AccrualType"/>
+                    <xsd:enumeration value="ActivityId"/>
+                    <xsd:enumeration value="ActivityName"/>
+                    <xsd:enumeration value="ActivityObjectId"/>
+                    <xsd:enumeration value="ActualCost"/>
+                    <xsd:enumeration value="ActualUnits"/>
+                    <xsd:enumeration value="AtCompletionCost"/>
+                    <xsd:enumeration value="AtCompletionUnits"/>
+                    <xsd:enumeration value="AutoComputeActuals"/>
+                    <xsd:enumeration value="CBSCode"/>
+                    <xsd:enumeration value="CBSId"/>
+                    <xsd:enumeration value="CostAccountId"/>
+                    <xsd:enumeration value="CostAccountName"/>
+                    <xsd:enumeration value="CostAccountObjectId"/>
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="DocumentNumber"/>
+                    <xsd:enumeration value="ExpenseCategoryName"/>
+                    <xsd:enumeration value="ExpenseCategoryObjectId"/>
+                    <xsd:enumeration value="ExpenseDescription"/>
+                    <xsd:enumeration value="ExpenseItem"/>
+                    <xsd:enumeration value="ExpensePercentComplete"/>
+                    <xsd:enumeration value="IsBaseline"/>
+                    <xsd:enumeration value="IsTemplate"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="OverBudget"/>
+                    <xsd:enumeration value="PlannedCost"/>
+                    <xsd:enumeration value="PlannedUnits"/>
+                    <xsd:enumeration value="PricePerUnit"/>
+                    <xsd:enumeration value="ProjectId"/>
+                    <xsd:enumeration value="ProjectObjectId"/>
+                    <xsd:enumeration value="RemainingCost"/>
+                    <xsd:enumeration value="RemainingUnits"/>
+                    <xsd:enumeration value="UnitOfMeasure"/>
+                    <xsd:enumeration value="Vendor"/>
+                    <xsd:enumeration value="WBSObjectId"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="ActivityExpense">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:ActivityExpenseFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="ActivityNoteFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="ActivityId"/>
+                    <xsd:enumeration value="ActivityName"/>
+                    <xsd:enumeration value="ActivityObjectId"/>
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="IsBaseline"/>
+                    <xsd:enumeration value="IsTemplate"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="Note"/>
+                    <xsd:enumeration value="NotebookTopicName"/>
+                    <xsd:enumeration value="NotebookTopicObjectId"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="ProjectId"/>
+                    <xsd:enumeration value="ProjectObjectId"/>
+                    <xsd:enumeration value="RawTextNote"/>
+                    <xsd:enumeration value="WBSObjectId"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="ActivityNote">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:ActivityNoteFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="ActivityPeriodActualFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="ActivityObjectId"/>
+                    <xsd:enumeration value="ActualExpenseCost"/>
+                    <xsd:enumeration value="ActualLaborCost"/>
+                    <xsd:enumeration value="ActualLaborUnits"/>
+                    <xsd:enumeration value="ActualMaterialCost"/>
+                    <xsd:enumeration value="ActualNonLaborCost"/>
+                    <xsd:enumeration value="ActualNonLaborUnits"/>
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="EarnedValueCost"/>
+                    <xsd:enumeration value="EarnedValueLaborUnits"/>
+                    <xsd:enumeration value="FinancialPeriodObjectId"/>
+                    <xsd:enumeration value="IsBaseline"/>
+                    <xsd:enumeration value="IsTemplate"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="PlannedValueCost"/>
+                    <xsd:enumeration value="PlannedValueLaborUnits"/>
+                    <xsd:enumeration value="ProjectObjectId"/>
+                    <xsd:enumeration value="WBSObjectId"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="ActivityPeriodActual">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:ActivityPeriodActualFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="ActivityRiskFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="ActivityId"/>
+                    <xsd:enumeration value="ActivityName"/>
+                    <xsd:enumeration value="ActivityObjectId"/>
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="IsBaseline"/>
+                    <xsd:enumeration value="IsTemplate"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="ProjectId"/>
+                    <xsd:enumeration value="ProjectName"/>
+                    <xsd:enumeration value="ProjectObjectId"/>
+                    <xsd:enumeration value="RiskId"/>
+                    <xsd:enumeration value="RiskName"/>
+                    <xsd:enumeration value="RiskObjectId"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="ActivityRisk">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:ActivityRiskFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="ActivityStepFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="ActivityId"/>
+                    <xsd:enumeration value="ActivityName"/>
+                    <xsd:enumeration value="ActivityObjectId"/>
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="Description"/>
+                    <xsd:enumeration value="IsBaseline"/>
+                    <xsd:enumeration value="IsCompleted"/>
+                    <xsd:enumeration value="IsTemplate"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="Name"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="PercentComplete"/>
+                    <xsd:enumeration value="ProjectId"/>
+                    <xsd:enumeration value="ProjectObjectId"/>
+                    <xsd:enumeration value="SequenceNumber"/>
+                    <xsd:enumeration value="WBSObjectId"/>
+                    <xsd:enumeration value="Weight"/>
+                    <xsd:enumeration value="WeightPercent"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="ActivityStep">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:ActivityStepFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="CalendarFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="BaseCalendarObjectId"/>
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="HoursPerDay"/>
+                    <xsd:enumeration value="HoursPerMonth"/>
+                    <xsd:enumeration value="HoursPerWeek"/>
+                    <xsd:enumeration value="HoursPerYear"/>
+                    <xsd:enumeration value="IsBaseline"/>
+                    <xsd:enumeration value="IsDefault"/>
+                    <xsd:enumeration value="IsPersonal"/>
+                    <xsd:enumeration value="IsTemplate"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="Name"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="ProjectId"/>
+                    <xsd:enumeration value="ProjectObjectId"/>
+                    <xsd:enumeration value="Type"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="Calendar">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:CalendarFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="CostAccountFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="Description"/>
+                    <xsd:enumeration value="Id"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="Name"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="ParentObjectId"/>
+                    <xsd:enumeration value="SequenceNumber"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="CostAccount">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:CostAccountFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="CurrencyFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="DecimalPlaces"/>
+                    <xsd:enumeration value="DecimalSymbol"/>
+                    <xsd:enumeration value="DigitGroupingSymbol"/>
+                    <xsd:enumeration value="ExchangeRate"/>
+                    <xsd:enumeration value="Id"/>
+                    <xsd:enumeration value="IsBaseCurrency"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="Name"/>
+                    <xsd:enumeration value="NegativeSymbol"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="PositiveSymbol"/>
+                    <xsd:enumeration value="Symbol"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="Currency">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:CurrencyFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="DocumentFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="Author"/>
+                    <xsd:enumeration value="ContentRepositoryDocumentInternalId"/>
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="Deliverable"/>
+                    <xsd:enumeration value="Description"/>
+                    <xsd:enumeration value="DocumentCategoryName"/>
+                    <xsd:enumeration value="DocumentCategoryObjectId"/>
+                    <xsd:enumeration value="DocumentStatusCodeName"/>
+                    <xsd:enumeration value="DocumentStatusCodeObjectId"/>
+                    <xsd:enumeration value="DocumentType"/>
+                    <xsd:enumeration value="GUID"/>
+                    <xsd:enumeration value="IsBaseline"/>
+                    <xsd:enumeration value="IsTemplate"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="ParentObjectId"/>
+                    <xsd:enumeration value="PrivateLocation"/>
+                    <xsd:enumeration value="ProjectId"/>
+                    <xsd:enumeration value="ProjectObjectId"/>
+                    <xsd:enumeration value="PublicLocation"/>
+                    <xsd:enumeration value="ReferenceNumber"/>
+                    <xsd:enumeration value="ResourceId"/>
+                    <xsd:enumeration value="ResourceName"/>
+                    <xsd:enumeration value="ResourceObjectId"/>
+                    <xsd:enumeration value="RevisionDate"/>
+                    <xsd:enumeration value="SequenceNumber"/>
+                    <xsd:enumeration value="Title"/>
+                    <xsd:enumeration value="Version"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="Document">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:DocumentFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="DocumentCategoryFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="Name"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="SequenceNumber"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="DocumentCategory">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:DocumentCategoryFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="DocumentStatusCodeFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="Name"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="SequenceNumber"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="DocumentStatusCode">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:DocumentStatusCodeFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="EPSFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="AnticipatedFinishDate"/>
+                    <xsd:enumeration value="AnticipatedStartDate"/>
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="CurrentBudget"/>
+                    <xsd:enumeration value="CurrentVariance"/>
+                    <xsd:enumeration value="DistributedCurrentBudget"/>
+                    <xsd:enumeration value="FinishDate"/>
+                    <xsd:enumeration value="GUID"/>
+                    <xsd:enumeration value="Id"/>
+                    <xsd:enumeration value="IndependentETCLaborUnits"/>
+                    <xsd:enumeration value="IndependentETCTotalCost"/>
+                    <xsd:enumeration value="LastSummarizedDate"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="Name"/>
+                    <xsd:enumeration value="OBSName"/>
+                    <xsd:enumeration value="OBSObjectId"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="OriginalBudget"/>
+                    <xsd:enumeration value="ParentObjectId"/>
+                    <xsd:enumeration value="PlannedStartDate"/>
+                    <xsd:enumeration value="ProjectObjectId"/>
+                    <xsd:enumeration value="ProposedBudget"/>
+                    <xsd:enumeration value="SequenceNumber"/>
+                    <xsd:enumeration value="StartDate"/>
+                    <xsd:enumeration value="SummaryAccountingVarianceByCost"/>
+                    <xsd:enumeration value="SummaryAccountingVarianceByLaborUnits"/>
+                    <xsd:enumeration value="SummaryActivityCount"/>
+                    <xsd:enumeration value="SummaryActualDuration"/>
+                    <xsd:enumeration value="SummaryActualExpenseCost"/>
+                    <xsd:enumeration value="SummaryActualFinishDate"/>
+                    <xsd:enumeration value="SummaryActualLaborCost"/>
+                    <xsd:enumeration value="SummaryActualLaborUnits"/>
+                    <xsd:enumeration value="SummaryActualMaterialCost"/>
+                    <xsd:enumeration value="SummaryActualNonLaborCost"/>
+                    <xsd:enumeration value="SummaryActualNonLaborUnits"/>
+                    <xsd:enumeration value="SummaryActualStartDate"/>
+                    <xsd:enumeration value="SummaryActualThisPeriodCost"/>
+                    <xsd:enumeration value="SummaryActualThisPeriodLaborCost"/>
+                    <xsd:enumeration value="SummaryActualThisPeriodLaborUnits"/>
+                    <xsd:enumeration value="SummaryActualThisPeriodMaterialCost"/>
+                    <xsd:enumeration value="SummaryActualThisPeriodNonLaborCost"/>
+                    <xsd:enumeration value="SummaryActualThisPeriodNonLaborUnits"/>
+                    <xsd:enumeration value="SummaryActualTotalCost"/>
+                    <xsd:enumeration value="SummaryActualValueByCost"/>
+                    <xsd:enumeration value="SummaryActualValueByLaborUnits"/>
+                    <xsd:enumeration value="SummaryAtCompletionDuration"/>
+                    <xsd:enumeration value="SummaryAtCompletionExpenseCost"/>
+                    <xsd:enumeration value="SummaryAtCompletionLaborCost"/>
+                    <xsd:enumeration value="SummaryAtCompletionLaborUnits"/>
+                    <xsd:enumeration value="SummaryAtCompletionMaterialCost"/>
+                    <xsd:enumeration value="SummaryAtCompletionNonLaborCost"/>
+                    <xsd:enumeration value="SummaryAtCompletionNonLaborUnits"/>
+                    <xsd:enumeration value="SummaryAtCompletionTotalCost"/>
+                    <xsd:enumeration value="SummaryAtCompletionTotalCostVariance"/>
+                    <xsd:enumeration value="SummaryBaselineCompletedActivityCount"/>
+                    <xsd:enumeration value="SummaryBaselineDuration"/>
+                    <xsd:enumeration value="SummaryBaselineExpenseCost"/>
+                    <xsd:enumeration value="SummaryBaselineFinishDate"/>
+                    <xsd:enumeration value="SummaryBaselineInProgressActivityCount"/>
+                    <xsd:enumeration value="SummaryBaselineLaborCost"/>
+                    <xsd:enumeration value="SummaryBaselineLaborUnits"/>
+                    <xsd:enumeration value="SummaryBaselineMaterialCost"/>
+                    <xsd:enumeration value="SummaryBaselineNonLaborCost"/>
+                    <xsd:enumeration value="SummaryBaselineNonLaborUnits"/>
+                    <xsd:enumeration value="SummaryBaselineNotStartedActivityCount"/>
+                    <xsd:enumeration value="SummaryBaselineStartDate"/>
+                    <xsd:enumeration value="SummaryBaselineTotalCost"/>
+                    <xsd:enumeration value="SummaryBudgetAtCompletionByCost"/>
+                    <xsd:enumeration value="SummaryBudgetAtCompletionByLaborUnits"/>
+                    <xsd:enumeration value="SummaryCompletedActivityCount"/>
+                    <xsd:enumeration value="SummaryCostPercentComplete"/>
+                    <xsd:enumeration value="SummaryCostPercentOfPlanned"/>
+                    <xsd:enumeration value="SummaryCostPerformanceIndexByCost"/>
+                    <xsd:enumeration value="SummaryCostPerformanceIndexByLaborUnits"/>
+                    <xsd:enumeration value="SummaryCostVarianceByCost"/>
+                    <xsd:enumeration value="SummaryCostVarianceByLaborUnits"/>
+                    <xsd:enumeration value="SummaryCostVarianceIndex"/>
+                    <xsd:enumeration value="SummaryCostVarianceIndexByCost"/>
+                    <xsd:enumeration value="SummaryCostVarianceIndexByLaborUnits"/>
+                    <xsd:enumeration value="SummaryDurationPercentComplete"/>
+                    <xsd:enumeration value="SummaryDurationPercentOfPlanned"/>
+                    <xsd:enumeration value="SummaryDurationVariance"/>
+                    <xsd:enumeration value="SummaryEarnedValueByCost"/>
+                    <xsd:enumeration value="SummaryEarnedValueByLaborUnits"/>
+                    <xsd:enumeration value="SummaryEstimateAtCompletionByCost"/>
+                    <xsd:enumeration value="SummaryEstimateAtCompletionByLaborUnits"/>
+                    <xsd:enumeration value="SummaryEstimateAtCompletionHighPercentByLaborUnits"/>
+                    <xsd:enumeration value="SummaryEstimateAtCompletionLowPercentByLaborUnits"/>
+                    <xsd:enumeration value="SummaryEstimateToCompleteByCost"/>
+                    <xsd:enumeration value="SummaryEstimateToCompleteByLaborUnits"/>
+                    <xsd:enumeration value="SummaryExpenseCostPercentComplete"/>
+                    <xsd:enumeration value="SummaryExpenseCostVariance"/>
+                    <xsd:enumeration value="SummaryFinishDateVariance"/>
+                    <xsd:enumeration value="SummaryInProgressActivityCount"/>
+                    <xsd:enumeration value="SummaryLaborCostPercentComplete"/>
+                    <xsd:enumeration value="SummaryLaborCostVariance"/>
+                    <xsd:enumeration value="SummaryLaborUnitsPercentComplete"/>
+                    <xsd:enumeration value="SummaryLaborUnitsVariance"/>
+                    <xsd:enumeration value="SummaryMaterialCostPercentComplete"/>
+                    <xsd:enumeration value="SummaryMaterialCostVariance"/>
+                    <xsd:enumeration value="SummaryNonLaborCostPercentComplete"/>
+                    <xsd:enumeration value="SummaryNonLaborCostVariance"/>
+                    <xsd:enumeration value="SummaryNonLaborUnitsPercentComplete"/>
+                    <xsd:enumeration value="SummaryNonLaborUnitsVariance"/>
+                    <xsd:enumeration value="SummaryNotStartedActivityCount"/>
+                    <xsd:enumeration value="SummaryPerformancePercentCompleteByCost"/>
+                    <xsd:enumeration value="SummaryPerformancePercentCompleteByLaborUnits"/>
+                    <xsd:enumeration value="SummaryPlannedCost"/>
+                    <xsd:enumeration value="SummaryPlannedDuration"/>
+                    <xsd:enumeration value="SummaryPlannedExpenseCost"/>
+                    <xsd:enumeration value="SummaryPlannedFinishDate"/>
+                    <xsd:enumeration value="SummaryPlannedLaborCost"/>
+                    <xsd:enumeration value="SummaryPlannedLaborUnits"/>
+                    <xsd:enumeration value="SummaryPlannedMaterialCost"/>
+                    <xsd:enumeration value="SummaryPlannedNonLaborCost"/>
+                    <xsd:enumeration value="SummaryPlannedNonLaborUnits"/>
+                    <xsd:enumeration value="SummaryPlannedStartDate"/>
+                    <xsd:enumeration value="SummaryPlannedValueByCost"/>
+                    <xsd:enumeration value="SummaryPlannedValueByLaborUnits"/>
+                    <xsd:enumeration value="SummaryProgressFinishDate"/>
+                    <xsd:enumeration value="SummaryRemainingDuration"/>
+                    <xsd:enumeration value="SummaryRemainingExpenseCost"/>
+                    <xsd:enumeration value="SummaryRemainingFinishDate"/>
+                    <xsd:enumeration value="SummaryRemainingLaborCost"/>
+                    <xsd:enumeration value="SummaryRemainingLaborUnits"/>
+                    <xsd:enumeration value="SummaryRemainingMaterialCost"/>
+                    <xsd:enumeration value="SummaryRemainingNonLaborCost"/>
+                    <xsd:enumeration value="SummaryRemainingNonLaborUnits"/>
+                    <xsd:enumeration value="SummaryRemainingStartDate"/>
+                    <xsd:enumeration value="SummaryRemainingTotalCost"/>
+                    <xsd:enumeration value="SummarySchedulePercentComplete"/>
+                    <xsd:enumeration value="SummarySchedulePercentCompleteByLaborUnits"/>
+                    <xsd:enumeration value="SummarySchedulePerformanceIndexByCost"/>
+                    <xsd:enumeration value="SummarySchedulePerformanceIndexByLaborUnits"/>
+                    <xsd:enumeration value="SummaryScheduleVarianceByCost"/>
+                    <xsd:enumeration value="SummaryScheduleVarianceByLaborUnits"/>
+                    <xsd:enumeration value="SummaryScheduleVarianceIndex"/>
+                    <xsd:enumeration value="SummaryScheduleVarianceIndexByCost"/>
+                    <xsd:enumeration value="SummaryScheduleVarianceIndexByLaborUnits"/>
+                    <xsd:enumeration value="SummaryStartDateVariance"/>
+                    <xsd:enumeration value="SummaryToCompletePerformanceIndexByCost"/>
+                    <xsd:enumeration value="SummaryTotalCostVariance"/>
+                    <xsd:enumeration value="SummaryTotalFloat"/>
+                    <xsd:enumeration value="SummaryUnitsPercentComplete"/>
+                    <xsd:enumeration value="SummaryVarianceAtCompletionByLaborUnits"/>
+                    <xsd:enumeration value="TotalBenefitPlan"/>
+                    <xsd:enumeration value="TotalBenefitPlanTally"/>
+                    <xsd:enumeration value="TotalFunding"/>
+                    <xsd:enumeration value="TotalSpendingPlan"/>
+                    <xsd:enumeration value="TotalSpendingPlanTally"/>
+                    <xsd:enumeration value="UnallocatedBudget"/>
+                    <xsd:enumeration value="UndistributedCurrentVariance"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="EPS">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:EPSFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="ExpenseCategoryFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="Name"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="SequenceNumber"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="ExpenseCategory">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:ExpenseCategoryFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="FinancialPeriodFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="EndDate"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="Name"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="StartDate"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="FinancialPeriod">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:FinancialPeriodFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="FundingSourceFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="Description"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="Name"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="ParentObjectId"/>
+                    <xsd:enumeration value="SequenceNumber"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="FundingSource">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:FundingSourceFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="NotebookTopicFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="AvailableForActivity"/>
+                    <xsd:enumeration value="AvailableForEPS"/>
+                    <xsd:enumeration value="AvailableForProject"/>
+                    <xsd:enumeration value="AvailableForWBS"/>
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="Name"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="SequenceNumber"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="NotebookTopic">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:NotebookTopicFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="OBSFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="Description"/>
+                    <xsd:enumeration value="GUID"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="Name"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="ParentObjectId"/>
+                    <xsd:enumeration value="SequenceNumber"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="OBS">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:OBSFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="ProjectFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="ActivityDefaultActivityType"/>
+                    <xsd:enumeration value="ActivityDefaultCalendarName"/>
+                    <xsd:enumeration value="ActivityDefaultCalendarObjectId"/>
+                    <xsd:enumeration value="ActivityDefaultCostAccountObjectId"/>
+                    <xsd:enumeration value="ActivityDefaultDurationType"/>
+                    <xsd:enumeration value="ActivityDefaultPercentCompleteType"/>
+                    <xsd:enumeration value="ActivityDefaultPricePerUnit"/>
+                    <xsd:enumeration value="ActivityDefaultReviewRequired"/>
+                    <xsd:enumeration value="ActivityIdBasedOnSelectedActivity"/>
+                    <xsd:enumeration value="ActivityIdIncrement"/>
+                    <xsd:enumeration value="ActivityIdPrefix"/>
+                    <xsd:enumeration value="ActivityIdSuffix"/>
+                    <xsd:enumeration value="ActivityPercentCompleteBasedOnActivitySteps"/>
+                    <xsd:enumeration value="AddActualToRemaining"/>
+                    <xsd:enumeration value="AddedBy"/>
+                    <xsd:enumeration value="AllowNegativeActualUnitsFlag"/>
+                    <xsd:enumeration value="AllowStatusReview"/>
+                    <xsd:enumeration value="AnnualDiscountRate"/>
+                    <xsd:enumeration value="AnticipatedFinishDate"/>
+                    <xsd:enumeration value="AnticipatedStartDate"/>
+                    <xsd:enumeration value="AssignmentDefaultDrivingFlag"/>
+                    <xsd:enumeration value="AssignmentDefaultRateType"/>
+                    <xsd:enumeration value="CalculateFloatBasedOnFinishDate"/>
+                    <xsd:enumeration value="CheckOutDate"/>
+                    <xsd:enumeration value="CheckOutStatus"/>
+                    <xsd:enumeration value="CheckOutUserObjectId"/>
+                    <xsd:enumeration value="ComputeTotalFloatType"/>
+                    <xsd:enumeration value="ContainsSummaryData"/>
+                    <xsd:enumeration value="ContractManagementGroupName"/>
+                    <xsd:enumeration value="ContractManagementProjectName"/>
+                    <xsd:enumeration value="CostQuantityRecalculateFlag"/>
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="CriticalActivityFloatLimit"/>
+                    <xsd:enumeration value="CriticalActivityFloatThreshold"/>
+                    <xsd:enumeration value="CriticalActivityPathType"/>
+                    <xsd:enumeration value="CriticalFloatThreshold"/>
+                    <xsd:enumeration value="CurrentBaselineProjectObjectId"/>
+                    <xsd:enumeration value="CurrentBudget"/>
+                    <xsd:enumeration value="CurrentVariance"/>
+                    <xsd:enumeration value="DataDate"/>
+                    <xsd:enumeration value="DateAdded"/>
+                    <xsd:enumeration value="DefaultPriceTimeUnits"/>
+                    <xsd:enumeration value="Description"/>
+                    <xsd:enumeration value="DiscountApplicationPeriod"/>
+                    <xsd:enumeration value="DistributedCurrentBudget"/>
+                    <xsd:enumeration value="EarnedValueComputeType"/>
+                    <xsd:enumeration value="EarnedValueETCComputeType"/>
+                    <xsd:enumeration value="EarnedValueETCUserValue"/>
+                    <xsd:enumeration value="EarnedValueUserPercent"/>
+                    <xsd:enumeration value="EnablePrimeSycFlag"/>
+                    <xsd:enumeration value="EnablePublication"/>
+                    <xsd:enumeration value="EnableSummarization"/>
+                    <xsd:enumeration value="EtlInterval"/>
+                    <xsd:enumeration value="FinishDate"/>
+                    <xsd:enumeration value="FiscalYearStartMonth"/>
+                    <xsd:enumeration value="ForecastFinishDate"/>
+                    <xsd:enumeration value="ForecastStartDate"/>
+                    <xsd:enumeration value="GUID"/>
+                    <xsd:enumeration value="HasFutureBucketData"/>
+                    <xsd:enumeration value="HistoryInterval"/>
+                    <xsd:enumeration value="HistoryLevel"/>
+                    <xsd:enumeration value="Id"/>
+                    <xsd:enumeration value="IgnoreOtherProjectRelationships"/>
+                    <xsd:enumeration value="IndependentETCLaborUnits"/>
+                    <xsd:enumeration value="IndependentETCTotalCost"/>
+                    <xsd:enumeration value="IntegratedType"/>
+                    <xsd:enumeration value="IsTemplate"/>
+                    <xsd:enumeration value="LastApplyActualsDate"/>
+                    <xsd:enumeration value="LastFinancialPeriodObjectId"/>
+                    <xsd:enumeration value="LastLevelDate"/>
+                    <xsd:enumeration value="LastPublishedOn"/>
+                    <xsd:enumeration value="LastScheduleDate"/>
+                    <xsd:enumeration value="LastSummarizedDate"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="Latitude"/>
+                    <xsd:enumeration value="LevelAllResources"/>
+                    <xsd:enumeration value="LevelDateFlag"/>
+                    <xsd:enumeration value="LevelFloatThresholdCount"/>
+                    <xsd:enumeration value="LevelOuterAssign"/>
+                    <xsd:enumeration value="LevelOuterAssignPriority"/>
+                    <xsd:enumeration value="LevelOverAllocationPercent"/>
+                    <xsd:enumeration value="LevelPriorityList"/>
+                    <xsd:enumeration value="LevelResourceList"/>
+                    <xsd:enumeration value="LevelWithinFloat"/>
+                    <xsd:enumeration value="LevelingPriority"/>
+                    <xsd:enumeration value="LimitMultipleFloatPaths"/>
+                    <xsd:enumeration value="LinkActualToActualThisPeriod"/>
+                    <xsd:enumeration value="LinkPercentCompleteWithActual"/>
+                    <xsd:enumeration value="LinkPlannedAndAtCompletionFlag"/>
+                    <xsd:enumeration value="LocationName"/>
+                    <xsd:enumeration value="LocationObjectId"/>
+                    <xsd:enumeration value="Longitude"/>
+                    <xsd:enumeration value="MakeOpenEndedActivitiesCritical"/>
+                    <xsd:enumeration value="MaximumMultipleFloatPaths"/>
+                    <xsd:enumeration value="MultipleFloatPathsEnabled"/>
+                    <xsd:enumeration value="MultipleFloatPathsEndingActivityObjectId"/>
+                    <xsd:enumeration value="MultipleFloatPathsUseTotalFloat"/>
+                    <xsd:enumeration value="MustFinishByDate"/>
+                    <xsd:enumeration value="Name"/>
+                    <xsd:enumeration value="NetPresentValue"/>
+                    <xsd:enumeration value="OBSName"/>
+                    <xsd:enumeration value="OBSObjectId"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="OriginalBudget"/>
+                    <xsd:enumeration value="OutOfSequenceScheduleType"/>
+                    <xsd:enumeration value="OverallProjectScore"/>
+                    <xsd:enumeration value="OwnerResourceObjectId"/>
+                    <xsd:enumeration value="ParentEPSObjectId"/>
+                    <xsd:enumeration value="PaybackPeriod"/>
+                    <xsd:enumeration value="PerformancePercentCompleteByLaborUnits"/>
+                    <xsd:enumeration value="PlannedStartDate"/>
+                    <xsd:enumeration value="PrimaryResourcesCanMarkActivitiesAsCompleted"/>
+                    <xsd:enumeration value="ProjectForecastStartDate"/>
+                    <xsd:enumeration value="ProjectScheduleType"/>
+                    <xsd:enumeration value="PropertyType"/>
+                    <xsd:enumeration value="ProposedBudget"/>
+                    <xsd:enumeration value="PublicationPriority"/>
+                    <xsd:enumeration value="PublishLevel"/>
+                    <xsd:enumeration value="RelationshipLagCalendar"/>
+                    <xsd:enumeration value="ResetPlannedToRemainingFlag"/>
+                    <xsd:enumeration value="ResourceCanBeAssignedToSameActivityMoreThanOnce"/>
+                    <xsd:enumeration value="ResourcesCanAssignThemselvesToActivities"/>
+                    <xsd:enumeration value="ResourcesCanAssignThemselvesToActivitiesOutsideOBSAccess"/>
+                    <xsd:enumeration value="ResourcesCanEditAssignmentPercentComplete"/>
+                    <xsd:enumeration value="ResourcesCanMarkAssignmentAsCompleted"/>
+                    <xsd:enumeration value="ResourcesCanViewInactiveActivities"/>
+                    <xsd:enumeration value="ReturnOnInvestment"/>
+                    <xsd:enumeration value="RiskExposure"/>
+                    <xsd:enumeration value="RiskLevel"/>
+                    <xsd:enumeration value="RiskMatrixName"/>
+                    <xsd:enumeration value="RiskMatrixObjectId"/>
+                    <xsd:enumeration value="RiskScore"/>
+                    <xsd:enumeration value="ScheduleWBSHierarchyType"/>
+                    <xsd:enumeration value="ScheduledFinishDate"/>
+                    <xsd:enumeration value="SourceProjectObjectId"/>
+                    <xsd:enumeration value="StartDate"/>
+                    <xsd:enumeration value="StartToStartLagCalculationType"/>
+                    <xsd:enumeration value="Status"/>
+                    <xsd:enumeration value="StatusReviewerName"/>
+                    <xsd:enumeration value="StatusReviewerObjectId"/>
+                    <xsd:enumeration value="StrategicPriority"/>
+                    <xsd:enumeration value="SummarizeResourcesRolesByWBS"/>
+                    <xsd:enumeration value="SummarizeToWBSLevel"/>
+                    <xsd:enumeration value="SummarizedDataDate"/>
+                    <xsd:enumeration value="SummaryAccountingVarianceByCost"/>
+                    <xsd:enumeration value="SummaryAccountingVarianceByLaborUnits"/>
+                    <xsd:enumeration value="SummaryActivityCount"/>
+                    <xsd:enumeration value="SummaryActualDuration"/>
+                    <xsd:enumeration value="SummaryActualExpenseCost"/>
+                    <xsd:enumeration value="SummaryActualFinishDate"/>
+                    <xsd:enumeration value="SummaryActualLaborCost"/>
+                    <xsd:enumeration value="SummaryActualLaborUnits"/>
+                    <xsd:enumeration value="SummaryActualMaterialCost"/>
+                    <xsd:enumeration value="SummaryActualNonLaborCost"/>
+                    <xsd:enumeration value="SummaryActualNonLaborUnits"/>
+                    <xsd:enumeration value="SummaryActualStartDate"/>
+                    <xsd:enumeration value="SummaryActualThisPeriodCost"/>
+                    <xsd:enumeration value="SummaryActualThisPeriodLaborCost"/>
+                    <xsd:enumeration value="SummaryActualThisPeriodLaborUnits"/>
+                    <xsd:enumeration value="SummaryActualThisPeriodMaterialCost"/>
+                    <xsd:enumeration value="SummaryActualThisPeriodNonLaborCost"/>
+                    <xsd:enumeration value="SummaryActualThisPeriodNonLaborUnits"/>
+                    <xsd:enumeration value="SummaryActualTotalCost"/>
+                    <xsd:enumeration value="SummaryActualValueByCost"/>
+                    <xsd:enumeration value="SummaryActualValueByLaborUnits"/>
+                    <xsd:enumeration value="SummaryAtCompletionDuration"/>
+                    <xsd:enumeration value="SummaryAtCompletionExpenseCost"/>
+                    <xsd:enumeration value="SummaryAtCompletionLaborCost"/>
+                    <xsd:enumeration value="SummaryAtCompletionLaborUnits"/>
+                    <xsd:enumeration value="SummaryAtCompletionMaterialCost"/>
+                    <xsd:enumeration value="SummaryAtCompletionNonLaborCost"/>
+                    <xsd:enumeration value="SummaryAtCompletionNonLaborUnits"/>
+                    <xsd:enumeration value="SummaryAtCompletionTotalCost"/>
+                    <xsd:enumeration value="SummaryAtCompletionTotalCostVariance"/>
+                    <xsd:enumeration value="SummaryBaselineCompletedActivityCount"/>
+                    <xsd:enumeration value="SummaryBaselineDuration"/>
+                    <xsd:enumeration value="SummaryBaselineExpenseCost"/>
+                    <xsd:enumeration value="SummaryBaselineFinishDate"/>
+                    <xsd:enumeration value="SummaryBaselineInProgressActivityCount"/>
+                    <xsd:enumeration value="SummaryBaselineLaborCost"/>
+                    <xsd:enumeration value="SummaryBaselineLaborUnits"/>
+                    <xsd:enumeration value="SummaryBaselineMaterialCost"/>
+                    <xsd:enumeration value="SummaryBaselineNonLaborCost"/>
+                    <xsd:enumeration value="SummaryBaselineNonLaborUnits"/>
+                    <xsd:enumeration value="SummaryBaselineNotStartedActivityCount"/>
+                    <xsd:enumeration value="SummaryBaselineStartDate"/>
+                    <xsd:enumeration value="SummaryBaselineTotalCost"/>
+                    <xsd:enumeration value="SummaryBudgetAtCompletionByCost"/>
+                    <xsd:enumeration value="SummaryBudgetAtCompletionByLaborUnits"/>
+                    <xsd:enumeration value="SummaryCompletedActivityCount"/>
+                    <xsd:enumeration value="SummaryCostPercentComplete"/>
+                    <xsd:enumeration value="SummaryCostPercentOfPlanned"/>
+                    <xsd:enumeration value="SummaryCostPerformanceIndexByCost"/>
+                    <xsd:enumeration value="SummaryCostPerformanceIndexByLaborUnits"/>
+                    <xsd:enumeration value="SummaryCostVarianceByCost"/>
+                    <xsd:enumeration value="SummaryCostVarianceByLaborUnits"/>
+                    <xsd:enumeration value="SummaryCostVarianceIndex"/>
+                    <xsd:enumeration value="SummaryCostVarianceIndexByCost"/>
+                    <xsd:enumeration value="SummaryCostVarianceIndexByLaborUnits"/>
+                    <xsd:enumeration value="SummaryDurationPercentComplete"/>
+                    <xsd:enumeration value="SummaryDurationPercentOfPlanned"/>
+                    <xsd:enumeration value="SummaryDurationVariance"/>
+                    <xsd:enumeration value="SummaryEarnedValueByCost"/>
+                    <xsd:enumeration value="SummaryEarnedValueByLaborUnits"/>
+                    <xsd:enumeration value="SummaryEstimateAtCompletionByCost"/>
+                    <xsd:enumeration value="SummaryEstimateAtCompletionByLaborUnits"/>
+                    <xsd:enumeration value="SummaryEstimateAtCompletionHighPercentByLaborUnits"/>
+                    <xsd:enumeration value="SummaryEstimateAtCompletionLowPercentByLaborUnits"/>
+                    <xsd:enumeration value="SummaryEstimateToCompleteByCost"/>
+                    <xsd:enumeration value="SummaryEstimateToCompleteByLaborUnits"/>
+                    <xsd:enumeration value="SummaryExpenseCostPercentComplete"/>
+                    <xsd:enumeration value="SummaryExpenseCostVariance"/>
+                    <xsd:enumeration value="SummaryFinishDateVariance"/>
+                    <xsd:enumeration value="SummaryInProgressActivityCount"/>
+                    <xsd:enumeration value="SummaryLaborCostPercentComplete"/>
+                    <xsd:enumeration value="SummaryLaborCostVariance"/>
+                    <xsd:enumeration value="SummaryLaborUnitsPercentComplete"/>
+                    <xsd:enumeration value="SummaryLaborUnitsVariance"/>
+                    <xsd:enumeration value="SummaryLevel"/>
+                    <xsd:enumeration value="SummaryMaterialCostPercentComplete"/>
+                    <xsd:enumeration value="SummaryMaterialCostVariance"/>
+                    <xsd:enumeration value="SummaryNonLaborCostPercentComplete"/>
+                    <xsd:enumeration value="SummaryNonLaborCostVariance"/>
+                    <xsd:enumeration value="SummaryNonLaborUnitsPercentComplete"/>
+                    <xsd:enumeration value="SummaryNonLaborUnitsVariance"/>
+                    <xsd:enumeration value="SummaryNotStartedActivityCount"/>
+                    <xsd:enumeration value="SummaryPerformancePercentCompleteByCost"/>
+                    <xsd:enumeration value="SummaryPerformancePercentCompleteByLaborUnits"/>
+                    <xsd:enumeration value="SummaryPlannedCost"/>
+                    <xsd:enumeration value="SummaryPlannedDuration"/>
+                    <xsd:enumeration value="SummaryPlannedExpenseCost"/>
+                    <xsd:enumeration value="SummaryPlannedFinishDate"/>
+                    <xsd:enumeration value="SummaryPlannedLaborCost"/>
+                    <xsd:enumeration value="SummaryPlannedLaborUnits"/>
+                    <xsd:enumeration value="SummaryPlannedMaterialCost"/>
+                    <xsd:enumeration value="SummaryPlannedNonLaborCost"/>
+                    <xsd:enumeration value="SummaryPlannedNonLaborUnits"/>
+                    <xsd:enumeration value="SummaryPlannedStartDate"/>
+                    <xsd:enumeration value="SummaryPlannedValueByCost"/>
+                    <xsd:enumeration value="SummaryPlannedValueByLaborUnits"/>
+                    <xsd:enumeration value="SummaryProgressFinishDate"/>
+                    <xsd:enumeration value="SummaryRemainingDuration"/>
+                    <xsd:enumeration value="SummaryRemainingExpenseCost"/>
+                    <xsd:enumeration value="SummaryRemainingFinishDate"/>
+                    <xsd:enumeration value="SummaryRemainingLaborCost"/>
+                    <xsd:enumeration value="SummaryRemainingLaborUnits"/>
+                    <xsd:enumeration value="SummaryRemainingMaterialCost"/>
+                    <xsd:enumeration value="SummaryRemainingNonLaborCost"/>
+                    <xsd:enumeration value="SummaryRemainingNonLaborUnits"/>
+                    <xsd:enumeration value="SummaryRemainingStartDate"/>
+                    <xsd:enumeration value="SummaryRemainingTotalCost"/>
+                    <xsd:enumeration value="SummarySchedulePercentComplete"/>
+                    <xsd:enumeration value="SummarySchedulePercentCompleteByLaborUnits"/>
+                    <xsd:enumeration value="SummarySchedulePerformanceIndexByCost"/>
+                    <xsd:enumeration value="SummarySchedulePerformanceIndexByLaborUnits"/>
+                    <xsd:enumeration value="SummaryScheduleVarianceByCost"/>
+                    <xsd:enumeration value="SummaryScheduleVarianceByLaborUnits"/>
+                    <xsd:enumeration value="SummaryScheduleVarianceIndex"/>
+                    <xsd:enumeration value="SummaryScheduleVarianceIndexByCost"/>
+                    <xsd:enumeration value="SummaryScheduleVarianceIndexByLaborUnits"/>
+                    <xsd:enumeration value="SummaryStartDateVariance"/>
+                    <xsd:enumeration value="SummaryToCompletePerformanceIndexByCost"/>
+                    <xsd:enumeration value="SummaryTotalCostVariance"/>
+                    <xsd:enumeration value="SummaryTotalFloat"/>
+                    <xsd:enumeration value="SummaryUnitsPercentComplete"/>
+                    <xsd:enumeration value="SummaryVarianceAtCompletionByLaborUnits"/>
+                    <xsd:enumeration value="SyncWbsHierarchyFlag"/>
+                    <xsd:enumeration value="TeamMemberActivityFields"/>
+                    <xsd:enumeration value="TeamMemberAddNewActualUnits"/>
+                    <xsd:enumeration value="TeamMemberAssignmentOption"/>
+                    <xsd:enumeration value="TeamMemberCanStatusOtherResources"/>
+                    <xsd:enumeration value="TeamMemberCanUpdateNotebooks"/>
+                    <xsd:enumeration value="TeamMemberDisplayPlannedUnits"/>
+                    <xsd:enumeration value="TeamMemberIncludePrimaryResources"/>
+                    <xsd:enumeration value="TeamMemberResourceAssignmentFields"/>
+                    <xsd:enumeration value="TeamMemberStepsAddDeletable"/>
+                    <xsd:enumeration value="TeamMemberViewableFields"/>
+                    <xsd:enumeration value="TotalBenefitPlan"/>
+                    <xsd:enumeration value="TotalBenefitPlanTally"/>
+                    <xsd:enumeration value="TotalFunding"/>
+                    <xsd:enumeration value="TotalSpendingPlan"/>
+                    <xsd:enumeration value="TotalSpendingPlanTally"/>
+                    <xsd:enumeration value="UnallocatedBudget"/>
+                    <xsd:enumeration value="UndistributedCurrentVariance"/>
+                    <xsd:enumeration value="UnifierCBSTasksOnlyFlag"/>
+                    <xsd:enumeration value="UnifierDataMappingName"/>
+                    <xsd:enumeration value="UnifierDeleteActivitiesFlag"/>
+                    <xsd:enumeration value="UnifierEnabledFlag"/>
+                    <xsd:enumeration value="UnifierProjectName"/>
+                    <xsd:enumeration value="UnifierProjectNumber"/>
+                    <xsd:enumeration value="UnifierScheduleSheetName"/>
+                    <xsd:enumeration value="UseExpectedFinishDates"/>
+                    <xsd:enumeration value="UseProjectBaselineForEarnedValue"/>
+                    <xsd:enumeration value="WBSCodeSeparator"/>
+                    <xsd:enumeration value="WBSHierarchyLevels"/>
+                    <xsd:enumeration value="WBSMilestonePercentComplete"/>
+                    <xsd:enumeration value="WBSObjectId"/>
+                    <xsd:enumeration value="WebSiteRootDirectory"/>
+                    <xsd:enumeration value="WebSiteURL"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="Project">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:ProjectFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="ProjectBudgetChangeLogFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="Amount"/>
+                    <xsd:enumeration value="ChangeNumber"/>
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="Date"/>
+                    <xsd:enumeration value="IsBaseline"/>
+                    <xsd:enumeration value="IsTemplate"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="ProjectId"/>
+                    <xsd:enumeration value="ProjectObjectId"/>
+                    <xsd:enumeration value="Reason"/>
+                    <xsd:enumeration value="Responsible"/>
+                    <xsd:enumeration value="Status"/>
+                    <xsd:enumeration value="WBSCode"/>
+                    <xsd:enumeration value="WBSName"/>
+                    <xsd:enumeration value="WBSObjectId"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="ProjectBudgetChangeLog">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:ProjectBudgetChangeLogFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="ProjectCodeFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="CodeTypeName"/>
+                    <xsd:enumeration value="CodeTypeObjectId"/>
+                    <xsd:enumeration value="CodeValue"/>
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="Description"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="ParentObjectId"/>
+                    <xsd:enumeration value="SequenceNumber"/>
+                    <xsd:enumeration value="Weight"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="ProjectCode">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:ProjectCodeFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="ProjectCodeAssignment">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="ProjectCodeTypeFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="IsSecureCode"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="Length"/>
+                    <xsd:enumeration value="MaxCodeValueWeight"/>
+                    <xsd:enumeration value="Name"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="SequenceNumber"/>
+                    <xsd:enumeration value="Weight"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="ProjectCodeType">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:ProjectCodeTypeFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="ProjectDocumentFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="ActivityId"/>
+                    <xsd:enumeration value="ActivityName"/>
+                    <xsd:enumeration value="ActivityObjectId"/>
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="DocumentObjectId"/>
+                    <xsd:enumeration value="DocumentTitle"/>
+                    <xsd:enumeration value="IsBaseline"/>
+                    <xsd:enumeration value="IsTemplate"/>
+                    <xsd:enumeration value="IsWorkProduct"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="ProjectId"/>
+                    <xsd:enumeration value="ProjectObjectId"/>
+                    <xsd:enumeration value="WBSCode"/>
+                    <xsd:enumeration value="WBSName"/>
+                    <xsd:enumeration value="WBSObjectId"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="ProjectDocument">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:ProjectDocumentFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="ProjectFundingFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="Amount"/>
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="FundShare"/>
+                    <xsd:enumeration value="FundingSourceObjectId"/>
+                    <xsd:enumeration value="IsBaseline"/>
+                    <xsd:enumeration value="IsTemplate"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="ProjectId"/>
+                    <xsd:enumeration value="ProjectObjectId"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="ProjectFunding">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:ProjectFundingFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="ProjectIssueFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="ActivityId"/>
+                    <xsd:enumeration value="ActivityName"/>
+                    <xsd:enumeration value="ActivityObjectId"/>
+                    <xsd:enumeration value="ActualValue"/>
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="DateIdentified"/>
+                    <xsd:enumeration value="IdentifiedBy"/>
+                    <xsd:enumeration value="IsBaseline"/>
+                    <xsd:enumeration value="IsTemplate"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="LowerThreshold"/>
+                    <xsd:enumeration value="Name"/>
+                    <xsd:enumeration value="Notes"/>
+                    <xsd:enumeration value="OBSName"/>
+                    <xsd:enumeration value="OBSObjectId"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="Priority"/>
+                    <xsd:enumeration value="ProjectId"/>
+                    <xsd:enumeration value="ProjectName"/>
+                    <xsd:enumeration value="ProjectObjectId"/>
+                    <xsd:enumeration value="ProjectThresholdObjectId"/>
+                    <xsd:enumeration value="RawTextNote"/>
+                    <xsd:enumeration value="ResolutionDate"/>
+                    <xsd:enumeration value="ResourceId"/>
+                    <xsd:enumeration value="ResourceName"/>
+                    <xsd:enumeration value="ResourceObjectId"/>
+                    <xsd:enumeration value="Status"/>
+                    <xsd:enumeration value="ThresholdParameterObjectId"/>
+                    <xsd:enumeration value="UpperThreshold"/>
+                    <xsd:enumeration value="WBSCode"/>
+                    <xsd:enumeration value="WBSName"/>
+                    <xsd:enumeration value="WBSObjectId"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="ProjectIssue">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:ProjectIssueFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="ProjectNoteFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="AvailableForActivity"/>
+                    <xsd:enumeration value="AvailableForEPS"/>
+                    <xsd:enumeration value="AvailableForProject"/>
+                    <xsd:enumeration value="AvailableForWBS"/>
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="IsBaseline"/>
+                    <xsd:enumeration value="IsTemplate"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="Note"/>
+                    <xsd:enumeration value="NotebookTopicName"/>
+                    <xsd:enumeration value="NotebookTopicObjectId"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="ProjectId"/>
+                    <xsd:enumeration value="ProjectObjectId"/>
+                    <xsd:enumeration value="RawTextNote"/>
+                    <xsd:enumeration value="WBSCode"/>
+                    <xsd:enumeration value="WBSName"/>
+                    <xsd:enumeration value="WBSObjectId"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="ProjectNote">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:ProjectNoteFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="ProjectResourceFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="CommittedFlag"/>
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="FinishDate"/>
+                    <xsd:enumeration value="IsBaseline"/>
+                    <xsd:enumeration value="IsTemplate"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="LifeOfProjectFlag"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="ProjectId"/>
+                    <xsd:enumeration value="ProjectObjectId"/>
+                    <xsd:enumeration value="ProjectResourceCategoryName"/>
+                    <xsd:enumeration value="ProjectResourceCategoryObjectId"/>
+                    <xsd:enumeration value="ResourceName"/>
+                    <xsd:enumeration value="ResourceObjectId"/>
+                    <xsd:enumeration value="ResourceRequest"/>
+                    <xsd:enumeration value="RoleName"/>
+                    <xsd:enumeration value="RoleObjectId"/>
+                    <xsd:enumeration value="StartDate"/>
+                    <xsd:enumeration value="Status"/>
+                    <xsd:enumeration value="WBSCode"/>
+                    <xsd:enumeration value="WBSObjectId"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="ProjectResource">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:ProjectResourceFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="ProjectResourceCategoryFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="Name"/>
+                    <xsd:enumeration value="ObjectId"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="ProjectResourceCategory">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:ProjectResourceCategoryFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="ProjectResourceQuantityFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="CommittedFlag"/>
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="FinancialPeriod1ObjectId"/>
+                    <xsd:enumeration value="FinancialPeriod1Quantity"/>
+                    <xsd:enumeration value="FinancialPeriod2ObjectId"/>
+                    <xsd:enumeration value="FinancialPeriod2Quantity"/>
+                    <xsd:enumeration value="IsBaseline"/>
+                    <xsd:enumeration value="IsTemplate"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="MonthStartDate"/>
+                    <xsd:enumeration value="ProjectObjectId"/>
+                    <xsd:enumeration value="ProjectResourceObjectId"/>
+                    <xsd:enumeration value="Quantity"/>
+                    <xsd:enumeration value="ResourceObjectId"/>
+                    <xsd:enumeration value="RoleObjectId"/>
+                    <xsd:enumeration value="WBSObjectId"/>
+                    <xsd:enumeration value="WeekStartDate"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="ProjectResourceQuantity">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:ProjectResourceQuantityFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="ProjectSpendingPlanFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="BenefitPlan"/>
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="Date"/>
+                    <xsd:enumeration value="IsBaseline"/>
+                    <xsd:enumeration value="IsTemplate"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="ProjectId"/>
+                    <xsd:enumeration value="ProjectObjectId"/>
+                    <xsd:enumeration value="SpendingPlan"/>
+                    <xsd:enumeration value="WBSCode"/>
+                    <xsd:enumeration value="WBSName"/>
+                    <xsd:enumeration value="WBSObjectId"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="ProjectSpendingPlan">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:ProjectSpendingPlanFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="ProjectThresholdFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="DetailToMonitor"/>
+                    <xsd:enumeration value="FromDate"/>
+                    <xsd:enumeration value="FromDateExpression"/>
+                    <xsd:enumeration value="IsBaseline"/>
+                    <xsd:enumeration value="IsTemplate"/>
+                    <xsd:enumeration value="IssuePriority"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="LowerThreshold"/>
+                    <xsd:enumeration value="OBSObjectId"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="ProjectId"/>
+                    <xsd:enumeration value="ProjectObjectId"/>
+                    <xsd:enumeration value="Status"/>
+                    <xsd:enumeration value="ThresholdParameterObjectId"/>
+                    <xsd:enumeration value="ToDate"/>
+                    <xsd:enumeration value="ToDateExpression"/>
+                    <xsd:enumeration value="UpperThreshold"/>
+                    <xsd:enumeration value="WBSCode"/>
+                    <xsd:enumeration value="WBSName"/>
+                    <xsd:enumeration value="WBSObjectId"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="ProjectThreshold">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:ProjectThresholdFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="RelationshipFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="Aref"/>
+                    <xsd:enumeration value="Arls"/>
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="IsPredecessorBaseline"/>
+                    <xsd:enumeration value="IsPredecessorTemplate"/>
+                    <xsd:enumeration value="IsSuccessorBaseline"/>
+                    <xsd:enumeration value="IsSuccessorTemplate"/>
+                    <xsd:enumeration value="Lag"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="PredecessorActivityId"/>
+                    <xsd:enumeration value="PredecessorActivityName"/>
+                    <xsd:enumeration value="PredecessorActivityObjectId"/>
+                    <xsd:enumeration value="PredecessorActivityType"/>
+                    <xsd:enumeration value="PredecessorFinishDate"/>
+                    <xsd:enumeration value="PredecessorProjectId"/>
+                    <xsd:enumeration value="PredecessorProjectObjectId"/>
+                    <xsd:enumeration value="PredecessorStartDate"/>
+                    <xsd:enumeration value="PredecessorWbsName"/>
+                    <xsd:enumeration value="SuccessorActivityId"/>
+                    <xsd:enumeration value="SuccessorActivityName"/>
+                    <xsd:enumeration value="SuccessorActivityObjectId"/>
+                    <xsd:enumeration value="SuccessorActivityType"/>
+                    <xsd:enumeration value="SuccessorFinishDate"/>
+                    <xsd:enumeration value="SuccessorProjectId"/>
+                    <xsd:enumeration value="SuccessorProjectObjectId"/>
+                    <xsd:enumeration value="SuccessorStartDate"/>
+                    <xsd:enumeration value="SuccessorWbsName"/>
+                    <xsd:enumeration value="Type"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="Relationship">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:RelationshipFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="ResourceFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="AutoComputeActuals"/>
+                    <xsd:enumeration value="CalculateCostFromUnits"/>
+                    <xsd:enumeration value="CalendarName"/>
+                    <xsd:enumeration value="CalendarObjectId"/>
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="CurrencyId"/>
+                    <xsd:enumeration value="CurrencyName"/>
+                    <xsd:enumeration value="CurrencyObjectId"/>
+                    <xsd:enumeration value="DefaultUnitsPerTime"/>
+                    <xsd:enumeration value="EffectiveDate"/>
+                    <xsd:enumeration value="EmailAddress"/>
+                    <xsd:enumeration value="EmployeeId"/>
+                    <xsd:enumeration value="GUID"/>
+                    <xsd:enumeration value="Id"/>
+                    <xsd:enumeration value="IntegratedType"/>
+                    <xsd:enumeration value="IsActive"/>
+                    <xsd:enumeration value="IsOverTimeAllowed"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="Latitude"/>
+                    <xsd:enumeration value="LocationName"/>
+                    <xsd:enumeration value="LocationObjectId"/>
+                    <xsd:enumeration value="Longitude"/>
+                    <xsd:enumeration value="MaxUnitsPerTime"/>
+                    <xsd:enumeration value="Name"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="OfficePhone"/>
+                    <xsd:enumeration value="OtherPhone"/>
+                    <xsd:enumeration value="OvertimeFactor"/>
+                    <xsd:enumeration value="ParentObjectId"/>
+                    <xsd:enumeration value="PricePerUnit"/>
+                    <xsd:enumeration value="PrimaryRoleId"/>
+                    <xsd:enumeration value="PrimaryRoleName"/>
+                    <xsd:enumeration value="PrimaryRoleObjectId"/>
+                    <xsd:enumeration value="ResourceNotes"/>
+                    <xsd:enumeration value="ResourceType"/>
+                    <xsd:enumeration value="SequenceNumber"/>
+                    <xsd:enumeration value="ShiftObjectId"/>
+                    <xsd:enumeration value="TimesheetApprovalManager"/>
+                    <xsd:enumeration value="TimesheetApprovalManagerObjectId"/>
+                    <xsd:enumeration value="Title"/>
+                    <xsd:enumeration value="UnitOfMeasureAbbreviation"/>
+                    <xsd:enumeration value="UnitOfMeasureName"/>
+                    <xsd:enumeration value="UnitOfMeasureObjectId"/>
+                    <xsd:enumeration value="UseTimesheets"/>
+                    <xsd:enumeration value="UserName"/>
+                    <xsd:enumeration value="UserObjectId"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="Resource">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:ResourceFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="ResourceAssignmentFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="ActivityActualFinish"/>
+                    <xsd:enumeration value="ActivityId"/>
+                    <xsd:enumeration value="ActivityName"/>
+                    <xsd:enumeration value="ActivityObjectId"/>
+                    <xsd:enumeration value="ActivityType"/>
+                    <xsd:enumeration value="ActualCost"/>
+                    <xsd:enumeration value="ActualCurve"/>
+                    <xsd:enumeration value="ActualCurve"/>
+                    <xsd:enumeration value="ActualDuration"/>
+                    <xsd:enumeration value="ActualFinishDate"/>
+                    <xsd:enumeration value="ActualOvertimeCost"/>
+                    <xsd:enumeration value="ActualOvertimeUnits"/>
+                    <xsd:enumeration value="ActualRegularCost"/>
+                    <xsd:enumeration value="ActualRegularUnits"/>
+                    <xsd:enumeration value="ActualStartDate"/>
+                    <xsd:enumeration value="ActualThisPeriodCost"/>
+                    <xsd:enumeration value="ActualThisPeriodUnits"/>
+                    <xsd:enumeration value="ActualUnits"/>
+                    <xsd:enumeration value="AtCompletionCost"/>
+                    <xsd:enumeration value="AtCompletionDuration"/>
+                    <xsd:enumeration value="AtCompletionUnits"/>
+                    <xsd:enumeration value="AutoComputeActuals"/>
+                    <xsd:enumeration value="CBSCode"/>
+                    <xsd:enumeration value="CBSId"/>
+                    <xsd:enumeration value="CalendarName"/>
+                    <xsd:enumeration value="CalendarObjectId"/>
+                    <xsd:enumeration value="CostAccountId"/>
+                    <xsd:enumeration value="CostAccountName"/>
+                    <xsd:enumeration value="CostAccountObjectId"/>
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="DrivingActivityDatesFlag"/>
+                    <xsd:enumeration value="FinishDate"/>
+                    <xsd:enumeration value="GUID"/>
+                    <xsd:enumeration value="HasFutureBucketData"/>
+                    <xsd:enumeration value="IsActive"/>
+                    <xsd:enumeration value="IsActivityFlagged"/>
+                    <xsd:enumeration value="IsBaseline"/>
+                    <xsd:enumeration value="IsCostUnitsLinked"/>
+                    <xsd:enumeration value="IsOvertimeAllowed"/>
+                    <xsd:enumeration value="IsPrimaryResource"/>
+                    <xsd:enumeration value="IsTemplate"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="OvertimeFactor"/>
+                    <xsd:enumeration value="PendingActualOvertimeUnits"/>
+                    <xsd:enumeration value="PendingActualRegularUnits"/>
+                    <xsd:enumeration value="PendingPercentComplete"/>
+                    <xsd:enumeration value="PendingRemainingUnits"/>
+                    <xsd:enumeration value="PlannedCost"/>
+                    <xsd:enumeration value="PlannedCurve"/>
+                    <xsd:enumeration value="PlannedCurve"/>
+                    <xsd:enumeration value="PlannedDuration"/>
+                    <xsd:enumeration value="PlannedFinishDate"/>
+                    <xsd:enumeration value="PlannedLag"/>
+                    <xsd:enumeration value="PlannedStartDate"/>
+                    <xsd:enumeration value="PlannedUnits"/>
+                    <xsd:enumeration value="PlannedUnitsPerTime"/>
+                    <xsd:enumeration value="PricePerUnit"/>
+                    <xsd:enumeration value="PriorActualOvertimeUnits"/>
+                    <xsd:enumeration value="PriorActualRegularUnits"/>
+                    <xsd:enumeration value="Proficiency"/>
+                    <xsd:enumeration value="ProjectFlag"/>
+                    <xsd:enumeration value="ProjectId"/>
+                    <xsd:enumeration value="ProjectName"/>
+                    <xsd:enumeration value="ProjectObjectId"/>
+                    <xsd:enumeration value="ProjectProjectFlag"/>
+                    <xsd:enumeration value="RateSource"/>
+                    <xsd:enumeration value="RateType"/>
+                    <xsd:enumeration value="RemainingCost"/>
+                    <xsd:enumeration value="RemainingCurve"/>
+                    <xsd:enumeration value="RemainingCurve"/>
+                    <xsd:enumeration value="RemainingDuration"/>
+                    <xsd:enumeration value="RemainingFinishDate"/>
+                    <xsd:enumeration value="RemainingLag"/>
+                    <xsd:enumeration value="RemainingLateFinishDate"/>
+                    <xsd:enumeration value="RemainingLateStartDate"/>
+                    <xsd:enumeration value="RemainingStartDate"/>
+                    <xsd:enumeration value="RemainingUnits"/>
+                    <xsd:enumeration value="RemainingUnitsPerTime"/>
+                    <xsd:enumeration value="ResourceCalendarName"/>
+                    <xsd:enumeration value="ResourceCurveName"/>
+                    <xsd:enumeration value="ResourceCurveObjectId"/>
+                    <xsd:enumeration value="ResourceId"/>
+                    <xsd:enumeration value="ResourceName"/>
+                    <xsd:enumeration value="ResourceObjectId"/>
+                    <xsd:enumeration value="ResourceRequest"/>
+                    <xsd:enumeration value="ResourceType"/>
+                    <xsd:enumeration value="ReviewRequired"/>
+                    <xsd:enumeration value="RoleId"/>
+                    <xsd:enumeration value="RoleName"/>
+                    <xsd:enumeration value="RoleObjectId"/>
+                    <xsd:enumeration value="RoleShortName"/>
+                    <xsd:enumeration value="StaffedRemainingCost"/>
+                    <xsd:enumeration value="StaffedRemainingUnits"/>
+                    <xsd:enumeration value="StartDate"/>
+                    <xsd:enumeration value="StatusCode"/>
+                    <xsd:enumeration value="UnitsPercentComplete"/>
+                    <xsd:enumeration value="UnreadCommentCount"/>
+                    <xsd:enumeration value="UnstaffedRemainingCost"/>
+                    <xsd:enumeration value="UnstaffedRemainingUnits"/>
+                    <xsd:enumeration value="WBSObjectId"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="ResourceAssignment">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:ResourceAssignmentFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="ResourceAssignmentPeriodActualFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="ActivityObjectId"/>
+                    <xsd:enumeration value="ActualCost"/>
+                    <xsd:enumeration value="ActualUnits"/>
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="FinancialPeriodObjectId"/>
+                    <xsd:enumeration value="IsBaseline"/>
+                    <xsd:enumeration value="IsTemplate"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="ProjectObjectId"/>
+                    <xsd:enumeration value="ResourceAssignmentObjectId"/>
+                    <xsd:enumeration value="ResourceType"/>
+                    <xsd:enumeration value="WBSObjectId"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="ResourceAssignmentPeriodActual">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:ResourceAssignmentPeriodActualFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="ResourceCodeFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="CodeTypeName"/>
+                    <xsd:enumeration value="CodeTypeObjectId"/>
+                    <xsd:enumeration value="CodeValue"/>
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="Description"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="ParentObjectId"/>
+                    <xsd:enumeration value="SequenceNumber"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="ResourceCode">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:ResourceCodeFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="ResourceCodeAssignment">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="ResourceCodeTypeFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="IsSecureCode"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="Length"/>
+                    <xsd:enumeration value="Name"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="SequenceNumber"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="ResourceCodeType">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:ResourceCodeTypeFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="ResourceCurveFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="IsDefault"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="Name"/>
+                    <xsd:enumeration value="ObjectId"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="ResourceCurve">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:ResourceCurveFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="ResourceRateFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="EffectiveDate"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="MaxUnitsPerTime"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="PricePerUnit"/>
+                    <xsd:enumeration value="PricePerUnit2"/>
+                    <xsd:enumeration value="PricePerUnit3"/>
+                    <xsd:enumeration value="PricePerUnit4"/>
+                    <xsd:enumeration value="PricePerUnit5"/>
+                    <xsd:enumeration value="ResourceId"/>
+                    <xsd:enumeration value="ResourceName"/>
+                    <xsd:enumeration value="ResourceObjectId"/>
+                    <xsd:enumeration value="ShiftPeriodObjectId"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="ResourceRate">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:ResourceRateFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="ResourceRoleFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="Proficiency"/>
+                    <xsd:enumeration value="ResourceId"/>
+                    <xsd:enumeration value="ResourceName"/>
+                    <xsd:enumeration value="ResourceObjectId"/>
+                    <xsd:enumeration value="RoleId"/>
+                    <xsd:enumeration value="RoleName"/>
+                    <xsd:enumeration value="RoleObjectId"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="ResourceRole">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:ResourceRoleFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="RiskFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="Cause"/>
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="Description"/>
+                    <xsd:enumeration value="Effect"/>
+                    <xsd:enumeration value="Exposure"/>
+                    <xsd:enumeration value="ExposureFinishDate"/>
+                    <xsd:enumeration value="ExposureStartDate"/>
+                    <xsd:enumeration value="Id"/>
+                    <xsd:enumeration value="IdentifiedByResourceId"/>
+                    <xsd:enumeration value="IdentifiedByResourceName"/>
+                    <xsd:enumeration value="IdentifiedByResourceObjectId"/>
+                    <xsd:enumeration value="IdentifiedDate"/>
+                    <xsd:enumeration value="IsBaseline"/>
+                    <xsd:enumeration value="IsTemplate"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="Name"/>
+                    <xsd:enumeration value="Note"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="ProjectId"/>
+                    <xsd:enumeration value="ProjectName"/>
+                    <xsd:enumeration value="ProjectObjectId"/>
+                    <xsd:enumeration value="ResourceId"/>
+                    <xsd:enumeration value="ResourceName"/>
+                    <xsd:enumeration value="ResourceObjectId"/>
+                    <xsd:enumeration value="ResponseTotalCost"/>
+                    <xsd:enumeration value="RiskCategoryName"/>
+                    <xsd:enumeration value="RiskCategoryObjectId"/>
+                    <xsd:enumeration value="Score"/>
+                    <xsd:enumeration value="ScoreColor"/>
+                    <xsd:enumeration value="ScoreText"/>
+                    <xsd:enumeration value="Status"/>
+                    <xsd:enumeration value="Type"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="Risk">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:RiskFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="RiskCategoryFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="Name"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="ParentObjectId"/>
+                    <xsd:enumeration value="SequenceNumber"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="RiskCategory">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:RiskCategoryFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="RiskImpactFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="IsBaseline"/>
+                    <xsd:enumeration value="IsTemplate"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="ProjectId"/>
+                    <xsd:enumeration value="ProjectName"/>
+                    <xsd:enumeration value="ProjectObjectId"/>
+                    <xsd:enumeration value="RiskId"/>
+                    <xsd:enumeration value="RiskName"/>
+                    <xsd:enumeration value="RiskObjectId"/>
+                    <xsd:enumeration value="RiskThresholdLevelCode"/>
+                    <xsd:enumeration value="RiskThresholdLevelName"/>
+                    <xsd:enumeration value="RiskThresholdLevelObjectId"/>
+                    <xsd:enumeration value="RiskThresholdName"/>
+                    <xsd:enumeration value="RiskThresholdObjectId"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="RiskImpact">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:RiskImpactFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="RiskMatrixScoreFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="ProbabilityThresholdLevel"/>
+                    <xsd:enumeration value="RiskMatrixName"/>
+                    <xsd:enumeration value="RiskMatrixObjectId"/>
+                    <xsd:enumeration value="Severity1"/>
+                    <xsd:enumeration value="Severity1Label"/>
+                    <xsd:enumeration value="Severity2"/>
+                    <xsd:enumeration value="Severity2Label"/>
+                    <xsd:enumeration value="Severity3"/>
+                    <xsd:enumeration value="Severity3Label"/>
+                    <xsd:enumeration value="Severity4"/>
+                    <xsd:enumeration value="Severity4Label"/>
+                    <xsd:enumeration value="Severity5"/>
+                    <xsd:enumeration value="Severity5Label"/>
+                    <xsd:enumeration value="Severity6"/>
+                    <xsd:enumeration value="Severity6Label"/>
+                    <xsd:enumeration value="Severity7"/>
+                    <xsd:enumeration value="Severity7Label"/>
+                    <xsd:enumeration value="Severity8"/>
+                    <xsd:enumeration value="Severity8Label"/>
+                    <xsd:enumeration value="Severity9"/>
+                    <xsd:enumeration value="Severity9Label"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="RiskMatrixScore">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:RiskMatrixScoreFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="RiskMatrixThresholdFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="RiskMatrixName"/>
+                    <xsd:enumeration value="RiskMatrixObjectId"/>
+                    <xsd:enumeration value="RiskThresholdName"/>
+                    <xsd:enumeration value="RiskThresholdObjectId"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="RiskMatrixThreshold">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:RiskMatrixThresholdFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="RiskResponseActionFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="ActivityId"/>
+                    <xsd:enumeration value="ActivityName"/>
+                    <xsd:enumeration value="ActivityObjectId"/>
+                    <xsd:enumeration value="ActualCost"/>
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="FinishDate"/>
+                    <xsd:enumeration value="Id"/>
+                    <xsd:enumeration value="IsBaseline"/>
+                    <xsd:enumeration value="IsTemplate"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="Name"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="PlannedCost"/>
+                    <xsd:enumeration value="PlannedFinishDate"/>
+                    <xsd:enumeration value="PlannedStartDate"/>
+                    <xsd:enumeration value="ProjectId"/>
+                    <xsd:enumeration value="ProjectName"/>
+                    <xsd:enumeration value="ProjectObjectId"/>
+                    <xsd:enumeration value="RemainingCost"/>
+                    <xsd:enumeration value="ResourceId"/>
+                    <xsd:enumeration value="ResourceName"/>
+                    <xsd:enumeration value="ResourceObjectId"/>
+                    <xsd:enumeration value="RiskId"/>
+                    <xsd:enumeration value="RiskObjectId"/>
+                    <xsd:enumeration value="RiskResponsePlanId"/>
+                    <xsd:enumeration value="RiskResponsePlanName"/>
+                    <xsd:enumeration value="RiskResponsePlanObjectId"/>
+                    <xsd:enumeration value="Score"/>
+                    <xsd:enumeration value="ScoreColor"/>
+                    <xsd:enumeration value="ScoreText"/>
+                    <xsd:enumeration value="StartDate"/>
+                    <xsd:enumeration value="Status"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="RiskResponseAction">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:RiskResponseActionFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="RiskResponseActionImpactFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="IsBaseline"/>
+                    <xsd:enumeration value="IsTemplate"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="ProjectId"/>
+                    <xsd:enumeration value="ProjectName"/>
+                    <xsd:enumeration value="ProjectObjectId"/>
+                    <xsd:enumeration value="RiskId"/>
+                    <xsd:enumeration value="RiskObjectId"/>
+                    <xsd:enumeration value="RiskResponseActionId"/>
+                    <xsd:enumeration value="RiskResponseActionName"/>
+                    <xsd:enumeration value="RiskResponseActionObjectId"/>
+                    <xsd:enumeration value="RiskThresholdLevelCode"/>
+                    <xsd:enumeration value="RiskThresholdLevelName"/>
+                    <xsd:enumeration value="RiskThresholdLevelObjectId"/>
+                    <xsd:enumeration value="RiskThresholdName"/>
+                    <xsd:enumeration value="RiskThresholdObjectId"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="RiskResponseActionImpact">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:RiskResponseActionImpactFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="RiskResponsePlanFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="ActualCost"/>
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="FinishDate"/>
+                    <xsd:enumeration value="Id"/>
+                    <xsd:enumeration value="IsActive"/>
+                    <xsd:enumeration value="IsBaseline"/>
+                    <xsd:enumeration value="IsTemplate"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="Name"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="PlannedCost"/>
+                    <xsd:enumeration value="PlannedFinishDate"/>
+                    <xsd:enumeration value="PlannedStartDate"/>
+                    <xsd:enumeration value="ProjectId"/>
+                    <xsd:enumeration value="ProjectName"/>
+                    <xsd:enumeration value="ProjectObjectId"/>
+                    <xsd:enumeration value="RemainingCost"/>
+                    <xsd:enumeration value="ResponseType"/>
+                    <xsd:enumeration value="RiskId"/>
+                    <xsd:enumeration value="RiskName"/>
+                    <xsd:enumeration value="RiskObjectId"/>
+                    <xsd:enumeration value="Score"/>
+                    <xsd:enumeration value="ScoreColor"/>
+                    <xsd:enumeration value="ScoreText"/>
+                    <xsd:enumeration value="StartDate"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="RiskResponsePlan">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:RiskResponsePlanFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="RiskMatrixFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="Description"/>
+                    <xsd:enumeration value="ImpactThresholdLevel"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="Name"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="ProbabilityThresholdLevel"/>
+                    <xsd:enumeration value="RiskScoringMethod"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="RiskMatrix">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:RiskMatrixFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="RiskThresholdLevelFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="Code"/>
+                    <xsd:enumeration value="Color"/>
+                    <xsd:enumeration value="CostRange"/>
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="Level"/>
+                    <xsd:enumeration value="Name"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="ProbabilityRange"/>
+                    <xsd:enumeration value="Range"/>
+                    <xsd:enumeration value="RiskThresholdName"/>
+                    <xsd:enumeration value="RiskThresholdObjectId"/>
+                    <xsd:enumeration value="ScheduleRange"/>
+                    <xsd:enumeration value="ThresholdType"/>
+                    <xsd:enumeration value="ToleranceRange"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="RiskThresholdLevel">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:RiskThresholdLevelFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="RiskThresholdFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="Level"/>
+                    <xsd:enumeration value="Name"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="ThresholdType"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="RiskThreshold">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:RiskThresholdFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="RoleFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="CalculateCostFromUnits"/>
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="Id"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="Name"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="ParentObjectId"/>
+                    <xsd:enumeration value="Responsibilities"/>
+                    <xsd:enumeration value="SequenceNumber"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="Role">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:RoleFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="RoleRateFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="PricePerUnit"/>
+                    <xsd:enumeration value="PricePerUnit2"/>
+                    <xsd:enumeration value="PricePerUnit3"/>
+                    <xsd:enumeration value="PricePerUnit4"/>
+                    <xsd:enumeration value="PricePerUnit5"/>
+                    <xsd:enumeration value="RoleId"/>
+                    <xsd:enumeration value="RoleName"/>
+                    <xsd:enumeration value="RoleObjectId"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="RoleRate">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:RoleRateFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="RoleLimitFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="EffectiveDate"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="MaxUnitsPerTime"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="RoleObjectId"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="RoleLimit">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:RoleLimitFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="ShiftFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="Name"/>
+                    <xsd:enumeration value="ObjectId"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="Shift">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:ShiftFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="ThresholdParameterFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="Name"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="Type"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="ThresholdParameter">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:ThresholdParameterFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="UDFCodeFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="CodeTypeObjectId"/>
+                    <xsd:enumeration value="CodeTypeTitle"/>
+                    <xsd:enumeration value="CodeValue"/>
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="Description"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="SequenceNumber"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="UDFCode">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:UDFCodeFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="UDFTypeFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="DataType"/>
+                    <xsd:enumeration value="Formula"/>
+                    <xsd:enumeration value="IsCalculated"/>
+                    <xsd:enumeration value="IsConditional"/>
+                    <xsd:enumeration value="IsSecureCode"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="SubjectArea"/>
+                    <xsd:enumeration value="SummaryMethod"/>
+                    <xsd:enumeration value="Title"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="UDFType">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:UDFTypeFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="UDFValue">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="UnitOfMeasureFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="Abbreviation"/>
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="Name"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="SequenceNumber"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="UnitOfMeasure">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:UnitOfMeasureFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="WBSFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="AnticipatedFinishDate"/>
+                    <xsd:enumeration value="AnticipatedStartDate"/>
+                    <xsd:enumeration value="Code"/>
+                    <xsd:enumeration value="ContainsSummaryData"/>
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="CurrentBudget"/>
+                    <xsd:enumeration value="CurrentVariance"/>
+                    <xsd:enumeration value="DistributedCurrentBudget"/>
+                    <xsd:enumeration value="EarnedValueComputeType"/>
+                    <xsd:enumeration value="EarnedValueETCComputeType"/>
+                    <xsd:enumeration value="EarnedValueETCUserValue"/>
+                    <xsd:enumeration value="EarnedValueUserPercent"/>
+                    <xsd:enumeration value="EstimatedWeight"/>
+                    <xsd:enumeration value="FinishDate"/>
+                    <xsd:enumeration value="ForecastFinishDate"/>
+                    <xsd:enumeration value="ForecastStartDate"/>
+                    <xsd:enumeration value="GUID"/>
+                    <xsd:enumeration value="IndependentETCLaborUnits"/>
+                    <xsd:enumeration value="IndependentETCTotalCost"/>
+                    <xsd:enumeration value="IntegratedType"/>
+                    <xsd:enumeration value="IntegratedWBS"/>
+                    <xsd:enumeration value="IsBaseline"/>
+                    <xsd:enumeration value="IsTemplate"/>
+                    <xsd:enumeration value="IsWorkPackage"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="Name"/>
+                    <xsd:enumeration value="OBSName"/>
+                    <xsd:enumeration value="OBSObjectId"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="OriginalBudget"/>
+                    <xsd:enumeration value="ParentObjectId"/>
+                    <xsd:enumeration value="ProjectId"/>
+                    <xsd:enumeration value="ProjectObjectId"/>
+                    <xsd:enumeration value="ProposedBudget"/>
+                    <xsd:enumeration value="RolledUpFinishDate"/>
+                    <xsd:enumeration value="RolledUpStartDate"/>
+                    <xsd:enumeration value="SequenceNumber"/>
+                    <xsd:enumeration value="StartDate"/>
+                    <xsd:enumeration value="Status"/>
+                    <xsd:enumeration value="StatusReviewerName"/>
+                    <xsd:enumeration value="StatusReviewerObjectId"/>
+                    <xsd:enumeration value="SummaryAccountingVarianceByCost"/>
+                    <xsd:enumeration value="SummaryAccountingVarianceByLaborUnits"/>
+                    <xsd:enumeration value="SummaryActivityCount"/>
+                    <xsd:enumeration value="SummaryActualDuration"/>
+                    <xsd:enumeration value="SummaryActualExpenseCost"/>
+                    <xsd:enumeration value="SummaryActualFinishDate"/>
+                    <xsd:enumeration value="SummaryActualLaborCost"/>
+                    <xsd:enumeration value="SummaryActualLaborUnits"/>
+                    <xsd:enumeration value="SummaryActualMaterialCost"/>
+                    <xsd:enumeration value="SummaryActualNonLaborCost"/>
+                    <xsd:enumeration value="SummaryActualNonLaborUnits"/>
+                    <xsd:enumeration value="SummaryActualStartDate"/>
+                    <xsd:enumeration value="SummaryActualThisPeriodCost"/>
+                    <xsd:enumeration value="SummaryActualThisPeriodLaborCost"/>
+                    <xsd:enumeration value="SummaryActualThisPeriodLaborUnits"/>
+                    <xsd:enumeration value="SummaryActualThisPeriodMaterialCost"/>
+                    <xsd:enumeration value="SummaryActualThisPeriodNonLaborCost"/>
+                    <xsd:enumeration value="SummaryActualThisPeriodNonLaborUnits"/>
+                    <xsd:enumeration value="SummaryActualTotalCost"/>
+                    <xsd:enumeration value="SummaryActualValueByCost"/>
+                    <xsd:enumeration value="SummaryActualValueByLaborUnits"/>
+                    <xsd:enumeration value="SummaryAtCompletionDuration"/>
+                    <xsd:enumeration value="SummaryAtCompletionExpenseCost"/>
+                    <xsd:enumeration value="SummaryAtCompletionLaborCost"/>
+                    <xsd:enumeration value="SummaryAtCompletionLaborUnits"/>
+                    <xsd:enumeration value="SummaryAtCompletionMaterialCost"/>
+                    <xsd:enumeration value="SummaryAtCompletionNonLaborCost"/>
+                    <xsd:enumeration value="SummaryAtCompletionNonLaborUnits"/>
+                    <xsd:enumeration value="SummaryAtCompletionTotalCost"/>
+                    <xsd:enumeration value="SummaryAtCompletionTotalCostVariance"/>
+                    <xsd:enumeration value="SummaryBaselineCompletedActivityCount"/>
+                    <xsd:enumeration value="SummaryBaselineDuration"/>
+                    <xsd:enumeration value="SummaryBaselineExpenseCost"/>
+                    <xsd:enumeration value="SummaryBaselineFinishDate"/>
+                    <xsd:enumeration value="SummaryBaselineInProgressActivityCount"/>
+                    <xsd:enumeration value="SummaryBaselineLaborCost"/>
+                    <xsd:enumeration value="SummaryBaselineLaborUnits"/>
+                    <xsd:enumeration value="SummaryBaselineMaterialCost"/>
+                    <xsd:enumeration value="SummaryBaselineNonLaborCost"/>
+                    <xsd:enumeration value="SummaryBaselineNonLaborUnits"/>
+                    <xsd:enumeration value="SummaryBaselineNotStartedActivityCount"/>
+                    <xsd:enumeration value="SummaryBaselineStartDate"/>
+                    <xsd:enumeration value="SummaryBaselineTotalCost"/>
+                    <xsd:enumeration value="SummaryBudgetAtCompletionByCost"/>
+                    <xsd:enumeration value="SummaryBudgetAtCompletionByLaborUnits"/>
+                    <xsd:enumeration value="SummaryCompletedActivityCount"/>
+                    <xsd:enumeration value="SummaryCostPercentComplete"/>
+                    <xsd:enumeration value="SummaryCostPercentOfPlanned"/>
+                    <xsd:enumeration value="SummaryCostPerformanceIndexByCost"/>
+                    <xsd:enumeration value="SummaryCostPerformanceIndexByLaborUnits"/>
+                    <xsd:enumeration value="SummaryCostVarianceByCost"/>
+                    <xsd:enumeration value="SummaryCostVarianceByLaborUnits"/>
+                    <xsd:enumeration value="SummaryCostVarianceIndex"/>
+                    <xsd:enumeration value="SummaryCostVarianceIndexByCost"/>
+                    <xsd:enumeration value="SummaryCostVarianceIndexByLaborUnits"/>
+                    <xsd:enumeration value="SummaryDurationPercentComplete"/>
+                    <xsd:enumeration value="SummaryDurationPercentOfPlanned"/>
+                    <xsd:enumeration value="SummaryDurationVariance"/>
+                    <xsd:enumeration value="SummaryEarnedValueByCost"/>
+                    <xsd:enumeration value="SummaryEarnedValueByLaborUnits"/>
+                    <xsd:enumeration value="SummaryEstimateAtCompletionByCost"/>
+                    <xsd:enumeration value="SummaryEstimateAtCompletionByLaborUnits"/>
+                    <xsd:enumeration value="SummaryEstimateAtCompletionHighPercentByLaborUnits"/>
+                    <xsd:enumeration value="SummaryEstimateAtCompletionLowPercentByLaborUnits"/>
+                    <xsd:enumeration value="SummaryEstimateToCompleteByCost"/>
+                    <xsd:enumeration value="SummaryEstimateToCompleteByLaborUnits"/>
+                    <xsd:enumeration value="SummaryExpenseCostPercentComplete"/>
+                    <xsd:enumeration value="SummaryExpenseCostVariance"/>
+                    <xsd:enumeration value="SummaryFinishDateVariance"/>
+                    <xsd:enumeration value="SummaryInProgressActivityCount"/>
+                    <xsd:enumeration value="SummaryLaborCostPercentComplete"/>
+                    <xsd:enumeration value="SummaryLaborCostVariance"/>
+                    <xsd:enumeration value="SummaryLaborUnitsPercentComplete"/>
+                    <xsd:enumeration value="SummaryLaborUnitsVariance"/>
+                    <xsd:enumeration value="SummaryMaterialCostPercentComplete"/>
+                    <xsd:enumeration value="SummaryMaterialCostVariance"/>
+                    <xsd:enumeration value="SummaryNonLaborCostPercentComplete"/>
+                    <xsd:enumeration value="SummaryNonLaborCostVariance"/>
+                    <xsd:enumeration value="SummaryNonLaborUnitsPercentComplete"/>
+                    <xsd:enumeration value="SummaryNonLaborUnitsVariance"/>
+                    <xsd:enumeration value="SummaryNotStartedActivityCount"/>
+                    <xsd:enumeration value="SummaryPerformancePercentCompleteByCost"/>
+                    <xsd:enumeration value="SummaryPerformancePercentCompleteByLaborUnits"/>
+                    <xsd:enumeration value="SummaryPlannedCost"/>
+                    <xsd:enumeration value="SummaryPlannedDuration"/>
+                    <xsd:enumeration value="SummaryPlannedExpenseCost"/>
+                    <xsd:enumeration value="SummaryPlannedFinishDate"/>
+                    <xsd:enumeration value="SummaryPlannedLaborCost"/>
+                    <xsd:enumeration value="SummaryPlannedLaborUnits"/>
+                    <xsd:enumeration value="SummaryPlannedMaterialCost"/>
+                    <xsd:enumeration value="SummaryPlannedNonLaborCost"/>
+                    <xsd:enumeration value="SummaryPlannedNonLaborUnits"/>
+                    <xsd:enumeration value="SummaryPlannedStartDate"/>
+                    <xsd:enumeration value="SummaryPlannedValueByCost"/>
+                    <xsd:enumeration value="SummaryPlannedValueByLaborUnits"/>
+                    <xsd:enumeration value="SummaryProgressFinishDate"/>
+                    <xsd:enumeration value="SummaryRemainingDuration"/>
+                    <xsd:enumeration value="SummaryRemainingExpenseCost"/>
+                    <xsd:enumeration value="SummaryRemainingFinishDate"/>
+                    <xsd:enumeration value="SummaryRemainingLaborCost"/>
+                    <xsd:enumeration value="SummaryRemainingLaborUnits"/>
+                    <xsd:enumeration value="SummaryRemainingMaterialCost"/>
+                    <xsd:enumeration value="SummaryRemainingNonLaborCost"/>
+                    <xsd:enumeration value="SummaryRemainingNonLaborUnits"/>
+                    <xsd:enumeration value="SummaryRemainingStartDate"/>
+                    <xsd:enumeration value="SummaryRemainingTotalCost"/>
+                    <xsd:enumeration value="SummarySchedulePercentComplete"/>
+                    <xsd:enumeration value="SummarySchedulePercentCompleteByLaborUnits"/>
+                    <xsd:enumeration value="SummarySchedulePerformanceIndexByCost"/>
+                    <xsd:enumeration value="SummarySchedulePerformanceIndexByLaborUnits"/>
+                    <xsd:enumeration value="SummaryScheduleVarianceByCost"/>
+                    <xsd:enumeration value="SummaryScheduleVarianceByLaborUnits"/>
+                    <xsd:enumeration value="SummaryScheduleVarianceIndex"/>
+                    <xsd:enumeration value="SummaryScheduleVarianceIndexByCost"/>
+                    <xsd:enumeration value="SummaryScheduleVarianceIndexByLaborUnits"/>
+                    <xsd:enumeration value="SummaryStartDateVariance"/>
+                    <xsd:enumeration value="SummaryToCompletePerformanceIndexByCost"/>
+                    <xsd:enumeration value="SummaryTotalCostVariance"/>
+                    <xsd:enumeration value="SummaryTotalFloat"/>
+                    <xsd:enumeration value="SummaryUnitsPercentComplete"/>
+                    <xsd:enumeration value="SummaryVarianceAtCompletionByLaborUnits"/>
+                    <xsd:enumeration value="TotalBenefitPlan"/>
+                    <xsd:enumeration value="TotalBenefitPlanTally"/>
+                    <xsd:enumeration value="TotalSpendingPlan"/>
+                    <xsd:enumeration value="TotalSpendingPlanTally"/>
+                    <xsd:enumeration value="UnallocatedBudget"/>
+                    <xsd:enumeration value="UndistributedCurrentVariance"/>
+                    <xsd:enumeration value="WBSCategoryObjectId"/>
+                    <xsd:enumeration value="WBSMilestonePercentComplete"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="WBS">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:WBSFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="WBSCategoryFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="Name"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="SequenceNumber"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="WBSCategory">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:WBSCategoryFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="WBSMilestoneFieldType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="CreateDate"/>
+                    <xsd:enumeration value="CreateUser"/>
+                    <xsd:enumeration value="IsBaseline"/>
+                    <xsd:enumeration value="IsCompleted"/>
+                    <xsd:enumeration value="IsTemplate"/>
+                    <xsd:enumeration value="LastUpdateDate"/>
+                    <xsd:enumeration value="LastUpdateUser"/>
+                    <xsd:enumeration value="Name"/>
+                    <xsd:enumeration value="ObjectId"/>
+                    <xsd:enumeration value="ProjectId"/>
+                    <xsd:enumeration value="ProjectObjectId"/>
+                    <xsd:enumeration value="SequenceNumber"/>
+                    <xsd:enumeration value="WBSCode"/>
+                    <xsd:enumeration value="WBSName"/>
+                    <xsd:enumeration value="WBSObjectId"/>
+                    <xsd:enumeration value="Weight"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:complexType name="WBSMilestone">
+                <xsd:sequence>
+                    <xsd:element name="Include" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="Field" type="tns:WBSMilestoneFieldType" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:simpleType name="SpreadPeriodType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="Hour"/>
+                    <xsd:enumeration value="Day"/>
+                    <xsd:enumeration value="Week"/>
+                    <xsd:enumeration value="Month"/>
+                    <xsd:enumeration value="Quarter"/>
+                    <xsd:enumeration value="Year"/>
+                    <xsd:enumeration value="FinancialPeriod"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:simpleType name="FileTypeType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="GZIP"/>
+                    <xsd:enumeration value="XML"/>
+                    <xsd:enumeration value="ZIP"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:simpleType name="LineSeparator">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="Windows"/>
+                    <xsd:enumeration value="Unix"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:complexType name="BusinessObjectOptions">
+                <xsd:sequence>
+                    <xsd:element name="Activity" type="tns:Activity" minOccurs="0"/>
+                    <xsd:element name="ActivityCode" type="tns:ActivityCode" minOccurs="0"/>
+                    <xsd:element name="ActivityCodeAssignment" type="tns:ActivityCodeAssignment" minOccurs="0"/>
+                    <xsd:element name="ActivityCodeType" type="tns:ActivityCodeType" minOccurs="0"/>
+                    <xsd:element name="ActivityExpense" type="tns:ActivityExpense" minOccurs="0"/>
+                    <xsd:element name="ActivityNote" type="tns:ActivityNote" minOccurs="0"/>
+                    <xsd:element name="ActivityPeriodActual" type="tns:ActivityPeriodActual" minOccurs="0"/>
+                    <xsd:element name="ActivityRisk" type="tns:ActivityRisk" minOccurs="0"/>
+                    <xsd:element name="ActivityStep" type="tns:ActivityStep" minOccurs="0"/>
+                    <xsd:element name="Calendar" type="tns:Calendar" minOccurs="0"/>
+                    <xsd:element name="CostAccount" type="tns:CostAccount" minOccurs="0"/>
+                    <xsd:element name="Currency" type="tns:Currency" minOccurs="0"/>
+                    <xsd:element name="Document" type="tns:Document" minOccurs="0"/>
+                    <xsd:element name="DocumentCategory" type="tns:DocumentCategory" minOccurs="0"/>
+                    <xsd:element name="DocumentStatusCode" type="tns:DocumentStatusCode" minOccurs="0"/>
+                    <xsd:element name="EPS" type="tns:EPS" minOccurs="0"/>
+                    <xsd:element name="ExpenseCategory" type="tns:ExpenseCategory" minOccurs="0"/>
+                    <xsd:element name="FinancialPeriod" type="tns:FinancialPeriod" minOccurs="0"/>
+                    <xsd:element name="FundingSource" type="tns:FundingSource" minOccurs="0"/>
+                    <xsd:element name="NotebookTopic" type="tns:NotebookTopic" minOccurs="0"/>
+                    <xsd:element name="OBS" type="tns:OBS" minOccurs="0"/>
+                    <xsd:element name="Project" type="tns:Project" minOccurs="0"/>
+                    <xsd:element name="ProjectBudgetChangeLog" type="tns:ProjectBudgetChangeLog" minOccurs="0"/>
+                    <xsd:element name="ProjectCode" type="tns:ProjectCode" minOccurs="0"/>
+                    <xsd:element name="ProjectCodeAssignment" type="tns:ProjectCodeAssignment" minOccurs="0"/>
+                    <xsd:element name="ProjectCodeType" type="tns:ProjectCodeType" minOccurs="0"/>
+                    <xsd:element name="ProjectDocument" type="tns:ProjectDocument" minOccurs="0"/>
+                    <xsd:element name="ProjectFunding" type="tns:ProjectFunding" minOccurs="0"/>
+                    <xsd:element name="ProjectIssue" type="tns:ProjectIssue" minOccurs="0"/>
+                    <xsd:element name="ProjectNote" type="tns:ProjectNote" minOccurs="0"/>
+                    <xsd:element name="ProjectResource" type="tns:ProjectResource" minOccurs="0"/>
+                    <xsd:element name="ProjectResourceCategory" type="tns:ProjectResourceCategory" minOccurs="0"/>
+                    <xsd:element name="ProjectResourceQuantity" type="tns:ProjectResourceQuantity" minOccurs="0"/>
+                    <xsd:element name="ProjectSpendingPlan" type="tns:ProjectSpendingPlan" minOccurs="0"/>
+                    <xsd:element name="ProjectThreshold" type="tns:ProjectThreshold" minOccurs="0"/>
+                    <xsd:element name="Relationship" type="tns:Relationship" minOccurs="0"/>
+                    <xsd:element name="Resource" type="tns:Resource" minOccurs="0"/>
+                    <xsd:element name="ResourceAssignment" type="tns:ResourceAssignment" minOccurs="0"/>
+                    <xsd:element name="ResourceAssignmentPeriodActual" type="tns:ResourceAssignmentPeriodActual" minOccurs="0"/>
+                    <xsd:element name="ResourceCode" type="tns:ResourceCode" minOccurs="0"/>
+                    <xsd:element name="ResourceCodeAssignment" type="tns:ResourceCodeAssignment" minOccurs="0"/>
+                    <xsd:element name="ResourceCodeType" type="tns:ResourceCodeType" minOccurs="0"/>
+                    <xsd:element name="ResourceCurve" type="tns:ResourceCurve" minOccurs="0"/>
+                    <xsd:element name="ResourceRate" type="tns:ResourceRate" minOccurs="0"/>
+                    <xsd:element name="ResourceRole" type="tns:ResourceRole" minOccurs="0"/>
+                    <xsd:element name="Risk" type="tns:Risk" minOccurs="0"/>
+                    <xsd:element name="RiskCategory" type="tns:RiskCategory" minOccurs="0"/>
+                    <xsd:element name="RiskImpact" type="tns:RiskImpact" minOccurs="0"/>
+                    <xsd:element name="RiskMatrixScore" type="tns:RiskMatrixScore" minOccurs="0"/>
+                    <xsd:element name="RiskMatrixThreshold" type="tns:RiskMatrixThreshold" minOccurs="0"/>
+                    <xsd:element name="RiskResponseAction" type="tns:RiskResponseAction" minOccurs="0"/>
+                    <xsd:element name="RiskResponseActionImpact" type="tns:RiskResponseActionImpact" minOccurs="0"/>
+                    <xsd:element name="RiskResponsePlan" type="tns:RiskResponsePlan" minOccurs="0"/>
+                    <xsd:element name="RiskMatrix" type="tns:RiskMatrix" minOccurs="0"/>
+                    <xsd:element name="RiskThresholdLevel" type="tns:RiskThresholdLevel" minOccurs="0"/>
+                    <xsd:element name="RiskThreshold" type="tns:RiskThreshold" minOccurs="0"/>
+                    <xsd:element name="Role" type="tns:Role" minOccurs="0"/>
+                    <xsd:element name="RoleRate" type="tns:RoleRate" minOccurs="0"/>
+                    <xsd:element name="RoleLimit" type="tns:RoleLimit" minOccurs="0"/>
+                    <xsd:element name="Shift" type="tns:Shift" minOccurs="0"/>
+                    <xsd:element name="ThresholdParameter" type="tns:ThresholdParameter" minOccurs="0"/>
+                    <xsd:element name="UDFCode" type="tns:UDFCode" minOccurs="0"/>
+                    <xsd:element name="UDFType" type="tns:UDFType" minOccurs="0"/>
+                    <xsd:element name="UDFValue" type="tns:UDFValue" minOccurs="0"/>
+                    <xsd:element name="UnitOfMeasure" type="tns:UnitOfMeasure" minOccurs="0"/>
+                    <xsd:element name="WBS" type="tns:WBS" minOccurs="0"/>
+                    <xsd:element name="WBSCategory" type="tns:WBSCategory" minOccurs="0"/>
+                    <xsd:element name="WBSMilestone" type="tns:WBSMilestone" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="ExportProject">
+                <xsd:sequence>
+                    <xsd:element name="Encoding" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="FileType" type="tns:FileTypeType" minOccurs="0"/>
+                    <xsd:element name="LineSeparator" type="tns:LineSeparator" minOccurs="0"/>
+                    <xsd:element name="ProjectObjectId" type="xsd:int"/>
+                    <xsd:element name="SpreadPeriodType" type="tns:SpreadPeriodType" minOccurs="0"/>
+                    <xsd:element name="Spacing" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="BusinessObjectOptions" type="tns:BusinessObjectOptions" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="ExportProjectResponse">
+                <xsd:sequence>
+                    <xsd:element name="ProjectData" type="xsd:base64Binary" xmime:expectedContentTypes="application/xml,application/zip,application/x-gzip"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="ExportProjects">
+                <xsd:sequence>
+                    <xsd:element name="Encoding" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="FileType" type="tns:FileTypeType" minOccurs="0"/>
+                    <xsd:element name="LineSeparator" type="tns:LineSeparator" minOccurs="0"/>
+                    <xsd:element name="ProjectObjectId" type="xsd:int" maxOccurs="unbounded"/>
+                    <xsd:element name="SpreadPeriodType" type="tns:SpreadPeriodType" minOccurs="0"/>
+                    <xsd:element name="Spacing" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="BusinessObjectOptions" type="tns:BusinessObjectOptions" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="ExportProjectsResponse">
+                <xsd:sequence>
+                    <xsd:element name="ProjectData" type="xsd:base64Binary" xmime:expectedContentTypes="application/xml,application/zip,application/x-gzip"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="DownloadFiles">
+                <xsd:sequence>
+                    <xsd:element name="JobType" type="xsd:string" minOccurs="1"/>
+                    <xsd:element name="JobName" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+                    <xsd:element name="StartDate" type="xsd:dateTime" minOccurs="0"/>
+                    <xsd:element name="EndDate" type="xsd:dateTime" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="DownloadFilesResponse">
+                <xsd:sequence>
+                    <xsd:element name="NumberOfFiles" type="xsd:int"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="ExportProject" type="tns:ExportProject"/>
+            <xsd:element name="ExportProjectResponse" type="tns:ExportProjectResponse"/>
+            <xsd:element name="ExportProjects" type="tns:ExportProjects"/>
+            <xsd:element name="ExportProjectsResponse" type="tns:ExportProjectsResponse"/>
+            <xsd:element name="DownloadFiles" type="tns:DownloadFiles"/>
+            <xsd:element name="DownloadFilesResponse" type="tns:DownloadFilesResponse"/>
+        </xsd:schema>
+    </wsdl:types>
+
+    <wsdl:message name="ExportProject">
+        <wsdl:part name="params" element="tns:ExportProject"/>
+    </wsdl:message>
+    <wsdl:message name="ExportProjectResponse">
+        <wsdl:part name="result" element="tns:ExportProjectResponse"/>
+    </wsdl:message>
+    <wsdl:message name="IntegrationFault">
+        <wsdl:part name="fault" element="intgfault:IntegrationFault"/>
+    </wsdl:message>
+    <wsdl:message name="ExportProjects">
+        <wsdl:part name="params" element="tns:ExportProjects"/>
+    </wsdl:message>
+    <wsdl:message name="ExportProjectsResponse">
+        <wsdl:part name="result" element="tns:ExportProjectsResponse"/>
+    </wsdl:message>
+    <wsdl:message name="DownloadFiles">
+        <wsdl:part name="params" element="tns:DownloadFiles"/>
+    </wsdl:message>
+    <wsdl:message name="DownloadFilesResponse">
+        <wsdl:part name="result" element="tns:DownloadFilesResponse"/>
+    </wsdl:message>
+
+    <wsdl:portType name="ExportPortType">
+        <wsdl:operation name="ExportProject">
+            <wsdl:input name="ExportProjectRequest" message="tns:ExportProject"/>
+            <wsdl:output name="ExportProjectResponse" message="tns:ExportProjectResponse"/>
+            <wsdl:fault name="IntegrationFault" message="tns:IntegrationFault"/>
+        </wsdl:operation>
+        <wsdl:operation name="ExportProjects">
+            <wsdl:input name="ExportProjectsRequest" message="tns:ExportProjects"/>
+            <wsdl:output name="ExportProjectsResponse" message="tns:ExportProjectsResponse"/>
+            <wsdl:fault name="IntegrationFault" message="tns:IntegrationFault"/>
+        </wsdl:operation>
+        <wsdl:operation name="DownloadFiles">
+            <wsdl:input name="DownloadFilesRequest" message="tns:DownloadFiles"/>
+            <wsdl:output name="DownloadFilesResponse" message="tns:DownloadFilesResponse"/>
+            <wsdl:fault name="IntegrationFault" message="tns:IntegrationFault"/>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:binding name="ExportPortBinding" type="tns:ExportPortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="ExportProject">
+            <soap:operation soapAction="ExportProject" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="IntegrationFault">
+                <soap:fault name="IntegrationFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="ExportProjects">
+            <soap:operation soapAction="ExportProjects" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="IntegrationFault">
+                <soap:fault name="IntegrationFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="DownloadFiles">
+            <soap:operation soapAction="DownloadFiles" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="IntegrationFault">
+                <soap:fault name="IntegrationFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <wsdl:service name="ExportService">
+        <wsdl:port name="ExportPort" binding="tns:ExportPortBinding">
+            <soap:address location="http://p6.ipms:8206/p6ws/services/ExportService"/>
+        </wsdl:port>
+    </wsdl:service>
+
+</wsdl:definitions>

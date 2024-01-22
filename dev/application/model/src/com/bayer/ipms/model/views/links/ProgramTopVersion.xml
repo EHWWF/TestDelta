@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewLink SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewLink
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ProgramTopVersion"
+  Version="12.2.1.22.48"
+  InheritPersonalization="merge"
+  Where="nvl(PROGRAM_ID,0) = nvl(nvl(:Bind_Id,PROGRAM_ID),0) and nvl(PROJECT_ID,0) = nvl(:projectIdBindVar, nvl(PROJECT_ID,0))">
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="com.bayer.ipms.model.views.links.ProgramTopVersion_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <ViewLinkDefEnd
+    Name="ProgramView"
+    Cardinality="1"
+    Source="true"
+    Owner="com.bayer.ipms.model.views.ProgramView">
+    <DesignTime>
+      <Attr Name="_isUpdateable" Value="true"/>
+      <Attr Name="_accessor" Value="true"/>
+      <Attr Name="_finderName" Value="ProgramView"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.views.ProgramView.Id"/>
+    </AttrArray>
+  </ViewLinkDefEnd>
+  <ViewLinkDefEnd
+    Name="ProgramTopVersion"
+    Cardinality="-1"
+    Owner="com.bayer.ipms.model.views.ProgramTopVersionView">
+    <DesignTime>
+      <Attr Name="_isUpdateable" Value="true"/>
+      <Attr Name="_finderName" Value="ProgramTopVersion"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.views.ProgramTopVersionView.ProgramId"/>
+    </AttrArray>
+  </ViewLinkDefEnd>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.bayer.ipms.model.bundles.modelBundle"/>
+  </ResourceBundle>
+</ViewLink>

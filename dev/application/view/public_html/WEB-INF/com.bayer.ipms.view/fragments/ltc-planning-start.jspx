@@ -1,0 +1,355 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:h="http://java.sun.com/jsf/html" xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <f:view>
+        <f:loadBundle basename="com.bayer.ipms.view.bundles.viewBundle" var="bundle"/>
+        <af:document id="doc"
+                     title="#{bindings.StatusCode.inputValue eq 'RUN' ? bundle.ltcUpdate : bundle.ltcPlanningInitiate}"
+                     initialFocusId="templ:name">
+            <af:messages id="m1"/>
+            <af:form id="ltcPlanningStartF1">
+                <af:pageTemplate viewId="/WEB-INF/com.bayer.ipms.view/templates/ipms-popup-template.jspx" id="templ">
+                    <f:facet name="content">
+                        <af:panelStretchLayout id="content" topHeight="auto">
+                            <f:facet name="center">
+                                <af:panelTabbed id="prgTabPanel" dimensionsFrom="parent"
+                                                styleClass="AFStretchWidth AFStretchHeight">
+                                    <af:showDetailItem text="#{bundle.globalSummary}" immediate="true"
+                                                       stretchChildren="first" id="sdi1">
+                                        <af:panelBox showDisclosure="false" type="flow" id="pb1"
+                                                     text="#{bundle.globalSummary}">
+                                            <af:panelFormLayout id="pfl1" maxColumns="2" rows="2"
+                                                                styleClass="AFStretchWidth" fieldWidth="100%">
+                                                <af:inputText value="#{bindings.TagName.inputValue}"
+                                                              label="#{bundle.ltcTagName}"
+                                                              required="#{bindings.TagName.hints.mandatory}"
+                                                              columns="#{bindings.TagName.hints.displayWidth}"
+                                                              maximumLength="#{bindings.TagName.hints.precision}"
+                                                              readOnly="true"
+                                                              shortDesc="#{bindings.TagName.hints.tooltip}" id="it1">
+                                                    <f:validator binding="#{bindings.TagName.validator}"/>
+                                                </af:inputText>
+                                                <af:inputText value="#{bindings.Name.inputValue}"
+                                                              label="#{bindings.Name.hints.label}"
+                                                              required="#{bindings.Name.hints.mandatory}"
+                                                              maximumLength="#{bindings.Name.hints.precision}"
+                                                              autoSubmit="true" id="name"
+                                                              columns="#{bindings.Name.displayWidth}">
+                                                    <f:validator binding="#{bindings.Name.validator}"/>
+                                                </af:inputText>
+                                                <af:inputText value="#{bindings.Comments.inputValue}"
+                                                              required="#{bindings.Comments.hints.mandatory}"
+                                                              columns="#{bindings.Comments.hints.displayWidth}"
+                                                              maximumLength="#{bindings.Comments.hints.precision}"
+                                                              id="comments"
+                                                              rows="#{bindings.Comments.hints.displayHeight}"
+                                                              autoSubmit="true"
+                                                              label="#{bindings.Comments.hints.label}">
+                                                    <f:validator binding="#{bindings.Comments.validator}"/>
+                                                </af:inputText>
+                                                <af:inputText label="#{bindings.Year.label}" readOnly="true"
+                                                              value="#{bindings.Year.inputValue}" id="it6"/>
+                                                <af:inputDate value="#{bindings.TerminationDate.inputValue}"
+                                                              label="#{bindings.TerminationDate.hints.label}"
+                                                              required="#{bindings.TerminationDate.hints.mandatory}"
+                                                              autoSubmit="true" id="termdate"
+                                                              columns="#{bindings.TerminationDate.displayWidth}">
+                                                    <f:validator binding="#{bindings.TerminationDate.validator}"/>
+                                                    <af:convertDateTime pattern="#{bindings.TerminationDate.format}"/>
+                                                </af:inputDate>
+                                            </af:panelFormLayout>
+                                        </af:panelBox>
+                                        <af:panelBox id="pb2">
+                                            <af:panelFormLayout>
+                                                <af:inputText value="#{bindings.ProcessDescription.inputValue}"
+                                                              label="#{bindings.ProcessDescription.hints.label}"
+                                                              required="#{bindings.ProcessDescription.hints.mandatory}"
+                                                              columns="100" rows="6" autoSubmit="true"
+                                                              maximumLength="#{bindings.ProcessDescription.hints.precision}"
+                                                              shortDesc="#{bindings.ProcessDescription.hints.tooltip}"
+                                                              id="PDesc" partialTriggers="soc2">
+                                                    <f:validator binding="#{bindings.ProcessDescription.validator}"/>
+                                                </af:inputText>
+                                                <af:selectOneChoice value="#{bindings.PreviousPD.inputValue}"
+                                                                    label="#{bindings.PreviousPD.label}"
+                                                                    autoSubmit="true"
+                                                                    required="#{bindings.PreviousPD.hints.mandatory}"
+                                                                    shortDesc="#{bindings.PreviousPD.hints.tooltip}"
+                                                                    id="soc2" inlineStyle="column-width:100ch;">
+                                                    <f:selectItems value="#{bindings.PreviousPD.items}" id="si1"/>
+                                                    <f:validator binding="#{bindings.PreviousPD.validator}"/>
+                                                </af:selectOneChoice>
+                                            </af:panelFormLayout>
+                                        </af:panelBox>
+                                    </af:showDetailItem>
+                                    <af:showDetailItem text="#{bundle.ltcProjects}" immediate="true"
+                                                       stretchChildren="first" id="sdi3">
+                                        <af:panelBox styleClass="AFStretchWidth AFStretchHeight" showDisclosure="false"
+                                                     type="stretch" id="pb3">
+                                            <af:panelStretchLayout topHeight="auto" bottomHeight="0">
+                                                <f:facet name="top"></f:facet>
+                                                <f:facet name="center">
+                                                    <af:panelSplitter id="ps1" disabled="false"
+                                                                      styleClass="AFStretchWidth AFStretchHeight"
+                                                                      splitterPosition="310">
+                                                        <f:facet name="first">
+                                                            <af:panelAccordion id="pa1">
+                                                                <af:showDetailItem text="#{bundle.projectDevelopment}"
+                                                                                   stretchChildren="first" id="diDev"
+                                                                                   disclosureListener="#{pageFlowScope.ltcProcessBean.onProjectTabDisclose}">
+                                                                    <af:panelStretchLayout id="psl" topHeight="auto">
+                                                                        <f:facet name="top">
+                                                                            <af:query id="qryId1" disclosed="true"
+                                                                                      headerText="#{bundle.globalFilter}"
+                                                                                      searchButtonText="#{bundle.globalFilter}"
+                                                                                      value="#{bindings.LtcDevQuery.queryDescriptor}"
+                                                                                      model="#{bindings.LtcDevQuery.queryModel}"
+                                                                                      queryListener="#{pageFlowScope.ltcProcessBean.customQueryListener}"
+                                                                                      queryOperationListener="#{bindings.LtcDevQuery.processQueryOperation}"
+                                                                                      resultComponentId="::Dev"
+                                                                                      modeChangeVisible="false"
+                                                                                      saveQueryMode="hidden"
+                                                                                      immediate="true"/>
+                                                                        </f:facet>
+                                                                        <f:facet name="center">
+                                                                            <af:tree value="#{bindings.DevProgramView.treeModel}"
+                                                                                     var="node" rowSelection="multiple"
+                                                                                     contentDelivery="immediate"
+                                                                                     summary="Programs and Projects"
+                                                                                     fetchSize="#{bindings.DevProgramViewIterator.rangeSize}"
+                                                                                     id="Dev">
+                                                                                <f:facet name="nodeStamp">
+                                                                                    <af:outputText value="#{node.QualifiedName}"
+                                                                                                   id="ot5"/>
+                                                                                </f:facet>
+                                                                                <af:dragSource actions="MOVE"
+                                                                                               discriminant="rowmove"
+                                                                                               defaultAction="MOVE"/>
+                                                                            </af:tree>
+                                                                        </f:facet>
+                                                                    </af:panelStretchLayout>
+                                                                </af:showDetailItem>
+                                                                <af:showDetailItem text="#{bundle.projectMaintenance}"
+                                                                                   stretchChildren="first" id="diPrdMnt"
+                                                                                   disclosureListener="#{pageFlowScope.ltcProcessBean.onProjectTabDisclose}">
+                                                                    <af:panelStretchLayout id="ps2" topHeight="auto">
+                                                                        <f:facet name="top">
+                                                                            <af:query id="qryId2"
+                                                                                      headerText="#{bundle.globalFilter}"
+                                                                                      searchButtonText="#{bundle.globalFilter}"
+                                                                                      disclosed="false"
+                                                                                      resultComponentId="::PrdMnt"
+                                                                                      value="#{bindings.LtcPrdMntQuery.queryDescriptor}"
+                                                                                      model="#{bindings.LtcPrdMntQuery.queryModel}"
+                                                                                      queryListener="#{bindings.LtcPrdMntQuery.processQuery}"
+                                                                                      queryOperationListener="#{bindings.LtcPrdMntQuery.processQueryOperation}"
+                                                                                      modeChangeVisible="false"
+                                                                                      saveQueryMode="hidden"
+                                                                                      immediate="true"
+                                                                                      inlineStyle="width:260px;"/>
+                                                                        </f:facet>
+                                                                        <f:facet name="center">
+                                                                            <af:panelGroupLayout layout="scroll"
+                                                                                                 xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                                                                                                 id="pgl1">
+                                                                                <af:tree value="#{bindings.PrdMntProgramView.treeModel}"
+                                                                                         var="node"
+                                                                                         contentDelivery="immediate"
+                                                                                         rowSelection="multiple"
+                                                                                         id="PrdMnt"
+                                                                                         fetchSize="#{bindings.PrdMntProgramViewIterator.rangeSize}">
+                                                                                    <f:facet name="nodeStamp">
+                                                                                        <af:outputText value="#{node.QualifiedName}"
+                                                                                                       id="ot2"/>
+                                                                                    </f:facet>
+                                                                                    <af:dragSource actions="MOVE"
+                                                                                                   discriminant="rowmove"
+                                                                                                   defaultAction="MOVE"/>
+                                                                                </af:tree>
+                                                                            </af:panelGroupLayout>
+                                                                        </f:facet>
+                                                                    </af:panelStretchLayout>
+                                                                </af:showDetailItem>
+                                                                <af:showDetailItem text="#{bundle.projectD3}"
+                                                                                   stretchChildren="first" id="diD3Tr">
+                                                                    <af:panelStretchLayout id="ps3" topHeight="auto">
+                                                                        <f:facet name="top">
+                                                                            <af:query id="qryId3"
+                                                                                      headerText="#{bundle.globalFilter}"
+                                                                                      searchButtonText="#{bundle.globalFilter}"
+                                                                                      disclosed="false"
+                                                                                      resultComponentId="::D3Tr"
+                                                                                      value="#{bindings.LtcD3TrQuery.queryDescriptor}"
+                                                                                      model="#{bindings.LtcD3TrQuery.queryModel}"
+                                                                                      queryListener="#{bindings.LtcD3TrQuery.processQuery}"
+                                                                                      queryOperationListener="#{bindings.LtcD3TrQuery.processQueryOperation}"
+                                                                                      modeChangeVisible="false"
+                                                                                      saveQueryMode="hidden"
+                                                                                      immediate="true"
+                                                                                      inlineStyle="width:260px;"/>
+                                                                        </f:facet>
+                                                                        <f:facet name="center">
+                                                                            <af:panelGroupLayout layout="scroll"
+                                                                                                 xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                                                                                                 id="pg3">
+                                                                                <af:tree value="#{bindings.D3TrProjectView.treeModel}"
+                                                                                         var="node"
+                                                                                         contentDelivery="immediate"
+                                                                                         fetchSize="#{bindings.D3TrProjectViewIterator.rangeSize}"
+                                                                                         rowSelection="multiple"
+                                                                                         id="D3Tr">
+                                                                                    <f:facet name="nodeStamp">
+                                                                                        <af:outputText value="#{node.QualifiedName}"
+                                                                                                       id="ot3"/>
+                                                                                    </f:facet>
+                                                                                    <af:dragSource actions="MOVE"
+                                                                                                   discriminant="rowmove"
+                                                                                                   defaultAction="MOVE"/>
+                                                                                </af:tree>
+                                                                            </af:panelGroupLayout>
+                                                                        </f:facet>
+                                                                    </af:panelStretchLayout>
+                                                                </af:showDetailItem>
+                                                            </af:panelAccordion>
+                                                        </f:facet>
+                                                        <f:facet name="second">
+                                                            <af:panelStretchLayout id="psl1" topHeight="40px"
+                                                                                   endWidth="50px"
+                                                                                   dimensionsFrom="auto">
+                                                                <f:facet name="center">
+                                                                    <af:panelCollection id="pc1"
+                                                                                        styleClass="AFStretchWidth AFStretchHeight"
+                                                                                        featuresOff="detach statusBar viewMenu">
+                                                                        <f:facet name="toolbar">
+                                                                            <af:toolbar id="tools">
+                                                                                <af:commandToolbarButton shortDesc="#{bundle.globalRemove}"
+                                                                                                         text="#{bundle.globalRemove}"
+                                                                                                         icon="/images/remove.png"
+                                                                                                         immediate="true"
+                                                                                                         disabled="#{not pageFlowScope.ltcProcessBean.containsProjects}"
+                                                                                                         actionListener="#{pageFlowScope.ltcProcessBean.onDelete}"
+                                                                                                         id="cmdRemove"/>
+                                                                            </af:toolbar>
+                                                                        </f:facet>
+                                                                        <af:table value="#{bindings.LtcProjectView.collectionModel}"
+                                                                                  var="row"
+                                                                                  rows="#{bindings.LtcProjectView.rangeSize}"
+                                                                                  emptyText="#{bindings.LtcProjectView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                                                                                  fetchSize="#{bindings.LtcProjectView.rangeSize}"
+                                                                                  rowBandingInterval="0"
+                                                                                  filterModel="#{bindings.LtcProjectViewQuery.queryDescriptor}"
+                                                                                  queryListener="#{bindings.LtcProjectViewQuery.processQuery}"
+                                                                                  filterVisible="false" varStatus="vs"
+                                                                                  styleClass="AFStretchWidth"
+                                                                                  contentDelivery="immediate"
+                                                                                  columnStretching="last"
+                                                                                  rowSelection="multiple"
+                                                                                  id="prjSelected" autoHeightRows="0"
+                                                                                  partialTriggers="::cmdRemove :::sub1">
+                                                                            <af:collectionDropTarget dropListener="#{pageFlowScope.ltcProcessBean.onDrop}"
+                                                                                                     actions="MOVE"
+                                                                                                     modelName="rowmove"/>
+                                                                            <af:column sortProperty="#{bindings.LtcProjectView.hints.ProgramNameQualified.name}"
+                                                                                       filterable="true" sortable="true"
+                                                                                       headerText="#{bindings.LtcProjectView.hints.ProgramNameQualified.label}"
+                                                                                       id="c5">
+                                                                                <af:outputText value="#{row.bindings.ProgramNameQualified.inputValue}"
+                                                                                               id="ot4"/>
+                                                                            </af:column>
+                                                                            <af:column sortProperty="#{bindings.LtcProjectView.hints.ProjectName.name}"
+                                                                                       filterable="true" sortable="true"
+                                                                                       headerText="#{bindings.LtcProjectView.hints.ProjectName.label}"
+                                                                                       id="c8">
+                                                                                <af:inputText value="#{row.bindings.ProjectName.inputValue}"
+                                                                                              label="#{bindings.LtcProjectView.hints.ProjectName.label}"
+                                                                                              required="#{bindings.LtcProjectView.hints.ProjectName.mandatory}"
+                                                                                              columns="#{bindings.LtcProjectView.hints.ProjectName.displayWidth}"
+                                                                                              maximumLength="#{bindings.LtcProjectView.hints.ProjectName.precision}"
+                                                                                              shortDesc="#{bindings.LtcProjectView.hints.ProjectName.tooltip}"
+                                                                                              id="it5">
+                                                                                    <f:validator binding="#{row.bindings.ProjectName.validator}"/>
+                                                                                </af:inputText>
+                                                                            </af:column>
+                                                                            <af:column sortProperty="#{bindings.LtcProjectView.hints.ProjectCode.name}"
+                                                                                       filterable="true" sortable="true"
+                                                                                       headerText="#{bindings.LtcProjectView.hints.ProjectCode.label}"
+                                                                                       id="c2">
+                                                                                <af:inputText value="#{row.bindings.ProjectCode.inputValue}"
+                                                                                              label="#{bindings.LtcProjectView.hints.ProjectCode.label}"
+                                                                                              required="#{bindings.LtcProjectView.hints.ProjectCode.mandatory}"
+                                                                                              columns="#{bindings.LtcProjectView.hints.ProjectCode.displayWidth}"
+                                                                                              maximumLength="#{bindings.LtcProjectView.hints.ProjectCode.precision}"
+                                                                                              shortDesc="#{bindings.LtcProjectView.hints.ProjectCode.tooltip}"
+                                                                                              id="it8">
+                                                                                    <f:validator binding="#{row.bindings.ProjectCode.validator}"/>
+                                                                                </af:inputText>
+                                                                            </af:column>
+                                                                            <af:column sortProperty="#{bindings.LtcProjectView.hints.ProjectAreaName.name}"
+                                                                                       filterable="true" sortable="true"
+                                                                                       headerText="#{bindings.LtcProjectView.hints.ProjectAreaName.label}"
+                                                                                       id="c3">
+                                                                                <af:inputText value="#{row.bindings.ProjectAreaName.inputValue}"
+                                                                                              label="#{bindings.LtcProjectView.hints.ProjectAreaName.label}"
+                                                                                              required="#{bindings.LtcProjectView.hints.ProjectAreaName.mandatory}"
+                                                                                              columns="#{bindings.LtcProjectView.hints.ProjectAreaName.displayWidth}"
+                                                                                              maximumLength="#{bindings.LtcProjectView.hints.ProjectAreaName.precision}"
+                                                                                              shortDesc="#{bindings.LtcProjectView.hints.ProjectAreaName.tooltip}"
+                                                                                              id="it4">
+                                                                                    <f:validator binding="#{row.bindings.ProjectAreaName.validator}"/>
+                                                                                </af:inputText>
+                                                                            </af:column>
+                                                                            <af:column sortProperty="#{bindings.LtcProjectView.hints.IsActive.name}"
+                                                                                       sortable="true"
+                                                                                       headerText="#{bindings.LtcProjectView.hints.IsActive.label}"
+                                                                                       id="c1">
+                                                                                <af:inputText value="#{row.bindings.IsActive.inputValue ? bundle.globalYes : bundle.globalNo}"
+                                                                                              label="#{bindings.LtcProjectView.hints.IsActive.label}"
+                                                                                              required="#{bindings.LtcProjectView.hints.IsActive.mandatory}"
+                                                                                              columns="#{bindings.LtcProjectView.hints.IsActive.displayWidth}"
+                                                                                              maximumLength="#{bindings.LtcProjectView.hints.IsActive.precision}"
+                                                                                              shortDesc="#{bindings.LtcProjectView.hints.IsActive.tooltip}"
+                                                                                              id="it7" readOnly="true"></af:inputText>
+                                                                            </af:column>
+                                                                        </af:table>
+                                                                    </af:panelCollection>
+                                                                </f:facet>
+                                                                <f:facet name="top">
+                                                                    <af:group id="g1">
+                                                                        <af:spacer width="10" height="10" id="s1"/>
+                                                                        <af:selectOneChoice value="blank"
+                                                                                            label="#{bundle.ltcSourceProcessForProjectPrefill}"
+                                                                                            id="soc62" autoSubmit="true"
+                                                                                            valueChangeListener="#{pageFlowScope.ltcProcessBean.onPrefillProcessChange}">
+                                                                            <af:selectItem label="" value="blank"
+                                                                                           id="si223"/>
+                                                                            <f:selectItems value="#{bindings.PreviousTagProcesses.items}"
+                                                                                           id="si62"/>
+                                                                        </af:selectOneChoice>
+                                                                    </af:group>
+                                                                </f:facet>
+                                                            </af:panelStretchLayout>
+                                                        </f:facet>
+                                                    </af:panelSplitter>
+                                                </f:facet>
+                                            </af:panelStretchLayout>
+                                        </af:panelBox>
+                                    </af:showDetailItem>
+                                </af:panelTabbed>
+                            </f:facet>
+                        </af:panelStretchLayout>
+                    </f:facet>
+                    <f:facet name="controls">
+                        <f:subview id="sub1">
+                            <af:declarativeComponent viewId="global-ok-cancel.jsff" id="goc">
+                                <f:attribute name="showCancel" value="true"/>
+                                <f:attribute name="disabledOk"
+                                             value="#{not pageFlowScope.ltcProcessBean.containsProjects}"/>
+                            </af:declarativeComponent>
+                        </f:subview>
+                    </f:facet>
+                </af:pageTemplate>
+            </af:form>
+        </af:document>
+    </f:view>
+</jsp:root>

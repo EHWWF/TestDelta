@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<adf-settings xmlns="http://xmlns.oracle.com/adf/settings">
+
+
+<adf-faces-config xmlns="http://xmlns.oracle.com/adf/faces/settings">
+  <help-provider prefix = "HELP">
+    <help-provider-class>com.bayer.ipms.view.help.PromisHelpProvider</help-provider-class>
+    <property>
+      <property-name>baseName</property-name>
+      <value>com.bayer.ipms.view.bundles.HelpBundle</value>
+    </property>
+  </help-provider>
+</adf-faces-config>
+
+
+</adf-settings>

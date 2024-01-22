@@ -1,0 +1,634 @@
+<?xml version="1.0" encoding="windows-1257" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  xmlns:validation="http://xmlns.oracle.com/adfm/validation"
+  Name="LatestEstimatesProcess"
+  Version="12.1.3.10.8"
+  InheritPersonalization="true"
+  DBObjectType="table"
+  DBObjectName="LATEST_ESTIMATES_PROCESS"
+  AliasName="LatestEstimatesProcess"
+  BindingStyle="OracleName"
+  RowClass="com.bayer.ipms.model.base.IPMSEntityImpl">
+  <Attribute
+    Name="Id"
+    IsUpdateable="while_insert"
+    Precision="20"
+    ColumnName="ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="LATEST_ESTIMATES_PROCESS"
+    PrimaryKey="true"
+    RetrievedOnInsert="true"
+    Scale="0">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="Name"
+    IsNotNull="true"
+    Precision="100"
+    ColumnName="NAME"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="LATEST_ESTIMATES_PROCESS"
+    Scale="0">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="Comments"
+    Precision="500"
+    ColumnName="COMMENTS"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="LATEST_ESTIMATES_PROCESS"
+    Scale="0">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="500"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="TerminationDate"
+    IsNotNull="true"
+    ColumnName="TERMINATION_DATE"
+    SQLType="TIMESTAMP"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    TableName="LATEST_ESTIMATES_PROCESS">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="7"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="StatusCode"
+    IsUpdateable="false"
+    Precision="10"
+    ColumnName="STATUS_CODE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="LATEST_ESTIMATES_PROCESS"
+    RetrievedOnUpdate="true"
+    RetrievedOnInsert="true"
+    Scale="0">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+    <Properties>
+      <CustomProperties>
+        <Property
+          Name="Property"
+          Value="Value"/>
+      </CustomProperties>
+    </Properties>
+  </Attribute>
+  <Attribute
+    Name="StatusDate"
+    IsUpdateable="false"
+    ColumnName="STATUS_DATE"
+    SQLType="TIMESTAMP"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    TableName="LATEST_ESTIMATES_PROCESS"
+    RetrievedOnUpdate="true"
+    RetrievedOnInsert="true">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="7"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="CreateUserId"
+    IsUpdateable="false"
+    Precision="20"
+    ColumnName="CREATE_USER_ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="LATEST_ESTIMATES_PROCESS"
+    RetrievedOnInsert="true"
+    Scale="0">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="UpdateUserId"
+    IsUpdateable="false"
+    Precision="20"
+    ColumnName="UPDATE_USER_ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="LATEST_ESTIMATES_PROCESS"
+    RetrievedOnUpdate="true"
+    RetrievedOnInsert="true"
+    Scale="0">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="CreateDate"
+    IsUpdateable="false"
+    ColumnName="CREATE_DATE"
+    SQLType="TIMESTAMP"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    TableName="LATEST_ESTIMATES_PROCESS"
+    RetrievedOnInsert="true">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="7"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="UpdateDate"
+    IsUpdateable="false"
+    ColumnName="UPDATE_DATE"
+    SQLType="TIMESTAMP"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    TableName="LATEST_ESTIMATES_PROCESS"
+    ChangeIndicator="true"
+    RetrievedOnUpdate="true"
+    RetrievedOnInsert="true">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="7"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="SyncDate"
+    IsUpdateable="false"
+    ColumnName="SYNC_DATE"
+    SQLType="TIMESTAMP"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    TableName="LATEST_ESTIMATES_PROCESS"
+    RetrievedOnUpdate="true"
+    RetrievedOnInsert="true">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="7"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="IsSyncing"
+    Precision="1"
+    ColumnName="IS_SYNCING"
+    SQLType="NUMERIC"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    TableName="LATEST_ESTIMATES_PROCESS"
+    RetrievedOnUpdate="true"
+    RetrievedOnInsert="true"
+    PrecisionRule="false"
+    IsUpdateable="false">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="2"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="Year"
+    IsNotNull="true"
+    ColumnName="YEAR"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="INTEGER"
+    TableName="LATEST_ESTIMATES_PROCESS"
+    RetrievedOnInsert="true">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="22"/>
+    </DesignTime>
+    <TransientExpression><![CDATA[1900 + adf.currentDate.year]]></TransientExpression>
+  </Attribute>
+  <Attribute
+    Name="IsNextYear"
+    IsNotNull="true"
+    DefaultValue="0"
+    Precision="1"
+    ColumnName="IS_NEXT_YEAR"
+    SQLType="NUMERIC"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    TableName="LATEST_ESTIMATES_PROCESS"
+    PrecisionRule="false">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="22"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="CyDetPrefillCode"
+    Precision="10"
+    Scale="0"
+    ColumnName="CY_DET_PREFILL_CODE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="LATEST_ESTIMATES_PROCESS">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="NyDetPrefillCode"
+    Precision="10"
+    Scale="0"
+    ColumnName="NY_DET_PREFILL_CODE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="LATEST_ESTIMATES_PROCESS">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="CyDetPrefillLepId"
+    Precision="20"
+    Scale="0"
+    ColumnName="CY_DET_PREFILL_LEP_ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="LATEST_ESTIMATES_PROCESS">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="NyDetPrefillLepId"
+    Precision="20"
+    Scale="0"
+    ColumnName="NY_DET_PREFILL_LEP_ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="LATEST_ESTIMATES_PROCESS">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="SyncId"
+    Precision="20"
+    Scale="0"
+    ColumnName="SYNC_ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="LATEST_ESTIMATES_PROCESS">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="LetId"
+    Precision="20"    
+    Scale="0"    
+    ColumnName="LET_ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="LATEST_ESTIMATES_PROCESS">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>    
+  </Attribute>    
+  <AccessorAttribute
+    Name="LatestEstimatesTag"
+    Association="com.bayer.ipms.model.entities.assoc.LepLet"
+    AssociationEnd="com.bayer.ipms.model.entities.assoc.LepLet.LatestEstimatesTag"
+    AssociationOtherEnd="com.bayer.ipms.model.entities.assoc.LepLet.LatestEstimatesProcess"
+    Type="com.bayer.ipms.model.base.IPMSEntityImpl"
+    IsUpdateable="true"/>
+  <Key
+    Name="SysC0043804">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0043804"/>
+      <Attr Name="_checkCondition" Value='"ID" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.estimates.LatestEstimatesProcess.Id"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0043805">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0043805"/>
+      <Attr Name="_checkCondition" Value='"NAME" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.estimates.LatestEstimatesProcess.Name"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0043807">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0043807"/>
+      <Attr Name="_checkCondition" Value='"TERMINATION_DATE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.estimates.LatestEstimatesProcess.TerminationDate"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0043808">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0043808"/>
+      <Attr Name="_checkCondition" Value='"STATUS_CODE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.estimates.LatestEstimatesProcess.StatusCode"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0043809">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0043809"/>
+      <Attr Name="_checkCondition" Value='"STATUS_DATE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.estimates.LatestEstimatesProcess.StatusDate"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0043810">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0043810"/>
+      <Attr Name="_checkCondition" Value='"CREATE_USER_ID" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.estimates.LatestEstimatesProcess.CreateUserId"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0043811">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0043811"/>
+      <Attr Name="_checkCondition" Value='"CREATE_DATE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.estimates.LatestEstimatesProcess.CreateDate"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0043812">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0043812"/>
+      <Attr Name="_checkCondition" Value='"IS_SYNCING" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.estimates.LatestEstimatesProcess.IsSyncing"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0043813">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0043813"/>
+      <Attr Name="_checkCondition" Value='"YEAR" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.estimates.LatestEstimatesProcess.Year"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0043814">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0043814"/>
+      <Attr Name="_checkCondition" Value='"IS_NEXT_YEAR" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.estimates.LatestEstimatesProcess.IsNextYear"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0043816">
+    <DesignTime>
+      <Attr Name="_isUnique" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0043816"/>
+    </DesignTime>
+    <AttrArray Name="Attributes"/>
+  </Key>
+  <Key
+    Name="SysC0044008"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0044008"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.estimates.LatestEstimatesProcess.Id"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0044012">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0044012"/>
+      <Attr Name="_checkCondition" Value="is_syncing in (0,1)"/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.estimates.LatestEstimatesProcess.IsSyncing"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0044013">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0044013"/>
+      <Attr Name="_checkCondition" Value="is_next_year in (0,1)"/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.estimates.LatestEstimatesProcess.IsNextYear"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0045503">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0045503"/>
+      <Attr Name="_checkCondition" Value='"IS_LAST" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+  </Key>
+  <Key
+    Name="SysC0045504">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0045504"/>
+      <Attr Name="_checkCondition" Value="is_last in (0,1)"/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+  </Key>
+  <Key
+    Name="SysC0045850">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0045850"/>
+      <Attr Name="_checkCondition" Value='"IS_FORECAST_PROB" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes"/>
+  </Key>
+  <Key
+    Name="SysC0045851">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0045851"/>
+      <Attr Name="_checkCondition" Value='"IS_PREFILL_PROB" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes"/>
+  </Key>
+  <Key
+    Name="SysC0045852">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0045852"/>
+      <Attr Name="_checkCondition" Value="is_forecast_prob in (0,1)"/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes"/>
+  </Key>
+  <Key
+    Name="SysC0045853">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0045853"/>
+      <Attr Name="_checkCondition" Value="is_prefill_prob in (0,1)"/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes"/>
+  </Key>
+  <Key
+    Name="SysC0044091">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0044007"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0044091"/>
+    </DesignTime>
+    <AttrArray Name="Attributes"/>
+  </Key>
+  <Key
+    Name="SysC0044092">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0043934"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0044092"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.estimates.LatestEstimatesProcess.StatusCode"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0044688">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0044007"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0044688"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.estimates.LatestEstimatesProcess.CyDetPrefillCode"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0044689">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0044007"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0044689"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.estimates.LatestEstimatesProcess.NyDetPrefillCode"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0044690">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0044008"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0044690"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.estimates.LatestEstimatesProcess.CyDetPrefillLepId"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0044691">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0044008"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0044691"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.estimates.LatestEstimatesProcess.NyDetPrefillLepId"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0044692">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0044007"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0044692"/>
+    </DesignTime>
+    <AttrArray Name="Attributes"/>
+  </Key>
+  <Key
+    Name="SysC0044693">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0044007"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0044693"/>
+    </DesignTime>
+    <AttrArray Name="Attributes"/>
+  </Key>
+  <Key
+    Name="SysC0044694">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0044008"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0044694"/>
+    </DesignTime>
+    <AttrArray Name="Attributes"/>
+  </Key>
+  <Key
+    Name="SysC0044695">
+    <DesignTime>
+      <Attr Name="_referencedKey" Value="SYS_C0044008"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="SYS_C0044695"/>
+    </DesignTime>
+    <AttrArray Name="Attributes"/>
+  </Key>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.bayer.ipms.model.bundles.modelBundle"/>
+  </ResourceBundle>
+</Entity>

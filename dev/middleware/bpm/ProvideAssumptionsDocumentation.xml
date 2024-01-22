@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?oracleBPM version="12.1.3.0.0.00.00" fileRevision="20120601"?>
+<processDocumentation xmlns="http://xmlns.oracle.com/bpm/taskMetadataService/processDocumentation">
+   <component name="ProvideAssumptions">
+      <topicDocumentations>
+         <topicDocumentation name="ProvideAssumptions">
+            <descriptions>
+               <description locale="en">ProvideAssumptions</description>
+            </descriptions>
+         </topicDocumentation>
+         <topicDocumentation name="ACT10737843924068">
+            <labels>
+               <label locale="en">SubProgram</label>
+            </labels>
+            <descriptions>
+               <description locale="en"></description>
+            </descriptions>
+         </topicDocumentation>
+         <topicDocumentation name="ACT1073794843415">
+            <labels>
+               <label locale="en">SubProgramRoles</label>
+            </labels>
+            <descriptions>
+               <description locale="en"></description>
+            </descriptions>
+         </topicDocumentation>
+         <topicDocumentation name="ACT10737957978349">
+            <labels>
+               <label locale="en">GetProgramLevelAssignees</label>
+            </labels>
+            <descriptions>
+               <description locale="en"></description>
+            </descriptions>
+         </topicDocumentation>
+         <topicDocumentation name="EVT10737948434159">
+            <labels>
+               <label locale="en">subProgramRoleStart</label>
+            </labels>
+         </topicDocumentation>
+         <topicDocumentation name="EVT10737948434125">
+            <labels>
+               <label locale="en">subProgramRoleEnd</label>
+            </labels>
+         </topicDocumentation>
+         <topicDocumentation name="sf43"/>
+         <topicDocumentation name="sf45"/>
+         <topicDocumentation name="ACT10747088382125">
+            <labels>
+               <label locale="en">GetTaskAssignees</label>
+            </labels>
+            <descriptions>
+               <description locale="en"></description>
+            </descriptions>
+         </topicDocumentation>
+         <topicDocumentation name="EVT10737844008084">
+            <labels>
+               <label locale="en">subProgramStart</label>
+            </labels>
+         </topicDocumentation>
+         <topicDocumentation name="EVT10737844008019">
+            <labels>
+               <label locale="en">subProgramEnd</label>
+            </labels>
+            <descriptions>
+               <description locale="en"></description>
+            </descriptions>
+         </topicDocumentation>
+         <topicDocumentation name="EVT10737972977579">
+            <labels>
+               <label locale="en">BoundaryEvent</label>
+            </labels>
+            <descriptions>
+               <description locale="en"></description>
+            </descriptions>
+         </topicDocumentation>
+         <topicDocumentation name="sf40"/>
+         <topicDocumentation name="sf44"/>
+         <topicDocumentation name="sf52"/>
+         <topicDocumentation name="sf197"/>
+         <topicDocumentation name="ACT10737969207342">
+            <labels>
+               <label locale="en">AssignComplete</label>
+            </labels>
+            <descriptions>
+               <description locale="en"></description>
+            </descriptions>
+         </topicDocumentation>
+         <topicDocumentation name="ACT1073797095838">
+            <labels>
+               <label locale="en">TerminationSubProcess</label>
+            </labels>
+            <descriptions>
+               <description locale="en"></description>
+            </descriptions>
+         </topicDocumentation>
+         <topicDocumentation name="EVT10737971042386">
+            <labels>
+               <label locale="en">StartTermination</label>
+            </labels>
+            <descriptions>
+               <description locale="en"></description>
+            </descriptions>
+         </topicDocumentation>
+         <topicDocumentation name="EVT10737971042360">
+            <labels>
+               <label locale="en">EndTermination</label>
+            </labels>
+            <descriptions>
+               <description locale="en"></description>
+            </descriptions>
+         </topicDocumentation>
+         <topicDocumentation name="sf49"/>
+         <topicDocumentation name="ACT10746625357037">
+            <labels>
+               <label locale="en">Provide Planning Assumptions</label>
+            </labels>
+            <descriptions>
+               <description locale="en"></description>
+            </descriptions>
+         </topicDocumentation>
+         <topicDocumentation name="ACT10772412241667">
+            <labels>
+               <label locale="en">ScriptTask</label>
+            </labels>
+            <descriptions>
+               <description locale="en"></description>
+            </descriptions>
+         </topicDocumentation>
+         <topicDocumentation name="EVT10737559865574">
+            <labels>
+               <label locale="en">Start</label>
+            </labels>
+            <descriptions>
+               <description locale="en"></description>
+            </descriptions>
+         </topicDocumentation>
+         <topicDocumentation name="EVT10737559865679">
+            <labels>
+               <label locale="en">End</label>
+            </labels>
+            <descriptions>
+               <description locale="en"></description>
+            </descriptions>
+         </topicDocumentation>
+         <topicDocumentation name="EVT1073797607958">
+            <labels>
+               <label locale="en">BoundaryEvent1</label>
+            </labels>
+            <descriptions>
+               <description locale="en"></description>
+            </descriptions>
+         </topicDocumentation>
+         <topicDocumentation name="sf69"/>
+         <topicDocumentation name="sf41"/>
+         <topicDocumentation name="sf48"/>
+         <topicDocumentation name="sf55"/>
+         <topicDocumentation name="sf99"/>
+         <topicDocumentation name="sf51"/>
+      </topicDocumentations>
+   </component>
+</processDocumentation>

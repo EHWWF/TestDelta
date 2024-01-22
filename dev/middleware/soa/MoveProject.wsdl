@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="MoveProject"
+             targetNamespace="http://xmlns.bayer.com/ipms/soa"
+             xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:client="http://xmlns.bayer.com/ipms/soa"
+             xmlns:ns1="http://xmlns.bayer.com/ipms/soa"
+             xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype">
+
+	<wsdl:types>
+		<schema xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://xmlns.bayer.com/ipms/soa" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/soa/soa.xsd" />
+		</schema>
+	</wsdl:types>
+
+	<wsdl:message name="MoveProjectRequestMessage">
+		<wsdl:part name="payload" element="ns1:move" />
+	</wsdl:message>
+	<wsdl:message name="MoveProjectResponseMessage">
+		<wsdl:part name="payload" element="ns1:response" />
+	</wsdl:message>
+
+	<wsdl:portType name="MoveProject">
+		<wsdl:operation name="process">
+			<wsdl:input  message="client:MoveProjectRequestMessage" />
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<wsdl:portType name="MoveProjectCallback">
+		<wsdl:operation name="callback">
+			<wsdl:input  message="client:MoveProjectResponseMessage" />			
+		</wsdl:operation>
+	</wsdl:portType>
+        
+	<plnk:partnerLinkType name="MoveProject">
+            <plnk:role name="MoveProjectProvider" portType="client:MoveProject"/>
+            <plnk:role name="MoveProjectRequester" portType="client:MoveProjectCallback"/>
+	</plnk:partnerLinkType>
+    
+</wsdl:definitions>

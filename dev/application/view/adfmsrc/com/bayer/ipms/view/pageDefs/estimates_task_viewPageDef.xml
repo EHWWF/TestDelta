@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.64.93" id="estimates_task_viewPageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="Root.WorkspaceAppModule.LatestEstimatesTaskView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="LatestEstimatesTaskViewIterator"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="LatestEstimatesTaskViewIterator"
+                     id="Name">
+      <AttrNames>
+        <Item Value="Name"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LatestEstimatesTaskViewIterator"
+                     id="Comments">
+      <AttrNames>
+        <Item Value="Comments"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LatestEstimatesTaskViewIterator"
+                     id="IsNextYear">
+      <AttrNames>
+        <Item Value="IsNextYear"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LatestEstimatesTaskViewIterator"
+                     id="Year">
+      <AttrNames>
+        <Item Value="Year"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LatestEstimatesTaskViewIterator"
+                     id="PrefillTypeName">
+      <AttrNames>
+        <Item Value="PrefillTypeName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LatestEstimatesTaskViewIterator"
+                     id="TerminationDate">
+      <AttrNames>
+        <Item Value="TerminationDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LatestEstimatesTaskViewIterator"
+                     id="CreateDate">
+      <AttrNames>
+        <Item Value="CreateDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LatestEstimatesTaskViewIterator"
+                     id="ProgramId">
+      <AttrNames>
+        <Item Value="ProgramId"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LatestEstimatesTaskViewIterator"
+                     id="ProjectCode">
+      <AttrNames>
+        <Item Value="ProjectCode"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LatestEstimatesTaskViewIterator"
+                     id="ProjectName">
+      <AttrNames>
+        <Item Value="ProjectName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LatestEstimatesTaskViewIterator"
+                     id="StatusDate">
+      <AttrNames>
+        <Item Value="StatusDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LatestEstimatesTaskViewIterator"
+                     id="ProjectId">
+      <AttrNames>
+        <Item Value="ProjectId"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="LatestEstimatesTaskViewIterator" id="ProcessId">
+      <AttrNames>
+        <Item Value="_ProcessId"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

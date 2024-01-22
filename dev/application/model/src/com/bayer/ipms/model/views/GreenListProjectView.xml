@@ -1,0 +1,842 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="GreenListProjectView"
+  Version="12.2.1.0.31"
+  InheritPersonalization="true"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="com.bayer.ipms.model.base.IPMSViewRowImpl"
+  ComponentClass="com.bayer.ipms.model.base.IPMSViewObjectImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_isExpertMode" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="com.bayer.ipms.model.views.GreenListProjectView_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <Variable
+    Name="UserNameVar"
+    Kind="where"
+    Type="java.lang.String"/>
+  <SQLQuery><![CDATA[select prj.id,  
+                      prj.name,  
+                      prj.code,  
+                      gbu.name  gbu_name,  
+                      sbe.name  sbe_name,  
+                      gr.name main_group_name,  
+                      DECODE(prj.is_portfolio, 1, 'true', 'false') is_portfolio,  
+                      DECODE(prj.state_code, 5, 'true', 'false') is_terminated,  
+                      DECODE(prj.state_code, 2, 'true', 'false') is_onhold,  
+                      prj.controlling_project_type,  
+                      prj.comment_previous_fc,  
+                      prj.current_comment,  
+                      DECODE(prj.is_hpr, 1, 'true', 'false') is_hpr,  
+                      phase.name phase_name,  
+                      case when pcc_date is not null and pcc_date_source in (2,3) then pcc_date  
+                          when d3_date is not null and d3_date_source in (2,3) then d3_date  
+                          else pcc_date end pcc_d3_date,  
+                      d4_date,  
+                      m4c_date, 
+                      d5_date, 
+                      poc_date,  
+                      d6_date,  
+                      d7_date,  
+                      d8_date,  
+                      prob.preclinical probability_preclinical,  
+                      prob.phase1 probability_phase1,  
+                      prob.phase2 probability_phase2,  
+                      prob.phase3 probability_phase3,  
+                      prob.submission probability_submission,  
+                      prob.total probability_total,  
+                      prj.successor_project_id,  
+                      case when pcc_date is not null and pcc_date_source in (2,3) then pcc_date_source  
+                           when d3_date is not null and d3_date_source in (2,3) then d3_date_source  
+                           else pcc_date_source end pcc_d3_date_source,  
+                      d4_date_source,  
+                      m4c_date_source,  
+                      poc_date_source,  
+                      d6_date_source,  
+                      d7_date_source,  
+                      d8_date_source,  
+                      priority.name priority_name,  
+                      stp.name substance_type_name  
+               from project prj  
+                      left join substance_type stp on stp.code = prj.substance_type_code  
+                      left join global_business_unit gbu on prj.pidt_bu_code = gbu.code  
+                      left join strategic_business_entity sbe on prj.sbe_code = sbe.code  
+                      left join project_category cat on prj.project_group_code = cat.code  
+                      left join maingroup gr on gr.code = cat.maingroup_code and gr.is_active = 1  
+                      left join phase on prj.phase_code = phase.code  
+                      left join priority on prj.priority_code = priority.code  
+                      left join prj_cost_probabilities_vw prob on prob.project_id = prj.id  
+                      left join (select project_id,  
+                                        max(decode(milestone_code, 'D3', ms_dates)) d3_date,  
+                                        max(decode(milestone_code, 'PCC', ms_dates)) pcc_date,  
+                                        max(decode(milestone_code, 'D4', ms_dates)) d4_date,  
+                                        max(decode(milestone_code, 'M4C', ms_dates)) m4c_date,  
+                                        max(decode(milestone_code, 'PoC', ms_dates)) poc_date,  
+                                        max(decode(milestone_code, 'D6', ms_dates)) d6_date,  
+                                        max(decode(milestone_code, 'D7', ms_dates)) d7_date,  
+                                        max(decode(milestone_code, 'D8', ms_dates)) d8_date,  
+                                        max(decode(milestone_code, 'D5', ms_dates)) d5_date, 
+                                        max(decode(milestone_code, 'D3', ms_date_source)) d3_date_source,  
+                                        max(decode(milestone_code, 'D3', ms_date_source)) pcc_date_source,  
+                                        max(decode(milestone_code, 'D4', ms_date_source)) d4_date_source,  
+                                        max(decode(milestone_code, 'M4C', ms_date_source)) m4c_date_source,  
+                                        max(decode(milestone_code, 'PoC', ms_date_source)) poc_date_source,  
+                                        max(decode(milestone_code, 'D6', ms_date_source)) d6_date_source,  
+                                        max(decode(milestone_code, 'D7', ms_date_source)) d7_date_source,  
+                                        max(decode(milestone_code, 'D8', ms_date_source)) d8_date_source, 
+                                        max(decode(milestone_code, 'D5', ms_date_source)) d5_date_source 
+                                 from (select project_id, milestone_code,  
+                                              LISTAGG(to_char(ms_date, 'DD-Mon-YYYY'),  
+                                                      ', ') within group (order by ms_date asc) ms_dates,  
+                                              MAX(ms_date_source) ms_date_source  
+                                       from (select distinct p.id project_id, ms.code milestone_code,  
+                                                             COALESCE(vw.actual_date, vw.plan_date, gt.generic_date) as ms_date,  
+                                                             case when vw.actual_date is not null  
+                                                                       then 3  
+                                                                  when vw.plan_date is not null  
+                                                                       then 2  
+                                                                  when gt.generic_date is not null  
+                                                                       then 1  
+                                                                  else 0  
+                                                                 end as ms_date_source  
+                                             from project p  
+                                                    cross join milestone ms  
+                                                    left join milestone_vw vw  
+                                                      on vw.project_id = p.id and vw.milestone_code = ms.code and  
+                                                         vw.timeline_type_code in('CUR', 'RAW') and  
+                                                         vw.timeline_type_code = p.gt_timeline_type  
+                                                    left join (select gt.project_id, gt.milestone_code, gt.generic_date  
+                                                               from generic_timeline gt  
+                                                                      join phase_milestone pm  
+                                                                        on pm.milestone_code = gt.milestone_code  
+                                                               where pm.category = 'GT') gt  
+                                                      on gt.project_id = p.id and gt.milestone_code = ms.code  
+                                             where ms.code in('D3', 'PCC', 'D4', 'M4C', 'PoC', 'D6', 'D7', 'D8','D5'))  
+                                       group by project_id, milestone_code)  
+                                 group by project_id) ms on ms.project_id = prj.id  
+               where UPPER(prj.planning_enabled) = UPPER('green') and (:UserNameVar is null or :UserNameVar = '' or  
+                                                                       EXISTS(select 1  
+                                                                              from user_role  
+                                                                              where program_id = prj.program_id and  
+                                                                                      UPPER(user_id) = UPPER(:UserNameVar)))]]></SQLQuery>
+  <EntityUsage
+    Name="Project"
+    Entity="com.bayer.ipms.model.entities.Project"/>
+  <ViewAttribute
+    Name="Id"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="Id"
+    EntityUsage="Project"
+    AliasName="ID"/>
+  <ViewAttribute
+    Name="Name"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Name"
+    EntityUsage="Project"
+    AliasName="NAME"
+    IsUpdateable="false">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.GreenListProjectView.Name_LABEL"/>
+        <DISPLAYWIDTH
+          Value="20"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Code"
+    PrecisionRule="true"
+    EntityAttrName="Code"
+    EntityUsage="Project"
+    AliasName="CODE"
+    IsUpdateable="false">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.GreenListProjectView.Code_LABEL"/>
+        <DISPLAYWIDTH
+          Value="20"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+ <ViewAttribute
+    Name="GbuName"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="100"
+    Scale="0"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="GBU_NAME"
+    Expression="GBU_NAME"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.GreenListProjectView.GbuName_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="SbeName"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="100"
+    Scale="0"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="SBE_NAME"
+    Expression="SBE_NAME"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.GreenListProjectView.SbeName_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="MainGroupName"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Scale="0"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="MAIN_GROUP_NAME"
+    Expression="MAIN_GROUP_NAME"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.GreenListProjectView.MainGroupName_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IsPortfolio"
+    PrecisionRule="true"
+    IsPersistent="false"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="IS_PORTFOLIO"
+    Expression="IS_PORTFOLIO"
+    IsUpdateable="false"
+    Precision="5"
+    Scale="0"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.GreenListProjectView.IsPortfolio_LABEL"/>
+        <CONTROLTYPE
+          Value="check_box"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IsTerminated"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="IS_TERMINATED"
+    Expression="IS_TERMINATED"
+    SQLType="VARCHAR"
+    Precision="5"
+    Scale="0">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.GreenListProjectView.IsTerminated_LABEL"/>
+        <CONTROLTYPE
+          Value="check_box"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IsOnHold"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="IS_ONHOLD"
+    Expression="IS_ONHOLD"
+    SQLType="VARCHAR"
+    Precision="5"
+    Scale="0">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+      <Attr Name="_diagramName" Value="Is On Hold"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.GreenListProjectView.IsOnHold_LABEL"/>
+        <CONTROLTYPE
+          Value="check_box"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ControllingProjectType"
+    PrecisionRule="true"
+    EntityAttrName="ControllingProjectType"
+    EntityUsage="Project"
+    AliasName="CONTROLLING_PROJECT_TYPE">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.GreenListProjectView.ControllingProjectType_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CommentPreviousFc"
+    PrecisionRule="true"
+    EntityAttrName="CommentPreviousFc"
+    EntityUsage="Project"
+    AliasName="COMMENT_PREVIOUS_FC"
+    IsUpdateable="false">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.GreenListProjectView.CommentPreviousFc_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CurrentComment"
+    PrecisionRule="true"
+    EntityAttrName="CurrentComment"
+    EntityUsage="Project"
+    AliasName="CURRENT_COMMENT">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.GreenListProjectView.CurrentComment_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IsHpr"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="IS_HPR"
+    Expression="IS_HPR"
+    SQLType="VARCHAR"
+    Precision="5"
+    Scale="0">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.GreenListProjectView.IsHpr_LABEL"/>
+        <CONTROLTYPE
+          Value="check_box"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="PhaseName"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="100"
+    Scale="0"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="PHASE_NAME"
+    Expression="PHASE_NAME"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.GreenListProjectView.PhaseName_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="PccD3Date"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="4000"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="PCC_D3_DATE"
+    Expression="PCC_D3_DATE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="4000"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.GreenListProjectView.PccD3Date_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="D4Date"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="4000"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="D4_DATE"
+    Expression="D4_DATE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="4000"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.GreenListProjectView.D4Date_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="M4cDate"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="4000"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="M4C_DATE"
+    Expression="M4C_DATE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="4000"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.GreenListProjectView.M4cDate_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="D5Date"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="4000"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="D5_DATE"
+    Expression="D5_DATE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="4000"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.GreenListProjectView.D5Date_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="PocDate"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="4000"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="POC_DATE"
+    Expression="POC_DATE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="4000"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.GreenListProjectView.PocDate_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="D6Date"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="4000"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="D6_DATE"
+    Expression="D6_DATE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="4000"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.GreenListProjectView.D6Date_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="D7Date"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="4000"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="D7_DATE"
+    Expression="D7_DATE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="4000"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.GreenListProjectView.D7Date_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="D8Date"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="4000"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="D8_DATE"
+    Expression="D8_DATE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="4000"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.GreenListProjectView.D8Date_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ProbabilityPreclinical"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="PROBABILITY_PRECLINICAL"
+    Expression="PROBABILITY_PRECLINICAL"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.GreenListProjectView.ProbabilityPreclinical_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ProbabilityPhase1"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="PROBABILITY_PHASE1"
+    Expression="PROBABILITY_PHASE1"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.GreenListProjectView.ProbabilityPhase1_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ProbabilityPhase2"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="PROBABILITY_PHASE2"
+    Expression="PROBABILITY_PHASE2"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.GreenListProjectView.ProbabilityPhase2_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ProbabilityPhase3"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="PROBABILITY_PHASE3"
+    Expression="PROBABILITY_PHASE3"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.GreenListProjectView.ProbabilityPhase3_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ProbabilitySubmission"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="PROBABILITY_SUBMISSION"
+    Expression="PROBABILITY_SUBMISSION"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.GreenListProjectView.ProbabilitySubmission_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ProbabilityTotal"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="PROBABILITY_TOTAL"
+    Expression="PROBABILITY_TOTAL"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.GreenListProjectView.ProbabilityTotal_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="SuccessorProjectId"
+    PrecisionRule="true"
+    EntityAttrName="SuccessorProjectId"
+    EntityUsage="Project"
+    AliasName="SUCCESSOR_PROJECT_ID"
+    IsUpdateable="false">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.GreenListProjectView.SuccessorProjectId_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="PccD3DateSource"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="PCC_D3_DATE_SOURCE"
+    Expression="PCC_D3_DATE_SOURCE"
+    SQLType="NUMERIC">
+       <DesignTime>
+      <Attr Name="_DisplaySize" Value="22"/>
+    </DesignTime>
+    </ViewAttribute>
+  <ViewAttribute
+    Name="D4DateSource"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="D4_DATE_SOURCE"
+    Expression="D4_DATE_SOURCE"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="22"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="M4cDateSource"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="M4C_DATE_SOURCE"
+    Expression="M4C_DATE_SOURCE"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="22"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="PocDateSource"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="POC_DATE_SOURCE"
+    Expression="POC_DATE_SOURCE"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="22"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="D6DateSource"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="D6_DATE_SOURCE"
+    Expression="D6_DATE_SOURCE"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="22"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="D7DateSource"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="D7_DATE_SOURCE"
+    Expression="D7_DATE_SOURCE"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="22"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="D8DateSource"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="D8_DATE_SOURCE"
+    Expression="D8_DATE_SOURCE"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="22"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="PriorityName"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="100"
+    Scale="0"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="PRIORITY_NAME"
+    Expression="PRIORITY_NAME"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.GreenListProjectView.PriorityName_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="SubstanceTypeName"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    AliasName="substance_type_name"
+    SQLType="VARCHAR"
+    Expression="substance_type_name">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.GreenListProjectView.SubstanceTypeName_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.bayer.ipms.model.bundles.modelBundle"/>
+  </ResourceBundle>
+</ViewObject>

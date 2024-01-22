@@ -1,0 +1,1 @@
+alter table study add(is_timeline_auto_import number(1) default 0 not null);

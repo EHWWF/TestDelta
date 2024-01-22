@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI (http://jax-ws.java.net). RI's version is JAX-WS RI 2.2.11-b150616.1732 svn-revision#a247ba216861f2c0baac9a3657c5690bce0c744d. --><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:p6exp="http://xmlns.oracle.com/Primavera/P6/WS/IntegrationFaultType/V1" targetNamespace="http://xmlns.oracle.com/Primavera/P6/WS/IntegrationFaultType/V1" elementFormDefault="qualified">
+
+    <xsd:complexType name="IntegrationFaultType">
+        <xsd:sequence>
+            <xsd:element name="ErrorType" type="p6exp:IntegrationFaultCodeType"/>
+            <xsd:element name="ErrorCode" type="xsd:int"/>
+            <xsd:element name="ErrorDescription" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="StackTrace" type="xsd:string" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:element name="IntegrationFault" type="p6exp:IntegrationFaultType"/>
+
+    <xsd:simpleType name="IntegrationFaultCodeType">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="General"/>
+            <xsd:enumeration value="Presentation"/>
+            <xsd:enumeration value="Network"/>
+            <xsd:enumeration value="Server"/>
+            <xsd:enumeration value="Business Rules"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+</xsd:schema>

@@ -1,0 +1,147 @@
+----------------------------------------------------------
+--create tablespace FDA_TS_ADM datafile '/opt/oracle/app/oracle/oradata/IPMSPDW/IPMSPDW_FDA_TS_ADM_01.dbf' size 1G;
+create tablespace FDA_TS_ADM datafile '/opt/oracle/database/oradata/promis/fda_ts_adm_01.dbf' size 100M;
+create tablespace FDA_TS_PROJECT datafile '/opt/oracle/app/oracle/oradata/IPMSPDW/IPMSPDW_FDA_TS_PROJECT_01.dbf' size 3G;
+create tablespace FDA_TS_PROGRAM datafile '/opt/oracle/app/oracle/oradata/IPMSPDW/IPMSPDW_FDA_TS_PROGRAM_01.dbf' size 1G;
+create tablespace FDA_TS_TIMELINE datafile '/opt/oracle/app/oracle/oradata/IPMSPDW/IPMSPDW_FDA_TS_TIMELINE_01.dbf' size 1G;
+create tablespace FDA_TS_IMPORT datafile '/opt/oracle/app/oracle/oradata/IPMSPDW/IPMSPDW_FDA_TS_IMPORT_01.dbf' size 1G;
+create tablespace FDA_TS_LE datafile '/opt/oracle/app/oracle/oradata/IPMSPDW/IPMSPDW_FDA_TS_LE_01.dbf' size 1G;
+--create tablespace FDA_TS_COSTS datafile '/opt/oracle/app/oracle/oradata/IPMSPDW/IPMSPDW_FDA_TS_COSTS_01.dbf' size 2G;
+create tablespace FDA_TS_COSTS datafile '/opt/oracle/database/oradata/promis/fda_ts_costs_01.dbf' size 500M;
+--create tablespace FDA_TS_STUDY datafile '/opt/oracle/app/oracle/oradata/IPMSPDW/IPMSPDW_FDA_TS_STUDY_01.dbf' size 1G;
+create tablespace FDA_TS_STUDY datafile '/opt/oracle/database/oradata/promis/fda_ts_study_01.dbf' size 100M;
+ ----------------------------------------------------------
+alter user ipms_data quota unlimited on FDA_TS_ADM;
+alter user ipms_data quota unlimited on FDA_TS_PROJECT;
+alter user ipms_data quota unlimited on FDA_TS_PROGRAM;
+alter user ipms_data quota unlimited on FDA_TS_TIMELINE;
+alter user ipms_data quota unlimited on FDA_TS_IMPORT;
+alter user ipms_data quota unlimited on FDA_TS_LE;
+alter user ipms_data quota unlimited on FDA_TS_COSTS;
+alter user ipms_data quota unlimited on FDA_TS_STUDY;
+ ----------------------------------------------------------
+grant flashback archive administer to ipms_data;
+grant execute on dbms_flashback_archive to ipms_data;
+grant create any context to ipms_data;
+----------------------------------------------------------
+----------------------------------------------------------
+--alter flashback archive FDA_TB_IMPORT_STUDY purge all;
+--alter flashback archive FDA_TB_IMPORT_TIMELINE purge all;
+--alter flashback archive FDA_TB_COSTS purge all;
+--alter table COSTS no flashback archive;
+--alter table IMPORT_TIMELINE no flashback archive;
+--alter table IMPORT_STUDY no flashback archive;
+----------------------------------------------------------
+--alter table COMMENTS no flashback archive;
+----------------------------------------------------------
+--select * from dba_flashback_archive_tables where flashback_archive_name in ('FDA_TB_IMPORT_STUDY','FDA_TB_IMPORT_TIMELINE','FDA_TB_COSTS') order by 3,1;
+----------------------------------------------------------
+--ALTER FLASHBACK ARCHIVE fla1 PURGE BEFORE TIMESTAMP (SYSTIMESTAMP - INTERVAL '1' DAY);
+--alter flashback archive FDA_TB_IMPORT_STUDY purge before timestamp to_timestamp('2015-12-18 00:00:00', 'YYYY-MM-DD HH24:MI:SS') ;
+--alter flashback archive FDA_TB_IMPORT_STUDY purge all;
+--alter flashback archive FDA_TB_IMPORT_TIMELINE purge before timestamp to_timestamp('2015-12-18 00:00:00', 'YYYY-MM-DD HH24:MI:SS') ;
+--alter flashback archive FDA_TB_IMPORT_TIMELINE purge all;
+--alter flashback archive FDA_TB_COSTS purge before timestamp to_timestamp('2015-12-18 00:00:00', 'YYYY-MM-DD HH24:MI:SS') ;
+--alter flashback archive FDA_TB_COSTS purge all;
+----------------------------------------------------------
+--ALTER FLASHBACK ARCHIVE FDA_TB_IMPORT_STUDY MODIFY RETENTION 10 DAY;
+--ALTER FLASHBACK ARCHIVE FDA_TB_IMPORT_TIMELINE MODIFY RETENTION 10 DAY;
+--ALTER FLASHBACK ARCHIVE FDA_TB_COSTS MODIFY RETENTION 10 DAY;
+----------------------------------------------------------
+--ALTER FLASHBACK ARCHIVE FDA_ADM PURGE ALL;
+--ALTER FLASHBACK ARCHIVE FDA_COSTS PURGE ALL;
+--ALTER FLASHBACK ARCHIVE FDA_IMPORT PURGE ALL;
+--ALTER FLASHBACK ARCHIVE FDA_LE PURGE ALL;
+--ALTER FLASHBACK ARCHIVE FDA_PROGRAM PURGE ALL;
+--ALTER FLASHBACK ARCHIVE FDA_PROJECT PURGE ALL;
+--ALTER FLASHBACK ARCHIVE FDA_STUDY PURGE ALL;
+--ALTER FLASHBACK ARCHIVE FDA_TIMELINE PURGE ALL;
+----------------------------------------------------------
+--drop flashback archive FDA_ADM;
+--drop flashback archive FDA_COSTS;
+--drop flashback archive FDA_IMPORT;
+--drop flashback archive FDA_LE;
+--drop flashback archive FDA_PROGRAM;
+--drop flashback archive FDA_PROJECT;
+--drop flashback archive FDA_STUDY;
+--drop flashback archive FDA_TIMELINE;
+----------------------------------------------------------
+----------------------------------------------------------
+create flashback archive FDA_ADM tablespace FDA_TS_ADM quota 1G retention 6 month;
+create flashback archive FDA_COSTS tablespace FDA_TS_COSTS quota 3G retention 1 year;
+create flashback archive FDA_IMPORT tablespace FDA_TS_IMPORT quota 1G retention 1 year;
+create flashback archive FDA_LE tablespace FDA_TS_LE quota 2G retention 1 year;
+create flashback archive FDA_PROGRAM tablespace FDA_TS_PROGRAM quota 1G retention 1 year;
+create flashback archive FDA_PROJECT tablespace FDA_TS_PROJECT quota 3G retention 1 year;
+create flashback archive FDA_STUDY tablespace FDA_TS_STUDY quota 1G retention 1 year;
+create flashback archive FDA_TIMELINE tablespace FDA_TS_TIMELINE quota 2G retention 6 month;
+create flashback archive FDA_TB_COSTS tablespace FDA_TS_COSTS quota 2G retention 14 day;
+create flashback archive FDA_TB_IMPORT_STUDY tablespace FDA_TS_IMPORT quota 1G retention 14 day;
+create flashback archive FDA_TB_IMPORT_TIMELINE tablespace FDA_TS_IMPORT quota 1G retention 14 day;
+----------------------------------------------------------
+----------------------------------------------------------
+--select 'alter table '||table_name||' flashback archive '||FLASHBACK_ARCHIVE_NAME||';' fda from dba_flashback_archive_tables order by FLASHBACK_ARCHIVE_NAME,table_name;
+----------------------------------------------------------
+alter table ANNOUNCEMENT flashback archive FDA_ADM;
+alter table CONFIGURATION flashback archive FDA_ADM;
+alter table FUNCTION flashback archive FDA_ADM;
+alter table GLOBAL_BUSINESS_UNIT flashback archive FDA_ADM;
+alter table GOAL_STATUS flashback archive FDA_ADM;
+alter table LICENSE_TYPE flashback archive FDA_ADM;
+alter table NEWS_CATEGORY flashback archive FDA_ADM;
+alter table PRIORITY flashback archive FDA_ADM;
+alter table PROJECT_AREA flashback archive FDA_ADM;
+alter table PROJECT_CATEGORY flashback archive FDA_ADM;
+alter table PROJECT_GOAL_FACTOR flashback archive FDA_ADM;
+alter table PROJECT_SOURCE flashback archive FDA_ADM;
+alter table PROJECT_STATE flashback archive FDA_ADM;
+alter table REFERENCE flashback archive FDA_ADM;
+alter table REGION flashback archive FDA_ADM;
+alter table STUDY_STATUS flashback archive FDA_ADM;
+alter table SUBFUNCTION flashback archive FDA_ADM;
+alter table SUBSTANCE_TYPE flashback archive FDA_ADM;
+alter table TEAM_ROLE flashback archive FDA_ADM;
+alter table TERMINATION_REASON flashback archive FDA_ADM;
+alter table THERAPEUTIC_AREA flashback archive FDA_ADM;
+alter table TPP_CATEGORY flashback archive FDA_ADM;
+alter table TPP_SUBCATEGORY flashback archive FDA_ADM;
+alter table COSTS_PROBABILITY flashback archive FDA_COSTS;
+alter table COSTS_SCOPE flashback archive FDA_COSTS;
+alter table COSTS_SUBTYPE flashback archive FDA_COSTS;
+alter table COSTS_TYPE flashback archive FDA_COSTS;
+alter table LTC_INSTANCE flashback archive FDA_COSTS;
+alter table LTC_PLAN flashback archive FDA_COSTS;
+alter table LTC_VALUE flashback archive FDA_COSTS;
+alter table IMPORT_D1 flashback archive FDA_IMPORT;
+alter table IMPORT_STUDY_DATA flashback archive FDA_IMPORT;
+alter table LATEST_ESTIMATE flashback archive FDA_LE;
+alter table LATEST_ESTIMATES_PROCESS flashback archive FDA_LE;
+alter table LATEST_ESTIMATES_PROJECT flashback archive FDA_LE;
+alter table LATEST_ESTIMATES_TAG flashback archive FDA_LE;
+alter table PLAN_ASSUMPTION_REQUEST flashback archive FDA_LE;
+alter table GOAL flashback archive FDA_PROGRAM;
+alter table PROGRAM flashback archive FDA_PROGRAM;
+alter table PROGRAM_SANDBOX flashback archive FDA_PROGRAM;
+alter table TEAM_MEMBER flashback archive FDA_PROGRAM;
+alter table USER_ROLE flashback archive FDA_PROGRAM;
+alter table PROJECT flashback archive FDA_PROJECT;
+alter table PROJECT_SUBSTANCE_CODE flashback archive FDA_PROJECT;
+alter table TARGET_PRODUCT_PROFILE flashback archive FDA_PROJECT;
+alter table TEAM_MEMBER_PROJECT flashback archive FDA_PROJECT;
+alter table TPP_VALUES flashback archive FDA_PROJECT;
+alter table LEAD_STUDIES flashback archive FDA_STUDY;
+alter table LEAD_STUDY_INSTANCE flashback archive FDA_STUDY;
+alter table LEAD_STUDY_MAP flashback archive FDA_STUDY;
+alter table PHASE flashback archive FDA_STUDY;
+alter table PHASE_DURATION flashback archive FDA_STUDY;
+alter table PHASE_ESTIMATED flashback archive FDA_STUDY;
+alter table PHASE_MILESTONE flashback archive FDA_STUDY;
+alter table GENERIC_TIMELINE flashback archive FDA_TIMELINE;
+alter table TIMELINE flashback archive FDA_TIMELINE;
+alter table ltc_tag flashback archive FDA_COSTS;
+alter table ltc_process flashback archive FDA_COSTS;
+alter table ltc_project flashback archive FDA_COSTS;
+alter table ltc_estimate flashback archive FDA_COSTS;
+alter table ltc_milestone_phase_mapping flashback archive FDA_COSTS;
+----------------------------------------------------------
+----------------------------------------------------------

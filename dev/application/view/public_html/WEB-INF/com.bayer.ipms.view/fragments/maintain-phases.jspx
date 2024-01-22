@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:h="http://java.sun.com/jsf/html"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+  <f:view>
+    <f:loadBundle basename="com.bayer.ipms.view.bundles.viewBundle"
+                  var="bundle"/>
+    <af:document id="d1" title="#{bundle.maintainPhaseMilestones}">
+      <af:messages id="m1"/>
+      <af:form id="f1">
+        <af:pageTemplate viewId="/WEB-INF/com.bayer.ipms.view/templates/ipms-popup-template.jspx"
+                         id="pt1">
+          <f:facet name="summary"></f:facet>
+          <f:facet name="content">
+            <af:panelCollection id="pc1" styleClass="AFStretchWidth"
+                                featuresOff="detach viewMenu statusBar">
+              <f:facet name="toolbar">
+                <af:toolbar id="tools">
+                  <af:commandToolbarButton shortDesc="#{bundle.globalAdd}"
+                                           text="#{bundle.globalAdd}"
+                                           icon="/images/new.png"
+                                           immediate="true"
+                                           actionListener="#{bindings.CreateInsert.execute}"/>
+                  <af:commandToolbarButton shortDesc="#{bundle.globalRemove}"
+                                           text="#{bundle.globalRemove}"
+                                           icon="/images/remove.png"
+                                           immediate="true"
+                                           actionListener="#{utilsBean.onDelete}">
+                    <f:attribute name="table" value="table"/>
+                    <f:attribute name="iterator"
+                                 value="#{bindings.PhaseMilestoneViewIterator}"/>
+                  </af:commandToolbarButton>
+                </af:toolbar>
+              </f:facet>
+              <af:table value="#{bindings.PhaseMilestoneView.collectionModel}"
+                        var="row"
+                        rows="#{bindings.PhaseMilestoneView.rangeSize}"
+                        emptyText="#{bindings.PhaseMilestoneView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                        fetchSize="#{bindings.PhaseMilestoneView.rangeSize}"
+                        rowBandingInterval="0" rowSelection="multiple"
+                        id="table" columnStretching="last" editingMode="editAll"
+                        autoHeightRows="0" contentDelivery="immediate">
+                <af:column sortProperty="#{bindings.PhaseMilestoneView.hints.PhaseCode.name}"
+                           sortable="true"
+                           headerText="#{bindings.PhaseMilestoneView.hints.PhaseCode.label}"
+                           id="c1">
+                  <af:selectOneChoice value="#{row.bindings.PhaseCode.inputValue}"
+                                      label="#{row.bindings.PhaseCode.label}"
+                                      required="#{bindings.PhaseMilestoneView.hints.PhaseCode.mandatory}"
+                                      shortDesc="#{bindings.PhaseMilestoneView.hints.PhaseCode.tooltip}"
+                                      id="socPhase">
+                    <f:selectItems value="#{row.bindings.PhaseCode.items}"
+                                   id="si1"/>
+                  </af:selectOneChoice>
+                </af:column>
+                <af:column sortProperty="#{bindings.PhaseMilestoneView.hints.MilestoneCode.name}"
+                           sortable="true"
+                           headerText="#{bindings.PhaseMilestoneView.hints.MilestoneCode.label}"
+                           id="c2">
+                  <af:selectOneChoice value="#{row.bindings.MilestoneCode.inputValue}"
+                                      label="#{row.bindings.MilestoneCode.label}"
+                                      required="#{bindings.PhaseMilestoneView.hints.MilestoneCode.mandatory}"
+                                      shortDesc="#{bindings.PhaseMilestoneView.hints.MilestoneCode.tooltip}"
+                                      id="socMStone">
+                    <f:selectItems value="#{row.bindings.MilestoneCode.items}"
+                                   id="si2"/>
+                  </af:selectOneChoice>
+                </af:column>
+              </af:table>
+            </af:panelCollection>
+          </f:facet>
+          <f:facet name="controls">
+            <f:subview id="sub1">
+              <af:declarativeComponent viewId="global-ok-cancel.jsff" id="goc">
+                <f:attribute name="showCancel" value="true"/>
+              </af:declarativeComponent>
+            </f:subview>
+          </f:facet>
+        </af:pageTemplate>
+      </af:form>
+    </af:document>
+  </f:view>
+</jsp:root>

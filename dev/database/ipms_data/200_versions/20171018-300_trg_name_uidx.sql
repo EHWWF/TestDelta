@@ -1,0 +1,1 @@
+create unique index trg_name_ui on therapeutic_research_group(name);

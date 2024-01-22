@@ -1,0 +1,632 @@
+<?xml version="1.0" encoding="windows-1257" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+    xmlns="http://xmlns.oracle.com/bc4j"
+    Name="TimelineView"
+    Version="12.2.1.12.2"
+    InheritPersonalization="true"
+    BindingStyle="OracleName"
+    CustomQuery="true"
+    RowClass="com.bayer.ipms.model.views.TimelineViewRowImpl"
+    ComponentClass="com.bayer.ipms.model.base.IPMSViewObjectImpl"
+    ClientRowProxyName="com.bayer.ipms.model.views.client.TimelineViewRowClient"
+    FetchMode="FETCH_AS_NEEDED"
+    FetchSize="100"
+    PageIterMode="Full"
+    ViewLinkAccessorRetained="true"
+    RowInterface="com.bayer.ipms.model.views.common.TimelineViewRow">
+    <DesignTime>
+        <Attr Name="_codeGenFlag2" Value="Access"/>
+        <Attr Name="_isCodegen" Value="true"/>
+        <Attr Name="_isExpertMode" Value="true"/>
+    </DesignTime>
+    <ViewAccessor
+        Name="BaseLineTypeView"
+        ViewObjectName="com.bayer.ipms.model.views.lookups.BaseLineTypeView"
+        AMUsageName="SharedAppModule"
+        ViewInstanceName="BaseLineTypeView"
+        RowLevelBinds="true"/>
+    <ListBinding
+        Name="LOV_BaselineTypeId2"
+        ListVOName="BaseLineTypeView"
+        ListRangeSize="-1"
+        NullValueFlag="none"
+        MRUCount="0">
+        <AttrArray Name="AttrNames">
+            <Item Value="BaselineTypeId2"/>
+        </AttrArray>
+        <AttrArray Name="AttrExpressions"/>
+        <AttrArray Name="ListAttrNames">
+            <Item Value="Code"/>
+        </AttrArray>
+        <AttrArray Name="ListDisplayAttrNames">
+            <Item Value="Name"/>
+        </AttrArray>
+        <DisplayCriteria/>
+    </ListBinding>
+    <SQLQuery><![CDATA[select timeline.id,             
+       timeline.name,             
+       timeline.project_id,             
+       timeline.type_code,             
+       timeline.create_date,             
+       timeline.update_date,             
+       timeline.sync_date,             
+       timeline.is_syncing,             
+       timeline.comments,              
+       timeline.reference_id,             
+       timeline.start_date,             
+       timeline.finish_date,             
+       timeline.sync_id,           
+       timeline.ltc_process_id,	           
+       timeline.is_pa_conflict,       
+       timeline.baseline_type_id Baseline_Type_Id2,	         
+       timelinetype.name as type_name,             
+       timelinetype.code as type_code_2,                     
+       ltcprocess.id as id3,           
+       ltcprocess.ltc_tag_id,             
+       ltcprocess.PROCESS_DESCRIPTION,  
+       baselinetype.name as name1,             
+       baselinetype.id as id1,             
+       ltcinstance.id as id2,             
+       ltcinstance.excel_report,             
+      case when timeline.type_code = 'RAW' and  max_process.ltc_process_id is not null             
+                 then timestamp_to_scn(sysdate)   
+                 when (timeline.type_code = 'CUR'or timeline.type_code = 'APR') and timeline.ltci_id is not null  
+                 then timeline.ltci_id  
+            else latest_bsl.scn             
+           end ltci_id,                      
+       decode(timeline.type_code,'RAW',max_process.ltc_process_id,nvl( timeline.ltc_process_id,latest_bsl.ltc_process_id)) as max_ltc_process_id                              
+       from timeline timeline             
+       join timeline_type timelinetype on (timeline.type_code = timelinetype.code)             
+       left join baseline_type baselinetype on (timeline.baseline_type_id = baselinetype.id)             
+       left join ltc_instance ltcinstance on (timeline.ltci_id = ltcinstance.id)             
+       left join (select row_number() over (partition by prj.project_id order by prc.create_date desc) as rank_max_process_date,             
+                         prj.project_id,             
+                         prc.id ltc_process_id             
+                  from ltc_process prc             
+                         join ltc_project prj on prj.ltc_process_id = prc.id) max_process             
+         on (max_process.project_id = timeline.project_id and rank_max_process_date = 1)             
+       left join (select row_number() over (partition by bsl.timeline_id order by bsl.create_date_p6 desc) as baseline_num,             
+                         bsl.timeline_id,             
+                         bsl.ltc_process_id,             
+                         bsl.ltci_id scn             
+                  from timeline_baseline bsl) latest_bsl             
+         on substr(latest_bsl.timeline_id, 1, length(latest_bsl.timeline_id) - 4) =             
+            substr(timeline.id, 1, length(timeline.id) - 4)             
+              and substr(latest_bsl.timeline_id, length(latest_bsl.timeline_id) - 2, length(latest_bsl.timeline_id)) =             
+                  decode(substr(timeline.id, length(timeline.id) - 2, length(timeline.id)),'CUR','RAW','APR','CUR','RAW')             
+              and latest_bsl.baseline_num = 1             
+       left join ltc_process ltcprocess on ltcprocess.id = decode(timeline.type_code,'RAW',max_process.ltc_process_id,nvl( timeline.ltc_process_id,latest_bsl.ltc_process_id))   
+	   order by decode(type_code, 'RAW', 1, 'CUR', 2, 'APR', 3, 0)]]></SQLQuery>
+    <EntityUsage
+        Name="Timeline"
+        Entity="com.bayer.ipms.model.entities.Timeline"/>
+    <EntityUsage
+        Name="TimelineType"
+        Entity="com.bayer.ipms.model.entities.lookups.TimelineType"
+        Association="com.bayer.ipms.model.entities.assoc.TimelineType"
+        AssociationEnd="com.bayer.ipms.model.entities.assoc.TimelineType.TimelineType"
+        SourceUsage="com.bayer.ipms.model.views.TimelineView.Timeline"
+        ReadOnly="true"
+        Reference="true"
+        DeleteParticipant="false"
+        JoinType="INNER JOIN">
+        <DesignTime>
+            <AttrArray Name="_srcAttributes">
+                <Item Value="com.bayer.ipms.model.entities.Timeline.TypeCode"/>
+            </AttrArray>
+            <AttrArray Name="_dstAttributes">
+                <Item Value="com.bayer.ipms.model.entities.lookups.TimelineType.Code"/>
+            </AttrArray>
+        </DesignTime>
+    </EntityUsage>
+    <EntityUsage
+        Name="BaselineType"
+        Entity="com.bayer.ipms.model.entities.lookups.BaselineType"
+        ReadOnly="true"
+        DeleteParticipant="false">
+        <DesignTime>
+            <Attr Name="_customjoin" Value="true"/>
+        </DesignTime>
+    </EntityUsage>
+    <EntityUsage
+        Name="LtcInstance"
+        Entity="com.bayer.ipms.model.entities.LtcInstance"
+        ReadOnly="true"
+        DeleteParticipant="false">
+        <DesignTime>
+            <Attr Name="_customjoin" Value="true"/>
+        </DesignTime>
+    </EntityUsage>
+    <EntityUsage
+        Name="LTCProcessTimeline"
+        Entity="com.bayer.ipms.model.entities.ltc.LTCProcessTimeline"
+        ReadOnly="true"
+        DeleteParticipant="false">
+        <DesignTime>
+            <Attr Name="_customjoin" Value="true"/>
+        </DesignTime>
+    </EntityUsage>
+    <Properties>
+        <SchemaBasedProperties>
+            <LABEL
+                ResId="com.bayer.ipms.model.views.TimelineView.UpdateDate_LABEL"/>
+        </SchemaBasedProperties>
+    </Properties>
+    <ViewAttribute
+        Name="Id"
+        IsUpdateable="false"
+        PrecisionRule="true"
+        EntityAttrName="Id"
+        EntityUsage="Timeline"
+        AliasName="ID"/>
+    <ViewAttribute
+        Name="Name"
+        PrecisionRule="true"
+        EntityAttrName="Name"
+        EntityUsage="Timeline"
+        AliasName="NAME"/>
+    <ViewAttribute
+        Name="ProjectId"
+        IsUpdateable="false"
+        IsNotNull="true"
+        PrecisionRule="true"
+        EntityAttrName="ProjectId"
+        EntityUsage="Timeline"
+        AliasName="PROJECT_ID"/>
+    <ViewAttribute
+        Name="TypeCode"
+        IsUpdateable="false"
+        IsNotNull="true"
+        PrecisionRule="true"
+        EntityAttrName="TypeCode"
+        EntityUsage="Timeline"
+        AliasName="TYPE_CODE"/>
+    <ViewAttribute
+        Name="CreateDate"
+        IsUpdateable="false"
+        PrecisionRule="true"
+        EntityAttrName="CreateDate"
+        EntityUsage="Timeline"
+        AliasName="CREATE_DATE">
+        <Properties>
+            <SchemaBasedProperties>
+                <FMT_FORMATTER
+                    ResId="com.bayer.ipms.model.views.TimelineView.CreateDate_FMT_FORMATTER"/>
+                <FMT_FORMAT
+                    ResId="com.bayer.ipms.model.views.TimelineView.CreateDate_FMT_FORMAT"/>
+                <LABEL
+                    ResId="com.bayer.ipms.model.views.TimelineView.CreateDate_LABEL"/>
+            </SchemaBasedProperties>
+        </Properties>
+    </ViewAttribute>
+    <ViewAttribute
+        Name="UpdateDate"
+        IsUpdateable="false"
+        PrecisionRule="true"
+        EntityAttrName="UpdateDate"
+        EntityUsage="Timeline"
+        AliasName="UPDATE_DATE">
+        <Properties>
+            <SchemaBasedProperties>
+                <LABEL
+                    ResId="com.bayer.ipms.model.views.TimelineView.UpdateDate_LABEL"/>
+            </SchemaBasedProperties>
+        </Properties>
+    </ViewAttribute>
+    <ViewAttribute
+        Name="SyncDate"
+        IsUpdateable="false"
+        PrecisionRule="true"
+        EntityAttrName="SyncDate"
+        EntityUsage="Timeline"
+        AliasName="SYNC_DATE">
+        <Properties>
+            <SchemaBasedProperties>
+                <FMT_FORMATTER
+                    ResId="com.bayer.ipms.model.views.TimelineView.SyncDate_FMT_FORMATTER"/>
+                <FMT_FORMAT
+                    ResId="com.bayer.ipms.model.views.TimelineView.SyncDate_FMT_FORMAT"/>
+                <LABEL
+                    ResId="com.bayer.ipms.model.views.TimelineView.SyncDate_LABEL"/>
+            </SchemaBasedProperties>
+        </Properties>
+    </ViewAttribute>
+    <ViewAttribute
+        Name="IsSyncing"
+        PrecisionRule="true"
+        EntityAttrName="IsSyncing"
+        EntityUsage="Timeline"
+        AliasName="IS_SYNCING">
+        <Properties>
+            <SchemaBasedProperties>
+                <LABEL
+                    ResId="com.bayer.ipms.model.views.TimelineView.IsSyncing_LABEL"/>
+            </SchemaBasedProperties>
+        </Properties>
+    </ViewAttribute>
+    <ViewAttribute
+        Name="Comments"
+        PrecisionRule="true"
+        EntityAttrName="Comments"
+        EntityUsage="Timeline"
+        AliasName="COMMENTS">
+        <Properties>
+            <SchemaBasedProperties>
+                <LABEL
+                    ResId="com.bayer.ipms.model.views.TimelineView.Comments_LABEL"/>
+                <DISPLAYWIDTH
+                    Value="100"/>
+                <DISPLAYHEIGHT
+                    Value="5"/>
+            </SchemaBasedProperties>
+        </Properties>
+    </ViewAttribute>
+    <ViewAttribute
+        Name="ReferenceId"
+        IsUpdateable="false"
+        PrecisionRule="true"
+        EntityAttrName="ReferenceId"
+        EntityUsage="Timeline"
+        AliasName="REFERENCE_ID">
+        <Properties>
+            <SchemaBasedProperties>
+                <LABEL
+                    ResId="com.bayer.ipms.model.views.TimelineView.ReferenceId_LABEL"/>
+            </SchemaBasedProperties>
+        </Properties>
+    </ViewAttribute>
+    <ViewAttribute
+        Name="StartDate"
+        IsNotNull="true"
+        PrecisionRule="true"
+        EntityAttrName="StartDate"
+        EntityUsage="Timeline"
+        AliasName="START_DATE"/>
+    <ViewAttribute
+        Name="FinishDate"
+        PrecisionRule="true"
+        EntityAttrName="FinishDate"
+        EntityUsage="Timeline"
+        AliasName="FINISH_DATE"/>
+    <ViewAttribute
+        Name="SyncId"
+        IsUpdateable="false"
+        PrecisionRule="true"
+        EntityAttrName="SyncId"
+        EntityUsage="Timeline"
+        AliasName="SYNC_ID"/>
+    <ViewAttribute
+        Name="LtcProcessId"
+        PrecisionRule="true"
+        EntityAttrName="LtcProcessId"
+        EntityUsage="Timeline"
+        AliasName="LTC_PROCESS_ID"/>
+    <ViewAttribute
+        Name="IsPaConflict"
+        IsNotNull="true"
+        PrecisionRule="true"
+        EntityAttrName="IsPaConflict"
+        EntityUsage="Timeline"
+        AliasName="IS_PA_CONFLICT"/>
+    <ViewAttribute
+        Name="BaselineTypeId2"
+        PrecisionRule="true"
+        AliasName="BASELINE_TYPE_ID2"
+        EntityAttrName="BaselineTypeId"
+        EntityUsage="Timeline"/>
+    <ViewAttribute
+        Name="TypeName"
+        IsNotNull="true"
+        PrecisionRule="true"
+        EntityAttrName="Name"
+        EntityUsage="TimelineType"
+        AliasName="type_name">
+        <Properties>
+            <SchemaBasedProperties>
+                <LABEL
+                    ResId="com.bayer.ipms.model.views.TimelineView.TypeName_LABEL"/>
+            </SchemaBasedProperties>
+        </Properties>
+    </ViewAttribute>
+    <ViewAttribute
+        Name="_TypeCode"
+        IsNotNull="true"
+        PrecisionRule="true"
+        EntityAttrName="Code"
+        EntityUsage="TimelineType"
+        AliasName="TYPE_CODE_2"/>
+    <ViewAttribute
+        Name="Id3"
+        IsNotNull="true"
+        PrecisionRule="true"
+        EntityAttrName="Id"
+        EntityUsage="LTCProcessTimeline"
+        AliasName="ID3"/>
+    <ViewAttribute
+        Name="LtcTagId"
+        IsNotNull="true"
+        PrecisionRule="true"
+        EntityAttrName="LtcTagId"
+        EntityUsage="LTCProcessTimeline"
+        AliasName="LTC_TAG_ID"/>
+    <ViewAttribute
+        Name="ProcessDescription"
+        PrecisionRule="true"
+        EntityAttrName="ProcessDescription"
+        EntityUsage="LTCProcessTimeline"
+        AliasName="PROCESS_DESCRIPTION"/>
+    <ViewAttribute
+        Name="BaselineTypeName"
+        IsUpdateable="false"
+        IsUnique="true"
+        PrecisionRule="true"
+        EntityAttrName="Name"
+        EntityUsage="BaselineType"
+        AliasName="NAME1"/>
+    <ViewAttribute
+        Name="Id1"
+        IsUpdateable="false"
+        PrecisionRule="true"
+        EntityAttrName="Id"
+        EntityUsage="BaselineType"
+        AliasName="ID1"/>
+    <ViewAttribute
+        Name="Id2"
+        IsUpdateable="false"
+        PrecisionRule="true"
+        EntityAttrName="Id"
+        EntityUsage="LtcInstance"
+        AliasName="ID2"/>
+    <ViewAttribute
+        Name="ExcelReport"
+        PrecisionRule="true"
+        EntityAttrName="ExcelReport"
+        EntityUsage="LtcInstance"
+        AliasName="EXCEL_REPORT"/>
+    <ViewAttribute
+        Name="LtciId"
+        PrecisionRule="true"
+        AliasName="LTCI_ID"
+        EntityAttrName="LtciId"
+        EntityUsage="Timeline"/>
+    <ViewAttribute
+        Name="MaxLtcProcessId"
+        IsPersistent="false"
+        PrecisionRule="true"
+        Type="java.lang.String"
+        ColumnType="NUMBER"
+        AliasName="MAX_LTC_PROCESS_ID"
+        Expression="MAX_LTC_PROCESS_ID"
+        SQLType="VARCHAR"
+        Passivate="true"/>
+    <ViewAttribute
+        Name="Publish"
+        IsSelected="false"
+        IsPersistent="false"
+        PrecisionRule="true"
+        Type="java.lang.String"
+        ColumnType="NVARCHAR2"
+        AliasName="VIEW_ATTR"
+        Passivate="true"
+        SQLType="VARCHAR">
+        <Properties>
+            <SchemaBasedProperties>
+                <LABEL
+                    ResId="com.bayer.ipms.model.views.TimelineView.Publish_LABEL"/>
+                <CONTROLTYPE
+                    Value="edit"/>
+                <DISPLAYWIDTH
+                    Value="100"/>
+                <DISPLAYHEIGHT
+                    Value="5"/>
+            </SchemaBasedProperties>
+        </Properties>
+    </ViewAttribute>
+    <ViewAttribute
+        Name="BaselineTypeId"
+        IsSelected="false"
+        IsPersistent="false"
+        PrecisionRule="true"
+        Type="java.lang.String"
+        ColumnType="NVARCHAR2"
+        AliasName="VIEW_ATTR"
+        SQLType="VARCHAR"
+        Passivate="true"
+        IsQueriable="false">
+        <Properties>
+            <SchemaBasedProperties>
+                <DISPLAYWIDTH
+                    Value="100"/>
+                <DISPLAYHEIGHT
+                    Value="5"/>
+                <LABEL
+                    ResId="com.bayer.ipms.model.views.TimelineView.BaselineTypeId_LABEL"/>
+            </SchemaBasedProperties>
+        </Properties>
+    </ViewAttribute>
+    <ViewCriteria
+        Name="Raw"
+        ViewObjectName="com.bayer.ipms.model.views.TimelineView"
+        Conjunction="AND">
+        <Properties Name="_Props">
+            <CustomProperties>
+                <Property
+                    Name="autoExecute"
+                    Value="false"/>
+                <Property
+                    Name="mode"
+                    Value="Basic"/>
+                <Property
+                    Name="allowConjunctionOverride"
+                    Value="true"/>
+                <Property
+                    Name="showInList"
+                    Value="true"/>
+                <Property
+                    Name="displayOperators"
+                    Value="InAdvancedMode"/>
+            </CustomProperties>
+        </Properties>
+        <ViewCriteriaRow
+            Name="TimelineViewCriteria_row_0"
+            UpperColumns="1">
+            <ViewCriteriaItem
+                Name="TypeCode"
+                ViewAttribute="TypeCode"
+                Operator="STARTSWITH"
+                Conjunction="AND"
+                Value="RAW"
+                Required="Optional"/>
+        </ViewCriteriaRow>
+    </ViewCriteria>
+    <AttrArray Name="KeyAttributes">
+        <Item Value="Id"/>
+        <Item Value="Id1"/>
+        <Item Value="Id2"/>
+        <Item Value="Id3"/>
+    </AttrArray>
+    <ViewLinkAccessor
+        Name="SensorView"
+        ViewLink="com.bayer.ipms.model.views.links.TimelineSensor"
+        Type="oracle.jbo.RowIterator"
+        IsUpdateable="false"/>
+    <ViewLinkAccessor
+        Name="ProjectView"
+        ViewLink="com.bayer.ipms.model.views.links.ProjectTimelines"
+        Type="oracle.jbo.Row"
+        Reversed="true"
+        IsUpdateable="false"/>
+    <ViewLinkAccessor
+        Name="TimelineBaselineView"
+        ViewLink="com.bayer.ipms.model.views.links.TimelineBaseLines"
+        Type="oracle.jbo.RowIterator"
+        IsUpdateable="false"/>
+    <ClientRowInterface
+        Name="__rowClientInterface">
+    <Method
+      Name="publish"
+      MethodName="publish">
+      <Return
+        Type="void"
+        Name="_return_type_"/>
+    </Method>
+    <Method
+      Name="refresh"
+      MethodName="refresh">
+      <Return
+        Type="void"
+        Name="_return_type_"/>
+    </Method>
+    <Method
+      Name="isBusy"
+      MethodName="isBusy">
+      <Return
+        Type="boolean"
+        Name="_return_type_"/>
+    </Method>
+    <Method
+      Name="receive"
+      MethodName="receive">
+      <Return
+        Type="void"
+        Name="_return_type_"/>
+    </Method>
+    <Method
+      Name="unlock"
+      MethodName="unlock">
+      <Return
+        Type="void"
+        Name="_return_type_"/>
+    </Method>
+    <Method
+      Name="getSensorView"
+      MethodName="getSensorView">
+      <Return
+        Type="oracle.jbo.RowIterator"
+        Name="_return_type_"/>
+    </Method>
+    <Method
+      Name="getTimelineBaselineView"
+      MethodName="getTimelineBaselineView">
+      <Return
+        Name="_return_type_"
+        Type="oracle.jbo.RowIterator"/>
+    </Method>
+    <Method
+      Name="publish"
+      MethodName="publish">
+      <Return
+        Name="_return_type_"
+        Type="void"/>
+    </Method>
+    <Method
+      Name="refresh"
+      MethodName="refresh">
+      <Return
+        Name="_return_type_"
+        Type="void"/>
+    </Method>
+    <Method
+      Name="isBusy"
+      MethodName="isBusy">
+      <Return
+        Name="_return_type_"
+        Type="boolean"/>
+    </Method>
+    <Method
+      Name="receive"
+      MethodName="receive">
+      <Return
+        Name="_return_type_"
+        Type="void"/>
+    </Method>
+    <Method
+      Name="unlock"
+      MethodName="unlock">
+      <Return
+        Name="_return_type_"
+        Type="void"/>
+    </Method>
+    <Method
+      Name="getSensorView"
+      MethodName="getSensorView">
+      <Return
+        Name="_return_type_"
+        Type="oracle.jbo.RowIterator"/>
+    </Method>
+    <Method
+      Name="getTimelineBaselineView"
+      MethodName="getTimelineBaselineView">
+      <Return
+        Name="_return_type_"
+        Type="oracle.jbo.RowIterator"/>
+    </Method>
+    <Method
+      Name="receiveStudies"
+      MethodName="receiveStudies">
+      <Return
+        Name="_return_type_"
+        Type="void"/>
+    </Method>
+    <Method
+      Name="deleteStudies"
+      MethodName="deleteStudies">
+      <Return
+        Name="_return_type_"
+        Type="void"/>
+    </Method>
+    <Method
+      Name="getBaseLineTypeView"
+      MethodName="getBaseLineTypeView">
+      <Return
+        Name="_return_type_"
+        Type="oracle.jbo.RowSet"/>
+    </Method>
+  </ClientRowInterface>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.bayer.ipms.model.bundles.modelBundle"/>
+  </ResourceBundle>
+</ViewObject>

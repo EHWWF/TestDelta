@@ -1,0 +1,45 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
+<wsdl:definitions
+     name="UpdateProject"
+     targetNamespace="http://xmlns.bayer.com/ipms/soa"
+     xmlns:ns2="http://xmlns.oracle.com/Primavera/P6/WS/ProjectCodeAssignment/V1"
+     xmlns:ns1="http://xmlns.bayer.com/ipms/soa"
+     xmlns:plnk="http://schemas.xmlsoap.org/ws/2003/05/partner-link/"
+     xmlns:ns3="http://xmlns.bayer.com/ipms/cache"
+     xmlns:client="http://xmlns.bayer.com/ipms/soa"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    >
+    <plnk:partnerLinkType name="UpdateProject">
+        <plnk:role name="UpdateProjectProvider">
+            <plnk:portType name="client:UpdateProject"/>
+        </plnk:role>
+        <plnk:role name="UpdateProjectRequester">
+            <plnk:portType name="client:UpdateProjectCallback"/>
+        </plnk:role>
+    </plnk:partnerLinkType>
+    <!--wsdl:import namespace="http://xmlns.oracle.com/Primavera/P6/WS/ProjectCodeAssignment/V1" location="oramds:/apps/com/oracle/xmlns/Primavera/P6/WS/ProjectCodeAssignment/V1/ProjectCodeAssignmentService.wsdl"/-->
+    <wsdl:types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema">
+            <import namespace="http://xmlns.bayer.com/ipms/soa" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/soa/soa.xsd"/>
+        </schema>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:import namespace="http://xmlns.bayer.com/ipms/cache" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/cache/cache.xsd"/>
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:message name="UpdateProjectRequestMessage">
+        <wsdl:part name="payload" element="ns1:update"/>
+    </wsdl:message>
+    <wsdl:message name="UpdateProjectResponseMessage">
+        <wsdl:part name="payload" element="ns1:response"/>
+    </wsdl:message>
+    <wsdl:portType name="UpdateProject">
+        <wsdl:operation name="process">
+            <wsdl:input message="ns1:UpdateProjectRequestMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:portType name="UpdateProjectCallback">
+        <wsdl:operation name="callback">
+            <wsdl:input message="ns1:UpdateProjectResponseMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+</wsdl:definitions>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ProjectRelatedSuccessorView"
+  Version="12.2.1.20.47"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="com.bayer.ipms.model.views.ProjectRelatedSuccessorViewRowImpl"
+  ComponentClass="com.bayer.ipms.model.base.IPMSViewObjectImpl"
+  PageIterMode="Full"
+  RowInterface="com.bayer.ipms.model.views.common.ProjectRelatedSuccessorViewRow">
+    <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Access"/>
+    <Attr Name="_isCodegen" Value="true"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+  </DesignTime>
+  <SQLQuery><![CDATA[SELECT ProjectRelatedSuccessor.ID,    
+       ProjectRelatedSuccessor.PROJECT_ID,    
+       ProjectRelatedSuccessor.SUCCESSOR_PROJECT_ID, 
+       (select Project.CODE from PROJECT Project where ProjectRelatedSuccessor.SUCCESSOR_PROJECT_ID = Project.ID) REL_SUCCESSOR_CODE   
+FROM  PROJECT_RELATED_SUCCESSOR ProjectRelatedSuccessor]]></SQLQuery>
+  <EntityUsage
+    Name="ProjectRelatedSuccessor"
+    Entity="com.bayer.ipms.model.entities.ProjectRelatedSuccessor"/>
+  <ViewAttribute
+    Name="Id"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="Id"
+    EntityUsage="ProjectRelatedSuccessor"
+    AliasName="ID"/>
+  <ViewAttribute
+    Name="ProjectId"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="ProjectId"
+    EntityUsage="ProjectRelatedSuccessor"
+    AliasName="PROJECT_ID"/>
+  <ViewAttribute
+    Name="SuccessorProjectId"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="SuccessorProjectId"
+    EntityUsage="ProjectRelatedSuccessor"
+    AliasName="SUCCESSOR_PROJECT_ID"/>
+  <ViewAttribute
+    Name="RelSuccessorCode"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="REL_SUCCESSOR_CODE"
+    Expression="REL_SUCCESSOR_CODE"
+    SQLType="STRUCT"/>
+</ViewObject>

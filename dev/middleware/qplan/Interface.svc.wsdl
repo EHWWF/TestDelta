@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:i0="https://by-quickplan-p.bayer-ag.com/services" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="https://quickplan-p.bayer-ag.com/services" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="ProMISInterface" targetNamespace="https://quickplan-p.bayer-ag.com/services">
+	<wsp:Policy wsu:Id="ProMISInterface_policy">
+		<wsp:ExactlyOne>
+			<wsp:All>
+				<sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+					<wsp:Policy>
+						<sp:TransportToken>
+							<wsp:Policy>
+								<sp:HttpsToken RequireClientCertificate="false"/>
+							</wsp:Policy>
+						</sp:TransportToken>
+						<sp:AlgorithmSuite>
+							<wsp:Policy>
+								<sp:Basic256/>
+							</wsp:Policy>
+						</sp:AlgorithmSuite>
+						<sp:Layout>
+							<wsp:Policy>
+								<sp:Strict/>
+							</wsp:Policy>
+						</sp:Layout>
+					</wsp:Policy>
+				</sp:TransportBinding>
+			</wsp:All>
+		</wsp:ExactlyOne>
+	</wsp:Policy>
+	<wsdl:types>
+		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="https://quickplan-p.bayer-ag.com/services">
+			<xs:element name="CreateProject">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="createProjectRequest" nillable="true" type="tns:CreateProjectRequest"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="CreateProjectRequest">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:BaseServiceRequest">
+						<xs:sequence>
+							<xs:element name="keyData" nillable="true" type="tns:KeyData"/>
+							<xs:element name="milestoneData" nillable="true" type="tns:MilestoneData"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:element name="CreateProjectRequest" nillable="true" type="tns:CreateProjectRequest"/>
+			<xs:complexType name="BaseServiceRequest">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="cwid" nillable="true" type="xs:string"/>
+					<xs:element name="projectId" nillable="true" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="BaseServiceRequest" nillable="true" type="tns:BaseServiceRequest"/>
+			<xs:complexType name="KeyData">
+				<xs:sequence>
+					<xs:element maxOccurs="unbounded" minOccurs="0" name="keyDataAttribute" nillable="true" type="tns:KeyDataAttribute"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="KeyData" nillable="true" type="tns:KeyData"/>
+			<xs:complexType name="KeyDataAttribute">
+				<xs:sequence>
+					<xs:element name="key" nillable="true" type="xs:string"/>
+					<xs:element name="value" nillable="true" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="KeyDataAttribute" nillable="true" type="tns:KeyDataAttribute"/>
+			<xs:complexType name="MilestoneData">
+				<xs:sequence>
+					<xs:element name="milestoneOutOfSync" type="xs:boolean"/>
+					<xs:element name="D1" nillable="true" type="tns:Milestone"/>
+					<xs:element name="D2" nillable="true" type="tns:Milestone"/>
+					<xs:element name="CSM" nillable="true" type="tns:Milestone"/>
+					<xs:element name="D3" nillable="true" type="tns:Milestone"/>
+					<xs:element name="toxFimRC" nillable="true" type="tns:Milestone"/>
+					<xs:element name="D4" nillable="true" type="tns:Milestone"/>
+					<xs:element name="M4A" nillable="true" type="tns:Milestone"/>
+					<xs:element name="POC" nillable="true" type="tns:Milestone"/>
+					<xs:element name="D6" nillable="true" type="tns:Milestone"/>
+					<xs:element name="D7" nillable="true" type="tns:Milestone"/>
+					<xs:element name="D8" nillable="true" type="tns:Milestone"/>
+					<xs:element name="M9" nillable="true" type="tns:Milestone"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="MilestoneData" nillable="true" type="tns:MilestoneData"/>
+			<xs:complexType name="Milestone">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="generic" type="xs:dateTime"/>
+					<xs:element minOccurs="0" name="planned" type="xs:dateTime"/>
+					<xs:element minOccurs="0" name="actual" type="xs:dateTime"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="Milestone" nillable="true" type="tns:Milestone"/>
+			<xs:element name="CreateProjectResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="CreateProjectResult" nillable="true" type="tns:ServiceResponse"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="ServiceResponse">
+				<xs:sequence>
+					<xs:element name="message" nillable="true" type="xs:string"/>
+					<xs:element name="msgCode" type="xs:int"/>
+					<xs:element name="ok" type="xs:boolean"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ServiceResponse" nillable="true" type="tns:ServiceResponse"/>
+			<xs:element name="UpdateDecisionMilestones">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="updateDecisionMilestonesRequest" nillable="true" type="tns:UpdateDecisionMilestonesRequest"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="UpdateDecisionMilestonesRequest">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:BaseServiceRequest">
+						<xs:sequence>
+							<xs:element name="milestoneData" nillable="true" type="tns:MilestoneData"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:element name="UpdateDecisionMilestonesRequest" nillable="true" type="tns:UpdateDecisionMilestonesRequest"/>
+			<xs:element name="UpdateDecisionMilestonesResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="UpdateDecisionMilestonesResult" nillable="true" type="tns:ServiceResponse"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="UpdateKeyData">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="updateKeyDataRequest" nillable="true" type="tns:UpdateKeyDataRequest"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="UpdateKeyDataRequest">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:BaseServiceRequest">
+						<xs:sequence>
+							<xs:element name="keyData" nillable="true" type="tns:KeyData"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:element name="UpdateKeyDataRequest" nillable="true" type="tns:UpdateKeyDataRequest"/>
+			<xs:element name="UpdateKeyDataResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="UpdateKeyDataResult" nillable="true" type="tns:ServiceResponse"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="UpdatePtrValues">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="updatePTRValuesRequest" nillable="true" type="tns:UpdatePTRValuesRequest"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="UpdatePTRValuesRequest">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:BaseServiceRequest">
+						<xs:sequence>
+							<xs:element name="ptrValueData" nillable="true" type="tns:PTRValueData"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:element name="UpdatePTRValuesRequest" nillable="true" type="tns:UpdatePTRValuesRequest"/>
+			<xs:complexType name="PTRValueData">
+				<xs:sequence>
+					<xs:element name="preclinical" nillable="true" type="tns:PTRValue"/>
+					<xs:element name="phase1" nillable="true" type="tns:PTRValue"/>
+					<xs:element name="phase2" nillable="true" type="tns:PTRValue"/>
+					<xs:element name="phase3" nillable="true" type="tns:PTRValue"/>
+					<xs:element name="submission" nillable="true" type="tns:PTRValue"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="PTRValueData" nillable="true" type="tns:PTRValueData"/>
+			<xs:complexType name="PTRValue">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="percentageGeneric" type="xs:decimal"/>
+					<xs:element minOccurs="0" name="percentageProject" type="xs:decimal"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="PTRValue" nillable="true" type="tns:PTRValue"/>
+			<xs:element name="UpdatePtrValuesResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="UpdatePtrValuesResult" nillable="true" type="tns:ServiceResponse"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GetStudyList">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="projectId" nillable="true" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GetStudyListResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="GetStudyListResult" nillable="true" type="tns:StudyListResponse"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="StudyListResponse">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:ServiceResponse">
+						<xs:sequence>
+							<xs:element name="studyData" nillable="true" type="tns:StudyData"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:element name="StudyListResponse" nillable="true" type="tns:StudyListResponse"/>
+			<xs:complexType name="StudyData">
+				<xs:sequence>
+					<xs:element maxOccurs="unbounded" minOccurs="0" name="study" nillable="true" type="tns:Study"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="StudyData" nillable="true" type="tns:StudyData"/>
+			<xs:complexType name="Study">
+				<xs:sequence>
+					<xs:element name="name" nillable="true" type="xs:string"/>
+					<xs:element name="projectId" nillable="true" type="xs:string"/>
+					<xs:element name="studyId" nillable="true" type="xs:string"/>
+					<xs:element name="studyType" nillable="true" type="xs:string"/>
+					<xs:element name="studyInfo" nillable="true" type="tns:StudyInfo"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="Study" nillable="true" type="tns:Study"/>
+			<xs:complexType name="StudyInfo">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="actualFinish" type="xs:dateTime"/>
+					<xs:element minOccurs="0" name="actualStart" type="xs:dateTime"/>
+					<xs:element minOccurs="0" name="plannedFinish" type="xs:dateTime"/>
+					<xs:element minOccurs="0" name="plannedStart" type="xs:dateTime"/>
+					<xs:element minOccurs="0" name="studyPhase" nillable="true" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="StudyInfo" nillable="true" type="tns:StudyInfo"/>
+			<xs:element name="GetTimelineData">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="projectId" nillable="true" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GetTimelineDataResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="GetTimelineDataResult" nillable="true" type="tns:TimelineDataResponse"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="TimelineDataResponse">
+				<xs:complexContent mixed="false">
+					<xs:extension base="tns:ServiceResponse">
+						<xs:sequence>
+							<xs:element name="timelineData" nillable="true" type="tns:TimelineData"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:element name="TimelineDataResponse" nillable="true" type="tns:TimelineDataResponse"/>
+			<xs:complexType name="TimelineData">
+				<xs:sequence>
+					<xs:element maxOccurs="unbounded" minOccurs="0" name="timelineInfo" nillable="true" type="tns:TimelineInfo"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="TimelineData" nillable="true" type="tns:TimelineData"/>
+			<xs:complexType name="TimelineInfo">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="actualFinish" type="xs:dateTime"/>
+					<xs:element minOccurs="0" name="actualStart" type="xs:dateTime"/>
+					<xs:element minOccurs="0" name="dateStatus" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="mappingCode" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="plannedFinish" type="xs:dateTime"/>
+					<xs:element minOccurs="0" name="plannedStart" type="xs:dateTime"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="TimelineInfo" nillable="true" type="tns:TimelineInfo"/>
+		</xs:schema>
+		<xs:schema xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/">
+			<xs:element name="anyType" nillable="true" type="xs:anyType"/>
+			<xs:element name="anyURI" nillable="true" type="xs:anyURI"/>
+			<xs:element name="base64Binary" nillable="true" type="xs:base64Binary"/>
+			<xs:element name="boolean" nillable="true" type="xs:boolean"/>
+			<xs:element name="byte" nillable="true" type="xs:byte"/>
+			<xs:element name="dateTime" nillable="true" type="xs:dateTime"/>
+			<xs:element name="decimal" nillable="true" type="xs:decimal"/>
+			<xs:element name="double" nillable="true" type="xs:double"/>
+			<xs:element name="float" nillable="true" type="xs:float"/>
+			<xs:element name="int" nillable="true" type="xs:int"/>
+			<xs:element name="long" nillable="true" type="xs:long"/>
+			<xs:element name="QName" nillable="true" type="xs:QName"/>
+			<xs:element name="short" nillable="true" type="xs:short"/>
+			<xs:element name="string" nillable="true" type="xs:string"/>
+			<xs:element name="unsignedByte" nillable="true" type="xs:unsignedByte"/>
+			<xs:element name="unsignedInt" nillable="true" type="xs:unsignedInt"/>
+			<xs:element name="unsignedLong" nillable="true" type="xs:unsignedLong"/>
+			<xs:element name="unsignedShort" nillable="true" type="xs:unsignedShort"/>
+			<xs:element name="char" nillable="true" type="tns:char"/>
+			<xs:simpleType name="char">
+				<xs:restriction base="xs:int"/>
+			</xs:simpleType>
+			<xs:element name="duration" nillable="true" type="tns:duration"/>
+			<xs:simpleType name="duration">
+				<xs:restriction base="xs:duration">
+					<xs:pattern value="\-?P(\d*D)?(T(\d*H)?(\d*M)?(\d*(\.\d*)?S)?)?"/>
+					<xs:minInclusive value="-P10675199DT2H48M5.4775808S"/>
+					<xs:maxInclusive value="P10675199DT2H48M5.4775807S"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:element name="guid" nillable="true" type="tns:guid"/>
+			<xs:simpleType name="guid">
+				<xs:restriction base="xs:string">
+					<xs:pattern value="[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:attribute name="FactoryType" type="xs:QName"/>
+			<xs:attribute name="Id" type="xs:ID"/>
+			<xs:attribute name="Ref" type="xs:IDREF"/>
+		</xs:schema>
+	</wsdl:types>
+	<wsdl:message name="IProMISInterface_CreateProject_InputMessage">
+		<wsdl:part element="tns:CreateProject" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="IProMISInterface_CreateProject_OutputMessage">
+		<wsdl:part element="tns:CreateProjectResponse" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="IProMISInterface_UpdateDecisionMilestones_InputMessage">
+		<wsdl:part element="tns:UpdateDecisionMilestones" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="IProMISInterface_UpdateDecisionMilestones_OutputMessage">
+		<wsdl:part element="tns:UpdateDecisionMilestonesResponse" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="IProMISInterface_UpdateKeyData_InputMessage">
+		<wsdl:part element="tns:UpdateKeyData" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="IProMISInterface_UpdateKeyData_OutputMessage">
+		<wsdl:part element="tns:UpdateKeyDataResponse" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="IProMISInterface_UpdatePtrValues_InputMessage">
+		<wsdl:part element="tns:UpdatePtrValues" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="IProMISInterface_UpdatePtrValues_OutputMessage">
+		<wsdl:part element="tns:UpdatePtrValuesResponse" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="IProMISInterface_GetStudyList_InputMessage">
+		<wsdl:part element="tns:GetStudyList" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="IProMISInterface_GetStudyList_OutputMessage">
+		<wsdl:part element="tns:GetStudyListResponse" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="IProMISInterface_GetTimelineData_InputMessage">
+		<wsdl:part element="tns:GetTimelineData" name="parameters"/>
+	</wsdl:message>
+	<wsdl:message name="IProMISInterface_GetTimelineData_OutputMessage">
+		<wsdl:part element="tns:GetTimelineDataResponse" name="parameters"/>
+	</wsdl:message>
+	<wsdl:portType name="IProMISInterface" msc:usingSession="false">
+		<wsdl:operation name="CreateProject">
+			<wsdl:input message="tns:IProMISInterface_CreateProject_InputMessage" wsaw:Action="https://quickplan-p.bayer-ag.com/services/IProMISInterface/CreateProject"/>
+			<wsdl:output message="tns:IProMISInterface_CreateProject_OutputMessage" wsaw:Action="https://quickplan-p.bayer-ag.com/services/IProMISInterface/CreateProjectResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="UpdateDecisionMilestones">
+			<wsdl:input message="tns:IProMISInterface_UpdateDecisionMilestones_InputMessage" wsaw:Action="https://quickplan-p.bayer-ag.com/services/IProMISInterface/UpdateDecisionMilestones"/>
+			<wsdl:output message="tns:IProMISInterface_UpdateDecisionMilestones_OutputMessage" wsaw:Action="https://quickplan-p.bayer-ag.com/services/IProMISInterface/UpdateDecisionMilestonesResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="UpdateKeyData">
+			<wsdl:input message="tns:IProMISInterface_UpdateKeyData_InputMessage" wsaw:Action="https://quickplan-p.bayer-ag.com/services/IProMISInterface/UpdateKeyData"/>
+			<wsdl:output message="tns:IProMISInterface_UpdateKeyData_OutputMessage" wsaw:Action="https://quickplan-p.bayer-ag.com/services/IProMISInterface/UpdateKeyDataResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="UpdatePtrValues">
+			<wsdl:input message="tns:IProMISInterface_UpdatePtrValues_InputMessage" wsaw:Action="https://quickplan-p.bayer-ag.com/services/IProMISInterface/UpdatePtrValues"/>
+			<wsdl:output message="tns:IProMISInterface_UpdatePtrValues_OutputMessage" wsaw:Action="https://quickplan-p.bayer-ag.com/services/IProMISInterface/UpdatePtrValuesResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="GetStudyList">
+			<wsdl:input message="tns:IProMISInterface_GetStudyList_InputMessage" wsaw:Action="https://quickplan-p.bayer-ag.com/services/IProMISInterface/GetStudyList"/>
+			<wsdl:output message="tns:IProMISInterface_GetStudyList_OutputMessage" wsaw:Action="https://quickplan-p.bayer-ag.com/services/IProMISInterface/GetStudyListResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="GetTimelineData">
+			<wsdl:input message="tns:IProMISInterface_GetTimelineData_InputMessage" wsaw:Action="https://quickplan-p.bayer-ag.com/services/IProMISInterface/GetTimelineData"/>
+			<wsdl:output message="tns:IProMISInterface_GetTimelineData_OutputMessage" wsaw:Action="https://quickplan-p.bayer-ag.com/services/IProMISInterface/GetTimelineDataResponse"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="ProMISInterface" type="tns:IProMISInterface">
+		<wsp:PolicyReference URI="#ProMISInterface_policy"/>
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="CreateProject">
+			<soap:operation soapAction="https://quickplan-p.bayer-ag.com/services/IProMISInterface/CreateProject" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="UpdateDecisionMilestones">
+			<soap:operation soapAction="https://quickplan-p.bayer-ag.com/services/IProMISInterface/UpdateDecisionMilestones" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="UpdateKeyData">
+			<soap:operation soapAction="https://quickplan-p.bayer-ag.com/services/IProMISInterface/UpdateKeyData" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="UpdatePtrValues">
+			<soap:operation soapAction="https://quickplan-p.bayer-ag.com/services/IProMISInterface/UpdatePtrValues" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetStudyList">
+			<soap:operation soapAction="https://quickplan-p.bayer-ag.com/services/IProMISInterface/GetStudyList" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetTimelineData">
+			<soap:operation soapAction="https://quickplan-p.bayer-ag.com/services/IProMISInterface/GetTimelineData" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="ProMISInterface">
+		<wsdl:port binding="tns:ProMISInterface" name="ProMISInterface">
+			<soap:address location="http://soa.ipms:7011/soa-infra/services/default/mockup.qplan/QPlanMockService"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

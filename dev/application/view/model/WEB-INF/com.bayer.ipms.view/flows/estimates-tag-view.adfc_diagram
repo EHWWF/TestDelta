@@ -1,0 +1,75 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<SDM>
+   <OverallProperties
+      id="OverallProperties1">
+      <property
+         name="y">266.5</property>
+      <property
+         name="x">93.90918</property>
+   </OverallProperties>
+   <MethodCall
+      id="MethodCall2">
+      <property
+         name="activityId">handleException</property>
+      <property
+         name="start">false</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>handleException&lt;/b> (Default Activity)&lt;/p>&lt;p>Activity Type:  Method Call&lt;/p></property>
+      <property
+         name="inherited">true</property>
+      <property
+         name="exceptionHandler">false</property>
+      <property
+         name="y">99.53125</property>
+      <property
+         name="x">93.90918</property>
+   </MethodCall>
+   <View
+      id="View3">
+      <property
+         name="activityId">__estimates-tag-view1</property>
+      <property
+         name="page">/WEB-INF/com.bayer.ipms.view/fragments/estimates-tag-view.jsff</property>
+      <property
+         name="start">true</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>__estimates-tag-view1&lt;/b> (Default Activity)&lt;/p>&lt;p>Activity Type:  View&lt;/p></property>
+      <property
+         name="exceptionHandler">false</property>
+      <property
+         name="y">361.53125</property>
+      <property
+         name="x">718.3926</property>
+      <property
+         name="pageFragment">true</property>
+   </View>
+   <TaskFlowCall
+      id="TaskFlowCall4">
+      <property
+         name="taskFlowId">estimates-start</property>
+      <property
+         name="activityId">estimates-start</property>
+      <property
+         name="documentReference">/WEB-INF/com.bayer.ipms.view/flows/estimates-start.xml</property>
+      <property
+         name="runAsDialog">true</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>estimates-start&lt;/b>&lt;/p>&lt;p>Activity Type:  Task Flow Call&lt;/p></property>
+      <property
+         name="exceptionHandler">false</property>
+      <property
+         name="y">663.5156</property>
+      <property
+         name="x">826.66797</property>
+   </TaskFlowCall>
+   <ControlFlowCase
+      islink="true"
+      id="ControlFlowCase5"
+      from="View3"
+      to="TaskFlowCall4">
+      <property
+         name="fromOutcome">estimates-start</property>
+      <property
+         name="sdm:polyPoints">B50,718.3926,415.54688,826.66797,609.53125,T50</property>
+   </ControlFlowCase>
+</SDM>

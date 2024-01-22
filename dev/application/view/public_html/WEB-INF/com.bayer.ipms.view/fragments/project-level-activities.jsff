@@ -1,0 +1,124 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    <af:componentDef>
+        <c:set var="bundle" value="#{adfBundle['com.bayer.ipms.view.bundles.viewBundle']}"/>
+        <af:resource type="css">
+            .invalid {
+                background-color: rgb(255, 214, 214);
+            }
+
+            .discrepancy {
+                color: red;
+            }
+
+            .noPlan {
+                color: red;
+            }
+        </af:resource>
+        <af:subform id="plaEditArea">
+        <af:outputText value="#{bundle.projectActivitiesConfilct}" id="otConflict" visible="false"/>
+            <af:panelStretchLayout topHeight="auto" id="pslPA">
+                <f:facet name="top">
+                    <af:query id="qryId1" headerText="Search" disclosed="true"
+                              value="#{bindings.FilterQuery1.queryDescriptor}"
+                              model="#{bindings.FilterQuery1.queryModel}"
+                              queryListener="#{bindings.FilterQuery1.processQuery}"
+                              queryOperationListener="#{bindings.FilterQuery1.processQueryOperation}"
+                              modeChangeVisible="false" saveQueryMode="hidden" searchButtonText="#{bundle.globalFilter}"
+                              labelAlignment="start" rows="2" maxColumns="2"
+                              resultComponentId="::pcPAList:tableProjectLevelActivities"/>
+                </f:facet>
+                <f:facet name="center">
+                    <af:panelBox text="#{bundle.projectActivitiesNoPhase}" type="stretch" showDisclosure="false"
+                                 background="#{pageFlowScope.projectViewBean.editable eq 'plaEditArea' ? 'light' : 'default'}">
+                        
+                        <af:panelCollection id="pcPAList" styleClass="AFStretchWidth" featuresOff="detach statusBar">
+
+                            <f:facet name="toolbar">
+                                <af:toolbar id="plaToolbar">
+                                    <af:button text="#{bundle.activitiesSetMissingPhases}"
+                                               action="activities-set-phases" useWindow="true"
+                                               windowWidth="#{bundle.globalPopupWidth}"
+                                               rendered="#{rolesBean.activityBasedPlanningMaintainMapingDev}"
+                                               windowHeight="#{bundle.globalPopupHeight}" immediate="true"
+                                               icon="/images/mapping.png"
+                                               disabled="#{bindings.IsSyncing.inputValue or bindings.ProjectViewIterator.currentRow.code == null or bindings.ProjectViewIterator.currentRow.versions['RAW'].isSyncing}"
+                                               id="cmi923">
+                                        <af:setActionListener from="#{bindings.Code.inputValue}"
+                                                              to="#{requestScope.projectCode}"/>
+                                        <af:setActionListener from="#{bindings.Name.inputValue}"
+                                                              to="#{requestScope.projectName}"/>
+                                        <af:setActionListener from="#{bindings.Id.inputValue}"
+                                                              to="#{requestScope.projectId}"/>
+                                    </af:button>
+                                </af:toolbar>
+                            </f:facet>
+                            
+                            <af:table value="#{bindings.ProjectLevelActivitiesView.collectionModel}" var="row"
+                                      rows="#{bindings.ProjectLevelActivitiesView.rangeSize}"
+                                      emptyText="#{bindings.StudyView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                                      rowBandingInterval="0"
+                                      fetchSize="#{bindings.ProjectLevelActivitiesView.rangeSize}"
+                                      id="tableProjectLevelActivities" filterVisible="false" varStatus="vs"
+                                      rowSelection="none" contentDelivery="immediate" styleClass="AFStretchWidth"
+                                      autoHeightRows="-1" columnStretching="column:dc_c3">
+                                <af:column headerText="#{bindings.ProjectLevelActivitiesView.hints.ProjectActivityId.label}"
+                                           id="dc_c2">
+                                    <af:outputText value="#{row.ProjectActivityId}"
+                                                   shortDesc="#{bindings.ProjectLevelActivitiesView.hints.ProjectActivityId.tooltip}"
+                                                   id="dc_ot2"/>
+                                </af:column>
+                                <af:column headerText="#{bindings.ProjectLevelActivitiesView.hints.ProjectActivityName.label}"
+                                           id="dc_c3">
+                                    <af:outputText value="#{row.ProjectActivityName}"
+                                                   shortDesc="#{bindings.ProjectLevelActivitiesView.hints.ProjectActivityName.tooltip}"
+                                                   id="dc_ot3"/>
+                                </af:column>
+                                <af:column headerText="#{bindings.ProjectLevelActivitiesView.hints.StudyId.label}"
+                                           id="dc_c32">
+                                    <af:outputText value="#{row.StudyId}"
+                                                   shortDesc="#{bindings.ProjectLevelActivitiesView.hints.StudyId.tooltip}"
+                                                   id="dc_ot32"/>
+                                </af:column>
+                                <af:column headerText="#{bindings.ProjectLevelActivitiesView.hints.PlanStartDate.label}"
+                                           id="dc_c4">
+                                    <af:outputText value="#{row.PlanStartDate}"
+                                                   shortDesc="#{bindings.ProjectLevelActivitiesView.hints.PlanStartDate.tooltip}"
+                                                   id="dc_ot4">
+                                        <af:convertDateTime pattern="#{bindings.ProjectLevelActivitiesView.hints.PlanStartDate.format}"/>
+                                    </af:outputText>
+                                </af:column>
+                                <af:column headerText="#{bindings.ProjectLevelActivitiesView.hints.PlanFinishDate.label}"
+                                           id="dc_c5">
+                                    <af:outputText value="#{row.PlanFinishDate}"
+                                                   shortDesc="#{bindings.ProjectLevelActivitiesView.hints.PlanFinishDate.tooltip}"
+                                                   id="dc_ot5">
+                                        <af:convertDateTime pattern="#{bindings.ProjectLevelActivitiesView.hints.PlanFinishDate.format}"/>
+                                    </af:outputText>
+                                </af:column>
+                                <af:column headerText="#{bindings.ProjectLevelActivitiesView.hints.ActStartDate.label}"
+                                           id="dc_c6">
+                                    <af:outputText value="#{row.ActStartDate}"
+                                                   shortDesc="#{bindings.ProjectLevelActivitiesView.hints.ActStartDate.tooltip}"
+                                                   id="dc_ot6">
+                                        <af:convertDateTime pattern="#{bindings.ProjectLevelActivitiesView.hints.ActStartDate.format}"/>
+                                    </af:outputText>
+                                </af:column>
+                                <af:column headerText="#{bindings.ProjectLevelActivitiesView.hints.ActFinishDate.label}"
+                                           id="dc_c7">
+                                    <af:outputText value="#{row.ActFinishDate}"
+                                                   shortDesc="#{bindings.ProjectLevelActivitiesView.hints.ActFinishDate.tooltip}"
+                                                   id="dc_ot7">
+                                        <af:convertDateTime pattern="#{bindings.ProjectLevelActivitiesView.hints.ActFinishDate.format}"/>
+                                    </af:outputText>
+                                </af:column>
+                            </af:table>
+                        </af:panelCollection>
+                    </af:panelBox>
+                </f:facet>
+            </af:panelStretchLayout>
+        </af:subform>
+    </af:componentDef>
+</jsp:root>

@@ -1,0 +1,1 @@
+alter table project_audit drop column details_for_diff;

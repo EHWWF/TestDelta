@@ -1,0 +1,146 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:h="http://java.sun.com/jsf/html" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <f:view>
+        <f:loadBundle basename="com.bayer.ipms.view.bundles.viewBundle" var="bundle"/>
+        <af:document title="#{bundle.globalProMIS}" id="doc">
+            <af:messages id="m1"/>
+            <af:form id="referencesEditArea">
+                <af:pageTemplate viewId="/WEB-INF/com.bayer.ipms.view/templates/ipms-page-template.jspx" id="tmpl">
+                    <f:facet name="content">
+                        <af:panelHeader text="" id="content">
+                            <f:facet name="toolbar">
+                                <af:panelGroupLayout layout="horizontal" halign="end" id="tools">
+                                    <af:toolbar id="t3" rendered="#{securityContext.userInRole['ReferencesMaintain']}">
+                                        <af:commandToolbarButton icon="/images/edit.png" immediate="true"
+                                                                 text="#{bundle.globalEdit}" id="ctb5"
+                                                                 rendered="#{empty pageFlowScope.referencesBean.editable}"
+                                                                 actionListener="#{pageFlowScope.referencesBean.onEdit}">
+                                            <f:attribute name="target" value="referencesEditArea"/>
+                                        </af:commandToolbarButton>
+                                        <af:commandToolbarButton icon="/images/commit.png" text="#{bundle.globalOk}"
+                                                                 id="ctb4"
+                                                                 rendered="#{pageFlowScope.referencesBean.editable eq 'referencesEditArea'}"
+                                                                 actionListener="#{pageFlowScope.referencesBean.onCommit}"/>
+                                        <af:commandToolbarButton icon="/images/rollback.png" immediate="true"
+                                                                 text="#{bundle.globalCancel}" id="ctb1"
+                                                                 rendered="#{pageFlowScope.referencesBean.editable eq 'referencesEditArea'}"
+                                                                 actionListener="#{pageFlowScope.referencesBean.onRollback}"/>
+                                    </af:toolbar>
+                                    <af:outputFormatted id="of1" value="ADF Desktop Integration"
+                                                        styleUsage="instruction" inlineStyle="font-size:small;"
+                                                        visible="false"/>
+                                </af:panelGroupLayout>
+                            </f:facet>
+                            <af:panelGroupLayout id="pgl2" layout="scroll">
+                                <af:panelGridLayout id="pgl1">
+                                    <af:gridRow marginTop="5px" height="auto" id="gr2">
+                                        <af:gridCell marginStart="5px" width="100%" marginEnd="5px" id="gc4">
+                                            <af:panelBox text="#{bundle.globalWelcome}" id="pb1" showDisclosure="false">
+                                                <f:facet name="toolbar"/>
+                                                <af:richTextEditor id="rte1" value="#{bindings.WelcomeText.inputValue}"
+                                                                   rows="#{pageFlowScope.referencesBean.editable eq 'referencesEditArea' ? '20':'-1'}"
+                                                                   readOnly="#{pageFlowScope.referencesBean.editable ne 'referencesEditArea'}"
+                                                                   simple="true" inlineStyle="width: 100%;"
+                                                                   contentStyle="width: 100%;">
+                                                    <f:facet name="footer"/>
+                                                </af:richTextEditor>
+                                            </af:panelBox>
+                                        </af:gridCell>
+                                    </af:gridRow>
+                                    <af:gridRow marginTop="5px" height="auto" marginBottom="5px" id="gr3">
+                                        <af:gridCell marginStart="5px" width="100%" marginEnd="5px" id="gc5">
+                                            <af:panelBox text="#{bundle.globalReferences}" id="pb2"
+                                                         showDisclosure="false">
+                                                <f:facet name="toolbar">
+                                                    <af:toolbar rendered="#{pageFlowScope.referencesBean.editable eq 'referencesEditArea'}"
+                                                                id="t1">
+                                                        <af:button shortDesc="#{bundle.globalAdd}"
+                                                                   text="#{bundle.globalAdd}" icon="/images/new.png"
+                                                                   immediate="true"
+                                                                   actionListener="#{bindings.ReferenceCreateInsert.execute}"
+                                                                   id="ctb2"/>
+                                                        <af:button actionListener="#{bindings.ReferenceDelete.execute}"
+                                                                   text="#{bundle.globalRemove}"
+                                                                   icon="/images/remove.png" immediate="true" id="b1"
+                                                                   partialTriggers="lv2"/>
+                                                    </af:toolbar>
+                                                </f:facet>
+                                                <af:listView value="#{bindings.ReferenceView.collectionModel}"
+                                                             var="item"
+                                                             emptyText="#{bindings.ReferenceView.viewable ? 'No data to display.' : 'Access Denied.'}"
+                                                             selectionListener="#{bindings.ReferenceView.collectionModel.makeCurrent}"
+                                                             selectedRowKeys="#{bindings.ReferenceView.collectionModel.selectedRow}"
+                                                             selection="#{pageFlowScope.referencesBean.editable eq 'referencesEditArea'? 'single':'none'}"
+                                                             fetchSize="#{bindings.ReferenceView.rangeSize}" id="lv2"
+                                                             partialTriggers="::ctb2 ::b1">
+                                                    <af:listItem id="li2">
+                                                        <af:panelGridLayout id="pgl3">
+                                                            <af:gridRow marginTop="5px" height="auto" marginBottom="5px"
+                                                                        id="gr1">
+                                                                <af:gridCell marginStart="5px" width="400px" id="gc1">
+                                                                    <af:inputText value="#{item.bindings.Title.inputValue}"
+                                                                                  label="#{bindings.ReferenceView.hints.Title.label}"
+                                                                                  required="#{bindings.ReferenceView.hints.Title.mandatory}"
+                                                                                  columns="#{bindings.ReferenceView.hints.Title.displayWidth}"
+                                                                                  maximumLength="#{bindings.ReferenceView.hints.Title.precision}"
+                                                                                  readOnly="#{pageFlowScope.referencesBean.editable ne 'referencesEditArea'}"
+                                                                                  shortDesc="#{bindings.ReferenceView.hints.Title.tooltip}"
+                                                                                  id="it1"
+                                                                                  rendered="#{pageFlowScope.referencesBean.editable eq 'referencesEditArea'}">
+                                                                        <f:validator binding="#{item.bindings.Title.validator}"/>
+                                                                    </af:inputText>
+                                                                    <af:goLink text="#{item.bindings.Title.inputValue}"
+                                                                               id="gl1"
+                                                                               destination="#{item.bindings.Type eq 'MAIL' ? 'mailto:' : ''}#{item.bindings.Link.inputValue}"
+                                                                               rendered="#{empty pageFlowScope.referencesBean.editable}"
+                                                                               targetFrame="_blank"/>
+                                                                </af:gridCell>
+                                                                <af:gridCell marginStart="5px" width="150px" id="gc2"
+                                                                             rendered="#{pageFlowScope.referencesBean.editable eq 'referencesEditArea'}">
+                                                                    <af:selectOneChoice label="#{bindings.ReferenceView.hints.Type.label}"
+                                                                                        id="soc1"
+                                                                                        value="#{item.bindings.Type.inputValue}">
+                                                                        <af:selectItem label="HTTP/HTTPS" value="HTTP"
+                                                                                       id="si2"/>
+                                                                        <af:selectItem label="MAIL" value="MAIL"
+                                                                                       id="si1"/>
+                                                                    </af:selectOneChoice>
+                                                                </af:gridCell>
+                                                                <af:gridCell marginStart="5px" width="200px"
+                                                                             marginEnd="5px" id="gc3"
+                                                                             rendered="#{pageFlowScope.referencesBean.editable eq 'referencesEditArea'}">
+                                                                    <af:inputText value="#{item.bindings.Link.inputValue}"
+                                                                                  label="#{bindings.ReferenceView.hints.Link.label}"
+                                                                                  required="#{bindings.ReferenceView.hints.Link.mandatory}"
+                                                                                  columns="#{bindings.ReferenceView.hints.Link.displayWidth}"
+                                                                                  maximumLength="#{bindings.ReferenceView.hints.Link.precision}"
+                                                                                  readOnly="#{pageFlowScope.referencesBean.editable ne 'referencesEditArea'}"
+                                                                                  shortDesc="#{bindings.ReferenceView.hints.Link.tooltip}"
+                                                                                  id="it2">
+                                                                        <f:validator binding="#{item.bindings.Link.validator}"/>
+                                                                    </af:inputText>
+                                                                </af:gridCell>
+                                                            </af:gridRow>
+                                                        </af:panelGridLayout>
+                                                    </af:listItem>
+                                                </af:listView>
+                                            </af:panelBox>
+                                        </af:gridCell>
+                                    </af:gridRow>
+                                </af:panelGridLayout>
+                            </af:panelGroupLayout>
+                        </af:panelHeader>
+                    </f:facet>
+                    <f:attribute name="tab" value="references"/>
+                    <f:facet name="navigation"/>
+                </af:pageTemplate>
+            </af:form>
+            <f:facet name="metaContainer">
+                <f:verbatim>      <link type="image/x-icon" href="images/promis.png" rel="shortcut icon"/>     </f:verbatim>
+            </f:facet>
+        </af:document>
+    </f:view>
+</jsp:root>

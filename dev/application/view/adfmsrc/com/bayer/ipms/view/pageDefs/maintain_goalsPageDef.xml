@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.22.48" id="maintain_goalsPageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="ProgramAppModule.ProgramGoals" DataControl="PrivateAppModuleDataControl" RangeSize="25"
+              id="ProgramGoalsIterator" ChangeEventPolicy="none"/>
+  
+    <iterator Binds="ProgramAppModule.ProgramView" RangeSize="25" DataControl="PrivateAppModuleDataControl"
+                  id="ProgramViewIterator" ChangeEventPolicy="none"/>
+    <iterator Binds="ProgramAppModule.GoalPhase" DataControl="PrivateAppModuleDataControl" RangeSize="10"
+              id="GoalPhaseIterator"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="ProgramGoalsIterator" id="Id">  
+      <AttrNames>
+        <Item Value="Id"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="ProgramGoalsIterator" StaticList="false" Uses="LOV_ProjectId" id="ProjectId"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="ProgramGoalsIterator" id="Goal1">
+      <AttrNames>
+        <Item Value="Goal1"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="ProgramGoalsIterator" StaticList="false" Uses="LOV_Type" id="Type" DTSupportsMRU="false"
+          SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="ProgramGoalsIterator" id="StudyId">
+      <AttrNames>
+        <Item Value="StudyId"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProgramGoalsIterator" id="PlanReference">
+      <AttrNames>
+        <Item Value="PlanReference"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="ProgramGoalsIterator" StaticList="false" Uses="LOV_Status" id="Status" DTSupportsMRU="false"
+          SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="ProgramGoalsIterator" id="TargetDate">
+      <AttrNames>
+        <Item Value="TargetDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProgramGoalsIterator" id="AchievedDate">
+      <AttrNames>
+        <Item Value="AchievedDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProgramGoalsIterator" id="RevisedDate">
+      <AttrNames>
+        <Item Value="RevisedDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProgramGoalsIterator" id="Comments">
+      <AttrNames>
+        <Item Value="Comments"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProgramGoalsIterator" id="ProgramId">
+      <AttrNames>
+        <Item Value="ProgramId"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProgramGoalsIterator" id="Code">
+      <AttrNames>
+        <Item Value="Code"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProgramGoalsIterator" id="PlanReferenceDate">
+      <AttrNames>
+        <Item Value="PlanReferenceDate"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="ProgramGoalsIterator" StaticList="false" Uses="LOV_TargetYear" id="TargetYear"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="ProgramGoalsIterator" id="IsManualStatus">
+      <AttrNames>
+        <Item Value="IsManualStatus"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="ProgramGoalsIterator" StaticList="false" Uses="LOV_SearchTargetYear" id="SearchTargetYear"
+          DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="GoalPhaseIterator" id="GoalTrackYear">
+      <AttrNames>
+        <Item Value="GoalTrackYear"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProgramGoalsIterator" id="TargetYearCheck">
+      <AttrNames>
+        <Item Value="TargetYearCheck"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

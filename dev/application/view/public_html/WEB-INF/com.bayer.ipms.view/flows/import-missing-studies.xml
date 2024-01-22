@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="import-missing-studies">
+    <template-reference>
+      <document>/WEB-INF/com.bayer.ipms.view/templates/ipms-taskflow-template-page.xml</document>
+      <id>ipms-taskflow-template-page</id>
+    </template-reference>
+    <default-activity>CreateWithParameters</default-activity>
+    <transaction>
+      <requires-transaction/>
+    </transaction>
+    <data-control-scope>
+      <shared/>
+    </data-control-scope>
+    <input-parameter-definition id="__1">
+      <name>projectId</name>
+      <value>#{pageFlowScope.projectId}</value>
+      <class>java.lang.String</class>
+      <required/>
+    </input-parameter-definition>
+    <input-parameter-definition id="__3">
+      <name>studyId</name>
+      <value>#{pageFlowScope.studyId}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <managed-bean id="__10">
+      <managed-bean-name>importStudyBean</managed-bean-name>
+      <managed-bean-class>com.bayer.ipms.view.beans.ImportStudyBean</managed-bean-class>
+      <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <exception-handler>handleException</exception-handler>
+    <view id="import-studies-view">
+      <page>/WEB-INF/com.bayer.ipms.view/fragments/import-studies-view.jspx</page>
+    </view>
+    <task-flow-return id="cancel">
+      <outcome>
+        <name>cancel</name>
+        <rollback/>
+      </outcome>
+    </task-flow-return>
+    <method-call id="setBaCode">
+      <method>#{utilsBean.setBaCode2}</method>
+      <parameter>
+            <class>java.lang.String</class>
+            <value>ImportStudy</value>
+      </parameter>
+      <outcome>
+            <fixed-outcome>set</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="clearBaCode">
+      <method>#{utilsBean.clearBaCode}</method>
+      <outcome>
+            <fixed-outcome>clear</fixed-outcome>
+      </outcome>
+    </method-call>    
+    <task-flow-return id="ok">
+      <outcome>
+        <name>ok</name>
+        <commit/>
+      </outcome>
+    </task-flow-return>
+    <router id="is-import-completed">
+      <case id="__2">
+        <expression>#{requestScope.importStatusCode eq 'DONE'}</expression>
+        <outcome>yes</outcome>
+      </case>
+      <default-outcome>no</default-outcome>
+    </router>
+    <method-call id="preselect-study">
+      <method>#{bindings.setPreselectedStudy.execute}</method>
+      <outcome>
+        <fixed-outcome>view</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="Commit">
+      <method>#{bindings.Commit.execute}</method>
+      <outcome>
+        <fixed-outcome>Commit</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="finish-import-studies">
+      <method>#{importStudyBean.onFinish}</method>
+      <outcome>
+        <fixed-outcome>view</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="clearBaCode2">
+      <method>#{utilsBean.clearBaCode}</method>
+      <outcome>
+        <fixed-outcome>clear</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="CreateWithParameters">
+      <method>#{bindings.CreateWithParams.execute}</method>
+      <outcome>
+        <fixed-outcome>CreateWithParams</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="start">
+      <method>#{bindings.start.execute}</method>
+      <outcome>
+        <fixed-outcome>start</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="CommitNew">
+      <method>#{bindings.Commit.execute}</method>
+      <outcome>
+        <fixed-outcome>Commit</fixed-outcome>
+      </outcome>
+    </method-call>
+    <control-flow-rule id="__7">
+      <from-activity-id>import-studies-view</from-activity-id>
+      <control-flow-case id="__8">
+        <from-outcome>close</from-outcome>
+        <to-activity-id>is-import-completed</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__6">
+        <from-outcome>import</from-outcome>
+        <to-activity-id>setBaCode</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__11">
+      <from-activity-id>is-import-completed</from-activity-id>
+      <control-flow-case id="__14">
+        <from-outcome>no</from-outcome>
+        <to-activity-id>clearBaCode2</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__13">
+        <from-outcome>yes</from-outcome>
+        <to-activity-id>Commit</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__4">
+      <from-activity-id>preselect-study</from-activity-id>
+      <control-flow-case id="__9">
+        <from-outcome>view</from-outcome>
+        <to-activity-id>import-studies-view</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__17">
+      <from-activity-id>setBaCode</from-activity-id>
+      <control-flow-case id="__18">
+        <from-outcome>set</from-outcome>
+        <to-activity-id>finish-import-studies</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__19">
+      <from-activity-id>Commit</from-activity-id>
+      <control-flow-case id="__20">
+        <from-outcome>Commit</from-outcome>
+        <to-activity-id>ok</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__21">
+      <from-activity-id>clearBaCode</from-activity-id>
+      <control-flow-case id="__22">
+        <from-outcome>clear</from-outcome>
+        <to-activity-id>import-studies-view</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__5">
+      <from-activity-id>finish-import-studies</from-activity-id>
+      <control-flow-case id="__15">
+        <from-outcome>view</from-outcome>
+        <to-activity-id>clearBaCode</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__23">
+      <from-activity-id>clearBaCode2</from-activity-id>
+      <control-flow-case id="__24">
+        <from-outcome>clear</from-outcome>
+        <to-activity-id>cancel</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__29">
+      <from-activity-id>start</from-activity-id>
+      <control-flow-case id="__30">
+        <from-outcome>start</from-outcome>
+        <to-activity-id>preselect-study</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__31">
+      <from-activity-id>CreateWithParameters</from-activity-id>
+      <control-flow-case id="__32">
+        <from-outcome>CreateWithParams</from-outcome>
+        <to-activity-id>CommitNew</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__33">
+      <from-activity-id>CommitNew</from-activity-id>
+      <control-flow-case id="__34">
+        <from-outcome>Commit</from-outcome>
+        <to-activity-id>start</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+  </task-flow-definition>
+</adfc-config>

@@ -1,0 +1,108 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core">
+    <af:componentDef var="attrs" componentVar="comp">
+        <af:xmlContent>
+            <component xmlns="http://xmlns.oracle.com/adf/faces/rich/component">
+                <attribute>
+                    <attribute-name>projectType</attribute-name>
+                </attribute>
+                <attribute>
+                    <attribute-name>bean</attribute-name>
+                </attribute>
+            </component>
+        </af:xmlContent>
+        
+              <af:panelBox text="#{attrs.projectType eq 'D3Tr'? bundle.projectRoles : bundle.programRoles}" showDisclosure="false" type="stretch"
+                                             id="studiesPanel">
+                     <f:facet name="toolbar">
+                           <af:toolbar id="tlbRoles" >
+                                <af:group id="grpRoles">
+                                   <af:button rendered="#{empty pageFlowScope.editable}"
+                                               icon="/images/edit.png" immediate="true" partialSubmit="false"
+                                               text="#{bundle.globalEdit}" id="roleedit">
+                                        <af:setPropertyListener from="#{'roleedit'}" to="#{pageFlowScope.editable}" type="action" />
+                                       <af:setPropertyListener from="#{true}" to="#{attrs.bean.modalModeOn}" type="action" />
+                                   </af:button>
+                                   <af:button rendered="#{pageFlowScope.editable eq 'roleedit'}"
+                                                           icon="/images/commit.png" partialSubmit="false"
+                                                           actionListener="#{attrs.bean.onCommitRoles}" action="ok"
+                                                           text="#{bundle.globalOk}" id="teammemberok">
+                                                 <af:setPropertyListener from="#{null}" to="#{pageFlowScope.editable}" type="action" />
+                                                 <af:setPropertyListener from="#{false}" to="#{attrs.bean.modalModeOff}" type="action" />
+                                   </af:button>
+                                               
+                                  <af:button rendered="#{pageFlowScope.editable eq 'roleedit'}"
+                                                           icon="/images/rollback.png"
+                                                           action="cancel" partialSubmit="false"
+                                                           immediate="true" text="#{bundle.globalCancel}"
+                                                           id="teammembercancel"
+                                                           actionListener="#{attrs.bean.onRollbackRoles}">
+                                                           <af:resetActionListener/>
+                                      <af:setPropertyListener from="#{null}" to="#{pageFlowScope.editable}" type="action" />
+                                      <af:setPropertyListener from="#{false}" to="#{attrs.bean.modalModeOff}" type="action" />
+                                   </af:button>
+                                </af:group>
+                           </af:toolbar>
+                       </f:facet>    
+                <af:panelCollection styleClass="AFStretchWidth AFStretchHeight" featuresOff="detach statusBar"
+                                    id="pc1">
+                    <f:facet name="toolbar">
+                        <af:toolbar>
+                            <af:button   rendered="#{pageFlowScope.editable eq 'roleedit'}"
+                                       shortDesc="#{bundle.globalAdd}" text="#{bundle.globalAdd}" icon="/images/new.png"
+                                       immediate="true" actionListener="#{attrs.bean.onRoleAdd}" id="btnAdd">
+                            </af:button>           
+                            <af:button rendered="#{pageFlowScope.editable eq 'roleedit'}" shortDesc="#{bundle.globalRemove}" text="#{bundle.globalRemove}" id="btnRemove"
+                                       icon="/images/remove.png" immediate="true"
+                                       actionListener="#{utilsBean.onDelete}">
+                                <f:attribute name="table" value="tblRoles"/>
+                                <f:attribute name="iterator" value="#{bindings.UserRoleViewIterator}"/>
+                                              
+                            </af:button>
+                        </af:toolbar>
+                    </f:facet>
+                    <af:table value="#{bindings.UserRoleView.collectionModel}" var="row"
+                              rows="#{bindings.UserRoleView.rangeSize}"
+                              emptyText="#{bindings.UserRoleView.viewable ? bundle.globalEmptyList : bundle.globalNoAccess}"
+                              fetchSize="#{bindings.UserRoleView.rangeSize}" rowBandingInterval="0"
+                              editingMode="editAll" rowSelection="multiple" columnStretching="multiple" id="tblRoles"
+                              styleClass="AFStretchWidth" autoHeightRows="5" contentDelivery="immediate"
+                              partialTriggers="::btnAdd ::btnRemove">
+                        <af:column headerText="#{bindings.UserRoleView.hints.RoleCode.label}" width="25%">
+                            <af:selectOneChoice readOnly="#{pageFlowScope.editable == null}" value="#{row.bindings.RoleCode.inputValue}"
+                                                label="#{row.bindings.RoleCode.label}" id="selRol"
+                                                required="#{bindings.UserRoleView.hints.RoleCode.mandatory}"
+                                                shortDesc="#{bindings.UserRoleView.hints.RoleCode.tooltip}">
+                                                
+                                                <f:selectItems value="#{row.bindings.RoleCode.items}" id="siRoll"/>
+                                            
+                    
+                              <!-- <f:selectItems value="#{utilsBean.allRolesLookup[bindings.UserRoleViewIterator.currentRow.roleView]}"/> 
+                                <f:selectItems value="#{utilsBean.allRolesLookup[attrs.bean.roleList]}"/>-->
+                      
+                                  
+                            </af:selectOneChoice>
+                        </af:column>
+                        <af:column headerText="#{bindings.UserRoleView.hints.UserId.label}" width="35%">
+                            <af:selectOneChoice value="#{row.bindings.UserId.inputValue}" readOnly="#{(pageFlowScope.editable == null) or (row.row.entities[0].entityState ne 0)}"
+                                                label="#{row.bindings.UserId.label}"
+                                                required="#{bindings.UserRoleView.hints.UserId.mandatory}"
+                                                shortDesc="#{bindings.UserRoleView.hints.UserId.tooltip}" id="selUsr">
+                                  
+                                <f:selectItems value="#{utilsBean.allUsersLookup[attrs.bean.userList]}"/>
+                                
+                               <!-- <f:selectItems value="#{row.bindings.UserId.items}" id="siUsr"/>-->
+                            </af:selectOneChoice>
+                        </af:column>
+                        <af:column headerText="#{bundle.globalWarning}" minimumWidth="100" width="40%">
+                            <af:inputText label="currentUserWarning" id="it1" rows="2" wrap="soft" simple="true" 
+                                          value="#{attrs.projectType eq 'D3Tr'? bundle.roleProjectsCurrentUserWarning : bundle.roleProgramsCurrentUserWarning}"
+                                          rendered="#{row.row.userId eq securityContext.userName}" readOnly="true"
+                                          contentStyle="color:Blue"/>
+                        </af:column>
+                    </af:table>
+                </af:panelCollection>
+              </af:panelBox>
+    </af:componentDef>
+</jsp:root>

@@ -1,0 +1,419 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Tue Aug 19 09:43:25 CEST 2014
+  Author:  algis
+  Type: BPEL 2.0 Process
+  Purpose: Asynchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="SendEmail"
+         targetNamespace="http://xmlns.bayer.com/ipms/soa"
+         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:client="http://xmlns.bayer.com/ipms/soa"
+         xmlns:ora="http://schemas.oracle.com/xpath/extension"
+         xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ns1="http://xmlns.oracle.com/ias/pcbpel/NotificationService"
+         xmlns:ns2="http://xmlns.bayer.com/ipms"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="http://xmlns.oracle.com/soa/designer"
+         xmlns:ess="http://xmlns.oracle.com/scheduler" xmlns:ns3="http://xmlns.bayer.com/ipms/qplan">
+    <import namespace="http://xmlns.bayer.com/ipms/soa"
+            location="oramds:/apps/com/bayer/xmlns/ipms/soa/soa.xsd"
+            importType="http://www.w3.org/2001/XMLSchema"/>
+    <import namespace="http://xmlns.bayer.com/ipms/soa" location="SendEmail.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"
+            ui:processWSDL="true"/>
+
+    <partnerLinks>
+        <partnerLink name="UMSService" partnerLinkType="client:SendEmail" myRole="SendEmailProvider" partnerRole="SendEmailRequester"/>
+        <partnerLink name="NotificationService"
+                     partnerLinkType="ns1:NotificationServiceLink"
+                     partnerRole="NotificationServiceProvider"/>
+        <partnerLink name="PromiseService" partnerLinkType="client:PromiseService" partnerRole="execute_ptt"
+                     myRole="callback_ptt"/>
+    </partnerLinks>
+
+    <variables>
+        <!-- Reference to the message passed as input during initiation -->
+        <variable name="inputVariable" messageType="client:SendEmailRequestMessage"/>
+
+        <!-- Reference to the message that will be sent back to the requester during callback -->
+        <variable name="outputVariable" messageType="client:SendEmailResponseMessage"/>
+        <variable name="tableCwidEmail" element="ns2:users"/>
+        <variable name="cwidsCounter" type="xsd:int"/>
+        <variable name="appRolesCounter" type="xsd:int"/>
+        <variable name="tmpTable"
+                  messageType="client:SendEmailUserList"/>
+        <!--variable name="input2" messageType="client:SendEmailRequestMessage"/-->
+        <variable name="waitCount" type="xsd:int"/>
+        <variable name="GetEmailFromLDAPIn" messageType="client:requestMessage"/>
+        <variable name="CallbackEmailOut" messageType="client:callbackMessage"/>
+    </variables>
+    <faultHandlers>
+        <catchAll>
+            <scope name="FaultOutput">
+                <variables>
+                    <variable name="faultVariable"
+                              messageType="client:SendEmailResponseMessage"/>
+                </variables>
+                <sequence name="FaultOutput">
+                    <assign name="assignFaultOutput">
+                        <copy>
+                            <from>$inputVariable.payload/@id</from>
+                            <to>$faultVariable.payload/@id</to>
+                        </copy>
+                        <copy>
+                            <from>$inputVariable.payload/@id</from>
+                            <to>$faultVariable.payload/ns2:error/@id</to>
+                        </copy>
+                        <copy>
+                            <from>ora:getFaultName()</from>
+                            <to>$faultVariable.payload/ns2:error/ns2:code</to>
+                        </copy>
+                        <copy>
+                            <from>ora:getFaultAsString()</from>
+                            <to>$faultVariable.payload/ns2:error/ns2:description</to>
+                        </copy>
+                    </assign>                    
+                    <invoke name="callbackFault" bpelx:invokeAsDetail="no"
+                            partnerLink="UMSService"
+                            portType="client:SendEmailCallback"
+                            operation="callback" inputVariable="faultVariable"/>
+                </sequence>
+            </scope>
+        </catchAll>
+    </faultHandlers>
+
+    <sequence name="main">
+        <!-- Receive input from requestor. (Note: This maps to operation defined in SendEmail.wsdl) -->
+        <receive name="receiveInput" partnerLink="UMSService" portType="client:SendEmail" operation="execute" variable="inputVariable" createInstance="yes"/>
+        <sequence name="InitiateEmailTable">
+            <assign name="SKIP-InitiateEmailTable">
+                <bpelx:skipCondition>count($inputVariable.payload/ns2:notification/ns2:cwids/ns2:cwid)=0</bpelx:skipCondition>
+                <bpelx:annotation>
+                    <bpelx:pattern patternName="bpelx:transformation"/>
+                </bpelx:annotation>
+                <copy>
+                    <from>ora:doXSLTransformForDoc("xsl/initiateTable.xsl", $inputVariable.payload)</from>
+                    <to variable="tableCwidEmail"/>
+                </copy>
+            </assign>
+            <assign name="AssignStart">
+                <copy ignoreMissingFromData="yes">
+                    <from>count($inputVariable.payload/ns2:notification/ns2:appRoles/ns2:appRole)</from>
+                    <to>$appRolesCounter</to>
+                </copy>
+                <copy>
+                    <from>$inputVariable.payload/@id</from>
+                    <to>$outputVariable.payload/@id</to>
+                </copy>
+                <copy>
+                    <from>$inputVariable.payload/@id</from>
+                    <to>$outputVariable.payload/client:complete/@id</to>
+                </copy>
+                <copy ignoreMissingFromData="yes"
+                      bpelx:insertMissingToData="yes">
+                    <from>$inputVariable.payload/ns2:notification</from>
+                    <to>$outputVariable.payload/client:complete/ns2:notification</to>
+                </copy>
+            </assign>
+        </sequence>
+        <sequence name="getCWIDsBasedOnAppRoles">
+            <bpelx:skipCondition>($appRolesCounter)=0</bpelx:skipCondition>
+            <while name="WhileAppRolesCounter">
+                <condition>($appRolesCounter)&gt;0</condition>
+                <sequence name="LoopWithAppRoles">
+                    <sequence name="GetUserList">
+                        <assign name="AssignCwidsFromAppRole">
+                            <extensionAssignOperation>
+                                <bpelx:copyList>
+                                    <bpelx:from>ids:getUsersInAppRole($inputVariable.payload/ns2:notification/ns2:appRoles/ns2:appRole[$appRolesCounter],'ipms',false())</bpelx:from>
+                                    <bpelx:to>$tmpTable.payload/user</bpelx:to>
+                                </bpelx:copyList>
+                            </extensionAssignOperation>
+                        </assign>
+                        <assign name="RemoveNamespace">
+                            <bpelx:annotation>
+                                <bpelx:pattern patternName="bpelx:transformation"/>
+                            </bpelx:annotation>
+                            <copy>
+                                <from>ora:doXSLTransformForDoc("xsl/removeNamespace.xsl", $tmpTable.payload)</from>
+                                <to variable="tmpTable" part="payload"/>
+                            </copy>
+                        </assign>
+                        <assign name="CombineTable">
+                            <bpelx:annotation>
+                                <bpelx:pattern patternName="bpelx:transformation"/>
+                            </bpelx:annotation>
+                            <copy>
+                                <from>ora:doXSLTransformForDoc("xsl/extendEmailTable.xsl", $tableCwidEmail, "tmpTable.payload", $tmpTable.payload)</from>
+                                <to variable="tableCwidEmail"/>
+                            </copy>
+                        </assign>
+                    </sequence>
+                    <assign name="AssignLoopMinusAndRemove">
+                        <copy>
+                            <from>($appRolesCounter)-1</from>
+                            <to>$appRolesCounter</to>
+                        </copy>
+                    </assign>
+                </sequence>
+            </while>
+        </sequence>
+        <assign name="AssignCwidsCounter">
+            <copy ignoreMissingFromData="yes">
+                <from>count($tableCwidEmail/ns2:user)</from>
+                <to>$cwidsCounter</to>
+            </copy>
+            <copy>
+                <from>6</from>
+                <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$waitCount</to>
+            </copy>
+        </assign>
+        <sequence name="collectEmailsBasedOnCWIDs">
+            <bpelx:skipCondition>($cwidsCounter)=0</bpelx:skipCondition>
+            <while name="WhileCwidsCounter">
+                <condition>($cwidsCounter)&gt;0</condition>
+                <sequence name="assignEmailBasedOnCwid">
+                    <while name="WhileNullEmail">
+                        <condition>($waitCount)&gt;0</condition>
+                        <sequence name="AssignOrWait">
+                            <assign name="AssignEmail">
+                                <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                    <from>ids:getUserProperty($tableCwidEmail/ns2:user[$cwidsCounter]/@id, 'mail')</from>
+                                    <to>$tableCwidEmail/ns2:user[$cwidsCounter]/ns2:name</to>
+                                </copy>
+                            </assign>
+                            <if name="IfMissingEmail">
+                                <documentation>
+                                    <![CDATA[NoEmail]]>
+                                </documentation>
+                                <condition>string-length($tableCwidEmail/ns2:user[$cwidsCounter]/ns2:name)=0</condition>
+                                <sequence name="GetOneEmailFromLDAP">
+                                    <assign name="AssignGetEmailFromLDAP">
+                                        <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                            <from>$inputVariable.payload/@id</from>
+                                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$GetEmailFromLDAPIn.request/@id</to>
+                                        </copy>
+                                        <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                            <from>$inputVariable.payload/@id</from>
+                                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$GetEmailFromLDAPIn.request/client:read/@id</to>
+                                        </copy>
+                                        <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                            <from>$inputVariable.payload/ns2:notification/ns2:ldap/ns2:baseDN</from>
+                                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$GetEmailFromLDAPIn.request/client:read/ns2:ldap/ns2:baseDN</to>
+                                        </copy>
+                                        <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                            <from>concat('sAMAccountName=', $tableCwidEmail/ns2:user[$cwidsCounter]/@id)</from>
+                                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$GetEmailFromLDAPIn.request/client:read/ns2:ldap/ns2:searchFilter</to>
+                                        </copy>
+                                    </assign>
+                                    <invoke name="GetEmailFromLDAP"
+                                            partnerLink="PromiseService" portType="client:execute_ptt"
+                                            operation="execute" inputVariable="GetEmailFromLDAPIn"
+                                            bpelx:invokeAsDetail="no"/>
+                                    <receive name="CallbackEmail" partnerLink="PromiseService"
+                                             portType="client:callback_ptt" operation="callback"
+                                             variable="CallbackEmailOut"/>
+                                    <assign name="AssignEmailFromLDAP">
+                                        <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                            <from>$CallbackEmailOut.callback/client:complete/ns2:employees[1]/ns2:employee/@email</from>
+                                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$tableCwidEmail/ns2:user[$cwidsCounter]/ns2:name</to>
+                                        </copy>
+                                    </assign>
+                                </sequence>
+                                <else>
+                                    <documentation>
+                                        <![CDATA[exit]]>
+                                    </documentation>
+                                    <assign name="WaitCount0">
+                                        <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                            <from>0</from>
+                                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$waitCount</to>
+                                        </copy>
+                                    </assign>
+                                </else>
+                            </if>
+                            <if name="IfStillMissingEmail">
+                                <documentation>
+                                    <![CDATA[NoEmail]]>
+                                </documentation>
+                                <condition>string-length($tableCwidEmail/ns2:user[$cwidsCounter]/ns2:name)=0</condition>
+                                <wait name="Wait10s">
+                                    <for>'PT10S'</for>
+                                </wait>
+                                <else>
+                                    <documentation>
+                                        <![CDATA[exit]]>
+                                    </documentation>
+                                    <assign name="WaitCount0">
+                                        <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                                            <from>0</from>
+                                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$waitCount</to>
+                                        </copy>
+                                    </assign>
+                                </else>
+                            </if>
+                            <assign name="AssignWaitCount">
+                                <copy>
+                                    <from>($waitCount)-1</from>
+                                    <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$waitCount</to>
+                                </copy>
+                            </assign>
+                        </sequence>
+                    </while>
+                    <assign name="MinusCounter">
+                        <copy>
+                            <from>($cwidsCounter)-1</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$cwidsCounter</to>
+                        </copy>
+                        <copy>
+                            <from>6</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$waitCount</to>
+                        </copy>
+                    </assign>
+                </sequence>
+            </while>
+            <sequence name="SKIP-ExceptionEmails">
+                <bpelx:skipCondition>count($tableCwidEmail/ns2:user/ns2:name)&gt;0</bpelx:skipCondition>
+                <assign name="ExcEmailCount">
+                    <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                        <from>count($inputVariable.payload/ns2:notification/ns2:emails/ns2:email)</from>
+                        <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$appRolesCounter</to>
+                    </copy>
+                    <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                        <from>count($tableCwidEmail/ns2:user)</from>
+                        <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$cwidsCounter</to>
+                    </copy>
+                </assign>
+                <while name="WhileExceptionEmails">
+                    <condition>($appRolesCounter)&gt;0</condition>
+                    <assign name="ExcEmailsToTable">
+                        <copy>
+                            <from>($cwidsCounter)+1</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$cwidsCounter</to>
+                        </copy>
+                        <copy ignoreMissingFromData="yes" bpelx:insertMissingToData="yes">
+                            <from>$inputVariable.payload/ns2:notification/ns2:emails/ns2:email[$appRolesCounter]</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$tableCwidEmail/ns2:user[$cwidsCounter]/ns2:name</to>
+                        </copy>
+                        <copy>
+                            <from>($appRolesCounter)-1</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$appRolesCounter</to>
+                        </copy>
+                    </assign>
+                </while>
+            </sequence>
+            <assign name="FilterUniqueEmails">
+                <bpelx:annotation>
+                    <bpelx:pattern patternName="bpelx:transformation"/>
+                </bpelx:annotation>
+                <copy>
+                    <from>ora:doXSLTransformForDoc("xsl/getUniqueEmails.xsl", $tableCwidEmail)</from>
+                    <to variable="tableCwidEmail"/>
+                </copy>
+            </assign>
+            <scope name="SendEmail">
+                <bpelx:annotation>
+                    <bpelx:pattern patternName="bpelx:email"/>
+                </bpelx:annotation>
+                <variables>
+                    <variable name="varNotificationReq"
+                              messageType="ns1:EmailNotificationRequest"/>
+                    <variable name="varNotificationResponse"
+                              messageType="ns1:ArrayOfResponse"/>
+                    <variable name="NotificationServiceFaultVariable"
+                              messageType="ns1:NotificationServiceErrorMessage"/>
+                </variables>
+                <sequence name="Sequence1">
+                    <assign name="EmailParamsAssign">
+                        <copy>
+                            <from>string('Default')</from>
+                            <to variable="varNotificationReq"
+                                part="EmailPayload">
+                                <query>ns1:FromAccountName</query>
+                            </to>
+                        </copy>
+                        <copy>
+                            <from>string('')</from>
+                            <to variable="varNotificationReq"
+                                part="EmailPayload">
+                                <query>ns1:FromUserName</query>
+                            </to>
+                        </copy>
+                        <copy>
+                            <from>oraext:create-delimited-string($tableCwidEmail/ns2:user/ns2:name,',')</from>
+                            <to variable="varNotificationReq"
+                                part="EmailPayload">
+                                <query>ns1:Bcc</query>
+                            </to>
+                        </copy>
+                        <copy>
+                            <from>string('')</from>
+                            <to variable="varNotificationReq"
+                                part="EmailPayload">
+                                <query>ns1:Cc</query>
+                            </to>
+                        </copy>
+                        <copy>
+                            <from>string('')</from>
+                            <to variable="varNotificationReq"
+                                part="EmailPayload">
+                                <query>ns1:ReplyToAddress</query>
+                            </to>
+                        </copy>
+                        <copy>
+                            <from>$inputVariable.payload/ns2:notification/ns2:subject</from>
+                            <to variable="varNotificationReq"
+                                part="EmailPayload">
+                                <query>ns1:Subject</query>
+                            </to>
+                        </copy>
+                        <copy>
+                            <from>string('')</from>
+                            <to variable="varNotificationReq"
+                                part="EmailPayload">
+                                <query>ns1:To</query>
+                            </to>
+                        </copy>
+                        <copy>
+                            <from>$inputVariable.payload/ns2:notification/ns2:content</from>
+                            <to variable="varNotificationReq"
+                                part="EmailPayload">
+                                <query>ns1:Content/ns1:ContentBody</query>
+                            </to>
+                        </copy>
+                        <copy>
+                            <from>string('text/html; charset=UTF-8')</from>
+                            <to variable="varNotificationReq"
+                                part="EmailPayload">
+                                <query>ns1:Content/ns1:MimeType</query>
+                            </to>
+                        </copy>
+                    </assign>
+                    <invoke name="InvokeNotificationService"
+                            portType="ns1:NotificationService"
+                            partnerLink="NotificationService"
+                            inputVariable="varNotificationReq"
+                            outputVariable="varNotificationResponse"
+                            operation="sendEmailNotification"/>
+                </sequence>
+            </scope>
+        </sequence>
+
+        <invoke name="callbackClient" partnerLink="UMSService" portType="client:SendEmailCallback" operation="callback" inputVariable="outputVariable"/>
+    </sequence>
+</process>

@@ -1,0 +1,46 @@
+--update ipms_repo.cost_ltc_fct fct set study_wbs_id=null where study_wbs_id is not null; and ltci_id<>1664;--191,513
+--select count(1) from ipms_repo.cost_ltc_fct fct where study_wbs_id is not null; and ltci_id<>1664;--191513
+--select * from ipms_data.timeline_wbs tws;
+declare
+	v_where nvarchar2(111):='manual.cost_ltc_fct.study_wbs_id';
+	v_rowcount number:=0;
+	v_timeline_id nvarchar2(55);
+begin
+	for rr in (select ltci_id,count(1) from cost_ltc_fct group by ltci_id order by ltci_id) --ltci_id=1582 and
+	loop
+		begin
+			select timeline_id into v_timeline_id from cost_ltc_fct where ltci_id=rr.ltci_id and timeline_id is not null and rownum=1;
+			
+			update ipms_repo.cost_ltc_fct fct set study_wbs_id=null where ltci_id=rr.ltci_id and study_wbs_id is not null;
+			v_rowcount:=sql%rowcount;
+			ipms_data.log_pkg.log(v_where, 'v_timeline_id='||v_timeline_id||';ltci_id='||rr.ltci_id||';v_rowcount='||v_rowcount,'Updated.study_wbs_id=null.');
+    
+			-- Mark nodes which have ancestors with study ID not null
+			merge into ipms_repo.cost_ltc_fct fct
+			using (
+				select
+					tws.timeline_id,
+					tws.parent_wbs_id,
+					tws.wbs_id,
+          tws.study_id,
+					connect_by_root tws.study_id root_study_id,
+					connect_by_root tws.wbs_id root_study_wbs_id
+				from ipms_data.timeline_wbs tws
+				where tws.timeline_id=v_timeline_id
+				start with tws.study_id is not null
+				connect by prior tws.wbs_id=tws.parent_wbs_id 
+			  ) tw on (fct.wbs_id=tw.wbs_id and fct.ltci_id = rr.ltci_id)
+			when matched then update set fct.study_wbs_id=nvl(decode(nvl(tw.study_id,tw.root_study_id), null, null, nvl(tw.root_study_wbs_id,tw.wbs_id)),fct.study_wbs_id);
+			
+		v_rowcount:=sql%rowcount;
+		ipms_data.log_pkg.log(v_where, 'v_timeline_id='||v_timeline_id||';ltci_id='||rr.ltci_id||';v_rowcount='||v_rowcount,'Updated.study_wbs_id.');
+			
+		exception when others then
+			ipms_data.log_pkg.log(v_where, 'v_timeline_id='||v_timeline_id||';is_study;ltci_id='||rr.ltci_id||';rowcount='||v_rowcount, sqlerrm);
+		end;
+		commit;
+		--exit;
+	end loop;
+  update cost_ltc_fct set study_wbs_id=wbs_id where study_id is not null and study_wbs_id is null and wbs_id is not null;
+  commit;
+end;

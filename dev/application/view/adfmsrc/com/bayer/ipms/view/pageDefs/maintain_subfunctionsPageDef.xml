@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.64.93" id="maintain_subfunctionsPageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="Root.ManagementAppModule.SubFunctionView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="SubFunctionViewIterator" ChangeEventPolicy="ppr"
+              CacheResults="true"/>
+    <searchRegion Binds="SubFunctionViewIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="SubFunctionViewQuery"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="SubFunctionViewIterator" id="SubFunctionView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.lookups.SubFunctionView"
+                      Name="SubFunctionView0">
+        <AttrNames>
+          <Item Value="Code"/>
+          <Item Value="Name"/>
+          <Item Value="FunctionCode"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+  </bindings>
+</pageDefinition>

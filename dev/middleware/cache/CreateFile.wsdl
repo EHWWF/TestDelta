@@ -1,0 +1,29 @@
+<wsdl:definitions
+     name="CreateFile"
+     targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/file/ipms/cache/CreateFile"
+     xmlns:jca="http://xmlns.oracle.com/pcbpel/wsdl/jca/"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+     xmlns:tns="http://xmlns.oracle.com/pcbpel/adapter/file/ipms/cache/CreateFile"
+     xmlns:imp1="http://xmlns.bayer.com/ipms/cache"
+     xmlns:plt="http://schemas.xmlsoap.org/ws/2003/05/partner-link/"
+    >
+  <plt:partnerLinkType name="Create_plt" >
+    <plt:role name="Create_role" >
+      <plt:portType name="tns:Create_ptt" />
+    </plt:role>
+  </plt:partnerLinkType>
+    <wsdl:types>
+      <schema targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/file/ipms/cache/CreateFile"
+              xmlns="http://www.w3.org/2001/XMLSchema" >
+        <import namespace="http://xmlns.bayer.com/ipms/cache" schemaLocation="oramds:/apps/com/bayer/xmlns/ipms/cache/cache.xsd" />
+      </schema>
+    </wsdl:types>
+    <wsdl:message name="Create_msg">
+        <wsdl:part name="body" element="imp1:cache"/>
+    </wsdl:message>
+    <wsdl:portType name="Create_ptt">
+        <wsdl:operation name="Create">
+            <wsdl:input message="tns:Create_msg"/>
+        </wsdl:operation>
+    </wsdl:portType>
+</wsdl:definitions>

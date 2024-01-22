@@ -1,0 +1,1693 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="LtcEstimateView"
+  Version="12.2.1.0.31"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="com.bayer.ipms.model.views.ltc.LtcEstimateViewRowImpl"
+  ComponentClass="com.bayer.ipms.model.views.ltc.LtcEstimateViewImpl"
+  PageIterMode="Full"
+  ComponentInterface="com.bayer.ipms.model.views.ltc.common.LtcEstimateView"
+  ClientProxyName="com.bayer.ipms.model.views.ltc.client.LtcEstimateViewClient"
+  RowInterface="com.bayer.ipms.model.views.ltc.common.LtcEstimateViewRow"
+  ClientRowProxyName="com.bayer.ipms.model.views.ltc.client.LtcEstimateViewRowClient">
+  <DesignTime>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|VarAccess"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Variable
+    Name="TagIdVar"
+    Kind="where"
+    Type="java.lang.String"/>
+  <Variable
+    Name="ProjectIdVar"
+    Kind="where"
+    Type="java.lang.String"/>
+  <Variable
+    Name="ProgramIdVar"
+    Kind="where"
+    Type="java.lang.String"/>
+  <Variable
+    Name="ProcessIdVar"
+    Kind="where"
+    Type="java.lang.String"/>
+  <Variable
+    Name="TypeVar"
+    Kind="where"
+    Type="java.lang.String"/>
+  <ViewAccessor
+    Name="ScopeView"
+    ViewObjectName="com.bayer.ipms.model.views.lookups.ScopeView"
+    RowLevelBinds="true"/>
+  <ViewAccessor
+    Name="ExternalFteView"
+    ViewObjectName="com.bayer.ipms.model.views.lookups.ExternalFteView"
+    RowLevelBinds="true"/>
+  <ViewAccessor
+    Name="LtcStudiesView"
+    ViewObjectName="com.bayer.ipms.model.views.lookups.LtcStudiesView"
+    RowLevelBinds="true">
+    <ParameterMap>
+      <PIMap Variable="LtcProjectIdVar">
+        <TransientExpression
+          trustMode="untrusted"
+          Name="ExpressionScript"><![CDATA[LtcProjectId]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="LtcFunctionView"
+    ViewObjectName="com.bayer.ipms.model.views.lookups.LtcFunctionView"
+    RowLevelBinds="true">
+    <ViewCriteriaUsage
+      Name="LtcFunctions"
+      FullName="com.bayer.ipms.model.views.lookups.LtcFunctionView.LtcFunctions"/>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="LtcSelectedProjectView"
+    ViewObjectName="com.bayer.ipms.model.views.lookups.LtcAvailableProjects"
+    RowLevelBinds="true">
+    <ParameterMap>
+      <PIMap Variable="SelectedLtcProjectIdVar">
+        <TransientExpression
+          trustMode="untrusted"
+          Name="ExpressionScript"><![CDATA[LtcProjectId]]></TransientExpression>
+      </PIMap>
+      <PIMap Variable="ProcessIdVar">
+        <TransientExpression
+          trustMode="untrusted"
+          Name="ExpressionScript"><![CDATA[LtcProcessId]]></TransientExpression>
+      </PIMap>
+      <PIMap Variable="ProgramIdVar">
+        <TransientExpression
+          trustMode="untrusted"
+          Name="ExpressionScript"><![CDATA[ProgramId]]></TransientExpression>
+      </PIMap>
+      <PIMap Variable="ProjectIdVar">
+        <TransientExpression
+          trustMode="untrusted"
+          Name="ExpressionScript"><![CDATA[ProjectId]]></TransientExpression>
+      </PIMap>
+      <PIMap Variable="TagIdVar">
+        <TransientExpression
+          trustMode="untrusted"
+          Name="ExpressionScript"><![CDATA[LtcTagId]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="LtcSelectedStudyView"
+    ViewObjectName="com.bayer.ipms.model.views.lookups.LtcStudiesView"
+    RowLevelBinds="true">
+    <ParameterMap>
+      <PIMap Variable="SelectedStudyIdVar">
+        <TransientExpression
+          trustMode="untrusted"
+          Name="ExpressionScript"><![CDATA[StudyId]]></TransientExpression>
+      </PIMap>
+      <PIMap Variable="LtcProjectIdVar">
+        <TransientExpression
+          trustMode="untrusted"
+          Name="ExpressionScript"><![CDATA[LtcProjectId]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="LtcSelectedFunctionView"
+    ViewObjectName="com.bayer.ipms.model.views.lookups.LtcFunctionView"
+    RowLevelBinds="true">
+    <ViewCriteriaUsage
+      Name="LtcFunctions"
+      FullName="com.bayer.ipms.model.views.lookups.LtcFunctionView.LtcFunctions"/>
+    <ViewCriteriaUsage
+      Name="LtcSelectedFunction"
+      FullName="com.bayer.ipms.model.views.lookups.LtcFunctionView.LtcSelectedFunction"/>
+    <ParameterMap>
+      <PIMap Variable="LtcSelectedFunctionCodeVar">
+        <TransientExpression
+          trustMode="untrusted"
+          Name="ExpressionScript"><![CDATA[FunctionCode]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="SelectedScopeView"
+    ViewObjectName="com.bayer.ipms.model.views.lookups.ScopeView"
+    RowLevelBinds="true">
+    <ViewCriteriaUsage
+      Name="SelectedScope"
+      FullName="com.bayer.ipms.model.views.lookups.ScopeView.SelectedScope"/>
+    <ParameterMap>
+      <PIMap Variable="SelectedScopeCodeVar">
+        <TransientExpression
+          trustMode="untrusted"
+          Name="ExpressionScript"><![CDATA[ScopeCode]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="LtcProjectPhaseView"
+    ViewObjectName="com.bayer.ipms.model.views.ltc.LtcProjectPhaseView"
+    RowLevelBinds="true">
+    <ParameterMap>
+      <PIMap Variable="LtcProjectIdVar">
+        <TransientExpression
+          trustMode="untrusted"
+          Name="ExpressionScript"><![CDATA[LtcProjectId]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="LtcAvailableProjects"
+    ViewObjectName="com.bayer.ipms.model.views.lookups.LtcAvailableProjects"
+    RowLevelBinds="true">
+    <ParameterMap>
+      <PIMap Variable="ProcessIdVar">
+        <TransientExpression
+          trustMode="untrusted"
+          Name="ExpressionScript"><![CDATA[LtcProcessId]]></TransientExpression>
+      </PIMap>
+      <PIMap Variable="TagIdVar">
+        <TransientExpression
+          trustMode="untrusted"
+          Name="ExpressionScript"><![CDATA[LtcTagId]]></TransientExpression>
+      </PIMap>
+      <PIMap Variable="ProgramIdVar">
+        <TransientExpression
+          trustMode="untrusted"
+          Name="ExpressionScript"><![CDATA[ProgramId]]></TransientExpression>
+      </PIMap>
+      <PIMap Variable="ProjectIdVar">
+        <TransientExpression
+          trustMode="untrusted"
+          Name="ExpressionScript"><![CDATA[ProjectId]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="LtcAllPhasesView"
+    ViewObjectName="com.bayer.ipms.model.views.ltc.LtcAllPhasesView"
+    RowLevelBinds="true"/>
+  <ListBinding
+    Name="LOV_ScopeCode"
+    ListVOName="ScopeView"
+    ListRangeSize="-1"
+    NullValueFlag="none"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="ScopeCode"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="Code"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="Name"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_IsExternalFte"
+    ListVOName="ExternalFteView"
+    ListRangeSize="-1"
+    NullValueFlag="none"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="IsExternalFte"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="Code"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="Name"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_StudyId"
+    ListVOName="LtcStudiesView"
+    ListRangeSize="-1"
+    NullValueFlag="start"
+    MRUCount="0"
+    NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}">
+    <AttrArray Name="AttrNames">
+      <Item Value="StudyId"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="DerivedAttrNames">
+      <Item Value="StudyFpfv4Saving"/>
+      <Item Value="StudyLplv4Saving"/>
+      <Item Value="StudyName4Saving"/>
+      <Item Value="StudyPhaseCode4Saving"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="Id"/>
+      <Item Value="Fpfv"/>
+      <Item Value="Lplv"/>
+      <Item Value="Name"/>
+      <Item Value="PhaseCode"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="Id"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_FunctionCode"
+    ListVOName="LtcFunctionView"
+    ListRangeSize="-1"
+    NullValueFlag="none"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="FunctionCode"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="DerivedAttrNames">
+      <Item Value="FunctionCostRate"/>
+      <Item Value="FunctionCostRate4Saving"/>
+      <Item Value="FunctionName4Saving"/>
+      <Item Value="TopFunctionName4Saving"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="Code"/>
+      <Item Value="CostRate"/>
+      <Item Value="CostRate"/>
+      <Item Value="Name"/>
+      <Item Value="TopFunctionName"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="QualifiedName2"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_ProgramName"
+    ListVOName="LtcSelectedProjectView"
+    ListRangeSize="-1"
+    NullValueFlag="none"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="ProgramName"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="ProgramName"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="ProgramName"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_ProjectName"
+    ListVOName="LtcSelectedProjectView"
+    ListRangeSize="-1"
+    NullValueFlag="none"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="ProjectName"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="Name"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="Name"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_StudyName"
+    ListVOName="LtcSelectedStudyView"
+    ListRangeSize="-1"
+    NullValueFlag="none"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="StudyName"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="Name"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="Name"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_StudyFpfv"
+    ListVOName="LtcSelectedStudyView"
+    ListRangeSize="-1"
+    NullValueFlag="none"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="StudyFpfv"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="Fpfv"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="Fpfv"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_StudyLplv"
+    ListVOName="LtcSelectedStudyView"
+    ListRangeSize="-1"
+    NullValueFlag="none"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="StudyLplv"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="Lplv"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="Lplv"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_TopFunctionName"
+    ListVOName="LtcSelectedFunctionView"
+    ListRangeSize="-1"
+    NullValueFlag="none"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="TopFunctionName"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="TopFunctionName"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="TopFunctionName"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_FunctionCostRate"
+    ListVOName="LtcSelectedFunctionView"
+    ListRangeSize="-1"
+    NullValueFlag="none"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="FunctionCostRate"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="CostRate"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="CostRate"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_ScopeCode2"
+    ListVOName="SelectedScopeView"
+    ListRangeSize="-1"
+    NullValueFlag="none"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="ScopeCode2"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="Code"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="Code"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_ProjectPhaseCode"
+    ListVOName="LtcAllPhasesView"
+    ListRangeSize="-1"
+    NullValueFlag="start"
+    MRUCount="0"
+    NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}">
+    <AttrArray Name="AttrNames">
+      <Item Value="ProjectPhaseCode"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="DerivedAttrNames">
+      <Item Value="ProjectPhaseName4Saving"/>
+      <Item Value="ProjectPhaseOrdering4Saving"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="Code"/>
+      <Item Value="Name"/>
+      <Item Value="Ordering"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="Name"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_StudyPhaseCode"
+    ListVOName="LtcSelectedStudyView"
+    ListRangeSize="-1"
+    NullValueFlag="none"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="StudyPhaseCode"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="PhaseCode"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="PhaseCode"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_StudyProjectPhaseName"
+    ListVOName="LtcSelectedStudyView"
+    ListRangeSize="-1"
+    NullValueFlag="none"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="StudyProjectPhaseName"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="ProjectPhaseName"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="ProjectPhaseName"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_LtcProjectId"
+    ListVOName="LtcAvailableProjects"
+    ListRangeSize="-1"
+    NullValueFlag="none"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="LtcProjectId"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="Id"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="Code"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_ProjectPhaseCodeLookup"
+    ListVOName="LtcProjectPhaseView"
+    ListRangeSize="-1"
+    NullValueFlag="start"
+    NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="ProjectPhaseCodeLookup"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="Code"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="Name"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <SQLQuery><![CDATA[SELECT  
+  lte.ID,  
+  lte.LTC_PROJECT_ID,  
+  lte.STUDY_ID,  
+  lte.FUNCTION_CODE,  
+  decode(lte.type_code,'FTE','-',lte.SCOPE_CODE) scope_code,  
+  lte.IS_EXTERNAL_FTE IS_EXTERNAL_FTE,  
+  prg.name       program_name,  
+  prj.code       project_code,  
+  prj.name       project_name,  
+  std.name       study_name,  
+  std.fpfv       study_fpfv,  
+  std.lplv       study_lplv,  
+  tfnc.name top_function_name,  
+  fnc.name function_name,  
+  lte.COMMENTS,  
+  lte.fct_y1_cost fc_d_y1_cost,  
+  lte.lt_y1_cost lt_y1_cost,  
+  lte.lt_y1_cost - nvl(lte.fct_y1_cost,0) cost_deviation_y1,  
+  lte.fct_y2_cost fc_d_y2_cost,  
+  lte.lt_y2_cost lt_y2_cost,  
+  lte.lt_y2_cost-nvl(lte.fct_y2_cost,0) cost_deviation_y2,  
+  lte.fct_y3_cost fc_d_y3_cost,  
+  lte.lt_y3_cost lt_y3_cost,  
+  lte.lt_y3_cost-nvl(lte.fct_y3_cost,0) cost_deviation_y3,  
+  lte.lt_y4_cost lt_y4_cost,  
+  lte.lt_y5_cost lt_y5_cost,  
+  lte.lt_y6_cost lt_y6_cost,  
+  lte.lt_y7_cost lt_y7_cost,  
+  lte.lt_y8_cost lt_y8_cost,  
+  lte.lt_y9_cost lt_y9_cost,  
+  lte.lt_y10_cost lt_y10_cost,  
+  lte.lt_y11_cost lt_y11_cost,  
+  lte.lt_y12_cost lt_y12_cost,  
+  lte.lt_y13_cost lt_y13_cost,  
+  lte.lt_y14_cost lt_y14_cost,  
+  lte.lt_y15_cost lt_y15_cost,  
+  lte.is_discrepancy,  
+  fnc.cost_rate function_cost_rate,  
+  lte.scope_code as scope_code2,  
+  lte.project_phase_code,  
+  std.phase_code study_phase_code,  
+  phs.name project_phase_name,  
+  lte.is_manual,  
+  lte.function_Cost_Rate function_cost_rate1,  
+  lte.function_name function_name1,  
+  lte.project_phase_name project_phase_name1,  
+  lte.study_fpfv study_fpfv1,  
+  lte.study_lplv study_lplv1,  
+  lte.study_name study_name1,  
+  lte.study_phase_code study_phase_code1,  
+  lte.top_function_name top_function_name1,  
+  lte.type_code,  
+  lte.project_phase_ordering,  
+  lte.fct_y4_cost fc_d_y4_cost,  
+  lte.lt_y4_cost - nvl(lte.fct_y4_cost,0) cost_deviation_y4,   
+  lte.fct_y5_cost fc_d_y5_cost,  
+  lte.lt_y5_cost - nvl(lte.fct_y5_cost,0) cost_deviation_y5,   
+  lte.fct_y6_cost fc_d_y6_cost,  
+  lte.lt_y6_cost - nvl(lte.fct_y6_cost,0) cost_deviation_y6,  
+  lte.fct_y7_cost fc_d_y7_cost,  
+  lte.lt_y7_cost - nvl(lte.fct_y7_cost,0) cost_deviation_y7,  
+  lte.fct_y8_cost fc_d_y8_cost,  
+  lte.lt_y8_cost - nvl(lte.fct_y8_cost,0) cost_deviation_y8,  
+  lte.fct_y9_cost fc_d_y9_cost,  
+  lte.lt_y9_cost - nvl(lte.fct_y9_cost,0) cost_deviation_y9,  
+  lte.fct_y10_cost fc_d_y10_cost,  
+  lte.lt_y10_cost - nvl(lte.fct_y10_cost,0) cost_deviation_y10,  
+  lte.fct_y11_cost fc_d_y11_cost,  
+  lte.lt_y11_cost - nvl(lte.fct_y11_cost,0) cost_deviation_y11,  
+  lte.fct_y12_cost fc_d_y12_cost,  
+  lte.lt_y12_cost - nvl(lte.fct_y12_cost,0) cost_deviation_y12,  
+  lte.fct_y13_cost fc_d_y13_cost,  
+  lte.lt_y13_cost - nvl(lte.fct_y13_cost,0) cost_deviation_y13,  
+  lte.fct_y14_cost fc_d_y14_cost,  
+  lte.lt_y14_cost - nvl(lte.fct_y14_cost,0) cost_deviation_y14,  
+  lte.fct_y15_cost fc_d_y15_cost,  
+  lte.lt_y15_cost - nvl(lte.fct_y15_cost,0) cost_deviation_y15  
+FROM  ( select id,ltc_project_id,project_phase_code,study_id,function_code,scope_code,is_external_fte,comments,fct_y1_cost,lt_y1_cost,fct_y2_cost,lt_y2_cost,fct_y3_cost,lt_y3_cost,lt_y4_cost,lt_y5_cost,lt_y6_cost,lt_y7_cost,lt_y8_cost,lt_y9_cost,lt_y10_cost,lt_y11_cost,lt_y12_cost,lt_y13_cost,lt_y14_cost,lt_y15_cost,create_date,create_user_id,update_date,update_user_id,cost_start_date,cost_finish_date,is_manual,project_phase_name,study_phase_code,study_name,study_fpfv,study_lplv,top_function_name,function_name,function_cost_rate,fct_prob_y1_cost,fct_prob_y2_cost,fct_prob_y3_cost,type_code,is_discrepancy_profit,is_discrepancy_p6,is_discrepancy,project_phase_ordering,base_cost_source,fct_y4_cost,fct_y5_cost,fct_y6_cost,fct_y7_cost,fct_y8_cost,fct_y9_cost,fct_y10_cost,fct_y11_cost,fct_y12_cost,fct_y13_cost,fct_y14_cost,fct_y15_cost from LTC_ESTIMATE  
+        -- Add fake row in case if it was empty sheet  
+        union all  
+        select   
+            -1 id,  
+            (select ltcp.id from ltc_project ltcp  
+                    join ltc_process ltcr on ltcr.id=ltcp.ltc_process_id and ltcr.ltc_tag_id=:TagIdVar and  nvl(:ProcessIdVar,ltcr.id)=ltcr.id and nvl(:ProjectIdVar,ltcp.project_id)=ltcp.project_id  
+                    join project prj2 on prj2.id=ltcp.project_id and nvl(:ProgramIdVar,prj2.program_id)=prj2.program_id  
+            where rownum=1) ltc_project_id,  
+            (select code from phase where is_active=1 and rownum=1) project_phase_code,  
+            null study_id,  
+            (select code from function where is_active=1 and rownum=1) function_code,  
+            N'INT' scope_code,0 is_external_fte,N'Fake row. Do not use it.' comments,null fct_y1_cost,null lt_y1_cost,null fct_y2_cost,null lt_y2_cost,null fct_y3_cost,null lt_y3_cost,null lt_y4_cost,null lt_y5_cost,null lt_y6_cost,null lt_y7_cost,null lt_y8_cost,null lt_y9_cost,null lt_y10_cost,null lt_y11_cost,null lt_y12_cost,null lt_y13_cost,null lt_y14_cost,null lt_y15_cost,null create_date,null create_user_id,null update_date,null update_user_id,null cost_start_date,null cost_finish_date,0 is_manual,null project_phase_name,null study_phase_code,null study_name,null study_fpfv,null study_lplv,null top_function_name,null function_name,null function_cost_rate,null fct_prob_y1_cost,null fct_prob_y2_cost,null fct_prob_y3_cost,N'ZFAK' type_code,null is_discrepancy_profit,null is_discrepancy_p6,0 is_discrepancy,null project_phase_ordering,null base_cost_source, null fct_y4_cost, null fct_y5_cost, null fct_y6_cost, null fct_y7_cost, null fct_y8_cost, null fct_y9_cost, null fct_y10_cost, null fct_y11_cost, null fct_y12_cost, null fct_y13_cost, null fct_y14_cost, null fct_y15_cost  
+        from dual  
+      ) lte   
+  join ltc_project ltcprj on ltcprj.id = lte.ltc_project_id  
+  join ltc_process ltcprc on ltcprc.id=ltcprj.ltc_process_id  
+  join project prj on prj.id = ltcprj.project_id  
+  join program prg on prg.id = prj.program_id  
+  join phase phs on phs.code = lte.project_phase_code  
+  join function fnc on lte.function_code=fnc.code  
+  join top_function tfnc on tfnc.code=fnc.top_function_code  
+  left join study_data_vw std on std.project_id = ltcprj.project_id and std.id = lte.study_id and std.timeline_type_code='RAW'  
+where  
+  (lte.type_code=:TypeVar or lte.type_code='ZFAK')  
+  and :TagIdVar=ltcprc.ltc_tag_id  
+  and nvl(:ProcessIdVar,ltcprc.id)=ltcprc.id  
+  and nvl(:ProgramIdVar,prg.id)=prg.id  
+  and nvl(:ProjectIdVar,ltcprj.project_id)=ltcprj.project_id  
+order by lte.type_code, prg.name, prj.name, phs.ordering, lte.study_id nulls last, tfnc.name, fnc.name, lte.scope_code]]></SQLQuery>
+  <EntityUsage
+    Name="LtcEstimate"
+    Entity="com.bayer.ipms.model.entities.ltc.LtcEstimate"/>
+  <ViewAttribute
+    Name="Id"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="Id"
+    EntityUsage="LtcEstimate"
+    AliasName="ID"/>
+  <ViewAttribute
+    Name="LtcProjectId"
+    IsUnique="true"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="LtcProjectId"
+    EntityUsage="LtcEstimate"
+    AliasName="LTC_PROJECT_ID"
+    LOVName="LOV_LtcProjectId">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.ltc.LtcEstimateView.LtcProjectId_LABEL"/>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="StudyId"
+    IsUnique="true"
+    PrecisionRule="true"
+    EntityAttrName="StudyId"
+    EntityUsage="LtcEstimate"
+    AliasName="STUDY_ID"
+    LOVName="LOV_StudyId">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.ltc.LtcEstimateView.StudyId_LABEL"/>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="FunctionCode"
+    IsUnique="true"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="FunctionCode"
+    EntityUsage="LtcEstimate"
+    AliasName="FUNCTION_CODE"
+    LOVName="LOV_FunctionCode">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.ltc.LtcEstimateView.FunctionCode_LABEL"/>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ScopeCode"
+    IsUnique="true"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="ScopeCode"
+    EntityUsage="LtcEstimate"
+    AliasName="SCOPE_CODE"
+    LOVName="LOV_ScopeCode">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.ltc.LtcEstimateView.ScopeCode_LABEL"/>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IsExternalFte"
+    IsUnique="true"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="IsExternalFte"
+    EntityUsage="LtcEstimate"
+    AliasName="IS_EXTERNAL_FTE"
+    LOVName="LOV_IsExternalFte"
+    DefaultValue="0">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.ltc.LtcEstimateView.IsExternalFte_LABEL"/>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ProgramName"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="PROGRAM_NAME"
+    Expression="PROGRAM_NAME"
+    SQLType="VARCHAR"
+    LOVName="LOV_ProgramName">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.ltc.LtcEstimateView.ProgramName_LABEL"/>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ProjectCode"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="PROJECT_CODE"
+    Expression="PROJECT_CODE"
+    SQLType="VARCHAR">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.ltc.LtcEstimateView.ProjectCode_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ProjectName"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="PROJECT_NAME"
+    Expression="PROJECT_NAME"
+    SQLType="VARCHAR"
+    LOVName="LOV_ProjectName">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.ltc.LtcEstimateView.ProjectName_LABEL"/>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="StudyName"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="4000"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="STUDY_NAME"
+    Expression="STUDY_NAME"
+    SQLType="VARCHAR"
+    LOVName="LOV_StudyName">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="4000"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.ltc.LtcEstimateView.StudyName_LABEL"/>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="StudyFpfv"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    AliasName="STUDY_FPFV"
+    Expression="STUDY_FPFV"
+    SQLType="DATE"
+    LOVName="LOV_StudyFpfv">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.ltc.LtcEstimateView.StudyFpfv_LABEL"/>
+        <FMT_FORMATTER
+          ResId="com.bayer.ipms.model.views.ltc.LtcEstimateView.StudyFpfv_FMT_FORMATTER"/>
+        <FMT_FORMAT
+          ResId="com.bayer.ipms.model.views.ltc.LtcEstimateView.StudyFpfv_FMT_FORMAT"/>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="StudyLplv"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    AliasName="STUDY_LPLV"
+    Expression="STUDY_LPLV"
+    SQLType="DATE"
+    LOVName="LOV_StudyLplv">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.ltc.LtcEstimateView.StudyLplv_LABEL"/>
+        <FMT_FORMAT
+          ResId="com.bayer.ipms.model.views.ltc.LtcEstimateView.StudyLplv_FMT_FORMAT"/>
+        <FMT_FORMATTER
+          ResId="com.bayer.ipms.model.views.ltc.LtcEstimateView.StudyLplv_FMT_FORMATTER"/>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TopFunctionName"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="TOP_FUNCTION_NAME"
+    Expression="TOP_FUNCTION_NAME"
+    SQLType="VARCHAR"
+    IsQueriable="false"
+    LOVName="LOV_TopFunctionName">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.ltc.LtcEstimateView.TopFunctionName_LABEL"/>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="FunctionName"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="FUNCTION_NAME"
+    Expression="FUNCTION_NAME"
+    SQLType="VARCHAR">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.ltc.LtcEstimateView.FunctionName_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Comments"
+    PrecisionRule="true"
+    EntityAttrName="Comments"
+    EntityUsage="LtcEstimate"
+    AliasName="COMMENTS">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.ltc.LtcEstimateView.Comments_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="FcDY1Cost"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="FLOAT"
+    AliasName="FC_D_Y1_COST"
+    Expression="FC_D_Y1_COST"
+    SQLType="FLOAT"/>
+  <ViewAttribute
+    Name="LtY1Cost"
+    PrecisionRule="true"
+    EntityAttrName="LtY1Cost"
+    EntityUsage="LtcEstimate"
+    AliasName="LT_Y1_COST"/>
+  <ViewAttribute
+    Name="CostDeviationY1"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="FLOAT"
+    AliasName="COST_DEVIATION_Y1"
+    Expression="COST_DEVIATION_Y1"
+    SQLType="FLOAT"/>
+  <ViewAttribute
+    Name="FcDY2Cost"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="FLOAT"
+    AliasName="FC_D_Y2_COST"
+    Expression="FC_D_Y2_COST"
+    SQLType="FLOAT"/>
+  <ViewAttribute
+    Name="LtY2Cost"
+    PrecisionRule="true"
+    EntityAttrName="LtY2Cost"
+    EntityUsage="LtcEstimate"
+    AliasName="LT_Y2_COST"/>
+  <ViewAttribute
+    Name="CostDeviationY2"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="FLOAT"
+    AliasName="COST_DEVIATION_Y2"
+    Expression="COST_DEVIATION_Y2"
+    SQLType="FLOAT"/>
+  <ViewAttribute
+    Name="FcDY3Cost"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="FLOAT"
+    AliasName="FC_D_Y3_COST"
+    Expression="FC_D_Y3_COST"
+    SQLType="FLOAT"/>
+  <ViewAttribute
+    Name="LtY3Cost"
+    PrecisionRule="true"
+    EntityAttrName="LtY3Cost"
+    EntityUsage="LtcEstimate"
+    AliasName="LT_Y3_COST"/>
+  <ViewAttribute
+    Name="CostDeviationY3"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="FLOAT"
+    AliasName="COST_DEVIATION_Y3"
+    Expression="COST_DEVIATION_Y3"
+    SQLType="FLOAT"/>
+  <ViewAttribute
+    Name="LtY4Cost"
+    PrecisionRule="true"
+    EntityAttrName="LtY4Cost"
+    EntityUsage="LtcEstimate"
+    AliasName="LT_Y4_COST"/>
+  <ViewAttribute
+    Name="LtY5Cost"
+    PrecisionRule="true"
+    EntityAttrName="LtY5Cost"
+    EntityUsage="LtcEstimate"
+    AliasName="LT_Y5_COST"/>
+  <ViewAttribute
+    Name="LtY6Cost"
+    PrecisionRule="true"
+    EntityAttrName="LtY6Cost"
+    EntityUsage="LtcEstimate"
+    AliasName="LT_Y6_COST"/>
+  <ViewAttribute
+    Name="LtY7Cost"
+    PrecisionRule="true"
+    EntityAttrName="LtY7Cost"
+    EntityUsage="LtcEstimate"
+    AliasName="LT_Y7_COST"/>
+  <ViewAttribute
+    Name="LtY8Cost"
+    PrecisionRule="true"
+    EntityAttrName="LtY8Cost"
+    EntityUsage="LtcEstimate"
+    AliasName="LT_Y8_COST"/>
+  <ViewAttribute
+    Name="LtY9Cost"
+    PrecisionRule="true"
+    EntityAttrName="LtY9Cost"
+    EntityUsage="LtcEstimate"
+    AliasName="LT_Y9_COST"/>
+  <ViewAttribute
+    Name="LtY10Cost"
+    PrecisionRule="true"
+    EntityAttrName="LtY10Cost"
+    EntityUsage="LtcEstimate"
+    AliasName="LT_Y10_COST"/>
+  <ViewAttribute
+    Name="LtY11Cost"
+    PrecisionRule="true"
+    EntityAttrName="LtY11Cost"
+    EntityUsage="LtcEstimate"
+    AliasName="LT_Y11_COST"/>
+  <ViewAttribute
+    Name="LtY12Cost"
+    PrecisionRule="true"
+    EntityAttrName="LtY12Cost"
+    EntityUsage="LtcEstimate"
+    AliasName="LT_Y12_COST"/>
+  <ViewAttribute
+    Name="LtY13Cost"
+    PrecisionRule="true"
+    EntityAttrName="LtY13Cost"
+    EntityUsage="LtcEstimate"
+    AliasName="LT_Y13_COST"/>
+  <ViewAttribute
+    Name="LtY14Cost"
+    PrecisionRule="true"
+    EntityAttrName="LtY14Cost"
+    EntityUsage="LtcEstimate"
+    AliasName="LT_Y14_COST"/>
+  <ViewAttribute
+    Name="LtY15Cost"
+    PrecisionRule="true"
+    EntityAttrName="LtY15Cost"
+    EntityUsage="LtcEstimate"
+    AliasName="LT_Y15_COST"/>
+  <ViewAttribute
+    Name="IsDiscrepancy"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="IsDiscrepancy"
+    EntityUsage="LtcEstimate"
+    AliasName="IS_DISCREPANCY"/>
+  <ViewAttribute
+    Name="FunctionCostRate"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="FUNCTION_COST_RATE"
+    Expression="FUNCTION_COST_RATE"
+    SQLType="FLOAT"
+    LOVName="LOV_FunctionCostRate">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ScopeCode2"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="SCOPE_CODE2"
+    SQLType="VARCHAR"
+    LOVName="LOV_ScopeCode2"
+    Expression="SCOPE_CODE2"
+    IsQueriable="false">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ProjectPhaseCode"
+    IsUnique="true"
+    PrecisionRule="true"
+    EntityAttrName="ProjectPhaseCode"
+    EntityUsage="LtcEstimate"
+    AliasName="PROJECT_PHASE_CODE"
+    LOVName="LOV_ProjectPhaseCode">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.ltc.LtcEstimateView.ProjectPhaseCode_LABEL"/>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="StudyPhaseCode"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="STUDY_PHASE_CODE"
+    Expression="STUDY_PHASE_CODE"
+    SQLType="VARCHAR"
+    LOVName="LOV_StudyPhaseCode">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="com.bayer.ipms.model.views.ltc.LtcEstimateView.StudyPhaseCode_LABEL"/>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="StudyProjectPhaseName"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    AliasName="PROJECT_PHASE_NAME"
+    Expression="PROJECT_PHASE_NAME"
+    SQLType="VARCHAR"
+    LOVName="LOV_StudyProjectPhaseName">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="IsManual"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Scale="0"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    AliasName="IS_MANUAL"
+    Expression="IS_MANUAL"
+    SQLType="INTEGER"/>
+  <ViewAttribute
+    Name="FunctionCostRate4Saving"
+    PrecisionRule="true"
+    EntityAttrName="FunctionCostRate"
+    EntityUsage="LtcEstimate"
+    AliasName="FUNCTION_COST_RATE1"/>
+  <ViewAttribute
+    Name="FunctionName4Saving"
+    PrecisionRule="true"
+    EntityAttrName="FunctionName"
+    EntityUsage="LtcEstimate"
+    AliasName="FUNCTION_NAME1"/>
+  <ViewAttribute
+    Name="ProjectPhaseName4Saving"
+    PrecisionRule="true"
+    EntityAttrName="ProjectPhaseName"
+    EntityUsage="LtcEstimate"
+    AliasName="PROJECT_PHASE_NAME1"/>
+  <ViewAttribute
+    Name="StudyFpfv4Saving"
+    PrecisionRule="true"
+    EntityAttrName="StudyFpfv"
+    EntityUsage="LtcEstimate"
+    AliasName="STUDY_FPFV1"/>
+  <ViewAttribute
+    Name="StudyLplv4Saving"
+    PrecisionRule="true"
+    EntityAttrName="StudyLplv"
+    EntityUsage="LtcEstimate"
+    AliasName="STUDY_LPLV1"/>
+  <ViewAttribute
+    Name="StudyName4Saving"
+    PrecisionRule="true"
+    EntityAttrName="StudyName"
+    EntityUsage="LtcEstimate"
+    AliasName="STUDY_NAME1"/>
+  <ViewAttribute
+    Name="StudyPhaseCode4Saving"
+    PrecisionRule="true"
+    EntityAttrName="StudyPhaseCode"
+    EntityUsage="LtcEstimate"
+    AliasName="STUDY_PHASE_CODE1"/>
+  <ViewAttribute
+    Name="TopFunctionName4Saving"
+    PrecisionRule="true"
+    EntityAttrName="TopFunctionName"
+    EntityUsage="LtcEstimate"
+    AliasName="TOP_FUNCTION_NAME1"/>
+  <ViewAttribute
+    Name="TypeCode"
+    IsUnique="true"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="TypeCode"
+    EntityUsage="LtcEstimate"
+    AliasName="TYPE_CODE">
+    <TransientExpression
+      Name="ExpressionScript"
+      trustMode="untrusted"
+      CodeSourceName="LtcEstimateViewRow"/>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ProjectPhaseOrdering4Saving"
+    PrecisionRule="true"
+    EntityAttrName="ProjectPhaseOrdering"
+    EntityUsage="LtcEstimate"
+    AliasName="PROJECT_PHASE_ORDERING"/>
+  <ViewAttribute
+    Name="FcDY4Cost"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="FC_D_Y4_COST"
+    Expression="FC_D_Y4_COST"
+    SQLType="FLOAT"/>
+  <ViewAttribute
+    Name="CostDeviationY4"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="COST_DEVIATION_Y4"
+    Expression="COST_DEVIATION_Y4"
+    SQLType="FLOAT"/>
+  <ViewAttribute
+    Name="FcDY5Cost"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="FC_D_Y5_COST"
+    Expression="FC_D_Y5_COST"
+    SQLType="FLOAT"/>
+  <ViewAttribute
+    Name="CostDeviationY5"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="COST_DEVIATION_Y5"
+    Expression="COST_DEVIATION_Y5"
+    SQLType="FLOAT"/>
+  <ViewAttribute
+    Name="FcDY6Cost"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="FC_D_Y6_COST"
+    Expression="FC_D_Y6_COST"
+    SQLType="FLOAT"/>
+  <ViewAttribute
+    Name="CostDeviationY6"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="COST_DEVIATION_Y6"
+    Expression="COST_DEVIATION_Y6"
+    SQLType="FLOAT"/>
+  <ViewAttribute
+    Name="FcDY7Cost"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="FC_D_Y7_COST"
+    Expression="FC_D_Y7_COST"
+    SQLType="FLOAT"/>
+  <ViewAttribute
+    Name="CostDeviationY7"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="COST_DEVIATION_Y7"
+    Expression="COST_DEVIATION_Y7"
+    SQLType="FLOAT"/>
+  <ViewAttribute
+    Name="FcDY8Cost"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="FC_D_Y8_COST"
+    Expression="FC_D_Y8_COST"
+    SQLType="FLOAT"/>
+  <ViewAttribute
+    Name="CostDeviationY8"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="COST_DEVIATION_Y8"
+    Expression="COST_DEVIATION_Y8"
+    SQLType="FLOAT"/>
+  <ViewAttribute
+    Name="FcDY9Cost"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="FC_D_Y9_COST"
+    Expression="FC_D_Y9_COST"
+    SQLType="FLOAT"/>
+  <ViewAttribute
+    Name="CostDeviationY9"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="COST_DEVIATION_Y9"
+    Expression="COST_DEVIATION_Y9"
+    SQLType="FLOAT"/>
+  <ViewAttribute
+    Name="FcDY10Cost"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="FC_D_Y10_COST"
+    Expression="FC_D_Y10_COST"
+    SQLType="FLOAT"/>
+  <ViewAttribute
+    Name="CostDeviationY10"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="COST_DEVIATION_Y10"
+    Expression="COST_DEVIATION_Y10"
+    SQLType="FLOAT"/>
+  <ViewAttribute
+    Name="FcDY11Cost"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="FC_D_Y11_COST"
+    Expression="FC_D_Y11_COST"
+    SQLType="FLOAT"/>
+  <ViewAttribute
+    Name="CostDeviationY11"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="COST_DEVIATION_Y11"
+    Expression="COST_DEVIATION_Y11"
+    SQLType="FLOAT"/>
+  <ViewAttribute
+    Name="FcDY12Cost"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="FC_D_Y12_COST"
+    Expression="FC_D_Y12_COST"
+    SQLType="FLOAT"/>
+  <ViewAttribute
+    Name="CostDeviationY12"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="COST_DEVIATION_Y12"
+    Expression="COST_DEVIATION_Y12"
+    SQLType="FLOAT"/>
+  <ViewAttribute
+    Name="FcDY13Cost"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="FC_D_Y13_COST"
+    Expression="FC_D_Y13_COST"
+    SQLType="FLOAT"/>
+  <ViewAttribute
+    Name="CostDeviationY13"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="COST_DEVIATION_Y13"
+    Expression="COST_DEVIATION_Y13"
+    SQLType="FLOAT"/>
+  <ViewAttribute
+    Name="FcDY14Cost"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="FC_D_Y14_COST"
+    Expression="FC_D_Y14_COST"
+    SQLType="FLOAT"/>
+  <ViewAttribute
+    Name="CostDeviationY14"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="COST_DEVIATION_Y14"
+    Expression="COST_DEVIATION_Y14"
+    SQLType="FLOAT"/>
+  <ViewAttribute
+    Name="FcDY15Cost"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="FC_D_Y15_COST"
+    Expression="FC_D_Y15_COST"
+    SQLType="FLOAT"/>
+  <ViewAttribute
+    Name="CostDeviationY15"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Float"
+    ColumnType="NUMBER"
+    AliasName="COST_DEVIATION_Y15"
+    Expression="COST_DEVIATION_Y15"
+    SQLType="FLOAT"/>
+  <ViewAttribute
+    Name="LtcTagId"
+    IsUpdateable="false"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"/>
+  <ViewAttribute
+    Name="LtcProcessId"
+    IsUpdateable="false"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"/>
+  <ViewAttribute
+    Name="ProgramId"
+    IsUpdateable="false"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"/>
+  <ViewAttribute
+    Name="ProjectId"
+    IsUpdateable="false"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"/>
+  <ViewAttribute
+    Name="TypeBindVal"
+    IsUpdateable="false"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"/>
+  <ViewAttribute
+    Name="ProjectPhaseCodeLookup"
+    IsUpdateable="false"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    LOVName="LOV_ProjectPhaseCodeLookup">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewCriteria
+    Name="Main"
+    ViewObjectName="com.bayer.ipms.model.views.ltc.LtcEstimateView"
+    Conjunction="AND">
+    <Properties Name="_Props">
+      <CustomProperties>
+        <Property
+          Name="autoExecute"
+          Value="false"/>
+        <Property
+          Name="mode"
+          Value="Basic"/>
+        <Property
+          Name="allowConjunctionOverride"
+          Value="true"/>
+        <Property
+          Name="showInList"
+          Value="true"/>
+        <Property
+          Name="displayOperators"
+          Value="InAdvancedMode"/>
+      </CustomProperties>
+    </Properties>
+    <ViewCriteriaRow
+      Name="LtcEstimateViewCriteria_row_0"
+      UpperColumns="1">
+      <ViewCriteriaItem
+        Name="IsDiscrepancy"
+        ViewAttribute="IsDiscrepancy"
+        Operator="="
+        Conjunction="AND"
+        Value="0"
+        Required="Optional"/>
+    </ViewCriteriaRow>
+  </ViewCriteria>
+  <ViewCriteria
+    Name="FakeFte"
+    ViewObjectName="com.bayer.ipms.model.views.ltc.LtcEstimateView"
+    Conjunction="AND">
+    <Properties Name="_Props">
+      <CustomProperties>
+        <Property
+          Name="autoExecute"
+          Value="false"/>
+        <Property
+          Name="mode"
+          Value="Basic"/>
+        <Property
+          Name="allowConjunctionOverride"
+          Value="true"/>
+        <Property
+          Name="showInList"
+          Value="true"/>
+        <Property
+          Name="displayOperators"
+          Value="InAdvancedMode"/>
+      </CustomProperties>
+    </Properties>
+    <ViewCriteriaRow
+      Name="LtcEstimateViewCriteria_row_0"
+      UpperColumns="1">
+      <ViewCriteriaItem
+        Name="TypeCode"
+        ViewAttribute="TypeCode"
+        Operator="="
+        Conjunction="AND"
+        Value="AFAK"
+        Required="Optional"/>
+    </ViewCriteriaRow>
+  </ViewCriteria>
+  <ClientInterface
+    Name="__clientInterface">
+    <Method
+      Name="getProcessIdVar"
+      MethodName="getProcessIdVar">
+      <Return
+        Name="_return_type_"
+        Type="java.lang.String"/>
+    </Method>
+    <Method
+      Name="getTagIdVar"
+      MethodName="getTagIdVar">
+      <Return
+        Name="_return_type_"
+        Type="java.lang.String"/>
+    </Method>
+    <Method
+      Name="getProgramIdVar"
+      MethodName="getProgramIdVar">
+      <Return
+        Name="_return_type_"
+        Type="java.lang.String"/>
+    </Method>
+    <Method
+      Name="getProjectIdVar"
+      MethodName="getProjectIdVar">
+      <Return
+        Name="_return_type_"
+        Type="java.lang.String"/>
+    </Method>
+    <Method
+      Name="getTypeVar"
+      MethodName="getTypeVar">
+      <Return
+        Name="_return_type_"
+        Type="java.lang.String"/>
+    </Method>
+    <Method
+      Name="setup"
+      MethodName="setup">
+      <Return
+        Name="_return_type_"
+        Type="void"/>
+      <Parameter
+        Name="tagId"
+        Type="java.lang.String"/>
+      <Parameter
+        Name="processId"
+        Type="java.lang.String"/>
+      <Parameter
+        Name="programId"
+        Type="java.lang.String"/>
+      <Parameter
+        Name="projectId"
+        Type="java.lang.String"/>
+      <Parameter
+        Name="typeCode"
+        Type="java.lang.String"/>
+    </Method>
+  </ClientInterface>
+  <ClientRowInterface
+    Name="__rowClientInterface">
+    <Method
+      Name="removeFakeRow"
+      MethodName="removeFakeRow">
+      <Return
+        Name="_return_type_"
+        Type="void"/>
+    </Method>
+  </ClientRowInterface>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.bayer.ipms.model.bundles.modelBundle"/>
+  </ResourceBundle>
+</ViewObject>

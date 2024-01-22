@@ -1,0 +1,1 @@
+alter table import flashback archive fda_import;

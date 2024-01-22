@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.64.93" id="import_logPageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator id="ProjectViewIterator" Binds="Root.ImportAppModule.ProjectView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              ChangeEventPolicy="ppr"/>
+    <iterator Binds="ImportAppModule.ImportCostsView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="ImportCostsViewIterator" ChangeEventPolicy="ppr"
+              CacheResults="false"/>
+    <searchRegion Binds="ImportCostsViewIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="ImportCostsViewQuery"/>
+    <iterator Binds="ImportAppModule.ImportResourcesView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="ImportResourcesViewIterator" ChangeEventPolicy="ppr"
+              CacheResults="false"/>
+    <searchRegion Binds="ImportResourcesViewIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="ImportResourcesViewQuery"/>
+    <iterator Binds="Root.ImportAppModule.ImportHeadcountView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="ImportHeadcountViewIterator" ChangeEventPolicy="ppr"
+              CacheResults="false"/>
+    <searchRegion Binds="ImportHeadcountViewIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="ImportHeadcountViewQuery"/>
+    <iterator Binds="ImportAppModule.ImportTimelineActualsView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="ImportTimelineActualsViewIterator" ChangeEventPolicy="ppr"
+              CacheResults="false"/>
+    <searchRegion Binds="ImportTimelineActualsViewIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="ImportTimelineActualsViewQuery"/>
+    <iterator Binds="ImportAppModule.ImportTimelineActualsFpsView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="ImportTimelineActualsFpsViewIterator" ChangeEventPolicy="ppr"
+              CacheResults="false"/>
+    <searchRegion Binds="ImportTimelineActualsFpsViewIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="ImportTimelineActualsFpsViewQuery"/>
+    <iterator id="ImportTimelinePlanViewIterator"
+              Binds="ImportAppModule.ImportTimelinePlanView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              CacheResults="false"/>
+    <searchRegion Binds="ImportTimelinePlanViewIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="ImportTimelinePlanViewQuery"/>
+    <iterator Binds="ImportAppModule.ImportTimelinePlanFpsView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="ImportTimelinePlanFpsViewIterator" ChangeEventPolicy="ppr"
+              CacheResults="false"/>
+    <searchRegion Binds="ImportTimelinePlanFpsViewIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="ImportTimelinePlanFpsViewQuery"/>
+    <iterator Binds="Root.ImportAppModule.ImportStudyView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="ImportStudyViewIterator" ChangeEventPolicy="ppr"
+              CacheResults="false"/>
+    <searchRegion Binds="ImportStudyViewIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="ImportStudyViewQuery"/>
+    <iterator Binds="Root.ImportAppModule.ImportMasterDataView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="ImportMasterDataViewIterator" ChangeEventPolicy="ppr"
+              CacheResults="false"/>
+    <searchRegion Binds="ImportMasterDataViewIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="ImportMasterDataViewQuery"/>
+    <iterator Binds="ImportAppModule.ImportCostsSophiaView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="ImportCostsSophiaViewIterator" ChangeEventPolicy="ppr"
+              CacheResults="false"/>
+    <searchRegion id="ImportCostsSophiaViewQuery"
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="ImportCostsSophiaViewIterator" Criteria=""/>
+    <iterator Binds="ImportAppModule.ImportResourcesSophiaView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="ImportResourcesSophiaViewIterator" ChangeEventPolicy="ppr"/>
+    <searchRegion id="ImportResourcesSophiaViewQuery"
+                  Binds="ImportResourcesSophiaViewIterator"
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"/>
+    <iterator Binds="Root.ImportAppModule.ImportStudyDataView1"
+              DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="ImportStudyDataViewIterator" ChangeEventPolicy="ppr"
+              CacheResults="false">
+      <sortCriteria>
+        <sort attribute="CreateDate" ascending="false"/>
+      </sortCriteria>
+    </iterator>
+    <searchRegion Binds="ImportStudyDataViewIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="ImportStudyDataView1Query"/>
+    <iterator Binds="ImportAppModule.BaselineMaintenanceView" DataControl="PrivateAppModuleDataControl" RangeSize="100"
+              id="BaselineMaintenanceViewIterator" CacheResults="false" ChangeEventPolicy="ppr"/>
+    <searchRegion Binds="BaselineMaintenanceViewIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="BaselineMaintenanceViewQuery"/>
+	 <iterator Binds="ProgramAppModule.LeadStudyMapView" DataControl="PrivateAppModuleDataControl" RangeSize="25"
+              id="LeadStudyMapViewIterator"/>						
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="ProjectViewIterator" id="ProjectCode">
+      <AttrNames>
+        <Item Value="Code"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProjectViewIterator" id="ProjectName">
+      <AttrNames>
+        <Item Value="Name"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProjectViewIterator" id="ProjectIsLead">
+      <AttrNames>
+        <Item Value="IsLead"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="ImportCostsViewIterator" id="ImportCostsView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.imports.ImportCostsView"
+                      Name="ImportCostsView0">
+        <AttrNames>
+          <Item Value="ReferenceId"/>
+          <Item Value="CreateDate"/>
+          <Item Value="SubFunctionName"/>
+          <Item Value="StudyId"/>
+          <Item Value="ScopeName"/>
+          <Item Value="MethodName"/>
+          <Item Value="TypeName"/>
+          <Item Value="SubTypeName"/>
+          <Item Value="Year"/>
+          <Item Value="Month"/>
+          <Item Value="Cost"/>
+          <Item Value="StatusName"/>
+          <Item Value="StatusCode"/>
+          <Item Value="StatusDescription"/>
+          <Item Value="SubFunctionCode"/>
+          <Item Value="ForecastNumber"/>
+          <Item Value="ForecastVersion"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="ImportResourcesViewIterator" id="ImportResourcesView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.imports.ImportResourcesView"
+                      Name="ImportResourcesView0">
+        <AttrNames>
+          <Item Value="ReferenceId"/>
+          <Item Value="CreateDate"/>
+          <Item Value="SubFunctionName"/>
+          <Item Value="StudyId"/>
+          <Item Value="MethodName"/>
+          <Item Value="TypeName"/>
+          <Item Value="Year"/>
+          <Item Value="Month"/>
+          <Item Value="Demand"/>
+          <Item Value="StatusName"/>
+          <Item Value="StatusCode"/>
+          <Item Value="StatusDescription"/>
+          <Item Value="SubFunctionCode"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="ImportHeadcountViewIterator" id="ImportHeadcountView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.imports.ImportHeadcountView"
+                      Name="ImportHeadcountView0">
+        <AttrNames>
+          <Item Value="ReferenceId"/>
+          <Item Value="CreateDate"/>
+          <Item Value="SubFunctionName"/>
+          <Item Value="TypeName"/>
+          <Item Value="Year"/>
+          <Item Value="Demand"/>
+          <Item Value="StatusName"/>
+          <Item Value="StatusCode"/>
+          <Item Value="StatusDescription"/>
+          <Item Value="SubFunctionCode"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="ImportTimelineActualsViewIterator"
+          id="ImportTimelineActualsView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.imports.ImportTimelineView"
+                      Name="ImportTimelineActualsView0">
+        <AttrNames>
+          <Item Value="Code"/>
+          <Item Value="Id"/>
+          <Item Value="Name"/>
+          <Item Value="StudyElementId"/>
+          <Item Value="StudyId"/>
+          <Item Value="BusinessId"/>
+          <Item Value="CreateDate"/>
+          <Item Value="NewFinishDate"/>
+          <Item Value="NewStartDate"/>
+          <Item Value="OldFinishDate"/>
+          <Item Value="OldStartDate"/>
+          <Item Value="ReferenceId"/>
+          <Item Value="StatusName"/>
+          <Item Value="StatusCode"/>
+          <Item Value="StatusDescription"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="ImportTimelineActualsFpsViewIterator"
+          id="ImportTimelineActualsFpsView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.imports.ImportTimelineView"
+                      Name="ImportTimelineActualsFpsView0">
+        <AttrNames>
+          <Item Value="Code"/>
+          <Item Value="Id"/>
+          <Item Value="Name"/>
+          <Item Value="StudyElementId"/>
+          <Item Value="StudyId"/>
+          <Item Value="BusinessId"/>
+          <Item Value="CreateDate"/>
+          <Item Value="NewFinishDate"/>
+          <Item Value="NewStartDate"/>
+          <Item Value="OldFinishDate"/>
+          <Item Value="OldStartDate"/>
+          <Item Value="ReferenceId"/>
+          <Item Value="StatusName"/>
+          <Item Value="StatusCode"/>
+          <Item Value="StatusDescription"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="ImportTimelinePlanViewIterator"
+          id="ImportTimelinePlanView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.imports.ImportTimelineView"
+                      Name="ImportTimelinePlanView0">
+        <AttrNames>
+          <Item Value="Code"/>
+          <Item Value="Id"/>
+          <Item Value="Name"/>
+          <Item Value="StudyElementId"/>
+          <Item Value="StudyId"/>
+          <Item Value="BusinessId"/>
+          <Item Value="CreateDate"/>
+          <Item Value="NewFinishDate"/>
+          <Item Value="NewStartDate"/>
+          <Item Value="OldFinishDate"/>
+          <Item Value="OldStartDate"/>
+          <Item Value="ReferenceId"/>
+          <Item Value="StatusName"/>
+          <Item Value="StatusCode"/>
+          <Item Value="StatusDescription"/>
+          <Item Value="ActionName"/>
+          <Item Value="ActionCode"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="ImportStudyViewIterator" id="ImportStudyView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.imports.ImportStudyView"
+                      Name="ImportStudyView0">
+        <AttrNames>
+          <Item Value="StudyId"/>
+          <Item Value="CreateDate"/>
+          <Item Value="Name"/>
+          <Item Value="Phase"/>
+          <Item Value="StatusCode"/>
+          <Item Value="StatusDescription"/>
+          <Item Value="StatusName"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="ImportMasterDataViewIterator" id="ImportMasterDataView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.imports.ImportMasterDataView"
+                      Name="ImportMasterDataView0">
+        <AttrNames>
+          <Item Value="CreateDate"/>
+          <Item Value="ReferenceId"/>
+          <Item Value="DevelopmentPhaseName"/>
+          <Item Value="SbeName"/>
+          <Item Value="BayName"/>
+          <Item Value="StatusCode"/>
+          <Item Value="StatusDescription"/>
+          <Item Value="StatusName"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="ImportCostsSophiaViewIterator"
+          id="ImportCostsSophiaView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.imports.ImportCostsSophiaView"
+                      Name="ImportCostsSophiaView0">
+        <AttrNames>
+          <Item Value="MethodCode"/>
+          <Item Value="MethodName"/>
+          <Item Value="StudyId"/>
+          <Item Value="ScopeCode"/>
+          <Item Value="ScopeName"/>
+          <Item Value="Year"/>
+          <Item Value="Month"/>
+          <Item Value="Cost"/>
+          <Item Value="StatusCode"/>
+          <Item Value="StatusName"/>
+          <Item Value="SubfunctionCode"/>
+          <Item Value="SubfunctionName"/>
+          <Item Value="SubtypeCode"/>
+          <Item Value="SubtypeName"/>
+          <Item Value="TypeCode"/>
+          <Item Value="TypeName"/>
+          <Item Value="CreateDate"/>
+          <Item Value="ImportId"/>
+          <Item Value="ReferenceId"/>
+          <Item Value="ProjectId"/>
+          <Item Value="StatusDescription"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="ImportResourcesSophiaViewIterator"
+          id="ImportResourcesSophiaView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.imports.ImportResourcesSophiaView"
+                      Name="ImportResourcesSophiaView0">
+        <AttrNames>
+          <Item Value="ReferenceId"/>
+          <Item Value="ImportId"/>
+          <Item Value="ProjectId"/>
+          <Item Value="StudyId"/>
+          <Item Value="SubfunctionCode"/>
+          <Item Value="SubfunctionName"/>
+          <Item Value="TypeCode"/>
+          <Item Value="TypeName"/>
+          <Item Value="MethodCode"/>
+          <Item Value="MethodName"/>
+          <Item Value="Year"/>
+          <Item Value="Month"/>
+          <Item Value="Demand"/>
+          <Item Value="StatusCode"/>
+          <Item Value="StatusName"/>
+          <Item Value="StatusDescription"/>
+          <Item Value="CreateDate"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="ImportStudyDataViewIterator" id="ImportStudyDataView1">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.imports.ImportStudyDataView"
+                      Name="ImportStudyDataView10">
+        <AttrNames>
+          <Item Value="StudyId"/>
+          <Item Value="CreateDate"/>
+          <Item Value="Name"/>
+          <Item Value="OldStartDate"/>
+          <Item Value="OldFinishDate"/>
+          <Item Value="StartDate"/>
+          <Item Value="FinishDate"/>
+          <Item Value="ActionName"/>
+          <Item Value="StatusName"/>
+          <Item Value="StatusDescription"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="ProjectViewIterator" id="AreaCode">
+      <AttrNames>
+        <Item Value="AreaCode"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="ImportTimelinePlanFpsViewIterator"
+          id="ImportTimelinePlanFpsView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.imports.ImportTimelineView"
+                      Name="ImportTimelinePlanFpsView0">
+        <AttrNames>
+          <Item Value="Code"/>
+          <Item Value="Id"/>
+          <Item Value="Name"/>
+          <Item Value="StudyElementId"/>
+          <Item Value="StudyId"/>
+          <Item Value="BusinessId"/>
+          <Item Value="CreateDate"/>
+          <Item Value="NewFinishDate"/>
+          <Item Value="NewStartDate"/>
+          <Item Value="OldFinishDate"/>
+          <Item Value="OldStartDate"/>
+          <Item Value="ReferenceId"/>
+          <Item Value="StatusName"/>
+          <Item Value="StatusCode"/>
+          <Item Value="StatusDescription"/>
+          <Item Value="ActionName"/>
+          <Item Value="ActionCode"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="BaselineMaintenanceViewIterator" id="BaselineMaintenanceView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.imports.BaselineMaintenanceView"
+                      Name="BaselineMaintenanceView0">
+        <AttrNames>
+          <Item Value="CreateDate"/>
+          <Item Value="TimelineTypeName"/>
+          <Item Value="BaselineName"/>
+          <Item Value="BaselineCreateDate"/>
+          <Item Value="ImportStatusName"/>
+          <Item Value="StatusCode"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+	  <tree IterBinding="LeadStudyMapViewIterator" id="LeadStudyMapView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.LeadStudyMapView" Name="LeadStudyMapView0">
+        <AttrNames>
+          <Item Value="DevMlstnCode"/>
+          <Item Value="StudyPhaseName"/>
+          <Item Value="DrvMlstnName"/>
+          <Item Value="CurrLsName"/>
+          <Item Value="NewStudyWbsId"/>
+          <Item Value="StatusName"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+  </bindings>
+</pageDefinition>

@@ -1,0 +1,2 @@
+alter table milestone add (wbs_category nvarchar2(100));
+comment on column milestone.wbs_category is 'The value of milestone.code is linked with decision_start ProMIS gets from e.g. sophia_import.fps_cost_forecast.decision_start. Then it is linked with WBS Category at P6.';

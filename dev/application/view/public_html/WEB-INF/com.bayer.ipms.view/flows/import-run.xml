@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="windows-1257" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="import-run">
+    <template-reference>
+      <document id="__2">/WEB-INF/com.bayer.ipms.view/templates/ipms-taskflow-template-page.xml</document>
+      <id id="__1">ipms-taskflow-template-page</id>
+    </template-reference>
+    <default-activity>CreateWithParameters</default-activity>
+    <transaction id="__44">
+      <new-transaction/>
+    </transaction>
+    <data-control-scope id="__43">
+      <isolated/>
+    </data-control-scope>
+    <input-parameter-definition id="__45">
+      <name id="__4">importSource</name>
+      <value>#{pageFlowScope.importSource}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__51">
+      <name>sandboxId</name>
+      <value>#{pageFlowScope.sandboxId}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__52">
+      <name>sandboxName</name>
+      <value>#{pageFlowScope.sandboxName}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__53">
+      <name>sandboxCode</name>
+      <value>#{pageFlowScope.sandboxCode}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__5">
+      <name>projectCode</name>
+      <value>#{pageFlowScope.projectCode}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__42">
+      <name>projectName</name>
+      <value>#{pageFlowScope.projectName}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__46">
+      <name>projectIsLead</name>
+      <value>#{pageFlowScope.projectIsLead}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__47">
+      <name>projectId</name>
+      <value>#{pageFlowScope.projectId}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <managed-bean id="__56">
+      <managed-bean-name id="__58">importTimelineBean</managed-bean-name>
+      <managed-bean-class id="__59">com.bayer.ipms.view.beans.ImportTimelineBean</managed-bean-class>
+      <managed-bean-scope id="__57">pageFlow</managed-bean-scope>
+    </managed-bean>
+    <exception-handler id="__3">handleException</exception-handler>
+    <method-call id="setBaCodeSophia">
+      <method>#{utilsBean.setBaCode2}</method>
+      <parameter>
+            <class>java.lang.String</class>
+            <value>ImportTimelinePlanSophia</value>
+      </parameter>
+      <outcome>
+            <fixed-outcome>set</fixed-outcome>
+      </outcome>
+    </method-call>
+     <method-call id="setBaCodeFPS">
+      <method>#{utilsBean.setBaCode2}</method>
+      <parameter>
+            <class>java.lang.String</class>
+            <value>ImportTimelineFPS</value>
+      </parameter>
+      <outcome>
+            <fixed-outcome>set</fixed-outcome>
+      </outcome>
+    </method-call>   
+     <method-call id="setBaCodeSandbox">
+      <method>#{utilsBean.setBaCode2}</method>
+      <parameter>
+            <class>java.lang.String</class>
+            <value>SandboxPlanImportPlan</value>
+      </parameter>
+      <outcome>
+            <fixed-outcome>set</fixed-outcome>
+      </outcome>
+    </method-call>     
+    <method-call id="clearBaCode">
+      <method>#{utilsBean.clearBaCode}</method>
+      <outcome>
+            <fixed-outcome>clear</fixed-outcome>
+      </outcome>
+    </method-call>    
+    <task-flow-return id="ok">
+      <outcome id="__6">
+        <name>ok</name>
+        <commit/>
+      </outcome>
+    </task-flow-return>
+    <task-flow-return id="cancel">
+      <outcome id="__7">
+        <name>cancel</name>
+        <rollback/>
+      </outcome>
+    </task-flow-return>
+    <method-call id="CreateWithParameters">
+      <method>#{bindings.CreateWithParams.execute}</method>
+      <outcome id="__8">
+        <fixed-outcome>CreateWithParams</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="CommitNew">
+      <method>#{bindings.Commit.execute}</method>
+      <outcome id="__20">
+        <fixed-outcome>Commit</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="start">
+      <method>#{bindings.start.execute}</method>
+      <outcome id="__26">
+        <fixed-outcome>start</fixed-outcome>
+      </outcome>
+    </method-call>
+    <view id="import-form">
+      <page>/WEB-INF/com.bayer.ipms.view/fragments/import-run.jspx</page>
+    </view>
+    <method-call id="cancel1">
+      <method>#{bindings.cancel.execute}</method>
+      <outcome id="__36">
+        <fixed-outcome>cancel</fixed-outcome>
+      </outcome>
+    </method-call>
+    <router id="import-type">
+      <case id="__60">
+        <expression>#{pageFlowScope.sandboxId == null and pageFlowScope.importSource != 'FPS'}</expression>
+        <outcome>Sophia</outcome>
+      </case>
+      <case id="__61">
+        <expression>#{pageFlowScope.sandboxId == null and pageFlowScope.importSource == 'FPS'}</expression>
+        <outcome>FPS</outcome>
+      </case>
+      <case id="__62">
+        <expression>#{pageFlowScope.sandboxId != null}</expression>
+        <outcome>Sandbox</outcome>
+      </case>
+      <default-outcome>FPS</default-outcome>
+    </router>
+    <method-call id="Commit">
+      <method>#{bindings.Commit.execute}</method>
+      <outcome>
+        <fixed-outcome>Commit</fixed-outcome>
+      </outcome>
+    </method-call>
+    <control-flow-rule id="__10">
+      <from-activity-id id="__9">*</from-activity-id>
+      <control-flow-case id="__13">
+        <from-outcome id="__14">cancel</from-outcome>
+        <to-activity-id id="__12">cancel1</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__21">
+      <from-activity-id id="__22">CreateWithParameters</from-activity-id>
+      <control-flow-case id="__23">
+        <from-outcome id="__24">CreateWithParams</from-outcome>
+        <to-activity-id id="__25">import-type</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__28">
+      <from-activity-id id="__29">CommitNew</from-activity-id>
+      <control-flow-case id="__30">
+        <from-outcome id="__32">Commit</from-outcome>
+        <to-activity-id id="__31">start</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__11">
+      <from-activity-id id="__15">import-form</from-activity-id>
+      <control-flow-case id="__17">
+        <from-outcome id="__18">ok</from-outcome>
+        <to-activity-id id="__16">Commit</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__19">
+      <from-activity-id id="__27">start</from-activity-id>
+      <control-flow-case id="__35">
+        <from-outcome id="__34">start</from-outcome>
+        <to-activity-id id="__33">import-form</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__37">
+      <from-activity-id id="__38">cancel1</from-activity-id>
+      <control-flow-case id="__41">
+        <from-outcome id="__40">cancel</from-outcome>
+        <to-activity-id id="__39">cancel</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__65">
+      <from-activity-id>import-type</from-activity-id>
+      <control-flow-case id="__66">
+        <from-outcome>Sophia</from-outcome>
+        <to-activity-id>setBaCode</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__67">
+        <from-outcome>Sophia</from-outcome>
+        <to-activity-id>setBaCodeSophia</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__70">
+        <from-outcome>FPS</from-outcome>
+        <to-activity-id>setBaCodeFPS</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__73">
+        <from-outcome>Sandbox</from-outcome>
+        <to-activity-id>setBaCodeSandbox</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__68">
+      <from-activity-id>setBaCodeSophia</from-activity-id>
+      <control-flow-case id="__69">
+        <from-outcome>set</from-outcome>
+        <to-activity-id>CommitNew</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__71">
+      <from-activity-id>setBaCodeFPS</from-activity-id>
+      <control-flow-case id="__72">
+        <from-outcome>set</from-outcome>
+        <to-activity-id>CommitNew</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__74">
+      <from-activity-id>setBaCodeSandbox</from-activity-id>
+      <control-flow-case id="__75">
+        <from-outcome>set</from-outcome>
+        <to-activity-id>CommitNew</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__63">
+      <from-activity-id>clearBaCode</from-activity-id>
+      <control-flow-case id="__64">
+        <from-outcome>clear</from-outcome>
+        <to-activity-id>ok</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__76">
+      <from-activity-id>Commit</from-activity-id>
+      <control-flow-case id="__77">
+        <from-outcome>Commit</from-outcome>
+        <to-activity-id>clearBaCode</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+  </task-flow-definition>
+</adfc-config>

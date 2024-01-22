@@ -1,0 +1,665 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Tue May 05 17:06:54 CEST 2015
+  Author:  algis
+  Type: BPEL 2.0 Process
+  Purpose: Asynchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="CreateSandbox"
+         targetNamespace="http://xmlns.bayer.com/ipms/soa"
+         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:client="http://xmlns.bayer.com/ipms/soa"
+         xmlns:ora="http://schemas.oracle.com/xpath/extension"
+         xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ns1="http://xmlns.bayer.com/ipms"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:ns2="http://xmlns.oracle.com/Primavera/P6/WS/EPS/V1"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:ns3="http://xmlns.bayer.com/ipms/cache"
+         xmlns:ns4="http://xmlns.oracle.com/Primavera/P6/WS/OBS/V1"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         xmlns:ns5="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2"
+         xmlns:ns6="http://xmlns.oracle.com/Primavera/P6/WS/UDFValue/V1"
+         xmlns:ns7="http://xmlns.oracle.com/Primavera/P6/WS/ActivityCodeAssignment/V1"
+         xmlns:ns8="http://xmlns.oracle.com/Primavera/P6/WS/Activity/V1"
+         xmlns:ui="http://xmlns.oracle.com/soa/designer" xmlns:ess="http://xmlns.oracle.com/scheduler">
+    <import namespace="http://xmlns.bayer.com/ipms/cache"
+            location="oramds:/apps/com/bayer/xmlns/ipms/cache/cache.xsd"
+            importType="http://www.w3.org/2001/XMLSchema"/>
+    <import namespace="http://xmlns.bayer.com/ipms/soa" location="CreateSandbox.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"
+            ui:processWSDL="true"/>
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        PARTNERLINKS                                                      
+        List of services participating in this BPEL process               
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    --> 
+    <partnerLinks>
+        <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+        <partnerLink name="CreateSandboxService" partnerLinkType="client:CreateSandbox" myRole="CreateSandboxProvider" partnerRole="CreateSandboxRequester"/>
+        <partnerLink name="EPSService" partnerLinkType="ns2:EPSService"
+                     partnerRole="EPSPortType"/>
+        <partnerLink name="ReadConfiguration.ReadConfigurationService"
+                     partnerLinkType="client:ReadConfiguration"
+                     partnerRole="ReadConfigurationProvider"
+                     myRole="ReadConfigurationRequester"/>
+        <partnerLink name="OBSService" partnerLinkType="ns4:OBSService"
+                     partnerRole="OBSPortType"/>
+        <partnerLink name="ProjectService" partnerLinkType="ns5:ProjectService"
+                     partnerRole="ProjectPortType"/>
+        <partnerLink name="UDFValueService"
+                     partnerLinkType="ns6:UDFValueService"
+                     partnerRole="UDFValuePortType"/>
+        <partnerLink name="ActivityCodeAssignmentService"
+                     partnerLinkType="ns7:ActivityCodeAssignmentService"
+                     partnerRole="ActivityCodeAssignmentPortType"/>
+        <partnerLink name="ActivityService"
+                     partnerLinkType="ns8:ActivityService"
+                     partnerRole="ActivityPortType"/>
+        <partnerLink name="CreateProject.CreateProjectService"
+                     partnerLinkType="client:CreateProject"
+                     partnerRole="CreateProjectProvider"
+                     myRole="CreateProjectRequester"/>
+    </partnerLinks>
+
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        VARIABLES                                                        
+        List of messages and XML documents used within this BPEL process 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <variables>
+        <!-- Reference to the message passed as input during initiation -->
+        <variable name="inputVariable" messageType="client:CreateSandboxRequestMessage"/>
+
+        <!-- Reference to the message that will be sent back to the requester during callback -->
+        <variable name="outputVariable" messageType="client:CreateSandboxResponseMessage"/>
+        <variable name="ReadConfigIn"
+                  messageType="client:ReadConfigurationRequestMessage"/>
+        <variable name="ReadConfigOut"
+                  messageType="client:ReadConfigurationResponseMessage"/>
+        <variable name="sandboxEPSId" type="xsd:string"/>
+        <variable name="CreateOBSIn" messageType="ns4:CreateOBS"/>
+        <variable name="CreateOBSOut" messageType="ns4:CreateOBSResponse"/>
+        <variable name="CreateReflectionIn"
+                  messageType="ns5:CopyProjectAsReflection"/>
+        <variable name="CreateReflectionOut"
+                  messageType="ns5:CopyProjectAsReflectionResponse"/>
+        <variable name="UpdateSNDIn" messageType="ns5:UpdateProjects"/>
+        <variable name="UpdateSNDOut" messageType="ns5:UpdateProjectsResponse"/>
+        <variable name="UpdateUDFIn" messageType="ns6:UpdateUDFValues"/>
+        <variable name="UpdateUDFOut"
+                  messageType="ns6:UpdateUDFValuesResponse"/>
+        <variable name="ReadPrjRefIdIn" messageType="ns5:ReadProjects"/>
+        <variable name="ReadPrjRefIdOut"
+                  messageType="ns5:ReadProjectsResponse"/>
+        <variable name="ReadProjectObjectIdIn" messageType="ns5:ReadProjects"/>
+        <variable name="ReadProjectObjectIdOut"
+                  messageType="ns5:ReadProjectsResponse"/>
+        <variable name="CreateRAWIn"
+                  messageType="client:CreateProjectRequestMessage"/>
+        <variable name="CreateRAWOut"
+                  messageType="client:CreateProjectResponseMessage"/>
+        <variable name="ReadRAWPrjObjIdIn" messageType="ns5:ReadProjects"/>
+        <variable name="ReadRAWPrjObjIdOut"
+                  messageType="ns5:ReadProjectsResponse"/>
+        <variable name="SNDId" type="xsd:string"/>
+        <variable name="faultVariable"
+                  messageType="client:CreateSandboxResponseMessage"/>
+        <variable name="CheckOBSOut" messageType="ns4:ReadOBSResponse"/>
+        <variable name="CheckOBSIn" messageType="ns4:ReadOBS"/>
+        <variable name="timelineOBSId" type="xsd:string"/>
+        <variable name="DeleteUDFIn" messageType="ns6:DeleteUDFValues"/>
+        <variable name="DeleteUDFOut"
+                  messageType="ns6:DeleteUDFValuesResponse"/>
+        <variable name="CreateUDFIn" messageType="ns6:CreateUDFValues"/>
+        <variable name="CreateUDFOut"
+                  messageType="ns6:CreateUDFValuesResponse"/>
+        <variable name="ReadPlanVersionIdIn" messageType="ns6:ReadUDFValues"/>
+        <variable name="ReadPlanVersionIdOut" messageType="ns6:ReadUDFValuesResponse"/>
+        <variable name="UpdatePlanVersionIdIn" messageType="ns6:UpdateUDFValues"/>
+        <variable name="UpdatePlanVersionIdOut" messageType="ns6:UpdateUDFValuesResponse"/>
+    </variables>
+    <faultHandlers>
+        <catchAll>
+            <sequence name="CatchAll">
+                <assign name="AssignFault">
+                    <copy>
+                        <from>$inputVariable.payload/@id</from>
+                        <to>$faultVariable.payload/@id</to>
+                    </copy>
+                    <copy>
+                        <from>$inputVariable.payload/@id</from>
+                        <to>$faultVariable.payload/ns1:error/@id</to>
+                    </copy>
+                    <copy>
+                        <from>ora:getFaultName()</from>
+                        <to>$faultVariable.payload/ns1:error/ns1:code</to>
+                    </copy>
+                    <copy>
+                        <from>ora:getFaultAsString()</from>
+                        <to>$faultVariable.payload/ns1:error/ns1:description</to>
+                    </copy>
+                </assign>
+                <invoke name="CallbackFaultOutput" bpelx:invokeAsDetail="no"
+                        partnerLink="CreateSandboxService"
+                        portType="client:CreateSandboxCallback"
+                        operation="processResponse"
+                        inputVariable="faultVariable"/>
+            </sequence>
+        </catchAll>
+    </faultHandlers>
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+       ORCHESTRATION LOGIC                                               
+       Set of activities coordinating the flow of messages across the    
+       services integrated within this business process                  
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <sequence name="main">
+        <!-- Receive input from requestor. (Note: This maps to operation defined in CreateSandbox.wsdl) -->
+        <receive name="receiveInput" partnerLink="CreateSandboxService" portType="client:CreateSandbox" operation="process" variable="inputVariable" createInstance="yes"/>
+        <assign name="AssignOut">
+            <copy>
+                <from>$inputVariable.payload/@id</from>
+                <to>$outputVariable.payload/@id</to>
+            </copy>
+            <copy>
+                <from>$inputVariable.payload/@id</from>
+                <to>$outputVariable.payload/client:complete/@id</to>
+            </copy>
+            <copy>
+                <from>$inputVariable.payload/ns1:sandbox</from>
+                <to>$outputVariable.payload/client:complete/ns1:sandbox</to>
+            </copy>
+        </assign>
+        <sequence name="ReadConfig">
+            <scope name="ReadConfigFromCache" exitOnStandardFault="no">
+                <variables>
+                    <variable name="VariableCache" element="ns3:cache"/>
+                </variables>
+                <faultHandlers>
+                    <catchAll>
+                        <empty name="Empty2"/>
+                    </catchAll>
+                </faultHandlers>
+                <sequence name="FromCacheFile">
+                    <assign name="AssignFromCacheFile">
+                        <copy ignoreMissingFromData="yes"
+                              bpelx:insertMissingToData="yes">
+                            <from>ora:readFile("file:///opt/oracle/soa12.2.1/file_adapter/ipms/config.cache", "oramds:/apps/com/bayer/xmlns/ipms/cache/cache.xsd")</from>
+                            <to>$VariableCache/ns3:cache</to>
+                        </copy>
+                        <copy ignoreMissingFromData="yes"
+                              bpelx:insertMissingToData="yes">
+                            <from>$VariableCache/ns3:cache/*</from>
+                            <to>$ReadConfigOut.payload</to>
+                        </copy>
+                    </assign>
+                    <empty name="EmptyBeforeSkip"/>
+                </sequence>
+            </scope>
+            <sequence name="ReadFullConfig-SKIP">
+                <bpelx:skipCondition>$ReadConfigOut.payload/client:program/client:epsId!=''</bpelx:skipCondition>
+                <assign name="AssignConfig">
+                    <copy>
+                        <from>'cfg'</from>
+                        <to>$ReadConfigIn.payload</to>
+                    </copy>
+                </assign>
+                <invoke name="ReadConfig" bpelx:invokeAsDetail="no"
+                        partnerLink="ReadConfiguration.ReadConfigurationService"
+                        portType="client:ReadConfiguration"
+                        operation="process" inputVariable="ReadConfigIn"/>
+                <receive name="ReadConfigOut" createInstance="no"
+                         partnerLink="ReadConfiguration.ReadConfigurationService"
+                         portType="client:ReadConfigurationCallback"
+                         operation="callback" variable="ReadConfigOut"/>
+            </sequence>
+        </sequence>
+        <scope name="Check-EPS-SND" exitOnStandardFault="no">
+            <bpelx:annotation>
+                <bpelx:general>
+                    <bpelx:property name="userLabel">
+                        <![CDATA[Check-Root-EPS-SND]]>
+                    </bpelx:property>
+                </bpelx:general>
+            </bpelx:annotation>
+            <variables>
+                <variable name="ReadRootEPSIn" messageType="ns2:ReadEPS"/>
+                <variable name="ReadRootEPSOut" messageType="ns2:ReadEPSResponse"/>
+                <variable name="ReadSNDIn" messageType="ns2:ReadEPS"/>
+                <variable name="ReadSNDOut" messageType="ns2:ReadEPSResponse"/>
+                <variable name="CreateSNDEPSIn" messageType="ns2:CreateEPS"/>
+                <variable name="CreateSNDEPSOut" messageType="ns2:CreateEPSResponse"/>
+            </variables>
+            <sequence name="RootSubRootEPS">
+                <sequence name="RootEPS">
+                    <assign name="AssignRootEPS">
+                        <copy>
+                            <from>"Id"</from>
+                            <to>$ReadRootEPSIn.params/ns2:Field</to>
+                        </copy>
+                        <copy>
+                            <from>concat("Id='",$inputVariable.payload/ns1:sandbox/@programId,"' and ParentObjectId='", $ReadConfigOut.payload/client:program/client:epsId,"'")</from>
+                            <to>$ReadRootEPSIn.params/ns2:Filter</to>
+                        </copy>
+                    </assign>
+                    <invoke name="ReadRootEPS" bpelx:invokeAsDetail="no"
+                            partnerLink="EPSService" portType="ns2:EPSPortType"
+                            operation="ReadEPS" inputVariable="ReadRootEPSIn"
+                            outputVariable="ReadRootEPSOut"/>
+                </sequence>
+                <sequence name="SubRootEPS">
+                    <assign name="AssignReadSND">
+                        <copy>
+                            <from>"Id"</from>
+                            <to>$ReadSNDIn.params/ns2:Field</to>
+                        </copy>
+                        <copy>
+                            <from>concat("Id='",$inputVariable.payload/ns1:sandbox/@programId,"-SND' and ParentObjectId='",$ReadRootEPSOut.result/ns2:EPS/ns2:ObjectId ,"'")</from>
+                            <to>$ReadSNDIn.params/ns2:Filter</to>
+                        </copy>
+                    </assign>
+                    <invoke name="ReadSND" bpelx:invokeAsDetail="no"
+                            partnerLink="EPSService"
+                            portType="ns2:EPSPortType" operation="ReadEPS"
+                            inputVariable="ReadSNDIn"
+                            outputVariable="ReadSNDOut"/>
+                    <assign name="AssignSandboxEPSId">
+                        <copy ignoreMissingFromData="yes"
+                              bpelx:insertMissingToData="yes">
+                            <from>$ReadSNDOut.result/ns2:EPS/ns2:ObjectId</from>
+                            <to>$sandboxEPSId</to>
+                        </copy>
+                    </assign>
+                </sequence>
+                <sequence name="CreateIfMissing-SKIP">
+                    <bpelx:skipCondition>$sandboxEPSId!=''</bpelx:skipCondition>
+                    <assign name="AssignSNDEPS">
+                        <copy>
+                            <from>concat($inputVariable.payload/ns1:sandbox/@programId,'-SND')</from>
+                            <to>$CreateSNDEPSIn.params/ns2:EPS/ns2:Id</to>
+                        </copy>
+                        <copy>
+                            <from>'Sandbox'</from>
+                            <to>$CreateSNDEPSIn.params/ns2:EPS/ns2:Name</to>
+                        </copy>
+                        <copy>
+                            <from>$ReadConfigOut.payload/client:program/client:obs/client:sandboxId</from>
+                            <to>$CreateSNDEPSIn.params/ns2:EPS/ns2:OBSObjectId</to>
+                        </copy>
+                        <copy>
+                            <from>$ReadRootEPSOut.result/ns2:EPS/ns2:ObjectId</from>
+                            <to>$CreateSNDEPSIn.params/ns2:EPS/ns2:ParentObjectId</to>
+                        </copy>
+                    </assign>
+                    <invoke name="CreateSNDEPS" bpelx:invokeAsDetail="no"
+                            partnerLink="EPSService"
+                            portType="ns2:EPSPortType" operation="CreateEPS"
+                            inputVariable="CreateSNDEPSIn"
+                            outputVariable="CreateSNDEPSOut"/>
+                    <assign name="AssignSandboxEPSId">
+                        <copy>
+                            <from>$CreateSNDEPSOut.result/ns2:ObjectId</from>
+                            <to>$sandboxEPSId</to>
+                        </copy>
+                    </assign>
+                </sequence>
+            </sequence>
+        </scope>
+        <if name="IfSourceReferenceId">
+            <documentation>
+                <![CDATA[BasedOnReferenceId]]>
+            </documentation>
+            <condition>$inputVariable.payload/ns1:sandbox/@sourceReferenceId!=''</condition>
+                <sequence name="CreateSNDProject">
+                    <assign name="AssignReadObjId">
+                        <copy>
+                            <from>'WBSObjectId'</from>
+                            <to>$ReadProjectObjectIdIn.params/ns5:Field</to>
+                        </copy>
+                        <copy>
+                            <from>concat("WBSObjectId=",$inputVariable.payload/ns1:sandbox/@sourceReferenceId)</from>
+                            <to>$ReadProjectObjectIdIn.params/ns5:Filter</to>
+                        </copy>
+                    </assign>
+                    <invoke name="ReadProjectObjectId" bpelx:invokeAsDetail="no"
+                            partnerLink="ProjectService"
+                            portType="ns5:ProjectPortType"
+                            operation="ReadProjects"
+                            inputVariable="ReadProjectObjectIdIn"
+                            outputVariable="ReadProjectObjectIdOut"/>
+                    <assign name="AssignSourceObjectId">
+                        <copy>
+                            <from>$ReadProjectObjectIdOut.result/ns5:Project/ns5:ObjectId</from>
+                            <to>$CreateReflectionIn.params/ns5:ObjectId</to>
+                        </copy>
+                    </assign>
+                    <invoke name="CreateReflection" bpelx:invokeAsDetail="no"
+                            partnerLink="ProjectService"
+                            portType="ns5:ProjectPortType"
+                            operation="CopyProjectAsReflection"
+                            inputVariable="CreateReflectionIn"
+                            outputVariable="CreateReflectionOut"/>
+                    <sequence name="GetRefId">
+                        <assign name="AssignReadRefId">
+                            <copy>
+                                <from>'WBSObjectId'</from>
+                                <to>$ReadPrjRefIdIn.params/ns5:Field</to>
+                            </copy>
+                            <copy>
+                                <from>concat("ObjectId='",$CreateReflectionOut.result/ns5:ObjectId,"'")</from>
+                                <to>$ReadPrjRefIdIn.params/ns5:Filter</to>
+                            </copy>
+                        </assign>
+                        <invoke name="ReadPrjRefId" bpelx:invokeAsDetail="no"
+                                partnerLink="ProjectService"
+                                portType="ns5:ProjectPortType"
+                                operation="ReadProjects"
+                                inputVariable="ReadPrjRefIdIn"
+                                outputVariable="ReadPrjRefIdOut"/>
+                        <assign name="AssignOutRefId">
+                            <copy ignoreMissingFromData="yes"
+                                  bpelx:insertMissingToData="yes">
+                                <from>$ReadPrjRefIdOut.result/ns5:Project/ns5:WBSObjectId</from>
+                                <to>$outputVariable.payload/client:complete/ns1:sandbox/@referenceId</to>
+                            </copy>
+                            <copy>
+                                <from>$CreateReflectionOut.result/ns5:ObjectId</from>
+                                <to>$SNDId</to>
+                            </copy>
+                        </assign>
+                    </sequence>
+                </sequence>
+            <else>
+                <documentation>
+                    <![CDATA[EmptySandbox]]>
+                </documentation>
+                <sequence name="CreateRAW">
+                <assign name="AssignCreateRAW">
+                    <copy>
+                        <from>$inputVariable.payload/@id</from>
+                        <to>$CreateRAWIn.payload/@id</to>
+                    </copy>
+                    <copy>
+                        <from>$inputVariable.payload/ns1:sandbox/@programId</from>
+                        <to>$CreateRAWIn.payload/ns1:project/@programId</to>
+                    </copy>
+                    <copy>
+                        <from>$inputVariable.payload/ns1:sandbox/@id</from>
+                        <to>$CreateRAWIn.payload/ns1:project/@id</to>
+                    </copy>
+                    <copy>
+                        <from>$inputVariable.payload/ns1:sandbox/ns1:code</from>
+                        <to>$CreateRAWIn.payload/ns1:project/ns1:code</to>
+                    </copy>
+                    <copy>
+                        <from>$inputVariable.payload/ns1:sandbox/ns1:name</from>
+                        <to>$CreateRAWIn.payload/ns1:project/ns1:name</to>
+                    </copy>
+                    <copy>
+                        <from>'PRE-POT'</from>
+                        <to>$CreateRAWIn.payload/ns1:project/ns1:areaCode</to>
+                    </copy>
+                </assign>
+                <invoke name="CreateRAWIn" bpelx:invokeAsDetail="no"
+                        partnerLink="CreateProject.CreateProjectService"
+                        portType="client:CreateProject" operation="process"
+                        inputVariable="CreateRAWIn"/>
+                <receive name="CreateRAWOut" createInstance="no"
+                         partnerLink="CreateProject.CreateProjectService"
+                         portType="client:CreateProjectCallback"
+                         operation="callback" variable="CreateRAWOut"/>
+                <assign name="AssignReadRAWPrjObjId">
+                        <copy ignoreMissingFromData="yes"
+                              bpelx:insertMissingToData="yes">
+                            <from>'WBSObjectId'</from>
+                            <to>$ReadRAWPrjObjIdIn.params/ns5:Field</to>
+                        </copy>
+                        <copy ignoreMissingFromData="yes"
+                              bpelx:insertMissingToData="yes">
+                            <from>concat("WBSObjectId=",$CreateRAWOut.payload/client:complete/ns1:project/ns1:timelines/ns1:timeline/@referenceId)</from>
+                            <to>$ReadRAWPrjObjIdIn.params/ns5:Filter</to>
+                        </copy>
+                        <copy ignoreMissingFromData="yes"
+                              bpelx:insertMissingToData="yes">
+                            <from>$CreateRAWOut.payload/client:complete/ns1:project/ns1:timelines/ns1:timeline/@referenceId</from>
+                            <to>$outputVariable.payload/client:complete/ns1:sandbox/@referenceId</to>
+                        </copy>
+                    </assign>
+                <invoke name="ReadRAWPrjObjId" bpelx:invokeAsDetail="no"
+                        partnerLink="ProjectService"
+                        portType="ns5:ProjectPortType"
+                        operation="ReadProjects"
+                        inputVariable="ReadRAWPrjObjIdIn"
+                        outputVariable="ReadRAWPrjObjIdOut"/>
+                <assign name="AssignSNDId">
+                        <copy ignoreMissingFromData="yes"
+                              bpelx:insertMissingToData="yes">
+                            <from>$ReadRAWPrjObjIdOut.result/ns5:Project/ns5:ObjectId</from>
+                            <to>$SNDId</to>
+                        </copy>
+                    </assign>
+            </sequence>
+            </else>
+        </if>
+        <sequence name="OBS">
+            <sequence name="CheckOBS">
+                <assign name="AssignCheckOBS">
+                    <copy>
+                        <from>'Name'</from>
+                        <to>$CheckOBSIn.params/ns4:Field</to>
+                    </copy>
+                    <copy>
+                        <from>concat("Name='",$inputVariable.payload/ns1:sandbox/@programId,"-SND' and ParentObjectId='",$ReadConfigOut.payload/client:program/client:obs/client:sandboxId,"'")</from>
+                        <to>$CheckOBSIn.params/ns4:Filter</to>
+                    </copy>
+                </assign>
+                <invoke name="CheckOBS"
+                        partnerLink="OBSService" portType="ns4:OBSPortType"
+                        operation="ReadOBS" inputVariable="CheckOBSIn"
+                        outputVariable="CheckOBSOut" bpelx:invokeAsDetail="no"/>
+                <assign name="AssignCheckOBSObjectId">
+                    <copy ignoreMissingFromData="yes"
+                          bpelx:insertMissingToData="yes">
+                        <from>$CheckOBSOut.result/ns4:OBS/ns4:ObjectId</from>
+                        <to>$timelineOBSId</to>
+                    </copy>
+                </assign>
+            </sequence>
+            <sequence name="CreateOBS-SKIP">
+                <bpelx:skipCondition>$timelineOBSId!=''</bpelx:skipCondition>
+                <assign name="AssignOBS">
+                    <copy>
+                        <from>concat($inputVariable.payload/ns1:sandbox/@programId,'-SND')</from>
+                        <to>$CreateOBSIn.params/ns4:OBS/ns4:Name</to>
+                    </copy>
+                    <copy>
+                        <from>$ReadConfigOut.payload/client:program/client:obs/client:sandboxId</from>
+                        <to>$CreateOBSIn.params/ns4:OBS/ns4:ParentObjectId</to>
+                    </copy>
+                </assign>
+                <invoke name="CreateOBS" bpelx:invokeAsDetail="no"
+                        partnerLink="OBSService" portType="ns4:OBSPortType"
+                        operation="CreateOBS" inputVariable="CreateOBSIn"
+                        outputVariable="CreateOBSOut"/>
+                <assign name="AssignCreateOBSObjectId">
+                    <copy ignoreMissingFromData="yes"
+                          bpelx:insertMissingToData="yes">
+                        <from>$CreateOBSOut.result/ns4:ObjectId</from>
+                        <to>$timelineOBSId</to>
+                    </copy>
+                </assign>
+            </sequence>
+        </sequence>
+        <sequence name="UpdateSandbox">
+            <assign name="AssignUpdateSND">
+                <copy>
+                    <from>$inputVariable.payload/ns1:sandbox/@id</from>
+                    <to>$UpdateSNDIn.params/ns5:Project/ns5:Id</to>
+                </copy>
+                <copy>
+                    <from>'What-If'</from>
+                    <to>$UpdateSNDIn.params/ns5:Project/ns5:Status</to>
+                </copy>
+                <copy>
+                    <from>$sandboxEPSId</from>
+                    <to>$UpdateSNDIn.params/ns5:Project/ns5:ParentEPSObjectId</to>
+                </copy>
+                <copy>
+                    <from>$inputVariable.payload/ns1:sandbox/ns1:name</from>
+                    <to>$UpdateSNDIn.params/ns5:Project/ns5:Name</to>
+                </copy>
+                <copy>
+                    <from>$timelineOBSId</from>
+                    <to>$UpdateSNDIn.params/ns5:Project/ns5:OBSObjectId</to>
+                </copy>
+                <copy>
+                    <from>$SNDId</from>
+                    <to>$UpdateSNDIn.params/ns5:Project/ns5:ObjectId</to>
+                </copy>
+            </assign>
+            <invoke name="UpdateSND" bpelx:invokeAsDetail="no"
+                    partnerLink="ProjectService"
+                    portType="ns5:ProjectPortType" operation="UpdateProjects"
+                    inputVariable="UpdateSNDIn" outputVariable="UpdateSNDOut"/>
+        </sequence>
+        <sequence name="UpdateSandboxUDF">
+            <assign name="AssignDeleteUDF">
+                <copy ignoreMissingFromData="yes"
+                      bpelx:insertMissingToData="yes">
+                    <from>$ReadConfigOut.payload/client:project/client:codeTypeId</from>
+                    <to>$DeleteUDFIn.params/ns6:ObjectId/ns6:UDFTypeObjectId</to>
+                </copy>
+                <copy ignoreMissingFromData="yes"
+                      bpelx:insertMissingToData="yes">
+                    <from>$SNDId</from>
+                    <to>$DeleteUDFIn.params/ns6:ObjectId/ns6:ForeignObjectId</to>
+                </copy>
+            </assign>
+            <invoke name="DeleteUDF" bpelx:invokeAsDetail="no"
+                    partnerLink="UDFValueService"
+                    portType="ns6:UDFValuePortType" operation="DeleteUDFValues"
+                    inputVariable="DeleteUDFIn" outputVariable="DeleteUDFOut"/>
+            <assign name="AssignCreateUDF">
+                <copy>
+                    <from>$inputVariable.payload/ns1:sandbox/ns1:code</from>
+                    <to>$CreateUDFIn.params/ns6:UDFValue/ns6:Text</to>
+                </copy>
+                <copy>
+                    <from>$ReadConfigOut.payload/client:project/client:codeTypeId</from>
+                    <to>$CreateUDFIn.params/ns6:UDFValue/ns6:UDFTypeObjectId</to>
+                </copy>
+                <copy>
+                    <from>$SNDId</from>
+                    <to>$CreateUDFIn.params/ns6:UDFValue/ns6:ForeignObjectId</to>
+                </copy>
+            </assign>
+            <invoke name="CreateUDF" bpelx:invokeAsDetail="no"
+                    partnerLink="UDFValueService"
+                    portType="ns6:UDFValuePortType" operation="CreateUDFValues"
+                    inputVariable="CreateUDFIn" outputVariable="CreateUDFOut"/>
+        </sequence>
+        <sequence name="UpdateActUDF-SKIP">
+            <bpelx:skipCondition>count($ReadPrjRefIdOut.result/ns5:Project)=0</bpelx:skipCondition>
+            <assign name="AssignReadPlanVId">
+                <copy>
+                    <from>concat('ProjectObjectId=',$ReadPrjRefIdOut.result/ns5:Project/ns5:ObjectId, ' and UDFTypeObjectId=',$ReadConfigOut.payload/client:activity/client:planVersionIdTypeId)</from>
+                    <to>$ReadPlanVersionIdIn.params/ns6:Filter</to>
+                </copy>
+                <copy>
+                    <from>'ForeignObjectId'</from>
+                    <to>$ReadPlanVersionIdIn.params/ns6:Field</to>
+                </copy>
+            </assign>
+            <invoke name="ReadPlanVersionId" bpelx:invokeAsDetail="no" partnerLink="UDFValueService"
+                    portType="ns6:UDFValuePortType" operation="ReadUDFValues" inputVariable="ReadPlanVersionIdIn"
+                    outputVariable="ReadPlanVersionIdOut"/>
+            <assign name="TrUDFPVId">
+                <bpelx:annotation>
+                    <bpelx:pattern patternName="bpelx:transformation"></bpelx:pattern>
+                </bpelx:annotation>
+                <copy>
+                    <from>ora:doXSLTransformForDoc("Transformations/CreateSandboxUDFPVId.xsl", $inputVariable.payload, "ReadConfigOut.payload", $ReadConfigOut.payload, "ReadPlanVersionIdOut.result", $ReadPlanVersionIdOut.result)</from>
+                    <to variable="UpdatePlanVersionIdIn" part="params"/>
+                </copy>
+            </assign>
+            <invoke name="UpdatePlanVersionId" bpelx:invokeAsDetail="no" partnerLink="UDFValueService"
+                    portType="ns6:UDFValuePortType" operation="UpdateUDFValues" inputVariable="UpdatePlanVersionIdIn"
+                    outputVariable="UpdatePlanVersionIdOut"/>
+        </sequence>
+        <scope name="RemoveConstraints" exitOnStandardFault="no">
+            <bpelx:skipCondition>$inputVariable.payload/ns1:sandbox/@removeDateConstraints='false'</bpelx:skipCondition>
+            <variables>
+                <variable name="ReadAutoActivitiesIn"
+                          messageType="ns7:ReadActivityCodeAssignments"/>
+                <variable name="ReadAutoActivitiesOut"
+                          messageType="ns7:ReadActivityCodeAssignmentsResponse"/>
+                <variable name="UpdateActivConstraintIn"
+                          messageType="ns8:UpdateActivities"/>
+                <variable name="UpdateActivConstraintOut"
+                          messageType="ns8:UpdateActivitiesResponse"/>
+            </variables>
+            <sequence name="RemoveDateConstraints">
+                <assign name="AssignReadAutoActiv">
+                    <copy>
+                        <from>'ActivityObjectId'</from>
+                        <to>$ReadAutoActivitiesIn.params/ns7:Field</to>
+                    </copy>
+                    <copy>
+                        <from>concat("ProjectObjectId='",$SNDId,"' and ActivityCodeTypeObjectId='",$ReadConfigOut.payload/client:activity/client:integrationTypeId, "' and ActivityCodeValue='Auto'")</from>
+                        <to>$ReadAutoActivitiesIn.params/ns7:Filter</to>
+                    </copy>
+                </assign>
+                <invoke name="ReadAutoActivities" bpelx:invokeAsDetail="no"
+                        partnerLink="ActivityCodeAssignmentService"
+                        portType="ns7:ActivityCodeAssignmentPortType"
+                        operation="ReadActivityCodeAssignments"
+                        inputVariable="ReadAutoActivitiesIn"
+                        outputVariable="ReadAutoActivitiesOut"/>
+                <assign name="TranRemoveConstraints">
+                    <bpelx:annotation>
+                        <bpelx:pattern patternName="bpelx:transformation"/>
+                    </bpelx:annotation>
+                    <copy>
+                        <from>ora:doXSLTransformForDoc("xsl/CreateSandboxRemoveCons.xsl", $ReadAutoActivitiesOut.result)</from>
+                        <to variable="UpdateActivConstraintIn" part="params"/>
+                    </copy>
+                </assign>
+                <sequence name="UpdateActivConstraint-SKIP">
+                    <bpelx:skipCondition>count($UpdateActivConstraintIn.params/ns8:Activity)=0</bpelx:skipCondition>
+                    <invoke name="UpdateActivConstraint"
+                            bpelx:invokeAsDetail="no"
+                            partnerLink="ActivityService"
+                            portType="ns8:ActivityPortType"
+                            operation="UpdateActivities"
+                            inputVariable="UpdateActivConstraintIn"
+                            outputVariable="UpdateActivConstraintOut"/>
+                </sequence>
+            </sequence>
+        </scope>
+        <!-- 
+          Asynchronous callback to the requester. (Note: the callback location and correlation id is transparently handled using WS-addressing.)
+        -->
+        <invoke name="callbackClient" partnerLink="CreateSandboxService" portType="client:CreateSandboxCallback" operation="processResponse" inputVariable="outputVariable"/>
+    </sequence>
+</process>

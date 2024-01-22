@@ -1,0 +1,369 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Wed Jan 23 15:54:57 EET 2013
+  Author:  gytis
+  Type: BPEL 1.1 Process
+  Purpose: Synchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="UpdateProject"
+               targetNamespace="http://xmlns.bayer.com/ipms/soa"
+               xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+               xmlns:client="http://xmlns.bayer.com/ipms/soa"
+               xmlns:ora="http://schemas.oracle.com/xpath/extension"
+               xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:ns1="http://xmlns.bayer.com/ipms"
+         xmlns:ns11="http://xmlns.bayer.com/ipms/soa"
+         xmlns:bpel2="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ns2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:ns3="http://xmlns.oracle.com/Primavera/P6/WS/ProjectCodeAssignment/V1"
+         xmlns:ns4="http://xmlns.oracle.com/Primavera/P6/WS/UDFValue/V1"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         xmlns:ns5="http://xmlns.oracle.com/Primavera/P6/WS/Activity/V1"
+         xmlns:ns6="http://xmlns.bayer.com/ipms/cache">
+
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        PARTNERLINKS                                                      
+        List of services participating in this BPEL process               
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+  <bpelx:annotation>
+    <bpelx:analysis>
+      <bpelx:property name="wsdlFile">
+        <![CDATA[UpdateProject.wsdl]]>
+      </bpelx:property>
+    </bpelx:analysis>
+  </bpelx:annotation>
+  <partnerLinks>
+    <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+    <partnerLink name="UpdateProjectService" partnerLinkType="client:UpdateProject" myRole="UpdateProjectProvider"
+                 partnerRole="UpdateProjectRequester"/>
+    <partnerLink name="ProjectService" partnerLinkType="ns2:ProjectService"
+                 partnerRole="ProjectPortType"/>
+    <partnerLink name="UDFValueService" partnerLinkType="ns4:UDFValueService"
+                 partnerRole="UDFValuePortType"/>
+    <partnerLink name="ReadConfiguration.ReadConfigurationService"
+                 partnerLinkType="client:ReadConfiguration"
+                 partnerRole="ReadConfigurationProvider"
+                 myRole="ReadConfigurationRequester"/>
+    <partnerLink name="AdjustActivities.AdjustActivitiesService"
+                 partnerLinkType="client:AdjustActivities"
+                 partnerRole="AdjustActivitiesProvider"
+                 myRole="AdjustActivitiesRequester"/>
+  </partnerLinks>
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      VARIABLES                                                        
+      List of messages and XML documents used within this BPEL process 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <variables>
+    <!-- Reference to the message passed as input during initiation -->
+    <variable name="inputVariable" messageType="client:UpdateProjectRequestMessage"/>
+
+    <!-- Reference to the message that will be returned to the requester-->
+    <variable name="outputVariable" messageType="client:UpdateProjectResponseMessage"/>
+    <variable name="UpdateProjectIn" messageType="ns2:UpdateProjects"/>
+    <variable name="UpdateProjectOut" messageType="ns2:UpdateProjectsResponse"/>
+    <variable name="ReadProjectIn" messageType="ns2:ReadProjects"/>
+    <variable name="ReadProjectOut" messageType="ns2:ReadProjectsResponse"/>
+    <variable name="ReadCfgIn"
+              messageType="client:ReadConfigurationRequestMessage"/>
+    <variable name="ReadCfgOut"
+              messageType="client:ReadConfigurationResponseMessage"/>
+    <variable name="CreateUDFIn" messageType="ns4:CreateUDFValues"/>
+    <variable name="CreateUDFOut" messageType="ns4:CreateUDFValuesResponse"/>
+  </variables>
+  <faultHandlers>
+    <catchAll>
+      <scope name="ScopeFault" variableAccessSerializable="no">
+        <variables>
+          <variable name="faultVariable"
+                    messageType="client:UpdateProjectResponseMessage"/>
+        </variables>
+        <sequence name="mainFaultCatchingScope">
+          <assign name="assignFaultOutput">
+            <copy>
+              <from expression="ora:getFaultAsString()"/>
+              <to variable="faultVariable" part="payload"
+                  query="/client:response/ns1:error/ns1:description"/>
+            </copy>
+            <copy>
+              <from expression="ora:getFaultName()"/>
+              <to variable="faultVariable" part="payload"
+                  query="/client:response/ns1:error/ns1:code"/>
+            </copy>
+            <copy>
+              <from variable="inputVariable" part="payload"
+                    query="/client:update/@id"/>
+              <to variable="faultVariable" part="payload"
+                  query="/client:response/ns1:error/@id"/>
+            </copy>
+            <copy>
+              <from variable="inputVariable" part="payload"
+                    query="/client:update/@id"/>
+              <to variable="faultVariable" part="payload"
+                  query="/client:response/@id"/>
+            </copy>
+          </assign>
+          <invoke name="callbackFaultOutput" bpelx:invokeAsDetail="no"
+                  inputVariable="faultVariable"
+                  partnerLink="UpdateProjectService"
+                  portType="client:UpdateProjectCallback" operation="callback"/>
+        </sequence>
+      </scope>
+    </catchAll>
+  </faultHandlers>
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC                                               
+     Set of activities coordinating the flow of messages across the    
+     services integrated within this business process                  
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <sequence name="main">
+
+    <!-- Receive input from requestor. (Note: This maps to operation defined in UpdateProject.wsdl) -->
+    <receive name="receiveInput" partnerLink="UpdateProjectService" portType="client:UpdateProject" operation="process" variable="inputVariable" createInstance="yes"/>
+    <flow name="FlowProjectAndConfig">
+      <sequence name="ReadConfig">
+        <scope name="ReadConfig" variableAccessSerializable="no">
+          <variables>
+            <variable name="VariableCache" element="ns6:cache"/>
+          </variables>
+          <faultHandlers>
+            <catchAll>
+              <empty name="Empty1"/>
+            </catchAll>
+          </faultHandlers>
+          <sequence name="ReadConfigFromFile">
+            <assign name="AssignFromCache">
+              <copy bpelx:ignoreMissingFromData="yes"
+                    bpelx:insertMissingToData="yes">
+                <from expression='ora:readFile("file:///opt/oracle/soa12.2.1/file_adapter/ipms/config.cache", "oramds:/apps/com/bayer/xmlns/ipms/cache/cache.xsd")'/>
+                <to variable="VariableCache" query="/ns6:cache"/>
+              </copy>
+              <copy bpelx:ignoreMissingFromData="yes"
+                    bpelx:insertMissingToData="yes">
+                <from variable="VariableCache" query="/ns6:cache/*"/>
+                <to variable="ReadCfgOut" part="payload"/>
+              </copy>
+            </assign>
+            <empty name="EmptyBeforeSkip"/>
+          </sequence>
+        </scope>
+        <sequence name="FULL-ReadConfig-SKIP"
+                  bpelx:skipCondition="bpws:getVariableData('ReadCfgOut','payload','/client:config/client:program/client:epsId')!=''">
+          <assign name="AssignReadConfigIn">
+            <copy>
+              <from expression="'empty'"/>
+              <to variable="ReadCfgIn" part="payload" query="/ns1:empty"/>
+            </copy>
+          </assign>
+          <invoke name="ReadConfigIn" bpelx:invokeAsDetail="no"
+                  inputVariable="ReadCfgIn"
+                  partnerLink="ReadConfiguration.ReadConfigurationService"
+                  portType="client:ReadConfiguration" operation="process"/>
+          <receive name="ReadConfigOut" createInstance="no"
+                   variable="ReadCfgOut"
+                   partnerLink="ReadConfiguration.ReadConfigurationService"
+                   portType="client:ReadConfigurationCallback"
+                   operation="callback"/>
+        </sequence>
+      </sequence>
+      <sequence name="SequenceReadProject">
+        <assign name="AssignReadIn">
+          <copy>
+            <from><v2:Field xmlns:v2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2">Id</v2:Field></from>
+            <to variable="ReadProjectIn" part="params"
+                query="/ns2:ReadProjects/ns2:Field"/>
+          </copy>
+          <bpelx:insertAfter>
+            <bpelx:from><v2:Field xmlns:v2="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2">WBSObjectId</v2:Field></bpelx:from>
+            <bpelx:to variable="ReadProjectIn" part="params"
+                      query="/ns2:ReadProjects/ns2:Field"/>
+          </bpelx:insertAfter>
+          <copy>
+            <from expression="concat(&quot;Id='&quot;,bpws:getVariableData('inputVariable','payload','/client:update/ns1:project/@id'),&quot;-RAW'&quot;)"/>
+            <to variable="ReadProjectIn" part="params"
+                query="/ns2:ReadProjects/ns2:Filter"/>
+          </copy>
+        </assign>
+        <invoke name="ReadProject" bpelx:invokeAsDetail="no"
+                inputVariable="ReadProjectIn" outputVariable="ReadProjectOut"
+                partnerLink="ProjectService" portType="ns2:ProjectPortType"
+                operation="ReadProjects"/>
+        <switch name="CheckReadProjectResponse">
+          <case condition="ora:countNodes('ReadProjectOut','result','/ns2:ReadProjectsResponse/ns2:Project')>0">
+            <bpelx:annotation>
+              <bpelx:general>
+                <bpelx:property name="userLabel">countResponseNodes</bpelx:property>
+              </bpelx:general>
+            </bpelx:annotation>
+            <empty name="ResponseIsNotNull"/>
+          </case>
+          <otherwise>
+            <throw name="ThrowUpdateProjectRPRFault"
+                   faultName="bpws:selectionFailure"/>
+          </otherwise>
+        </switch>
+      </sequence>
+    </flow>
+    <flow name="FlowProjectAndUDF">
+      <sequence name="SequenceUDFAndAdjustActivities">
+        <scope name="ScopeDeleteUDF" variableAccessSerializable="no">
+          <variables>
+            <variable name="DeleteUDFIn" messageType="ns4:DeleteUDFValues"/>
+            <variable name="DeleteUDFOut"
+                      messageType="ns4:DeleteUDFValuesResponse"/>
+          </variables>
+          <sequence name="SequenceDeleteUDF">
+            <assign name="AssignDeleteUDF">
+              <copy bpelx:ignoreMissingFromData="yes">
+                <from variable="ReadCfgOut" part="payload"
+                      query="/ns11:config/ns11:project/ns11:codeTypeId"/>
+                <to variable="DeleteUDFIn" part="params"
+                    query="/ns4:DeleteUDFValues/ns4:ObjectId/ns4:UDFTypeObjectId"/>
+              </copy>
+              <copy bpelx:ignoreMissingFromData="yes">
+                <from variable="ReadProjectOut" part="result"
+                      query="/ns2:ReadProjectsResponse/ns2:Project/ns2:ObjectId"/>
+                <to variable="DeleteUDFIn" part="params"
+                    query="/ns4:DeleteUDFValues/ns4:ObjectId/ns4:ForeignObjectId"/>
+              </copy>
+            </assign>
+            <invoke name="DeleteUDF" bpelx:invokeAsDetail="no"
+                    inputVariable="DeleteUDFIn" outputVariable="DeleteUDFOut"
+                    partnerLink="UDFValueService"
+                    portType="ns4:UDFValuePortType"
+                    operation="DeleteUDFValues"/>
+          </sequence>
+        </scope>
+        <scope name="ScopeCreateUDF-SKIP" variableAccessSerializable="no"
+               bpelx:skipCondition="bpws:getVariableData('inputVariable','payload','/client:update/ns1:project/ns1:code') = '' or count(bpws:getVariableData('inputVariable','payload','/client:update/ns1:project/ns1:code'))=0">
+          <sequence name="AssignAndCall">
+            <assign name="AssignCreateUDF">
+              <copy>
+                <from variable="ReadProjectOut" part="result"
+                      query="/ns2:ReadProjectsResponse/ns2:Project/ns2:ObjectId"/>
+                <to variable="CreateUDFIn" part="params"
+                    query="/ns4:CreateUDFValues/ns4:UDFValue/ns4:ForeignObjectId"/>
+              </copy>
+              <copy>
+                <from variable="ReadCfgOut" part="payload"
+                      query="/ns11:config/ns11:project/ns11:codeTypeId"/>
+                <to variable="CreateUDFIn" part="params"
+                    query="/ns4:CreateUDFValues/ns4:UDFValue/ns4:UDFTypeObjectId"/>
+              </copy>
+              <copy>
+                <from expression="bpws:getVariableData('inputVariable','payload','/client:update/ns1:project/ns1:code')"/>
+                <to variable="CreateUDFIn" part="params"
+                    query="/ns4:CreateUDFValues/ns4:UDFValue/ns4:Text"/>
+              </copy>
+            </assign>
+            <invoke name="CreateUDF" bpelx:invokeAsDetail="no"
+                    inputVariable="CreateUDFIn" outputVariable="CreateUDFOut"
+                    partnerLink="UDFValueService"
+                    portType="ns4:UDFValuePortType"
+                    operation="CreateUDFValues"/>
+          </sequence>
+        </scope>
+        <scope name="ScopeAdjustActivities" variableAccessSerializable="no">
+          <variables>
+            <variable name="AdjustActivitiesIn"
+                      messageType="client:AdjustActivitiesRequestMessage"/>
+            <variable name="AdjustActivitiesOut"
+                      messageType="client:AdjustActivitiesResponseMessage"/>
+          </variables>
+          <sequence name="SequenceAdjustActivities">
+            <assign name="AssignAdjustActivities">
+              <copy>
+                <from expression="concat(bpws:getVariableData('inputVariable','payload','/client:update/ns1:project/@id'),'-RAW')"/>
+                <to variable="AdjustActivitiesIn" part="payload"
+                    query="/ns1:id"/>
+              </copy>
+            </assign>
+            <invoke name="AdjustActivitiesIn" bpelx:invokeAsDetail="no"
+                    inputVariable="AdjustActivitiesIn"
+                    partnerLink="AdjustActivities.AdjustActivitiesService"
+                    portType="client:AdjustActivities" operation="process"/>
+            <receive name="AdjustActivitiesOut" createInstance="no"
+                     variable="AdjustActivitiesOut"
+                     partnerLink="AdjustActivities.AdjustActivitiesService"
+                     portType="client:AdjustActivitiesCallback"
+                     operation="callback"/>
+            <sequence name="AdjustActivities-SKIP"
+                      bpelx:skipCondition="bpws:getVariableData('AdjustActivitiesOut','payload','/ns1:id')!=''">
+              <throw name="ErrorAdjustActivities"
+                     faultName="bpws:invalidReply"/>
+            </sequence>
+          </sequence>
+        </scope>
+      </sequence>
+      <sequence name="SequenceUpdateProject">
+        <assign name="AssignUpdateIn">
+          <copy bpelx:ignoreMissingFromData="yes">
+            <from variable="ReadProjectOut" part="result"
+                  query="/ns2:ReadProjectsResponse/ns2:Project/ns2:ObjectId"/>
+            <to variable="UpdateProjectIn" part="params"
+                query="/ns2:UpdateProjects/ns2:Project/ns2:ObjectId"/>
+          </copy>
+          <copy>
+            <from variable="inputVariable" part="payload"
+                  query="/client:update/ns1:project/ns1:name"/>
+            <to variable="UpdateProjectIn" part="params"
+                query="/ns2:UpdateProjects/ns2:Project/ns2:Name"/>
+          </copy>
+        </assign>
+        <invoke name="UpdateProject" bpelx:invokeAsDetail="no"
+                inputVariable="UpdateProjectIn"
+                outputVariable="UpdateProjectOut" partnerLink="ProjectService"
+                portType="ns2:ProjectPortType" operation="UpdateProjects"/>
+      </sequence>
+    </flow>
+    <assign name="AssignOut">
+      <copy>
+        <from variable="inputVariable" part="payload"
+              query="/client:update/ns1:project"/>
+        <to variable="outputVariable" part="payload"
+            query="/client:response/client:complete/ns1:project"/>
+      </copy>
+      <copy>
+        <from variable="inputVariable" part="payload"
+              query="/client:update/@id"/>
+        <to variable="outputVariable" part="payload"
+            query="/client:response/client:complete/@id"/>
+      </copy>
+      <copy>
+        <from variable="inputVariable" part="payload"
+              query="/client:update/@id"/>
+        <to variable="outputVariable" part="payload"
+            query="/client:response/@id"/>
+      </copy>
+    </assign>
+    <!-- Generate reply to synchronous request -->
+    <invoke name="callbackOutput" bpelx:invokeAsDetail="no"
+            inputVariable="outputVariable" partnerLink="UpdateProjectService"
+            portType="client:UpdateProjectCallback" operation="callback"/>
+  </sequence>
+</process>

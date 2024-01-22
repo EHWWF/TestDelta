@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="HelpBundle"
+  Version="12.2.1.0.31"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="HELP_BUNDLE"
+  AliasName="HelpBundle"
+  BindingStyle="OracleName"
+  RowClass="com.bayer.ipms.model.base.IPMSEntityImpl">
+  <Attribute
+    Name="Code"
+    IsUpdateable="false"
+    IsNotNull="true"
+    ColumnName="CODE"
+    SQLType="STRUCT"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    TableName="HELP_BUNDLE"
+    PrimaryKey="true"/>
+  <Attribute
+    Name="Name"
+    ColumnName="NAME"
+    SQLType="STRUCT"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    TableName="HELP_BUNDLE"
+    IsNotNull="true"/>
+  <Attribute
+    Name="Definition"
+    ColumnName="DEFINITION"
+    SQLType="STRUCT"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="HELP_BUNDLE"
+    IsNotNull="true"/>
+  <Attribute
+    Name="Url"
+    ColumnName="URL"
+    SQLType="STRUCT"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="HELP_BUNDLE"
+    IsNotNull="true"/>
+  <Key
+    Name="HelpBundleDefinitionCheck">
+    <DesignTime>
+      <Attr Name="_isNotNull" Value="true"/>
+      <Attr Name="_checkCondition" Value='"DEFINITION" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+      <Attr Name="_DBObjectName" Value="HELP_BUNDLE_DEFINITION_CHECK"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.HelpBundle.Definition"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="HelpBundleNameCheck">
+    <DesignTime>
+      <Attr Name="_isNotNull" Value="true"/>
+      <Attr Name="_checkCondition" Value='"NAME" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+      <Attr Name="_DBObjectName" Value="HELP_BUNDLE_NAME_CHECK"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.HelpBundle.Name"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="HelpBundleUrlCheck">
+    <DesignTime>
+      <Attr Name="_isNotNull" Value="true"/>
+      <Attr Name="_checkCondition" Value='"URL" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+      <Attr Name="_DBObjectName" Value="HELP_BUNDLE_URL_CHECK"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.HelpBundle.Url"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0071877"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0071877"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.HelpBundle.Code"/>
+    </AttrArray>
+  </Key>
+</Entity>

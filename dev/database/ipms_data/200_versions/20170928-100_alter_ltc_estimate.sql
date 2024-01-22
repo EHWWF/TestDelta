@@ -1,0 +1,1 @@
+alter table ltc_estimate add constraint ltc_estimate_scope_code_chk check (scope_code in ('INT','EXT'));

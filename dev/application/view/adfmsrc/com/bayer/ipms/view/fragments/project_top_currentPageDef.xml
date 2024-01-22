@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.0.31" id="project_top_currentPageDef"
+                Package="com.bayer.ipms.view.fragments">
+    <parameters/>
+    <executables>
+        <variableIterator id="variables"/>
+        <iterator Binds="ProgramAppModule.ProgramTopCurrentView" DataControl="PrivateAppModuleDataControl"
+                  RangeSize="25" id="ProgramTopCurrentViewIterator"/>
+        <iterator Binds="ProgramAppModule.ProgramTopVersionCategoryView" DataControl="PrivateAppModuleDataControl"
+                  RangeSize="100" id="ProgramTopCurrentCategoryViewIterator" ChangeEventPolicy="ppr"/>
+    </executables>
+    <bindings>
+        <tree IterBinding="ProgramTopCurrentViewIterator" id="ProgramTopVersionView">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.ProgramTopVersionView" Name="ProgramTopCurrentView0">
+                <AttrNames>
+                    <Item Value="ApprovalDate"/>
+                    <Item Value="Description"/>
+                    <Item Value="Id"/>
+                    <Item Value="Name"/>
+                    <Item Value="Version"/>
+                    <Item Value="ProgramId"/>
+                    <Item Value="ParentId"/>
+                    <Item Value="CreateDate"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <attributeValues IterBinding="ProgramTopCurrentViewIterator" id="TopVersionName">
+            <AttrNames>
+                <Item Value="Name"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProgramTopCurrentViewIterator" id="TopVersionApprovalDate">
+            <AttrNames>
+                <Item Value="ApprovalDate"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProgramTopCurrentViewIterator" id="TopVersionDescription">
+            <AttrNames>
+                <Item Value="Description"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProgramTopCurrentViewIterator" id="TopCurrentVersion">
+            <AttrNames>
+                <Item Value="Version"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProgramTopCurrentViewIterator" id="TopCurrentName">
+            <AttrNames>
+                <Item Value="Name"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProgramTopCurrentViewIterator" id="TopCurrentApprovalDate">
+            <AttrNames>
+                <Item Value="ApprovalDate"/>
+            </AttrNames>
+        </attributeValues>
+        <attributeValues IterBinding="ProgramTopCurrentViewIterator" id="TopCurrentDescription">
+            <AttrNames>
+                <Item Value="Description"/>
+            </AttrNames>
+        </attributeValues>
+        <tree IterBinding="ProgramTopCurrentCategoryViewIterator" id="ProgramTopCurrentCategoryView">
+            <nodeDefinition DefName="com.bayer.ipms.model.views.ProgramTopVersionCategoryView"
+                            Name="ProgramTopVersionCategoryView0">
+                <AttrNames>
+                    <Item Value="CategoryCode"/>
+                    <Item Value="Name"/>
+                    <Item Value="IsActive"/>
+                    <Item Value="VersionName"/>
+                    <Item Value="VersionId"/>
+                </AttrNames>
+                <Accessors>
+                    <Item Value="ProgramTopVersionSubCategoryView"/>
+                </Accessors>
+            </nodeDefinition>
+            <nodeDefinition DefName="com.bayer.ipms.model.views.ProgramTopVersionSubCategoryView"
+                            Name="ProgramTopCurrentCategoryView1">
+                <AttrNames>
+                    <Item Value="SubcategoryCode"/>
+                    <Item Value="Name"/>
+                    <Item Value="IsActive"/>
+                </AttrNames>
+                <Accessors>
+                    <Item Value="ProgramTopValuesView"/>
+                </Accessors>
+            </nodeDefinition>
+            <nodeDefinition DefName="com.bayer.ipms.model.views.ProgramTopValuesView"
+                            Name="ProgramTopCurrentCategoryView2">
+                <AttrNames>
+                    <Item Value="Indication1"/>
+                    <Item Value="Indication2"/>
+                    <Item Value="Indication3"/>
+                    <Item Value="Indication4"/>
+                    <Item Value="Indication5"/>
+                    <Item Value="Indication6"/>
+                    <Item Value="Indication7"/>
+                    <Item Value="Indication8"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+    </bindings>
+</pageDefinition>

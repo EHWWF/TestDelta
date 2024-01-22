@@ -1,0 +1,5 @@
+alter table sophia_costs_vw_merge add (create_date2 date, update_date2 date);
+update sophia_costs_vw_merge set create_date2=to_date(create_date,'DD.MM.YY'), update_date2=to_date(update_date,'DD.MM.YY');
+alter table sophia_costs_vw_merge drop (create_date,update_date);
+alter table sophia_costs_vw_merge rename column create_date2 to create_date;
+alter table sophia_costs_vw_merge rename column update_date2 to update_date;

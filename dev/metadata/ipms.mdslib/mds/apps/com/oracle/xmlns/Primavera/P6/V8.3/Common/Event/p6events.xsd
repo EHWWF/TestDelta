@@ -1,0 +1,2670 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://xmlns.oracle.com/Primavera/P6/V8.3/Common/Event" targetNamespace="http://xmlns.oracle.com/Primavera/P6/V8.3/Common/Event" elementFormDefault="qualified">
+    <xsd:element name="MessagingObjects">
+        <xsd:complexType>
+            <xsd:choice>
+                <xsd:element name="ProjectCodeAssignmentCreated" type="ProjectCodeAssignmentCreatedType" minOccurs="0"/>
+                <xsd:element name="ProjectCodeAssignmentUpdated" type="ProjectCodeAssignmentUpdatedType" minOccurs="0"/>
+                <xsd:element name="RiskResponseActionImpactCreated" type="RiskResponseActionImpactCreatedType" minOccurs="0"/>
+                <xsd:element name="RiskResponseActionImpactUpdated" type="RiskResponseActionImpactUpdatedType" minOccurs="0"/>
+                <xsd:element name="ActivityNoteCreated" type="ActivityNoteCreatedType" minOccurs="0"/>
+                <xsd:element name="ActivityNoteUpdated" type="ActivityNoteUpdatedType" minOccurs="0"/>
+                <xsd:element name="RiskCreated" type="RiskCreatedType" minOccurs="0"/>
+                <xsd:element name="RiskUpdated" type="RiskUpdatedType" minOccurs="0"/>
+                <xsd:element name="ProjectFundingCreated" type="ProjectFundingCreatedType" minOccurs="0"/>
+                <xsd:element name="ProjectFundingUpdated" type="ProjectFundingUpdatedType" minOccurs="0"/>
+                <xsd:element name="RiskMatrixScoreCreated" type="RiskMatrixScoreCreatedType" minOccurs="0"/>
+                <xsd:element name="RiskMatrixScoreUpdated" type="RiskMatrixScoreUpdatedType" minOccurs="0"/>
+                <xsd:element name="EPSNoteCreated" type="EPSNoteCreatedType" minOccurs="0"/>
+                <xsd:element name="EPSNoteUpdated" type="EPSNoteUpdatedType" minOccurs="0"/>
+                <xsd:element name="RiskResponseActionCreated" type="RiskResponseActionCreatedType" minOccurs="0"/>
+                <xsd:element name="RiskResponseActionUpdated" type="RiskResponseActionUpdatedType" minOccurs="0"/>
+                <xsd:element name="ActivityOwnerCreated" type="ActivityOwnerCreatedType" minOccurs="0"/>
+                <xsd:element name="ActivityOwnerUpdated" type="ActivityOwnerUpdatedType" minOccurs="0"/>
+                <xsd:element name="ResourceRoleCreated" type="ResourceRoleCreatedType" minOccurs="0"/>
+                <xsd:element name="ResourceRoleUpdated" type="ResourceRoleUpdatedType" minOccurs="0"/>
+                <xsd:element name="EPSFundingCreated" type="EPSFundingCreatedType" minOccurs="0"/>
+                <xsd:element name="EPSFundingUpdated" type="EPSFundingUpdatedType" minOccurs="0"/>
+                <xsd:element name="RiskCategoryCreated" type="RiskCategoryCreatedType" minOccurs="0"/>
+                <xsd:element name="RiskCategoryUpdated" type="RiskCategoryUpdatedType" minOccurs="0"/>
+                <xsd:element name="ProjectNoteCreated" type="ProjectNoteCreatedType" minOccurs="0"/>
+                <xsd:element name="ProjectNoteUpdated" type="ProjectNoteUpdatedType" minOccurs="0"/>
+                <xsd:element name="ActivityRiskCreated" type="ActivityRiskCreatedType" minOccurs="0"/>
+                <xsd:element name="ActivityRiskUpdated" type="ActivityRiskUpdatedType" minOccurs="0"/>
+                <xsd:element name="ResourceRateCreated" type="ResourceRateCreatedType" minOccurs="0"/>
+                <xsd:element name="ResourceRateUpdated" type="ResourceRateUpdatedType" minOccurs="0"/>
+                <xsd:element name="ProjectResourceCreated" type="ProjectResourceCreatedType" minOccurs="0"/>
+                <xsd:element name="ProjectResourceUpdated" type="ProjectResourceUpdatedType" minOccurs="0"/>
+                <xsd:element name="UserOBSCreated" type="UserOBSCreatedType" minOccurs="0"/>
+                <xsd:element name="UserOBSUpdated" type="UserOBSUpdatedType" minOccurs="0"/>
+                <xsd:element name="ProjectPortfolioCreated" type="ProjectPortfolioCreatedType" minOccurs="0"/>
+                <xsd:element name="ProjectPortfolioUpdated" type="ProjectPortfolioUpdatedType" minOccurs="0"/>
+                <xsd:element name="BaselineProjectCreated" type="BaselineProjectCreatedType" minOccurs="0"/>
+                <xsd:element name="BaselineProjectUpdated" type="BaselineProjectUpdatedType" minOccurs="0"/>
+                <xsd:element name="ActivityCreated" type="ActivityCreatedType" minOccurs="0"/>
+                <xsd:element name="ActivityUpdated" type="ActivityUpdatedType" minOccurs="0"/>
+                <xsd:element name="RiskThresholdLevelCreated" type="RiskThresholdLevelCreatedType" minOccurs="0"/>
+                <xsd:element name="RiskThresholdLevelUpdated" type="RiskThresholdLevelUpdatedType" minOccurs="0"/>
+                <xsd:element name="RiskImpactCreated" type="RiskImpactCreatedType" minOccurs="0"/>
+                <xsd:element name="RiskImpactUpdated" type="RiskImpactUpdatedType" minOccurs="0"/>
+                <xsd:element name="ResourceCodeAssignmentCreated" type="ResourceCodeAssignmentCreatedType" minOccurs="0"/>
+                <xsd:element name="ResourceCodeAssignmentUpdated" type="ResourceCodeAssignmentUpdatedType" minOccurs="0"/>
+                <xsd:element name="ResourceAssignmentCreated" type="ResourceAssignmentCreatedType" minOccurs="0"/>
+                <xsd:element name="ResourceAssignmentUpdated" type="ResourceAssignmentUpdatedType" minOccurs="0"/>
+                <xsd:element name="RiskResponsePlanCreated" type="RiskResponsePlanCreatedType" minOccurs="0"/>
+                <xsd:element name="RiskResponsePlanUpdated" type="RiskResponsePlanUpdatedType" minOccurs="0"/>
+                <xsd:element name="ActivityExpenseCreated" type="ActivityExpenseCreatedType" minOccurs="0"/>
+                <xsd:element name="ActivityExpenseUpdated" type="ActivityExpenseUpdatedType" minOccurs="0"/>
+                <xsd:element name="RiskThresholdCreated" type="RiskThresholdCreatedType" minOccurs="0"/>
+                <xsd:element name="RiskThresholdUpdated" type="RiskThresholdUpdatedType" minOccurs="0"/>
+                <xsd:element name="UDFValueCreated" type="UDFValueCreatedType" minOccurs="0"/>
+                <xsd:element name="UDFValueUpdated" type="UDFValueUpdatedType" minOccurs="0"/>
+                <xsd:element name="WBSCreated" type="WBSCreatedType" minOccurs="0"/>
+                <xsd:element name="WBSUpdated" type="WBSUpdatedType" minOccurs="0"/>
+                <xsd:element name="CalendarCreated" type="CalendarCreatedType" minOccurs="0"/>
+                <xsd:element name="CalendarUpdated" type="CalendarUpdatedType" minOccurs="0"/>
+                <xsd:element name="RelationshipCreated" type="RelationshipCreatedType" minOccurs="0"/>
+                <xsd:element name="RelationshipUpdated" type="RelationshipUpdatedType" minOccurs="0"/>
+                <xsd:element name="UserCreated" type="UserCreatedType" minOccurs="0"/>
+                <xsd:element name="UserUpdated" type="UserUpdatedType" minOccurs="0"/>
+                <xsd:element name="ResourceTeamCreated" type="ResourceTeamCreatedType" minOccurs="0"/>
+                <xsd:element name="ResourceTeamUpdated" type="ResourceTeamUpdatedType" minOccurs="0"/>
+                <xsd:element name="RoleRateCreated" type="RoleRateCreatedType" minOccurs="0"/>
+                <xsd:element name="RoleRateUpdated" type="RoleRateUpdatedType" minOccurs="0"/>
+                <xsd:element name="EPSBudgetChangeLogCreated" type="EPSBudgetChangeLogCreatedType" minOccurs="0"/>
+                <xsd:element name="EPSBudgetChangeLogUpdated" type="EPSBudgetChangeLogUpdatedType" minOccurs="0"/>
+                <xsd:element name="ProjectIssueCreated" type="ProjectIssueCreatedType" minOccurs="0"/>
+                <xsd:element name="ProjectIssueUpdated" type="ProjectIssueUpdatedType" minOccurs="0"/>
+                <xsd:element name="RiskMatrixThresholdCreated" type="RiskMatrixThresholdCreatedType" minOccurs="0"/>
+                <xsd:element name="RiskMatrixThresholdUpdated" type="RiskMatrixThresholdUpdatedType" minOccurs="0"/>
+                <xsd:element name="ResourceCreated" type="ResourceCreatedType" minOccurs="0"/>
+                <xsd:element name="ResourceUpdated" type="ResourceUpdatedType" minOccurs="0"/>
+                <xsd:element name="ProjectBudgetChangeLogCreated" type="ProjectBudgetChangeLogCreatedType" minOccurs="0"/>
+                <xsd:element name="ProjectBudgetChangeLogUpdated" type="ProjectBudgetChangeLogUpdatedType" minOccurs="0"/>
+                <xsd:element name="ProjectCreated" type="ProjectCreatedType" minOccurs="0"/>
+                <xsd:element name="ProjectUpdated" type="ProjectUpdatedType" minOccurs="0"/>
+                <xsd:element name="ActivityCodeAssignmentCreated" type="ActivityCodeAssignmentCreatedType" minOccurs="0"/>
+                <xsd:element name="ActivityCodeAssignmentUpdated" type="ActivityCodeAssignmentUpdatedType" minOccurs="0"/>
+                <xsd:element name="RoleCreated" type="RoleCreatedType" minOccurs="0"/>
+                <xsd:element name="RoleUpdated" type="RoleUpdatedType" minOccurs="0"/>
+                <xsd:element name="RiskMatrixCreated" type="RiskMatrixCreatedType" minOccurs="0"/>
+                <xsd:element name="RiskMatrixUpdated" type="RiskMatrixUpdatedType" minOccurs="0"/>
+                <xsd:element name="ActivityStepCreated" type="ActivityStepCreatedType" minOccurs="0"/>
+                <xsd:element name="ActivityStepUpdated" type="ActivityStepUpdatedType" minOccurs="0"/>
+                <xsd:element name="RoleTeamCreated" type="RoleTeamCreatedType" minOccurs="0"/>
+                <xsd:element name="RoleTeamUpdated" type="RoleTeamUpdatedType" minOccurs="0"/>
+                <xsd:element name="EPSCreated" type="EPSCreatedType" minOccurs="0"/>
+                <xsd:element name="EPSUpdated" type="EPSUpdatedType" minOccurs="0"/>
+                <xsd:element name="TimesheetUpdated" type="TimesheetUpdatedType" minOccurs="0"/>
+                <xsd:element name="XMLImportInvoked" type="XMLImportInvokedType" minOccurs="0"/>
+                <xsd:element name="ApplyActualsInvoked" type="ApplyActualsInvokedType" minOccurs="0"/>
+                <xsd:element name="RecalculateAssignmentCostsInvoked" type="RecalculateAssignmentCostsInvokedType" minOccurs="0"/>
+                <xsd:element name="LevelInvoked" type="LevelInvokedType" minOccurs="0"/>
+                <xsd:element name="ScheduleInvoked" type="ScheduleInvokedType" minOccurs="0"/>
+                <xsd:element name="StorePeriodPerformanceInvoked" type="StorePeriodPerformanceInvokedType" minOccurs="0"/>
+                <xsd:element name="SummarizeInvoked" type="SummarizeInvokedType" minOccurs="0"/>
+                <xsd:element name="PublishProjectInvoked" type="PublishProjectInvokedType" minOccurs="0"/>
+                <xsd:element name="PublishEnterpriseDataInvoked" type="PublishEnterpriseDataInvokedType" minOccurs="0"/>
+                <xsd:element name="PublishEnterpriseSummariesInvoked" type="PublishEnterpriseSummariesInvokedType" minOccurs="0"/>
+                <xsd:element name="PublishResourceManagementInvoked" type="PublishResourceManagementInvokedType" minOccurs="0"/>
+                <xsd:element name="PublishSecurityInvoked" type="PublishSecurityInvokedType" minOccurs="0"/>
+                <xsd:element name="ContentRepositoryDocumentAdded" type="ContentRepositoryDocumentType" minOccurs="0"/>
+                <xsd:element name="ContentRepositoryFolderAdded" type="ContentRepositoryDocumentType" minOccurs="0"/>
+                <xsd:element name="ContentRepositoryDocumentCheckedIn" type="ContentRepositoryDocumentType" minOccurs="0"/>
+                <xsd:element name="ConvertProjectToBaselineInvoked" type="ConvertProjectToBaselineInvokedType" minOccurs="0"/>
+                <xsd:element name="RestoreBaselineProjectInvoked" type="RestoreBaselineProjectInvokedType" minOccurs="0"/>
+                <xsd:element name="CopyBaselineProjectInvoked" type="CopyBaselineProjectInvokedType" minOccurs="0"/>
+                <xsd:element name="CopyProjectAsBaselineInvoked" type="CopyProjectAsBaselineInvokedType" minOccurs="0"/>
+                <xsd:element name="CreateProjectFromTemplateInvoked" type="CreateProjectFromTemplateInvokedType" minOccurs="0"/>
+                <xsd:element name="CreateCopyAsTemplateInvoked" type="CreateCopyAsTemplateInvokedType" minOccurs="0"/>
+                <xsd:element name="CopyProjectInvoked" type="CopyProjectInvokedType" minOccurs="0"/>
+            </xsd:choice>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:complexType name="ProjectCodeAssignmentCreatedType">
+        <xsd:sequence>
+            <xsd:element name="ProjectCodeObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ProjectCodeTypeObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ProjectCodeAssignmentUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="ProjectCodeObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ProjectCodeTypeObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="NewValues" type="ProjectCodeAssignmentType"/>
+            <xsd:element name="OldValues" type="ProjectCodeAssignmentType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RiskResponseActionImpactCreatedType">
+        <xsd:sequence>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="RiskResponseActionObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="RiskThresholdLevelObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="RiskThresholdObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RiskResponseActionImpactUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="RiskResponseActionObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="RiskThresholdLevelObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="RiskThresholdObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="NewValues" type="RiskResponseActionImpactType"/>
+            <xsd:element name="OldValues" type="RiskResponseActionImpactType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ActivityNoteCreatedType">
+        <xsd:sequence>
+            <xsd:element name="ActivityObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="NotebookTopicObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ActivityNoteUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="ActivityObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="NotebookTopicObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="NewValues" type="ActivityNoteType"/>
+            <xsd:element name="OldValues" type="ActivityNoteType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RiskCreatedType">
+        <xsd:sequence>
+            <xsd:element name="Id" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="IdentifiedByResourceObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="IdentifiedDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ResourceObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="RiskCategoryObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RiskUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="Id" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="IdentifiedByResourceObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="IdentifiedDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ResourceObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="RiskCategoryObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="NewValues" type="RiskType"/>
+            <xsd:element name="OldValues" type="RiskType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ProjectFundingCreatedType">
+        <xsd:sequence>
+            <xsd:element name="FundingSourceObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ProjectFundingUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="FundingSourceObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="NewValues" type="ProjectFundingType"/>
+            <xsd:element name="OldValues" type="ProjectFundingType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RiskMatrixScoreCreatedType">
+        <xsd:sequence>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="RiskMatrixObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RiskMatrixScoreUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="RiskMatrixObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="NewValues" type="RiskMatrixScoreType"/>
+            <xsd:element name="OldValues" type="RiskMatrixScoreType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="EPSNoteCreatedType">
+        <xsd:sequence>
+            <xsd:element name="EPSObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="NotebookTopicObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="EPSNoteUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="EPSObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="NotebookTopicObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="NewValues" type="EPSNoteType"/>
+            <xsd:element name="OldValues" type="EPSNoteType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RiskResponseActionCreatedType">
+        <xsd:sequence>
+            <xsd:element name="Id" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="RiskResponsePlanObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RiskResponseActionUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="Id" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="RiskResponsePlanObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="NewValues" type="RiskResponseActionType"/>
+            <xsd:element name="OldValues" type="RiskResponseActionType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ActivityOwnerCreatedType">
+        <xsd:sequence>
+            <xsd:element name="ActivityObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="UserObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ActivityOwnerUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="ActivityObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="UserObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="NewValues" type="ActivityOwnerType"/>
+            <xsd:element name="OldValues" type="ActivityOwnerType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ResourceRoleCreatedType">
+        <xsd:sequence>
+            <xsd:element name="ResourceObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="RoleObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ResourceRoleUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="ResourceObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="RoleObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="NewValues" type="ResourceRoleType"/>
+            <xsd:element name="OldValues" type="ResourceRoleType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="EPSFundingCreatedType">
+        <xsd:sequence>
+            <xsd:element name="EPSObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="FundingSourceObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="EPSFundingUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="EPSObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="FundingSourceObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="NewValues" type="EPSFundingType"/>
+            <xsd:element name="OldValues" type="EPSFundingType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RiskCategoryCreatedType">
+        <xsd:sequence>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ParentObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RiskCategoryUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ParentObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="NewValues" type="RiskCategoryType"/>
+            <xsd:element name="OldValues" type="RiskCategoryType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ProjectNoteCreatedType">
+        <xsd:sequence>
+            <xsd:element name="NotebookTopicObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="WBSObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ProjectNoteUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="NotebookTopicObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="WBSObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="NewValues" type="ProjectNoteType"/>
+            <xsd:element name="OldValues" type="ProjectNoteType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ActivityRiskCreatedType">
+        <xsd:sequence>
+            <xsd:element name="ActivityObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="RiskObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ActivityRiskUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="ActivityObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="RiskObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="NewValues" type="ActivityRiskType"/>
+            <xsd:element name="OldValues" type="ActivityRiskType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ResourceRateCreatedType">
+        <xsd:sequence>
+            <xsd:element name="EffectiveDate" minOccurs="0" type="xsd:dateTime"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ResourceObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ShiftPeriodObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ResourceRateUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="EffectiveDate" minOccurs="0" type="xsd:dateTime"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ResourceObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ShiftPeriodObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="NewValues" type="ResourceRateType"/>
+            <xsd:element name="OldValues" type="ResourceRateType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ProjectResourceCreatedType">
+        <xsd:sequence>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ResourceObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="RoleObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="WBSObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ProjectResourceUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ResourceObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="RoleObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="WBSObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="NewValues" type="ProjectResourceType"/>
+            <xsd:element name="OldValues" type="ProjectResourceType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="UserOBSCreatedType">
+        <xsd:sequence>
+            <xsd:element name="OBSObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="UserObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="UserOBSUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="OBSObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="UserObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="NewValues" type="UserOBSType"/>
+            <xsd:element name="OldValues" type="UserOBSType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ProjectPortfolioCreatedType">
+        <xsd:sequence>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="UserObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ProjectPortfolioUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="UserObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="NewValues" type="ProjectPortfolioType"/>
+            <xsd:element name="OldValues" type="ProjectPortfolioType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="BaselineProjectCreatedType">
+        <xsd:sequence>
+            <xsd:element name="Id" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="BaselineProjectUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="Id" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="NewValues" type="BaselineProjectType"/>
+            <xsd:element name="OldValues" type="BaselineProjectType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ActivityCreatedType">
+        <xsd:sequence>
+            <xsd:element name="Id" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="WBSObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ActivityUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="Id" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="WBSObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="NewValues" type="ActivityType"/>
+            <xsd:element name="OldValues" type="ActivityType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RiskThresholdLevelCreatedType">
+        <xsd:sequence>
+            <xsd:element name="Code" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="RiskThresholdObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RiskThresholdLevelUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="Code" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="RiskThresholdObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="NewValues" type="RiskThresholdLevelType"/>
+            <xsd:element name="OldValues" type="RiskThresholdLevelType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RiskImpactCreatedType">
+        <xsd:sequence>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="RiskObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="RiskThresholdLevelObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="RiskThresholdObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RiskImpactUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="RiskObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="RiskThresholdLevelObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="RiskThresholdObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="NewValues" type="RiskImpactType"/>
+            <xsd:element name="OldValues" type="RiskImpactType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ResourceCodeAssignmentCreatedType">
+        <xsd:sequence>
+            <xsd:element name="ResourceCodeObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ResourceCodeTypeObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ResourceObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ResourceCodeAssignmentUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="ResourceCodeObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ResourceCodeTypeObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ResourceObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="NewValues" type="ResourceCodeAssignmentType"/>
+            <xsd:element name="OldValues" type="ResourceCodeAssignmentType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ResourceAssignmentCreatedType">
+        <xsd:sequence>
+            <xsd:element name="ActivityObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="CostAccountObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ResourceObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="RoleObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ResourceAssignmentUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="ActivityObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="CostAccountObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ResourceObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="RoleObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="NewValues" type="ResourceAssignmentType"/>
+            <xsd:element name="OldValues" type="ResourceAssignmentType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RiskResponsePlanCreatedType">
+        <xsd:sequence>
+            <xsd:element name="Id" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="RiskObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RiskResponsePlanUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="Id" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="RiskObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="NewValues" type="RiskResponsePlanType"/>
+            <xsd:element name="OldValues" type="RiskResponsePlanType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ActivityExpenseCreatedType">
+        <xsd:sequence>
+            <xsd:element name="ActivityObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="CostAccountObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ExpenseCategoryObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ExpenseItem" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ActivityExpenseUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="ActivityObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="CostAccountObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ExpenseCategoryObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ExpenseItem" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="NewValues" type="ActivityExpenseType"/>
+            <xsd:element name="OldValues" type="ActivityExpenseType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RiskThresholdCreatedType">
+        <xsd:sequence>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RiskThresholdUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="NewValues" type="RiskThresholdType"/>
+            <xsd:element name="OldValues" type="RiskThresholdType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="UDFValueCreatedType">
+        <xsd:sequence>
+            <xsd:element name="Cost" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="Double" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="FinishDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+            <xsd:element name="ForeignObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="Indicator" minOccurs="0"  nillable="true">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="None"/>
+                        <xsd:enumeration value="Red"/>
+                        <xsd:enumeration value="Yellow"/>
+                        <xsd:enumeration value="Green"/>
+                        <xsd:enumeration value="Blue"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="Integer" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="StartDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+            <xsd:element name="Text" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="UDFCodeObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="UDFTypeObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="UDFTypeSubjectArea" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Activity"/>
+                        <xsd:enumeration value="Activity Expense"/>
+                        <xsd:enumeration value="Activity Step"/>
+                        <xsd:enumeration value="Project"/>
+                        <xsd:enumeration value="Project Issue"/>
+                        <xsd:enumeration value="Project Risk"/>
+                        <xsd:enumeration value="Resource"/>
+                        <xsd:enumeration value="Resource Assignment"/>
+                        <xsd:enumeration value="WBS"/>
+                        <xsd:enumeration value="Work Products and Documents"/>
+                        <xsd:enumeration value="Activity Step Template Item"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="UDFValueUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="ForeignObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="UDFCodeObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="UDFTypeObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="UDFTypeSubjectArea" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Activity"/>
+                        <xsd:enumeration value="Activity Expense"/>
+                        <xsd:enumeration value="Activity Step"/>
+                        <xsd:enumeration value="Project"/>
+                        <xsd:enumeration value="Project Issue"/>
+                        <xsd:enumeration value="Project Risk"/>
+                        <xsd:enumeration value="Resource"/>
+                        <xsd:enumeration value="Resource Assignment"/>
+                        <xsd:enumeration value="WBS"/>
+                        <xsd:enumeration value="Work Products and Documents"/>
+                        <xsd:enumeration value="Activity Step Template Item"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="NewValues" type="UDFValueType"/>
+            <xsd:element name="OldValues" type="UDFValueType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="WBSCreatedType">
+        <xsd:sequence>
+            <xsd:element name="Code" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ParentObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="StatusReviewerObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="WBSUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="Code" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ParentObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="StatusReviewerObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="NewValues" type="WBSType"/>
+            <xsd:element name="OldValues" type="WBSType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="CalendarCreatedType">
+        <xsd:sequence>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="Type" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Global"/>
+                        <xsd:enumeration value="Project"/>
+                        <xsd:enumeration value="Resource"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="CalendarUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="Type" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Global"/>
+                        <xsd:enumeration value="Project"/>
+                        <xsd:enumeration value="Resource"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="NewValues" type="CalendarType"/>
+            <xsd:element name="OldValues" type="CalendarType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RelationshipCreatedType">
+        <xsd:sequence>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="PredecessorActivityObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="PredecessorProjectObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="SuccessorActivityObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="SuccessorProjectObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="Type" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Finish to Start"/>
+                        <xsd:enumeration value="Finish to Finish"/>
+                        <xsd:enumeration value="Start to Start"/>
+                        <xsd:enumeration value="Start to Finish"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RelationshipUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="PredecessorActivityObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="PredecessorProjectObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="SuccessorActivityObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="SuccessorProjectObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="Type" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Finish to Start"/>
+                        <xsd:enumeration value="Finish to Finish"/>
+                        <xsd:enumeration value="Start to Start"/>
+                        <xsd:enumeration value="Start to Finish"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="NewValues" type="RelationshipType"/>
+            <xsd:element name="OldValues" type="RelationshipType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="UserCreatedType">
+        <xsd:sequence>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="PersonalName" minOccurs="0" type="xsd:string" nillable="true"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="UserUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="PersonalName" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="NewValues" type="UserType"/>
+            <xsd:element name="OldValues" type="UserType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ResourceTeamCreatedType">
+        <xsd:sequence>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="UserObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ResourceTeamUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="UserObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="NewValues" type="ResourceTeamType"/>
+            <xsd:element name="OldValues" type="ResourceTeamType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RoleRateCreatedType">
+        <xsd:sequence>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="RoleObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RoleRateUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="RoleObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="NewValues" type="RoleRateType"/>
+            <xsd:element name="OldValues" type="RoleRateType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="EPSBudgetChangeLogCreatedType">
+        <xsd:sequence>
+            <xsd:element name="ChangeNumber" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="EPSObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="EPSBudgetChangeLogUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="ChangeNumber" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="EPSObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="NewValues" type="EPSBudgetChangeLogType"/>
+            <xsd:element name="OldValues" type="EPSBudgetChangeLogType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ProjectIssueCreatedType">
+        <xsd:sequence>
+            <xsd:element name="ActivityObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="WBSObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ProjectIssueUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="ActivityObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="WBSObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="NewValues" type="ProjectIssueType"/>
+            <xsd:element name="OldValues" type="ProjectIssueType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RiskMatrixThresholdCreatedType">
+        <xsd:sequence>
+            <xsd:element name="RiskMatrixObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="RiskThresholdObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RiskMatrixThresholdUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="RiskMatrixObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="RiskThresholdObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="NewValues" type="RiskMatrixThresholdType"/>
+            <xsd:element name="OldValues" type="RiskMatrixThresholdType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ResourceCreatedType">
+        <xsd:sequence>
+            <xsd:element name="Id" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ResourceUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="Id" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="NewValues" type="ResourceType"/>
+            <xsd:element name="OldValues" type="ResourceType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ProjectBudgetChangeLogCreatedType">
+        <xsd:sequence>
+            <xsd:element name="ChangeNumber" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="WBSObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ProjectBudgetChangeLogUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="ChangeNumber" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="WBSObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="NewValues" type="ProjectBudgetChangeLogType"/>
+            <xsd:element name="OldValues" type="ProjectBudgetChangeLogType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ProjectCreatedType">
+        <xsd:sequence>
+            <xsd:element name="Id" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ProjectUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="Id" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="NewValues" type="ProjectType"/>
+            <xsd:element name="OldValues" type="ProjectType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ActivityCodeAssignmentCreatedType">
+        <xsd:sequence>
+            <xsd:element name="ActivityCodeObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ActivityCodeTypeObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ActivityObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ActivityCodeAssignmentUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="ActivityCodeObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ActivityCodeTypeObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ActivityObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="NewValues" type="ActivityCodeAssignmentType"/>
+            <xsd:element name="OldValues" type="ActivityCodeAssignmentType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RoleCreatedType">
+        <xsd:sequence>
+            <xsd:element name="Id" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RoleUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="Id" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="NewValues" type="RoleType"/>
+            <xsd:element name="OldValues" type="RoleType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RiskMatrixCreatedType">
+        <xsd:sequence>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RiskMatrixUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="NewValues" type="RiskMatrixType"/>
+            <xsd:element name="OldValues" type="RiskMatrixType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ActivityStepCreatedType">
+        <xsd:sequence>
+            <xsd:element name="ActivityObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ActivityStepUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="ActivityObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="NewValues" type="ActivityStepType"/>
+            <xsd:element name="OldValues" type="ActivityStepType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RoleTeamCreatedType">
+        <xsd:sequence>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="UserObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RoleTeamUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="UserObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="NewValues" type="RoleTeamType"/>
+            <xsd:element name="OldValues" type="RoleTeamType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="EPSCreatedType">
+        <xsd:sequence>
+            <xsd:element name="Id" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="EPSUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="Id" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="NewValues" type="EPSType"/>
+            <xsd:element name="OldValues" type="EPSType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ProjectCodeAssignmentType">
+        <xsd:sequence>
+            <xsd:element name="ProjectCodeObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RiskResponseActionImpactType">
+        <xsd:sequence>
+            <xsd:element name="RiskResponseActionObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="RiskThresholdLevelObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ActivityNoteType">
+        <xsd:sequence>
+            <xsd:element name="ActivityObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="NotebookTopicObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RiskType">
+        <xsd:sequence>
+            <xsd:element name="Cause" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="Description" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="Effect" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="Id" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="IdentifiedByResourceObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="IdentifiedDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="Note" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ResourceObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="RiskCategoryObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="Status" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Proposed"/>
+                        <xsd:enumeration value="Open"/>
+                        <xsd:enumeration value="Active"/>
+                        <xsd:enumeration value="Rejected"/>
+                        <xsd:enumeration value="Managed"/>
+                        <xsd:enumeration value="Impacted"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="Type" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Threat"/>
+                        <xsd:enumeration value="Opportunity"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ProjectFundingType">
+        <xsd:sequence>
+            <xsd:element name="Amount" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="FundShare" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="FundingSourceObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RiskMatrixScoreType">
+        <xsd:sequence>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ProbabilityThresholdLevel" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="RiskMatrixObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="Severity1" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="Severity1Label" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="Severity2" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="Severity2Label" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="Severity3" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="Severity3Label" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="Severity4" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="Severity4Label" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="Severity5" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="Severity5Label" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="Severity6" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="Severity6Label" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="Severity7" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="Severity7Label" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="Severity8" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="Severity8Label" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="Severity9" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="Severity9Label" minOccurs="0" type="xsd:string" nillable="true"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="EPSNoteType">
+        <xsd:sequence>
+            <xsd:element name="EPSObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="NotebookTopicObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RiskResponseActionType">
+        <xsd:sequence>
+            <xsd:element name="ActivityObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="Id" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ResourceObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="RiskResponsePlanObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="Status" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Proposed"/>
+                        <xsd:enumeration value="Sanctioned"/>
+                        <xsd:enumeration value="Rejected"/>
+                        <xsd:enumeration value="In Progress"/>
+                        <xsd:enumeration value="Complete"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ActivityOwnerType">
+        <xsd:sequence>
+            <xsd:element name="ActivityObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="IsActivityFlagged" minOccurs="0" type="xsd:boolean" nillable="true"/>
+            <xsd:element name="UserObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ResourceRoleType">
+        <xsd:sequence>
+            <xsd:element name="Proficiency" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="1 - Master"/>
+                        <xsd:enumeration value="2 - Expert"/>
+                        <xsd:enumeration value="3 - Skilled"/>
+                        <xsd:enumeration value="4 - Proficient"/>
+                        <xsd:enumeration value="5 - Inexperienced"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="ResourceObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="RoleObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="EPSFundingType">
+        <xsd:sequence>
+            <xsd:element name="Amount" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="FundShare" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="FundingSourceObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RiskCategoryType">
+        <xsd:sequence>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ParentObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ProjectNoteType">
+        <xsd:sequence>
+            <xsd:element name="NotebookTopicObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="WBSObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ActivityRiskType">
+        <xsd:sequence>
+            <xsd:element name="ActivityObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="RiskObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ResourceRateType">
+        <xsd:sequence>
+            <xsd:element name="EffectiveDate" minOccurs="0" type="xsd:dateTime"/>
+            <xsd:element name="MaxUnitsPerTime" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="PricePerUnit" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="PricePerUnit2" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="PricePerUnit3" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="PricePerUnit4" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="PricePerUnit5" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="ResourceObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ShiftPeriodObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ProjectResourceType">
+        <xsd:sequence>
+            <xsd:element name="CommittedFlag" minOccurs="0" type="xsd:boolean" nillable="true"/>
+            <xsd:element name="LifeOfProjectFlag" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ProjectResourceCategoryObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ResourceObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="RoleObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="WBSObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="UserOBSType">
+        <xsd:sequence>
+            <xsd:element name="OBSObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ProjectProfileObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="UserObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ProjectPortfolioType">
+        <xsd:sequence>
+            <xsd:element name="Description" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="IncludeClosedProjects" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="IncludeWhatIfProjects" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="UserObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="Projects" minOccurs="0">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="ObjectId" minOccurs="0" maxOccurs="unbounded" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="BaselineProjectType">
+        <xsd:sequence>
+            <xsd:element name="ActivityDefaultActivityType" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Task Dependent"/>
+                        <xsd:enumeration value="Resource Dependent"/>
+                        <xsd:enumeration value="Level of Effort"/>
+                        <xsd:enumeration value="Start Milestone"/>
+                        <xsd:enumeration value="Finish Milestone"/>
+                        <xsd:enumeration value="WBS Summary"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="ActivityDefaultCalendarObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ActivityDefaultCostAccountObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ActivityDefaultDurationType" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Fixed Units/Time"/>
+                        <xsd:enumeration value="Fixed Duration and Units/Time"/>
+                        <xsd:enumeration value="Fixed Units"/>
+                        <xsd:enumeration value="Fixed Duration and Units"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="ActivityDefaultPercentCompleteType" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Physical"/>
+                        <xsd:enumeration value="Duration"/>
+                        <xsd:enumeration value="Units"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="ActivityDefaultPricePerUnit" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="ActivityIdBasedOnSelectedActivity" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="ActivityIdIncrement" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ActivityIdPrefix" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="ActivityIdSuffix" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ActivityPercentCompleteBasedOnActivitySteps" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="AddActualToRemaining" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="AddedBy" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="AllowStatusReview" minOccurs="0" type="xsd:boolean" nillable="true"/>
+            <xsd:element name="AnnualDiscountRate" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="AnticipatedFinishDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+            <xsd:element name="AnticipatedStartDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+            <xsd:element name="AssignmentDefaultDrivingFlag" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="AssignmentDefaultRateType" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Price / Unit"/>
+                        <xsd:enumeration value="Price / Unit 2"/>
+                        <xsd:enumeration value="Price / Unit 3"/>
+                        <xsd:enumeration value="Price / Unit 4"/>
+                        <xsd:enumeration value="Price / Unit 5"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="BaselineTypeObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="CostQuantityRecalculateFlag" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="CriticalActivityFloatLimit" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="CriticalActivityPathType" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Critical Float"/>
+                        <xsd:enumeration value="Longest Path"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="DateAdded" minOccurs="0" type="xsd:dateTime"/>
+            <xsd:element name="DefaultPriceTimeUnits" minOccurs="0"  nillable="true">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Hour"/>
+                        <xsd:enumeration value="Day"/>
+                        <xsd:enumeration value="Week"/>
+                        <xsd:enumeration value="Month"/>
+                        <xsd:enumeration value="Year"/>
+                        <xsd:enumeration value="Days Hours"/>
+                        <xsd:enumeration value="Hours Minutes"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="Description" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="DiscountApplicationPeriod" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Month"/>
+                        <xsd:enumeration value="Quarter"/>
+                        <xsd:enumeration value="Year"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="EnablePublication" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="EnableSummarization" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="FiscalYearStartMonth" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="HistoryInterval" minOccurs="0"  nillable="true">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Month"/>
+                        <xsd:enumeration value="Week"/>
+                        <xsd:enumeration value="Quarter"/>
+                        <xsd:enumeration value="Year"/>
+                        <xsd:enumeration value="Financial Period"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="HistoryLevel" minOccurs="0"  nillable="true">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="None"/>
+                        <xsd:enumeration value="Project"/>
+                        <xsd:enumeration value="WBS"/>
+                        <xsd:enumeration value="Activity"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="Id" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="IndependentETCLaborUnits" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="IndependentETCTotalCost" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="LastBaselineUpdateDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+            <xsd:element name="LastFinancialPeriodObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="LastUpdateBaselineOptions" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="LevelingPriority" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="LinkActualToActualThisPeriod" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="LinkPercentCompleteWithActual" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="LinkPlannedAndAtCompletionFlag" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="LocationObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="MustFinishByDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="OBSObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="OriginalBudget" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="OwnerResourceObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ParentEPSObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="PlannedStartDate" minOccurs="0" type="xsd:dateTime"/>
+            <xsd:element name="PrimaryResourcesCanMarkActivitiesAsCompleted" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="ProjectForecastStartDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+            <xsd:element name="PublicationPriority" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ResetPlannedToRemainingFlag" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="ResourceCanBeAssignedToSameActivityMoreThanOnce" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="ResourcesCanAssignThemselvesToActivities" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="ResourcesCanEditAssignmentPercentComplete" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="RiskMatrixObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ScheduledFinishDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+            <xsd:element name="Status" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Planned"/>
+                        <xsd:enumeration value="Active"/>
+                        <xsd:enumeration value="Inactive"/>
+                        <xsd:enumeration value="What-If"/>
+                        <xsd:enumeration value="Requested"/>
+                        <xsd:enumeration value="Template"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="StatusReviewerObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="StrategicPriority" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="WBSCodeSeparator" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="WebSiteRootDirectory" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="WebSiteURL" minOccurs="0" type="xsd:string" nillable="true"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ActivityType">
+        <xsd:sequence>
+            <xsd:element name="ActualFinishDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+            <xsd:element name="ActualLaborUnits" minOccurs="0" type="xsd:double"/>
+            <xsd:element name="ActualNonLaborUnits" minOccurs="0" type="xsd:double"/>
+            <xsd:element name="ActualStartDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+            <xsd:element name="ActualThisPeriodLaborUnits" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="ActualThisPeriodNonLaborUnits" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="AtCompletionLaborUnits" minOccurs="0" type="xsd:double"/>
+            <xsd:element name="AtCompletionNonLaborUnits" minOccurs="0" type="xsd:double"/>
+            <xsd:element name="AutoComputeActuals" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="CBSCode" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="CalendarObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="DBPhysicalPercentComplete" minOccurs="0" type="xsd:double"/>
+            <xsd:element name="DurationType" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Fixed Units/Time"/>
+                        <xsd:enumeration value="Fixed Duration and Units/Time"/>
+                        <xsd:enumeration value="Fixed Units"/>
+                        <xsd:enumeration value="Fixed Duration and Units"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="ExpectedFinishDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+            <xsd:element name="Id" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="IsNewFeedback" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="IsStarred" minOccurs="0" type="xsd:boolean" nillable="true"/>
+            <xsd:element name="LevelingPriority" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Top"/>
+                        <xsd:enumeration value="High"/>
+                        <xsd:enumeration value="Normal"/>
+                        <xsd:enumeration value="Low"/>
+                        <xsd:enumeration value="Lowest"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="LocationObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="PercentCompleteType" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Physical"/>
+                        <xsd:enumeration value="Duration"/>
+                        <xsd:enumeration value="Units"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="PlannedDuration" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="PlannedFinishDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+            <xsd:element name="PlannedLaborUnits" minOccurs="0" type="xsd:double"/>
+            <xsd:element name="PlannedNonLaborUnits" minOccurs="0" type="xsd:double"/>
+            <xsd:element name="PlannedStartDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+            <xsd:element name="PrimaryConstraintDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+            <xsd:element name="PrimaryConstraintType" minOccurs="0"  nillable="true">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Start On"/>
+                        <xsd:enumeration value="Start On or Before"/>
+                        <xsd:enumeration value="Start On or After"/>
+                        <xsd:enumeration value="Finish On"/>
+                        <xsd:enumeration value="Finish On or Before"/>
+                        <xsd:enumeration value="Finish On or After"/>
+                        <xsd:enumeration value="As Late As Possible"/>
+                        <xsd:enumeration value="Mandatory Start"/>
+                        <xsd:enumeration value="Mandatory Finish"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="PrimaryResourceObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="RemainingDuration" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="RemainingEarlyFinishDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+            <xsd:element name="RemainingEarlyStartDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+            <xsd:element name="RemainingLaborUnits" minOccurs="0" type="xsd:double"/>
+            <xsd:element name="RemainingLateFinishDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+            <xsd:element name="RemainingLateStartDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+            <xsd:element name="RemainingNonLaborUnits" minOccurs="0" type="xsd:double"/>
+            <xsd:element name="ResumeDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+            <xsd:element name="ReviewRequired" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="ReviewStatus" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="OK"/>
+                        <xsd:enumeration value="For Review"/>
+                        <xsd:enumeration value="Rejected"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="SecondaryConstraintDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+            <xsd:element name="SecondaryConstraintType" minOccurs="0"  nillable="true">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Start On"/>
+                        <xsd:enumeration value="Start On or Before"/>
+                        <xsd:enumeration value="Start On or After"/>
+                        <xsd:enumeration value="Finish On"/>
+                        <xsd:enumeration value="Finish On or Before"/>
+                        <xsd:enumeration value="Finish On or After"/>
+                        <xsd:enumeration value="As Late As Possible"/>
+                        <xsd:enumeration value="Mandatory Start"/>
+                        <xsd:enumeration value="Mandatory Finish"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="Status" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Not Started"/>
+                        <xsd:enumeration value="In Progress"/>
+                        <xsd:enumeration value="Completed"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="SuspendDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+            <xsd:element name="Type" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Task Dependent"/>
+                        <xsd:enumeration value="Resource Dependent"/>
+                        <xsd:enumeration value="Level of Effort"/>
+                        <xsd:enumeration value="Start Milestone"/>
+                        <xsd:enumeration value="Finish Milestone"/>
+                        <xsd:enumeration value="WBS Summary"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="WBSObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RiskThresholdLevelType">
+        <xsd:sequence>
+            <xsd:element name="Code" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="Color" minOccurs="0" >
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:pattern value="#([A-Fa-f0-9]{6})"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+            <xsd:element name="CostRange" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="Level" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ProbabilityRange" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="Range" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="RiskThresholdObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ScheduleRange" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="ToleranceRange" minOccurs="0" type="xsd:int" nillable="true"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RiskImpactType">
+        <xsd:sequence>
+            <xsd:element name="RiskObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="RiskThresholdLevelObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ResourceCodeAssignmentType">
+        <xsd:sequence>
+            <xsd:element name="ResourceCodeObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ResourceObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ResourceAssignmentType">
+        <xsd:sequence>
+            <xsd:element name="ActivityObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ActualCost" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="ActualCurve" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="ActualFinishDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+            <xsd:element name="ActualOvertimeCost" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="ActualOvertimeUnits" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="ActualRegularCost" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="ActualRegularUnits" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="ActualStartDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+            <xsd:element name="ActualThisPeriodCost" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="ActualThisPeriodUnits" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="ActualUnits" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="AtCompletionCost" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="AtCompletionUnits" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="CostAccountObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="DrivingActivityDatesFlag" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="IsActivityFlagged" minOccurs="0" type="xsd:boolean" nillable="true"/>
+            <xsd:element name="IsCostUnitsLinked" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="OvertimeFactor" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="PendingPercentComplete" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="PendingRemainingUnits" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="PlannedCost" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="PlannedCurve" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="PlannedFinishDate" minOccurs="0" type="xsd:dateTime"/>
+            <xsd:element name="PlannedLag" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="PlannedStartDate" minOccurs="0" type="xsd:dateTime"/>
+            <xsd:element name="PlannedUnits" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="PlannedUnitsPerTime" minOccurs="0" type="xsd:double"/>
+            <xsd:element name="Proficiency" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="1 - Master"/>
+                        <xsd:enumeration value="2 - Expert"/>
+                        <xsd:enumeration value="3 - Skilled"/>
+                        <xsd:enumeration value="4 - Proficient"/>
+                        <xsd:enumeration value="5 - Inexperienced"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="RateSource" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Resource"/>
+                        <xsd:enumeration value="Role"/>
+                        <xsd:enumeration value="Override"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="RateType" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Price / Unit"/>
+                        <xsd:enumeration value="Price / Unit 2"/>
+                        <xsd:enumeration value="Price / Unit 3"/>
+                        <xsd:enumeration value="Price / Unit 4"/>
+                        <xsd:enumeration value="Price / Unit 5"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="RemainingCost" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="RemainingCurve" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="RemainingFinishDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+            <xsd:element name="RemainingStartDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+            <xsd:element name="RemainingUnits" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="RemainingUnitsPerTime" minOccurs="0" type="xsd:double"/>
+            <xsd:element name="ResourceCurveObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ResourceObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ResourceType" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Labor"/>
+                        <xsd:enumeration value="Nonlabor"/>
+                        <xsd:enumeration value="Material"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="RoleObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RiskResponsePlanType">
+        <xsd:sequence>
+            <xsd:element name="Id" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="IsActive" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ResponseType" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Avoid"/>
+                        <xsd:enumeration value="Transfer"/>
+                        <xsd:enumeration value="Reduce"/>
+                        <xsd:enumeration value="Accept"/>
+                        <xsd:enumeration value="Exploit"/>
+                        <xsd:enumeration value="Facilitate"/>
+                        <xsd:enumeration value="Enhance"/>
+                        <xsd:enumeration value="Reject"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="RiskObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ActivityExpenseType">
+        <xsd:sequence>
+            <xsd:element name="AccrualType" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Start of Activity"/>
+                        <xsd:enumeration value="End of Activity"/>
+                        <xsd:enumeration value="Uniform Over Activity"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="ActivityObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ActualCost" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="AutoComputeActuals" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="CostAccountObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="DocumentNumber" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="ExpenseCategoryObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ExpenseItem" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="PlannedCost" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="PlannedUnits" minOccurs="0" type="xsd:double"/>
+            <xsd:element name="PricePerUnit" minOccurs="0" type="xsd:double"/>
+            <xsd:element name="RemainingCost" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="UnitOfMeasure" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="Vendor" minOccurs="0" type="xsd:string" nillable="true"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RiskThresholdType">
+        <xsd:sequence>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ThresholdType" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Probability"/>
+                        <xsd:enumeration value="Tolerance"/>
+                        <xsd:enumeration value="Schedule"/>
+                        <xsd:enumeration value="Cost"/>
+                        <xsd:enumeration value="Relative Schedule"/>
+                        <xsd:enumeration value="Relative Cost"/>
+                        <xsd:enumeration value="User Defined"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="UDFValueType">
+        <xsd:sequence>
+            <xsd:element name="Cost" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="Double" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="FinishDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+            <xsd:element name="ForeignObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="Indicator" minOccurs="0"  nillable="true">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="None"/>
+                        <xsd:enumeration value="Red"/>
+                        <xsd:enumeration value="Yellow"/>
+                        <xsd:enumeration value="Green"/>
+                        <xsd:enumeration value="Blue"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="Integer" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="StartDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+            <xsd:element name="Text" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="UDFCodeObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="UDFTypeObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="WBSType">
+        <xsd:sequence>
+            <xsd:element name="AnticipatedFinishDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+            <xsd:element name="AnticipatedStartDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+            <xsd:element name="Code" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="EarnedValueComputeType" minOccurs="0"  nillable="true">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Activity Percent Complete"/>
+                        <xsd:enumeration value="0 / 100"/>
+                        <xsd:enumeration value="50 / 50"/>
+                        <xsd:enumeration value="Custom Percent Complete"/>
+                        <xsd:enumeration value="WBS Milestones Percent Complete"/>
+                        <xsd:enumeration value="Activity Percent Complete Using Resource Curves"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="EarnedValueETCComputeType" minOccurs="0"  nillable="true">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="ETC = Remaining Cost for Activity"/>
+                        <xsd:enumeration value="PF = 1"/>
+                        <xsd:enumeration value="PF = Custom Value"/>
+                        <xsd:enumeration value="PF = 1 / CPI"/>
+                        <xsd:enumeration value="PF = 1 / (CPI * SPI)"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="EarnedValueETCUserValue" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="EarnedValueUserPercent" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="IndependentETCLaborUnits" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="IndependentETCTotalCost" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="IntegratedType" minOccurs="0"  nillable="true">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="ERP"/>
+                        <xsd:enumeration value="Fusion"/>
+                        <xsd:enumeration value="Gateway"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="IntegratedWBS" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="OBSObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="OriginalBudget" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="ParentObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="Status" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Planned"/>
+                        <xsd:enumeration value="Active"/>
+                        <xsd:enumeration value="Inactive"/>
+                        <xsd:enumeration value="What-If"/>
+                        <xsd:enumeration value="Requested"/>
+                        <xsd:enumeration value="Template"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="StatusReviewerObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="WBSCategoryObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="CalendarType">
+        <xsd:sequence>
+            <xsd:element name="BaseCalendarObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="HoursPerDay" minOccurs="0" type="xsd:double"/>
+            <xsd:element name="HoursPerMonth" minOccurs="0" type="xsd:double"/>
+            <xsd:element name="HoursPerWeek" minOccurs="0" type="xsd:double"/>
+            <xsd:element name="HoursPerYear" minOccurs="0" type="xsd:double"/>
+            <xsd:element name="IsDefault" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="IsPersonal" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="Type" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Global"/>
+                        <xsd:enumeration value="Project"/>
+                        <xsd:enumeration value="Resource"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="CalendarData" minOccurs="0" type="xsd:string"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RelationshipType">
+        <xsd:sequence>
+            <xsd:element name="Lag" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="PredecessorActivityObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="PredecessorProjectObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="SuccessorActivityObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="SuccessorProjectObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="Type" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Finish to Start"/>
+                        <xsd:enumeration value="Finish to Finish"/>
+                        <xsd:enumeration value="Start to Start"/>
+                        <xsd:enumeration value="Start to Finish"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="UserType">
+        <xsd:sequence>
+            <xsd:element name="AllResourceAccessFlag" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="CurrencyObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="EmailAddress" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="EmailProtocol" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Internet Mail"/>
+                        <xsd:enumeration value="MAPI Mail"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="EnableUserToModifyViewSettingsFlag" minOccurs="0" type="xsd:boolean" nillable="true"/>
+            <xsd:element name="GlobalProfileObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="MailServerLoginName" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="OfficePhone" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="OutgoingMailServer" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="PersonalName" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="ReportingFlag" minOccurs="0" type="xsd:boolean" nillable="true"/>
+            <xsd:element name="UserInterfaceViewObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ResourceTeamType">
+        <xsd:sequence>
+            <xsd:element name="Description" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="UserObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="Resources" minOccurs="0">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="ObjectId" minOccurs="0" maxOccurs="unbounded" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RoleRateType">
+        <xsd:sequence>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="PricePerUnit" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="PricePerUnit2" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="PricePerUnit3" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="PricePerUnit4" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="PricePerUnit5" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="RoleObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="EPSBudgetChangeLogType">
+        <xsd:sequence>
+            <xsd:element name="Amount" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="ChangeNumber" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="Date" minOccurs="0" type="xsd:dateTime"/>
+            <xsd:element name="EPSObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="Reason" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="Responsible" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="Status" minOccurs="0"  nillable="true">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Pending"/>
+                        <xsd:enumeration value="Approved"/>
+                        <xsd:enumeration value="Not Approved"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ProjectIssueType">
+        <xsd:sequence>
+            <xsd:element name="ActivityObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ActualValue" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="DateIdentified" minOccurs="0" type="xsd:dateTime"/>
+            <xsd:element name="IdentifiedBy" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="LowerThreshold" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="OBSObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="Priority" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Top"/>
+                        <xsd:enumeration value="High"/>
+                        <xsd:enumeration value="Normal"/>
+                        <xsd:enumeration value="Low"/>
+                        <xsd:enumeration value="Lowest"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ResolutionDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+            <xsd:element name="ResourceObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="Status" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Open"/>
+                        <xsd:enumeration value="On Hold"/>
+                        <xsd:enumeration value="Closed"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="UpperThreshold" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="WBSObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RiskMatrixThresholdType">
+        <xsd:sequence>
+            <xsd:element name="RiskMatrixObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="RiskThresholdObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ResourceType">
+        <xsd:sequence>
+            <xsd:element name="AutoComputeActuals" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="CalculateCostFromUnits" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="CalendarObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="CurrencyObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="DefaultUnitsPerTime" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="EmailAddress" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="EmployeeId" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="Id" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="IntegratedType" minOccurs="0"  nillable="true">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="ERP"/>
+                        <xsd:enumeration value="Fusion"/>
+                        <xsd:enumeration value="Gateway"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="IsActive" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="IsOverTimeAllowed" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="LocationObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="OfficePhone" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="OtherPhone" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="OvertimeFactor" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="ParentObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="PrimaryRoleObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ResourceType" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Labor"/>
+                        <xsd:enumeration value="Nonlabor"/>
+                        <xsd:enumeration value="Material"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="ShiftObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="TimesheetApprovalManagerObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="Title" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="UnitOfMeasureObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="UseTimesheets" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="UserObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ProjectBudgetChangeLogType">
+        <xsd:sequence>
+            <xsd:element name="Amount" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="ChangeNumber" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="Date" minOccurs="0" type="xsd:dateTime"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ProjectObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="Reason" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="Responsible" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="Status" minOccurs="0"  nillable="true">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Pending"/>
+                        <xsd:enumeration value="Approved"/>
+                        <xsd:enumeration value="Not Approved"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="WBSObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ProjectType">
+        <xsd:sequence>
+            <xsd:element name="ActivityDefaultActivityType" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Task Dependent"/>
+                        <xsd:enumeration value="Resource Dependent"/>
+                        <xsd:enumeration value="Level of Effort"/>
+                        <xsd:enumeration value="Start Milestone"/>
+                        <xsd:enumeration value="Finish Milestone"/>
+                        <xsd:enumeration value="WBS Summary"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="ActivityDefaultCalendarObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ActivityDefaultCostAccountObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ActivityDefaultDurationType" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Fixed Units/Time"/>
+                        <xsd:enumeration value="Fixed Duration and Units/Time"/>
+                        <xsd:enumeration value="Fixed Units"/>
+                        <xsd:enumeration value="Fixed Duration and Units"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="ActivityDefaultPercentCompleteType" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Physical"/>
+                        <xsd:enumeration value="Duration"/>
+                        <xsd:enumeration value="Units"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="ActivityDefaultPricePerUnit" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="ActivityIdBasedOnSelectedActivity" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="ActivityIdIncrement" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ActivityIdPrefix" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="ActivityIdSuffix" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ActivityPercentCompleteBasedOnActivitySteps" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="AddActualToRemaining" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="AddedBy" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="AllowNegativeActualUnitsFlag" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="AllowStatusReview" minOccurs="0" type="xsd:boolean" nillable="true"/>
+            <xsd:element name="AnnualDiscountRate" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="AnticipatedFinishDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+            <xsd:element name="AnticipatedStartDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+            <xsd:element name="AssignmentDefaultDrivingFlag" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="AssignmentDefaultRateType" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Price / Unit"/>
+                        <xsd:enumeration value="Price / Unit 2"/>
+                        <xsd:enumeration value="Price / Unit 3"/>
+                        <xsd:enumeration value="Price / Unit 4"/>
+                        <xsd:enumeration value="Price / Unit 5"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="CheckOutStatus" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="ContractManagementGroupName" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="ContractManagementProjectName" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="CostQuantityRecalculateFlag" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="CriticalActivityFloatLimit" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="CriticalActivityPathType" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Critical Float"/>
+                        <xsd:enumeration value="Longest Path"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="CurrentBaselineProjectObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="DateAdded" minOccurs="0" type="xsd:dateTime"/>
+            <xsd:element name="DefaultPriceTimeUnits" minOccurs="0"  nillable="true">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Hour"/>
+                        <xsd:enumeration value="Day"/>
+                        <xsd:enumeration value="Week"/>
+                        <xsd:enumeration value="Month"/>
+                        <xsd:enumeration value="Year"/>
+                        <xsd:enumeration value="Days Hours"/>
+                        <xsd:enumeration value="Hours Minutes"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="Description" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="DiscountApplicationPeriod" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Month"/>
+                        <xsd:enumeration value="Quarter"/>
+                        <xsd:enumeration value="Year"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="EarnedValueComputeType" minOccurs="0"  nillable="true">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Activity Percent Complete"/>
+                        <xsd:enumeration value="0 / 100"/>
+                        <xsd:enumeration value="50 / 50"/>
+                        <xsd:enumeration value="Custom Percent Complete"/>
+                        <xsd:enumeration value="WBS Milestones Percent Complete"/>
+                        <xsd:enumeration value="Activity Percent Complete Using Resource Curves"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="EarnedValueETCComputeType" minOccurs="0"  nillable="true">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="ETC = Remaining Cost for Activity"/>
+                        <xsd:enumeration value="PF = 1"/>
+                        <xsd:enumeration value="PF = Custom Value"/>
+                        <xsd:enumeration value="PF = 1 / CPI"/>
+                        <xsd:enumeration value="PF = 1 / (CPI * SPI)"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="EarnedValueETCUserValue" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="EarnedValueUserPercent" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="EnablePublication" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="EnableSummarization" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="FiscalYearStartMonth" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="HistoryInterval" minOccurs="0"  nillable="true">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Month"/>
+                        <xsd:enumeration value="Week"/>
+                        <xsd:enumeration value="Quarter"/>
+                        <xsd:enumeration value="Year"/>
+                        <xsd:enumeration value="Financial Period"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="HistoryLevel" minOccurs="0"  nillable="true">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="None"/>
+                        <xsd:enumeration value="Project"/>
+                        <xsd:enumeration value="WBS"/>
+                        <xsd:enumeration value="Activity"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="Id" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="IndependentETCLaborUnits" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="IndependentETCTotalCost" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="IntegratedType" minOccurs="0"  nillable="true">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="ERP"/>
+                        <xsd:enumeration value="Fusion"/>
+                        <xsd:enumeration value="Gateway"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="LastFinancialPeriodObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="LevelingPriority" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="LinkActualToActualThisPeriod" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="LinkPercentCompleteWithActual" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="LinkPlannedAndAtCompletionFlag" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="LocationObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="MustFinishByDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="OBSObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="OriginalBudget" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="OwnerResourceObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ParentEPSObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="PlannedStartDate" minOccurs="0" type="xsd:dateTime"/>
+            <xsd:element name="PrimaryResourcesCanMarkActivitiesAsCompleted" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="ProjectForecastStartDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+            <xsd:element name="PublicationPriority" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ResetPlannedToRemainingFlag" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="ResourceCanBeAssignedToSameActivityMoreThanOnce" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="ResourcesCanAssignThemselvesToActivities" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="ResourcesCanEditAssignmentPercentComplete" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="ResourcesCanMarkAssignmentAsCompleted" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="ResourcesCanViewInactiveActivities" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="RiskMatrixObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="ScheduledFinishDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+            <xsd:element name="Status" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Planned"/>
+                        <xsd:enumeration value="Active"/>
+                        <xsd:enumeration value="Inactive"/>
+                        <xsd:enumeration value="What-If"/>
+                        <xsd:enumeration value="Requested"/>
+                        <xsd:enumeration value="Template"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="StatusReviewerObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="StrategicPriority" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="SummarizeToWBSLevel" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="SummarizedDataDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+            <xsd:element name="SummaryLevel" minOccurs="0"  nillable="true">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="WBS Level"/>
+                        <xsd:enumeration value="Assignment Level"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="UseProjectBaselineForEarnedValue" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="WBSCodeSeparator" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="WebSiteRootDirectory" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="WebSiteURL" minOccurs="0" type="xsd:string" nillable="true"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ActivityCodeAssignmentType">
+        <xsd:sequence>
+            <xsd:element name="ActivityCodeObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ActivityObjectId" minOccurs="0" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RoleType">
+        <xsd:sequence>
+            <xsd:element name="CalculateCostFromUnits" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="Id" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ParentObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RiskMatrixType">
+        <xsd:sequence>
+            <xsd:element name="Description" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="RiskScoringMethod" minOccurs="0" >
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Highest"/>
+                        <xsd:enumeration value="Average of Impacts"/>
+                        <xsd:enumeration value="Average of Individual Scores"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ActivityStepType">
+        <xsd:sequence>
+            <xsd:element name="ActivityObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="IsCompleted" minOccurs="0" type="xsd:boolean"/>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="PercentComplete" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="Weight" minOccurs="0" type="xsd:double" nillable="true"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RoleTeamType">
+        <xsd:sequence>
+            <xsd:element name="Description" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="UserObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="Roles" minOccurs="0">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="ObjectId" minOccurs="0" maxOccurs="unbounded" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="EPSType">
+        <xsd:sequence>
+            <xsd:element name="AnticipatedFinishDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+            <xsd:element name="AnticipatedStartDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+            <xsd:element name="Id" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="Name" minOccurs="0" type="xsd:string" nillable="true"/>
+            <xsd:element name="OBSObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="ObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+            <xsd:element name="OriginalBudget" minOccurs="0" type="xsd:double" nillable="true"/>
+            <xsd:element name="ParentObjectId" minOccurs="0" type="xsd:int" nillable="true"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="TimesheetUpdatedType">
+        <xsd:sequence>
+            <xsd:element name="ResourceId" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ResourceName" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="ResourceObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="StatusDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+            <xsd:element name="TimesheetPeriodObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="UserName" minOccurs="0" type="xsd:string"/>
+            <xsd:element name="UserObjectId" minOccurs="0" type="xsd:int"/>
+            <xsd:element name="NewValues" type="TimesheetType"/>
+            <xsd:element name="OldValues" type="TimesheetType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="TimesheetType">
+        <xsd:sequence>
+            <xsd:element name="Status" minOccurs="0">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="Submitted"/>
+                        <xsd:enumeration value="Approved"/>
+                        <xsd:enumeration value="Resource Manager Approved"/>
+                        <xsd:enumeration value="Project Manager Approved"/>
+                        <xsd:enumeration value="Active"/>
+                        <xsd:enumeration value="Rejected"/>
+                        <xsd:enumeration value="Not Started"/>
+                        <xsd:enumeration value="Resubmitted"/>
+                        <xsd:enumeration value="Reopened"/>
+                        <xsd:enumeration value="Submitted for RM"/>
+                        <xsd:enumeration value="Resubmitted for RM"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="XMLImportInvokedType">
+        <xsd:sequence>
+            <xsd:element name="ImportFile" type="xsd:string"/>
+            <xsd:element name="CreateNewProject" minOccurs="0">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="EPSObjectId" type="xsd:int"/>
+                        <xsd:element name="ProjectObjectId" type="xsd:int" minOccurs="0"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="UpdateExistingProject"  minOccurs="0">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="ProjectObjectId" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="Success" type="xsd:boolean"/>
+            <xsd:element name="ErrorMessage" type="xsd:string" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RecalculateAssignmentCostsInvokedType">
+    	<xsd:sequence>
+    		<xsd:element name="Project" type="ProjectIdentityType" maxOccurs="unbounded"/>
+            <xsd:element name="SyncOTFactor" type="xsd:boolean"/>
+    		<xsd:element name="Status" type="JobStatusType"/>
+    	</xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="LevelInvokedType">
+    	<xsd:sequence>
+    		<xsd:element name="Project" type="ProjectIdentityType" maxOccurs="unbounded"/>
+    		<xsd:element name="Status" type="JobStatusType"/>
+    	</xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ScheduleInvokedType">
+        <xsd:sequence>
+            <xsd:element name="DataDate" type="xsd:dateTime"/>
+            <xsd:element name="Project" type="ProjectIdentityType" maxOccurs="unbounded"/>
+            <xsd:element name="Status" type="JobStatusType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ApplyActualsInvokedType">
+        <xsd:sequence>
+            <xsd:element name="DataDate" type="xsd:dateTime"/>
+            <xsd:element name="Project" type="ProjectIdentityType"/>
+            <xsd:element name="Status" type="JobStatusType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="SummarizeInvokedType">
+        <xsd:sequence>
+            <xsd:element name="Project" type="ProjectIdentityType"/>
+            <xsd:element name="Status" type="JobStatusType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="StorePeriodPerformanceInvokedType">
+        <xsd:sequence>
+            <xsd:element name="FinancialPeriod" type="FinancialPeriodIdentityType"/>
+            <xsd:element name="Project" type="ProjectIdentityType" maxOccurs="unbounded"/>
+            <xsd:element name="Status" type="JobStatusType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="PublishProjectInvokedType">
+        <xsd:sequence>
+            <xsd:element name="CompletedOn" type="xsd:dateTime"/>
+            <xsd:element name="Project" type="ProjectIdentityType"/>
+            <xsd:element name="Status" type="JobStatusType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="PublishEnterpriseDataInvokedType">
+        <xsd:sequence>
+            <xsd:element name="CompletedOn" type="xsd:dateTime"/>
+            <xsd:element name="Status" type="JobStatusType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="PublishEnterpriseSummariesInvokedType">
+        <xsd:sequence>
+            <xsd:element name="CompletedOn" type="xsd:dateTime"/>
+            <xsd:element name="Status" type="JobStatusType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="PublishResourceManagementInvokedType">
+        <xsd:sequence>
+            <xsd:element name="CompletedOn" type="xsd:dateTime"/>
+            <xsd:element name="Status" type="JobStatusType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="PublishSecurityInvokedType">
+        <xsd:sequence>
+            <xsd:element name="CompletedOn" type="xsd:dateTime"/>
+            <xsd:element name="Status" type="JobStatusType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:simpleType name="JobStatusType">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="Completed"/>
+            <xsd:enumeration value="Failed"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:complexType name="ProjectIdentityType">
+        <xsd:sequence>
+            <xsd:element name="Id" type="xsd:string"/>
+            <xsd:element name="Name" type="xsd:string"/>
+            <xsd:element name="ObjectId" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="WBSIdentityType">
+        <xsd:sequence>
+            <xsd:element name="Code" type="xsd:string"/>
+            <xsd:element name="Name" type="xsd:string"/>
+            <xsd:element name="ObjectId" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="FinancialPeriodIdentityType">
+        <xsd:sequence>
+            <xsd:element name="EndDate" type="xsd:dateTime"/>
+            <xsd:element name="Name" type="xsd:string"/>
+            <xsd:element name="ObjectId" type="xsd:int"/>
+            <xsd:element name="StartDate" type="xsd:dateTime"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ContentRepositoryDocumentType">
+            <xsd:sequence>
+                <xsd:element name="UUID" type="xsd:string"/>
+                <xsd:element name="UserName" type="xsd:string"/>
+                <xsd:element name="DocumentObjectId" type="xsd:int" minOccurs="0" />
+            </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ConvertProjectToBaselineInvokedType">
+        <xsd:sequence>
+            <xsd:element name="NewBaselineProjectObjectId" type="xsd:int" minOccurs="0" />
+            <xsd:element name="ObjectId" type="xsd:int" minOccurs="0" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RestoreBaselineProjectInvokedType">
+        <xsd:sequence>
+            <xsd:element name="ObjectId" type="xsd:int" minOccurs="0" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="CopyBaselineProjectInvokedType">
+        <xsd:sequence>
+            <xsd:element name="NewBaselineProjectObjectId" type="xsd:int" minOccurs="0" />
+            <xsd:element name="ObjectId" type="xsd:int" minOccurs="0" />
+            <xsd:element name="BaselineProjectObjectId" type="xsd:int" minOccurs="0" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="CopyProjectAsBaselineInvokedType">
+        <xsd:sequence>
+            <xsd:element name="NewBaselineProjectObjectId" type="xsd:int" minOccurs="0" />
+            <xsd:element name="EPSObjectId" type="xsd:int" minOccurs="0" />
+            <xsd:element name="ObjectId" type="xsd:int" minOccurs="0" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="CreateProjectFromTemplateInvokedType">
+        <xsd:sequence>
+            <xsd:element name="NewProjectObjectId" type="xsd:int" minOccurs="0" />
+            <xsd:element name="EPSObjectId" type="xsd:int" minOccurs="0" />
+            <xsd:element name="ObjectId" type="xsd:int" minOccurs="0" />
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="CreateCopyAsTemplateInvokedType">
+        <xsd:sequence>
+            <xsd:element name="NewTemplateProjectObjectId" type="xsd:int" minOccurs="0" />
+            <xsd:element name="EPSObjectId" type="xsd:int" minOccurs="0" />
+            <xsd:element name="ObjectId" type="xsd:int" minOccurs="0" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="CopyProjectInvokedType">
+        <xsd:sequence>
+            <xsd:element name="NewProjectObjectId" type="xsd:int" minOccurs="0" />
+            <xsd:element name="EPSObjectId" type="xsd:int" minOccurs="0" />
+            <xsd:element name="ObjectId" type="xsd:int" minOccurs="0" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+</xsd:schema>

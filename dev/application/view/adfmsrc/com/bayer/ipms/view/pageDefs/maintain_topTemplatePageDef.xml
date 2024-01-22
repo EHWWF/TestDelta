@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.9.14" id="maintain_topTemplatePageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="Root.ManagementAppModule.ProgramTopCategoryView" DataControl="PrivateAppModuleDataControl"
+              RangeSize="100" id="ProgramTopCategoryViewIterator" CacheResults="true"/>
+    <iterator Binds="ManagementAppModule.ProgramTopSubCategoryView" DataControl="PrivateAppModuleDataControl"
+              RangeSize="100" id="ProgramTopSubCategoryViewIterator"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="ProgramTopCategoryViewIterator" id="ProgramTopCategoryView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.ProgramTopCategoryView" Name="ProgramTopCategoryView0">
+        <AttrNames>
+          <Item Value="Code"/>
+          <Item Value="Name"/>
+          <Item Value="IsActive"/>
+          <Item Value="Description"/>
+          <Item Value="IsIndication"/>
+          <Item Value="ModifyDate"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="ProgramTopCategoryViewIterator" id="CreateInsertCat" RequiresUpdateModel="true"
+            Action="createInsertRow" DataControl="PrivateAppModuleDataControl"
+            InstanceName="PrivateAppModuleDataControl.ManagementAppModule.ProgramTopCategoryView"/>
+    <tree IterBinding="ProgramTopSubCategoryViewIterator" id="ProgramTopSubCategoryView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.ProgramTopSubCategoryView" Name="ProgramTopSubCategoryView0">
+        <AttrNames>
+          <Item Value="Code"/>
+          <Item Value="Name"/>
+          <Item Value="IsActive"/>
+          <Item Value="Description"/>
+          <Item Value="ModifyDate"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="ProgramTopSubCategoryViewIterator" id="CreateInsertSub" RequiresUpdateModel="true"
+            Action="createInsertRow"/>
+    <action IterBinding="ProgramTopSubCategoryViewIterator" id="DeleteSub" RequiresUpdateModel="false"
+            Action="removeCurrentRow"/>
+    <action IterBinding="ProgramTopCategoryViewIterator" id="DeleteCat" RequiresUpdateModel="false"
+            Action="removeCurrentRow"/>
+    <attributeValues IterBinding="ProgramTopCategoryViewIterator" id="CategoryModifyDate">
+      <AttrNames>
+        <Item Value="ModifyDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProgramTopSubCategoryViewIterator" id="SubcategoryModifyDate">
+      <AttrNames>
+        <Item Value="ModifyDate"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

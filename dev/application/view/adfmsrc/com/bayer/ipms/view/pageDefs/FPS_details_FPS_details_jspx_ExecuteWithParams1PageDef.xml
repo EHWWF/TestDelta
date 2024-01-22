@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.64.93"
+                id="FPS_details_FPS_details_jspx_ExecuteWithParams1PageDef"
+                Package="com.bayer.ipms.view.pageDefs" SkipValidation="true">
+  <parameters/>
+  <executables>
+    <iterator Binds="Root.ProgramAppModule.AllQplanMilestonesView"
+              DataControl="PrivateAppModuleDataControl" RangeSize="25"
+              id="AllQplanMilestonesViewIterator"/>
+  </executables>
+  <bindings>
+    <action IterBinding="AllQplanMilestonesViewIterator" id="ExecuteWithParams"
+            InstanceName="PrivateAppModuleDataControl.Root.ProgramAppModule.AllQplanMilestonesView"
+            DataControl="PrivateAppModuleDataControl" RequiresUpdateModel="true"
+            Action="executeWithParams">
+      <NamedData NDName="ProjectIdVar" NDValue="#{pageFlowScope.projectId}"
+                 NDType="java.lang.String"/>
+    </action>
+  </bindings>
+</pageDefinition>

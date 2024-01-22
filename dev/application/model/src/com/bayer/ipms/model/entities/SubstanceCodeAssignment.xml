@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="SubstanceCodeAssignment"
+  Version="12.1.3.10.8"
+  InheritPersonalization="merge"
+  DBObjectType="table"
+  DBObjectName="PROJECT_SUBSTANCE_CODE"
+  AliasName="SubstanceCodeAssignment"
+  BindingStyle="OracleName"
+  RowClass="com.bayer.ipms.model.base.IPMSEntityImpl">
+  <Attribute
+    Name="Id"
+    ColumnName="ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="PROJECT_SUBSTANCE_CODE"
+    PrimaryKey="true"
+    RetrievedOnInsert="true"
+    Precision="20"/>
+  <Attribute
+    Name="SubstanceCode"
+    IsNotNull="true"
+    ColumnName="SUBSTANCE_CODE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="PROJECT_SUBSTANCE_CODE"
+    Precision="120"/>
+  <Attribute
+    Name="ProjectId"
+    ColumnName="PROJECT_ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="PROJECT_SUBSTANCE_CODE"
+    IsNotNull="true"
+    Precision="20"/>
+  <Key
+    Name="ProjectSubstanceCodePk"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="PROJECT_SUBSTANCE_CODE_PK"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.bayer.ipms.model.entities.SubstanceCodeAssignment.Id"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="ProjectSubstanceCodeProjectIdCheck">
+    <DesignTime>
+      <Attr Name="_isNotNull" Value="true"/>
+      <Attr Name="_DBObjectName" Value="PROJECT_SUBSTANCE_CODE_PROJECT"/>
+      <Attr Name="_checkCondition" Value='"PROJECT_ID" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.SubstanceCodeAssignment.ProjectId"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="ProjectSubstanceCodeFk1">
+    <DesignTime>
+      <Attr Name="_isCascadeDelete" Value="true"/>
+      <Attr Name="_referencedKey" Value="SYS_C0043961"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="PROJECT_SUBSTANCE_CODE_FK1"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.SubstanceCodeAssignment.SubstanceCode"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="ProjectSubstanceCodeFk2">
+    <DesignTime>
+      <Attr Name="_isCascadeDelete" Value="true"/>
+      <Attr Name="_referencedKey" Value="SYS_C0043880"/>
+      <Attr Name="_isForeign" Value="true"/>
+      <Attr Name="_DBObjectName" Value="PROJECT_SUBSTANCE_CODE_FK2"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.SubstanceCodeAssignment.ProjectId"/>
+    </AttrArray>
+  </Key>
+</Entity>

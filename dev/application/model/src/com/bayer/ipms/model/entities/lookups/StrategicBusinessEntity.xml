@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="windows-1257" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="StrategicBusinessEntity"
+  Version="12.2.1.0.31"
+  InheritPersonalization="true"
+  DBObjectType="table"
+  DBObjectName="STRATEGIC_BUSINESS_ENTITY"
+  AliasName="StrategicBusinessEntity"
+  BindingStyle="OracleName"
+  RowClass="com.bayer.ipms.model.base.IPMSEntityImpl">
+  <Attribute
+    Name="Code"
+    IsNotNull="true"
+    Precision="10"
+    Scale="0"
+    ColumnName="CODE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="STRATEGIC_BUSINESS_ENTITY"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="Name"
+    IsNotNull="true"
+    Precision="100"
+    Scale="0"
+    ColumnName="NAME"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="STRATEGIC_BUSINESS_ENTITY">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="IsActive"
+    IsNotNull="true"
+    Precision="1"
+    ColumnName="IS_ACTIVE"
+    SQLType="NUMERIC"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    TableName="STRATEGIC_BUSINESS_ENTITY"
+    PrecisionRule="false">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="2"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="IsVisible"
+    IsNotNull="true"
+    ColumnName="IS_VISIBLE"
+    SQLType="NUMERIC"
+    Type="java.lang.Boolean"
+    ColumnType="BIT"
+    TableName="STRATEGIC_BUSINESS_ENTITY"/>
+  <Attribute
+    Name="UpdateDate"
+    IsNotNull="true"
+    ColumnName="UPDATE_DATE"
+    SQLType="DATE"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    TableName="STRATEGIC_BUSINESS_ENTITY"
+    HistoryColumn="DateHistory"/>
+  <Attribute
+    Name="CreateDate"
+    IsNotNull="true"
+    ColumnName="CREATE_DATE"
+    SQLType="DATE"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    TableName="STRATEGIC_BUSINESS_ENTITY"
+    IsUpdateable="while_insert"
+    HistoryColumn="DateHistory"/>
+  <Key
+    Name="SysC0011120">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0011120"/>
+      <Attr Name="_checkCondition" Value='"CODE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.lookups.StrategicBusinessEntity.Code"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0011121">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0011121"/>
+      <Attr Name="_checkCondition" Value='"NAME" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.lookups.StrategicBusinessEntity.Name"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0011122">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0011122"/>
+      <Attr Name="_checkCondition" Value='"IS_ACTIVE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.lookups.StrategicBusinessEntity.IsActive"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0011123">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0011123"/>
+      <Attr Name="_checkCondition" Value="is_active in (0,1)"/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.lookups.StrategicBusinessEntity.IsActive"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0011124"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0011124"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.lookups.StrategicBusinessEntity.Code"/>
+    </AttrArray>
+  </Key>
+</Entity>

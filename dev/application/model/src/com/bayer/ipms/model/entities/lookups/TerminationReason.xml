@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="windows-1257" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="TerminationReason"
+  Version="12.1.3.10.8"
+  InheritPersonalization="true"
+  DBObjectType="table"
+  DBObjectName="TERMINATION_REASON"
+  AliasName="TerminationReason"
+  BindingStyle="OracleName"
+  RowClass="com.bayer.ipms.model.base.IPMSEntityImpl">
+  <Attribute
+    Name="Code"
+    IsNotNull="true"
+    Precision="10"
+    ColumnName="CODE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="TERMINATION_REASON"
+    PrimaryKey="true"
+    Scale="0"
+    IsUpdateable="while_insert">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="Name"
+    IsNotNull="true"
+    Precision="100"
+    ColumnName="NAME"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="TERMINATION_REASON"
+    Scale="0">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="IsActive"
+    IsNotNull="true"
+    ColumnName="IS_ACTIVE"
+    SQLType="NUMERIC"
+    Type="java.lang.Boolean"
+    ColumnType="NUMBER"
+    TableName="TERMINATION_REASON"
+    Precision="1"
+    PrecisionRule="false">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="2"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="Description"
+    Precision="500"
+    Scale="0"
+    ColumnName="DESCRIPTION"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="TERMINATION_REASON">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="500"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="RefReasonCode"
+    ColumnName="REF_REASON_CODE"
+    SQLType="STRUCT"
+    Type="java.lang.String"
+    ColumnType="NVARCHAR2"
+    TableName="TERMINATION_REASON"
+    Precision="10"/>
+  <Key
+    Name="SysC0012817">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0012817"/>
+      <Attr Name="_checkCondition" Value='"CODE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.lookups.TerminationReason.Code"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0012818">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0012818"/>
+      <Attr Name="_checkCondition" Value='"NAME" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.lookups.TerminationReason.Name"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0012819">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0012819"/>
+      <Attr Name="_checkCondition" Value='"IS_ACTIVE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.lookups.TerminationReason.IsActive"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0012820">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0012820"/>
+      <Attr Name="_checkCondition" Value="is_active in (0,1)"/>
+      <Attr Name="_isCheck" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.lookups.TerminationReason.IsActive"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="SysC0012821"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="SYS_C0012821"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item
+        Value="com.bayer.ipms.model.entities.lookups.TerminationReason.Code"/>
+    </AttrArray>
+  </Key>
+</Entity>

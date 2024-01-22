@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.0.31" id="activities_set_phasesPageDef"
+                Package="com.bayer.ipms.view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="ImportAppModule.ImportProjectActivityView" DataControl="PrivateAppModuleDataControl" RangeSize="25"
+              id="ImportProjectActivityViewIterator"/>
+    <iterator Binds="ImportAppModule.ImportView" DataControl="PrivateAppModuleDataControl" RangeSize="10"
+              id="ImportViewIterator"/>
+    <iterator Binds="ImportAppModule.TimelineRawView" DataControl="PrivateAppModuleDataControl" RangeSize="10"
+              id="TimelineRawViewIterator"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="ImportProjectActivityViewIterator" id="ImportProjectActivityView">
+      <nodeDefinition DefName="com.bayer.ipms.model.views.imports.ImportProjectActivityView"
+                      Name="ImportProjectActivityView0">
+        <AttrNames>
+          <Item Value="ProjectActivityId"/>
+          <Item Value="ProjectActivityName"/>
+          <Item Value="PlanStartDate"/>
+          <Item Value="PlanFinishDate"/>
+          <Item Value="ActStartDate"/>
+          <Item Value="ActFinishDate"/>
+          <Item Value="WbsCategory"/>
+          <Item Value="StudyId"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+  </bindings>
+</pageDefinition>

@@ -1,0 +1,15 @@
+alter table ltc_estimate add fct_y4_cost number;
+alter table ltc_estimate add fct_y5_cost number;
+alter table ltc_estimate add fct_y6_cost number;
+alter table ltc_estimate add fct_y7_cost number;
+alter table ltc_estimate add fct_y8_cost number;
+alter table ltc_estimate add fct_y9_cost number;
+alter table ltc_estimate add fct_y10_cost number;
+alter table ltc_estimate add fct_y11_cost number;
+alter table ltc_estimate add fct_y12_cost number;
+alter table ltc_estimate add fct_y13_cost number;
+alter table ltc_estimate add fct_y14_cost number;
+alter table ltc_estimate add fct_y15_cost number;
+drop table ltc_estimate_tmp;
+create global temporary table ltc_estimate_tmp on commit delete rows as (select * from ltc_estimate where 1=0);
+create index ltc_estimate_tmp_idx1 on ltc_estimate_tmp(ltc_project_id, project_phase_code, study_id, function_code, scope_code, is_external_fte, is_discrepancy, type_code);

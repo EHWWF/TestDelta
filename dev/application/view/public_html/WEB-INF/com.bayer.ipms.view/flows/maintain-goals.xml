@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="maintain-goals">
+    <template-reference>
+      <document>/WEB-INF/com.bayer.ipms.view/templates/ipms-taskflow-template-page.xml</document>
+      <id>ipms-taskflow-template-page</id>
+    </template-reference>
+    <default-activity>initMaintainGoalsScreen</default-activity>
+     <transaction id="__8">
+      <new-transaction/>
+    </transaction>
+    <data-control-scope>
+      <isolated/>
+    </data-control-scope>
+    <input-parameter-definition id="__1">
+      <name>programGoalId</name>
+      <value>#{pageFlowScope.programGoalId}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__2">
+      <name>programId</name>
+      <value>#{pageFlowScope.programId}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__2s">
+      <name>projectId</name>
+      <value>#{pageFlowScope.projectId}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <managed-bean id="__6">
+      <managed-bean-name id="__8">programViewBean</managed-bean-name>
+      <managed-bean-class id="__15">com.bayer.ipms.view.beans.ProgramViewBean</managed-bean-class>
+      <managed-bean-scope id="__9">pageFlow</managed-bean-scope>
+    </managed-bean>
+    <exception-handler>handleException</exception-handler>
+    <view id="edit">
+      <page>/maintain_goals.jspx</page>
+    </view>
+    <method-call id="initMaintainGoalsScreen">
+      <method>#{pageFlowScope.programViewBean.initMaintainGoalsScreen}</method>
+      <outcome>
+        <fixed-outcome>next</fixed-outcome>
+      </outcome>
+    </method-call>
+    <task-flow-return id="taskFlowReturn">
+      <outcome>
+        <name>taskFlowReturn</name>
+        <rollback/>
+      </outcome>
+    </task-flow-return>
+    <control-flow-rule id="__4">
+      <from-activity-id>initMaintainGoalsScreen</from-activity-id>
+      <control-flow-case id="__5">
+        <from-outcome>next</from-outcome>
+        <to-activity-id>edit</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__7">
+      <from-activity-id>*</from-activity-id>
+      <control-flow-case id="__10">
+        <from-outcome>back</from-outcome>
+        <to-activity-id>taskFlowReturn</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+  </task-flow-definition>
+</adfc-config>

@@ -1,0 +1,12 @@
+//Groovy Scripts for com.bayer.ipms.model.views.TaskLocalView
+
+package com.bayer.ipms.model.views
+
+import oracle.jbo.script.annotation.TransientValueExpression;
+
+@TransientValueExpression(attributeName="TitleOrdering")
+def TitleOrdering_ExpressionScript_Expression()
+{
+Title
+}
+

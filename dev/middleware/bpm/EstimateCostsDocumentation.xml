@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?oracleBPM version="12.1.3" fileRevision="20120601"?>
+<processDocumentation xmlns="http://xmlns.oracle.com/bpm/taskMetadataService/processDocumentation">
+   <component name="EstimateCosts">
+      <topicDocumentations>
+         <topicDocumentation name="EstimateCosts">
+            <descriptions>
+               <description locale="en">EstimateCosts</description>
+            </descriptions>
+         </topicDocumentation>
+         <topicDocumentation name="SUBPROCESS6053811498664">
+            <labels>
+               <label locale="en">SubProgram</label>
+            </labels>
+            <descriptions>
+               <description locale="en">Program SubProcess</description>
+            </descriptions>
+         </topicDocumentation>
+         <topicDocumentation name="SUBPROCESS7290141113680">
+            <labels>
+               <label locale="en">SubProgramRoles</label>
+            </labels>
+            <descriptions>
+               <description locale="en"></description>
+            </descriptions>
+         </topicDocumentation>
+         <topicDocumentation name="ACT7412230395416">
+            <labels>
+               <label locale="en">GetProgramLevelAssignees</label>
+            </labels>
+            <descriptions>
+               <description locale="en"></description>
+            </descriptions>
+         </topicDocumentation>
+         <topicDocumentation name="START_EVENT7290141114325">
+            <labels>
+               <label locale="en">subProgramRoleStart</label>
+            </labels>
+            <descriptions>
+               <description locale="en"></description>
+            </descriptions>
+         </topicDocumentation>
+         <topicDocumentation name="END_EVENT7290141114659">
+            <labels>
+               <label locale="en">subProgramRoleEnd</label>
+            </labels>
+            <descriptions>
+               <description locale="en"></description>
+            </descriptions>
+         </topicDocumentation>
+         <topicDocumentation name="sf19"/>
+         <topicDocumentation name="sf51"/>
+         <topicDocumentation name="ACT7412209545613">
+            <labels>
+               <label locale="en">ProvideLatestEstimates</label>
+            </labels>
+            <descriptions>
+               <description locale="en"></description>
+            </descriptions>
+         </topicDocumentation>
+         <topicDocumentation name="ACT9918013493795">
+            <labels>
+               <label locale="en">GetProcess</label>
+            </labels>
+            <descriptions>
+               <description locale="en"></description>
+            </descriptions>
+         </topicDocumentation>
+         <topicDocumentation name="START_EVENT605381183629">
+            <labels>
+               <label locale="en">subProgramStart</label>
+            </labels>
+            <descriptions>
+               <description locale="en"></description>
+            </descriptions>
+         </topicDocumentation>
+         <topicDocumentation name="END_EVENT6053811836444">
+            <labels>
+               <label locale="en">subProgramEnd</label>
+            </labels>
+            <descriptions>
+               <description locale="en"></description>
+            </descriptions>
+         </topicDocumentation>
+         <topicDocumentation name="BOUNDARY_EVENT7307537762952">
+            <labels>
+               <label locale="en">BoundaryEvent1</label>
+            </labels>
+            <descriptions>
+               <description locale="en"></description>
+            </descriptions>
+         </topicDocumentation>
+         <topicDocumentation name="sf16"/>
+         <topicDocumentation name="sf20"/>
+         <topicDocumentation name="sf25"/>
+         <topicDocumentation name="sf50"/>
+         <topicDocumentation name="sf57"/>
+         <topicDocumentation name="SUBPROCESS7254709095051">
+            <labels>
+               <label locale="en">TerminationSubprocess</label>
+            </labels>
+            <descriptions>
+               <description locale="en"></description>
+            </descriptions>
+         </topicDocumentation>
+         <topicDocumentation name="START_EVENT725470917306">
+            <labels>
+               <label locale="en">StartTermination</label>
+            </labels>
+            <descriptions>
+               <description locale="en"></description>
+            </descriptions>
+         </topicDocumentation>
+         <topicDocumentation name="END_EVENT7254713603492">
+            <labels>
+               <label locale="en">EndTermination</label>
+            </labels>
+            <descriptions>
+               <description locale="en"></description>
+            </descriptions>
+         </topicDocumentation>
+         <topicDocumentation name="sf19"/>
+         <topicDocumentation name="ACT8932514415353">
+            <labels>
+               <label locale="en">AssignComplete</label>
+            </labels>
+            <descriptions>
+               <description locale="en"></description>
+            </descriptions>
+         </topicDocumentation>
+         <topicDocumentation name="START_EVENT6053802506132">
+            <labels>
+               <label locale="en">Start</label>
+            </labels>
+            <descriptions>
+               <description locale="en"></description>
+            </descriptions>
+         </topicDocumentation>
+         <topicDocumentation name="END_EVENT6053802506280">
+            <labels>
+               <label locale="en">End</label>
+            </labels>
+            <descriptions>
+               <description locale="en"></description>
+            </descriptions>
+         </topicDocumentation>
+         <topicDocumentation name="BOUNDARY_EVENT6159900312418">
+            <labels>
+               <label locale="en">BoundaryEvent2</label>
+            </labels>
+            <descriptions>
+               <description locale="en"></description>
+            </descriptions>
+         </topicDocumentation>
+         <topicDocumentation name="sf14"/>
+         <topicDocumentation name="sf17"/>
+         <topicDocumentation name="sf29"/>
+         <topicDocumentation name="sf24"/>
+      </topicDocumentations>
+   </component>
+</processDocumentation>

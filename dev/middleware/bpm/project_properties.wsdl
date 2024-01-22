@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--########################################################################################-->
+<!--####                                                                                ####-->
+<!--####          THIS IS AN AUTO GENERATED FILE. PLEASE DO NOT MANUALLY MODIFY         ####-->
+<!--#### CHANGES TO THIS FILE MAY PRODUCE UNEXPECTED BEHAVIOR AND WOULD BE OVERWRITTEN  ####-->
+<!--####                                                                                ####-->
+<!--########################################################################################-->
+<wsdl:definitions targetNamespace="http://xmlns.oracle.com/bpmn/bpmnProcess/bpm" xmlns:tns3="http://xmlns.oracle.com/bpmn/bpmnProcess/EstimateLTC"  xmlns:tns6="http://xmlns.bayer.com/ipms/soa/EstimateCosts"  xmlns:tns2="http://xmlns.bayer.com/ipms/soa/IdentifyProject"  xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop"  xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"  xmlns:xsd="http://www.w3.org/2001/XMLSchema"  xmlns:tns="http://xmlns.oracle.com/bpmn/bpmnProcess/bpm"  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"  xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/"  xmlns:tns4="http://xmlns.bayer.com/ipms/soa"  xmlns:tns5="http://xmlns.bayer.com/ipms/soa/ProvideAssumptions" >
+    <vprop:property name="compositeId" type="xsd:string"/>
+    <vprop:propertyAlias messageType="tns2:terminateIdentifyProject" propertyName="tns:compositeId" part="parameters">
+        <vprop:query xmlns:ns="http://xmlns.bayer.com/ipms/soa/IdentifyProject" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://xmlns.oracle.com/bpmn/bpmnProcess/bpm" xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://xmlns.bayer.com/ipms/soa" xmlns:tns2="http://xmlns.bayer.com/ipms/soa" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns4="http://xmlns.bayer.com/ipms/soa/EstimateCosts" xmlns:tns3="http://xmlns.bayer.com/ipms/soa/IdentifyProject" xmlns:tns6="http://xmlns.bayer.com/ipms/soa/EstimateCosts" xmlns:tns5="http://xmlns.bayer.com/ipms/soa/EstimateCosts" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/">
+            /ns:terminateIdentifyProject/ns1:terminate/@compositeId
+        </vprop:query>
+    </vprop:propertyAlias>
+    <vprop:propertyAlias messageType="tns3:terminate" propertyName="tns:compositeId" part="parameters">
+        <vprop:query xmlns:tns4="http://xmlns.bayer.com/ipms/soa" xmlns:tns3="http://xmlns.oracle.com/bpmn/bpmnProcess/EstimateLTC">
+            /tns3:terminate/tns4:terminate/@compositeId
+        </vprop:query>
+    </vprop:propertyAlias>
+    <vprop:propertyAlias messageType="tns4:start" propertyName="tns:compositeId" part="parameters">
+        <vprop:query xmlns:ns="http://xmlns.bayer.com/ipms/soa" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://xmlns.oracle.com/bpmn/bpmnProcess/bpm" xmlns:tns2="http://xmlns.bayer.com/ipms/soa" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns4="http://xmlns.bayer.com/ipms/soa/EstimateCosts" xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop" xmlns:tns3="http://xmlns.bayer.com/ipms/soa" xmlns:tns6="http://xmlns.bayer.com/ipms/soa/EstimateCosts" xmlns:tns5="http://xmlns.bayer.com/ipms/soa/EstimateCosts" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/">
+            /ns:start/ns:identify/@compositeId
+        </vprop:query>
+    </vprop:propertyAlias>
+    <vprop:propertyAlias messageType="tns2:start" propertyName="tns:compositeId" part="parameters">
+        <vprop:query xmlns:ns="http://xmlns.bayer.com/ipms/soa/IdentifyProject" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://xmlns.oracle.com/bpmn/bpmnProcess/bpm" xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://xmlns.bayer.com/ipms/soa" xmlns:tns2="http://xmlns.bayer.com/ipms/soa" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns4="http://xmlns.bayer.com/ipms/soa/EstimateCosts" xmlns:tns3="http://xmlns.bayer.com/ipms/soa/IdentifyProject" xmlns:tns6="http://xmlns.bayer.com/ipms/soa/EstimateCosts" xmlns:tns5="http://xmlns.bayer.com/ipms/soa/EstimateCosts" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/">
+            /ns:start/ns1:identify/@compositeId
+        </vprop:query>
+    </vprop:propertyAlias>
+    <vprop:propertyAlias messageType="tns5:teminate" propertyName="tns:compositeId" part="parameters">
+        <vprop:query xmlns:ns="http://xmlns.bayer.com/ipms/soa/ProvideAssumptions" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://xmlns.oracle.com/bpmn/bpmnProcess/bpm" xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://xmlns.bayer.com/ipms/soa" xmlns:tns2="http://xmlns.bayer.com/ipms/soa/IdentifyProject" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns4="http://xmlns.bayer.com/ipms/soa" xmlns:tns3="http://xmlns.bayer.com/ipms/soa/EstimateCosts" xmlns:tns6="http://xmlns.bayer.com/ipms/soa/EstimateCosts" xmlns:tns5="http://xmlns.bayer.com/ipms/soa/ProvideAssumptions" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/">
+            /ns:teminate/ns1:terminate/@compositeId
+        </vprop:query>
+    </vprop:propertyAlias>
+    <vprop:propertyAlias messageType="tns6:terminate" propertyName="tns:compositeId" part="parameters">
+        <vprop:query xmlns:tns2="http://xmlns.bayer.com/ipms/soa/EstimateCosts" xmlns:tns3="http://xmlns.bayer.com/ipms/soa">
+            /tns2:terminate/tns3:terminate/@compositeId
+        </vprop:query>
+    </vprop:propertyAlias>
+    <vprop:propertyAlias messageType="tns5:start" propertyName="tns:compositeId" part="parameters">
+        <vprop:query xmlns:ns="http://xmlns.bayer.com/ipms/soa/ProvideAssumptions" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://xmlns.oracle.com/bpmn/bpmnProcess/bpm" xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://xmlns.bayer.com/ipms/soa" xmlns:tns2="http://xmlns.bayer.com/ipms/soa/ProvideAssumptions" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns4="http://xmlns.bayer.com/ipms/soa" xmlns:tns3="http://xmlns.bayer.com/ipms/soa/IdentifyProject" xmlns:tns6="http://xmlns.bayer.com/ipms/soa/EstimateCosts" xmlns:tns5="http://xmlns.bayer.com/ipms/soa/EstimateCosts" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/">
+            /ns:start/ns1:greenList/@compositeId
+        </vprop:query>
+    </vprop:propertyAlias>
+    <vprop:propertyAlias messageType="tns6:start" propertyName="tns:compositeId" part="parameters">
+        <vprop:query xmlns:tns2="http://xmlns.bayer.com/ipms/soa/EstimateCosts" xmlns:tns3="http://xmlns.bayer.com/ipms/soa">
+            /tns2:start/tns3:estimate/@compositeId
+        </vprop:query>
+    </vprop:propertyAlias>
+    <vprop:propertyAlias messageType="tns5:startTermination" propertyName="tns:compositeId" part="parameters">
+        <vprop:query xmlns:ns="http://xmlns.bayer.com/ipms/soa/ProvideAssumptions" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://xmlns.oracle.com/bpmn/bpmnProcess/bpm" xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://xmlns.bayer.com/ipms/soa" xmlns:tns2="http://xmlns.bayer.com/ipms/soa/IdentifyProject" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns4="http://xmlns.bayer.com/ipms/soa/EstimateCosts" xmlns:tns3="http://xmlns.bayer.com/ipms/soa/ProvideAssumptions" xmlns:tns6="http://xmlns.bayer.com/ipms/soa/EstimateCosts" xmlns:tns5="http://xmlns.bayer.com/ipms/soa" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/">
+            /ns:startTermination/ns1:terminate/@compositeId
+        </vprop:query>
+    </vprop:propertyAlias>
+    <vprop:propertyAlias messageType="tns4:terminateIdentifyProject" propertyName="tns:compositeId" part="parameters">
+        <vprop:query xmlns:ns="http://xmlns.bayer.com/ipms/soa" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://xmlns.oracle.com/bpmn/bpmnProcess/bpm" xmlns:tns2="http://xmlns.bayer.com/ipms/soa" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns4="http://xmlns.bayer.com/ipms/soa/EstimateCosts" xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop" xmlns:tns3="http://xmlns.bayer.com/ipms/soa" xmlns:tns6="http://xmlns.bayer.com/ipms/soa/EstimateCosts" xmlns:tns5="http://xmlns.bayer.com/ipms/soa/EstimateCosts" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/">
+            /ns:terminateIdentifyProject/ns:terminate/@compositeId
+        </vprop:query>
+    </vprop:propertyAlias>
+    <vprop:propertyAlias messageType="tns3:start" propertyName="tns:compositeId" part="parameters">
+        <vprop:query xmlns:tns4="http://xmlns.bayer.com/ipms/soa" xmlns:tns3="http://xmlns.oracle.com/bpmn/bpmnProcess/EstimateLTC">
+            /tns3:start/tns4:estimate/@compositeId
+        </vprop:query>
+    </vprop:propertyAlias>
+</wsdl:definitions>

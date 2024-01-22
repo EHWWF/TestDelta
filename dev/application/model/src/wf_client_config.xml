@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<workflowServicesClientConfiguration xmlns="http://xmlns.oracle.com/bpel/services/client">
+    <server name="default" default="true" excludeFromFederatedList="true">
+        <localClient>
+            <participateInClientTransaction>false</participateInClientTransaction>
+        </localClient>
+        
+        <remoteClient>
+            <serverURL>t3://soa.ipms:7011</serverURL>
+            <initialContextFactory>weblogic.jndi.WLInitialContextFactory</initialContextFactory>
+            <participateInClientTransaction>false</participateInClientTransaction>
+        </remoteClient>
+        
+        <soapClient>
+            <rootEndPointURL>http://soa.ipms:7011</rootEndPointURL>
+            <identityPropagation mode="dynamic" type="saml">
+                <policy-references>
+                    <policy-reference enabled="true" category="security" uri="oracle/wss10_saml_token_client_policy"/>
+                </policy-references>
+            </identityPropagation>
+        </soapClient>
+   </server>
+</workflowServicesClientConfiguration>

@@ -1,0 +1,13 @@
+<?xml version = '1.0' encoding = 'ISO-8859-1'?>
+<weblogic-web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://www.bea.com/ns/weblogic/weblogic-web-app http://www.bea.com/ns/weblogic/weblogic-web-app/1.0/weblogic-web-app.xsd"
+                  xmlns="http://www.bea.com/ns/weblogic/weblogic-web-app">
+  <security-role-assignment>
+    <role-name>valid-users</role-name>
+    <principal-name>users</principal-name>
+  </security-role-assignment>
+  <session-descriptor>
+    <cookie-name>SESSIDIPMS</cookie-name>
+    <url-rewriting-enabled>false</url-rewriting-enabled>
+  </session-descriptor>
+</weblogic-web-app>

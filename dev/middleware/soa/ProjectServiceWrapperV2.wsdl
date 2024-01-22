@@ -1,0 +1,15 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
+<wsdl:definitions
+     name="ProjectService"
+     targetNamespace="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2"
+     xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+     xmlns:bpws="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+     xmlns:tns="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    >
+    <plnk:partnerLinkType name="ProjectService">
+        <plnk:role name="ProjectPortType" portType="tns:ProjectPortType"/>
+    </plnk:partnerLinkType>
+    <wsdl:import namespace="http://xmlns.oracle.com/Primavera/P6/WS/Project/V2" location="wsdl/ProjectService.wsdl"/>
+</wsdl:definitions>
